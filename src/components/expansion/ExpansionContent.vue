@@ -1,5 +1,5 @@
 <template>
-    <v-expansion-panel-content>
+    <v-expansion-panel-content id="exp-pan-content">
         <div slot="header">{{this.panelName}}</div>
         <slot></slot>
     </v-expansion-panel-content>     
@@ -13,3 +13,10 @@ export default class ExpansionContent extends Vue {
     @Prop() private panelName!: string;
 }
 </script>
+
+<style scoped lang="scss">
+    #exp-pan-content {
+        padding: 15px;
+    }
+</style>
+

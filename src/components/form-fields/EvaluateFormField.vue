@@ -3,13 +3,13 @@
         <div>
             {{this.evaluationText}}
         </div>
-        <v-radio-group v-model="evalValue" row :rules="this.evalRules">
+        <v-radio-group id="grp"  v-model="evalValue" row :rules="this.evalRules">
             <v-radio
+                id="eval-radio"
                 v-for="option in evalOptions"
                 :key="option.label"
                 :label="option.label"
                 :value="option.value"
-                color="	orange darken-3"
             />
         </v-radio-group>
     </div>
@@ -40,3 +40,7 @@ export default class EvaluateFormField extends Vue {
     ];
 }
 </script>
+
+<style lang="scss">
+
+</style>

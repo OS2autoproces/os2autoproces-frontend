@@ -12,7 +12,13 @@
                     <ExpansionPanel v-if="radioValue === 'email'">
                         <ExpansionContent panelName="Email Form">
                             <EmailFormField />
-                            <EvaluateFormField evaluationText="1 + 2 = "/>
+                            <EvaluateFormField evaluationText="1 + 2 = "/>                            
+                            <RadioGroup>
+                                <RadioButton radioButtonLabel='Slet Ikke' groupName="How you like it?" />
+                                <RadioButton radioButtonLabel='I mindre grad' groupName="How you like it?"/>
+                                <RadioButton radioButtonLabel='I nogen Grad' groupName="How you like it?"/>
+                            </RadioGroup>
+
                         </ExpansionContent>
                     </ExpansionPanel>                    
                     <v-btn
@@ -44,6 +50,8 @@ import ExpansionPanel from './expansion/ExpansionPanel.vue';
 import ExpansionContent from './expansion/ExpansionContent.vue';
 import EvaluateFormField from './form-fields/EvaluateFormField.vue';
 import TextFieldComponent from './form-fields/TextField.vue';
+import RadioButton from './form-fields/RadioButton.vue';
+import RadioGroup from './form-fields/RadioGroup.vue';
 
 @Component({
     components: {
@@ -52,7 +60,9 @@ import TextFieldComponent from './form-fields/TextField.vue';
         ExpansionPanel,
         ExpansionContent,
         EvaluateFormField,
-        TextFieldComponent
+        TextFieldComponent,
+        RadioButton,
+        RadioGroup
     },
 })
 export default class Post extends Vue {
@@ -61,9 +71,11 @@ export default class Post extends Vue {
     forValue = '';
 
     submit() {
-        this.$refs.formRef;
-        debugger;
         return;
     }
 }
 </script>
+
+<style lang="scss" scoped>
+
+</style>

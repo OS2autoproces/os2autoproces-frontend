@@ -42,4 +42,8 @@ export default class App extends Vue {
     }
   }
 }
+
+.expansion-panel .icon {
+  color: orange !important;
+}
 </style>
