@@ -20,7 +20,7 @@ export default class RadioButton extends Vue {
 
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="stylus">
     .radio-container {
         display: flex;
         cursor: pointer;

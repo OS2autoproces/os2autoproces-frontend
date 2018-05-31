@@ -12,7 +12,7 @@ export default class ExpansionItem extends Vue {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="stylus" scoped>
     .expansion-panel {
         color: orange;
         padding: 10px;

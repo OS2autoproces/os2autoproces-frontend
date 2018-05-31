@@ -14,7 +14,7 @@ export default class ExpansionContent extends Vue {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="stylus">
     #exp-pan-content {
         padding: 15px;
     }

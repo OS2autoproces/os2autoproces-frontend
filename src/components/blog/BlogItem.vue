@@ -20,7 +20,7 @@ export default class BlogItem extends Vue {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="stylus">
 .ccb-Card1 {
     /* Add shadows to create the "card" effect */
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);

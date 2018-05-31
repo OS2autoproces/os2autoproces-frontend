@@ -41,6 +41,6 @@ export default class EvaluateFormField extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style lang="stylus">
 
 </style>

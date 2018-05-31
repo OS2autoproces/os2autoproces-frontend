@@ -15,7 +15,7 @@ export default class RadioGroup extends Vue {
 }
 </script>
 
-<style scoped lang='scss'>
+<style scoped lang="stylus">
     .container {
         display: flex;
         flex-direction: row;

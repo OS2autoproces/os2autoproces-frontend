@@ -23,8 +23,11 @@ export default class App extends Vue {
 }
 </script>
 
+<style lang="stylus">
+  @import '~vuetify/src/stylus/main'
+</style>
 
-<style lang="scss">
+<style lang="stylus">
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
