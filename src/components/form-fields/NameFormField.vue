@@ -4,8 +4,7 @@
         v-model="name"
         :rules="nameRules"
         required
-        >
-    </v-text-field>
+    />
 </template>
 
 <script lang="ts">
@@ -13,6 +12,7 @@ import {Vue, Component, Prop} from 'vue-property-decorator';
 
 @Component
 export default class NameFormField extends Vue {
+    fieldName = 'Name';
     name = '';
     nameRules = [
         (v: string) => !!v || 'Name is required',

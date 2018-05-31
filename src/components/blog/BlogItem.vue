@@ -1,11 +1,10 @@
 <template>
   <v-container grid-list-xl>
-    <v-layout column row wrap>
+    <v-layout column wrap>
         <v-flex xs10 sm6 >
             <div class="ccb-Card2">
                 <h3 class="cbb-card-title">{{title}}</h3>
                 <div class="textWrapper">
-
                 </div>
             </div>
         </v-flex>
