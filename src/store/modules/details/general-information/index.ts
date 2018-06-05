@@ -13,7 +13,8 @@ export const state: GeneralInformationState = {
   field: '',
   department: '',
   visibility: '',
-  contactPerson: ''
+  contactPerson: '',
+  email: ''
 };
 
 export const generalInformation: Module<GeneralInformationState, RootState> = {

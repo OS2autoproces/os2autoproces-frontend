@@ -8,6 +8,7 @@ export const generalInformationMutationTypes = {
   SET_DEPARTMENT: 'setDepartment',
   SET_VISIBILITY: 'setVisiblity',
   SET_CONTACTPERSON: 'setContactPerson',
+  SET_EMAIL: 'setEmail',
 };
 
 export const mutations: MutationTree<GeneralInformationState> = {
@@ -28,5 +29,8 @@ export const mutations: MutationTree<GeneralInformationState> = {
   },
   setContactPerson(state: GeneralInformationState, payload: string) {
     state.contactPerson = payload;
+  },
+  setEmail(state: GeneralInformationState, payload: string) {
+    state.email= payload;
   }
 };

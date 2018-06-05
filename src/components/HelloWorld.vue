@@ -6,6 +6,7 @@
     <DepartmentField />
     <VisibilitySelection />
     <ContactPersonField />
+    <EmailField />
   </div>
 </template>
 
@@ -18,6 +19,7 @@ import FieldSelection from '@/components/details/general-information/FieldSelect
 import DepartmentField from '@/components/details/general-information/DepartmentField.vue';
 import VisibilitySelection from '@/components/details/general-information/VisibilitySelection.vue';
 import ContactPersonField from '@/components/details/general-information/ContactPersonField.vue';
+import EmailField from '@/components/details/general-information/EmailField.vue';
 
 const namespace = 'common';
 
@@ -28,7 +30,8 @@ const namespace = 'common';
     FieldSelection,
     DepartmentField,
     VisibilitySelection,
-    ContactPersonField
+    ContactPersonField,
+    EmailField
   }
 })
 export default class HelloWorld extends Vue {

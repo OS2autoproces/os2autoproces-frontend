@@ -5,5 +5,6 @@ export interface GeneralInformationState {
   department: string; // afdeling
   visibility: string; // synlighed
   contactPerson: string; // kontaktperson
+  email: string;      // mail
 }
 

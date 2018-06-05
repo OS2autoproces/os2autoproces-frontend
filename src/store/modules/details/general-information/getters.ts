@@ -74,5 +74,14 @@ export const getters: GetterTree<GeneralInformationState, RootState> = {
     }
     return !validate({inputValue: state.contactPerson}, constraints);
   },
+  isEmailValid(state: GeneralInformationState): boolean {
+    const constraints = {
+      inputValue: {
+        presence: true,
+        email: true,
+      }
+    }
+    return !validate({inputValue: state.email}, constraints);
+  },
 
 };

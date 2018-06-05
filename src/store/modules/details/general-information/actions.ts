@@ -10,6 +10,7 @@ export const generalInformationActionTypes = {
   SET_DEPARTMENT: 'generalInformation/SET_DEPARTMENT',
   SET_VISIBILITY: 'generalInformation/SET_VISIBILITY',
   SET_CONTACT_PERSON: 'generalInformation/SET_CONTACT_PERSON',
+  SET_EMAIL: 'generalInformation/SET_EMAIL',
 };
 
 export const actions: ActionTree<GeneralInformationState, RootState> = {
@@ -30,6 +31,9 @@ export const actions: ActionTree<GeneralInformationState, RootState> = {
   },
   setContactPerson({commit}, payload: string): void {
     commit(generalInformationMutationTypes.SET_CONTACTPERSON, payload);
+  },
+  setEmail({commit}, payload: string): void {
+    commit(generalInformationMutationTypes.SET_EMAIL, payload);
   }
   // async someAsyncAction({ commit }, payload: any) {
   //   const serverCall = await new Promise((reject, resolve) => resolve(2));
