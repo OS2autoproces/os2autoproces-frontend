@@ -1,8 +1,8 @@
 <template>
-    <div>
+    <div class="selectionContainer">
+        <p>Synlighed:</p>
         <v-select
           :items="visibilityItems"
-          label="Synlighed"
           single-line
           @change="setVisibility"
           autocomplete
@@ -29,5 +29,6 @@ export default class FieldSelection extends Vue {
 }
 </script>
 
-<style>
+<style lang="scss">
+@import '@/styles/selection-input.scss';
 </style>

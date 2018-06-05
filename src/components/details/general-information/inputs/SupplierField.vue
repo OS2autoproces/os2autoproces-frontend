@@ -1,6 +1,7 @@
 
 <template>
-    <div>
+    <div class="inputContainer">
+        <p>Leverandør:</p>
         <input type="text" v-model="inputValue" @input="valueChanged">
     </div>
 </template>
@@ -24,5 +25,6 @@ export default class SupplierField extends Vue {
 }
 </script>
 
-<style>
+<style lang="scss">
+@import '@/styles/text-input.scss';
 </style>

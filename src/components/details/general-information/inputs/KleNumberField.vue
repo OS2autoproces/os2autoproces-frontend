@@ -1,9 +1,9 @@
 <template>
-    <div>
+    <div class="selectionContainer">
+        <p>KLE nummer: </p>
         <v-select
           :items="kleNumbers"
           v-model="selected"
-          label="Kle Number"
           single-line
           @change="setKleNumber"
           autocomplete
@@ -36,6 +36,6 @@ export default class KleNumberField extends Vue {
 }
 </script>
 
-<style>
-
+<style lang="scss">
+@import '@/styles/selection-input.scss';
 </style>

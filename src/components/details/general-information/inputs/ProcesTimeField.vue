@@ -1,5 +1,6 @@
 <template>
-    <div>
+    <div class="inputContainer">
+        <p>Årlig procestid: </p>
         <input type="text" v-model="inputValue" @input="valueChanged">
     </div>
 </template>
@@ -23,5 +24,6 @@ export default class ProcesTimeField extends Vue {
 }
 </script>
 
-<style>
+<style lang="scss">
+@import '@/styles/text-input.scss';
 </style>

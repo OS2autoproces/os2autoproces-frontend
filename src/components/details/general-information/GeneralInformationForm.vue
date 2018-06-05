@@ -1,15 +1,15 @@
 <template>
     <div class="container">
         <KleNumberField />
-        <ParagrafField />
         <FieldSelection />
-        <DepartmentField />
-        <VisibilitySelection />
         <ContactPersonField />
-        <EmailField />
-        <ProcesTimeField />
         <ProjectManagerField />
+        <DepartmentField />
+        <EmailField />
         <SupplierField />
+        <ParagrafField />
+        <VisibilitySelection />
+        <ProcesTimeField />
         <ResumeTextArea />
     </div>
 </template>
@@ -49,7 +49,7 @@ export default class GeneralInformationForm extends Vue {
 }
 </script>
 
-<style>
+<style lang="scss">
     .container {
         display: flex;
         flex-direction: row;

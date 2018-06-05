@@ -1,5 +1,6 @@
 <template>
     <div>
+        <p>Resumé: </p>
         <textarea type="text" v-model="inputValue" @blur="valueChanged" />
     </div>
 </template>

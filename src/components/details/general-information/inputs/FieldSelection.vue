@@ -1,8 +1,8 @@
 <template>
-    <div>
+    <div class="selectionContainer">
+        <p>Fagområde: </p>
         <v-select
           :items="fields"
-          label="Fagområde"
           single-line
           @change="setField"
           autocomplete
@@ -29,5 +29,6 @@ export default class FieldSelection extends Vue {
 }
 </script>
 
-<style>
+<style lang="scss">
+@import '@/styles/selection-input.scss';
 </style>

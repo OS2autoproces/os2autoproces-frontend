@@ -1,0 +1,19 @@
+@import '@/variables.scss';
+
+.input-group--autocomplete {
+        padding: none;
+
+    .input-group__input {
+        border: 1px solid $color-primary;
+        border-radius: 20px;
+        padding-left: 13px;
+
+        .icon {
+            color: $color-primary !important;
+        }
+    }
+
+    .input-group__details {
+        display: none;
+    }
+}

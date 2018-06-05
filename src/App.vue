@@ -23,8 +23,8 @@ export default class App extends Vue {
 }
 </script>
 
-<style lang="stylus">
-  @import '~vuetify/src/stylus/main'
+<style lang="scss">
+@import '@/auto-complete.scss';
 </style>
 
 <style lang="stylus">
