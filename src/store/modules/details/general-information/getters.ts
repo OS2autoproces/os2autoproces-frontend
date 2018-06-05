@@ -35,5 +35,19 @@ export const getters: GetterTree<GeneralInformationState, RootState> = {
     }
     return !validate({inputValue: state.field}, constraints);
   },
+  isDepartmentValid(state: GeneralInformationState): boolean {
+    const constraints = {
+      inputValue: {
+        presence: true,
+        format: {
+          pattern: /[a-zA-Z]+/,
+        },
+        length: {
+          minimum: 1
+        }
+      }
+    }
+    return !validate({inputValue: state.department}, constraints);
+  },
 
 };

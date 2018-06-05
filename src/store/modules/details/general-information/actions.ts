@@ -7,6 +7,7 @@ export const generalInformationActionTypes = {
   SET_KLE_NUMBER: 'generalInformation/SET_KLE_NUMBER',
   SET_PARAGRAF: 'generalInformation/SET_PARAGRAF',
   SET_FIELD: 'generalInformation/SET_FIELD',
+  SET_DEPARTMENT: 'generalInformation/SET_DEPARTMENT',
 };
 
 export const actions: ActionTree<GeneralInformationState, RootState> = {
@@ -18,6 +19,9 @@ export const actions: ActionTree<GeneralInformationState, RootState> = {
   },
   setField({commit}, payload: string): void {
     commit(generalInformationMutationTypes.SET_FIELD, payload);
+  },
+  setDepartment({commit}, payload: string): void {
+    commit(generalInformationMutationTypes.SET_DEPARTMENT, payload);
   }
   // async someAsyncAction({ commit }, payload: any) {
   //   const serverCall = await new Promise((reject, resolve) => resolve(2));

@@ -5,6 +5,7 @@ export const generalInformationMutationTypes = {
   SET_KLE_NUMBER: "setKleNumber",
   SET_PARAGRAF: "setParagraf",
   SET_FIELD: 'setField',
+  SET_DEPARTMENT: 'setDepartment',
 };
 
 export const mutations: MutationTree<GeneralInformationState> = {
@@ -16,5 +17,8 @@ export const mutations: MutationTree<GeneralInformationState> = {
   },
   setField(state: GeneralInformationState, payload: string) {
     state.field = payload;
+  },
+  setDepartment(state: GeneralInformationState, payload: string) {
+    state.department = payload;
   }
 };

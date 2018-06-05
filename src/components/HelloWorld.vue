@@ -3,6 +3,7 @@
     <KleNumberField />
     <ParagrafField />
     <FieldSelection />
+    <DepartmentField />
   </div>
 </template>
 
@@ -12,6 +13,7 @@ import { State, Action } from 'vuex-class';
 import KleNumberField from '@/components/details/general-information/KleNumberField.vue';
 import ParagrafField from '@/components/details/general-information/ParagrafField.vue';
 import FieldSelection from '@/components/details/general-information/FieldSelection.vue';
+import DepartmentField from '@/components/details/general-information/DepartmentField.vue';
 
 const namespace = 'common';
 
@@ -19,7 +21,8 @@ const namespace = 'common';
   components: {
     KleNumberField,
     ParagrafField,
-    FieldSelection
+    FieldSelection,
+    DepartmentField
   }
 })
 export default class HelloWorld extends Vue {
