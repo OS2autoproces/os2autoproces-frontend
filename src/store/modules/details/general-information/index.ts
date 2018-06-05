@@ -11,7 +11,9 @@ export const state: GeneralInformationState = {
   kleNumber: '',
   paragraf: '',
   field: '',
-  department: ''
+  department: '',
+  visibility: '',
+  contactPerson: ''
 };
 
 export const generalInformation: Module<GeneralInformationState, RootState> = {

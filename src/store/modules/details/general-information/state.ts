@@ -3,4 +3,7 @@ export interface GeneralInformationState {
   paragraf: string;   // paragraf og lov
   field: string;      // field of study eller fagområde
   department: string; // afdeling
+  visibility: string; // synlighed
+  contactPerson: string; // kontaktperson
 }
+

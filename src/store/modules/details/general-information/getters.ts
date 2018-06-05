@@ -49,5 +49,30 @@ export const getters: GetterTree<GeneralInformationState, RootState> = {
     }
     return !validate({inputValue: state.department}, constraints);
   },
+  isVisibilityValid(state: GeneralInformationState): boolean {
+    const constraints = {
+      inputValue: {
+        presence: true,
+        length: {
+          minimum: 1
+        }
+      }
+    }
+    return !validate({inputValue: state.visibility}, constraints);
+  },
+  isContactPersonValid(state: GeneralInformationState): boolean {
+    const constraints = {
+      inputValue: {
+        presence: true,
+        length: {
+          minimum: 2
+        },
+        format: {
+          pattern: /[a-zA-Z]+/,
+        },
+      }
+    }
+    return !validate({inputValue: state.contactPerson}, constraints);
+  },
 
 };

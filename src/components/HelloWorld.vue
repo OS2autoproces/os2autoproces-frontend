@@ -4,6 +4,8 @@
     <ParagrafField />
     <FieldSelection />
     <DepartmentField />
+    <VisibilitySelection />
+    <ContactPersonField />
   </div>
 </template>
 
@@ -14,6 +16,8 @@ import KleNumberField from '@/components/details/general-information/KleNumberFi
 import ParagrafField from '@/components/details/general-information/ParagrafField.vue';
 import FieldSelection from '@/components/details/general-information/FieldSelection.vue';
 import DepartmentField from '@/components/details/general-information/DepartmentField.vue';
+import VisibilitySelection from '@/components/details/general-information/VisibilitySelection.vue';
+import ContactPersonField from '@/components/details/general-information/ContactPersonField.vue';
 
 const namespace = 'common';
 
@@ -22,7 +26,9 @@ const namespace = 'common';
     KleNumberField,
     ParagrafField,
     FieldSelection,
-    DepartmentField
+    DepartmentField,
+    VisibilitySelection,
+    ContactPersonField
   }
 })
 export default class HelloWorld extends Vue {

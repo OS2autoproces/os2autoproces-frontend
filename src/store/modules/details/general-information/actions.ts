@@ -8,6 +8,8 @@ export const generalInformationActionTypes = {
   SET_PARAGRAF: 'generalInformation/SET_PARAGRAF',
   SET_FIELD: 'generalInformation/SET_FIELD',
   SET_DEPARTMENT: 'generalInformation/SET_DEPARTMENT',
+  SET_VISIBILITY: 'generalInformation/SET_VISIBILITY',
+  SET_CONTACT_PERSON: 'generalInformation/SET_CONTACT_PERSON',
 };
 
 export const actions: ActionTree<GeneralInformationState, RootState> = {
@@ -22,6 +24,12 @@ export const actions: ActionTree<GeneralInformationState, RootState> = {
   },
   setDepartment({commit}, payload: string): void {
     commit(generalInformationMutationTypes.SET_DEPARTMENT, payload);
+  },
+  setVisibility({commit}, payload: string): void {
+    commit(generalInformationMutationTypes.SET_VISIBILITY, payload);
+  },
+  setContactPerson({commit}, payload: string): void {
+    commit(generalInformationMutationTypes.SET_CONTACTPERSON, payload);
   }
   // async someAsyncAction({ commit }, payload: any) {
   //   const serverCall = await new Promise((reject, resolve) => resolve(2));
