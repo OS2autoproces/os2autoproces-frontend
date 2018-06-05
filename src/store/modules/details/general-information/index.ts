@@ -14,7 +14,10 @@ export const state: GeneralInformationState = {
   department: '',
   visibility: '',
   contactPerson: '',
-  email: ''
+  email: '',
+  procesTime: '',
+  projectManager: '',
+  supplier: ''
 };
 
 export const generalInformation: Module<GeneralInformationState, RootState> = {

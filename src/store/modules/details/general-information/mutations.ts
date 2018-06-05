@@ -9,6 +9,9 @@ export const generalInformationMutationTypes = {
   SET_VISIBILITY: 'setVisiblity',
   SET_CONTACTPERSON: 'setContactPerson',
   SET_EMAIL: 'setEmail',
+  SET_PROCES_TIME: 'setProcesTime',
+  SET_PROJECT_MANAGER: 'setProjectManager',
+  SET_SUPPLIER: 'setSupplier',
 };
 
 export const mutations: MutationTree<GeneralInformationState> = {
@@ -31,6 +34,15 @@ export const mutations: MutationTree<GeneralInformationState> = {
     state.contactPerson = payload;
   },
   setEmail(state: GeneralInformationState, payload: string) {
-    state.email= payload;
-  }
+    state.email = payload;
+  },
+  setProcesTime(state: GeneralInformationState, payload: string) {
+    state.procesTime = payload;
+  },
+  setProjectManager(state: GeneralInformationState, payload: string) {
+    state.projectManager = payload;
+  },
+  setSupplier(state: GeneralInformationState, payload: string) {
+    state.projectManager = payload;
+  },
 };

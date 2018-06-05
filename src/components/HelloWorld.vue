@@ -7,6 +7,9 @@
     <VisibilitySelection />
     <ContactPersonField />
     <EmailField />
+    <ProcesTimeField />
+    <ProjectManagerField />
+    <SupplierField />
   </div>
 </template>
 
@@ -20,6 +23,9 @@ import DepartmentField from '@/components/details/general-information/Department
 import VisibilitySelection from '@/components/details/general-information/VisibilitySelection.vue';
 import ContactPersonField from '@/components/details/general-information/ContactPersonField.vue';
 import EmailField from '@/components/details/general-information/EmailField.vue';
+import ProcesTimeField from '@/components/details/general-information/ProcesTimeField.vue';
+import ProjectManagerField from '@/components/details/general-information/ProjectManagerField.vue';
+import SupplierField from '@/components/details/general-information/SupplierField.vue';
 
 const namespace = 'common';
 
@@ -31,7 +37,10 @@ const namespace = 'common';
     DepartmentField,
     VisibilitySelection,
     ContactPersonField,
-    EmailField
+    EmailField,
+    ProcesTimeField,
+    ProjectManagerField,
+    SupplierField
   }
 })
 export default class HelloWorld extends Vue {

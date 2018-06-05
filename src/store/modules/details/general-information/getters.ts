@@ -83,5 +83,42 @@ export const getters: GetterTree<GeneralInformationState, RootState> = {
     }
     return !validate({inputValue: state.email}, constraints);
   },
+  isProcesTimeValid(state: GeneralInformationState): boolean {
+    const constraints = {
+      inputValue: {
+        presence: true,
+        numericality: true
+      }
+    }
+    return !validate({inputValue: state.procesTime}, constraints);
+  },
+  isProjectManagerValid(state: GeneralInformationState): boolean {
+    const constraints = {
+      inputValue: {
+        presence: true,
+        length: {
+          minimum: 2
+        },
+        format: {
+          pattern: /[a-zA-Z]+/,
+        },
+      }
+    }
+    return !validate({inputValue: state.projectManager}, constraints);
+  },
+  isSupplierValid(state: GeneralInformationState): boolean {
+    const constraints = {
+      inputValue: {
+        presence: true,
+        length: {
+          minimum: 2
+        },
+        format: {
+          pattern: /[a-zA-Z]+/,
+        },
+      }
+    }
+    return !validate({inputValue: state.supplier}, constraints);
+  },
 
 };
