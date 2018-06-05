@@ -1,28 +1,5 @@
-<template lang="pug">
-v-container(grid-list-x1='')
-  v-layout(wrap='', column='')
-    v-flex(xs10='', sm6='')
-      v-form(ref='formRef', v-model='formIsValid')
-        expansionpanel
-          expansioncontent(panelname='Name Form')
-            nameformfield
-        br
-        expansionpanel(v-if="radioValue === 'email'")
-          expansioncontent(panelname='Email Form')
-            emailformfield
-              evaluateformfield(evaluationtext='1 + 2 = ')
-                radiogroup
-                  radiobutton(radiobuttonlabel='Slet Ikke', groupname='How you like it?')
-                    radiobutton(radiobuttonlabel='I mindre grad', groupname='How you like it?')
-                      radiobutton(radiobuttonlabel='I nogen Grad', groupname='How you like it?')
-        v-btn(:disabled='!formIsValid', @click='submit')
-          | submit
-        p  {{formIsValid}} 
-        p  {{ forValue }}
-        textfieldcomponent
-  v-radio-group(:manditory='false', column='', v-model='radioValue')
-    v-radio(label='name', value='name')
-      v-radio(label='email', value='email')
+<template>
+
 </template>
 
 <script>
