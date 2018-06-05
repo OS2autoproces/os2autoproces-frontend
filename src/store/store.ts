@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Vuex, { StoreOptions } from "vuex";
-import { common } from "./modules/common";
+import { generalInformation } from '@/store/modules/details/general-information';
 
 Vue.use(Vuex);
 
@@ -10,7 +10,7 @@ export interface RootState {
 
 const store: StoreOptions<RootState> = {
   modules: {
-    common
+    generalInformation
   }
 };
 

@@ -11,7 +11,7 @@ export const state: GeneralInformationState = {
   kleNumber: '',
 };
 
-export const common: Module<GeneralInformationState, RootState> = {
+export const generalInformation: Module<GeneralInformationState, RootState> = {
   namespaced,
   state,
   actions,

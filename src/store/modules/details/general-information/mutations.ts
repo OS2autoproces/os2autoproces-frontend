@@ -8,5 +8,5 @@ export const generalInformationMutationTypes = {
 export const mutations: MutationTree<GeneralInformationState> = {
   setKleNumber(state: GeneralInformationState, payload: string) {
     state.kleNumber = payload;
-  }
+  },
 };

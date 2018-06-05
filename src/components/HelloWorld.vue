@@ -7,24 +7,32 @@
       <a href="https://github.com/vuejs/vue-cli/tree/dev/docs" target="_blank">vue-cli documentation</a>.
     </p>
     <div>
-      {{common.networkCalls}}
+      <!-- {{common.networkCalls}} -->
     </div>
-    <v-btn @click="incrementNetworkCalls"></v-btn>
+    <!-- <v-btn @click="incrementNetworkCalls"></v-btn> -->
+    <br>
+    <br>
+    <br>
+    <KleNumberField />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { State, Action } from 'vuex-class';
-import { CommonState } from '../store/modules/common/state';
+import KleNumberField from '@/components/details/general-information/KleNumberField.vue';
 
 const namespace = 'common';
 
-@Component
+@Component({
+  components: {
+    KleNumberField
+  }
+})
 export default class HelloWorld extends Vue {
-  @Action('incrementNetworkCalls', { namespace })
-  incrementNetworkCalls: any;
-  @State('common') common!: CommonState;
+  // @Action('incrementNetworkCalls', { namespace })
+  // incrementNetworkCalls: any;
+  // @State('common') common!: CommonState;
   @Prop() private msg!: string;
 }
 </script>

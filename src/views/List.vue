@@ -21,7 +21,7 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 import BlogItem from '../components/blog/BlogItem.vue';
-import { watcher } from '../ultils/IsInView';
+import {watcher} from '../utils/IsInView';
 
 Vue.directive('is-in-view', {
     bind(element: HTMLElement, binding: any ) {
