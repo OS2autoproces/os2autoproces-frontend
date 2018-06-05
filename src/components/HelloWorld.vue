@@ -1,46 +1,19 @@
 <template>
   <div class="hello">
-    <KleNumberField />
-    <ParagrafField />
-    <FieldSelection />
-    <DepartmentField />
-    <VisibilitySelection />
-    <ContactPersonField />
-    <EmailField />
-    <ProcesTimeField />
-    <ProjectManagerField />
-    <SupplierField />
+    <GeneralInformationForm />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { State, Action } from 'vuex-class';
-import KleNumberField from '@/components/details/general-information/KleNumberField.vue';
-import ParagrafField from '@/components/details/general-information/ParagrafField.vue';
-import FieldSelection from '@/components/details/general-information/FieldSelection.vue';
-import DepartmentField from '@/components/details/general-information/DepartmentField.vue';
-import VisibilitySelection from '@/components/details/general-information/VisibilitySelection.vue';
-import ContactPersonField from '@/components/details/general-information/ContactPersonField.vue';
-import EmailField from '@/components/details/general-information/EmailField.vue';
-import ProcesTimeField from '@/components/details/general-information/ProcesTimeField.vue';
-import ProjectManagerField from '@/components/details/general-information/ProjectManagerField.vue';
-import SupplierField from '@/components/details/general-information/SupplierField.vue';
+import GeneralInformationForm from '@/components/details/general-information/GeneralInformationForm.vue';
 
 const namespace = 'common';
 
 @Component({
   components: {
-    KleNumberField,
-    ParagrafField,
-    FieldSelection,
-    DepartmentField,
-    VisibilitySelection,
-    ContactPersonField,
-    EmailField,
-    ProcesTimeField,
-    ProjectManagerField,
-    SupplierField
+    GeneralInformationForm
   }
 })
 export default class HelloWorld extends Vue {

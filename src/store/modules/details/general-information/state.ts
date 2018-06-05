@@ -9,5 +9,6 @@ export interface GeneralInformationState {
   procesTime: string; // årlig procestid
   projectManager: string // projektleder
   supplier: string; // leverrandør
+  resume: string    // resumé
 }
 

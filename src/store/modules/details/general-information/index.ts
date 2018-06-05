@@ -17,7 +17,8 @@ export const state: GeneralInformationState = {
   email: '',
   procesTime: '',
   projectManager: '',
-  supplier: ''
+  supplier: '',
+  resume: ''
 };
 
 export const generalInformation: Module<GeneralInformationState, RootState> = {

@@ -1,6 +1,7 @@
 <template>
-    <div>
-        <input type="text" v-model="inputValue" @input="valueChanged">
+    <div class="contactContainer">
+        <p>Kontanktperson:</p>
+        <input type="text" v-model="inputValue" @input="valueChanged"> 
     </div>
 </template>
 
@@ -24,4 +25,18 @@ export default class ContactPersonField extends Vue {
 </script>
 
 <style>
+  .contactContainer {
+    display: flex;
+    flex-direction: row;
+    background-color: aquamarine;
+    align-items: center;
+
+  }
+  input {
+    border: 1.4px solid orange;
+    border-radius: 50px;
+    padding: 3px;
+    outline: none;
+    padding-left: 10px;
+  }
 </style>

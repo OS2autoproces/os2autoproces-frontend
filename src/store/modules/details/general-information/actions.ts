@@ -14,6 +14,7 @@ export const generalInformationActionTypes = {
   SET_PROCES_TIME: 'generalInformation/SET_PROCES_TIME',
   SET_PROJECT_MANAGER: 'generalInformation/SET_PROJECT_MANAGER',
   SET_SUPPLIER: 'generalInformation/SET_SUPPLIER',
+  SET_RESUME: 'generalInformation/SET_RESUME',
 };
 
 export const actions: ActionTree<GeneralInformationState, RootState> = {
@@ -46,6 +47,9 @@ export const actions: ActionTree<GeneralInformationState, RootState> = {
   },
   setSupplier({commit}, payload: string): void {
     commit(generalInformationMutationTypes.SET_SUPPLIER, payload);
+  },
+  setResume({commit}, payload: string): void {
+    commit(generalInformationMutationTypes.SET_RESUME, payload);
   }
     // async someAsyncAction({ commit }, payload: any) {
   //   const serverCall = await new Promise((reject, resolve) => resolve(2));

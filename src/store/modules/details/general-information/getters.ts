@@ -120,5 +120,17 @@ export const getters: GetterTree<GeneralInformationState, RootState> = {
     }
     return !validate({inputValue: state.supplier}, constraints);
   },
+  isResumeValid(state: GeneralInformationState): boolean {
+    const constraints = {
+      inputValue: {
+        presence: true,
+        length: {
+          minimum: 10,
+          maximum: 140
+        },
+      }
+    }
+    return !validate({inputValue: state.resume}, constraints);
+  },
 
 };

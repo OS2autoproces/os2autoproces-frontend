@@ -1,6 +1,6 @@
 <template>
     <div>
-        <input type="text" v-model="inputValue" @input="valueChanged">
+        <textarea type="text" v-model="inputValue" @blur="valueChanged" />
     </div>
 </template>
 
@@ -11,14 +11,14 @@ import { Action } from 'vuex-class';
 const namespace = 'generalInformation';
 
 @Component
-export default class SupplierField extends Vue {
-  @Action('setSupplier', { namespace })
-  setSupplier: any;
+export default class ResumeTextArea extends Vue {
+  @Action('setResume', { namespace })
+  setResume: any;
 
   inputValue: string = '';
 
   valueChanged(event: any) {
-    this.setSupplier(event.target.value);
+    this.setResume(event.target.value);
   }
 }
 </script>

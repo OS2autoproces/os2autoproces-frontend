@@ -12,6 +12,7 @@ export const generalInformationMutationTypes = {
   SET_PROCES_TIME: 'setProcesTime',
   SET_PROJECT_MANAGER: 'setProjectManager',
   SET_SUPPLIER: 'setSupplier',
+  SET_RESUME: 'setResume',
 };
 
 export const mutations: MutationTree<GeneralInformationState> = {
@@ -44,5 +45,8 @@ export const mutations: MutationTree<GeneralInformationState> = {
   },
   setSupplier(state: GeneralInformationState, payload: string) {
     state.projectManager = payload;
+  },
+  setResume(state: GeneralInformationState, payload: string) {
+    state.resume = payload;
   },
 };
