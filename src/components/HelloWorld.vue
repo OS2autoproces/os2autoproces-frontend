@@ -1,19 +1,7 @@
 <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://github.com/vuejs/vue-cli/tree/dev/docs" target="_blank">vue-cli documentation</a>.
-    </p>
-    <div>
-      <!-- {{common.networkCalls}} -->
-    </div>
-    <!-- <v-btn @click="incrementNetworkCalls"></v-btn> -->
-    <br>
-    <br>
-    <br>
     <KleNumberField />
+    <ParagrafField />
   </div>
 </template>
 
@@ -21,12 +9,14 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { State, Action } from 'vuex-class';
 import KleNumberField from '@/components/details/general-information/KleNumberField.vue';
+import ParagrafField from '@/components/details/general-information/ParagrafField.vue';
 
 const namespace = 'common';
 
 @Component({
   components: {
-    KleNumberField
+    KleNumberField,
+    ParagrafField
   }
 })
 export default class HelloWorld extends Vue {

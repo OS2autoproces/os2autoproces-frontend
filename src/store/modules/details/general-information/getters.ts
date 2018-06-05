@@ -7,9 +7,21 @@ export const getters: GetterTree<GeneralInformationState, RootState> = {
   isKleNumberValid(state: GeneralInformationState): boolean {
     const constraints = {
       inputValue: {
+        presence: true,
         numericality: true
       }
     };
     return !validate({ inputValue: state.kleNumber }, constraints);
+  },
+  isParagrafValid(state: GeneralInformationState): boolean {
+    const constraints = {
+      inputValue: {
+        presence: true,
+        length: {
+          minimum: 1,
+        }
+      }
+    }
+    return !validate({inputValue: state.paragraf}, constraints);
   }
 };
