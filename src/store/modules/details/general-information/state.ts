@@ -1,4 +1,5 @@
 export interface GeneralInformationState {
-  kleNumber: string;
-  paragraf: string;
+  kleNumber: string;  // KL Nummer
+  paragraf: string;   // paragraf og lov
+  field: string;      // field of study eller fagområde
 }

@@ -23,5 +23,17 @@ export const getters: GetterTree<GeneralInformationState, RootState> = {
       }
     }
     return !validate({inputValue: state.paragraf}, constraints);
-  }
+  },
+  isFieldValid(state: GeneralInformationState): boolean {
+    const constraints = {
+      inputValue: {
+        presence: true,
+        format: {
+          pattern: /[a-zA-Z]+/,
+        }
+      }
+    }
+    return !validate({inputValue: state.field}, constraints);
+  },
+
 };

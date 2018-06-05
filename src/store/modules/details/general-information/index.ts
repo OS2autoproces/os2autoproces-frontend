@@ -9,7 +9,8 @@ const namespaced = true;
 
 export const state: GeneralInformationState = {
   kleNumber: '',
-  paragraf: ''
+  paragraf: '',
+  field: ''
 };
 
 export const generalInformation: Module<GeneralInformationState, RootState> = {

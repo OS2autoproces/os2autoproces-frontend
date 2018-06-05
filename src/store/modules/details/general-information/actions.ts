@@ -6,6 +6,7 @@ import { generalInformationMutationTypes } from "@/store/modules/details/general
 export const generalInformationActionTypes = {
   SET_KLE_NUMBER: 'generalInformation/SET_KLE_NUMBER',
   SET_PARAGRAF: 'generalInformation/SET_PARAGRAF',
+  SET_FIELD: 'generalInformation/SET_FIELD',
 };
 
 export const actions: ActionTree<GeneralInformationState, RootState> = {
@@ -14,6 +15,9 @@ export const actions: ActionTree<GeneralInformationState, RootState> = {
   },
   setParagraf({ commit }, payload: string): void {
     commit(generalInformationMutationTypes.SET_PARAGRAF, payload);
+  },
+  setField({commit}, payload: string): void {
+    commit(generalInformationMutationTypes.SET_FIELD, payload);
   }
   // async someAsyncAction({ commit }, payload: any) {
   //   const serverCall = await new Promise((reject, resolve) => resolve(2));

@@ -4,6 +4,7 @@ import { GeneralInformationState } from "@/store/modules/details/general-informa
 export const generalInformationMutationTypes = {
   SET_KLE_NUMBER: "setKleNumber",
   SET_PARAGRAF: "setParagraf",
+  SET_FIELD: 'setField',
 };
 
 export const mutations: MutationTree<GeneralInformationState> = {
@@ -12,5 +13,8 @@ export const mutations: MutationTree<GeneralInformationState> = {
   },
   setParagraf(state: GeneralInformationState, payload: string) {
     state.paragraf = payload;
+  },
+  setField(state: GeneralInformationState, payload: string) {
+    state.field = payload;
   }
 };
