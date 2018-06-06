@@ -1,20 +1,16 @@
-interface WatchELement {
+interface Target {
   element: HTMLElement;
-  callBack(): void;
+  callback(element: HTMLElement, isInView: boolean): void;
 }
 
-class Watcher {
-  windowHeight = 0;
-  elementsToWatch: any[] = [];
-  scrollListener: any;
-  reziseListener: any;
+export class Watcher {
+  margin = 100;
+  targets: Target[] = [];
+  listener = this.update.bind(this);
 
   constructor() {
-    this.scrollListener = this.update.bind(this);
-    this.reziseListener = this.resize.bind(this);
-    window.addEventListener("scroll", this.scrollListener);
-    window.addEventListener("resize", this.reziseListener);
-    this.resize();
+    window.addEventListener("scroll", this.listener);
+    window.addEventListener("resize", this.listener);
     this.update();
   }
 
@@ -22,36 +18,31 @@ class Watcher {
     const viewPortTop = window.pageYOffset;
     const viewPortBottom = viewPortTop + window.innerHeight;
 
-    this.elementsToWatch.forEach((elementBinding: any) => {
-      const { element, settings } = elementBinding;
+    this.targets.forEach(target => {
+      const { element, callback } = target;
 
       const elementTopPosition = element.offsetTop;
       const elementBottomPosition = element.offsetTop + element.clientHeight;
 
+      const isElementTopOverScreenBottom =
+        elementTopPosition + this.margin < viewPortBottom;
+
+      const isElementBottomBelowScreenTop =
+        elementBottomPosition > viewPortTop + this.margin;
+
       const isInView =
-        elementTopPosition + 100 < viewPortBottom &&
-        elementBottomPosition > viewPortTop + 100;
+        isElementTopOverScreenBottom && isElementBottomBelowScreenTop;
 
-      settings.callback(element, isInView);
+      callback(element, isInView);
     });
   }
 
-  resize() {
-    this.windowHeight = window.innerHeight;
-    this.update();
+  addElement(element: Target['element'], callback: Target['callback']): void {
+    this.targets.push({ element, callback });
   }
 
-  addElement(element: HTMLElement, settings = {}) {
-    this.elementsToWatch.push({
-      element,
-      settings
-    });
-  }
-
-  removeListeners() {
-    window.removeEventListener("resize", this.reziseListener);
-    window.removeEventListener("scroll", this.scrollListener);
+  removeListeners(): void {
+    window.removeEventListener("resize", this.listener);
+    window.removeEventListener("scroll", this.listener);
   }
 }
-
-export const watcher = new Watcher();
