@@ -1,21 +1,12 @@
 @import '@/variables.scss';
 
 .inputContainer {
-    display: flex;
-    flex-direction: row;
-    background-color: aquamarine;
-    align-items: center;
-
-    p {
-        margin: 5px;
-    }
-
     input {
         border: 1px solid $color-primary;
         border-radius: 50px;
         outline: none;
         padding-left: 10px;
-        margin: 5px;
+        height: 32px;
         width: 100%;
     }
 }

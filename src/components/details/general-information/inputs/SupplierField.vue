@@ -26,5 +26,4 @@ export default class SupplierField extends Vue {
 </script>
 
 <style lang="scss">
-@import '@/styles/text-input.scss';
 </style>

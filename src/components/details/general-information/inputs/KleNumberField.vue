@@ -1,6 +1,5 @@
 <template>
     <div class="selectionContainer">
-        <p>KLE nummer: </p>
         <v-select
           :items="kleNumbers"
           v-model="selected"
@@ -37,5 +36,4 @@ export default class KleNumberField extends Vue {
 </script>
 
 <style lang="scss">
-@import '@/styles/selection-input.scss';
 </style>

@@ -1,16 +1,30 @@
 <template>
     <div class="container">
-        <KleNumberField />
-        <FieldSelection />
-        <ContactPersonField />
-        <ProjectManagerField />
-        <DepartmentField />
-        <EmailField />
-        <SupplierField />
-        <ParagrafField />
-        <VisibilitySelection />
-        <ProcesTimeField />
-        <ResumeTextArea />
+        <div class="section-col kle">
+            <div class="labels">
+                <div>KLE-nr:</div>
+                <div>Lov og paragraf:</div>
+            </div>
+            <div class="fields">
+                <KleNumberField />
+                <ParagrafField />
+            </div>
+        </div>
+        <div class="section-col">
+            <FieldSelection />
+            <DepartmentField />
+            <VisibilitySelection />
+        </div>
+        <div class="section-col">
+            <ContactPersonField />
+            <EmailField />
+            <ProcesTimeField />
+        </div>
+        <div class="section-col">
+            <SupplierField />
+            <ProjectManagerField />
+        </div>
+        <!-- <ResumeTextArea /> -->
     </div>
 </template>
 
@@ -49,11 +63,27 @@ export default class GeneralInformationForm extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
     .container {
         display: flex;
         flex-direction: row;
         background-color: gainsboro;
-        flex-wrap: wrap;
+    }
+    .section-col {
+        flex: 0 0 25%;
+        display: flex;
+
+        .labels {
+            width: 50%;
+
+            > div {
+                line-height: 32px;
+            }
+        }
+
+        .labels > div,
+        .fields > * {
+            margin-bottom: 1rem;
+        }
     }
 </style>

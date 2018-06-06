@@ -25,5 +25,4 @@ export default class ProjectManagerField extends Vue {
 </script>
 
 <style lang="scss">
-@import '@/styles/text-input.scss';
 </style>

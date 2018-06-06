@@ -1,7 +1,7 @@
 @import '@/variables.scss';
 
-.input-group--autocomplete {
-        padding: none;
+div>.input-group--autocomplete {
+        padding: 0;
 
     .input-group__input {
         border: 1px solid $color-primary;

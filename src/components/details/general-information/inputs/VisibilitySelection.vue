@@ -30,5 +30,4 @@ export default class FieldSelection extends Vue {
 </script>
 
 <style lang="scss">
-@import '@/styles/selection-input.scss';
 </style>

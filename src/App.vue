@@ -24,7 +24,9 @@ export default class App extends Vue {
 </script>
 
 <style lang="scss">
-@import '@/auto-complete.scss';
+@import '@/styles/auto-complete.scss';
+@import '@/styles/selection-input.scss';
+@import '@/styles/text-input.scss';
 </style>
 
 <style lang="stylus">
