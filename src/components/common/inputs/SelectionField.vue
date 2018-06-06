@@ -17,9 +17,9 @@ export default class InputField extends Vue {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import "@/styles/variables.scss";
-div > .input-group--autocomplete {
+.input-group--autocomplete {
   padding: 0;
 
   .input-group__input {
