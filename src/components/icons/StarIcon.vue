@@ -15,17 +15,17 @@ import { Vue, Component, Prop } from "vue-property-decorator";
 export default class StarIcon extends Vue {}
 </script>
 
-<style lang="stylus" scoped>
-@import '../../styles/helpers.styl';
+<style lang="scss" scoped>
+@import "../../styles/helpers";
 
 polygon {
-    fill: #fff;
-    stroke: $colors.secondary;
-    stroke-miterlimit: 10;
+  fill: #fff;
+  stroke: $color-secondary;
+  stroke-miterlimit: 10;
 }
 
 .selected polygon {
-    fill: $colors.star;
-    stroke: $colors.star;
+  fill: $color-star;
+  stroke: $color-star;
 }
 </style>

@@ -24,49 +24,49 @@ import { Vue, Component, Prop } from "vue-property-decorator";
 export default class Home extends Vue {}
 </script>
 
-<style lang="stylus" scoped>
-@import '../styles/helpers.styl';
+<style lang="scss" scoped>
+@import "../styles/helpers";
 
 .page {
-    background-color: $colors.secondary;
+  background-color: $color-secondary;
 }
 
 .header {
-    background-size: cover;
-    background-image: url('https://upload.wikimedia.org/wikipedia/commons/e/e5/Stack_of_Copy_Paper.jpg');
-    height: 350px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  background-size: cover;
+  background-image: url("https://upload.wikimedia.org/wikipedia/commons/e/e5/Stack_of_Copy_Paper.jpg");
+  height: 350px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
-    button {
-        position: absolute;
-        top: 1rem;
-        right: 1rem;
-    }
+  button {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+  }
 
-    h1 {
-        color: white;
-        font-size: 3rem;
-    }
+  h1 {
+    color: white;
+    font-size: 3rem;
+  }
 
-    h2 {
-        color: white;
-        font-size: 2rem;
-    }
+  h2 {
+    color: white;
+    font-size: 2rem;
+  }
 }
 
 .details {
-    column-count: 2;
-    column-gap: 5rem;
-    color: white;
-    padding: 100px 0;
-    width: 650px;
-    margin: 0 auto;
+  column-count: 2;
+  column-gap: 5rem;
+  color: white;
+  padding: 100px 0;
+  width: 650px;
+  margin: 0 auto;
 
-    h1 {
-        color: $colors.primary;
-    }
+  h1 {
+    color: $color-primary;
+  }
 }
 </style>

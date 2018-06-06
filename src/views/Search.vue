@@ -79,27 +79,27 @@ export default class Search extends Vue {
 }
 </script>
 
-<style lang="stylus" scoped>
-@import '../styles/helpers.styl';
+<style lang="scss" scoped>
+@import "../styles/helpers";
 
 .page {
-    display: flex;
+  display: flex;
 }
 
 .filters {
-    flex: 0 0 300px;
-    border-right: 1px solid $colors.grey;
+  flex: 0 0 300px;
+  border-right: 1px solid $color-grey;
 }
 
 .results {
-    flex-grow: 1;
+  flex-grow: 1;
 
-    .report {
-        text-align: right;
-    }
+  .report {
+    text-align: right;
+  }
 
-    .result {
-        margin-bottom: 1rem;
-    }
+  .result {
+    margin-bottom: 1rem;
+  }
 }
 </style>

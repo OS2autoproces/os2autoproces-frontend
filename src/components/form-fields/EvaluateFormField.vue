@@ -3,44 +3,35 @@
         <div>
             {{this.evaluationText}}
         </div>
-        <v-radio-group id="grp"  v-model="evalValue" row :rules="this.evalRules">
-            <v-radio
-                id="eval-radio"
-                v-for="option in evalOptions"
-                :key="option.label"
-                :label="option.label"
-                :value="option.value"
-            />
+        <v-radio-group id="grp" v-model="evalValue" row :rules="this.evalRules">
+            <v-radio id="eval-radio" v-for="option in evalOptions" :key="option.label" :label="option.label" :value="option.value" />
         </v-radio-group>
     </div>
 </template>
 
 <script lang="ts">
-import {Vue, Component, Prop} from 'vue-property-decorator';
+import { Vue, Component, Prop } from "vue-property-decorator";
 
 interface EvalOptions {
-    label: string;
-    value: string;
+  label: string;
+  value: string;
 }
 
 @Component
 export default class EvaluateFormField extends Vue {
-    @Prop() evaluationText!: string;
-    evalValue = '';
-    evalOptions: EvalOptions[] = [
-        {label: '1', value: '1'},
-        {label: '2', value: '2'},
-        {label: '3', value: '3'},
-        {label: '4', value: '4'},
-        {label: '5', value: '5'},
-    ];
+  @Prop() evaluationText!: string;
+  evalValue = "";
+  evalOptions: EvalOptions[] = [
+    { label: "1", value: "1" },
+    { label: "2", value: "2" },
+    { label: "3", value: "3" },
+    { label: "4", value: "4" },
+    { label: "5", value: "5" }
+  ];
 
-    evalRules = [
-        (v: any) => !!v || 'Select One Eval Point'
-    ];
+  evalRules = [(v: any) => !!v || "Select One Eval Point"];
 }
 </script>
 
-<style lang="stylus">
-
+<style lang="scss">
 </style>

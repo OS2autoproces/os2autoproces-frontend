@@ -47,40 +47,41 @@ export default class NavBar extends Vue {
 }
 </script>
 
-<style lang="stylus" scoped>
-@import '../../styles/helpers.styl';
+<style lang="scss" scoped>
+@import "../../styles/helpers";
 
 .result {
-    border: 2px solid $colors.secondary;
-    border-radius: 1rem;
-    padding: 1rem;
-    display: flex;
-    max-width: 1400px;
-    position: relative;
+  border: 2px solid $color-secondary;
+  border-radius: 1rem;
+  padding: 1rem;
+  display: flex;
+  max-width: 1400px;
+  position: relative;
 }
 
 .star-icon {
-    position: absolute;
-    top: -14px;
-    right: -14px;
-    height: 40px;
-    width: 40px;
+  position: absolute;
+  top: -14px;
+  right: -14px;
+  height: 40px;
+  width: 40px;
 }
 
 .result-column {
-    flex: 0 0 25%;
+  flex: 0 0 25%;
 
-    &:nth-child(2), &:nth-child(3) {
-        display: flex;
+  &:nth-child(2),
+  &:nth-child(3) {
+    display: flex;
 
-        > div:last-of-type {
-            padding-left: 1rem;
-            font-weight: bold;
-        }
-
-        > div > div:not(:last-of-type) {
-            padding-bottom: 1rem;
-        }
+    > div:last-of-type {
+      padding-left: 1rem;
+      font-weight: bold;
     }
+
+    > div > div:not(:last-of-type) {
+      padding-bottom: 1rem;
+    }
+  }
 }
 </style>
