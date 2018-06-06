@@ -36,6 +36,6 @@ export default class Post extends Vue {
 }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="scss" scoped>
 
 </style>

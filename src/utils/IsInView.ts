@@ -1,4 +1,3 @@
-
 interface WatchELement {
   element: HTMLElement;
   callBack(): void;
@@ -13,8 +12,8 @@ class Watcher {
   constructor() {
     this.scrollListener = this.update.bind(this);
     this.reziseListener = this.resize.bind(this);
-    window.addEventListener('scroll', this.scrollListener);
-    window.addEventListener('resize', this.reziseListener);
+    window.addEventListener("scroll", this.scrollListener);
+    window.addEventListener("resize", this.reziseListener);
     this.resize();
     this.update();
   }
@@ -50,8 +49,8 @@ class Watcher {
   }
 
   removeListeners() {
-    window.removeEventListener('resize', this.reziseListener);
-    window.removeEventListener('scroll', this.scrollListener);
+    window.removeEventListener("resize", this.reziseListener);
+    window.removeEventListener("scroll", this.scrollListener);
   }
 }
 
