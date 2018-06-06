@@ -12,14 +12,12 @@ Vue.config.productionTip = false;
 // TODO: change to autoprocess colors
 Vue.use(Vuetify, {
   theme: {
-    primary: "#3f51b5",
-    secondary: "#b0bec5",
+    primary: "#F5AF30",
+    secondary: "#3C546C",
     accent: "#8c9eff",
     error: "#b71c1c"
   }
 });
-
-// Vue.use(Vuelidate);
 
 new Vue({
   router,
