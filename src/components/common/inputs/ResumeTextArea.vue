@@ -1,8 +1,5 @@
 <template>
-    <div>
-        <p>Resumé: </p>
-        <textarea type="text" v-model="inputValue" @blur="valueChanged" />
-    </div>
+    <textarea :value="value" @blur="valueChanged" />
 </template>
 
 <script lang='ts'>
@@ -16,7 +13,7 @@ export default class ResumeTextArea extends Vue {
   @Action('setResume', { namespace })
   setResume: any;
 
-  inputValue: string = '';
+  value: string = '';
 
   valueChanged(event: any) {
     this.setResume(event.target.value);

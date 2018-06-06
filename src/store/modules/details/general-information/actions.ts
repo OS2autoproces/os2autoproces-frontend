@@ -3,19 +3,22 @@ import { ActionTree } from "vuex";
 import { GeneralInformationState } from "@/store/modules/details/general-information/state";
 import { generalInformationMutationTypes } from "@/store/modules/details/general-information/mutations";
 
+export const namespace = 'generalInformation';
+
 export const generalInformationActionTypes = {
-  SET_KLE_NUMBER: 'generalInformation/SET_KLE_NUMBER',
-  SET_PARAGRAF: 'generalInformation/SET_PARAGRAF',
-  SET_FIELD: 'generalInformation/SET_FIELD',
-  SET_DEPARTMENT: 'generalInformation/SET_DEPARTMENT',
-  SET_VISIBILITY: 'generalInformation/SET_VISIBILITY',
-  SET_CONTACT_PERSON: 'generalInformation/SET_CONTACT_PERSON',
-  SET_EMAIL: 'generalInformation/SET_EMAIL',
-  SET_PROCES_TIME: 'generalInformation/SET_PROCES_TIME',
-  SET_PROJECT_MANAGER: 'generalInformation/SET_PROJECT_MANAGER',
-  SET_SUPPLIER: 'generalInformation/SET_SUPPLIER',
-  SET_RESUME: 'generalInformation/SET_RESUME',
+  SET_KLE_NUMBER: `${namespace}/SET_KLE_NUMBER`,
+  SET_PARAGRAF: `${namespace}/SET_PARAGRAF`,
+  SET_FIELD: `${namespace}/SET_FIELD`,
+  SET_DEPARTMENT: `${namespace}/SET_DEPARTMENT`,
+  SET_VISIBILITY: `${namespace}/SET_VISIBILITY`,
+  SET_CONTACT_PERSON: `${namespace}/SET_CONTACT_PERSON`,
+  SET_EMAIL: `${namespace}/SET_EMAIL`,
+  SET_PROCES_TIME: `${namespace}/SET_PROCES_TIME`,
+  SET_PROJECT_MANAGER: `${namespace}/SET_PROJECT_MANAGER`,
+  SET_SUPPLIER: `${namespace}/SET_SUPPLIER`,
+  SET_RESUME: `${namespace}/SET_RESUME`,
 };
+
 
 export const actions: ActionTree<GeneralInformationState, RootState> = {
   setKleNumber({ commit }, payload: string): void {
@@ -51,9 +54,4 @@ export const actions: ActionTree<GeneralInformationState, RootState> = {
   setResume({commit}, payload: string): void {
     commit(generalInformationMutationTypes.SET_RESUME, payload);
   }
-    // async someAsyncAction({ commit }, payload: any) {
-  //   const serverCall = await new Promise((reject, resolve) => resolve(2));
-
-  //   commit(commonMutationTypes.INCREMENT_NETWORK_CALLS);
-  // }
 };

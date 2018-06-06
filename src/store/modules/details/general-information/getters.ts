@@ -1,136 +1,84 @@
 import { RootState } from '@/store/store';
 import { GeneralInformationState } from '@/store/modules/details/general-information/state';
 import { GetterTree } from 'vuex';
-import * as validate from 'validate.js';
+import * as validateJs from 'validate.js';
 
 export const getters: GetterTree<GeneralInformationState, RootState> = {
   isKleNumberValid(state: GeneralInformationState): boolean {
-    const constraints = {
-      inputValue: {
-        presence: true,
-        numericality: true
-      }
-    };
-    return !validate({ inputValue: state.kleNumber }, constraints);
+    return isValid(state.kleNumber, {
+      numericality: true
+    });
   },
   isParagrafValid(state: GeneralInformationState): boolean {
-    const constraints = {
-      inputValue: {
-        presence: true,
-        length: {
-          minimum: 1,
-        }
+    return isValid(state.paragraf, {
+      length: {
+        minimum: 1
       }
-    }
-    return !validate({inputValue: state.paragraf}, constraints);
+    });
   },
   isFieldValid(state: GeneralInformationState): boolean {
-    const constraints = {
-      inputValue: {
-        presence: true,
-        format: {
-          pattern: /[a-zA-Z]+/,
-        }
+    return isValid(state.field, {
+      length: {
+        minimum: 1
       }
-    }
-    return !validate({inputValue: state.field}, constraints);
+    });
   },
   isDepartmentValid(state: GeneralInformationState): boolean {
-    const constraints = {
-      inputValue: {
-        presence: true,
-        format: {
-          pattern: /[a-zA-Z]+/,
-        },
-        length: {
-          minimum: 1
-        }
+    return isValid(state.department, {
+      length: {
+        minimum: 1
       }
-    }
-    return !validate({inputValue: state.department}, constraints);
+    });
   },
   isVisibilityValid(state: GeneralInformationState): boolean {
-    const constraints = {
-      inputValue: {
-        presence: true,
-        length: {
-          minimum: 1
-        }
+    return isValid(state.visibility, {
+      length: {
+        minimum: 1
       }
-    }
-    return !validate({inputValue: state.visibility}, constraints);
+    });
   },
   isContactPersonValid(state: GeneralInformationState): boolean {
-    const constraints = {
-      inputValue: {
-        presence: true,
-        length: {
-          minimum: 2
-        },
-        format: {
-          pattern: /[a-zA-Z]+/,
-        },
+    return isValid(state.contactPerson, {
+      length: {
+        minimum: 1
       }
-    }
-    return !validate({inputValue: state.contactPerson}, constraints);
+    });
   },
   isEmailValid(state: GeneralInformationState): boolean {
-    const constraints = {
-      inputValue: {
-        presence: true,
-        email: true,
-      }
-    }
-    return !validate({inputValue: state.email}, constraints);
+    return isValid(state.email, {
+      email: true
+    });
   },
   isProcesTimeValid(state: GeneralInformationState): boolean {
-    const constraints = {
-      inputValue: {
-        presence: true,
-        numericality: true
-      }
-    }
-    return !validate({inputValue: state.procesTime}, constraints);
+    return isValid(state.procesTime, {
+      numericality: true
+    });
   },
   isProjectManagerValid(state: GeneralInformationState): boolean {
-    const constraints = {
-      inputValue: {
-        presence: true,
-        length: {
-          minimum: 2
-        },
-        format: {
-          pattern: /[a-zA-Z]+/,
-        },
+    return isValid(state.projectManager, {
+      length: {
+        minimum: 1
       }
-    }
-    return !validate({inputValue: state.projectManager}, constraints);
+    });
   },
   isSupplierValid(state: GeneralInformationState): boolean {
-    const constraints = {
-      inputValue: {
-        presence: true,
-        length: {
-          minimum: 2
-        },
-        format: {
-          pattern: /[a-zA-Z]+/,
-        },
-      }
-    }
-    return !validate({inputValue: state.supplier}, constraints);
+    return isValid(state.supplier, {
+      length: {
+        minimum: 2
+      },
+    });
   },
   isResumeValid(state: GeneralInformationState): boolean {
-    const constraints = {
-      inputValue: {
-        presence: true,
-        length: {
-          minimum: 10,
-          maximum: 140
-        },
+    return isValid(state.resume, {
+      presence: true,
+      length: {
+        minimum: 10,
+        maximum: 140
       }
-    }
-    return !validate({inputValue: state.resume}, constraints);
-  },
-
+    });
+  }
 };
+
+function isValid(value: any, constraints: any): boolean {
+  return !validateJs({ value }, { value: constraints });
+}

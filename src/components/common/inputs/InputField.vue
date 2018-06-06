@@ -10,13 +10,13 @@ export default class InputField extends Vue {
   @Prop() value!: string;
 
   valueChanged(event: any) {
-    this.$emit('input', event.target.value);
+    this.$emit('change', event.target.value);
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import '@/variables.scss';
+@import '@/styles/variables.scss';
 input {
   border: 1px solid $color-primary;
   border-radius: 50px;
