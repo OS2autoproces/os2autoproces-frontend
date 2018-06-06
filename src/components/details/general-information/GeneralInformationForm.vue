@@ -10,6 +10,7 @@
               <InputField :value="getParagraf" @input="setParagraf" />
           </div>
         </div>
+
         <div class="section-col">
           <div class="labels">
             <div>Afdeling:</div>
@@ -22,6 +23,7 @@
             <SelectionField :value="getVisibility" @change="setVisibility" :fields="visibilityItems"/>
           </div>
         </div>
+
         <div class="section-col">
           <div class="labels">
             <div>Kontaktperson:</div>
@@ -34,6 +36,7 @@
             <InputField :value="getProcesTime" @input="setProcesTime"/>
           </div>
         </div>
+
         <div class="section-col">
           <div class="labels">
             <div>Leverandør:</div>
@@ -142,15 +145,15 @@ export default class GeneralInformationForm extends Vue {
   flex-direction: row;
   background-color: gainsboro;
 }
-.section-col {
-  flex: 0 0 25%;
-  display: flex;
 
+.section-col {
+  display: flex;
+  flex: 0 0 25%;
   .labels {
     width: 50%;
-
     > div {
       line-height: 32px;
+      text-align: left;
     }
   }
 
