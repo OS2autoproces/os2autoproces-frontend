@@ -33,7 +33,7 @@ body {
 </style>
 
 <style lang="scss" scoped>
-@import "./styles/helpers";
+@import "./styles/variables";
 
 .footer {
   background-color: #f2f3f4;

@@ -25,7 +25,7 @@ export default class Home extends Vue {}
 </script>
 
 <style lang="scss" scoped>
-@import "../styles/helpers";
+@import "../styles/variables";
 
 .page {
   background-color: $color-secondary;

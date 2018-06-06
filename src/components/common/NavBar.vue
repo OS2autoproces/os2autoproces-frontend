@@ -28,7 +28,7 @@ export default class NavBar extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import "../../styles/helpers";
+@import "../../styles/variables";
 
 .navbar {
   display: flex;

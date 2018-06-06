@@ -80,7 +80,7 @@ export default class Search extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import "../styles/helpers";
+@import "../styles/variables";
 
 .page {
   display: flex;

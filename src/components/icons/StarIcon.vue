@@ -16,7 +16,7 @@ export default class StarIcon extends Vue {}
 </script>
 
 <style lang="scss" scoped>
-@import "../../styles/helpers";
+@import "../../styles/variables";
 
 polygon {
   fill: #fff;

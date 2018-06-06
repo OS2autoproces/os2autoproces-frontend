@@ -1,35 +1,34 @@
 <template>
     <div>
-        <ul class="inFocus">
+        <ul class="in-focus">
             <li v-for="item in this.menu" :key="item.name">
-                <div class="menuItem" v-bind:class="{'inView': item.isInView}">
+                <div class="menu-item" v-bind:class="{'in-view': item.isInView}">
                     {{item.name}}
                 </div>
             </li>
         </ul>
 
-        <BlogItem v-is-in-view="{callback: this.componentInView}" title="General Information" />
-        <BlogItem v-is-in-view="{callback: this.componentInView}" title="Problemstillinger" />
-        <BlogItem v-is-in-view="{callback: this.componentInView}" title="Tid og Proces foretagen" />
-        <BlogItem v-is-in-view="{callback: this.componentInView}" title="Faglig Vurdering" />
-        <BlogItem v-is-in-view="{callback: this.componentInView}" title="Specifikation" />
-        <BlogItem v-is-in-view="{callback: this.componentInView}" title="Udvikling og Implementering" />
-        <BlogItem v-is-in-view="{callback: this.componentInView}" title="Drift" />
+        <BlogItem v-is-in-view="this.componentInView" title="General Information" />
+        <BlogItem v-is-in-view="this.componentInView" title="Problemstillinger" />
+        <BlogItem v-is-in-view="this.componentInView" title="Tid og Proces foretagen" />
+        <BlogItem v-is-in-view="this.componentInView" title="Faglig Vurdering" />
+        <BlogItem v-is-in-view="this.componentInView" title="Specifikation" />
+        <BlogItem v-is-in-view="this.componentInView" title="Udvikling og Implementering" />
+        <BlogItem v-is-in-view="this.componentInView" title="Drift" />
     </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
 import BlogItem from "../components/blog/BlogItem.vue";
-import { watcher } from "../ultils/IsInView";
+import { Watcher } from "../utils/IsInView";
+
+const watcher = new Watcher();
 
 Vue.directive("is-in-view", {
   bind(element: HTMLElement, binding: any) {
-    const { value } = binding;
-    watcher.addElement(element, value);
-    Vue.nextTick(() => {
-      watcher.update();
-    });
+    watcher.addElement(element, binding.value);
+    Vue.nextTick(() => watcher.update());
   }
 });
 
@@ -39,8 +38,6 @@ Vue.directive("is-in-view", {
   }
 })
 export default class List extends Vue {
-  scrolled: number = 0;
-  componentInViewName: string | null = "";
   menu = [
     { name: "General Information", isInView: false },
     { name: "Problemstillinger", isInView: false },
@@ -50,37 +47,26 @@ export default class List extends Vue {
     { name: "Udvikling og Implementering", isInView: false },
     { name: "Drift", isInView: false }
   ];
-  mounted() {
-    window.addEventListener("scroll", this.handleScroll);
-  }
-
-  destroyed() {
-    window.removeEventListener("scroll", this.handleScroll);
-  }
-
-  handleScroll() {
-    this.scrolled = window.scrollY;
-  }
 
   componentInView(element: HTMLElement, inView: boolean) {
     const menuItem = this.menu.find(item => item.name === element.textContent);
-    if (!menuItem) {
-      return;
+
+    if (menuItem) {
+      menuItem.isInView = inView;
     }
-    menuItem.isInView = inView;
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.inFocus {
+.in-focus {
   position: fixed;
 }
-.menuItem {
+.menu-item {
   padding: 2;
   position: relative;
 }
-.inView {
+.in-view {
   font-style: italic;
   font-weight: bold;
 }
