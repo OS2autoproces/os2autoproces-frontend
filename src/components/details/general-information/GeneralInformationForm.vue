@@ -11,9 +11,6 @@
                     <InputField :value="getParagraf" @change="setParagraf" />
                 </div>
             </div>
-
-            <div class="verticalLine" />
-
             <div class="section-col">
                 <div class="labels">
                     <div>Afdeling:</div>
@@ -26,9 +23,6 @@
                     <SelectionField :value="getVisibility" @change="setVisibility" :items="visibilityLevels" />
                 </div>
             </div>
-
-            <div class="verticalLine" />
-
             <div class="section-col">
                 <div class="labels">
                     <div>Kontaktperson:</div>
@@ -41,9 +35,6 @@
                     <InputField :value="getProcesTime" @change="setProcesTime" />
                 </div>
             </div>
-
-            <div class="verticalLine" />
-
             <div class="section-col">
                 <div class="labels">
                     <div>Leverandør:</div>
