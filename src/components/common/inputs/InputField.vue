@@ -21,7 +21,7 @@ input {
   border: 1px solid $color-primary;
   border-radius: 30px;
   outline: none;
-  padding-left: 10px;
+  padding-left: 10px !important;
   height: 32px;
   width: 100%;
 }

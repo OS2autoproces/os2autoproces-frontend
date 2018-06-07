@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="container">
+        <div class="general-information">
             <div class="section-col">
                 <div class="labels">
                     <div>KLE-nr:</div>
@@ -11,7 +11,6 @@
                     <InputField :value="getParagraf" @change="setParagraf" />
                 </div>
             </div>
-
             <div class="section-col">
                 <div class="labels">
                     <div>Afdeling:</div>
@@ -24,7 +23,6 @@
                     <SelectionField :value="getVisibility" @change="setVisibility" :items="visibilityLevels" />
                 </div>
             </div>
-
             <div class="section-col">
                 <div class="labels">
                     <div>Kontaktperson:</div>
@@ -37,7 +35,6 @@
                     <InputField :value="getProcesTime" @change="setProcesTime" />
                 </div>
             </div>
-
             <div class="section-col">
                 <div class="labels">
                     <div>Leverandør:</div>
@@ -132,15 +129,32 @@ export default class GeneralInformationForm extends Vue {
 
 <style lang="scss" scoped>
 @import "@/styles/variables.scss";
-.container {
+.general-information {
   display: flex;
   flex-direction: row;
   background-color: $color-edit-background;
+  border-radius: 12px;
+  padding: $size-unit;
 }
 
 .section-col {
   display: flex;
   flex: 0 0 25%;
+  
+  padding: 0 $size-unit/2;
+
+  &:not(:last-of-type) {
+    border-right: 1px solid white;
+  }
+
+  &:last-of-type {
+    padding-right: 0;
+  }
+
+  &:first-of-type {
+    padding-left: 0;
+  }
+
   .labels {
     width: 50%;
     > div {
@@ -151,6 +165,7 @@ export default class GeneralInformationForm extends Vue {
 
   .labels > div,
   .fields > * {
+    padding: 0;
     margin-bottom: 1rem;
   }
 }
