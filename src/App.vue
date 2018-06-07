@@ -44,6 +44,7 @@ body {
   .application--wrap {
     .router-view {
       flex-grow: 1;
+      display: flex;
     }
     
     .app-footer {
