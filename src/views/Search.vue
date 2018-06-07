@@ -115,7 +115,8 @@ export default class Search extends Vue {
   color: $color-secondary;
   font-size: 2rem;
   font-weight: bold;
-  padding: 2 * $size-unit 0;
+  padding-top: 2 * $size-unit;
+  padding-bottom: $size-unit;
 
   svg {
     height: $size-unit * 1.5;
