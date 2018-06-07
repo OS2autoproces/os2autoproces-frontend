@@ -10,7 +10,7 @@
                     <a href="/a">Log ud</a>
                 </div>
             </div>
-            <img class="user-icon" src="https://openclipart.org/download/247324/abstract-user-flat-1.svg">
+            <ProfileIcon class="profile-icon" />
         </div>
     </div>
 </template>
@@ -18,9 +18,12 @@
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
 import { IUser } from "../../models/user";
+import ProfileIcon from '../icons/ProfileIcon.vue';
 
 @Component({
-  components: {}
+  components: {
+      ProfileIcon
+  }
 })
 export default class NavBar extends Vue {
   @Prop() user!: IUser;
@@ -52,9 +55,9 @@ export default class NavBar extends Vue {
   color: $color-grey;
 }
 
-.user-icon {
-  height: 50px;
-  width: 50px;
+.profile-icon {
+  height: 45px;
+  width: 45px;
   margin-left: $size-unit;
 }
 
