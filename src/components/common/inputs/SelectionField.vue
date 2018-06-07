@@ -12,6 +12,7 @@ export default class InputField extends Vue {
   @Prop() items!: string[];
 
   valueChanged(value: any) {
+    if (typeof value === 'string')
     this.$emit("change", value);
   }
 }
