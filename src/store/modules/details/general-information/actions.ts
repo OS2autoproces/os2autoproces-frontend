@@ -17,6 +17,8 @@ export const generalInformationActionTypes = {
   SET_PROJECT_MANAGER: `${namespace}/SET_PROJECT_MANAGER`,
   SET_SUPPLIER: `${namespace}/SET_SUPPLIER`,
   SET_RESUME: `${namespace}/SET_RESUME`,
+  ADD_ASSOCIATED_PERSON: `${namespace}/ADD_ASSOCIATED_PERSON`,
+  REMOVE_ASSOCIATED_PERSON: `${namespace}/REMOVE_ASSOCIATED_PERSON`,
 };
 
 
@@ -53,5 +55,11 @@ export const actions: ActionTree<GeneralInformationState, RootState> = {
   },
   setResume({commit}, payload: string): void {
     commit(generalInformationMutationTypes.SET_RESUME, payload);
-  }
+  },
+  addAssociatedPerson({commit}, payload: string): void {
+    commit(generalInformationMutationTypes.ADD_ASSOCIATED_PERSON, payload);
+  },
+  removeAssociatedPerson({commit}, payload: string): void {
+    commit(generalInformationMutationTypes.REMOVE_ASSOCIATED_PERSON, payload);
+  },
 };

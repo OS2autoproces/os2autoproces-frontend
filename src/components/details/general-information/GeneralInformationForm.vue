@@ -1,98 +1,98 @@
 <template>
-    <div>
-        <div class="general-information">
-            <div class="section-col">
-                <div class="labels">
-                    <div>KLE-nr:</div>
-                    <div>Lov og paragraf:</div>
-                </div>
-                <div class="fields">
-                    <SelectionField :value="getKleNumber" @change="setKleNumber" :items="kleNumbers" />
-                    <InputField :value="getParagraf" @change="setParagraf" />
-                </div>
-            </div>
-            <div class="section-col">
-                <div class="labels">
-                    <div>Afdeling:</div>
-                    <div>Fagområde:</div>
-                    <div>Synlighed:</div>
-                </div>
-                <div class="fields">
-                    <InputField :value="getDepartment" @change="setDepartment" />
-                    <SelectionField :value="getField" @change="setField" :items="fields" />
-                    <SelectionField :value="getVisibility" @change="setVisibility" :items="visibilityLevels" />
-                </div>
-            </div>
-            <div class="section-col">
-                <div class="labels">
-                    <div>Kontaktperson:</div>
-                    <div>Mail:</div>
-                    <div>Procestid:</div>
-                </div>
-                <div class="fields">
-                    <InputField :value="getContactPerson" @change="setContactPerson" />
-                    <InputField :value="getEmail" @change="setEmail" />
-                    <InputField :value="getProcesTime" @change="setProcesTime" />
-                </div>
-            </div>
-            <div class="section-col">
-                <div class="labels">
-                    <div>Leverandør:</div>
-                    <div>Projektleder:</div>
-                </div>
-                <div class="fields">
-                    <InputField :value="getSupplier" @change="setSupplier" />
-                    <InputField :value="getProjectMananger" @change="setProjectMananger" />
-                </div>
-            </div>
+  <div class="general-information-wrapper">
+    <div class="general-information">
+      <div class="section-col">
+        <div class="labels">
+          <div>KLE-nr:</div>
+          <div>Lov og paragraf:</div>
         </div>
-        <TextArea :max-length="1200" />
+        <div class="fields">
+          <SelectionField :value="getKleNumber" @change="setKleNumber" :items="kleNumbers" />
+          <InputField :value="getParagraf" @change="setParagraf" />
+        </div>
+      </div>
+      <div class="section-col">
+        <div class="labels">
+          <div>Afdeling:</div>
+          <div>Fagområde:</div>
+          <div>Synlighed:</div>
+        </div>
+        <div class="fields">
+          <InputField :value="getDepartment" @change="setDepartment" />
+          <SelectionField :value="getField" @change="setField" :items="fields" />
+          <SelectionField :value="getVisibility" @change="setVisibility" :items="visibilityLevels" />
+        </div>
+      </div>
+      <div class="section-col">
+        <div class="labels">
+          <div>Kontaktperson:</div>
+          <div>Mail:</div>
+          <div>Procestid:</div>
+        </div>
+        <div class="fields">
+          <InputField :value="getContactPerson" @change="setContactPerson" />
+          <InputField :value="getEmail" @change="setEmail" />
+          <InputField :value="getProcesTime" @change="setProcesTime" />
+        </div>
+      </div>
+      <div class="section-col">
+        <div class="labels">
+          <div>Leverandør:</div>
+          <div>Projektleder:</div>
+        </div>
+        <div class="fields">
+          <InputField :value="getSupplier" @change="setSupplier" />
+          <InputField :value="getProjectMananger" @change="setProjectMananger" />
+        </div>
+      </div>
     </div>
+    <AssociatedPersonsInput />
+  </div>
 </template>
 
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
-import { Action } from "vuex-class";
-import { namespace } from "@/store/modules/details/general-information/actions";
+import { Vue, Component } from 'vue-property-decorator';
+import { Action } from 'vuex-class';
+import { namespace } from '@/store/modules/details/general-information/actions';
 
-import InputField from "@/components/common/inputs/InputField.vue";
-import SelectionField from "@/components/common/inputs/SelectionField.vue";
-import TextArea from "@/components/common/inputs/TextArea.vue";
+import InputField from '@/components/common/inputs/InputField.vue';
+import SelectionField from '@/components/common/inputs/SelectionField.vue';
+import AssociatedPersonsInput from '@/components/details/general-information/AssociatedPersonsInput.vue';
 
 @Component({
   components: {
     InputField,
     SelectionField,
-    TextArea
+    AssociatedPersonsInput
   }
 })
 export default class GeneralInformationForm extends Vue {
-  @Action("setKleNumber", { namespace })
+  @Action('setKleNumber', { namespace })
   setKleNumber: any;
-  @Action("setParagraf", { namespace })
+  @Action('setParagraf', { namespace })
   setParagraf: any;
-  @Action("setDepartment", { namespace })
+  @Action('setDepartment', { namespace })
   setDepartment: any;
-  @Action("setContactPerson", { namespace })
+  @Action('setContactPerson', { namespace })
   setContactPerson: any;
-  @Action("setEmail", { namespace })
+  @Action('setEmail', { namespace })
   setEmail: any;
-  @Action("setProcesTime", { namespace })
+  @Action('setProcesTime', { namespace })
   setProcesTime: any;
-  @Action("setSupplier", { namespace })
+  @Action('setSupplier', { namespace })
   setSupplier: any;
-  @Action("setProjectMananger", { namespace })
+  @Action('setProjectMananger', { namespace })
   setProjectMananger: any;
-  @Action("setField", { namespace })
+  @Action('setField', { namespace })
   setField: any;
-  @Action("setVisibility", { namespace })
+  @Action('setVisibility', { namespace })
   setVisibility: any;
 
-  fields = ["Teknik", "Diverse", "ETC"];
+  fields = ['Teknik', 'Diverse', 'ETC'];
 
-  visibilityLevels = ["Privat", "Tværkommunalt", "Kommunalt"];
+  visibilityLevels = ['Privat', 'Tværkommunalt', 'Kommunalt'];
 
-  kleNumbers = ["1234", "134324", "54353"];
+  kleNumbers = ['1234', '134324', '54353'];
 
   get getKleNumber() {
     return this.$store.state.kleNumber;
@@ -128,12 +128,15 @@ export default class GeneralInformationForm extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import "@/styles/variables.scss";
+@import '@/styles/variables.scss';
+.general-information-wrapper {
+  background-color: $color-edit-background;
+  border-radius: 12px;
+}
+
 .general-information {
   display: flex;
   flex-direction: row;
-  background-color: $color-edit-background;
-  border-radius: 12px;
   padding: $size-unit;
 }
 
@@ -158,7 +161,7 @@ export default class GeneralInformationForm extends Vue {
   .labels {
     width: 50%;
     > div {
-      line-height: 32px;
+      line-height: $size-unit * 2;
       text-align: left;
     }
   }
