@@ -101,6 +101,8 @@ export default class GeneralInformationForm extends Vue {
   setVisibility: any;
   @Action("addAssociatedPerson", { namespace })
   addAssociatedPerson: any;
+  @Action("removeAssociatedPerson", { namespace })
+  removeAssociatedPerson: any;
 
   associatedPeople = [];
   
@@ -119,6 +121,7 @@ export default class GeneralInformationForm extends Vue {
 
   removePerson(person: string) {
     this.associatedPeople = this.associatedPeople.filter(p => p !== person);
+    this.removeAssociatedPerson(person);
   }
 
   get getKleNumber() {

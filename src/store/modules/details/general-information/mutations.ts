@@ -13,7 +13,8 @@ export const generalInformationMutationTypes = {
   SET_PROJECT_MANAGER: 'setProjectManager',
   SET_SUPPLIER: 'setSupplier',
   SET_RESUME: 'setResume',
-  ADD_ASSOCIATED_PERSON: 'addAssociatedPerson'
+  ADD_ASSOCIATED_PERSON: 'addAssociatedPerson',
+  REMOVE_ASSOCIATED_PERSON: 'removeAssociatedPerson'
 };
 
 export const mutations: MutationTree<GeneralInformationState> = {
@@ -52,5 +53,8 @@ export const mutations: MutationTree<GeneralInformationState> = {
   },
   addAssociatedPerson(state: GeneralInformationState, payload: string) {
     state.associatedPersons = [...state.associatedPersons, payload];
+  },
+  removeAssociatedPerson(state: GeneralInformationState, payload: string) {
+    state.associatedPersons = state.associatedPersons.filter(person => person !== payload);
   }
 };
