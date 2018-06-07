@@ -8,16 +8,23 @@
 
         <h1>Avanceret søgning</h1>
 
+        <Checkbox :value="checked" @change="checked = !checked" />
+        <Checkbox :value="checked" @change="checked = !checked" disabled />
     </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
+import Checkbox from "../common/inputs/Checkbox.vue";
 
 @Component({
-  components: {}
+  components: {
+    Checkbox
+  }
 })
-export default class NavBar extends Vue {}
+export default class NavBar extends Vue {
+    checked: boolean = false;
+}
 </script>
 
 <style lang="scss" scoped>

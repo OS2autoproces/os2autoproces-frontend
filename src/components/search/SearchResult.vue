@@ -88,6 +88,10 @@ export default class NavBar extends Vue {
 .result-column {
   flex: 0 0 25%;
 
+  &:not(:last-of-type) {
+    padding-right: $size-unit;
+  }
+
   &:nth-child(2),
   &:nth-child(3) {
     display: flex;
@@ -101,14 +105,13 @@ export default class NavBar extends Vue {
       padding-bottom: $size-unit;
     }
   }
+}
 
-  &:nth-child(4) {
-    display: flex;
-    align-items: center;
-
-    > div {
-      flex: 1 1 auto;
-    }
-  }
+/*
+    IE11 fix
+    https://github.com/philipwalton/flexbugs/issues/3#issuecomment-69036362
+*/
+.result-column {
+  max-width: 25%;
 }
 </style>

@@ -3,22 +3,24 @@
         <NavBar :user="user" />
 
         <div class="page">
-            <div class="filters">
+            <div>
                 <SearchFilters />
             </div>
-            <div class="results-wrapper">
-                <div class="report">
-                    <button>
-                        <PlusIcon/> Indberet</button>
-                </div>
+            <div>
+                <div class="results-wrapper">
+                    <div class="report">
+                        <button>
+                            <PlusIcon/> Indberet</button>
+                    </div>
 
-                <SearchSorting />
+                    <SearchSorting />
 
-                <div class="results">
-                    <SearchResult class="search-result" :result="result" v-for="result in results" :key="result.id" />
+                    <div class="results">
+                        <SearchResult class="search-result" :result="result" v-for="result in results" :key="result.id" />
+                    </div>
+
+                    <SearchPagination :page="0" :pageTotal="23" />
                 </div>
-                
-                <SearchPagination :page="0" :pageTotal="23" />
             </div>
         </div>
     </div>
@@ -91,11 +93,15 @@ export default class Search extends Vue {
 
 .page {
   display: flex;
-}
 
-.filters {
-  flex: 0 0 300px;
-  border-right: 1px solid $color-grey;
+  > div:first-of-type {
+    flex: 0 0 300px;
+    border-right: 1px solid $color-grey;
+  }
+
+  > div:last-of-type {
+    flex-grow: 1;
+  }
 }
 
 .results-wrapper {
@@ -109,7 +115,8 @@ export default class Search extends Vue {
   color: $color-secondary;
   font-size: 2rem;
   font-weight: bold;
-  padding: 2 * $size-unit 0;
+  padding-top: 2 * $size-unit;
+  padding-bottom: $size-unit;
 
   svg {
     height: $size-unit * 1.5;
@@ -117,11 +124,7 @@ export default class Search extends Vue {
   }
 }
 
-.results {
-  flex-grow: 1;
-
-  .search-result:not(:last-of-type) {
-    margin-bottom: $size-unit;
-  }
+.search-result:not(:last-of-type) {
+  margin-bottom: $size-unit;
 }
 </style>
