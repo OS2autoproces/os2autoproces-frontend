@@ -1,5 +1,5 @@
 <template>
-    <div class="rating">
+    <div>
         <StarIcon class="star" :class="{selected: value > 0}" @click="setValue(1)" />
         <StarIcon class="star" :class="{selected: value > 1}" @click="setValue(2)" />
         <StarIcon class="star" :class="{selected: value > 2}" @click="setValue(3)" />
@@ -17,7 +17,7 @@ import StarIcon from "../../icons/StarIcon.vue";
 })
 export default class Rating extends Vue {
   @Prop() disabled!: boolean;
-  @Prop() value?: number;
+  @Prop() value!: number;
 
   get comp() {
     return this.value;
@@ -30,7 +30,5 @@ export default class Rating extends Vue {
 </script>
 
 <style scoped lang="scss">
-.star {
-    height: 100%;
-}
+
 </style>
