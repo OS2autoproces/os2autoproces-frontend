@@ -1,5 +1,5 @@
 <template>
-    <div class="phase" @click="clicked()" :class="{ reverse, selected, disabled }">
+    <div class="phase" @click="clicked()" :class="{ reverse, selected, disabled, small }">
         <div class="text">{{ text }}</div>
         <div class="angled-line-container">
             <div class="angled-line"></div>
@@ -18,6 +18,7 @@ export default class Phase extends Vue {
   @Prop() private reverse!: boolean;
   @Prop() private selected!: boolean;
   @Prop() private disabled!: boolean;
+  @Prop() private small!: boolean;
 
   private clicked() {
     if (!this.disabled) {
@@ -27,19 +28,25 @@ export default class Phase extends Vue {
 }
 </script>
 
-<style scoped lang="scss">
-@import "../../variables.scss";
+<style lang="scss" scoped>
+@import "../../../styles/variables.scss";
 
 .phase {
   position: relative;
-  width: 150px;
   display: flex;
   align-items: center;
-  flex-grow: 1;
+  flex: 1 1 1px;
   color: $color-disabled;
 
   &:not(.disabled) {
     cursor: pointer;
+  }
+
+  &.small {
+    .circle {
+        height: 23px;
+        width: 23px;
+    }
   }
 }
 

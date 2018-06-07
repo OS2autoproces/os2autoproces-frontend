@@ -1,9 +1,10 @@
 <template>
     <div id="app">
         <v-app light>
-
-            <router-view/>
-            <div class="footer">
+            <div class="router-view">
+                <router-view/>
+            </div>
+            <div class="app-footer">
                 <div>Her skal der stå noget <br> Her skal der være et link <br> Her kan der stå noget mere</div>
                 <div>Her skal der stå noget <br> Her skal der være et link <br> Her kan der stå noget mere</div>
                 <div>Her skal der stå noget <br> Her skal der være et link <br> Her kan der stå noget mere</div>
@@ -32,15 +33,27 @@ body {
 }
 </style>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import "./styles/variables";
 
-.footer {
-  background-color: #f2f3f4;
-  border-top: 10px solid $color-secondary;
-  display: flex;
-  padding: 40px;
-  font-weight: bold;
-  justify-content: space-between;
+#app {
+  .application.theme--light {
+    background: $color-background;
+  }
+
+  .application--wrap {
+    .router-view {
+      flex-grow: 1;
+    }
+    
+    .app-footer {
+      background-color: #f2f3f4;
+      border-top: 10px solid $color-secondary;
+      display: flex;
+      padding: 40px;
+      font-weight: bold;
+      justify-content: space-between;
+    }
+  }
 }
 </style>
