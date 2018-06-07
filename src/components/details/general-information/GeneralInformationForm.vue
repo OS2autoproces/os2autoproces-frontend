@@ -179,11 +179,11 @@ export default class GeneralInformationForm extends Vue {
 .section-col {
   display: flex;
   flex: 0 0 25%;
-  
+
   padding: 0 $size-unit/2;
 
   &:not(:last-of-type) {
-    border-right: 1px solid white;
+    border-right: 1px solid $color-background;
   }
 
   &:last-of-type {
@@ -204,8 +204,8 @@ export default class GeneralInformationForm extends Vue {
 
   .labels > div,
   .fields > * {
+    margin-bottom: $size-unit;
     padding: 0;
-    margin-bottom: 1rem;
   }
 }
 

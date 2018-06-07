@@ -34,7 +34,7 @@ export default class NavBar extends Vue {
   display: flex;
   background-color: $color-secondary;
   height: 60px;
-  padding: 1rem;
+  padding: $size-unit;
 }
 
 .fill {
@@ -44,7 +44,7 @@ export default class NavBar extends Vue {
 .logo {
   font-size: 1.5rem;
   font-weight: bold;
-  color: white;
+  color: $color-background;
 }
 
 .user {
@@ -55,7 +55,7 @@ export default class NavBar extends Vue {
 .user-icon {
   height: 50px;
   width: 50px;
-  margin-left: 1rem;
+  margin-left: $size-unit;
 }
 
 .user-info {

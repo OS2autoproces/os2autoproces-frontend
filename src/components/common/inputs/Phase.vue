@@ -65,7 +65,7 @@ export default class Phase extends Vue {
   width: 35px;
   border-radius: 50%;
   border: 2px solid $color-primary;
-  background: white;
+  background: $color-background;
 }
 
 .horizontal-line {

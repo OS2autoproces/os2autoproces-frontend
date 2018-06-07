@@ -7,12 +7,13 @@
                 <SearchFilters />
             </div>
             <div class="results">
-                <div class="report">
-                    <button>Indberet</button>
-                </div>
-                <SearchSorting />
-                <div class="result" v-for="result in results" :key="result.id">
-                    <SearchResult :result="result" />
+                <div class="results-wrapper">
+                    <div class="report">
+                        <button>
+                            <PlusIcon/> Indberet</button>
+                    </div>
+                    <SearchSorting />
+                    <SearchResult :result="result" v-for="result in results" :key="result.id" />
                 </div>
             </div>
         </div>
@@ -26,9 +27,11 @@ import SearchFilters from "../components/search/SearchFilters.vue";
 import SearchPagination from "../components/search/SearchPagination.vue";
 import SearchResult from "../components/search/SearchResult.vue";
 import SearchSorting from "../components/search/SearchSorting.vue";
+import PlusIcon from "../components/icons/PlusIcon.vue";
 
 @Component({
   components: {
+    PlusIcon,
     NavBar,
     SearchFilters,
     SearchPagination,
@@ -94,12 +97,27 @@ export default class Search extends Vue {
 .results {
   flex-grow: 1;
 
+  .results-wrapper {
+    max-width: 1350px;
+    margin: 0 auto;
+  }
+
   .report {
     text-align: right;
+
+    color: $color-secondary;
+    font-size: 2rem;
+    font-weight: bold;
+    padding: 2*$size-unit 0;
+
+    svg {
+        height: $size-unit * 1.5;
+        width: $size-unit * 1.5;
+    }
   }
 
   .result {
-    margin-bottom: 1rem;
+    margin-bottom: $size-unit;
   }
 }
 </style>
