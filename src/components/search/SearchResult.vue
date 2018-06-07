@@ -88,6 +88,10 @@ export default class NavBar extends Vue {
 .result-column {
   flex: 0 0 25%;
 
+  &:not(:last-of-type) {
+      padding-right: $size-unit;
+  }
+
   &:nth-child(2),
   &:nth-child(3) {
     display: flex;
@@ -99,15 +103,6 @@ export default class NavBar extends Vue {
 
     > div > div:not(:last-of-type) {
       padding-bottom: $size-unit;
-    }
-  }
-
-  &:nth-child(4) {
-    display: flex;
-    align-items: center;
-
-    > div {
-      flex: 1 1 auto;
     }
   }
 }
