@@ -12,6 +12,8 @@
                 </div>
             </div>
 
+            <div class="verticalLine" />
+
             <div class="section-col">
                 <div class="labels">
                     <div>Afdeling:</div>
@@ -25,6 +27,8 @@
                 </div>
             </div>
 
+            <div class="verticalLine" />
+
             <div class="section-col">
                 <div class="labels">
                     <div>Kontaktperson:</div>
@@ -37,6 +41,8 @@
                     <InputField :value="getProcesTime" @change="setProcesTime" />
                 </div>
             </div>
+
+            <div class="verticalLine" />
 
             <div class="section-col">
                 <div class="labels">
@@ -136,6 +142,8 @@ export default class GeneralInformationForm extends Vue {
   display: flex;
   flex-direction: row;
   background-color: $color-edit-background;
+  padding: 25px;
+  border-radius: 12px;
 }
 
 .section-col {
@@ -151,7 +159,13 @@ export default class GeneralInformationForm extends Vue {
 
   .labels > div,
   .fields > * {
+    padding: 0;
     margin-bottom: 1rem;
   }
+}
+
+.verticalLine {
+  border-left: 1px solid $color-background;
+  margin: 5px;
 }
 </style>

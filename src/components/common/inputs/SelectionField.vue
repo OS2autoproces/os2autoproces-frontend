@@ -20,8 +20,6 @@ export default class InputField extends Vue {
 <style lang="scss">
 @import "@/styles/variables.scss";
 .input-group--autocomplete {
-  padding: 0;
-
   .input-group__input {
     border: 1px solid $color-primary;
     border-radius: 20px;
