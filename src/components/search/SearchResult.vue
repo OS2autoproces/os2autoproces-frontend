@@ -64,7 +64,6 @@ export default class NavBar extends Vue {
   padding: $size-unit;
   display: flex;
   position: relative;
-  margin-bottom: $size-unit;
 }
 
 .name {
