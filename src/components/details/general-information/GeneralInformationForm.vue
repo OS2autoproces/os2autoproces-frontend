@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="general-information-wrapper">
         <div class="general-information">
             <div class="section-col">
                 <div class="labels">
@@ -46,19 +46,22 @@
                 </div>
             </div>
         </div>
+
         <div class="associated">
           <div class="associated-list">
             <div class="associated-label">Tilknyttede personer:</div>
-            <div v-for="(person, index) in associatedPeople">
-              <div>
+            <div class="associated-persons-list">
+              <div v-for="(person, index) in associatedPeople">
                  {{person}} <div @click="removePerson(person)">X</div>
               </div>
             </div>
           </div>
-          <SelectionField :value="getAssociatedPersons" @change="addPerson" :items="people" />
+          <div class="add-person">
+            <div class="associated-label">Tilknyt person</div>
+            <SelectionField :value="getAssociatedPersons" @change="addPerson" :items="people" />
+          </div>
         </div>
-
-        <TextArea :max-length="1200" />
+        <!-- <TextArea :max-length="1200" /> -->
     </div>
 </template>
 
@@ -104,7 +107,7 @@ export default class GeneralInformationForm extends Vue {
   @Action("removeAssociatedPerson", { namespace })
   removeAssociatedPerson: any;
 
-  associatedPeople = [];
+  associatedPeople: string[] = [];
   
   people = ['Christian', 'Rasmus', 'Jakob'];
 
@@ -162,11 +165,14 @@ export default class GeneralInformationForm extends Vue {
 
 <style lang="scss" scoped>
 @import "@/styles/variables.scss";
+.general-information-wrapper {
+  background-color: $color-edit-background;
+  border-radius: 12px;
+}
+
 .general-information {
   display: flex;
   flex-direction: row;
-  background-color: $color-edit-background;
-  border-radius: 12px;
   padding: $size-unit;
 }
 
@@ -191,7 +197,7 @@ export default class GeneralInformationForm extends Vue {
   .labels {
     width: 50%;
     > div {
-      line-height: 32px;
+      line-height: $size-unit*2;
       text-align: left;
     }
   }
@@ -205,8 +211,29 @@ export default class GeneralInformationForm extends Vue {
 
 .associated {
   display: flex;
-   > div {
-     width: 50%;
-   }
+  padding: $size-unit;
+  .associated-list {
+     width: 60%;
+     .associated-persons-list {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        align-content: flex-start;
+        height: 150px;
+        border: 1px solid $color-primary;
+        border-radius: 15px;
+        padding: $size-unit/2;
+        > div {
+          width: 15%;
+        }
+     }
+  }
+  .add-person {
+    .input-group {
+      padding: 0;
+    }
+    margin-left: 100px;
+  }
 }
 </style>
