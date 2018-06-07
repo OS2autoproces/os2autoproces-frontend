@@ -50,7 +50,9 @@
           <div class="associated-list">
             <div class="associated-label">Tilknyttede personer:</div>
             <div v-for="(person, index) in associatedPeople">
-              {{person}}
+              <div>
+                 {{person}} <div @click="removePerson(person)">X</div>
+              </div>
             </div>
           </div>
           <SelectionField :value="getAssociatedPersons" @change="addPerson" :items="people" />
@@ -113,6 +115,10 @@ export default class GeneralInformationForm extends Vue {
   addPerson(name: string) {
     this.associatedPeople.push(name);
     this.addAssociatedPerson(name);
+  }
+
+  removePerson(person: string) {
+    this.associatedPeople = this.associatedPeople.filter(p => p !== person);
   }
 
   get getKleNumber() {
