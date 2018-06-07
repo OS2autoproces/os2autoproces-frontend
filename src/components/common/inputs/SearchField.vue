@@ -1,28 +1,43 @@
 <template>
-    <input :value="value" @input="valueChanged">
+    <div class="search-field">
+        <InputField placeholder="Søg f.eks. på KLE-numre" :value="value" @change="valueChanged" />
+        <SearchIcon class="search-icon" />
+    </div>
 </template>
 
 <script lang='ts'>
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { Vue, Component, Prop } from 'vue-property-decorator';
 
-@Component({})
-export default class InputField extends Vue {
+import InputField from './InputField.vue';
+import SearchIcon from '../../icons/SearchIcon.vue';
+
+@Component({
+  components: {
+    InputField,
+    SearchIcon
+  }
+})
+export default class SearchField extends Vue {
   @Prop() value!: string;
 
-  valueChanged(event: any) {
-    this.$emit("change", event.target.value);
+  valueChanged(value: string) {
+    this.$emit('change', value);
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import "@/styles/variables.scss";
-input {
-  border: 1px solid $color-primary;
-  border-radius: 30px;
-  outline: none;
-  padding-left: 10px !important;
-  height: 32px;
-  width: 100%;
+@import '@/styles/variables.scss';
+
+div.search-field {
+    position: relative;
+}
+
+.search-icon {
+    position: absolute;
+    right: 8px;
+    top: 6px;
+    height: 20px;
+    width: 20px;
 }
 </style>

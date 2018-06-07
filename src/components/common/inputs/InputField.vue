@@ -1,5 +1,5 @@
 <template>
-    <input :value="value" @input="valueChanged">
+    <input :placeholder="placeholder" :value="value" @input="valueChanged">
 </template>
 
 <script lang='ts'>
@@ -8,6 +8,7 @@ import { Vue, Component, Prop } from "vue-property-decorator";
 @Component({})
 export default class InputField extends Vue {
   @Prop() value!: string;
+  @Prop() placeholder!: string;
 
   valueChanged(event: any) {
     this.$emit("change", event.target.value);
