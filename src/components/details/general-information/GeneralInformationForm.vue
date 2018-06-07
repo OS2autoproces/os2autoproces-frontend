@@ -49,7 +49,16 @@
                 </div>
             </div>
         </div>
-        <SelectionField :value="getAssociatedPersons" @change="addAssociatedPerson" :items="people" />
+        <div class="associated">
+          <div class="associated-list">
+            <div class="associated-label">Tilknyttede personer:</div>
+            <div v-for="(person, index) in associatedPeople">
+              {{person}}
+            </div>
+          </div>
+          <SelectionField :value="getAssociatedPersons" @change="addPerson" :items="people" />
+        </div>
+
         <TextArea :max-length="1200" />
     </div>
 </template>
@@ -93,6 +102,8 @@ export default class GeneralInformationForm extends Vue {
   setVisibility: any;
   @Action("addAssociatedPerson", { namespace })
   addAssociatedPerson: any;
+
+  associatedPeople = [];
   
   people = ['Christian', 'Rasmus', 'Jakob'];
 
@@ -101,6 +112,11 @@ export default class GeneralInformationForm extends Vue {
   visibilityLevels = ["Privat", "Tværkommunalt", "Kommunalt"];
 
   kleNumbers = ["1234", "134324", "54353"];
+
+  addPerson(name: string) {
+    this.associatedPeople.push(name);
+    this.addAssociatedPerson(name);
+  }
 
   get getKleNumber() {
     return this.$store.state.kleNumber;
@@ -161,5 +177,12 @@ export default class GeneralInformationForm extends Vue {
   .fields > * {
     margin-bottom: 1rem;
   }
+}
+
+.associated {
+  display: flex;
+   > div {
+     width: 50%;
+   }
 }
 </style>
