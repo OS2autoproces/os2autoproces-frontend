@@ -91,7 +91,14 @@ export default class Search extends Vue {
 <style lang="scss" scoped>
 @import "../styles/variables";
 
+.search {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
 .page {
+  flex-grow: 1;
   display: flex;
 
   > div:first-of-type {
@@ -115,7 +122,7 @@ export default class Search extends Vue {
   color: $color-secondary;
   font-size: 2rem;
   font-weight: bold;
-  padding-top: 2 * $size-unit;
+  padding-top: 3 * $size-unit;
   padding-bottom: $size-unit;
 
   svg {
