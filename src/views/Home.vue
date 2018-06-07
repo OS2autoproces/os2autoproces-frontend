@@ -1,7 +1,7 @@
 <template>
     <div class="page">
         <div class="header">
-            <button>Log ind</button>
+            <a-button>Log ind</a-button>
 
             <h1>AutoProces</h1>
             <h2>Tværkommunal procesdeling</h2>
@@ -23,10 +23,12 @@
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
 import IdeaSharingIcon from "../components/icons/IdeaSharingIcon.vue";
+import AButton from "../components/common/inputs/AButton.vue";
 
 @Component({
   components: {
-    IdeaSharingIcon
+    IdeaSharingIcon,
+    AButton
   }
 })
 export default class Home extends Vue {}
