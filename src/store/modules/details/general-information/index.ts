@@ -18,7 +18,8 @@ export const state: GeneralInformationState = {
   procesTime: '',
   projectManager: '',
   supplier: '',
-  resume: ''
+  resume: '',
+  associatedPersons: []
 };
 
 export const generalInformation: Module<GeneralInformationState, RootState> = {

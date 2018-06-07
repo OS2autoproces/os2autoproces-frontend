@@ -13,6 +13,7 @@ export const generalInformationMutationTypes = {
   SET_PROJECT_MANAGER: 'setProjectManager',
   SET_SUPPLIER: 'setSupplier',
   SET_RESUME: 'setResume',
+  ADD_ASSOCIATED_PERSON: 'addAssociatedPerson'
 };
 
 export const mutations: MutationTree<GeneralInformationState> = {
@@ -49,4 +50,7 @@ export const mutations: MutationTree<GeneralInformationState> = {
   setResume(state: GeneralInformationState, payload: string) {
     state.resume = payload;
   },
+  addAssociatedPerson(state: GeneralInformationState, payload: string) {
+    state.associatedPersons = [...state.associatedPersons, payload];
+  }
 };

@@ -49,6 +49,7 @@
                 </div>
             </div>
         </div>
+        <SelectionField :value="getAssociatedPersons" @change="addAssociatedPerson" :items="people" />
         <TextArea :max-length="1200" />
     </div>
 </template>
@@ -90,6 +91,10 @@ export default class GeneralInformationForm extends Vue {
   setField: any;
   @Action("setVisibility", { namespace })
   setVisibility: any;
+  @Action("addAssociatedPerson", { namespace })
+  addAssociatedPerson: any;
+  
+  people = ['Christian', 'Rasmus', 'Jakob'];
 
   fields = ["Teknik", "Diverse", "ETC"];
 
@@ -126,6 +131,9 @@ export default class GeneralInformationForm extends Vue {
   }
   get getVisibility() {
     return this.$store.state.visibility;
+  }
+  get getAssociatedPersons() {
+    return this.$store.state.associatedPersons;
   }
 }
 </script>
