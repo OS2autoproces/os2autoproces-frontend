@@ -59,13 +59,15 @@ import InputField from "@/components/common/inputs/InputField.vue";
 import SelectionField from "@/components/common/inputs/SelectionField.vue";
 import TextArea from "@/components/common/inputs/TextArea.vue";
 import Phases from '@/components/common/inputs/Phases.vue';
+import AssociatedPersonsInput from '@/components/details/general-information/AssociatedPersonsInput.vue';
 
 @Component({
   components: {
     InputField,
     SelectionField,
     TextArea,
-    Phases
+    Phases,
+    AssociatedPersonsInput
   }
 })
 export default class GeneralInformationForm extends Vue {
