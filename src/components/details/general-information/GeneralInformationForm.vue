@@ -52,7 +52,10 @@
             <div class="associated-label">Tilknyttede personer:</div>
             <div class="associated-persons-list">
               <div v-for="(person, index) in associatedPeople">
-                 {{person}} <div @click="removePerson(person)">X</div>
+                 {{person}}
+                 <span @click="removePerson(person)" class="delete-icon">
+                  <DeleteCrossIcon />
+                 </span>
               </div>
             </div>
           </div>
@@ -73,12 +76,14 @@ import { namespace } from "@/store/modules/details/general-information/actions";
 import InputField from "@/components/common/inputs/InputField.vue";
 import SelectionField from "@/components/common/inputs/SelectionField.vue";
 import TextArea from "@/components/common/inputs/TextArea.vue";
+import DeleteCrossIcon from '@/components/icons/DeleteCrossIcon.vue';
 
 @Component({
   components: {
     InputField,
     SelectionField,
-    TextArea
+    TextArea,
+    DeleteCrossIcon
   }
 })
 export default class GeneralInformationForm extends Vue {
@@ -109,7 +114,7 @@ export default class GeneralInformationForm extends Vue {
 
   associatedPeople: string[] = [];
   
-  people = ['Christian', 'Rasmus', 'Jakob'];
+  people = ['Christian Branstrup Bondesdfsdfa', 'Rasmus', 'Jakob'];
 
   fields = ["Teknik", "Diverse", "ETC"];
 
@@ -225,7 +230,14 @@ export default class GeneralInformationForm extends Vue {
         border-radius: 15px;
         padding: $size-unit/2;
         > div {
-          width: 15%;
+          display: flex;
+          align-items: center;
+          width: 20%;
+          .delete-icon {
+            width: $size-unit;
+            height: $size-unit;
+            margin-left: auto;
+          }
         }
      }
   }
