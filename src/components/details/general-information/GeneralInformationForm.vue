@@ -1,57 +1,59 @@
 <template>
-    <div class="general-information-wrapper">
-        <div class="general-information">
-            <div class="section-col">
-                <div class="labels">
-                    <div>KLE-nr:</div>
-                    <div>Lov og paragraf:</div>
-                </div>
-                <div class="fields">
-                    <SelectionField :value="getKleNumber" @change="setKleNumber" :items="kleNumbers" />
-                    <InputField :value="getParagraf" @change="setParagraf" />
-                </div>
-            </div>
-            <div class="section-col">
-                <div class="labels">
-                    <div>Afdeling:</div>
-                    <div>Fagområde:</div>
-                    <div>Synlighed:</div>
-                </div>
-                <div class="fields">
-                    <InputField :value="getDepartment" @change="setDepartment" />
-                    <SelectionField :value="getField" @change="setField" :items="fields" />
-                    <SelectionField :value="getVisibility" @change="setVisibility" :items="visibilityLevels" />
-                </div>
-            </div>
-            <div class="section-col">
-                <div class="labels">
-                    <div>Kontaktperson:</div>
-                    <div>Mail:</div>
-                    <div>Procestid:</div>
-                </div>
-                <div class="fields">
-                    <InputField :value="getContactPerson" @change="setContactPerson" />
-                    <InputField :value="getEmail" @change="setEmail" />
-                    <InputField :value="getProcesTime" @change="setProcesTime" />
-                </div>
-            </div>
-            <div class="section-col">
-                <div class="labels">
-                    <div>Leverandør:</div>
-                    <div>Projektleder:</div>
-                </div>
-                <div class="fields">
-                    <InputField :value="getSupplier" @change="setSupplier" />
-                    <InputField :value="getProjectMananger" @change="setProjectMananger" />
-                </div>
-            </div>
+  <div class="general-information-wrapper">
+    <div class="general-information">
+      <div class="section-col">
+        <div class="labels">
+          <div>KLE-nr:</div>
+          <div>Lov og paragraf:</div>
         </div>
+        <div class="fields">
+          <SelectionField :value="getKleNumber" @change="setKleNumber" :items="kleNumbers" />
+          <InputField :value="getParagraf" @change="setParagraf" />
+        </div>
+      </div>
+      <div class="section-col">
+        <div class="labels">
+          <div>Afdeling:</div>
+          <div>Fagområde:</div>
+          <div>Synlighed:</div>
+        </div>
+        <div class="fields">
+          <InputField :value="getDepartment" @change="setDepartment" />
+          <SelectionField :value="getField" @change="setField" :items="fields" />
+          <SelectionField :value="getVisibility" @change="setVisibility" :items="visibilityLevels" />
+        </div>
+      </div>
+      <div class="section-col">
+        <div class="labels">
+          <div>Kontaktperson:</div>
+          <div>Mail:</div>
+          <div>Procestid:</div>
+        </div>
+        <div class="fields">
+          <InputField :value="getContactPerson" @change="setContactPerson" />
+          <InputField :value="getEmail" @change="setEmail" />
+          <InputField :value="getProcesTime" @change="setProcesTime" />
+        </div>
+      </div>
+      <div class="section-col">
+        <div class="labels">
+          <div>Leverandør:</div>
+          <div>Projektleder:</div>
+        </div>
+        <div class="fields">
+          <InputField :value="getSupplier" @change="setSupplier" />
+          <InputField :value="getProjectMananger" @change="setProjectMananger" />
+        </div>
+      </div>
+    </div>
 
-        <div class="associated">
+    <AssociatedPersonsInput />
+
+    <!-- <div class="associated">
           <div class="associated-list">
             <div class="associated-label">Tilknyttede personer:</div>
             <div class="associated-persons-list">
-              <div v-for="(person, index) in associatedPeople">
+              <div v-for="person in associatedPeople" :key="person">
                  {{person}}
                  <span @click="removePerson(person)" class="delete-icon">
                   <DeleteCrossIcon />
@@ -63,74 +65,55 @@
             <div class="associated-label">Tilknyt person</div>
             <SelectionField :value="getAssociatedPersons" @change="addPerson" :items="people" />
           </div>
-        </div>
-        <!-- <TextArea :max-length="1200" /> -->
-    </div>
+        </div> -->
+    <!-- <TextArea :max-length="1200" /> -->
+  </div>
 </template>
 
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
-import { Action } from "vuex-class";
-import { namespace } from "@/store/modules/details/general-information/actions";
+import { Vue, Component } from 'vue-property-decorator';
+import { Action } from 'vuex-class';
+import { namespace } from '@/store/modules/details/general-information/actions';
 
-import InputField from "@/components/common/inputs/InputField.vue";
-import SelectionField from "@/components/common/inputs/SelectionField.vue";
-import TextArea from "@/components/common/inputs/TextArea.vue";
-import DeleteCrossIcon from '@/components/icons/DeleteCrossIcon.vue';
+import InputField from '@/components/common/inputs/InputField.vue';
+import SelectionField from '@/components/common/inputs/SelectionField.vue';
+
+import AssociatedPersonsInput from '@/components/details/general-information/AssociatedPersonsInput.vue';
 
 @Component({
   components: {
     InputField,
     SelectionField,
-    TextArea,
-    DeleteCrossIcon
+    AssociatedPersonsInput
   }
 })
 export default class GeneralInformationForm extends Vue {
-  @Action("setKleNumber", { namespace })
+  @Action('setKleNumber', { namespace })
   setKleNumber: any;
-  @Action("setParagraf", { namespace })
+  @Action('setParagraf', { namespace })
   setParagraf: any;
-  @Action("setDepartment", { namespace })
+  @Action('setDepartment', { namespace })
   setDepartment: any;
-  @Action("setContactPerson", { namespace })
+  @Action('setContactPerson', { namespace })
   setContactPerson: any;
-  @Action("setEmail", { namespace })
+  @Action('setEmail', { namespace })
   setEmail: any;
-  @Action("setProcesTime", { namespace })
+  @Action('setProcesTime', { namespace })
   setProcesTime: any;
-  @Action("setSupplier", { namespace })
+  @Action('setSupplier', { namespace })
   setSupplier: any;
-  @Action("setProjectMananger", { namespace })
+  @Action('setProjectMananger', { namespace })
   setProjectMananger: any;
-  @Action("setField", { namespace })
+  @Action('setField', { namespace })
   setField: any;
-  @Action("setVisibility", { namespace })
+  @Action('setVisibility', { namespace })
   setVisibility: any;
-  @Action("addAssociatedPerson", { namespace })
-  addAssociatedPerson: any;
-  @Action("removeAssociatedPerson", { namespace })
-  removeAssociatedPerson: any;
 
-  associatedPeople: string[] = [];
-  
-  people = ['Christian Branstrup Bondesdfsdfa', 'Rasmus', 'Jakob'];
+  fields = ['Teknik', 'Diverse', 'ETC'];
 
-  fields = ["Teknik", "Diverse", "ETC"];
+  visibilityLevels = ['Privat', 'Tværkommunalt', 'Kommunalt'];
 
-  visibilityLevels = ["Privat", "Tværkommunalt", "Kommunalt"];
-
-  kleNumbers = ["1234", "134324", "54353"];
-
-  addPerson(name: string) {
-    this.associatedPeople.push(name);
-    this.addAssociatedPerson(name);
-  }
-
-  removePerson(person: string) {
-    this.associatedPeople = this.associatedPeople.filter(p => p !== person);
-    this.removeAssociatedPerson(person);
-  }
+  kleNumbers = ['1234', '134324', '54353'];
 
   get getKleNumber() {
     return this.$store.state.kleNumber;
@@ -162,14 +145,11 @@ export default class GeneralInformationForm extends Vue {
   get getVisibility() {
     return this.$store.state.visibility;
   }
-  get getAssociatedPersons() {
-    return this.$store.state.associatedPersons;
-  }
 }
 </script>
 
 <style lang="scss" scoped>
-@import "@/styles/variables.scss";
+@import '@/styles/variables.scss';
 .general-information-wrapper {
   background-color: $color-edit-background;
   border-radius: 12px;
@@ -202,7 +182,7 @@ export default class GeneralInformationForm extends Vue {
   .labels {
     width: 50%;
     > div {
-      line-height: $size-unit*2;
+      line-height: $size-unit * 2;
       text-align: left;
     }
   }
@@ -211,41 +191,6 @@ export default class GeneralInformationForm extends Vue {
   .fields > * {
     margin-bottom: $size-unit;
     padding: 0;
-  }
-}
-
-.associated {
-  display: flex;
-  padding: $size-unit;
-  .associated-list {
-     width: 60%;
-     .associated-persons-list {
-        display: flex;
-        flex-direction: column;
-        flex-wrap: wrap;
-        justify-content: flex-start;
-        align-content: flex-start;
-        height: 150px;
-        border: 1px solid $color-primary;
-        border-radius: 15px;
-        padding: $size-unit/2;
-        > div {
-          display: flex;
-          align-items: center;
-          width: 20%;
-          .delete-icon {
-            width: $size-unit;
-            height: $size-unit;
-            margin-left: auto;
-          }
-        }
-     }
-  }
-  .add-person {
-    .input-group {
-      padding: 0;
-    }
-    margin-left: 100px;
   }
 }
 </style>
