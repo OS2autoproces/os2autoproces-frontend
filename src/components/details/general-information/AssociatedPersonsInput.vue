@@ -69,11 +69,10 @@ export default class AssociatedPersonsInput extends Vue {
       display: flex;
       flex-direction: column;
       flex-wrap: wrap;
-      justify-content: flex-start;
       align-content: flex-start;
       height: 150px;
       border: 1px solid $color-primary;
-      border-radius: 15px;
+      border-radius: $size-unit;
       padding: $size-unit/2;
       > div {
         display: flex;
