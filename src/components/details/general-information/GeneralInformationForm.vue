@@ -46,27 +46,7 @@
         </div>
       </div>
     </div>
-
     <AssociatedPersonsInput />
-
-    <!-- <div class="associated">
-          <div class="associated-list">
-            <div class="associated-label">Tilknyttede personer:</div>
-            <div class="associated-persons-list">
-              <div v-for="person in associatedPeople" :key="person">
-                 {{person}}
-                 <span @click="removePerson(person)" class="delete-icon">
-                  <DeleteCrossIcon />
-                 </span>
-              </div>
-            </div>
-          </div>
-          <div class="add-person">
-            <div class="associated-label">Tilknyt person</div>
-            <SelectionField :value="getAssociatedPersons" @change="addPerson" :items="people" />
-          </div>
-        </div> -->
-    <!-- <TextArea :max-length="1200" /> -->
   </div>
 </template>
 
@@ -77,7 +57,6 @@ import { namespace } from '@/store/modules/details/general-information/actions';
 
 import InputField from '@/components/common/inputs/InputField.vue';
 import SelectionField from '@/components/common/inputs/SelectionField.vue';
-
 import AssociatedPersonsInput from '@/components/details/general-information/AssociatedPersonsInput.vue';
 
 @Component({
