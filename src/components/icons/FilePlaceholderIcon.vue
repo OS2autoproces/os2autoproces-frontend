@@ -8,7 +8,7 @@
 import { Vue, Component } from "vue-property-decorator";
 
 @Component({})
-export default class FileWordIcon extends Vue {}
+export default class FilePlaceholderIcon extends Vue {}
 </script>
 
 <style lang="scss" scoped>

@@ -9,7 +9,7 @@
 import { Vue, Component } from "vue-property-decorator";
 
 @Component({})
-export default class PlusIcon extends Vue {}
+export default class ProfileIcon extends Vue {}
 </script>
 
 <style lang="scss" scoped>
