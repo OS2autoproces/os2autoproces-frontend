@@ -6,15 +6,19 @@
             <div class="filters">
                 <SearchFilters />
             </div>
-            <div class="results">
-                <div class="results-wrapper">
-                    <div class="report">
-                        <button>
-                            <PlusIcon/> Indberet</button>
-                    </div>
-                    <SearchSorting />
-                    <SearchResult :result="result" v-for="result in results" :key="result.id" />
+            <div class="results-wrapper">
+                <div class="report">
+                    <button>
+                        <PlusIcon/> Indberet</button>
                 </div>
+
+                <SearchSorting />
+
+                <div class="results">
+                    <SearchResult class="search-result" :result="result" v-for="result in results" :key="result.id" />
+                </div>
+                
+                <SearchPagination :page="0" :pageTotal="23" />
             </div>
         </div>
     </div>
@@ -94,29 +98,29 @@ export default class Search extends Vue {
   border-right: 1px solid $color-grey;
 }
 
+.results-wrapper {
+  max-width: 1350px;
+  margin: 0 auto;
+}
+
+.report {
+  text-align: right;
+
+  color: $color-secondary;
+  font-size: 2rem;
+  font-weight: bold;
+  padding: 2 * $size-unit 0;
+
+  svg {
+    height: $size-unit * 1.5;
+    width: $size-unit * 1.5;
+  }
+}
+
 .results {
   flex-grow: 1;
 
-  .results-wrapper {
-    max-width: 1350px;
-    margin: 0 auto;
-  }
-
-  .report {
-    text-align: right;
-
-    color: $color-secondary;
-    font-size: 2rem;
-    font-weight: bold;
-    padding: 2*$size-unit 0;
-
-    svg {
-        height: $size-unit * 1.5;
-        width: $size-unit * 1.5;
-    }
-  }
-
-  .result {
+  .search-result:not(:last-of-type) {
     margin-bottom: $size-unit;
   }
 }

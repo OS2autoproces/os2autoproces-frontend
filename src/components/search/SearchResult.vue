@@ -11,7 +11,9 @@
                 <div>Unik ID:</div>
             </div>
             <div>
-                <div class="rating"><Rating :value="result.assessedPotential" disabled /></div>
+                <div class="rating">
+                    <Rating :value="result.assessedPotential" disabled />
+                </div>
                 <div>{{result.municipality}}</div>
                 <div>{{result.id}}</div>
             </div>
@@ -28,7 +30,9 @@
                 <div>{{result.law}}</div>
             </div>
         </div>
-        <div class="result-column"></div>
+        <div class="result-column">
+            <Phases :value="result.phase" small disabled />
+        </div>
         <star-icon class="star-icon" />
     </div>
 </template>
@@ -37,11 +41,13 @@
 import { Vue, Component, Prop } from "vue-property-decorator";
 import StarIcon from "../icons/StarIcon.vue";
 import Rating from "../common/inputs/Rating.vue";
+import Phases from "../common/inputs/Phases.vue";
 
 @Component({
   components: {
     StarIcon,
-    Rating
+    Rating,
+    Phases
   }
 })
 export default class NavBar extends Vue {
@@ -58,19 +64,25 @@ export default class NavBar extends Vue {
   padding: $size-unit;
   display: flex;
   position: relative;
-  margin-bottom: $size-unit;
+}
+
+.name {
+  color: $color-secondary;
+  font-size: 1.5rem;
+  font-weight: bold;
 }
 
 .star-icon {
   position: absolute;
-  top: -14px;
-  right: -14px;
-  height: 40px;
-  width: 40px;
+  top: -$size-unit;
+  right: -$size-unit;
+  height: $size-unit * 2.5;
+  width: $size-unit * 2.5;
 }
 
-.rating > div {
-    height: $size-unit;
+.rating /deep/ .star {
+  height: 16px;
+  width: 16px;
 }
 
 .result-column {
@@ -87,6 +99,15 @@ export default class NavBar extends Vue {
 
     > div > div:not(:last-of-type) {
       padding-bottom: $size-unit;
+    }
+  }
+
+  &:nth-child(4) {
+    display: flex;
+    align-items: center;
+
+    > div {
+      flex: 1 1 auto;
     }
   }
 }
