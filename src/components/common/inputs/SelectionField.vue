@@ -1,5 +1,5 @@
 <template>
-    <v-select :items="items" single-line @change="valueChanged" autocomplete :value="value">
+    <v-select :items="items" single-line @change="valueChanged" autocomplete :value="value" :append-icon="iconName">
     </v-select>
 </template>
 
@@ -10,6 +10,7 @@ import { Vue, Component, Prop } from "vue-property-decorator";
 export default class InputField extends Vue {
   @Prop() value!: string;
   @Prop() items!: string[];
+  @Prop() iconName!: string;
 
   valueChanged(value: any) {
     if(typeof value === 'string') {
