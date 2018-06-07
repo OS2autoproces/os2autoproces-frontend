@@ -57,6 +57,14 @@
         </div>
 
         <TextArea :max-length="1200" />
+
+        <div class="phase-resume">
+          <div class="resume">
+            <div class="resume-label">Resume</div>
+            <TextArea :value="getResume" @change="setResume" :max-length="140"/>
+          </div>
+          <Phases class="general-phase"/>
+        </div>
     </div>
 </template>
 
@@ -68,12 +76,14 @@ import { namespace } from "@/store/modules/details/general-information/actions";
 import InputField from "@/components/common/inputs/InputField.vue";
 import SelectionField from "@/components/common/inputs/SelectionField.vue";
 import TextArea from "@/components/common/inputs/TextArea.vue";
+import Phases from '@/components/common/inputs/Phases.vue';
 
 @Component({
   components: {
     InputField,
     SelectionField,
-    TextArea
+    TextArea,
+    Phases
   }
 })
 export default class GeneralInformationForm extends Vue {
@@ -99,6 +109,8 @@ export default class GeneralInformationForm extends Vue {
   setVisibility: any;
   @Action("addAssociatedPerson", { namespace })
   addAssociatedPerson: any;
+  @Action("setResume", { namespace })
+  setResume: any;
 
   associatedPeople = [];
   
@@ -147,6 +159,9 @@ export default class GeneralInformationForm extends Vue {
   }
   get getAssociatedPersons() {
     return this.$store.state.associatedPersons;
+  }
+  get getResume() {
+    return this.$store.state.resume;
   }
 }
 </script>
@@ -199,5 +214,17 @@ export default class GeneralInformationForm extends Vue {
    > div {
      width: 50%;
    }
+}
+
+.phase-resume {
+  display: flex;
+  align-items: center;
+  .resume {
+    width: 25%;
+  }
+  .general-phase {
+    width: 35%;
+    margin-left: auto;
+  }
 }
 </style>
