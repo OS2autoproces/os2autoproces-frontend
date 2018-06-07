@@ -6,7 +6,7 @@
                 <div v-for="person in associatedPeople" :key="person">
                     {{person}}
                     <span @click="removePerson(person)" class="delete-icon">
-                        <DeleteCrossIcon />
+                        <DeleteIcon />
                     </span>
                 </div>
             </div>
@@ -22,13 +22,13 @@
 import { Vue, Component } from 'vue-property-decorator';
 import { Action } from 'vuex-class';
 import SelectionField from '@/components/common/inputs/SelectionField.vue';
-import DeleteCrossIcon from '@/components/icons/DeleteCrossIcon.vue';
+import DeleteIcon from '@/components/icons/DeleteIcon.vue';
 import { namespace } from '@/store/modules/details/general-information/actions';
 
 @Component({
   components: {
     SelectionField,
-    DeleteCrossIcon
+    DeleteIcon
   }
 })
 export default class AssociatedPersonsInput extends Vue {
