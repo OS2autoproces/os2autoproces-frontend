@@ -10,5 +10,6 @@ export interface GeneralInformationState {
   projectManager: string // projektleder
   supplier: string; // leverrandør
   resume: string    // resumé
+  associatedPersons: string [];
 }
 

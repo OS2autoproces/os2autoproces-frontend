@@ -62,5 +62,5 @@ export const getters: GetterTree<GeneralInformationState, RootState> = {
   },
   isResumeValid(state: GeneralInformationState): boolean {
     return isValid(state.resume, isMinMax(1, 140));
-  }
+  },
 };
