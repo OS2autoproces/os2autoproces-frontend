@@ -52,17 +52,17 @@ export default class Home extends Vue {}
 
   button {
     position: absolute;
-    top: 1rem;
-    right: 1rem;
+    top: $size-unit;
+    right: $size-unit;
   }
 
   h1 {
-    color: white;
+    color: $color-background;
     font-size: 3rem;
   }
 
   h2 {
-    color: white;
+    color: $color-background;
     font-size: 2rem;
   }
 }
@@ -70,7 +70,7 @@ export default class Home extends Vue {}
 .details {
   column-count: 2;
   column-gap: 5rem;
-  color: white;
+  color: $color-background;
   padding: 100px 0;
   width: 650px;
   margin: 0 auto;

@@ -151,7 +151,7 @@ export default class GeneralInformationForm extends Vue {
 
   .labels > div,
   .fields > * {
-    margin-bottom: 1rem;
+    margin-bottom: $size-unit;
   }
 }
 </style>

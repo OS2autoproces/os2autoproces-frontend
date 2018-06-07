@@ -11,7 +11,7 @@
                 <div>Unik ID:</div>
             </div>
             <div>
-                <div>{{result.assessedPotential}}</div>
+                <div class="rating"><Rating :value="result.assessedPotential" disabled /></div>
                 <div>{{result.municipality}}</div>
                 <div>{{result.id}}</div>
             </div>
@@ -29,17 +29,19 @@
             </div>
         </div>
         <div class="result-column"></div>
-        <star-icon class="selected" />
+        <star-icon class="star-icon" />
     </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
 import StarIcon from "../icons/StarIcon.vue";
+import Rating from "../common/inputs/Rating.vue";
 
 @Component({
   components: {
-    StarIcon
+    StarIcon,
+    Rating
   }
 })
 export default class NavBar extends Vue {
@@ -52,11 +54,11 @@ export default class NavBar extends Vue {
 
 .result {
   border: 2px solid $color-secondary;
-  border-radius: 1rem;
-  padding: 1rem;
+  border-radius: $size-unit;
+  padding: $size-unit;
   display: flex;
-  max-width: 1400px;
   position: relative;
+  margin-bottom: $size-unit;
 }
 
 .star-icon {
@@ -67,6 +69,10 @@ export default class NavBar extends Vue {
   width: 40px;
 }
 
+.rating > div {
+    height: $size-unit;
+}
+
 .result-column {
   flex: 0 0 25%;
 
@@ -75,12 +81,12 @@ export default class NavBar extends Vue {
     display: flex;
 
     > div:last-of-type {
-      padding-left: 1rem;
+      padding-left: $size-unit;
       font-weight: bold;
     }
 
     > div > div:not(:last-of-type) {
-      padding-bottom: 1rem;
+      padding-bottom: $size-unit;
     }
   }
 }
