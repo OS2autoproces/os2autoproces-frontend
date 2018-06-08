@@ -1,0 +1,57 @@
+<template>
+    <div class="markdown-editor">
+        <textarea :value="value" @input="valueChanged" v-if="editing">
+        </TextArea>
+        <div class="rendered" v-if="!editing" v-html="renderedMarkdown"></div>
+    </div>
+</template>
+
+<script lang='ts'>
+import { Vue, Component, Prop } from 'vue-property-decorator';
+import TextArea from './TextArea.vue';
+import marked from 'marked';
+
+@Component({
+  components: {
+    TextArea
+  }
+})
+export default class InputField extends Vue {
+  @Prop() value!: string;
+  @Prop() editing!: boolean;
+  @Prop() placeholder!: string;
+
+  valueChanged(event: any) {
+    this.$emit('change', event.target.value);
+  }
+
+  get renderedMarkdown() {
+    return marked(this.value, {
+      headerIds: false
+    } as any);
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+@import '@/styles/variables.scss';
+
+textarea {
+  width: 100%;
+  border: 1px solid $color-primary;
+  border-radius: 10px;
+  padding: 10px;
+  min-height: 500px;
+}
+
+.rendered /deep/ {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: $color-primary;
+  }
+}
+</style>

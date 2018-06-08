@@ -1,16 +1,20 @@
 <template>
     <div class="page">
         <div class="header">
-            <a-button>Log ind</a-button>
+            <Button>Log ind</Button>
 
             <h1>AutoProces</h1>
             <h2>Tværkommunal procesdeling</h2>
         </div>
 
-        <div class="details">
-            <h1>Overskrift</h1>
-
-            Lorem ipsum dolor sit amet, consectetur ad- ipiscing elit. Fusce quis lectus quis sem lac- inia nonummy. Proin mollis lorem non dolor. In hac habitasse platea dictumst. Nulla ultrices odio. Donec augue. Phasellus dui. Maecenas facilisis nisl vitae nibh. Proin vel seo est vitae eros pretium dignissim. Ali- quam aliquam sodales orci. Suspendisse potenti. Nunc adipiscing euismod arcu. Quisque facilisis mattis lacus. Fusce biben- dum, velit in venenatis viverra, tellus ligula dignissim felis, quis euismod mauris tellus ut urna. Proin scelerisque. Nulla in mi. Integer ac leo. Nunc urna ligula, gravida a, pretium vitae, bibendum nec, ante. Aliquam ullam- corper iaculis lectus. Sed vel dui. Etiam lac- inia risus vitae lacus. Aliquam elementum imperdiet turpis. In id metus. Mauris eu nisl. Nam pharetra nisi nec enim. Nulla aliquam, tellus sed laoreet blandit, eros urna vehicula lectus, et vulputate mauris arcu ut arcu. Praesent eros metus lirum larum, accumsan a, malesuada et, commodo vel, nulla. Ali- quam sagittis auctor sapien. Morbi a nibh. Lorem ipsum dolor sit amet, consectetur ad- ipiscing elit. Fusce quis lectus quis sem lac- inia nonummy. Proin mollis lorem non dolor. In hac habitasse platea dictumst. Nulla ultrices odio. Donec augue. Phasellus dui. Maecenas facilisis nisl vitae nibh. Proin vel seo est vitae eros pretium dignissim. Ali- quam aliquam sodales orci. Suspendisse potenti. Nunc adipiscing euismod arcu. Quisque facilisis mattis lacus. Fusce biben- dum, velit in venenatis viverra, tellus ligula dignissim felis, quis euismod mauris tellus ut urna. Proin scelerisque. Nulla in mi. Integer ac leo. Nunc urna ligula, gravida a, pretium vitae, bibendum nec, ante. Aliquam ullam- coaliquam, tellus sed laoreet blandit, eros urna vehiculauris arcu ut arcu. Praesent eros metus lirum larum, accumsan a, malesuada et, commodo vel, nulla. Aliquam sagittis auctor sapien. Morbi a nibh.
+        <div class="details" :class="{ editing }">
+            <div class="edit-button" v-if="!editing" @click="editing = true">
+                <EditIcon class="edit-icon"></EditIcon>
+            </div>
+            <div class="save-button" v-if="editing" @click="save">
+                <Button>Gem</Button>
+            </div>
+            <MarkdownEditor :editing="editing" :value="details" @change="changeDetails" />
         </div>
 
         <div class="idea-sharing-icon">
@@ -23,15 +27,30 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import IdeaSharingIcon from '../components/icons/IdeaSharingIcon.vue';
-import AButton from '../components/common/inputs/AButton.vue';
+import EditIcon from '../components/icons/EditIcon.vue';
+import Button from '../components/common/inputs/Button.vue';
+import MarkdownEditor from '../components/common/inputs/MarkdownEditor.vue';
 
 @Component({
   components: {
     IdeaSharingIcon,
-    AButton
+    EditIcon,
+    MarkdownEditor,
+    Button
   }
 })
-export default class Home extends Vue {}
+export default class Home extends Vue {
+  editing = false;
+  details = '# Overskrift\n\n## Overskrift 2\n\n1. item\n2. item\n3. item\n\n[google](http://google.dk/)';
+
+  changeDetails(value: string) {
+      this.details = value;
+  }
+
+  save() {
+      this.editing = false;
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -68,15 +87,16 @@ export default class Home extends Vue {}
 }
 
 .details {
-  column-count: 2;
-  column-gap: 5rem;
-  color: $color-background;
-  padding: 100px 0;
-  width: 650px;
-  margin: 0 auto;
+  position: relative;
 
-  h1 {
-    color: $color-primary;
+  color: $color-background;
+  width: 650px;
+  margin: 100px auto;
+  padding: 0 $size-unit;
+
+  &:not(.editing) {
+    column-count: 2;
+    column-gap: 5rem;
   }
 }
 
@@ -84,5 +104,23 @@ export default class Home extends Vue {}
   margin: 0 auto;
   margin-bottom: 100px;
   width: 320px;
+}
+
+.edit-button,
+.save-button {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translateX(-100%);
+}
+
+.edit-button {
+  cursor: pointer;
+  height: 20px;
+  width: 20px;
+
+  /deep/ path {
+    fill: $color-primary;
+  }
 }
 </style>
