@@ -6,7 +6,7 @@
                 <PillCheckbox :value="checked" @change="checked = !checked">Tilknyttede</PillCheckbox>
                 <PillCheckbox :value="checked" @change="checked = !checked">Favoritter</PillCheckbox>
             </div>
-            <InputField class="search-text" />
+            <SearchField class="search-text" />
             <h1>AVANCERET SØGNING</h1>
         </div>
     </div>
@@ -15,12 +15,12 @@
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
 import Checkbox from "../common/inputs/Checkbox.vue";
-import InputField from "../common/inputs/InputField.vue";
+import SearchField from "../common/inputs/SearchField.vue";
 import PillCheckbox from "../common/inputs/PillCheckbox.vue";
 
 @Component({
   components: {
-    InputField,
+    SearchField,
     Checkbox,
     PillCheckbox
   }
