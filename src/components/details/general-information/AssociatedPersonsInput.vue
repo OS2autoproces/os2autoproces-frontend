@@ -95,7 +95,6 @@ export default class AssociatedPersonsInput extends Vue {
 
   /deep/ .input-group--autocomplete {
     .icon {
-      color: $color-primary !important;
       transform: none !important;
     }
   }
