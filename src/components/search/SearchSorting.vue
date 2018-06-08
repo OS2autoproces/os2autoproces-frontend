@@ -1,22 +1,22 @@
 <template>
     <div class="search-sorting">
         <div class="sort-option-column">
-            <div @click="toggleProcessSort">Proces
+            <div @click="toggleProcessSort" role="button">Proces
                 <SortIcon />
             </div>
         </div>
         <div class="sort-option-column">
-            <div @click="togglePotentialSort">Vurderet potentiale
+            <div @click="togglePotentialSort" role="button">Vurderet potentiale
                 <SortIcon />
             </div>
         </div>
         <div class="sort-option-column">
-            <div @click="toggleFieldSort">Fagområde
+            <div @click="toggleFieldSort" role="button">Fagområde
                 <SortIcon />
             </div>
         </div>
         <div class="sort-option-column">
-            <div @click="toggleStatusSort">Status
+            <div @click="toggleStatusSort" role="button">Status
                 <SortIcon />
             </div>
         </div>

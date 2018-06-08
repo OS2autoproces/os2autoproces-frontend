@@ -1,5 +1,5 @@
 <template>
-    <div class="checkbox" @click="click" :class="{ disabled, selected: value }">
+    <div class="checkbox" role="checkbox" :aria-checked="value.toString()" @click="click" :class="{ disabled, selected: value }">
         <div>
             <slot />
         </div>

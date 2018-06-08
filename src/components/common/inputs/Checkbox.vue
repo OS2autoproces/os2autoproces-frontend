@@ -1,5 +1,5 @@
 <template>
-    <div class="checkbox" @click="click" :class="{ disabled }">
+    <div class="checkbox" role="checkbox" :aria-checked="value.toString()" @click="click" :class="{ disabled }">
         <CheckIcon v-if="value" />
     </div>
 </template>

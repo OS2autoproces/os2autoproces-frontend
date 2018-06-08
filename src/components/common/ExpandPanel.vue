@@ -1,6 +1,6 @@
 <template>
     <div class="expand-panel" :class="{ expanded }">
-        <div class="panel-header" @click="expanded = !expanded">
+        <div class="panel-header" @click="expanded = !expanded" role="checkbox" :aria-checked="expanded.toString()">
             <div class="panel-title">{{title}}</div>
             <ArrowDownIcon class="panel-icon" />
         </div>
