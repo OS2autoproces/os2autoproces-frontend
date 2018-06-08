@@ -10,7 +10,7 @@ import { Vue, Component, Prop } from "vue-property-decorator";
 export default class InputField extends Vue {
   @Prop() value!: string;
   @Prop() items!: string[];
-  @Prop() iconName!: string;
+  @Prop({default: 'keyboard_arrow_down'}) iconName!: string;
 
   valueChanged(value: any) {
     if(typeof value === 'string') {

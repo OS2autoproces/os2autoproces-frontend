@@ -11,5 +11,6 @@ export interface GeneralInformationState {
   supplier: string; // leverrandør
   resume: string    // resumé
   associatedPersons: string [];
+  status: string;
 }
 
