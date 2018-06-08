@@ -16,14 +16,14 @@
         <div class="idea-sharing-icon">
             <idea-sharing-icon />
         </div>
-        
+
     </div>
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
-import IdeaSharingIcon from "../components/icons/IdeaSharingIcon.vue";
-import AButton from "../components/common/inputs/AButton.vue";
+import { Vue, Component, Prop } from 'vue-property-decorator';
+import IdeaSharingIcon from '../components/icons/IdeaSharingIcon.vue';
+import AButton from '../components/common/inputs/AButton.vue';
 
 @Component({
   components: {
@@ -35,7 +35,7 @@ export default class Home extends Vue {}
 </script>
 
 <style lang="scss" scoped>
-@import "../styles/variables";
+@import '../styles/variables';
 
 .page {
   background-color: $color-secondary;
@@ -43,7 +43,7 @@ export default class Home extends Vue {}
 
 .header {
   background-size: cover;
-  background-image: url("https://upload.wikimedia.org/wikipedia/commons/e/e5/Stack_of_Copy_Paper.jpg");
+  background-image: url('https://upload.wikimedia.org/wikipedia/commons/e/e5/Stack_of_Copy_Paper.jpg');
   height: 350px;
   display: flex;
   flex-direction: column;
@@ -81,8 +81,8 @@ export default class Home extends Vue {}
 }
 
 .idea-sharing-icon {
-    margin: 0 auto;
-    margin-bottom: 100px;
-    width: 320px;
+  margin: 0 auto;
+  margin-bottom: 100px;
+  width: 320px;
 }
 </style>
