@@ -13,7 +13,7 @@
         </div>
         <div class="add-person">
             <div class="associated-label">Tilknyt person</div>
-            <SelectionField :value="getAssociatedPersons" @change="addPerson" :items="people" />
+            <SelectionField :value="getAssociatedPersons" @change="addPerson" :items="people" iconName="search"/>
         </div>
     </div>
 </template>
