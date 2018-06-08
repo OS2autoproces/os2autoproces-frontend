@@ -19,7 +19,8 @@ export const state: GeneralInformationState = {
   projectManager: '',
   supplier: '',
   resume: '',
-  associatedPersons: []
+  associatedPersons: [],
+  status: '',
 };
 
 export const generalInformation: Module<GeneralInformationState, RootState> = {
