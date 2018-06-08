@@ -32,6 +32,7 @@
         </div>
         <div class="result-column">
             <Phases :value="result.phase" small disabled />
+            <div class="status">{{result.status}}</div>
         </div>
         <star-icon class="star-icon" />
     </div>
@@ -83,6 +84,11 @@ export default class SearchResult extends Vue {
 .rating /deep/ .star {
   height: 16px;
   width: 16px;
+}
+
+.status {
+    font-weight: bold;
+    text-align: center;
 }
 
 .result-column {
