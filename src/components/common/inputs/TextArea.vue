@@ -1,9 +1,8 @@
 <template>
     <div class="text-area">
-        <textarea :value="value" @input="valueChanged" />
+        <textarea v-model="value" @input="valueChanged" />
         <span v-if="maxLength">({{currentLength}} ud af {{maxLength}} tegn)</span>
     </div>
-
 </template>
 
 <script lang='ts'>
