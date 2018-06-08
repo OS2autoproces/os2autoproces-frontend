@@ -50,7 +50,7 @@ import Phases from "../common/inputs/Phases.vue";
     Phases
   }
 })
-export default class NavBar extends Vue {
+export default class SearchResult extends Vue {
   @Prop() result: any;
 }
 </script>

@@ -19,7 +19,6 @@ export default class AButton extends Vue {
 @import "@/styles/variables.scss";
 
 button {
-  outline: none;
   border: 1px solid $color-primary;
   border-radius: $size-unit/2;
   padding: $size-unit/2 $size-unit;

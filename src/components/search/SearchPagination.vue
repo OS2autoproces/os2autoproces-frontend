@@ -25,7 +25,7 @@ import ArrowRightIcon from "../icons/ArrowRightIcon.vue";
     ArrowRightIcon
   }
 })
-export default class NavBar extends Vue {
+export default class SearchPagination extends Vue {
   @Prop() page!: number;
   @Prop() pageTotal!: number;
 

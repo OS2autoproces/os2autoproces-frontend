@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
+import { Vue, Component } from 'vue-property-decorator';
 
 @Component({
   components: {}
@@ -34,11 +34,17 @@ body {
 </style>
 
 <style lang="scss">
-@import "./styles/variables";
+@import './styles/variables';
 
 #app {
   .application.theme--light {
     background: $color-background;
+  }
+
+  input,
+  textarea,
+  button {
+    outline: none;
   }
 
   .application--wrap {
@@ -47,10 +53,10 @@ body {
       display: flex;
 
       > * {
-          flex-grow: 1;
+        flex-grow: 1;
       }
     }
-    
+
     .app-footer {
       background-color: #f2f3f4;
       border-top: 10px solid $color-secondary;

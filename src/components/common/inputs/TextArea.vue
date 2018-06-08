@@ -37,7 +37,6 @@ export default class TextArea extends Vue {
 textarea {
   border: 1px solid $color-primary;
   border-radius: 10px;
-  outline: none;
   padding: 10px;
   width: 100%;
 }

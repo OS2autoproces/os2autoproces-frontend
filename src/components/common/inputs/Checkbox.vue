@@ -33,7 +33,6 @@ export default class Checkbox extends Vue {
   height: 19px;
   border: 1px solid $color-primary;
   border-radius: 50%;
-  margin: 50px;
   position: relative;
 
   &:not(.disabled) {

@@ -32,7 +32,7 @@ import SortIcon from "../icons/SortIcon.vue";
     SortIcon
   }
 })
-export default class NavBar extends Vue {
+export default class SearchSorting extends Vue {
   toggleProcessSort() {
     this.$emit("process");
   }
