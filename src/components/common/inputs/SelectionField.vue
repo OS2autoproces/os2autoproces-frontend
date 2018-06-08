@@ -37,4 +37,9 @@ export default class InputField extends Vue {
     display: none;
   }
 }
+
+.menu__content--autocomplete.menuable__content__active {
+      transform: translateY(24px);
+}
+
 </style>
