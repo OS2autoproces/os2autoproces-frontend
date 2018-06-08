@@ -92,5 +92,18 @@ export default class AssociatedPersonsInput extends Vue {
     }
     margin-left: 100px;
   }
+
+  /deep/ .input-group--autocomplete {
+    .input-group__input {
+      border: 1px solid $color-primary;
+      border-radius: 20px;
+      padding-left: 13px;
+
+     .icon {
+        color: $color-primary !important;
+        transform: none !important;
+      }
+    }
+  }
 }
 </style>
