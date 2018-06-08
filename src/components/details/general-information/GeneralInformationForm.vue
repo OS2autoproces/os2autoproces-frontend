@@ -1,4 +1,5 @@
 <template>
+<div class="overall-wrap">
   <div class="general-information-wrapper">
     <div class="general-information">
       <div class="section-col">
@@ -48,6 +49,19 @@
     </div>
     <AssociatedPersonsInput />
   </div>
+  
+  <div class="resume-phases">
+    <div class="resume">
+      <p>Resume</p>
+      <TextArea @change="setResume" :value="getResume" />
+    </div>
+    <div class="general-phases">
+      <Phases />
+      <SelectionField class="status-selection" :value="getStatus" @change="setStatus" :items="statusItems"/>
+    </div>
+  </div>
+</div>
+
 </template>
 
 <script lang="ts">
@@ -91,12 +105,18 @@ export default class GeneralInformationForm extends Vue {
   setField: any;
   @Action('setVisibility', { namespace })
   setVisibility: any;
+  @Action('setResume', { namespace })
+  setResume: any;
+  @Action('setStatus', { namespace })
+  setStatus: any;
 
   fields = ['Teknik', 'Diverse', 'ETC'];
 
   visibilityLevels = ['Privat', 'Tværkommunalt', 'Kommunalt'];
 
   kleNumbers = ['1234', '134324', '54353'];
+
+  statusItems = ['Afventer', 'Igang', 'Produktions Klar'];
 
   get getKleNumber() {
     return this.$store.state.kleNumber;
@@ -128,6 +148,12 @@ export default class GeneralInformationForm extends Vue {
   get getVisibility() {
     return this.$store.state.visibility;
   }
+  get getResume() {
+    return this.$store.state.resume;
+  }
+  get getStatus() {
+    return this.$store.state.status;
+  }
 }
 </script>
 
@@ -136,44 +162,65 @@ export default class GeneralInformationForm extends Vue {
 .general-information-wrapper {
   background-color: $color-edit-background;
   border-radius: 12px;
-}
 
-.general-information {
-  display: flex;
-  flex-direction: row;
-  padding: $size-unit;
-}
-
-.section-col {
-  display: flex;
-  flex: 0 0 25%;
-
-  padding: 0 $size-unit/2;
-
-  &:not(:last-of-type) {
-    border-right: 1px solid $color-background;
+  .general-information {
+    display: flex;
+    flex-direction: row;
+    padding: $size-unit;
   }
 
-  &:last-of-type {
-    padding-right: 0;
-  }
+  .section-col {
+    display: flex;
+    flex: 0 0 25%;
 
-  &:first-of-type {
-    padding-left: 0;
-  }
+    padding: 0 $size-unit/2;
 
-  .labels {
-    width: 50%;
-    > div {
-      line-height: $size-unit * 2;
-      text-align: left;
+    &:not(:last-of-type) {
+      border-right: 1px solid $color-background;
+    }
+
+    &:last-of-type {
+      padding-right: 0;
+    }
+
+    &:first-of-type {
+      padding-left: 0;
+    }
+
+    .labels {
+      width: 50%;
+      > div {
+        line-height: $size-unit * 2;
+        text-align: left;
+      }
+    }
+
+    .labels > div,
+    .fields > * {
+      margin-bottom: $size-unit;
+      padding: 0;
     }
   }
+}
 
-  .labels > div,
-  .fields > * {
-    margin-bottom: $size-unit;
-    padding: 0;
+.resume-phases {
+  background-color: white;
+  border-radius: 0;
+  display: flex;
+  margin-top: 50px;
+
+  .resume {
+    width: 30%;
+  }
+  .general-phases {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    margin-left: auto;
+    .status-selection {
+      align-self: center;
+      max-width: 230px;
+    }
   }
 }
 </style>
