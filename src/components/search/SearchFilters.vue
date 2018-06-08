@@ -2,18 +2,18 @@
     <div>
         <div class="wrapper">
             <div class="types">
-                <PillCheckbox :value="checked" @change="checked = !checked">Indberettede</PillCheckbox>
-                <PillCheckbox :value="checked" @change="checked = !checked">Tilknyttede</PillCheckbox>
-                <PillCheckbox :value="checked" @change="checked = !checked">Favoritter</PillCheckbox>
+                <PillCheckbox :value="filters.reported" @change="setReported">Indberettede</PillCheckbox>
+                <PillCheckbox :value="filters.related" @change="setRelated">Tilknyttede</PillCheckbox>
+                <PillCheckbox :value="filters.favorites" @change="setFavorites">Favoritter</PillCheckbox>
             </div>
 
-            <SearchField class="search-text" />
+            <SearchField class="search-text" :value="filters.text" @change="setText" />
 
             <h1>AVANCERET SØGNING</h1>
 
             <div class="municipality-level">
-                <SearchOption :value="checked" @change="checked = !checked">Kommunalt</SearchOption>
-                <SearchOption :value="checked" @change="checked = !checked">Tværkommunalt</SearchOption>
+                <SearchOption :value="filters.municipal" @change="setMunicipal">Kommunalt</SearchOption>
+                <SearchOption :value="filters.intermunicipal" @change="setIntermunicipal">Tværkommunalt</SearchOption>
             </div>
 
             <ExpandPanel title="Fase">
@@ -44,6 +44,8 @@ import SearchField from '../common/inputs/SearchField.vue';
 import SearchOption from './SearchOption.vue';
 import PillCheckbox from '../common/inputs/PillCheckbox.vue';
 import ExpandPanel from '../common/ExpandPanel.vue';
+import { Action } from 'vuex-class';
+import { searchActionTypes } from '@/store/modules/search/actions';
 
 @Component({
   components: {
@@ -55,7 +57,18 @@ import ExpandPanel from '../common/ExpandPanel.vue';
   }
 })
 export default class SearchFilters extends Vue {
-  checked: boolean = false;
+  checked = false;
+
+  @Action(searchActionTypes.SET_REPORTED) setReported: any;
+  @Action(searchActionTypes.SET_RELATED) setRelated: any;
+  @Action(searchActionTypes.SET_FAVORITES) setFavorites: any;
+  @Action(searchActionTypes.SET_TEXT) setText: any;
+  @Action(searchActionTypes.SET_MUNICIPAL) setMunicipal: any;
+  @Action(searchActionTypes.SET_INTERMUNICIPAL) setIntermunicipal: any;
+
+  get filters() {
+    return this.$store.state.search.filters;
+  }
 }
 </script>
 

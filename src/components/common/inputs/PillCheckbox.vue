@@ -8,8 +8,8 @@
 </template>
 
 <script lang='ts'>
-import { Vue, Component, Prop } from "vue-property-decorator";
-import CheckIcon from "../../icons/CheckIcon.vue";
+import { Vue, Component, Prop } from 'vue-property-decorator';
+import CheckIcon from '../../icons/CheckIcon.vue';
 
 @Component({
   components: {
@@ -17,19 +17,19 @@ import CheckIcon from "../../icons/CheckIcon.vue";
   }
 })
 export default class Checkbox extends Vue {
-  @Prop() value!: boolean;
+  @Prop({ default: false }) value!: boolean;
   @Prop() disabled!: boolean;
 
-  click(event: any) {
+  click() {
     if (!this.disabled) {
-      this.$emit("change", event);
+      this.$emit('change', !this.value);
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import "@/styles/variables.scss";
+@import '@/styles/variables.scss';
 
 .checkbox {
   display: flex;
@@ -39,11 +39,11 @@ export default class Checkbox extends Vue {
   border-radius: 20px;
 
   > div:first-of-type {
-      flex-grow: 1;
+    flex-grow: 1;
   }
 
   &.selected {
-      font-weight: bold;
+    font-weight: bold;
   }
 
   &:not(.disabled) {
@@ -53,9 +53,9 @@ export default class Checkbox extends Vue {
   svg {
     height: 20px;
     width: 20px;
-    
+
     /deep/ path {
-        fill: $color-background;
+      fill: $color-background;
     }
   }
 }

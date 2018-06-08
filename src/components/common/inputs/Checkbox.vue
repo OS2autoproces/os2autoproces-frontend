@@ -5,8 +5,8 @@
 </template>
 
 <script lang='ts'>
-import { Vue, Component, Prop } from "vue-property-decorator";
-import CheckIcon from "../../icons/CheckIcon.vue";
+import { Vue, Component, Prop } from 'vue-property-decorator';
+import CheckIcon from '../../icons/CheckIcon.vue';
 
 @Component({
   components: {
@@ -14,19 +14,20 @@ import CheckIcon from "../../icons/CheckIcon.vue";
   }
 })
 export default class Checkbox extends Vue {
-  @Prop() value!: boolean;
+  @Prop({ default: false })
+  value!: boolean;
   @Prop() disabled!: boolean;
 
-  click(event: any) {
+  click() {
     if (!this.disabled) {
-      this.$emit("change", event);
+      this.$emit('change', !this.value);
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import "@/styles/variables.scss";
+@import '@/styles/variables.scss';
 
 .checkbox {
   width: 19px;
