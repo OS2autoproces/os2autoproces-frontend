@@ -13,4 +13,3 @@ export interface GeneralInformationState {
   associatedPersons: string [];
   status: string;
 }
-
