@@ -2,27 +2,27 @@
     <div>
         <div class="wrapper">
             <div class="types">
-                <PillCheckbox :value="filters.reported" @change="setReported">Indberettede</PillCheckbox>
-                <PillCheckbox :value="filters.related" @change="setRelated">Tilknyttede</PillCheckbox>
-                <PillCheckbox :value="filters.favorites" @change="setFavorites">Favoritter</PillCheckbox>
+                <PillCheckbox :value="filters.reported" @change="updateFilters({ reported: $event })">Indberettede</PillCheckbox>
+                <PillCheckbox :value="filters.related" @change="updateFilters({ related: $event })">Tilknyttede</PillCheckbox>
+                <PillCheckbox :value="filters.favorites" @change="updateFilters({ favorites: $event })">Favoritter</PillCheckbox>
             </div>
 
-            <SearchField class="search-text" :value="filters.text" @change="setText" />
+            <SearchField class="search-text" :value="filters.text" @change="updateFilters({ text: $event })" />
 
             <h1>AVANCERET SØGNING</h1>
 
             <div class="municipality-level">
-                <SearchOption :value="filters.municipal" @change="setMunicipal">Kommunalt</SearchOption>
-                <SearchOption :value="filters.intermunicipal" @change="setIntermunicipal">Tværkommunalt</SearchOption>
+                <SearchOption :value="filters.municipal" @change="updateFilters({ municipal: $event })">Kommunalt</SearchOption>
+                <SearchOption :value="filters.intermunicipal" @change="updateFilters({ intermunicipal: $event })">Tværkommunalt</SearchOption>
             </div>
 
             <ExpandPanel title="Fase">
-                <SearchOption :value="checked" @change="checked = !checked">Idé</SearchOption>
-                <SearchOption :value="checked" @change="checked = !checked">Foranalyse</SearchOption>
-                <SearchOption :value="checked" @change="checked = !checked">Specifikation</SearchOption>
-                <SearchOption :value="checked" @change="checked = !checked">Udvikling</SearchOption>
-                <SearchOption :value="checked" @change="checked = !checked">Implementering</SearchOption>
-                <SearchOption :value="checked" @change="checked = !checked">Drift</SearchOption>
+                <SearchOption :value="filters.phases.idea" @change="updateFilters({ phases: { idea: $event } })">Idé</SearchOption>
+                <SearchOption :value="filters.phases.preliminaryAnalysis" @change="updateFilters({ phases: { preliminaryAnalysis: $event } })">Foranalyse</SearchOption>
+                <SearchOption :value="filters.phases.specification" @change="updateFilters({ phases: { specification: $event } })">Specifikation</SearchOption>
+                <SearchOption :value="filters.phases.development" @change="updateFilters({ phases: { development: $event } })">Udvikling</SearchOption>
+                <SearchOption :value="filters.phases.implementation" @change="updateFilters({ phases: { implementation: $event } })">Implementering</SearchOption>
+                <SearchOption :value="filters.phases.operating" @change="updateFilters({ phases: { operating: $event } })">Drift</SearchOption>
             </ExpandPanel>
 
             <ExpandPanel title="Fagområde">
@@ -45,7 +45,7 @@ import SearchOption from './SearchOption.vue';
 import PillCheckbox from '../common/inputs/PillCheckbox.vue';
 import ExpandPanel from '../common/ExpandPanel.vue';
 import { Action } from 'vuex-class';
-import { searchActionTypes } from '@/store/modules/search/actions';
+import { namespace, searchActionTypes } from '@/store/modules/search/actions';
 
 @Component({
   components: {
@@ -57,14 +57,8 @@ import { searchActionTypes } from '@/store/modules/search/actions';
   }
 })
 export default class SearchFilters extends Vue {
-  checked = false;
-
-  @Action(searchActionTypes.SET_REPORTED) setReported: any;
-  @Action(searchActionTypes.SET_RELATED) setRelated: any;
-  @Action(searchActionTypes.SET_FAVORITES) setFavorites: any;
-  @Action(searchActionTypes.SET_TEXT) setText: any;
-  @Action(searchActionTypes.SET_MUNICIPAL) setMunicipal: any;
-  @Action(searchActionTypes.SET_INTERMUNICIPAL) setIntermunicipal: any;
+  @Action(searchActionTypes.UPDATE_FILTERS, { namespace })
+  updateFilters: any;
 
   get filters() {
     return this.$store.state.search.filters;

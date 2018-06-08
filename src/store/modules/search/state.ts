@@ -9,6 +9,7 @@ export interface SearchResultProcess {
   law: string;
   phase: number;
   status: string;
+  favorite: boolean;
 }
 
 export interface SearchResult {

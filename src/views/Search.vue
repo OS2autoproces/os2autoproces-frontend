@@ -13,13 +13,13 @@
                             <PlusIcon/> Indberet</button>
                     </div>
 
-                    <SearchSorting />
+                    <SearchSorting v-if="result" />
 
-                    <div class="results">
-                        <SearchResult class="search-result" :result="result" v-for="result in results" :key="result.id" />
+                    <div class="results" v-if="result">
+                        <SearchResult class="search-result" :process="process" v-for="process in result.processes" :key="process.id" />
                     </div>
 
-                    <SearchPagination :page="0" :pageTotal="23" />
+                    <SearchPagination v-if="result" :page="result.page" :pageTotal="result.numberOfPages" />
                 </div>
             </div>
         </div>
@@ -46,6 +46,22 @@ import PlusIcon from '../components/icons/PlusIcon.vue';
   }
 })
 export default class Search extends Vue {
+// TODO: Search page
+// Sorting
+// Field, time and system filters
+// pagination
+// Click process to go to details
+// Call backend
+// indberet button
+// Check design details pdf to fix fonts and font-sizes
+// Logout link
+// font-colors in navbar
+// Search when entering page
+
+  get result() {
+    return this.$store.state.search.result;
+  }
+
   get user() {
     return (
       this.$store.state.user || {
@@ -53,39 +69,6 @@ export default class Search extends Vue {
         roles: ['superbruger', 'Admin']
       }
     );
-  }
-
-  get results() {
-    return [
-      {
-        name: 'Rekruttering',
-        resume:
-          'Resume, resume, resume, resume, resume, resume, resume, resume, resume, resume, resume, resume, resume, resume, resume, resume',
-        assessedPotential: 2,
-        municipality: 'Syddjurs Kommune',
-        id: '56472927382',
-        field: 'Teknik',
-        kleNumber: '4348',
-        law: 'Lov om aktiv social politik §128',
-        phase: 1,
-        status: 'Afventer',
-        favorite: false
-      },
-      {
-        name: 'Rekruttering',
-        resume:
-          'Resume, resume, resume, resume, resume, resume, resume, resume, resume, resume, resume, resume, resume, resume, resume, resume',
-        assessedPotential: 3,
-        municipality: 'Syddjurs Kommune',
-        id: '56472927383',
-        field: 'Teknik',
-        kleNumber: '4348',
-        law: 'Lov om aktiv social politik §128',
-        phase: 2,
-        status: 'Mislykket',
-        favorite: true
-      }
-    ];
   }
 }
 </script>

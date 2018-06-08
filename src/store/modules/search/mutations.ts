@@ -1,33 +1,18 @@
 import { MutationTree } from 'vuex';
-import { SearchState, SearchFilters } from './state';
+import { SearchState, SearchFilters, SearchResult } from './state';
 import { namespace } from '@/store/modules/search/actions';
+import {merge} from 'lodash';
 
 export const searchMutationTypes = {
-  SET_REPORTED: 'setReported',
-  SET_RELATED: 'setRelated',
-  SET_FAVORITES: 'setFavorites',
-  SET_TEXT: 'setText',
-  SET_MUNICIPAL: 'setMunicipal',
-  SET_INTERMUNICIPAL: 'setIntermunicipal'
+  UPDATE_FILTERS: 'updateFilters',
+  SET_SEARCH_RESULT: 'setSearchResult'
 };
 
 export const mutations: MutationTree<SearchState> = {
-  setReported(state: SearchState, reported: boolean) {
-    state.filters = { ...state.filters, ...{ reported } };
+  updateFilters(state: SearchState, filters: Partial<SearchFilters>) {
+    state.filters = merge(state.filters, filters);
   },
-  setRelated(state: SearchState, related: boolean) {
-    state.filters = { ...state.filters, ...{ related } };
+  setSearchResult(state: SearchState, result: SearchResult) {
+    state.result = result;
   },
-  setFavorites(state: SearchState, favorites: boolean) {
-    state.filters = { ...state.filters, ...{ favorites } };
-  },
-  setText(state: SearchState, text: string) {
-    state.filters = { ...state.filters, ...{ text } };
-  },
-  setMunicipal(state: SearchState, municipal: boolean) {
-    state.filters = { ...state.filters, ...{ municipal } };
-  },
-  setIntermunicipal(state: SearchState, intermunicipal: boolean) {
-    state.filters = { ...state.filters, ...{ intermunicipal } };
-  }
 };
