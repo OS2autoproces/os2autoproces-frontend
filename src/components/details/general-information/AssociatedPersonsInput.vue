@@ -23,7 +23,7 @@ import { Vue, Component } from 'vue-property-decorator';
 import { Action } from 'vuex-class';
 import SelectionField from '@/components/common/inputs/SelectionField.vue';
 import DeleteIcon from '@/components/icons/DeleteIcon.vue';
-import { namespace } from '@/store/modules/details/general-information/actions';
+import { namespace, generalInformationActionTypes } from '@/store/modules/details/general-information/actions';
 
 @Component({
   components: {
@@ -32,9 +32,9 @@ import { namespace } from '@/store/modules/details/general-information/actions';
   }
 })
 export default class AssociatedPersonsInput extends Vue {
-  @Action('addAssociatedPerson', { namespace })
+  @Action(generalInformationActionTypes.ADD_ASSOCIATED_PERSON, { namespace })
   addAssociatedPerson: any;
-  @Action('removeAssociatedPerson', { namespace })
+  @Action(generalInformationActionTypes.REMOVE_ASSOCIATED_PERSON, { namespace })
   removeAssociatedPerson: any;
 
   associatedPeople: string[] = [];

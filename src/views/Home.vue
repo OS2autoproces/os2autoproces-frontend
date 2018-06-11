@@ -9,7 +9,7 @@
 
         <div class="details" :class="{ editing }">
             <div class="edit-button" v-if="!editing" @click="editing = true">
-                <EditIcon class="edit-icon"></EditIcon>
+                <EditIcon></EditIcon>
             </div>
             <div class="save-button" v-if="editing" @click="save">
                 <Button>Gem</Button>
