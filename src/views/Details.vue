@@ -1,18 +1,18 @@
 <template>
-    <FormWrapper />
+    <DetailsFormWrapper />
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 
-import FormWrapper from '@/components/details/FormWrapper.vue';
+import DetailsFormWrapper from '@/components/details/DetailsFormWrapper.vue';
 
 @Component({
     components: {
-        FormWrapper
+        DetailsFormWrapper
     }
 })
-export default class ProcesForm extends Vue {
+export default class Details extends Vue {
 }
 </script>
 

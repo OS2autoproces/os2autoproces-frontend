@@ -14,7 +14,7 @@ import GeneralInformationForm from './general-information/GeneralInformationForm
         GeneralInformationForm
     }
 })
-export default class FormWrapper extends Vue {
+export default class DetailsFormWrapper extends Vue {
 }
 </script>
 
