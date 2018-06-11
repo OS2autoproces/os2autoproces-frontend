@@ -3,9 +3,11 @@
         <div class="validation-form" id="general-information">
             <div class="details-title">
                 Grundlæggende Oplysninger
-                <EditIcon class="edit-button"></EditIcon>
+                <span @click="toggleEditMode()">
+                  <EditIcon :class="{disabled}" class="edit-button"></EditIcon>
+                </span>
             </div>
-            <GeneralInformationForm />
+            <GeneralInformationForm :disabled="disabled" />
         </div>
 
         <div style="border: 1px solid black; height: 3000px; display: flex; align-items: center; justify-content: center; background: grey; font-size: 20rem" id="challenges">challenges</div>
@@ -29,7 +31,14 @@ import EditIcon from '@/components/icons/EditIcon.vue';
     EditIcon
   }
 })
-export default class DetailsFormWrapper extends Vue {}
+export default class DetailsFormWrapper extends Vue {
+
+  disabled = true;
+
+  toggleEditMode() {
+    this.disabled = !this.disabled;
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -67,6 +76,11 @@ export default class DetailsFormWrapper extends Vue {}
     margin-left: $size-unit;
     /deep/ path {
       fill: $color-primary;
+    }
+    &.disabled {
+      /deep/ path {
+        fill: $color-secondary;
+      }
     }
   }
 }
