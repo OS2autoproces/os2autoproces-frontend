@@ -67,13 +67,14 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 import { Action } from 'vuex-class';
-import { namespace } from '@/store/modules/details/general-information/actions';
+import { namespace, generalInformationActionTypes } from '@/store/modules/details/general-information/actions';
 
 import InputField from "@/components/common/inputs/InputField.vue";
 import SelectionField from "@/components/common/inputs/SelectionField.vue";
 import TextArea from "@/components/common/inputs/TextArea.vue";
 import Phases from '@/components/common/inputs/Phases.vue';
 import AssociatedPersonsInput from '@/components/details/general-information/AssociatedPersonsInput.vue';
+
 
 @Component({
   components: {
@@ -85,7 +86,7 @@ import AssociatedPersonsInput from '@/components/details/general-information/Ass
   }
 })
 export default class GeneralInformationForm extends Vue {
-  @Action('setGeneralInformationProp', { namespace })
+  @Action(generalInformationActionTypes.SET_GENERAL_INFORMATION_PROP, { namespace })
   setGeneralInformationProp: any;
 
   fields = ['Teknik', 'Diverse', 'ETC'];
