@@ -3,7 +3,7 @@ import { ActionTree } from "vuex";
 import { GeneralInformationState } from "@/store/modules/details/general-information/state";
 import { generalInformationMutationTypes } from "@/store/modules/details/general-information/mutations";
 
-export const namespace = 'generalInformation';
+export const namespace = 'details/generalInformation';
 
 export const generalInformationActionTypes = {
   SET_GENERAL_INFORMATION_PROP: 'setGeneralInformationProp',
