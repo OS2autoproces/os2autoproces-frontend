@@ -25,6 +25,7 @@ export interface SearchFilters {
   text: string;
   municipal: boolean;
   intermunicipal: boolean;
+  page: number;
 
   phases: {
     idea: boolean;

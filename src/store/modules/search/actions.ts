@@ -12,7 +12,7 @@ export const searchActionTypes = {
 };
 
 const debouncedSearch = debounce((filters: SearchFilters, commit: Commit) => {
-  commit(searchMutationTypes.SET_SEARCH_RESULT, dummyResult);
+  commit(searchMutationTypes.SET_SEARCH_RESULT, getMockedSearchResult(filters));
 }, 250);
 
 export const actions: ActionTree<SearchState, RootState> = {
@@ -25,10 +25,10 @@ export const actions: ActionTree<SearchState, RootState> = {
   }
 };
 
-
-const dummyResult: SearchResult = {
+function getMockedSearchResult(filters: SearchFilters) {
+  return {
     numberOfPages: 10,
-    page: 3,
+    page: filters.page,
     processes: [
       {
         name: 'Rekruttering',
@@ -48,7 +48,7 @@ const dummyResult: SearchResult = {
         name: 'Rekruttering',
         resume:
           'Resume, resume, resume, resume, resume, resume, resume, resume, resume, resume, resume, resume, resume, resume, resume, resume',
-          potential: 3,
+        potential: 3,
         municipality: 'Syddjurs Kommune',
         id: '56472927383',
         field: 'Teknik',
@@ -60,3 +60,4 @@ const dummyResult: SearchResult = {
       }
     ]
   };
+}
