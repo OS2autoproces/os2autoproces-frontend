@@ -1,12 +1,17 @@
 $color-primary: #ee8a3c;
-$color-edit-background: #e7eaed;
+$color-secondary: #3d5386;
 $color-text: #575756;
-$color-highlighted: #3d5386;
+$color-grey: #b2b2b2;
 $color-background: #ffffff;
-
-$color-grey: grey;
-$color-secondary: #3c546c;
+$color-background-grey: #e7eaed;
+$color-edit-background: #e7eaed;
 $color-disabled: #dedfe0;
 $color-star: #ffec3c;
 
 $size-unit: 16px;
+
+@mixin heading() {
+  font-family: 'Lato', Arial, 'Helvetica Neue', Helvetica, sans-serif;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+}

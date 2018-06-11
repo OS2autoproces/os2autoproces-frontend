@@ -10,6 +10,7 @@ const namespaced = true;
 export const state: SearchState = {
   result: undefined,
   filters: {
+    page: 0,
     reported: true,
     related: false,
     favorites: false,

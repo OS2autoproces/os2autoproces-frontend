@@ -24,7 +24,6 @@ button {
   padding: $size-unit/2 $size-unit;
   min-width: 40px;
   color: $color-primary;
-  font-weight: bold;
 }
 </style>
 

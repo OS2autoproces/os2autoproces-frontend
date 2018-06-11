@@ -19,7 +19,7 @@
                         <SearchResult class="search-result" :process="process" v-for="process in result.processes" :key="process.id" />
                     </div>
 
-                    <SearchPagination v-if="result" :page="result.page" :pageTotal="result.numberOfPages" />
+                    <SearchPagination v-if="result" :page="result.page" :pageTotal="result.numberOfPages" @change="updateFilters({ page: $event })" />
                 </div>
             </div>
         </div>
@@ -34,6 +34,8 @@ import SearchPagination from '../components/search/SearchPagination.vue';
 import SearchResult from '../components/search/SearchResult.vue';
 import SearchSorting from '../components/search/SearchSorting.vue';
 import PlusIcon from '../components/icons/PlusIcon.vue';
+import { Action } from 'vuex-class';
+import { searchActionTypes, namespace } from '../store/modules/search/actions';
 
 @Component({
   components: {
@@ -46,17 +48,16 @@ import PlusIcon from '../components/icons/PlusIcon.vue';
   }
 })
 export default class Search extends Vue {
-// TODO: Search page
-// Sorting
-// Field, time and system filters
-// pagination
-// Click process to go to details
-// Call backend
-// indberet button
-// Check design details pdf to fix fonts and font-sizes
-// Logout link
-// font-colors in navbar
-// Search when entering page
+  // TODO: Search page
+  // Sorting
+  // Field, time and system filters
+  // Click process to go to details
+  // Call backend
+  // indberet button
+  // Logout link
+
+  @Action(searchActionTypes.UPDATE_FILTERS, { namespace })
+  updateFilters: any;
 
   get result() {
     return this.$store.state.search.result;
@@ -69,6 +70,10 @@ export default class Search extends Vue {
         roles: ['superbruger', 'Admin']
       }
     );
+  }
+
+  mounted() {
+    this.$store.dispatch(`${namespace}/search`);
   }
 }
 </script>
@@ -101,15 +106,20 @@ export default class Search extends Vue {
 }
 
 .report {
-  text-align: right;
-
-  color: $color-secondary;
-  font-size: 2rem;
-  font-weight: bold;
   padding-top: 3 * $size-unit;
   padding-bottom: $size-unit;
 
+  button {
+    @include heading;
+    color: $color-secondary;
+    font-size: 1.66rem;
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+  }
+
   svg {
+    margin-right: $size-unit/2;
     height: $size-unit * 1.5;
     width: $size-unit * 1.5;
   }

@@ -51,6 +51,7 @@ textarea {
   h4,
   h5,
   h6 {
+    @include heading;
     color: $color-primary;
   }
 }
