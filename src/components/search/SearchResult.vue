@@ -69,9 +69,9 @@ export default class SearchResult extends Vue {
 }
 
 .name {
-  color: $color-secondary;
+  @include heading;
   font-size: 1.5rem;
-  font-weight: bold;
+  color: $color-secondary;
 }
 
 .star-icon {
@@ -88,8 +88,8 @@ export default class SearchResult extends Vue {
 }
 
 .status {
-  font-weight: bold;
   text-align: center;
+  font-weight: bold;
 }
 
 .result-column {

@@ -82,14 +82,11 @@ export default class SearchFilters extends Vue {
 }
 
 h1 {
+  @include heading;
   color: $color-secondary;
-  font-size: 1.8rem;
-  font-weight: bold;
   line-height: 1.2em;
-}
-
-.search-text {
-  margin: 2 * $size-unit 0;
+  font-size: 1.25rem;
+  margin: 3 * $size-unit 0;
 }
 
 .search-option {

@@ -16,13 +16,13 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
-import { IUser } from "../../models/user";
+import { Vue, Component, Prop } from 'vue-property-decorator';
+import { IUser } from '../../models/user';
 import ProfileIcon from '../icons/ProfileIcon.vue';
 
 @Component({
   components: {
-      ProfileIcon
+    ProfileIcon
   }
 })
 export default class NavBar extends Vue {
@@ -31,13 +31,13 @@ export default class NavBar extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import "../../styles/variables";
+@import '../../styles/variables';
 
 .navbar {
   display: flex;
   align-items: center;
   background-color: $color-secondary;
-  height: 5*$size-unit;
+  height: 5 * $size-unit;
   padding: $size-unit;
 }
 
@@ -46,9 +46,9 @@ export default class NavBar extends Vue {
 }
 
 .logo {
-  font-size: 2rem;
-  font-weight: bold;
   color: $color-background;
+  @include heading;
+  font-size: 1.75rem;
 }
 
 .user {
@@ -58,8 +58,8 @@ export default class NavBar extends Vue {
 }
 
 .profile-icon {
-  height: 3*$size-unit;
-  width: 3*$size-unit;
+  height: 3 * $size-unit;
+  width: 3 * $size-unit;
   margin-left: $size-unit;
 }
 

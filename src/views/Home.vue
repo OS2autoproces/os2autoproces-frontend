@@ -41,14 +41,14 @@ import MarkdownEditor from '../components/common/inputs/MarkdownEditor.vue';
 })
 export default class Home extends Vue {
   editing = false;
-  details = '# Overskrift\n\n## Overskrift 2\n\n1. item\n2. item\n3. item\n\n[google](http://google.dk/)';
+  details = '# Overskrift\n\nLorem ipsum dolor, sit amet consectetur adipisicing elit. Non porro ut deserunt nesciunt quidem sint ducimus labore quae dolorum consectetur cum minima, ipsam vero facere officia? Debitis temporibus repudiandae laudantium.Lorem ipsum dolor, sit amet consectetur adipisicing elit. Non porro ut deserunt nesciunt quidem sint ducimus labore quae dolorum consectetur cum minima, ipsam vero facere officia? Debitis temporibus repudiandae laudantium. Lorem ipsum dolor, sit amet consectetur adipisicing elit. Non porro ut deserunt nesciunt quidem sint ducimus labore quae dolorum consectetur cum minima, ipsam vero facere officia? Debitis temporibus repudiandae laudantium. Lorem ipsum dolor, sit amet consectetur adipisicing elit. Non porro ut deserunt nesciunt quidem sint ducimus labore quae dolorum consectetur cum minima, ipsam vero facere officia? Debitis temporibus repudiandae laudantium. Lorem ipsum dolor, sit amet consectetur adipisicing elit. Non porro ut deserunt nesciunt quidem sint ducimus labore quae dolorum consectetur cum minima, ipsam vero facere officia? Debitis temporibus repudiandae laudantium.';
 
   changeDetails(value: string) {
-      this.details = value;
+    this.details = value;
   }
 
   save() {
-      this.editing = false;
+    this.editing = false;
   }
 }
 </script>
@@ -70,23 +70,28 @@ export default class Home extends Vue {
   align-items: center;
 
   button {
+    @include heading;
+    font-size: 1.5rem;
     position: absolute;
     top: $size-unit;
     right: $size-unit;
   }
 
   h1 {
+    @include heading;
     color: $color-background;
-    font-size: 3rem;
+    font-size: 5rem;
   }
 
   h2 {
+    @include heading;
     color: $color-background;
-    font-size: 2rem;
+    font-size: 3rem;
   }
 }
 
 .details {
+  font-size: 1.3rem;
   position: relative;
 
   color: $color-background;
