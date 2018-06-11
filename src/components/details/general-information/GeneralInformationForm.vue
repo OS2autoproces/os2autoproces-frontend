@@ -8,8 +8,8 @@
           <div>Lov og paragraf:</div>
         </div>
         <div class="fields">
-          <SelectionField :value="generalInformation.kleNumber" @change="setGeneralInformationProp({kleNumber: $event})" :items="kleNumbers" />
-          <InputField :value="generalInformation.paragraf" @change="setGeneralInformationProp({paragraf: $event})" />
+          <SelectionField :value="generalInformation.kleNumber" @change="updateGeneranlInformation({kleNumber: $event})" :items="kleNumbers" />
+          <InputField :value="generalInformation.paragraf" @change="updateGeneranlInformation({paragraf: $event})" />
         </div>
       </div>
       <div class="section-col">
@@ -19,9 +19,9 @@
           <div>Synlighed:</div>
         </div>
         <div class="fields">
-          <InputField :value="generalInformation.department" @change="setGeneralInformationProp({department: $event})" />
-          <SelectionField :value="generalInformation.field" @change="setGeneralInformationProp({field: $event})" :items="fields" />
-          <SelectionField :value="generalInformation.visibility" @change="setGeneralInformationProp({visibility: $event})" :items="visibilityLevels" />
+          <InputField :value="generalInformation.department" @change="updateGeneranlInformation({department: $event})" />
+          <SelectionField :value="generalInformation.field" @change="updateGeneranlInformation({field: $event})" :items="fields" />
+          <SelectionField :value="generalInformation.visibility" @change="updateGeneranlInformation({visibility: $event})" :items="visibilityLevels" />
         </div>
       </div>
       <div class="section-col">
@@ -31,9 +31,9 @@
           <div>Procestid:</div>
         </div>
         <div class="fields">
-          <InputField :value="generalInformation.contactPerson" @change="setGeneralInformationProp({contactPerson: $event})" />
-          <InputField :value="generalInformation.email" @change="setGeneralInformationProp({email: $event})" />
-          <InputField :value="generalInformation.procesTime" @change="setGeneralInformationProp({procesTime: $event})" />
+          <InputField :value="generalInformation.contactPerson" @change="updateGeneranlInformation({contactPerson: $event})" />
+          <InputField :value="generalInformation.email" @change="updateGeneranlInformation({email: $event})" />
+          <InputField :value="generalInformation.procesTime" @change="updateGeneranlInformation({procesTime: $event})" />
         </div>
       </div>
       <div class="section-col">
@@ -42,8 +42,8 @@
           <div>Projektleder:</div>
         </div>
         <div class="fields">
-          <InputField :value="generalInformation.supplier" @change="setGeneralInformationProp({supplier: $event})" />
-          <InputField :value="generalInformation.projectManager" @change="setGeneralInformationProp({projectManager: $event})" />
+          <InputField :value="generalInformation.supplier" @change="updateGeneranlInformation({supplier: $event})" />
+          <InputField :value="generalInformation.projectManager" @change="updateGeneranlInformation({projectManager: $event})" />
         </div>
       </div>
     </div>
@@ -53,11 +53,11 @@
   <div class="resume-phases">
     <div class="resume">
       <p>Resume</p>
-      <TextArea @change="setGeneralInformationProp({resume: $event})" :value="generalInformation.resume" />
+      <TextArea @change="updateGeneranlInformation({resume: $event})" :value="generalInformation.resume" />
     </div>
     <div class="general-phases">
       <Phases />
-      <SelectionField class="status-selection" :value="generalInformation.status" @change="setGeneralInformationProp({status: $event})" :items="statusItems"/>
+      <SelectionField class="status-selection" :value="generalInformation.status" @change="updateGeneranlInformation({status: $event})" :items="statusItems"/>
     </div>
   </div>
 </div>
@@ -86,8 +86,8 @@ import AssociatedPersonsInput from '@/components/details/general-information/Ass
   }
 })
 export default class GeneralInformationForm extends Vue {
-  @Action(generalInformationActionTypes.SET_GENERAL_INFORMATION_PROP, { namespace })
-  setGeneralInformationProp: any;
+  @Action(generalInformationActionTypes.UPDATE_GENERAL_INFORMATION, { namespace })
+  updateGeneranlInformation: any;
 
   get generalInformation() {
     return this.$store.state.details.generalInformation;

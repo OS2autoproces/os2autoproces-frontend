@@ -5,11 +5,11 @@ import { merge } from 'lodash';
 export const generalInformationMutationTypes = {
   ADD_ASSOCIATED_PERSON: 'addAssociatedPerson',
   REMOVE_ASSOCIATED_PERSON: 'removeAssociatedPerson',
-  SET_GENERAL_INFORMATION_PROP: 'setGeneralInformationProp',
+  UPDATE_GENERAL_INFORMATION: 'updateGeneranlInformation',
 };
 
 export const mutations: MutationTree<GeneralInformationState> = {
-  setGeneralInformationProp(state: GeneralInformationState, payload: Partial<GeneralInformationState>) {
+  updateGeneranlInformation(state: GeneralInformationState, payload: Partial<GeneralInformationState>) {
     state = merge(state, payload);
   },
   addAssociatedPerson(state: GeneralInformationState, payload: string) {
