@@ -7,6 +7,13 @@
             </div>
             <GeneralInformationForm />
         </div>
+        <div class="validation-form">
+          <div class="details-title">
+            Problemstillinger
+            <EditIcon class="edit-button"></EditIcon>
+          </div>
+          <IssuePanelForm />
+        </div>
     </div>
 </template>
 
@@ -14,12 +21,14 @@
 import { Vue, Component } from 'vue-property-decorator';
 
 import GeneralInformationForm from './general-information/GeneralInformationForm.vue';
+import IssuePanelForm from './issue-panel/IssuePanelForm.vue';
 import EditIcon from '@/components/icons/EditIcon.vue';
 
 @Component({
   components: {
     GeneralInformationForm,
-    EditIcon
+    EditIcon,
+    IssuePanelForm
   }
 })
 export default class DetailsFormWrapper extends Vue {}
