@@ -4,7 +4,7 @@
             <div class="details-title">
                 Grundlæggende Oplysninger
                 <span @click="toggleEditMode()">
-                  <EditIcon class="edit-button"></EditIcon>
+                  <EditIcon :class="{disabled}" class="edit-button"></EditIcon>
                 </span>
             </div>
             <GeneralInformationForm :disabled="disabled" />
@@ -69,6 +69,11 @@ export default class DetailsFormWrapper extends Vue {
     margin-left: $size-unit;
     /deep/ path {
       fill: $color-primary;
+    }
+  }
+  .disabled {
+    /deep/ path {
+      fill: $color-secondary;
     }
   }
 }
