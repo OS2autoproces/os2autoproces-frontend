@@ -54,9 +54,7 @@ export default class Search extends Vue {
   // Click process to go to details
   // Call backend
   // indberet button
-  // Check design details pdf to fix fonts and font-sizes
   // Logout link
-  // font-colors in navbar
 
   @Action(searchActionTypes.UPDATE_FILTERS, { namespace })
   updateFilters: any;
