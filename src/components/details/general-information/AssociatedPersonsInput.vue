@@ -1,5 +1,5 @@
 <template>
-    <div class="associated">
+    <div class="associated" v-if="!disabled">
         <div class="associated-list">
             <div class="associated-label">Tilknyttede personer:</div>
             <div class="associated-persons-list">
@@ -19,7 +19,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
+import { Vue, Component, Prop } from 'vue-property-decorator';
 import { Action } from 'vuex-class';
 import SelectionField from '@/components/common/inputs/SelectionField.vue';
 import DeleteIcon from '@/components/icons/DeleteIcon.vue';
@@ -36,6 +36,8 @@ export default class AssociatedPersonsInput extends Vue {
   addAssociatedPerson: any;
   @Action(generalInformationActionTypes.REMOVE_ASSOCIATED_PERSON, { namespace })
   removeAssociatedPerson: any;
+
+  @Prop() disabled!: boolean;
 
   associatedPeople: string[] = [];
 

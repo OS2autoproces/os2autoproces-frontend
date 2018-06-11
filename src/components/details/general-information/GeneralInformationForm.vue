@@ -47,16 +47,16 @@
         </div>
       </div>
     </div>
-    <AssociatedPersonsInput />
+    <AssociatedPersonsInput :disabled="disabled" />
   </div>
   
   <div class="resume-phases">
     <div class="resume">
       <p>Resume</p>
-      <TextArea :disabled="true" @change="updateGeneralInformation({resume: $event})" :value="generalInformation.resume" />
+      <TextArea :disabled="disabled" @change="updateGeneralInformation({resume: $event})" :value="generalInformation.resume" />
     </div>
     <div class="general-phases">
-      <Phases />
+      <Phases :disabled="disabled" />
       <SelectionField :disabled="disabled" class="status-selection" :value="generalInformation.status" @change="updateGeneralInformation({status: $event})" :items="statusItems"/>
     </div>
   </div>
