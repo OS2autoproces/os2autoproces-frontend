@@ -3,7 +3,7 @@
         <div>
             <slot />
         </div>
-        <Checkbox :value="value" @change="$emit('change')" />
+        <Checkbox :value="value" @change="$emit('change', $event)" />
     </div>
 </template>
 

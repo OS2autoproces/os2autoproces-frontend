@@ -1,8 +1,8 @@
 <template>
     <div class="result">
         <div class="result-column">
-            <div class="name">{{result.name}}</div>
-            <div class="resume">{{result.resume}}</div>
+            <div class="name">{{process.name}}</div>
+            <div class="resume">{{process.resume}}</div>
         </div>
         <div class="result-column">
             <div>
@@ -12,10 +12,10 @@
             </div>
             <div>
                 <div class="rating">
-                    <Rating :value="result.assessedPotential" disabled />
+                    <Rating :value="process.potential" disabled />
                 </div>
-                <div>{{result.municipality}}</div>
-                <div>{{result.id}}</div>
+                <div>{{process.municipality}}</div>
+                <div>{{process.id}}</div>
             </div>
         </div>
         <div class="result-column">
@@ -25,24 +25,25 @@
                 <div>Lov og paragraf:</div>
             </div>
             <div>
-                <div>{{result.field}}</div>
-                <div>{{result.kleNumber}}</div>
-                <div>{{result.law}}</div>
+                <div>{{process.field}}</div>
+                <div>{{process.kleNumber}}</div>
+                <div>{{process.law}}</div>
             </div>
         </div>
         <div class="result-column">
-            <Phases :value="result.phase" small disabled />
-            <div class="status">{{result.status}}</div>
+            <Phases :value="process.phase" small disabled />
+            <div class="status">{{process.status}}</div>
         </div>
-        <star-icon class="star-icon" />
+        <star-icon class="star-icon" :class="{ selected: process.favorite }" />
     </div>
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
-import StarIcon from "../icons/StarIcon.vue";
-import Rating from "../common/inputs/Rating.vue";
-import Phases from "../common/inputs/Phases.vue";
+import { Vue, Component, Prop } from 'vue-property-decorator';
+import StarIcon from '../icons/StarIcon.vue';
+import Rating from '../common/inputs/Rating.vue';
+import Phases from '../common/inputs/Phases.vue';
+import { SearchResultProcess } from '../../store/modules/search/state';
 
 @Component({
   components: {
@@ -52,12 +53,12 @@ import Phases from "../common/inputs/Phases.vue";
   }
 })
 export default class SearchResult extends Vue {
-  @Prop() result: any;
+  @Prop() process!: SearchResultProcess;
 }
 </script>
 
 <style lang="scss" scoped>
-@import "../../styles/variables";
+@import '../../styles/variables';
 
 .result {
   border: 2px solid $color-secondary;
@@ -87,8 +88,8 @@ export default class SearchResult extends Vue {
 }
 
 .status {
-    font-weight: bold;
-    text-align: center;
+  font-weight: bold;
+  text-align: center;
 }
 
 .result-column {
