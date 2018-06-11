@@ -1,5 +1,8 @@
 <template>
-  <input :placeholder="placeholder" :class="{ disabled }" :readonly="disabled" :value="value" @input="valueChanged">
+  <div>
+    <input :placeholder="placeholder" v-if="!disabled" :value="value" @input="valueChanged">
+    <div class="readonly-text" v-if="disabled">{{value}}</div>
+  </div>
 </template>
 
 <script lang='ts'>
@@ -27,8 +30,8 @@ input {
   width: 100%;
 }
 
-.disabled {
-  border: 0px;
-  cursor: context-menu;
-}
+// .disabled {
+//   border: 0px;
+//   cursor: context-menu;
+// }
 </style>

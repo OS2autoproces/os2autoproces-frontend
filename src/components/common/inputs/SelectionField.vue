@@ -1,6 +1,8 @@
 <template>
-    <v-select :items="items" single-line @change="valueChanged" autocomplete :value="value" :append-icon="iconName">
-    </v-select>
+<div>
+  <v-select v-if="!disabled" :items="items" single-line @change="valueChanged" autocomplete :value="value" :append-icon="iconName" />
+  <div v-if="disabled">{{value}}</div>
+</div>
 </template>
 
 <script lang='ts'>
@@ -11,6 +13,7 @@ export default class InputField extends Vue {
   @Prop() value!: string;
   @Prop() items!: string[];
   @Prop({default: 'keyboard_arrow_down'}) iconName!: string;
+  @Prop() disabled!: boolean;
 
   valueChanged(value: any) {
     if(typeof value === 'string') {

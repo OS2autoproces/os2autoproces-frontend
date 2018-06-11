@@ -1,28 +1,32 @@
 <template>
-    <div class="text-area">
-        <textarea v-model="value" @input="valueChanged" />
-        <span v-if="maxLength">({{currentLength}} ud af {{maxLength}} tegn)</span>
+  <div>
+    <div class="text-area" v-if="!disabled">
+      <textarea v-model="value" @input="valueChanged" />
+      <span v-if="maxLength">({{currentLength}} ud af {{maxLength}} tegn)</span>
     </div>
+    <div v-if="disabled"> {{value}} </div>
+  </div>
 </template>
 
 <script lang='ts'>
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { Vue, Component, Prop } from 'vue-property-decorator';
 
 @Component
 export default class TextArea extends Vue {
   @Prop() value!: string;
   @Prop() maxLength!: number;
+  @Prop() disabled!: boolean;
   currentLength = 0;
 
   valueChanged(event: any) {
     this.currentLength = event.target.value.length;
-    this.$emit("change", event.target.value);
+    this.$emit('change', event.target.value);
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import "@/styles/variables.scss";
+@import '@/styles/variables.scss';
 
 .text-area {
   position: relative;
@@ -40,5 +44,6 @@ textarea {
   padding: 10px;
   width: 100%;
 }
+
 </style>
 

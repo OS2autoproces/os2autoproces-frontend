@@ -8,7 +8,7 @@
           <div>Lov og paragraf:</div>
         </div>
         <div class="fields">
-          <SelectionField :value="generalInformation.kleNumber" @change="updateGeneralInformation({kleNumber: $event})" :items="kleNumbers" />
+          <SelectionField :disabled="disabled" :value="generalInformation.kleNumber" @change="updateGeneralInformation({kleNumber: $event})" :items="kleNumbers" />
           <InputField :disabled="disabled" :value="generalInformation.paragraf" @change="updateGeneralInformation({paragraf: $event})" />
         </div>
       </div>
@@ -20,8 +20,8 @@
         </div>
         <div class="fields">
           <InputField :disabled="disabled" :value="generalInformation.department" @change="updateGeneralInformation({department: $event})" />
-          <SelectionField :value="generalInformation.field" @change="updateGeneralInformation({field: $event})" :items="fields" />
-          <SelectionField :value="generalInformation.visibility" @change="updateGeneralInformation({visibility: $event})" :items="visibilityLevels" />
+          <SelectionField :disabled="disabled" :value="generalInformation.field" @change="updateGeneralInformation({field: $event})" :items="fields" />
+          <SelectionField :disabled="disabled" :value="generalInformation.visibility" @change="updateGeneralInformation({visibility: $event})" :items="visibilityLevels" />
         </div>
       </div>
       <div class="section-col">
@@ -53,11 +53,11 @@
   <div class="resume-phases">
     <div class="resume">
       <p>Resume</p>
-      <TextArea @change="updateGeneralInformation({resume: $event})" :value="generalInformation.resume" />
+      <TextArea :disabled="true" @change="updateGeneralInformation({resume: $event})" :value="generalInformation.resume" />
     </div>
     <div class="general-phases">
       <Phases />
-      <SelectionField class="status-selection" :value="generalInformation.status" @change="updateGeneralInformation({status: $event})" :items="statusItems"/>
+      <SelectionField :disabled="disabled" class="status-selection" :value="generalInformation.status" @change="updateGeneralInformation({status: $event})" :items="statusItems"/>
     </div>
   </div>
 </div>
@@ -90,7 +90,7 @@ export default class GeneralInformationForm extends Vue {
   updateGeneralInformation: any;
 
   // Todo: set default true in production
-  @Prop({ default: false}) disabled!: boolean;
+  @Prop({ default: true}) disabled!: boolean;
 
   get generalInformation() {
     return this.$store.state.details.generalInformation;
