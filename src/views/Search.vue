@@ -1,6 +1,6 @@
 <template>
     <div class="search">
-        <NavBar :user="user" />
+        <NavBar />
 
         <div class="page">
             <div>
@@ -61,15 +61,6 @@ export default class Search extends Vue {
 
   get result() {
     return this.$store.state.search.result;
-  }
-
-  get user() {
-    return (
-      this.$store.state.user || {
-        name: 'Julie',
-        roles: ['superbruger', 'Admin']
-      }
-    );
   }
 
   mounted() {

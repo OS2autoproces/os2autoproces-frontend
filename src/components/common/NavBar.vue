@@ -26,7 +26,14 @@ import ProfileIcon from '../icons/ProfileIcon.vue';
   }
 })
 export default class NavBar extends Vue {
-  @Prop() user!: IUser;
+  get user() {
+    return (
+      this.$store.state.user || {
+        name: 'Julie',
+        roles: ['superbruger', 'Admin']
+      }
+    );
+  }
 }
 </script>
 
