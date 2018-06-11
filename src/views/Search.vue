@@ -108,15 +108,20 @@ export default class Search extends Vue {
 }
 
 .report {
-  text-align: right;
-
-  color: $color-secondary;
-  font-size: 2rem;
-  font-weight: bold;
   padding-top: 3 * $size-unit;
   padding-bottom: $size-unit;
 
+  button {
+    @include heading;
+    color: $color-secondary;
+    font-size: 1.66rem;
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+  }
+
   svg {
+    margin-right: $size-unit/2;
     height: $size-unit * 1.5;
     width: $size-unit * 1.5;
   }

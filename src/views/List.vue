@@ -67,7 +67,5 @@ export default class List extends Vue {
   position: relative;
 }
 .in-view {
-  font-style: italic;
-  font-weight: bold;
 }
 </style>

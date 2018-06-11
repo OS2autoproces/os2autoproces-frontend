@@ -17,7 +17,8 @@ import CheckIcon from '../../icons/CheckIcon.vue';
   }
 })
 export default class Checkbox extends Vue {
-  @Prop({ default: false }) value!: boolean;
+  @Prop({ default: false })
+  value!: boolean;
   @Prop() disabled!: boolean;
 
   click() {

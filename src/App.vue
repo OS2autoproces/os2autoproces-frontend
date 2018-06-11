@@ -24,27 +24,21 @@ export default class App extends Vue {}
 </script>
 
 <style lang="scss">
+@import './styles/variables';
+
 html {
   font-size: 16px;
+  font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+  color: $color-text;
 }
 
 body {
   min-height: 100vh;
 }
-</style>
-
-<style lang="scss">
-@import './styles/variables';
 
 #app {
   .application.theme--light {
     background: $color-background;
-  }
-
-  input,
-  textarea,
-  button {
-    outline: none;
   }
 
   .application--wrap {
@@ -56,15 +50,24 @@ body {
         flex-grow: 1;
       }
     }
+  }
 
-    .app-footer {
-      background-color: #f2f3f4;
-      border-top: 10px solid $color-secondary;
-      display: flex;
-      padding: 40px;
-      font-weight: bold;
-      justify-content: space-between;
-    }
+  button {
+    @include heading;
+  }
+
+  input,
+  textarea,
+  button {
+    outline: none;
+  }
+
+  .app-footer {
+    background-color: $color-background-grey;
+    border-top: 10px solid $color-secondary;
+    display: flex;
+    padding: 40px;
+    justify-content: space-between;
   }
 }
 </style>

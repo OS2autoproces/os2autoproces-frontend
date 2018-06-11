@@ -46,28 +46,32 @@ export default class SearchPagination extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import "../../styles/variables";
+@import '../../styles/variables';
 
 .search-pagination {
-    display: flex;
-    padding: 2*$size-unit 0;
+  display: flex;
+  padding: 2 * $size-unit 0;
 }
 
 .fill {
-    flex-grow: 1;
+  flex-grow: 1;
+}
+
+.next {
+  text-align: right;
 }
 
 button {
-    color: $color-primary;
-    font-size: 1.5rem;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    margin-bottom: $size-unit;
+  font-size: 1.25rem;
+  color: $color-primary;
+  display: inline-flex;
+  align-items: center;
+  margin: 0;
+  margin-bottom: $size-unit;
 
-    svg {
-        height: 1.5rem;
-        width: 1.5rem;
-    }
+  svg {
+    height: 1.5rem;
+    width: 1.5rem;
+  }
 }
 </style>

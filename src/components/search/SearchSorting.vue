@@ -24,8 +24,8 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
-import SortIcon from "../icons/SortIcon.vue";
+import { Vue, Component, Prop } from 'vue-property-decorator';
+import SortIcon from '../icons/SortIcon.vue';
 
 @Component({
   components: {
@@ -34,25 +34,25 @@ import SortIcon from "../icons/SortIcon.vue";
 })
 export default class SearchSorting extends Vue {
   toggleProcessSort() {
-    this.$emit("process");
+    this.$emit('process');
   }
 
   togglePotentialSort() {
-    this.$emit("potential");
+    this.$emit('potential');
   }
 
   toggleFieldSort() {
-    this.$emit("field");
+    this.$emit('field');
   }
 
   toggleStatusSort() {
-    this.$emit("status");
+    this.$emit('status');
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import "../../styles/variables";
+@import '../../styles/variables';
 
 .search-sorting {
   display: flex;
@@ -60,8 +60,8 @@ export default class SearchSorting extends Vue {
 }
 
 .sort-option-column {
+  @include heading;
   color: $color-primary;
-  font-weight: bold;
   flex: 0 0 25%;
 
   > div {
