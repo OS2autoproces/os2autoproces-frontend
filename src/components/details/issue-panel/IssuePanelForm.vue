@@ -29,17 +29,17 @@
       </div>
 
       <div class="date-proces-box">
-        <div class="current-proces">
+        <div v-if="!disabled" class="current-proces">
           Nuværende system:
           <span>{{issuePanel.currentProcesTitle}}</span>
         </div>
 
         <div class="date-box-container">
-          <div class="date-box">
+          <div v-if="!disabled" class="date-box">
             Start dato:
             <span>{{issuePanel.startDate}}</span>
           </div>
-          <div class="date-box">
+          <div v-if="!disabled" class="date-box">
             Forventet sletdato:
             <span>{{issuePanel.expectedEndDate}}</span>
           </div>
