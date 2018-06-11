@@ -89,7 +89,6 @@ export default class GeneralInformationForm extends Vue {
   @Action(generalInformationActionTypes.UPDATE_GENERAL_INFORMATION, { namespace })
   updateGeneralInformation: any;
 
-  // Todo: set default true in production
   @Prop({ default: true}) disabled!: boolean;
 
   get generalInformation() {

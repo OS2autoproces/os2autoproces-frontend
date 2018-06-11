@@ -1,7 +1,7 @@
 <template>
   <div>
     <input :placeholder="placeholder" v-if="!disabled" :value="value" @input="valueChanged">
-    <div class="readonly-text" v-if="disabled">{{value}}</div>
+    <div v-if="disabled">{{value}}</div>
   </div>
 </template>
 
@@ -29,9 +29,4 @@ input {
   height: 32px;
   width: 100%;
 }
-
-// .disabled {
-//   border: 0px;
-//   cursor: context-menu;
-// }
 </style>

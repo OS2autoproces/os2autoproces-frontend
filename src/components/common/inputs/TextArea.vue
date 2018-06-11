@@ -4,7 +4,7 @@
       <textarea v-model="value" @input="valueChanged" />
       <span v-if="maxLength">({{currentLength}} ud af {{maxLength}} tegn)</span>
     </div>
-    <div v-if="disabled"> {{value}} </div>
+    <div v-if="disabled">{{value}}</div>
   </div>
 </template>
 

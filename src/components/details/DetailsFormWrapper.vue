@@ -70,10 +70,10 @@ export default class DetailsFormWrapper extends Vue {
     /deep/ path {
       fill: $color-primary;
     }
-  }
-  .disabled {
-    /deep/ path {
-      fill: $color-secondary;
+    &.disabled {
+      /deep/ path {
+        fill: $color-secondary;
+      }
     }
   }
 }
