@@ -8,8 +8,8 @@
           <div>Lov og paragraf:</div>
         </div>
         <div class="fields">
-          <SelectionField :value="getKleNumber" @change="setKleNumber" :items="kleNumbers" />
-          <InputField :value="getParagraf" @change="setParagraf" />
+          <SelectionField :value="generalInformation.kleNumber" @change="updateGeneralInformation({kleNumber: $event})" :items="kleNumbers" />
+          <InputField :value="generalInformation.paragraf" @change="updateGeneralInformation({paragraf: $event})" />
         </div>
       </div>
       <div class="section-col">
@@ -19,9 +19,9 @@
           <div>Synlighed:</div>
         </div>
         <div class="fields">
-          <InputField :value="getDepartment" @change="setDepartment" />
-          <SelectionField :value="getField" @change="setField" :items="fields" />
-          <SelectionField :value="getVisibility" @change="setVisibility" :items="visibilityLevels" />
+          <InputField :value="generalInformation.department" @change="updateGeneralInformation({department: $event})" />
+          <SelectionField :value="generalInformation.field" @change="updateGeneralInformation({field: $event})" :items="fields" />
+          <SelectionField :value="generalInformation.visibility" @change="updateGeneralInformation({visibility: $event})" :items="visibilityLevels" />
         </div>
       </div>
       <div class="section-col">
@@ -31,9 +31,9 @@
           <div>Procestid:</div>
         </div>
         <div class="fields">
-          <InputField :value="getContactPerson" @change="setContactPerson" />
-          <InputField :value="getEmail" @change="setEmail" />
-          <InputField :value="getProcesTime" @change="setProcesTime" />
+          <InputField :value="generalInformation.contactPerson" @change="updateGeneralInformation({contactPerson: $event})" />
+          <InputField :value="generalInformation.email" @change="updateGeneralInformation({email: $event})" />
+          <InputField :value="generalInformation.procesTime" @change="updateGeneralInformation({procesTime: $event})" />
         </div>
       </div>
       <div class="section-col">
@@ -42,8 +42,8 @@
           <div>Projektleder:</div>
         </div>
         <div class="fields">
-          <InputField :value="getSupplier" @change="setSupplier" />
-          <InputField :value="getProjectMananger" @change="setProjectMananger" />
+          <InputField :value="generalInformation.supplier" @change="updateGeneralInformation({supplier: $event})" />
+          <InputField :value="generalInformation.projectManager" @change="updateGeneralInformation({projectManager: $event})" />
         </div>
       </div>
     </div>
@@ -53,11 +53,11 @@
   <div class="resume-phases">
     <div class="resume">
       <p>Resume</p>
-      <TextArea @change="setResume" :value="getResume" />
+      <TextArea @change="updateGeneralInformation({resume: $event})" :value="generalInformation.resume" />
     </div>
     <div class="general-phases">
       <Phases />
-      <SelectionField class="status-selection" :value="getStatus" @change="setStatus" :items="statusItems"/>
+      <SelectionField class="status-selection" :value="generalInformation.status" @change="updateGeneralInformation({status: $event})" :items="statusItems"/>
     </div>
   </div>
 </div>
@@ -67,13 +67,14 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 import { Action } from 'vuex-class';
-import { namespace } from '@/store/modules/details/general-information/actions';
+import { namespace, generalInformationActionTypes } from '@/store/modules/details/general-information/actions';
 
 import InputField from "@/components/common/inputs/InputField.vue";
 import SelectionField from "@/components/common/inputs/SelectionField.vue";
 import TextArea from "@/components/common/inputs/TextArea.vue";
 import Phases from '@/components/common/inputs/Phases.vue';
 import AssociatedPersonsInput from '@/components/details/general-information/AssociatedPersonsInput.vue';
+
 
 @Component({
   components: {
@@ -85,30 +86,12 @@ import AssociatedPersonsInput from '@/components/details/general-information/Ass
   }
 })
 export default class GeneralInformationForm extends Vue {
-  @Action('setKleNumber', { namespace })
-  setKleNumber: any;
-  @Action('setParagraf', { namespace })
-  setParagraf: any;
-  @Action('setDepartment', { namespace })
-  setDepartment: any;
-  @Action('setContactPerson', { namespace })
-  setContactPerson: any;
-  @Action('setEmail', { namespace })
-  setEmail: any;
-  @Action('setProcesTime', { namespace })
-  setProcesTime: any;
-  @Action('setSupplier', { namespace })
-  setSupplier: any;
-  @Action('setProjectMananger', { namespace })
-  setProjectMananger: any;
-  @Action('setField', { namespace })
-  setField: any;
-  @Action('setVisibility', { namespace })
-  setVisibility: any;
-  @Action('setResume', { namespace })
-  setResume: any;
-  @Action('setStatus', { namespace })
-  setStatus: any;
+  @Action(generalInformationActionTypes.UPDATE_GENERAL_INFORMATION, { namespace })
+  updateGeneralInformation: any;
+
+  get generalInformation() {
+    return this.$store.state.details.generalInformation;
+  }
 
   fields = ['Teknik', 'Diverse', 'ETC'];
 
@@ -117,43 +100,6 @@ export default class GeneralInformationForm extends Vue {
   kleNumbers = ['1234', '134324', '54353'];
 
   statusItems = ['Afventer', 'Igang', 'Produktions Klar'];
-
-  get getKleNumber() {
-    return this.$store.state.kleNumber;
-  }
-  get getParagraf() {
-    return this.$store.state.paragraf;
-  }
-  get getDepartment() {
-    return this.$store.state.department;
-  }
-  get getContactPerson() {
-    return this.$store.state.contactPerson;
-  }
-  get getEmail() {
-    return this.$store.state.email;
-  }
-  get getProcesTime() {
-    return this.$store.state.procesTime;
-  }
-  get getSupplier() {
-    return this.$store.state.supplier;
-  }
-  get getProjectMananger() {
-    return this.$store.state.projectManager;
-  }
-  get getField() {
-    return this.$store.state.field;
-  }
-  get getVisibility() {
-    return this.$store.state.visibility;
-  }
-  get getResume() {
-    return this.$store.state.resume;
-  }
-  get getStatus() {
-    return this.$store.state.status;
-  }
 }
 </script>
 

@@ -6,64 +6,20 @@ import { generalInformationMutationTypes } from "@/store/modules/details/general
 export const namespace = 'details/generalInformation';
 
 export const generalInformationActionTypes = {
-  SET_KLE_NUMBER: `${namespace}/SET_KLE_NUMBER`,
-  SET_PARAGRAF: `${namespace}/SET_PARAGRAF`,
-  SET_FIELD: `${namespace}/SET_FIELD`,
-  SET_DEPARTMENT: `${namespace}/SET_DEPARTMENT`,
-  SET_VISIBILITY: `${namespace}/SET_VISIBILITY`,
-  SET_CONTACT_PERSON: `${namespace}/SET_CONTACT_PERSON`,
-  SET_EMAIL: `${namespace}/SET_EMAIL`,
-  SET_PROCES_TIME: `${namespace}/SET_PROCES_TIME`,
-  SET_PROJECT_MANAGER: `${namespace}/SET_PROJECT_MANAGER`,
-  SET_SUPPLIER: `${namespace}/SET_SUPPLIER`,
-  SET_RESUME: `${namespace}/SET_RESUME`,
-  ADD_ASSOCIATED_PERSON: `${namespace}/ADD_ASSOCIATED_PERSON`,
-  REMOVE_ASSOCIATED_PERSON: `${namespace}/REMOVE_ASSOCIATED_PERSON`,
-  SET_STATUS: `${namespace}/SET_STATUS`,
+  UPDATE_GENERAL_INFORMATION: 'updateGeneralInformation',
+  ADD_ASSOCIATED_PERSON: 'addAssociatedPerson',
+  REMOVE_ASSOCIATED_PERSON: 'removeAssociatedPerson',
 };
 
 
 export const actions: ActionTree<GeneralInformationState, RootState> = {
-  setKleNumber({ commit }, payload: string): void {
-    commit(generalInformationMutationTypes.SET_KLE_NUMBER, payload);
-  },
-  setParagraf({ commit }, payload: string): void {
-    commit(generalInformationMutationTypes.SET_PARAGRAF, payload);
-  },
-  setField({commit}, payload: string): void {
-    commit(generalInformationMutationTypes.SET_FIELD, payload);
-  },
-  setDepartment({commit}, payload: string): void {
-    commit(generalInformationMutationTypes.SET_DEPARTMENT, payload);
-  },
-  setVisibility({commit}, payload: string): void {
-    commit(generalInformationMutationTypes.SET_VISIBILITY, payload);
-  },
-  setContactPerson({commit}, payload: string): void {
-    commit(generalInformationMutationTypes.SET_CONTACTPERSON, payload);
-  },
-  setEmail({commit}, payload: string): void {
-    commit(generalInformationMutationTypes.SET_EMAIL, payload);
-  },
-  setProcesTime({commit}, payload: string): void {
-    commit(generalInformationMutationTypes.SET_PROCES_TIME, payload);
-  },
-  setProjectManager({commit}, payload: string): void {
-    commit(generalInformationMutationTypes.SET_PROJECT_MANAGER, payload);
-  },
-  setSupplier({commit}, payload: string): void {
-    commit(generalInformationMutationTypes.SET_SUPPLIER, payload);
-  },
-  setResume({commit}, payload: string): void {
-    commit(generalInformationMutationTypes.SET_RESUME, payload);
+  updateGeneralInformation({ commit }, payload: Partial<GeneralInformationState>): void {
+    commit(generalInformationMutationTypes.UPDATE_GENERAL_INFORMATION, payload);
   },
   addAssociatedPerson({commit}, payload: string): void {
     commit(generalInformationMutationTypes.ADD_ASSOCIATED_PERSON, payload);
   },
   removeAssociatedPerson({commit}, payload: string): void {
     commit(generalInformationMutationTypes.REMOVE_ASSOCIATED_PERSON, payload);
-  },
-  setStatus({commit}, payload: string): void {
-    commit(generalInformationMutationTypes.SET_STATUS, payload);
-  },
+  }
 };
