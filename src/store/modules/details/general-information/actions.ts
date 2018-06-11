@@ -24,6 +24,9 @@ export const generalInformationActionTypes = {
 
 
 export const actions: ActionTree<GeneralInformationState, RootState> = {
+  setGeneralInformationProp({ commit }, payload: Partial<GeneralInformationState>): void {
+    commit(generalInformationMutationTypes.SET_GENERAL_INFORMATION_PROP, payload);
+  },
   setKleNumber({ commit }, payload: string): void {
     commit(generalInformationMutationTypes.SET_KLE_NUMBER, payload);
   },

@@ -1,5 +1,6 @@
 import { MutationTree } from "vuex";
 import { GeneralInformationState } from "@/store/modules/details/general-information/state";
+import { merge } from 'lodash';
 
 export const generalInformationMutationTypes = {
   SET_KLE_NUMBER: "setKleNumber",
@@ -15,10 +16,14 @@ export const generalInformationMutationTypes = {
   SET_RESUME: 'setResume',
   ADD_ASSOCIATED_PERSON: 'addAssociatedPerson',
   REMOVE_ASSOCIATED_PERSON: 'removeAssociatedPerson',
-  SET_STATUS: 'setStatus'
+  SET_STATUS: 'setStatus',
+  SET_GENERAL_INFORMATION_PROP: 'setGeneralInformationProp',
 };
 
 export const mutations: MutationTree<GeneralInformationState> = {
+  setGeneralInformationProp(state: GeneralInformationState, payload: Partial<GeneralInformationState>) {
+    state = merge(state, payload);
+  },
   setKleNumber(state: GeneralInformationState, payload: string) {
     state.kleNumber = payload;
   },
