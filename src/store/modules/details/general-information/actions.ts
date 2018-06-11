@@ -6,14 +6,14 @@ import { generalInformationMutationTypes } from "@/store/modules/details/general
 export const namespace = 'details/generalInformation';
 
 export const generalInformationActionTypes = {
-  UPDATE_GENERAL_INFORMATION: 'updateGeneranlInformation',
+  UPDATE_GENERAL_INFORMATION: 'updateGeneralInformation',
   ADD_ASSOCIATED_PERSON: 'addAssociatedPerson',
   REMOVE_ASSOCIATED_PERSON: 'removeAssociatedPerson',
 };
 
 
 export const actions: ActionTree<GeneralInformationState, RootState> = {
-  updateGeneranlInformation({ commit }, payload: Partial<GeneralInformationState>): void {
+  updateGeneralInformation({ commit }, payload: Partial<GeneralInformationState>): void {
     commit(generalInformationMutationTypes.UPDATE_GENERAL_INFORMATION, payload);
   },
   addAssociatedPerson({commit}, payload: string): void {

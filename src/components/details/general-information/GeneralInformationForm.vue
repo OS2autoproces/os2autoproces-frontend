@@ -8,8 +8,8 @@
           <div>Lov og paragraf:</div>
         </div>
         <div class="fields">
-          <SelectionField :value="generalInformation.kleNumber" @change="updateGeneranlInformation({kleNumber: $event})" :items="kleNumbers" />
-          <InputField :value="generalInformation.paragraf" @change="updateGeneranlInformation({paragraf: $event})" />
+          <SelectionField :value="generalInformation.kleNumber" @change="updateGeneralInformation({kleNumber: $event})" :items="kleNumbers" />
+          <InputField :value="generalInformation.paragraf" @change="updateGeneralInformation({paragraf: $event})" />
         </div>
       </div>
       <div class="section-col">
@@ -19,9 +19,9 @@
           <div>Synlighed:</div>
         </div>
         <div class="fields">
-          <InputField :value="generalInformation.department" @change="updateGeneranlInformation({department: $event})" />
-          <SelectionField :value="generalInformation.field" @change="updateGeneranlInformation({field: $event})" :items="fields" />
-          <SelectionField :value="generalInformation.visibility" @change="updateGeneranlInformation({visibility: $event})" :items="visibilityLevels" />
+          <InputField :value="generalInformation.department" @change="updateGeneralInformation({department: $event})" />
+          <SelectionField :value="generalInformation.field" @change="updateGeneralInformation({field: $event})" :items="fields" />
+          <SelectionField :value="generalInformation.visibility" @change="updateGeneralInformation({visibility: $event})" :items="visibilityLevels" />
         </div>
       </div>
       <div class="section-col">
@@ -31,9 +31,9 @@
           <div>Procestid:</div>
         </div>
         <div class="fields">
-          <InputField :value="generalInformation.contactPerson" @change="updateGeneranlInformation({contactPerson: $event})" />
-          <InputField :value="generalInformation.email" @change="updateGeneranlInformation({email: $event})" />
-          <InputField :value="generalInformation.procesTime" @change="updateGeneranlInformation({procesTime: $event})" />
+          <InputField :value="generalInformation.contactPerson" @change="updateGeneralInformation({contactPerson: $event})" />
+          <InputField :value="generalInformation.email" @change="updateGeneralInformation({email: $event})" />
+          <InputField :value="generalInformation.procesTime" @change="updateGeneralInformation({procesTime: $event})" />
         </div>
       </div>
       <div class="section-col">
@@ -42,8 +42,8 @@
           <div>Projektleder:</div>
         </div>
         <div class="fields">
-          <InputField :value="generalInformation.supplier" @change="updateGeneranlInformation({supplier: $event})" />
-          <InputField :value="generalInformation.projectManager" @change="updateGeneranlInformation({projectManager: $event})" />
+          <InputField :value="generalInformation.supplier" @change="updateGeneralInformation({supplier: $event})" />
+          <InputField :value="generalInformation.projectManager" @change="updateGeneralInformation({projectManager: $event})" />
         </div>
       </div>
     </div>
@@ -53,11 +53,11 @@
   <div class="resume-phases">
     <div class="resume">
       <p>Resume</p>
-      <TextArea @change="updateGeneranlInformation({resume: $event})" :value="generalInformation.resume" />
+      <TextArea @change="updateGeneralInformation({resume: $event})" :value="generalInformation.resume" />
     </div>
     <div class="general-phases">
       <Phases />
-      <SelectionField class="status-selection" :value="generalInformation.status" @change="updateGeneranlInformation({status: $event})" :items="statusItems"/>
+      <SelectionField class="status-selection" :value="generalInformation.status" @change="updateGeneralInformation({status: $event})" :items="statusItems"/>
     </div>
   </div>
 </div>
@@ -87,7 +87,7 @@ import AssociatedPersonsInput from '@/components/details/general-information/Ass
 })
 export default class GeneralInformationForm extends Vue {
   @Action(generalInformationActionTypes.UPDATE_GENERAL_INFORMATION, { namespace })
-  updateGeneranlInformation: any;
+  updateGeneralInformation: any;
 
   get generalInformation() {
     return this.$store.state.details.generalInformation;
