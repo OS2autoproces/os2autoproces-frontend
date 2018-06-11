@@ -89,6 +89,10 @@ export default class GeneralInformationForm extends Vue {
   @Action(generalInformationActionTypes.SET_GENERAL_INFORMATION_PROP, { namespace })
   setGeneralInformationProp: any;
 
+  get generalInformation() {
+    return this.$store.state.details.generalInformation;
+  }
+
   fields = ['Teknik', 'Diverse', 'ETC'];
 
   visibilityLevels = ['Privat', 'Tværkommunalt', 'Kommunalt'];
@@ -96,10 +100,6 @@ export default class GeneralInformationForm extends Vue {
   kleNumbers = ['1234', '134324', '54353'];
 
   statusItems = ['Afventer', 'Igang', 'Produktions Klar'];
-
-  get generalInformation() {
-    return this.$store.state.generalInformation;
-  }
 }
 </script>
 
