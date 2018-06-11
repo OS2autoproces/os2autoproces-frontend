@@ -70,6 +70,10 @@ export default class Search extends Vue {
       }
     );
   }
+
+  mounted() {
+    this.$store.dispatch(`${namespace}/search`);
+  }
 }
 </script>
 
