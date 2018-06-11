@@ -1,29 +1,33 @@
 <template>
-    <div class="associated">
-        <div class="associated-list">
-            <div class="associated-label">Tilknyttede personer:</div>
-            <div class="associated-persons-list">
-                <div v-for="person in associatedPeople" :key="person">
-                    {{person}}
-                    <span @click="removePerson(person)" class="delete-icon">
-                        <DeleteIcon />
-                    </span>
-                </div>
-            </div>
+  <!-- Todo: Should we hide the associated person, or should they be shown when in readonly mode (disabled) -->
+  <div class="associated" v-if="!disabled">
+    <div class="associated-list">
+      <div class="associated-label">Tilknyttede personer:</div>
+      <div class="associated-persons-list">
+        <div v-for="person in associatedPeople" :key="person">
+          {{person}}
+          <span @click="removePerson(person)" class="delete-icon">
+            <DeleteIcon />
+          </span>
         </div>
-        <div class="add-person">
-            <div class="associated-label">Tilknyt person</div>
-            <SelectionField :value="getAssociatedPersons" @change="addPerson" :items="people" iconName="search"/>
-        </div>
+      </div>
     </div>
+    <div class="add-person">
+      <div class="associated-label">Tilknyt person</div>
+      <SelectionField :value="getAssociatedPersons" @change="addPerson" :items="people" iconName="search" />
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
+import { Vue, Component, Prop } from 'vue-property-decorator';
 import { Action } from 'vuex-class';
 import SelectionField from '@/components/common/inputs/SelectionField.vue';
 import DeleteIcon from '@/components/icons/DeleteIcon.vue';
-import { namespace, generalInformationActionTypes } from '@/store/modules/details/general-information/actions';
+import {
+  namespace,
+  generalInformationActionTypes
+} from '@/store/modules/details/general-information/actions';
 
 @Component({
   components: {
@@ -36,6 +40,8 @@ export default class AssociatedPersonsInput extends Vue {
   addAssociatedPerson: any;
   @Action(generalInformationActionTypes.REMOVE_ASSOCIATED_PERSON, { namespace })
   removeAssociatedPerson: any;
+
+  @Prop() disabled!: boolean;
 
   associatedPeople: string[] = [];
 

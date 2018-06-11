@@ -8,8 +8,8 @@
           <div>Lov og paragraf:</div>
         </div>
         <div class="fields">
-          <SelectionField :value="generalInformation.kleNumber" @change="updateGeneralInformation({kleNumber: $event})" :items="kleNumbers" />
-          <InputField :value="generalInformation.paragraf" @change="updateGeneralInformation({paragraf: $event})" />
+          <SelectionField :disabled="disabled" :value="generalInformation.kleNumber" @change="updateGeneralInformation({kleNumber: $event})" :items="kleNumbers" />
+          <InputField :disabled="disabled" :value="generalInformation.paragraf" @change="updateGeneralInformation({paragraf: $event})" />
         </div>
       </div>
       <div class="section-col">
@@ -19,9 +19,9 @@
           <div>Synlighed:</div>
         </div>
         <div class="fields">
-          <InputField :value="generalInformation.department" @change="updateGeneralInformation({department: $event})" />
-          <SelectionField :value="generalInformation.field" @change="updateGeneralInformation({field: $event})" :items="fields" />
-          <SelectionField :value="generalInformation.visibility" @change="updateGeneralInformation({visibility: $event})" :items="visibilityLevels" />
+          <InputField :disabled="disabled" :value="generalInformation.department" @change="updateGeneralInformation({department: $event})" />
+          <SelectionField :disabled="disabled" :value="generalInformation.field" @change="updateGeneralInformation({field: $event})" :items="fields" />
+          <SelectionField :disabled="disabled" :value="generalInformation.visibility" @change="updateGeneralInformation({visibility: $event})" :items="visibilityLevels" />
         </div>
       </div>
       <div class="section-col">
@@ -31,9 +31,9 @@
           <div>Procestid:</div>
         </div>
         <div class="fields">
-          <InputField :value="generalInformation.contactPerson" @change="updateGeneralInformation({contactPerson: $event})" />
-          <InputField :value="generalInformation.email" @change="updateGeneralInformation({email: $event})" />
-          <InputField :value="generalInformation.procesTime" @change="updateGeneralInformation({procesTime: $event})" />
+          <InputField :disabled="disabled" :value="generalInformation.contactPerson" @change="updateGeneralInformation({contactPerson: $event})" />
+          <InputField :disabled="disabled" :value="generalInformation.email" @change="updateGeneralInformation({email: $event})" />
+          <InputField :disabled="disabled" :value="generalInformation.procesTime" @change="updateGeneralInformation({procesTime: $event})" />
         </div>
       </div>
       <div class="section-col">
@@ -42,22 +42,22 @@
           <div>Projektleder:</div>
         </div>
         <div class="fields">
-          <InputField :value="generalInformation.supplier" @change="updateGeneralInformation({supplier: $event})" />
-          <InputField :value="generalInformation.projectManager" @change="updateGeneralInformation({projectManager: $event})" />
+          <InputField :disabled="disabled" :value="generalInformation.supplier" @change="updateGeneralInformation({supplier: $event})" />
+          <InputField :disabled="disabled" :value="generalInformation.projectManager" @change="updateGeneralInformation({projectManager: $event})" />
         </div>
       </div>
     </div>
-    <AssociatedPersonsInput />
+    <AssociatedPersonsInput :disabled="disabled" />
   </div>
   
   <div class="resume-phases">
     <div class="resume">
       <p>Resume</p>
-      <TextArea @change="updateGeneralInformation({resume: $event})" :value="generalInformation.resume" />
+      <TextArea :disabled="disabled" @change="updateGeneralInformation({resume: $event})" :value="generalInformation.resume" />
     </div>
     <div class="general-phases">
-      <Phases />
-      <SelectionField class="status-selection" :value="generalInformation.status" @change="updateGeneralInformation({status: $event})" :items="statusItems"/>
+      <Phases :disabled="disabled" />
+      <SelectionField :disabled="disabled" class="status-selection" :value="generalInformation.status" @change="updateGeneralInformation({status: $event})" :items="statusItems"/>
     </div>
   </div>
 </div>
@@ -65,7 +65,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
+import { Vue, Component, Prop } from 'vue-property-decorator';
 import { Action } from 'vuex-class';
 import { namespace, generalInformationActionTypes } from '@/store/modules/details/general-information/actions';
 
@@ -88,6 +88,8 @@ import AssociatedPersonsInput from '@/components/details/general-information/Ass
 export default class GeneralInformationForm extends Vue {
   @Action(generalInformationActionTypes.UPDATE_GENERAL_INFORMATION, { namespace })
   updateGeneralInformation: any;
+
+  @Prop({ default: true}) disabled!: boolean;
 
   get generalInformation() {
     return this.$store.state.details.generalInformation;
