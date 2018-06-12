@@ -1,6 +1,6 @@
 <template>
-    <div class="date-picker-wrap">
-        <InputField :disabled="disabled" :value="value" placeholder="DD/MM/YYYY" @change="onInputChange($event)" />
+    <div class="date-picker-wrap" :class="{ disabled }">
+        <InputField :value="value" placeholder="DD/MM/YYYY" @change="onInputChange($event)" />
         <v-menu :close-on-content-click="false" transition="scale-transition">
             <v-date-picker :value="datePickerValue" no-title @input="onDatePickerChange($event)" />
             <i slot="activator" class="material-icons md-36 calender-icon">today</i>
@@ -13,7 +13,6 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 import InputField from '@/components/common/inputs/InputField.vue';
 import { DateTime } from 'luxon';
 
-// Todo: Input should set the value of DatePicker from vuetify
 @Component({
   components: {
     InputField
@@ -25,10 +24,7 @@ export default class DatePicker extends Vue {
 
   get datePickerValue(): string {
     const date = this.parseDate(this.value);
-
-    if (date.isValid) {
-      return date.toISODate();
-    }
+    return date.isValid ? date.toISODate() : '';
   }
 
   onDatePickerChange(date: string): void {
