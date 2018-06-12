@@ -48,7 +48,7 @@ export default class DatePicker extends Vue {
   }
 
   parseDate(date: string): DateTime {
-    return date ? DateTime.fromFormat(date, this.format) : DateTime.invalid('');
+    return date ? DateTime.fromFormat(date, this.format) : DateTime.invalid('invalid format');
   }
 }
 </script>
