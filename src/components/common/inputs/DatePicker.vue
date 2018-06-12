@@ -22,21 +22,17 @@ export default class DatePicker extends Vue {
   @Prop() disabled!: boolean;
   @Prop() value!: string;
 
+  format = 'dd/MM/yyyy';
+
   get datePickerValue(): string {
     const date = this.parseDate(this.value);
     return date.isValid ? date.toISODate() : '';
   }
 
   onDatePickerChange(date: string): void {
-    if (!date) {
-      return;
+    if (date) {
+      this.valueChanged(DateTime.fromFormat(date, 'yyyy-MM-dd'));
     }
-
-    const [year, month, day] = date.split('-');
-
-    const parsedDate = DateTime.fromObject({ year: Number(year), month: Number(month), day: Number(day) });
-    
-    this.valueChanged(parsedDate);
   }
 
   onInputChange(date: string): void {
@@ -47,18 +43,12 @@ export default class DatePicker extends Vue {
 
   valueChanged(date: DateTime): void {
     if (date.isValid) {
-      this.$emit('change', date.toFormat('dd/MM/yyyy'));
+      this.$emit('change', date.toFormat(this.format));
     }
   }
 
-  parseDate(dateString: string): DateTime {
-    if (!dateString) {
-      return DateTime.invalid('');
-    }
-
-    const [day, month, year] = dateString.split('/');
-
-    return DateTime.fromObject({ year: Number(year), month: Number(month), day: Number(day) });
+  parseDate(date: string): DateTime {
+    return date ? DateTime.fromFormat(date, this.format) : DateTime.invalid('');
   }
 }
 </script>
