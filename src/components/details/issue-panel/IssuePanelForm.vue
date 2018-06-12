@@ -30,18 +30,24 @@
 
       <div class="date-proces-box">
         <div class="current-proces">
-          Nuværende system:
-          <SelectionField :items="procesItems" :value="issuePanel.currentProcesTitle" :disabled="disabled" @change="updateIssuePanel({currentProcesTitle: $event})"/>
+          <div>
+            Nuværende system:
+          </div>
+          <SelectionField :items="procesItems" :value="issuePanel.currentProcesTitle" :disabled="false" @change="updateIssuePanel({currentProcesTitle: $event})" />
         </div>
 
         <div class="date-box-container">
           <div class="date-box">
-            Start dato:
-            <span v-if="!disabled">{{issuePanel.startDate}}</span>
+            <div class="date-box-title">
+              Start dato:
+            </div>
+            <DatePicker :disabled="false" :value="issuePanel.startDate" @change="updateIssuePanel({startDate: $event})" />
           </div>
           <div class="date-box">
-            Forventet sletdato:
-            <span v-if="!disabled">{{issuePanel.expectedEndDate}}</span>
+            <div class="date-box-title">
+              Forventet sletdato:
+            </div>
+            <DatePicker :disabled="false" :value="issuePanel.expectedEndDate" @change="updateIssuePanel({expectedEndDate: $event})" />
           </div>
         </div>
       </div>
@@ -56,13 +62,15 @@ import {
   issuePanelActionTypes
 } from '@/store/modules/details/issue-panel/actions';
 import TextArea from '@/components/common/inputs/TextArea.vue';
-import SelectionField from '@/components/common/inputs/SelectionField.vue';
 import { Action } from 'vuex-class';
+import SelectionField from '@/components/common/inputs/SelectionField.vue';
+import DatePicker from '@/components/common/inputs/DatePicker.vue';
 
 @Component({
   components: {
     TextArea,
-    SelectionField
+    SelectionField,
+    DatePicker
   }
 })
 export default class GeneralInformationForm extends Vue {
@@ -74,12 +82,7 @@ export default class GeneralInformationForm extends Vue {
     return this.$store.state.details.issuePanel;
   }
 
-  procesItems = [
-    'KITOS',
-    'KITOS1',
-    'KITOS2',
-    'KITOS3'
-  ]
+  procesItems = ['KITOS', 'KITOS1', 'KITOS2', 'KITOS3'];
 }
 </script>
 
@@ -109,26 +112,27 @@ export default class GeneralInformationForm extends Vue {
     justify-content: center;
     background-color: $color-edit-background;
     border-radius: 12px;
-    
+
     .current-proces {
-      padding: $size-unit;
-      width: 30%;
-      margin-right: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      width: 35%;
       border-right: 1px solid white;
       margin: $size-unit;
-      > span {
-        float: right;
-        margin-right: $size-unit*4;
-      }
+      padding-right: $size-unit*2;
     }
 
     .date-box-container {
       padding: $size-unit;
       width: 30%;
       .date-box {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
         margin: $size-unit;
-        > span {
-          float: right;
+        .date-box-title {
+          width: 40%;
         }
       }
     }
