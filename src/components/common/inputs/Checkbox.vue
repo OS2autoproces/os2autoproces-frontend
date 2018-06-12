@@ -30,6 +30,7 @@ export default class Checkbox extends Vue {
 @import '@/styles/variables.scss';
 
 .checkbox {
+  display: inline-block;
   width: 19px;
   height: 19px;
   border: 1px solid $color-primary;
