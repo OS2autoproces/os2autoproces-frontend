@@ -31,7 +31,7 @@
       <div class="date-proces-box">
         <div class="current-proces">
           Nuværende system:
-          <span v-if="!disabled">{{issuePanel.currentProcesTitle}}</span>
+          <SelectionField :items="procesItems" :value="issuePanel.currentProcesTitle" :disabled="disabled" @change="updateIssuePanel({currentProcesTitle: $event})"/>
         </div>
 
         <div class="date-box-container">
@@ -56,11 +56,13 @@ import {
   issuePanelActionTypes
 } from '@/store/modules/details/issue-panel/actions';
 import TextArea from '@/components/common/inputs/TextArea.vue';
+import SelectionField from '@/components/common/inputs/SelectionField.vue';
 import { Action } from 'vuex-class';
 
 @Component({
   components: {
-    TextArea
+    TextArea,
+    SelectionField
   }
 })
 export default class GeneralInformationForm extends Vue {
@@ -71,6 +73,13 @@ export default class GeneralInformationForm extends Vue {
   get issuePanel() {
     return this.$store.state.details.issuePanel;
   }
+
+  procesItems = [
+    'KITOS',
+    'KITOS1',
+    'KITOS2',
+    'KITOS3'
+  ]
 }
 </script>
 

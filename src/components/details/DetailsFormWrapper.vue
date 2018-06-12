@@ -14,7 +14,7 @@
             Problemstillinger
             <EditIcon class="edit-button"></EditIcon>
           </div>
-          <IssuePanelForm />
+          <IssuePanelForm :disabled="disabled"/>
         </div>
 
         <div style="border: 1px solid black; height: 1500px; display: flex; align-items: center; justify-content: center; background: grey; font-size: 20rem" id="challenges">challenges</div>

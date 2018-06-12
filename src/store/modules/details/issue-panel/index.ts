@@ -11,9 +11,9 @@ export const state: IssuePanel = {
     currentProces: '',
     ideasSolution: '',
     challenges: '',
-    currentProcesTitle: 'asdasdsa',
-    startDate: 'asdasdasd',
-    expectedEndDate: 'asdasdasd'
+    currentProcesTitle: '',
+    startDate: '',
+    expectedEndDate: ''
 }
 
 export const issuePanel: Module<IssuePanel, RootState> = {

@@ -9,7 +9,7 @@
 import { Vue, Component, Prop } from "vue-property-decorator";
 
 @Component({})
-export default class InputField extends Vue {
+export default class SelectionField extends Vue {
   @Prop() value!: string;
   @Prop() items!: string[];
   @Prop({default: 'keyboard_arrow_down'}) iconName!: string;
