@@ -8,7 +8,6 @@
                 </span>
             </div>
             <GeneralInformationForm :disabled="disabled" />
-            <DatePicker :value="date" @change="date = $event" />
         </div>
 
         <div style="border: 1px solid black; height: 1500px; display: flex; align-items: center; justify-content: center; background: grey; font-size: 20rem" id="challenges">challenges</div>
@@ -25,13 +24,11 @@ import { Vue, Component } from 'vue-property-decorator';
 
 import GeneralInformationForm from './general-information/GeneralInformationForm.vue';
 import EditIcon from '@/components/icons/EditIcon.vue';
-import DatePicker from '@/components/common/inputs/DatePicker.vue';
 
 @Component({
   components: {
     GeneralInformationForm,
     EditIcon,
-    DatePicker
   }
 })
 export default class DetailsFormWrapper extends Vue {
