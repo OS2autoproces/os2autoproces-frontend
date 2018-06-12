@@ -1,7 +1,7 @@
 <template>
-    <div class="date-picker-wrap" :class="{ disabled }">
-        <InputField :value="value" placeholder="DD/MM/YYYY" @change="onInputChange($event)" />
-        <v-menu :close-on-content-click="false" transition="scale-transition">
+    <div class="date-picker-wrap">
+        <InputField :disabled="disabled" :value="value" placeholder="DD/MM/YYYY" @change="onInputChange($event)" />
+        <v-menu v-if="!disabled" :close-on-content-click="false" transition="scale-transition">
             <v-date-picker :value="datePickerValue" no-title @input="onDatePickerChange($event)" />
             <i slot="activator" class="material-icons md-36 calender-icon">today</i>
         </v-menu>
