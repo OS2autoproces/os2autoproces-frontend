@@ -1,7 +1,8 @@
 <template>
     <div class="page">
         <div class="header">
-            <Button>Log ind</Button>
+            <!-- TODO: Link to municipality discovery page -->
+            <router-link class="login-button" to="/search">Log ind</router-link>
 
             <h1>AutoProces</h1>
             <h2>Tværkommunal procesdeling</h2>
@@ -69,9 +70,16 @@ export default class Home extends Vue {
   justify-content: center;
   align-items: center;
 
-  button {
+  .login-button {
+    border: 1px solid $color-primary;
+    border-radius: $size-unit/2;
+    padding: $size-unit/2 $size-unit;
+    min-width: 40px;
+    color: $color-primary;
     @include heading;
     font-size: 1.5rem;
+    display: block;
+    text-decoration: none;
     position: absolute;
     top: $size-unit;
     right: $size-unit;

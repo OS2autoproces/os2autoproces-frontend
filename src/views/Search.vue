@@ -1,6 +1,6 @@
 <template>
     <div class="search">
-        <NavBar :user="user" />
+        <NavBar />
 
         <div class="page">
             <div>
@@ -16,7 +16,9 @@
                     <SearchSorting v-if="result" />
 
                     <div class="results" v-if="result">
-                        <SearchResult class="search-result" :process="process" v-for="process in result.processes" :key="process.id" />
+                        <router-link :to="'/details/' + process.id" class="search-result-link" v-for="process in result.processes" :key="process.id">
+                            <SearchResult :process="process" />
+                        </router-link>
                     </div>
 
                     <SearchPagination v-if="result" :page="result.page" :pageTotal="result.numberOfPages" @change="updateFilters({ page: $event })" />
@@ -35,7 +37,7 @@ import SearchResult from '../components/search/SearchResult.vue';
 import SearchSorting from '../components/search/SearchSorting.vue';
 import PlusIcon from '../components/icons/PlusIcon.vue';
 import { Action } from 'vuex-class';
-import { searchActionTypes, namespace } from '../store/modules/search/actions';
+import { searchActionTypes } from '../store/modules/search/actions';
 
 @Component({
   components: {
@@ -51,29 +53,18 @@ export default class Search extends Vue {
   // TODO: Search page
   // Sorting
   // Field, time and system filters
-  // Click process to go to details
   // Call backend
   // indberet button
   // Logout link
 
-  @Action(searchActionTypes.UPDATE_FILTERS, { namespace })
-  updateFilters: any;
+  @Action(searchActionTypes.UPDATE_FILTERS) updateFilters: any;
 
   get result() {
     return this.$store.state.search.result;
   }
 
-  get user() {
-    return (
-      this.$store.state.user || {
-        name: 'Julie',
-        roles: ['superbruger', 'Admin']
-      }
-    );
-  }
-
   mounted() {
-    this.$store.dispatch(`${namespace}/search`);
+    this.$store.dispatch(searchActionTypes.SEARCH);
   }
 }
 </script>
@@ -92,7 +83,7 @@ export default class Search extends Vue {
 
   > div:first-of-type {
     flex: 0 0 300px;
-    border-right: 1px solid $color-grey;
+    border-right: 1px solid #e6e6e8;
   }
 
   > div:last-of-type {
@@ -125,7 +116,13 @@ export default class Search extends Vue {
   }
 }
 
-.search-result:not(:last-of-type) {
-  margin-bottom: $size-unit;
+.search-result-link {
+  display: block;
+  text-decoration: inherit;
+  color: inherit;
+
+  &:not(:last-of-type) {
+    margin-bottom: $size-unit;
+  }
 }
 </style>

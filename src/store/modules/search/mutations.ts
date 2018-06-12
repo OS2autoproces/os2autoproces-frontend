@@ -1,7 +1,6 @@
 import { MutationTree } from 'vuex';
 import { SearchState, SearchFilters, SearchResult } from './state';
-import { namespace } from '@/store/modules/search/actions';
-import {merge} from 'lodash';
+import { merge } from 'lodash';
 
 export const searchMutationTypes = {
   UPDATE_FILTERS: 'updateFilters',
@@ -14,5 +13,5 @@ export const mutations: MutationTree<SearchState> = {
   },
   setSearchResult(state: SearchState, result: SearchResult) {
     state.result = result;
-  },
+  }
 };
