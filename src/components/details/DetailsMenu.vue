@@ -1,10 +1,10 @@
 <template>
     <div>
-        <a class="search-page">
+        <router-link to="/search" class="search-page-link">
             <ArrowLeftIcon /> Tilbage til søgning
-        </a>
+        </router-link>
 
-        <div class="menu-item" v-for="item in this.items" :key="item.id" :class="{ 'in-view': itemInView === item }">
+        <div class="menu-item" v-for="item in this.items" :key="item.id" :class="{ 'in-view': itemInView === item }" @click="scrollTo(item)">
             {{item.title}} {{item.percentageVisible}}
         </div>
     </div>
@@ -14,7 +14,7 @@
 import { Vue, Prop, Component } from 'vue-property-decorator';
 import ArrowLeftIcon from '@/components/icons/ArrowLeftIcon.vue';
 
-interface MenuItem {
+export interface MenuItem {
   title: string;
   id: string;
 }
@@ -37,7 +37,17 @@ export default class DetailsMenu extends Vue {
     this.update();
   }
 
-  update() {
+  destroyed(): void {
+    window.removeEventListener('resize', this.listener);
+    window.removeEventListener('scroll', this.listener);
+  }
+
+  private scrollTo(item: MenuItem) {
+    const element = document.getElementById(item.id);
+    element && element.scrollIntoView(true);
+  }
+
+  private update() {
     if (!this.items) {
       return;
     }
@@ -58,30 +68,33 @@ export default class DetailsMenu extends Vue {
 
     return items[0];
   }
-
-  destroyed(): void {
-    window.removeEventListener('resize', this.listener);
-    window.removeEventListener('scroll', this.listener);
-  }
 }
 </script>
 
 <style lang="scss" scoped>
 @import '@/styles/variables.scss';
 
-a.search-page {
+.search-page-link {
+  @include heading;
+  font-size: 1.2rem;
+  display: inline-flex;
+  align-items: center;
+
   svg {
-    height: 16px;
-    width: 16px;
+    height: $size-unit;
+    width: $size-unit;
+    margin-right: $size-unit / 2;
   }
 }
 
 .menu-item {
+  @include light-heading;
   margin-top: $size-unit;
+  cursor: pointer;
 }
 
 .in-view {
-  font-weight: bold;
+  @include heading;
   text-decoration: underline;
 }
 </style>
