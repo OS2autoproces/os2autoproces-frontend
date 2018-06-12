@@ -31,7 +31,7 @@ export default class DatePicker extends Vue {
 
   onDatePickerChange(date: string): void {
     if (date) {
-      this.valueChanged(DateTime.fromFormat(date, 'yyyy-MM-dd'));
+      this.valueChanged(DateTime.fromISO(date));
     }
   }
 
