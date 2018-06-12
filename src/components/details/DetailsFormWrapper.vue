@@ -38,8 +38,6 @@ export default class DetailsFormWrapper extends Vue {
     return this.$store.state.details.issuePanel;
   }
 
-  date: string = '11/11/2015';
-
   toggleEditMode() {
     this.disabled = !this.disabled;
   }
