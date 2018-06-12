@@ -12,6 +12,7 @@
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import { DateTime } from 'luxon';
 
+// Todo: Input should set the value of DatePicker from vuetify
 @Component({})
 export default class DatePicker extends Vue {
   formattedDate: string = '';
