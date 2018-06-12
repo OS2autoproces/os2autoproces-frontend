@@ -1,8 +1,8 @@
 <template>
     <div class="date-picker-wrap">
-        <input :value="formattedDate" placeholder="DD/MM/YYYY" @change="parseDate($event.target.value)" />
-        <v-menu :close-on-content-click="true" transition="scale-transition">
-            <v-date-picker :v-model="datePickerValue" no-title @input="formatDate($event)" />
+        <InputField :disabled="disabled" :value="value" placeholder="DD/MM/YYYY" @change="onInputChange($event)" />
+        <v-menu :close-on-content-click="false" transition="scale-transition">
+            <v-date-picker :value="datePickerValue" no-title @input="onDatePickerChange($event)" />
             <i slot="activator" class="material-icons md-36 calender-icon">today</i>
         </v-menu>
     </div>
@@ -10,48 +10,59 @@
 
 <script lang='ts'>
 import { Vue, Component, Prop } from 'vue-property-decorator';
+import InputField from '@/components/common/inputs/InputField.vue';
 import { DateTime } from 'luxon';
 
 // Todo: Input should set the value of DatePicker from vuetify
-@Component({})
+@Component({
+  components: {
+    InputField
+  }
+})
 export default class DatePicker extends Vue {
-  formattedDate: string = '';
-  datePickerValue: string = '';
+  @Prop() disabled!: boolean;
+  @Prop() value!: string;
 
-  formatDate(newDate: string) {
-    if (!newDate) {
-      return;
+  get datePickerValue(): string {
+    const date = this.parseDate(this.value);
+
+    if (date.isValid) {
+      return date.toISODate();
     }
-    const [year, month, day] = newDate.split('-');
-
-    this.formattedDate = `${day}/${month}/${year}`;
-    this.valueChanged(this.formattedDate);
   }
 
-  valueChanged(date: string) {
-    this.$emit('change', date);
+  onDatePickerChange(date: string): void {
+    if (!date) {
+      return;
+    }
+
+    const [year, month, day] = date.split('-');
+
+    const parsedDate = DateTime.fromObject({ year: Number(year), month: Number(month), day: Number(day) });;
+
+    this.valueChanged(parsedDate);
   }
 
-  parseDate(formatted: string) {
-    if (!formatted) {
-      return;
+  onInputChange(date: string): void {
+    if (date && date.match(/^\d{2}\/\d{2}\/\d{4}$/)) {
+      this.valueChanged(this.parseDate(date));
+    }
+  }
+
+  valueChanged(date: DateTime): void {
+    if (date.isValid) {
+      this.$emit('change', date.toFormat('dd/MM/yyyy'));
+    }
+  }
+
+  parseDate(dateString: string): DateTime {
+    if (!dateString) {
+      return DateTime.invalid('');
     }
 
-    const match = formatted.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+    const [day, month, year] = dateString.split('/');
 
-    if (!match) {
-      return;
-    }
-
-    const [valid, day, month, year] = match;
-    const dt = { year: Number(year), month: Number(month), day: Number(day) };
-    const isValidDate = DateTime.fromObject(dt);
-
-    if (!isValidDate.isValid) {
-      return;
-    }
-    this.datePickerValue = isValidDate.toISODate();
-    this.valueChanged(formatted);
+    return DateTime.fromObject({ year: Number(year), month: Number(month), day: Number(day) });
   }
 }
 </script>
@@ -68,12 +79,10 @@ export default class DatePicker extends Vue {
   color: $color-primary;
 }
 
-input {
-  border: 1px solid $color-primary;
-  border-radius: 30px;
-  padding-left: 10px !important;
-  height: 32px;
-  width: 100%;
+.menu {
+  cursor: pointer;
+  height: 24px;
+  margin-left: $size-unit/2;
 }
 </style>
 
