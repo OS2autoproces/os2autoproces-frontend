@@ -43,6 +43,10 @@ import EditIcon from '@/components/icons/EditIcon.vue';
 export default class DetailsFormWrapper extends Vue {
   disabled = true;
 
+  get issuePanel() {
+    return this.$store.state.details.issuePanel;
+  }
+
   toggleEditMode() {
     this.disabled = !this.disabled;
   }
