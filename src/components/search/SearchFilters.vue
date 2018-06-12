@@ -45,7 +45,7 @@ import SearchOption from './SearchOption.vue';
 import PillCheckbox from '../common/inputs/PillCheckbox.vue';
 import ExpandPanel from '../common/ExpandPanel.vue';
 import { Action } from 'vuex-class';
-import { namespace, searchActionTypes } from '@/store/modules/search/actions';
+import { searchActionTypes } from '@/store/modules/search/actions';
 
 @Component({
   components: {
@@ -57,8 +57,7 @@ import { namespace, searchActionTypes } from '@/store/modules/search/actions';
   }
 })
 export default class SearchFilters extends Vue {
-  @Action(searchActionTypes.UPDATE_FILTERS, { namespace })
-  updateFilters: any;
+  @Action(searchActionTypes.UPDATE_FILTERS) updateFilters: any;
 
   get filters() {
     return this.$store.state.search.filters;

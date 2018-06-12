@@ -7,7 +7,7 @@
                 <div>{{user && user.name}}</div>
                 <div>{{user && user.roles.join(', ')}}</div>
                 <div>
-                    <a href="/a">Log ud</a>
+                    <router-link to="/">Log ud</router-link>
                 </div>
             </div>
             <ProfileIcon class="profile-icon" />
@@ -26,7 +26,14 @@ import ProfileIcon from '../icons/ProfileIcon.vue';
   }
 })
 export default class NavBar extends Vue {
-  @Prop() user!: IUser;
+  get user() {
+    return (
+      this.$store.state.user || {
+        name: 'Julie',
+        roles: ['superbruger', 'Admin']
+      }
+    );
+  }
 }
 </script>
 

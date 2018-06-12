@@ -1,14 +1,21 @@
 <template>
     <div class="form-border">
-        <div class="validation-form">
+        <div class="validation-form" id="general-information">
             <div class="details-title">
                 Grundlæggende Oplysninger
                 <span @click="toggleEditMode()">
-                  <EditIcon :class="{disabled}" class="edit-button"></EditIcon>
+                    <EditIcon :class="{disabled}" class="edit-button"></EditIcon>
                 </span>
             </div>
             <GeneralInformationForm :disabled="disabled" />
         </div>
+
+        <div style="border: 1px solid black; height: 1500px; display: flex; align-items: center; justify-content: center; background: grey; font-size: 20rem" id="challenges">challenges</div>
+        <div style="border: 1px solid black; height: 1500px; display: flex; align-items: center; justify-content: center; background: grey; font-size: 20rem" id="process">process</div>
+        <div style="border: 1px solid black; height: 1500px; display: flex; align-items: center; justify-content: center; background: grey; font-size: 20rem" id="field">field</div>
+        <div style="border: 1px solid black; height: 1500px; display: flex; align-items: center; justify-content: center; background: grey; font-size: 20rem" id="spec">spec</div>
+        <div style="border: 1px solid black; height: 1500px; display: flex; align-items: center; justify-content: center; background: grey; font-size: 20rem" id="impl">impl</div>
+        <div style="border: 1px solid black; height: 1500px; display: flex; align-items: center; justify-content: center; background: grey; font-size: 20rem" id="drift">drift</div>
     </div>
 </template>
 
@@ -25,7 +32,6 @@ import EditIcon from '@/components/icons/EditIcon.vue';
   }
 })
 export default class DetailsFormWrapper extends Vue {
-
   disabled = true;
 
   toggleEditMode() {

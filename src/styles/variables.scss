@@ -15,3 +15,9 @@ $size-unit: 16px;
   font-weight: 900;
   letter-spacing: 0.04em;
 }
+
+@mixin light-heading() {
+  font-family: 'Lato', Arial, 'Helvetica Neue', Helvetica, sans-serif;
+  font-weight: 300;
+  letter-spacing: 0.04em;
+}
