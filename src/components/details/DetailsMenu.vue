@@ -79,6 +79,7 @@ export default class DetailsMenu extends Vue {
   font-size: 1.2rem;
   display: inline-flex;
   align-items: center;
+  text-decoration: none;
 
   svg {
     height: $size-unit;

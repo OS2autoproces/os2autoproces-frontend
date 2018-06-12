@@ -16,7 +16,9 @@
                     <SearchSorting v-if="result" />
 
                     <div class="results" v-if="result">
-                        <SearchResult class="search-result" :process="process" v-for="process in result.processes" :key="process.id" />
+                        <router-link :to="'/details/' + process.id" class="search-result-link" v-for="process in result.processes" :key="process.id">
+                            <SearchResult :process="process" />
+                        </router-link>
                     </div>
 
                     <SearchPagination v-if="result" :page="result.page" :pageTotal="result.numberOfPages" @change="updateFilters({ page: $event })" />
@@ -51,7 +53,6 @@ export default class Search extends Vue {
   // TODO: Search page
   // Sorting
   // Field, time and system filters
-  // Click process to go to details
   // Call backend
   // indberet button
   // Logout link
@@ -116,7 +117,13 @@ export default class Search extends Vue {
   }
 }
 
-.search-result:not(:last-of-type) {
-  margin-bottom: $size-unit;
+.search-result-link {
+  display: block;
+  text-decoration: inherit;
+  color: inherit;
+
+  &:not(:last-of-type) {
+    margin-bottom: $size-unit;
+  }
 }
 </style>
