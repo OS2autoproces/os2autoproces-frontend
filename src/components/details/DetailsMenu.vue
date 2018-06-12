@@ -44,7 +44,10 @@ export default class DetailsMenu extends Vue {
 
   private scrollTo(item: MenuItem) {
     const element = document.getElementById(item.id);
-    element && element.scrollIntoView(true);
+
+    if (element) {
+      element.scrollIntoView(true);
+    }
   }
 
   private update() {
