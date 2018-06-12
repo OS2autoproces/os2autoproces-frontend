@@ -84,7 +84,7 @@ export default class Search extends Vue {
 
   > div:first-of-type {
     flex: 0 0 300px;
-    border-right: 1px solid $color-grey;
+    border-right: 1px solid #e6e6e8;
   }
 
   > div:last-of-type {
