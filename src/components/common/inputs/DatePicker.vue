@@ -34,8 +34,8 @@ export default class DatePicker extends Vue {
 
     const [year, month, day] = date.split('-');
 
-    const parsedDate = DateTime.fromObject({ year: Number(year), month: Number(month), day: Number(day) });;
-
+    const parsedDate = DateTime.fromObject({ year: Number(year), month: Number(month), day: Number(day) });
+    
     this.valueChanged(parsedDate);
   }
 
