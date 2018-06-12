@@ -4,11 +4,11 @@ import { ActionTree, Commit } from 'vuex';
 import { searchMutationTypes } from '@/store/modules/search/mutations';
 import { debounce } from 'lodash';
 
-export const namespace = 'search';
+const namespace = 'search';
 
 export const searchActionTypes = {
-  UPDATE_FILTERS: 'updateFilters',
-  SEARCH: 'search'
+  UPDATE_FILTERS: `${namespace}/updateFilters`,
+  SEARCH: `${namespace}/search`
 };
 
 const debouncedSearch = debounce((filters: SearchFilters, commit: Commit) => {
@@ -16,9 +16,9 @@ const debouncedSearch = debounce((filters: SearchFilters, commit: Commit) => {
 }, 250);
 
 export const actions: ActionTree<SearchState, RootState> = {
-  updateFilters({ commit, dispatch, state }, filters: Partial<SearchFilters>) {
+  updateFilters({ commit, dispatch }, filters: Partial<SearchFilters>) {
     commit(searchMutationTypes.UPDATE_FILTERS, filters);
-    dispatch(searchActionTypes.SEARCH);
+    dispatch(searchActionTypes.SEARCH, {}, { root: true });
   },
   search({ commit, state }) {
     debouncedSearch(state.filters, commit);

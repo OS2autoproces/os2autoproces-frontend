@@ -37,7 +37,7 @@ import SearchResult from '../components/search/SearchResult.vue';
 import SearchSorting from '../components/search/SearchSorting.vue';
 import PlusIcon from '../components/icons/PlusIcon.vue';
 import { Action } from 'vuex-class';
-import { searchActionTypes, namespace } from '../store/modules/search/actions';
+import { searchActionTypes } from '../store/modules/search/actions';
 
 @Component({
   components: {
@@ -57,15 +57,14 @@ export default class Search extends Vue {
   // indberet button
   // Logout link
 
-  @Action(searchActionTypes.UPDATE_FILTERS, { namespace })
-  updateFilters: any;
+  @Action(searchActionTypes.UPDATE_FILTERS) updateFilters: any;
 
   get result() {
     return this.$store.state.search.result;
   }
 
   mounted() {
-    this.$store.dispatch(`${namespace}/search`);
+    this.$store.dispatch(searchActionTypes.SEARCH);
   }
 }
 </script>
