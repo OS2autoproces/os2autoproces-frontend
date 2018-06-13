@@ -34,7 +34,6 @@
                     </FormSection>
 
                     <FormSection :heading="menuItems[6].heading" :id="menuItems[6].id">
-
                     </FormSection>
                 </div>
 
@@ -59,6 +58,7 @@ import Comments from '../components/comments/Comments.vue';
 import IntervalSelector from '../components/common/inputs/IntervalSelector.vue';
 import FormSection from '@/components/details/FormSection.vue';
 import DetailsMenu from '@/components/details/DetailsMenu.vue';
+import ChallengesForm from '@/components/details/challenges/ChallengesForm.vue';
 
 @Component({
   components: {
@@ -66,7 +66,8 @@ import DetailsMenu from '@/components/details/DetailsMenu.vue';
     FormSection,
     DetailsMenu,
     Comments,
-    IntervalSelector
+    IntervalSelector,
+    ChallengesForm
   }
 })
 export default class Details extends Vue {
