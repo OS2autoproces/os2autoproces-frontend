@@ -5,7 +5,7 @@
         </router-link>
 
         <div class="menu-item" v-for="item in this.items" :key="item.id" :class="{ 'in-view': itemInView === item }" @click="scrollTo(item)">
-            {{item.title}} {{item.percentageVisible}}
+            {{item.heading}}
         </div>
     </div>
 </template>
@@ -15,7 +15,7 @@ import { Vue, Prop, Component } from 'vue-property-decorator';
 import ArrowLeftIcon from '@/components/icons/ArrowLeftIcon.vue';
 
 export interface MenuItem {
-  title: string;
+  heading: string;
   id: string;
 }
 
