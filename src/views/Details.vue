@@ -50,7 +50,6 @@
                     <Comments />
                 </div>
             </div>
-
         </div>
     </div>
 </template>
