@@ -9,8 +9,9 @@
             <div>
                 <div class="results-wrapper">
                     <div class="report">
-                        <button>
-                            <PlusIcon/> Indberet</button>
+                        <router-link to="/report">
+                            <PlusIcon/> Indberet
+                        </router-link>
                     </div>
 
                     <SearchSorting v-if="result" />
@@ -54,7 +55,6 @@ export default class Search extends Vue {
   // Sorting
   // Field, time and system filters
   // Call backend
-  // indberet button
   // Logout link
 
   @Action(searchActionTypes.UPDATE_FILTERS) updateFilters: any;
@@ -99,13 +99,14 @@ export default class Search extends Vue {
 .report {
   padding-top: 3 * $size-unit;
   padding-bottom: $size-unit;
+  text-align: right;
 
-  button {
+  a {
     @include heading;
     color: $color-secondary;
+    text-decoration: none;
     font-size: 1.66rem;
-    margin-left: auto;
-    display: flex;
+    display: inline-flex;
     align-items: center;
   }
 
