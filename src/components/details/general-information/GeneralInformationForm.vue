@@ -129,7 +129,7 @@ export default class GeneralInformationForm extends Vue {
     width: 25%;
 
     padding: 0 $size-unit/2;
-    
+
     .labels {
       width: 50%;
       > div {
