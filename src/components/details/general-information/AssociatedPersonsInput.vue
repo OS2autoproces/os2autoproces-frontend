@@ -13,7 +13,7 @@
     </div>
     <div class="add-person" v-if="!disabled">
       <div class="associated-label">Tilknyt person</div>
-      <SelectionField :value="getAssociatedPersons" @change="addPerson" :items="people" iconName="search" />
+      <SelectionField @change="addPerson" :items="people" iconName="search" />
     </div>
     <div class="associated-list-readonly" v-if="disabled">
       <div class="associated-label">Tilknyttede personer:</div>
