@@ -1,56 +1,56 @@
 <template>
-    <div class="details">
-        <NavBar />
+  <div class="details">
+    <NavBar />
 
-        <div class="page">
-            <div class="details-menu">
-                <DetailsMenu :items="menuItems" />
-            </div>
+    <div class="page">
+      <div class="details-menu">
+        <DetailsMenu :items="menuItems" />
+      </div>
 
-            <div class="details-wrapper">
-                <div class="form-sections">
-                    <FormSection :heading="menuItems[0].heading" :id="menuItems[0].id" :disabled="!editGeneralInformation" always-open @edit="editGeneralInformation = !editGeneralInformation">
-                        <GeneralInformationForm :disabled="!editGeneralInformation" />
-                    </FormSection>
+      <div class="details-wrapper">
+        <div class="form-sections">
+          <FormSection :heading="menuItems[0].heading" :id="menuItems[0].id" :disabled="!editGeneralInformation" always-open @edit="editGeneralInformation = !editGeneralInformation">
+            <GeneralInformationForm :disabled="!editGeneralInformation" />
+          </FormSection>
 
-                    <FormSection :heading="menuItems[1].heading" :id="menuItems[1].id">
+          <FormSection :heading="menuItems[1].heading" :id="menuItems[1].id">
 
-                    </FormSection>
+          </FormSection>
 
-                    <FormSection :heading="menuItems[2].heading" :id="menuItems[2].id">
+          <FormSection :heading="menuItems[2].heading" :id="menuItems[2].id">
+          </FormSection>
 
-                    </FormSection>
+          <FormSection :heading="menuItems[3].heading" :id="menuItems[3].id">
 
-                    <FormSection :heading="menuItems[3].heading" :id="menuItems[3].id">
+          </FormSection>
 
-                    </FormSection>
+          <FormSection :heading="menuItems[4].heading" :id="menuItems[4].id">
 
-                    <FormSection :heading="menuItems[4].heading" :id="menuItems[4].id">
+          </FormSection>
 
-                    </FormSection>
+          <FormSection :heading="menuItems[5].heading" :id="menuItems[5].id">
 
-                    <FormSection :heading="menuItems[5].heading" :id="menuItems[5].id">
+          </FormSection>
 
-                    </FormSection>
+          <FormSection :heading="menuItems[6].heading" :id="menuItems[6].id">
 
-                    <FormSection :heading="menuItems[6].heading" :id="menuItems[6].id">
-
-                    </FormSection>
-                </div>
-
-                <div class="usage">
-                    <div class="usage-heading">Antal kommuner der bruger løsningen</div>
-                    <IntervalSelector value="10 +" disabled />
-                </div>
-
-                <div class="comments">
-                    <div class="comments-heading">Kommentarer</div>
-                    <Comments />
-                </div>
-            </div>
-
+          </FormSection>
         </div>
+
+        <div class="usage">
+          <div class="usage-heading">Antal kommuner der bruger løsningen</div>
+          <IntervalSelector value="10 +" disabled />
+        </div>
+
+        <div class="comments">
+          <div class="comments-heading">Kommentarer</div>
+          <Comments />
+        </div>
+      <TimeAndProcess />
+      </div>
+
     </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -60,6 +60,7 @@ import Comments from '../components/comments/Comments.vue';
 import IntervalSelector from '../components/common/inputs/IntervalSelector.vue';
 import FormSection from '@/components/details/FormSection.vue';
 import DetailsMenu from '@/components/details/DetailsMenu.vue';
+import TimeAndProcess from '@/components/details/time-process/TimeAndProcess.vue';
 
 @Component({
   components: {
@@ -67,7 +68,8 @@ import DetailsMenu from '@/components/details/DetailsMenu.vue';
     FormSection,
     DetailsMenu,
     Comments,
-    IntervalSelector
+    IntervalSelector,
+    TimeAndProcess
   }
 })
 export default class Details extends Vue {
