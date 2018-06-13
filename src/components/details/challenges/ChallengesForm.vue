@@ -2,19 +2,19 @@
   <div class="challenges">
     <div class="challenges-unit">
       <h2>Beskrivelse</h2>
-      <TextArea :twoColumns="challenges.description.length > 1600" @change="updatechallenges({description: $event})" :disabled="disabled" :value="challenges.description" />
+      <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="updatechallenges({description: $event})" :disabled="disabled" :value="challenges.description" />
     </div>
     <div class="challenges-unit">
       <h2>Idéer og løsning</h2>
-      <TextArea :twoColumns="challenges.ideasSolution.length > 1600" @change="updatechallenges({ideasSolution: $event})" :disabled="disabled" :value="challenges.ideasSolution" />
+      <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="updatechallenges({ideasSolution: $event})" :disabled="disabled" :value="challenges.ideasSolution" />
     </div>
     <div class="challenges-unit">
       <h2>Nuværende process</h2>
-      <TextArea :twoColumns="challenges.currentProcess.length > 1600" @change="updatechallenges({currentProcess: $event})" :disabled="disabled" :value="challenges.currentProcess" />
+      <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="updatechallenges({currentProcess: $event})" :disabled="disabled" :value="challenges.currentProcess" />
     </div>
     <div class="challenges-unit">
       <h2>Udfordringer ved nuværende process</h2>
-      <TextArea :twoColumns="challenges.challenges.length > 1600" @change="updatechallenges({challenges: $event})" :disabled="disabled" :value="challenges.challenges" />
+      <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="updatechallenges({challenges: $event})" :disabled="disabled" :value="challenges.challenges" />
       <Well>
         <div class="section-col">
           <div class="labels">
@@ -71,6 +71,7 @@ export default class ChallengesForm extends Vue {
   @Action(ChallengesActionTypes.UPDATE_CHALLENGES) updatechallenges: any;
   @Prop({ default: true })
   disabled!: boolean;
+  twoColumnBreakpoint = 1600;
 
   get challenges() {
     return this.$store.state.details.challenges;

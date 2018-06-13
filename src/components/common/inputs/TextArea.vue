@@ -7,7 +7,7 @@
                 <slot />
             </div>
         </div>
-        <div :class="{'double-column': twoColumns}" v-if="disabled">{{value}}</div>
+        <div :class="{'double-column': value.length > twoColumnBreakpoint}" v-if="disabled">{{value}}</div>
     </div>
 </template>
 
@@ -21,7 +21,7 @@ export default class TextArea extends Vue {
   @Prop() disabled!: boolean;
   @Prop() placeholder!: string;
   @Prop() noResize!: boolean;
-  @Prop() twoColumns!: boolean;
+  @Prop() twoColumnBreakpoint!: number;
 
   currentLength = 0;
 
