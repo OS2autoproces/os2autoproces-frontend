@@ -115,6 +115,7 @@ export default class ChallengesForm extends Vue {
 
   .section-col {
     display: flex;
+    align-items: baseline;
     .labels {
       width: 50%;
       > div {
