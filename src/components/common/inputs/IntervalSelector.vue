@@ -37,7 +37,7 @@ export default class Button extends Vue {
 @import '@/styles/variables.scss';
 
 .wrapper {
-  display: flex;
+  display: inline-flex;
   align-items: center;
 
   &:not(.disabled) {
