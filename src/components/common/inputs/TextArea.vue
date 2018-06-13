@@ -1,11 +1,14 @@
 <template>
-  <div>
-    <div class="text-area" v-if="!disabled">
-      <textarea v-model="value" @input="valueChanged" />
-      <span v-if="maxLength">({{currentLength}} ud af {{maxLength}} tegn)</span>
+    <div>
+        <div class="text-area" v-if="!disabled">
+            <textarea v-model="value" @input="valueChanged" :placeholder="placeholder" :class="{ 'no-resize': noResize }" />
+            <div class="text-area-overlay">
+                <div v-if="maxLength" class="max-length-label">({{currentLength}} ud af {{maxLength}} tegn)</div>
+                <slot />
+            </div>
+        </div>
+        <div v-if="disabled">{{value}}</div>
     </div>
-    <div v-if="disabled">{{value}}</div>
-  </div>
 </template>
 
 <script lang='ts'>
@@ -16,6 +19,9 @@ export default class TextArea extends Vue {
   @Prop() value!: string;
   @Prop() maxLength!: number;
   @Prop() disabled!: boolean;
+  @Prop() placeholder!: string;
+  @Prop() noResize!: boolean;
+
   currentLength = 0;
 
   valueChanged(event: any) {
@@ -31,10 +37,17 @@ export default class TextArea extends Vue {
 .text-area {
   position: relative;
 
-  span {
+  .text-area-overlay {
+    display: inline-block;
     position: absolute;
     right: 10px;
     bottom: 10px;
+
+    text-align: right;
+  }
+
+  .max-length-label {
+    padding-bottom: $size-unit/2;
   }
 }
 
@@ -43,7 +56,11 @@ textarea {
   border-radius: 10px;
   padding: 10px;
   width: 100%;
-}
+  background: $color-background;
 
+  &.no-resize {
+    resize: none;
+  }
+}
 </style>
 
