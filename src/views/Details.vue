@@ -6,21 +6,8 @@
       <div class="details-menu">
         <DetailsMenu :items="menuItems" />
       </div>
-
       <DetailsFormWrapper />
     </div>
-    <GreyInputBox>
-      <template slot="item-labels">
-        <div v-for="(label, index) in labels" :key="index">
-          {{label}}
-        </div>
-      </template>
-      <template slot="item-input">
-        <div v-for="label in labels" :key="label">
-          {{label}}
-        </div>
-      </template>
-    </GreyInputBox>
   </div>
 </template>
 
@@ -48,15 +35,6 @@ export default class Details extends Vue {
     { title: 'Specifikation', id: 'spec' },
     { title: 'Udvikling og implementering', id: 'impl' },
     { title: 'Drift', id: 'drift' }
-  ];
-
-  labels = [
-    'KLE Nr',
-    'Lov og Paragraf',
-    'Lov og Paragraf1',
-    'Lov og Paragraf2',
-    'Lov og Paragraf3',
-    'Lov og Paragraf4',
   ];
 }
 </script>
