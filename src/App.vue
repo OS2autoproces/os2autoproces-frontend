@@ -36,6 +36,10 @@ body {
   min-height: 100vh;
 }
 
+.flex-grow {
+  flex-grow: 1;
+}
+
 #app {
   .application.theme--light {
     background: $color-background;

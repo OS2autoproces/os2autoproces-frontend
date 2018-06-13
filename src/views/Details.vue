@@ -8,6 +8,8 @@
             </div>
 
             <div class="details-wrapper">
+                <DetailsHeader />
+
                 <div class="form-sections">
                     <FormSection :heading="menuItems[0].heading" :id="menuItems[0].id" :disabled="!editGeneralInformation" always-open @edit="editGeneralInformation = !editGeneralInformation">
                         <GeneralInformationForm :disabled="!editGeneralInformation" />
@@ -57,12 +59,16 @@ import Comments from '../components/comments/Comments.vue';
 import IntervalSelector from '../components/common/inputs/IntervalSelector.vue';
 import FormSection from '@/components/details/FormSection.vue';
 import DetailsMenu from '@/components/details/DetailsMenu.vue';
+import DetailsHeader from '@/components/details/DetailsHeader.vue';
+import GeneralInformationForm from '@/components/details/general-information/GeneralInformationForm.vue';
 
 @Component({
   components: {
     NavBar,
     FormSection,
     DetailsMenu,
+    DetailsHeader,
+    GeneralInformationForm,
     Comments,
     IntervalSelector,
   }
@@ -74,10 +80,10 @@ export default class Details extends Vue {
     { heading: 'Grundlæggende oplysninger', id: 'general-information' },
     { heading: 'Problemstillinger', id: 'challenges' },
     { heading: 'Tids og proces foretagen', id: 'process' },
-    { heading: 'Faglig vurdering', id: 'field' },
-    { heading: 'Specifikation', id: 'spec' },
-    { heading: 'Udvikling og implementering', id: 'impl' },
-    { heading: 'Drift', id: 'drift' }
+    { heading: 'Faglig vurdering', id: 'assessment' },
+    { heading: 'Specifikation', id: 'specification' },
+    { heading: 'Udvikling og implementering', id: 'implementation' },
+    { heading: 'Drift', id: 'operation' }
   ];
 }
 </script>
@@ -109,6 +115,7 @@ export default class Details extends Vue {
 .form-sections {
   border: 1px solid $color-secondary;
   border-radius: $size-unit;
+  margin-top: 2 * $size-unit;
 
   > *:not(:last-of-type) {
     border-bottom: 1px solid $color-secondary;

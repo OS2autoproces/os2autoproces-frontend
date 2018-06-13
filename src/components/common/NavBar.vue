@@ -1,7 +1,7 @@
 <template>
     <div class="navbar">
         <div class="logo">AutoProces</div>
-        <div class="fill"></div>
+        <div class="flex-grow"></div>
         <div class="user-info">
             <div class="user">
                 <div>{{user && user.name}}</div>
@@ -46,10 +46,6 @@ export default class NavBar extends Vue {
   background-color: $color-secondary;
   height: 5 * $size-unit;
   padding: $size-unit;
-}
-
-.fill {
-  flex-grow: 1;
 }
 
 .logo {
