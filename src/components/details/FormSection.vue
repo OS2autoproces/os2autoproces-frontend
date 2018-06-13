@@ -15,8 +15,8 @@
                 </div>
             </div>
         </div>
-        <div class="section-content " v-if="alwaysOpen || expanded">
-
+        <div class="section-content" v-if="alwaysOpen || expanded">
+            <slot />
         </div>
     </div>
 </template>
@@ -80,5 +80,10 @@ export default class FormSection extends Vue {
       height: 20px;
     }
   }
+}
+
+.section-content {
+  padding: $size-unit;
+  padding-top: 0;
 }
 </style>

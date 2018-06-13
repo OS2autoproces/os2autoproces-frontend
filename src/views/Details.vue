@@ -62,6 +62,7 @@ import IntervalSelector from '../components/common/inputs/IntervalSelector.vue';
 import FormSection from '@/components/details/FormSection.vue';
 import DetailsMenu from '@/components/details/DetailsMenu.vue';
 import DetailsHeader from '@/components/details/DetailsHeader.vue';
+import GeneralInformationForm from '@/components/details/general-information/GeneralInformationForm.vue';
 
 @Component({
   components: {
@@ -69,6 +70,7 @@ import DetailsHeader from '@/components/details/DetailsHeader.vue';
     FormSection,
     DetailsMenu,
     DetailsHeader,
+    GeneralInformationForm,
     Comments,
     IntervalSelector
   }
