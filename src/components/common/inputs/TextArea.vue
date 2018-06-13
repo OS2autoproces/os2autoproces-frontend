@@ -7,7 +7,7 @@
                 <slot />
             </div>
         </div>
-        <div v-if="disabled">{{value}}</div>
+        <div :class="{'double-column': twoColumns}" v-if="disabled">{{value}}</div>
     </div>
 </template>
 
@@ -21,6 +21,7 @@ export default class TextArea extends Vue {
   @Prop() disabled!: boolean;
   @Prop() placeholder!: string;
   @Prop() noResize!: boolean;
+  @Prop() twoColumns!: boolean;
 
   currentLength = 0;
 
@@ -61,6 +62,12 @@ textarea {
   &.no-resize {
     resize: none;
   }
+}
+
+.double-column {
+  width: 100%;
+  column-count: 2;
+  column-gap: 5rem;
 }
 </style>
 

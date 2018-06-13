@@ -2,31 +2,19 @@
   <div class="challenges">
     <div class="challenges-unit">
       <h2>Beskrivelse</h2>
-      <TextArea v-if="!disabled" @change="updatechallenges({description: $event})" :disabled="disabled" :value="challenges.description" />
-      <div v-if="disabled" :class="{'double-column': challenges.description.length > 1600 }" class="challenges-description">
-        {{challenges.description}}
-      </div>
+      <TextArea :twoColumns="challenges.description.length > 1600" v-if="!disabled" @change="updatechallenges({description: $event})" :disabled="disabled" :value="challenges.description" />
     </div>
     <div class="challenges-unit">
       <h2>Idéer og løsning</h2>
-      <TextArea v-if="!disabled" @change="updatechallenges({ideasSolution: $event})" :disabled="disabled" :value="challenges.ideasSolution" />
-      <div v-if="disabled" :class="{'double-column': challenges.ideasSolution.length > 1600 }" class="challenges-description">
-        {{challenges.ideasSolution}}
-      </div>
+      <TextArea :twoColumns="challenges.ideasSolution.length > 1600" v-if="!disabled" @change="updatechallenges({ideasSolution: $event})" :disabled="disabled" :value="challenges.ideasSolution" />
     </div>
     <div class="challenges-unit">
       <h2>Nuværende process</h2>
-      <TextArea v-if="!disabled" @change="updatechallenges({currentProcess: $event})" :disabled="disabled" :value="challenges.currentProcess" />
-      <div v-if="disabled" :class="{'double-column': challenges.currentProcess.length > 1600 }" class="challenges-description">
-        {{challenges.currentProcess}}
-      </div>
+      <TextArea :twoColumns="challenges.currentProcess.length > 1600" v-if="!disabled" @change="updatechallenges({currentProcess: $event})" :disabled="disabled" :value="challenges.currentProcess" />
     </div>
     <div class="challenges-unit">
       <h2>Udfordringer ved nuværende process</h2>
-      <TextArea v-if="!disabled" @change="updatechallenges({challenges: $event})" :disabled="disabled" :value="challenges.challenges" />
-      <div v-if="disabled" :class="{'double-column': challenges.challenges.length > 1600 }" class="challenges-description">
-        {{challenges.challenges}}
-      </div>
+      <TextArea :twoColumns="challenges.challenges.length > 1600" v-if="!disabled" @change="updatechallenges({challenges: $event})" :disabled="disabled" :value="challenges.challenges" />
       <Well>
         <div class="section-col">
           <div class="labels">
@@ -100,11 +88,11 @@ export default class ChallengesForm extends Vue {
   .challenges-unit {
     .challenges-description {
       width: 40%;
-      &.double-column {
-        width: 100%;
-        column-count: 2;
-        column-gap: 5rem;
-      }
+      // &.double-column {
+      //   width: 100%;
+      //   column-count: 2;
+      //   column-gap: 5rem;
+      // }
     }
     h2 {
       @include heading;
