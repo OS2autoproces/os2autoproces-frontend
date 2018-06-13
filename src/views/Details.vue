@@ -8,6 +8,8 @@
             </div>
 
             <div class="details-wrapper">
+                <DetailsHeader />
+
                 <div class="form-sections">
                     <FormSection :heading="menuItems[0].heading" :id="menuItems[0].id" :disabled="!editGeneralInformation" always-open @edit="editGeneralInformation = !editGeneralInformation">
                         <GeneralInformationForm :disabled="!editGeneralInformation" />
@@ -60,12 +62,14 @@ import Comments from '../components/comments/Comments.vue';
 import IntervalSelector from '../components/common/inputs/IntervalSelector.vue';
 import FormSection from '@/components/details/FormSection.vue';
 import DetailsMenu from '@/components/details/DetailsMenu.vue';
+import DetailsHeader from '@/components/details/DetailsHeader.vue';
 
 @Component({
   components: {
     NavBar,
     FormSection,
     DetailsMenu,
+    DetailsHeader,
     Comments,
     IntervalSelector
   }
@@ -112,6 +116,7 @@ export default class Details extends Vue {
 .form-sections {
   border: 1px solid $color-secondary;
   border-radius: $size-unit;
+  margin-top: 2 * $size-unit;
 
   > *:not(:last-of-type) {
     border-bottom: 1px solid $color-secondary;
