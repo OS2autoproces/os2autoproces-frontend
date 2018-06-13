@@ -80,10 +80,10 @@ export default class Details extends Vue {
     { heading: 'Grundlæggende oplysninger', id: 'general-information' },
     { heading: 'Problemstillinger', id: 'challenges' },
     { heading: 'Tids og proces foretagen', id: 'process' },
-    { heading: 'Faglig vurdering', id: 'field' },
-    { heading: 'Specifikation', id: 'spec' },
-    { heading: 'Udvikling og implementering', id: 'impl' },
-    { heading: 'Drift', id: 'drift' }
+    { heading: 'Faglig vurdering', id: 'assessment' },
+    { heading: 'Specifikation', id: 'specification' },
+    { heading: 'Udvikling og implementering', id: 'implementation' },
+    { heading: 'Drift', id: 'operation' }
   ];
 }
 </script>
