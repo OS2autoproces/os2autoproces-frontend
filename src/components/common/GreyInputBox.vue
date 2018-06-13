@@ -1,17 +1,15 @@
 <template>
-    <div class="grey-area-container">
-        <div class="section-wrap">
-            <slot></slot>
-        </div>
+  <div class="grey-area-container">
+    <div class="section-wrap">
+      <slot />
     </div>
+  </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 
-@Component({
-  components: {}
-})
+@Component
 export default class GeneralInformationForm extends Vue {}
 </script>
 
@@ -21,26 +19,28 @@ export default class GeneralInformationForm extends Vue {}
 .grey-area-container {
   display: flex;
   background-color: $color-background-grey;
-  padding: $size-unit * 2;
-  margin: $size-unit;
+  padding: $size-unit;
   border-radius: $size-unit;
 
   .section-wrap {
     display: flex;
-    flex: 1 1 1px;
+    flex-grow: 1;
 
     > * {
-        &:not(:last-of-type) {
-          border-right: 1px solid $color-background;
-        }
-    
-        &:last-of-type {
-          padding-right: 0;
-        }
-    
-        &:first-of-type {
-          padding-left: 0;
-        }
+      flex: 1 1 1px;
+      padding: 0 $size-unit/2;
+
+      &:not(:last-of-type) {
+        border-right: 1px solid $color-background;
+      }
+
+      &:last-of-type {
+        padding-right: 0;
+      }
+
+      &:first-of-type {
+        padding-left: 0;
+      }
     }
   }
 }

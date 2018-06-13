@@ -126,10 +126,7 @@ export default class GeneralInformationForm extends Vue {
 
   .section-col {
     display: flex;
-    width: 25%;
-
-    padding: 0 $size-unit/2;
-
+    
     .labels {
       width: 50%;
       > div {
