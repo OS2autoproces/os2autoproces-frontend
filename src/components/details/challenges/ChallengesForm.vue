@@ -22,7 +22,7 @@
       </div>
     </div>
     <div class="challenges-unit">
-      <h2>Udfordringer ved nuværende proces</h2>
+      <h2>Udfordringer ved nuværende process</h2>
       <TextArea v-if="!disabled" @change="updatechallenges({challenges: $event})" :disabled="disabled" :value="challenges.challenges" />
       <div v-if="disabled" :class="{'double-column': challenges.challenges.length > 1600 }" class="challenges-description">
         {{challenges.challenges}}
@@ -33,7 +33,7 @@
             Nuværende system:
           </div>
           <div class="fields">
-            <SelectionField :items="processItems" :value="challenges.currentProcessTitle" :disabled="false" @change="updatechallenges({currentProcesTitle: $event})" />
+            <SelectionField :items="processItems" :value="challenges.currentProcessTitle" :disabled="false" @change="updatechallenges({currentProcessTitle: $event})" />
           </div>
         </div>
         <div>
