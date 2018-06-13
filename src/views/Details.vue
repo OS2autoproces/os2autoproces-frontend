@@ -61,6 +61,7 @@ import FormSection from '@/components/details/FormSection.vue';
 import DetailsMenu from '@/components/details/DetailsMenu.vue';
 import DetailsHeader from '@/components/details/DetailsHeader.vue';
 import GeneralInformationForm from '@/components/details/general-information/GeneralInformationForm.vue';
+import ChallengesForm from '@/components/details/challenges/ChallengesForm.vue';
 
 @Component({
   components: {
@@ -71,6 +72,7 @@ import GeneralInformationForm from '@/components/details/general-information/Gen
     GeneralInformationForm,
     Comments,
     IntervalSelector,
+    ChallengesForm,
   }
 })
 export default class Details extends Vue {
