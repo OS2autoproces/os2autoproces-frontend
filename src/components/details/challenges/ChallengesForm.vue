@@ -15,8 +15,8 @@
       </div>
     </div>
     <div class="challenges-unit">
-      <h2>Nuværende proces</h2>
-      <TextArea v-if="!disabled" @change="updatechallenges({currentProces: $event})" :disabled="disabled" :value="challenges.currentProces" />
+      <h2>Nuværende process</h2>
+      <TextArea v-if="!disabled" @change="updatechallenges({currentProcess: $event})" :disabled="disabled" :value="challenges.currentProcess" />
       <div v-if="disabled" :class="{'double-column': challenges.currentProcess.length > 1600 }" class="challenges-description">
         {{challenges.currentProcess}}
       </div>
