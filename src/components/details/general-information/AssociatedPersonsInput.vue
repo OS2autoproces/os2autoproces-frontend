@@ -1,10 +1,9 @@
 <template>
-  <!-- Todo: Should we hide the associated person, or should they be shown when in readonly mode (disabled) -->
-  <div class="associated" v-if="!disabled">
-    <div class="associated-list">
+  <div class="associated">
+    <div class="associated-list" v-if="!disabled">
       <div class="associated-label">Tilknyttede personer:</div>
       <div class="associated-persons-list">
-        <div v-for="person in associatedPeople" :key="person">
+        <div v-for="(person, index) in associatedPeople" :key="index">
           {{person}}
           <span @click="removePerson(person)" class="delete-icon">
             <DeleteIcon />
@@ -12,9 +11,13 @@
         </div>
       </div>
     </div>
-    <div class="add-person">
+    <div class="add-person" v-if="!disabled">
       <div class="associated-label">Tilknyt person</div>
       <SelectionField :value="getAssociatedPersons" @change="addPerson" :items="people" iconName="search" />
+    </div>
+    <div class="associated-list-readonly" v-if="disabled">
+      <div class="associated-label">Tilknyttede personer:</div>
+      {{ this.associatedPersonsDisabled }}
     </div>
   </div>
 </template>
@@ -58,7 +61,11 @@ export default class AssociatedPersonsInput extends Vue {
   }
 
   get getAssociatedPersons() {
-    return this.$store.state.associatedPersons;
+    return this.$store.state.details.generalInformation.associatedPersons;
+  }
+
+  get associatedPersonsDisabled() {
+    return this.$store.state.details.generalInformation.associatedPersons.join(', ');
   }
 }
 </script>
