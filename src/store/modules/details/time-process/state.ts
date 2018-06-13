@@ -1,7 +1,7 @@
 export interface TimeAndProcess {
     processRepetition: string;
-    procesTimeConsumptionMinutes: string;
-    procesTimeSavingMinutes: string;
+    processTimeConsumptionMinutes: string;
+    processTimeSavingMinutes: string;
     coWorkersUsingTheProcess: string;
     totalTimeConsumption: string;
     isUserAffected: string;

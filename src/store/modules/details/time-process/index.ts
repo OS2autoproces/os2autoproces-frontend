@@ -11,8 +11,8 @@ const state: TimeAndProcess = {
     isCorporationAffected: '',
     isUserAffected: '',
     processRepetition: '',
-    procesTimeConsumptionMinutes: '',
-    procesTimeSavingMinutes: '',
+    processTimeConsumptionMinutes: '',
+    processTimeSavingMinutes: '',
     timeConsumptionComments: '',
     totalTimeConsumption: ''
 }
