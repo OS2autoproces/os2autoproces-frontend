@@ -1,11 +1,11 @@
 <template>
     <div class="details-header">
         <div class="row">
-            <InputField class="name disabled" value="Rekruttering" disabled />
-            <div class="edit-button" role="button">
+            <InputField class="name" :value="name" :disabled="!editName" :class="{ disabled: !editName }" />
+            <div class="edit-button" role="button" @click="editName = !editName" :class="{ editing: editName }">
                 <EditIcon />
             </div>
-            <div class="favorite-icon" role="button" @click="favorite = !favorite">
+            <div class="favorite-button" role="button" @click="favorite = !favorite">
                 <StarIcon :class="{ selected: favorite }" />
             </div>
 
@@ -13,8 +13,8 @@
             <img src="https://www.syddjurs.dk/sites/all/themes/custom/site/dist/img/logo.png" alt="Kommune logo">
         </div>
         <div class="row">
-            <Button class="button">Slet proces</Button>
-            <Button class="button">Kopier proces</Button>
+            <Button class="button" @click="deleteProces">Slet proces</Button>
+            <Button class="button" @click="copyProces">Kopier proces</Button>
             <div class="flex-grow"></div>
             <Toggle :value="notification" @change="notification = $event">Mail notifikation</Toggle>
         </div>
@@ -39,8 +39,19 @@ import Toggle from '@/components/common/inputs/Toggle.vue';
   }
 })
 export default class DetailsMenu extends Vue {
+  // TODO: Bind these to the store
   favorite = true;
   notification = true;
+  editName = false;
+  name = 'Rekruttering';
+
+  deleteProces() {
+    // TODO: Show confirmation
+  }
+
+  copyProces() {
+    // TODO: copy proces
+  }
 }
 </script>
 
@@ -62,7 +73,17 @@ export default class DetailsMenu extends Vue {
   color: $color-secondary;
 }
 
-.favorite-icon {
+.edit-button {
+  height: $size-unit;
+  width: $size-unit;
+  margin-left: $size-unit / 2;
+
+  &.editing /deep/ path {
+    fill: $color-primary;
+  }
+}
+
+.favorite-button {
   height: 2 * $size-unit;
   width: 2 * $size-unit;
   margin-left: 50px;
