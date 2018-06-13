@@ -3,7 +3,7 @@ import { Module } from 'vuex';
 import { RootState } from '@/store/store';
 import { generalInformation } from '@/store/modules/details/general-information';
 import { actions } from '@/store/modules/details/actions';
-import { issuePanel } from '@/store/modules/details/issue-panel';
+import { challenges } from '@/store/modules/details/challenges';
 
 const namespaced = true;
 
@@ -16,6 +16,6 @@ export const details: Module<DetailsState, RootState> = {
     actions,
     modules: {
         generalInformation,
-        issuePanel
+        challenges
     }
 }
