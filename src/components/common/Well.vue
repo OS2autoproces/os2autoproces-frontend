@@ -3,6 +3,7 @@
     <div class="section-wrap">
       <slot />
     </div>
+    <slot name="well-footer"/>
   </div>
 </template>
 

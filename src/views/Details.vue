@@ -16,14 +16,14 @@ import { Vue, Component } from 'vue-property-decorator';
 import NavBar from '../components/common/NavBar.vue';
 import DetailsFormWrapper from '@/components/details/DetailsFormWrapper.vue';
 import DetailsMenu from '@/components/details/DetailsMenu.vue';
-import GreyInputBox from '@/components/common/GreyInputBox.vue';
+import Well from '@/components/common/Well.vue';
 
 @Component({
   components: {
     NavBar,
     DetailsFormWrapper,
     DetailsMenu,
-    GreyInputBox
+    Well
   }
 })
 export default class Details extends Vue {

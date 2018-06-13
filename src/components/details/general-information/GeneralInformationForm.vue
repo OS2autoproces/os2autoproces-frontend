@@ -1,7 +1,7 @@
 <template>
   <div class="overall-wrap">
     <div class="general-information-wrapper">
-      <GreyInputBox>
+      <Well>
         <div class="section-col">
           <div class="labels">
             <div>KLE-nr:</div>
@@ -46,8 +46,9 @@
             <InputField :disabled="disabled" :value="generalInformation.projectManager" @change="updateGeneralInformation({projectManager: $event})" />
           </div>
         </div>
-      </GreyInputBox>
-      <AssociatedPersonsInput :disabled="disabled" />
+        
+      </Well>
+      <AssociatedPersonsInput slot="well-footer" :disabled="disabled" />
     </div>
 
     <div class="resume-phases">
@@ -77,7 +78,7 @@ import SelectionField from '@/components/common/inputs/SelectionField.vue';
 import TextArea from '@/components/common/inputs/TextArea.vue';
 import Phases from '@/components/common/inputs/Phases.vue';
 import AssociatedPersonsInput from '@/components/details/general-information/AssociatedPersonsInput.vue';
-import GreyInputBox from '@/components/common/GreyInputBox.vue';
+import Well from '@/components/common/Well.vue';
 
 @Component({
   components: {
@@ -86,7 +87,7 @@ import GreyInputBox from '@/components/common/GreyInputBox.vue';
     TextArea,
     Phases,
     AssociatedPersonsInput,
-    GreyInputBox
+    Well
   }
 })
 export default class GeneralInformationForm extends Vue {
