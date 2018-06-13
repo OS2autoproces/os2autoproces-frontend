@@ -46,9 +46,8 @@
             <InputField :disabled="disabled" :value="generalInformation.projectManager" @change="updateGeneralInformation({projectManager: $event})" />
           </div>
         </div>
-        
+        <AssociatedPersonsInput slot="well-footer" :disabled="disabled" />
       </Well>
-      <AssociatedPersonsInput slot="well-footer" :disabled="disabled" />
     </div>
 
     <div class="resume-phases">

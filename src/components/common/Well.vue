@@ -19,6 +19,7 @@ export default class GeneralInformationForm extends Vue {}
 
 .grey-area-container {
   display: flex;
+  flex-direction: column;
   background-color: $color-background-grey;
   padding: $size-unit;
   border-radius: $size-unit;
