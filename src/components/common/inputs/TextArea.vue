@@ -63,7 +63,6 @@ textarea {
     resize: none;
   }
 }
-
 .double-column {
   width: 100%;
   column-count: 2;

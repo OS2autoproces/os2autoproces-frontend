@@ -2,19 +2,19 @@
   <div class="challenges">
     <div class="challenges-unit">
       <h2>Beskrivelse</h2>
-      <TextArea :twoColumns="challenges.description.length > 1600" v-if="!disabled" @change="updatechallenges({description: $event})" :disabled="disabled" :value="challenges.description" />
+      <TextArea :twoColumns="challenges.description.length > 1600" @change="updatechallenges({description: $event})" :disabled="disabled" :value="challenges.description" />
     </div>
     <div class="challenges-unit">
       <h2>Idéer og løsning</h2>
-      <TextArea :twoColumns="challenges.ideasSolution.length > 1600" v-if="!disabled" @change="updatechallenges({ideasSolution: $event})" :disabled="disabled" :value="challenges.ideasSolution" />
+      <TextArea :twoColumns="challenges.ideasSolution.length > 1600" @change="updatechallenges({ideasSolution: $event})" :disabled="disabled" :value="challenges.ideasSolution" />
     </div>
     <div class="challenges-unit">
       <h2>Nuværende process</h2>
-      <TextArea :twoColumns="challenges.currentProcess.length > 1600" v-if="!disabled" @change="updatechallenges({currentProcess: $event})" :disabled="disabled" :value="challenges.currentProcess" />
+      <TextArea :twoColumns="challenges.currentProcess.length > 1600" @change="updatechallenges({currentProcess: $event})" :disabled="disabled" :value="challenges.currentProcess" />
     </div>
     <div class="challenges-unit">
       <h2>Udfordringer ved nuværende process</h2>
-      <TextArea :twoColumns="challenges.challenges.length > 1600" v-if="!disabled" @change="updatechallenges({challenges: $event})" :disabled="disabled" :value="challenges.challenges" />
+      <TextArea :twoColumns="challenges.challenges.length > 1600" @change="updatechallenges({challenges: $event})" :disabled="disabled" :value="challenges.challenges" />
       <Well>
         <div class="section-col">
           <div class="labels">
@@ -86,14 +86,7 @@ export default class ChallengesForm extends Vue {
 .challenges {
   display: block;
   .challenges-unit {
-    .challenges-description {
-      width: 40%;
-      // &.double-column {
-      //   width: 100%;
-      //   column-count: 2;
-      //   column-gap: 5rem;
-      // }
-    }
+
     h2 {
       @include heading;
       color: $color-secondary;
