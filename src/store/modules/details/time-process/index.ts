@@ -7,7 +7,7 @@ import { mutations } from "@/store/modules/details/time-process/mutations";
 const namespaced = true;
 
 const state: TimeAndProcess = {
-    coWorkersUsingTheProces: '',
+    coWorkersUsingTheProcess: '',
     isCorporationAffected: '',
     isUserAffected: '',
     processRepetition: '',
