@@ -1,80 +1,83 @@
 <template>
-<div class="overall-wrap">
-  <div class="general-information-wrapper">
-    <div class="general-information">
-      <div class="section-col">
-        <div class="labels">
-          <div>KLE-nr:</div>
-          <div>Lov og paragraf:</div>
+  <div class="overall-wrap">
+    <div class="general-information-wrapper">
+      <GreyInputBox>
+        <div class="section-col">
+          <div class="labels">
+            <div>KLE-nr:</div>
+            <div>Lov og paragraf:</div>
+          </div>
+          <div class="fields">
+            <SelectionField :disabled="disabled" :value="generalInformation.kleNumber" @change="updateGeneralInformation({kleNumber: $event})" :items="kleNumbers" />
+            <InputField :disabled="disabled" :value="generalInformation.paragraf" @change="updateGeneralInformation({paragraf: $event})" />
+          </div>
         </div>
-        <div class="fields">
-          <SelectionField :disabled="disabled" :value="generalInformation.kleNumber" @change="updateGeneralInformation({kleNumber: $event})" :items="kleNumbers" />
-          <InputField :disabled="disabled" :value="generalInformation.paragraf" @change="updateGeneralInformation({paragraf: $event})" />
+        <div class="section-col">
+          <div class="labels">
+            <div>Afdeling:</div>
+            <div>Fagområde:</div>
+            <div>Synlighed:</div>
+          </div>
+          <div class="fields">
+            <InputField :disabled="disabled" :value="generalInformation.department" @change="updateGeneralInformation({department: $event})" />
+            <SelectionField :disabled="disabled" :value="generalInformation.field" @change="updateGeneralInformation({field: $event})" :items="fields" />
+            <SelectionField :disabled="disabled" :value="generalInformation.visibility" @change="updateGeneralInformation({visibility: $event})" :items="visibilityLevels" />
+          </div>
         </div>
+        <div class="section-col">
+          <div class="labels">
+            <div>Kontaktperson:</div>
+            <div>Mail:</div>
+            <div>Procestid:</div>
+          </div>
+          <div class="fields">
+            <InputField :disabled="disabled" :value="generalInformation.contactPerson" @change="updateGeneralInformation({contactPerson: $event})" />
+            <InputField :disabled="disabled" :value="generalInformation.email" @change="updateGeneralInformation({email: $event})" />
+            <InputField :disabled="disabled" :value="generalInformation.procesTime" @change="updateGeneralInformation({procesTime: $event})" />
+          </div>
+        </div>
+        <div class="section-col">
+          <div class="labels">
+            <div>Leverandør:</div>
+            <div>Projektleder:</div>
+          </div>
+          <div class="fields">
+            <InputField :disabled="disabled" :value="generalInformation.supplier" @change="updateGeneralInformation({supplier: $event})" />
+            <InputField :disabled="disabled" :value="generalInformation.projectManager" @change="updateGeneralInformation({projectManager: $event})" />
+          </div>
+        </div>
+      </GreyInputBox>
+      <AssociatedPersonsInput :disabled="disabled" />
+    </div>
+
+    <div class="resume-phases">
+      <div class="resume">
+        <p>Resume</p>
+        <TextArea :disabled="disabled" @change="updateGeneralInformation({resume: $event})" :value="generalInformation.resume" />
       </div>
-      <div class="section-col">
-        <div class="labels">
-          <div>Afdeling:</div>
-          <div>Fagområde:</div>
-          <div>Synlighed:</div>
-        </div>
-        <div class="fields">
-          <InputField :disabled="disabled" :value="generalInformation.department" @change="updateGeneralInformation({department: $event})" />
-          <SelectionField :disabled="disabled" :value="generalInformation.field" @change="updateGeneralInformation({field: $event})" :items="fields" />
-          <SelectionField :disabled="disabled" :value="generalInformation.visibility" @change="updateGeneralInformation({visibility: $event})" :items="visibilityLevels" />
-        </div>
-      </div>
-      <div class="section-col">
-        <div class="labels">
-          <div>Kontaktperson:</div>
-          <div>Mail:</div>
-          <div>Procestid:</div>
-        </div>
-        <div class="fields">
-          <InputField :disabled="disabled" :value="generalInformation.contactPerson" @change="updateGeneralInformation({contactPerson: $event})" />
-          <InputField :disabled="disabled" :value="generalInformation.email" @change="updateGeneralInformation({email: $event})" />
-          <InputField :disabled="disabled" :value="generalInformation.procesTime" @change="updateGeneralInformation({procesTime: $event})" />
-        </div>
-      </div>
-      <div class="section-col">
-        <div class="labels">
-          <div>Leverandør:</div>
-          <div>Projektleder:</div>
-        </div>
-        <div class="fields">
-          <InputField :disabled="disabled" :value="generalInformation.supplier" @change="updateGeneralInformation({supplier: $event})" />
-          <InputField :disabled="disabled" :value="generalInformation.projectManager" @change="updateGeneralInformation({projectManager: $event})" />
-        </div>
+      <div class="general-phases">
+        <Phases :disabled="disabled" />
+        <SelectionField :disabled="disabled" class="status-selection" :value="generalInformation.status" @change="updateGeneralInformation({status: $event})" :items="statusItems" />
       </div>
     </div>
-    <AssociatedPersonsInput :disabled="disabled" />
   </div>
-  
-  <div class="resume-phases">
-    <div class="resume">
-      <p>Resume</p>
-      <TextArea :disabled="disabled" @change="updateGeneralInformation({resume: $event})" :value="generalInformation.resume" />
-    </div>
-    <div class="general-phases">
-      <Phases :disabled="disabled" />
-      <SelectionField :disabled="disabled" class="status-selection" :value="generalInformation.status" @change="updateGeneralInformation({status: $event})" :items="statusItems"/>
-    </div>
-  </div>
-</div>
 
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import { Action } from 'vuex-class';
-import { namespace, generalInformationActionTypes } from '@/store/modules/details/general-information/actions';
+import {
+  namespace,
+  generalInformationActionTypes
+} from '@/store/modules/details/general-information/actions';
 
-import InputField from "@/components/common/inputs/InputField.vue";
-import SelectionField from "@/components/common/inputs/SelectionField.vue";
-import TextArea from "@/components/common/inputs/TextArea.vue";
+import InputField from '@/components/common/inputs/InputField.vue';
+import SelectionField from '@/components/common/inputs/SelectionField.vue';
+import TextArea from '@/components/common/inputs/TextArea.vue';
 import Phases from '@/components/common/inputs/Phases.vue';
 import AssociatedPersonsInput from '@/components/details/general-information/AssociatedPersonsInput.vue';
-
+import GreyInputBox from '@/components/common/GreyInputBox.vue';
 
 @Component({
   components: {
@@ -82,14 +85,18 @@ import AssociatedPersonsInput from '@/components/details/general-information/Ass
     SelectionField,
     TextArea,
     Phases,
-    AssociatedPersonsInput
+    AssociatedPersonsInput,
+    GreyInputBox
   }
 })
 export default class GeneralInformationForm extends Vue {
-  @Action(generalInformationActionTypes.UPDATE_GENERAL_INFORMATION, { namespace })
+  @Action(generalInformationActionTypes.UPDATE_GENERAL_INFORMATION, {
+    namespace
+  })
   updateGeneralInformation: any;
 
-  @Prop({ default: true}) disabled!: boolean;
+  @Prop({ default: true })
+  disabled!: boolean;
 
   get generalInformation() {
     return this.$store.state.details.generalInformation;
@@ -119,7 +126,7 @@ export default class GeneralInformationForm extends Vue {
 
   .section-col {
     display: flex;
-    flex: 0 0 25%;
+    width: 25%;
 
     padding: 0 $size-unit/2;
 
