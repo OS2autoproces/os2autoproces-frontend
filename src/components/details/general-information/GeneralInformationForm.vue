@@ -129,19 +129,7 @@ export default class GeneralInformationForm extends Vue {
     width: 25%;
 
     padding: 0 $size-unit/2;
-
-    &:not(:last-of-type) {
-      border-right: 1px solid $color-background;
-    }
-
-    &:last-of-type {
-      padding-right: 0;
-    }
-
-    &:first-of-type {
-      padding-left: 0;
-    }
-
+    
     .labels {
       width: 50%;
       > div {
@@ -153,7 +141,6 @@ export default class GeneralInformationForm extends Vue {
     .labels > div,
     .fields > * {
       margin-bottom: $size-unit;
-      padding: 0;
     }
   }
 }
