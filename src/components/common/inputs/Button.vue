@@ -20,10 +20,10 @@ export default class Button extends Vue {
 
 button {
   @include heading;
-  border: 1px solid $color-primary;
+  border: 1px solid $color-secondary;
   border-radius: $size-unit/2;
   padding: $size-unit/2 $size-unit;
-  min-width: 40px;
+  min-width: 100px;
   color: $color-primary;
 }
 </style>
