@@ -1,5 +1,5 @@
 <template>
-  <div class="grey-area-container">
+  <div class="well-container">
     <div class="section-wrap">
       <slot />
     </div>
@@ -11,13 +11,13 @@
 import { Vue, Component, Prop } from 'vue-property-decorator';
 
 @Component
-export default class GeneralInformationForm extends Vue {}
+export default class Well extends Vue {}
 </script>
 
 <style lang="scss" scoped>
 @import '@/styles/variables.scss';
 
-.grey-area-container {
+.well-container {
   display: flex;
   flex-direction: column;
   background-color: $color-background-grey;
