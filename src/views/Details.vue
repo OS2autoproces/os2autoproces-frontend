@@ -18,6 +18,7 @@
           </FormSection>
 
           <FormSection :heading="menuItems[2].heading" :id="menuItems[2].id">
+            <TimeAndProcess />
           </FormSection>
 
           <FormSection :heading="menuItems[3].heading" :id="menuItems[3].id">
@@ -46,9 +47,7 @@
           <div class="comments-heading">Kommentarer</div>
           <Comments />
         </div>
-      <TimeAndProcess />
       </div>
-
     </div>
   </div>
 </template>
