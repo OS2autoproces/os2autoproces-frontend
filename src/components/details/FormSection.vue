@@ -5,7 +5,7 @@
             <div class="edit-button" role="button" @click="toggleEdit">
                 <EditIcon />
             </div>
-            <div class="fill"></div>
+            <div class="flex-grow"></div>
             <div class="section-action">
                 <div role="button" @click="expanded = true" v-if="!alwaysOpen && !expanded">
                     <ArrowDownIcon />
@@ -15,8 +15,8 @@
                 </div>
             </div>
         </div>
-        <div class="section-content " v-if="alwaysOpen || expanded">
-
+        <div class="section-content" v-if="alwaysOpen || expanded">
+            <slot />
         </div>
     </div>
 </template>
@@ -80,9 +80,10 @@ export default class FormSection extends Vue {
       height: 20px;
     }
   }
+}
 
-  .fill {
-    flex-grow: 1;
-  }
+.section-content {
+  padding: $size-unit;
+  padding-top: 0;
 }
 </style>

@@ -5,7 +5,7 @@
                 <ArrowLeftIcon /> Forrige
             </button>
         </div>
-        <div class="fill"></div>
+        <div class="flex-grow"></div>
         <div class="next">
             <button @click="next" v-if="page < pageTotal - 1">
                 Næste
@@ -51,10 +51,6 @@ export default class SearchPagination extends Vue {
 .search-pagination {
   display: flex;
   padding: 2 * $size-unit 0;
-}
-
-.fill {
-  flex-grow: 1;
 }
 
 .next {
