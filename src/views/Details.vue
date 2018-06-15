@@ -16,7 +16,7 @@
                     </FormSection>
 
           <FormSection :heading="menuItems[1].heading" :id="menuItems[1].id">
-
+            
           </FormSection>
 
           <FormSection :heading="menuItems[2].heading" :id="menuItems[2].id">
