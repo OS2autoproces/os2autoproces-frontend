@@ -21,7 +21,7 @@
             Nuværende system:
           </div>
           <div class="fields">
-            <SelectionField :items="processItems" :value="challenges.currentProcessTitle" :disabled="false" @change="updatechallenges({currentProcessTitle: $event})" />
+            <SelectionField :items="processItems" :value="challenges.currentProcessTitle" :disabled="disabled" @change="updatechallenges({currentProcessTitle: $event})" />
           </div>
         </div>
         <div>
@@ -30,7 +30,7 @@
               Startdato:
             </div>
             <div class="fields">
-              <DatePicker :disabled="false" :value="challenges.startDate" @change="updatechallenges({startDate: $event})" />
+              <DatePicker :disabled="disabled" :value="challenges.startDate" @change="updatechallenges({startDate: $event})" />
             </div>
           </div>
           <div class="section-col">
@@ -38,7 +38,7 @@
               Forventet slutdato:
             </div>
             <div class="fields">
-              <DatePicker :disabled="false" :value="challenges.expectedEndDate" @change="updatechallenges({expectedEndDate: $event})" />
+              <DatePicker :disabled="disabled" :value="challenges.expectedEndDate" @change="updatechallenges({expectedEndDate: $event})" />
             </div>
           </div>
         </div>
