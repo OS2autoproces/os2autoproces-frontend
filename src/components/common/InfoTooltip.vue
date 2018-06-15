@@ -33,7 +33,7 @@ export default class ExpandPanel extends Vue {}
 .info-tooltip-wrapper {
   display: inline-block;
   position: relative;
-
+  height: $size-unit;
   cursor: help;
 
   &:not(:hover) .info-tooltip {
