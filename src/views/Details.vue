@@ -16,7 +16,7 @@
                     </FormSection>
 
                     <FormSection :heading="menuItems[1].heading" :id="menuItems[1].id">
-
+                      <ChallengesForm />
                     </FormSection>
 
                     <FormSection :heading="menuItems[2].heading" :id="menuItems[2].id">
@@ -36,10 +36,8 @@
                     </FormSection>
 
                     <FormSection :heading="menuItems[6].heading" :id="menuItems[6].id">
-
                     </FormSection>
                 </div>
-
                 <div class="usage">
                     <div class="usage-heading">Antal kommuner der bruger løsningen</div>
                     <IntervalSelector value="10 +" disabled />
@@ -63,6 +61,7 @@ import FormSection from '@/components/details/FormSection.vue';
 import DetailsMenu from '@/components/details/DetailsMenu.vue';
 import DetailsHeader from '@/components/details/DetailsHeader.vue';
 import GeneralInformationForm from '@/components/details/general-information/GeneralInformationForm.vue';
+import ChallengesForm from '@/components/details/challenges/ChallengesForm.vue';
 
 @Component({
   components: {
@@ -72,7 +71,8 @@ import GeneralInformationForm from '@/components/details/general-information/Gen
     DetailsHeader,
     GeneralInformationForm,
     Comments,
-    IntervalSelector
+    IntervalSelector,
+    ChallengesForm,
   }
 })
 export default class Details extends Vue {
