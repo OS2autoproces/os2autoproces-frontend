@@ -40,7 +40,6 @@ import DetailsMenu from '@/components/details/DetailsMenu.vue';
 import DetailsHeader from '@/components/details/DetailsHeader.vue';
 import GeneralInformationForm from '@/components/details/general-information/GeneralInformationForm.vue';
 import ChallengesForm from '@/components/details/challenges/ChallengesForm.vue';
-import { detailsGetterTypes } from '@/store/modules/details/getters';
 import { detailsActionTypes } from '@/store/modules/details/actions';
 
 @Component({
