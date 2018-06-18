@@ -1,76 +1,72 @@
 <template>
-  <div class="overall-wrap">
-    <div class="general-information-wrapper">
-      <Well>
-        <div class="section-col">
-          <div class="labels">
-            <div>KLE-nr:</div>
-            <div>Lov og paragraf:</div>
-          </div>
-          <div class="fields">
-            <SelectionField :disabled="disabled" :value="generalInformation.kleNumber" @change="updateGeneralInformation({kleNumber: $event})" :items="kleNumbers" />
-            <InputField :disabled="disabled" :value="generalInformation.paragraf" @change="updateGeneralInformation({paragraf: $event})" />
-          </div>
+    <FormSection heading="Grundlæggende oplysninger" id="general-information" :disabled="state.disabled" @edit="update({disabled: $event})" always-open>
+        <div class="general-information-wrapper">
+            <Well>
+                <div class="section-col">
+                    <div class="labels">
+                        <div>KLE-nr:</div>
+                        <div>Lov og paragraf:</div>
+                    </div>
+                    <div class="fields">
+                        <SelectionField :disabled="state.disabled" :value="state.kleNumber" @change="update({kleNumber: $event})" :items="kleNumbers" />
+                        <InputField :disabled="state.disabled" :value="state.paragraf" @change="update({paragraf: $event})" />
+                    </div>
+                </div>
+                <div class="section-col">
+                    <div class="labels">
+                        <div>Afdeling:</div>
+                        <div>Fagområde:</div>
+                        <div>Synlighed:</div>
+                    </div>
+                    <div class="fields">
+                        <InputField :disabled="state.disabled" :value="state.department" @change="update({department: $event})" />
+                        <SelectionField :disabled="state.disabled" :value="state.field" @change="update({field: $event})" :items="fields" />
+                        <SelectionField :disabled="state.disabled" :value="state.visibility" @change="update({visibility: $event})" :items="visibilityLevels" />
+                    </div>
+                </div>
+                <div class="section-col">
+                    <div class="labels">
+                        <div>Kontaktperson:</div>
+                        <div>Mail:</div>
+                        <div>Procestid:</div>
+                    </div>
+                    <div class="fields">
+                        <InputField :disabled="state.disabled" :value="state.contactPerson" @change="update({contactPerson: $event})" />
+                        <InputField :disabled="state.disabled" :value="state.email" @change="update({email: $event})" />
+                        <InputField :disabled="state.disabled" :value="state.procesTime" @change="update({procesTime: $event})" />
+                    </div>
+                </div>
+                <div class="section-col">
+                    <div class="labels">
+                        <div>Leverandør:</div>
+                        <div>Projektleder:</div>
+                    </div>
+                    <div class="fields">
+                        <InputField :disabled="state.disabled" :value="state.supplier" @change="update({supplier: $event})" />
+                        <InputField :disabled="state.disabled" :value="state.projectManager" @change="update({projectManager: $event})" />
+                    </div>
+                </div>
+                <AssociatedPersonsInput slot="well-footer" :disabled="state.disabled" />
+            </Well>
         </div>
-        <div class="section-col">
-          <div class="labels">
-            <div>Afdeling:</div>
-            <div>Fagområde:</div>
-            <div>Synlighed:</div>
-          </div>
-          <div class="fields">
-            <InputField :disabled="disabled" :value="generalInformation.department" @change="updateGeneralInformation({department: $event})" />
-            <SelectionField :disabled="disabled" :value="generalInformation.field" @change="updateGeneralInformation({field: $event})" :items="fields" />
-            <SelectionField :disabled="disabled" :value="generalInformation.visibility" @change="updateGeneralInformation({visibility: $event})" :items="visibilityLevels" />
-          </div>
-        </div>
-        <div class="section-col">
-          <div class="labels">
-            <div>Kontaktperson:</div>
-            <div>Mail:</div>
-            <div>Procestid:</div>
-          </div>
-          <div class="fields">
-            <InputField :disabled="disabled" :value="generalInformation.contactPerson" @change="updateGeneralInformation({contactPerson: $event})" />
-            <InputField :disabled="disabled" :value="generalInformation.email" @change="updateGeneralInformation({email: $event})" />
-            <InputField :disabled="disabled" :value="generalInformation.procesTime" @change="updateGeneralInformation({procesTime: $event})" />
-          </div>
-        </div>
-        <div class="section-col">
-          <div class="labels">
-            <div>Leverandør:</div>
-            <div>Projektleder:</div>
-          </div>
-          <div class="fields">
-            <InputField :disabled="disabled" :value="generalInformation.supplier" @change="updateGeneralInformation({supplier: $event})" />
-            <InputField :disabled="disabled" :value="generalInformation.projectManager" @change="updateGeneralInformation({projectManager: $event})" />
-          </div>
-        </div>
-        <AssociatedPersonsInput slot="well-footer" :disabled="disabled" />
-      </Well>
-    </div>
 
-    <div class="resume-phases">
-      <div class="resume">
-        <p>Resume</p>
-        <TextArea :disabled="disabled" @change="updateGeneralInformation({resume: $event})" :value="generalInformation.resume" />
-      </div>
-      <div class="general-phases">
-        <Phases :disabled="disabled" />
-        <SelectionField :disabled="disabled" class="status-selection" :value="generalInformation.status" @change="updateGeneralInformation({status: $event})" :items="statusItems" />
-      </div>
-    </div>
-  </div>
-
+        <div class="resume-phases">
+            <div class="resume">
+                <p>Resume</p>
+                <TextArea :disabled="state.disabled" @change="update({resume: $event})" :value="state.resume" />
+            </div>
+            <div class="general-phases">
+                <Phases :disabled="state.disabled" />
+                <SelectionField :disabled="state.disabled" class="status-selection" :value="state.status" @change="update({status: $event})" :items="statusItems" />
+            </div>
+        </div>
+    </FormSection>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import { Action } from 'vuex-class';
-import {
-  namespace,
-  generalInformationActionTypes
-} from '@/store/modules/details/general-information/actions';
+import { generalInformationActionTypes } from '@/store/modules/details/general-information/actions';
 
 import InputField from '@/components/common/inputs/InputField.vue';
 import SelectionField from '@/components/common/inputs/SelectionField.vue';
@@ -78,6 +74,7 @@ import TextArea from '@/components/common/inputs/TextArea.vue';
 import Phases from '@/components/common/inputs/Phases.vue';
 import AssociatedPersonsInput from '@/components/details/general-information/AssociatedPersonsInput.vue';
 import Well from '@/components/common/Well.vue';
+import FormSection from '@/components/details/FormSection.vue';
 
 @Component({
   components: {
@@ -86,19 +83,14 @@ import Well from '@/components/common/Well.vue';
     TextArea,
     Phases,
     AssociatedPersonsInput,
-    Well
+    Well,
+    FormSection
   }
 })
 export default class GeneralInformationForm extends Vue {
-  @Action(generalInformationActionTypes.UPDATE_GENERAL_INFORMATION, {
-    namespace
-  })
-  updateGeneralInformation: any;
+  @Action(generalInformationActionTypes.UPDATE_GENERAL_INFORMATION) update: any;
 
-  @Prop({ default: true })
-  disabled!: boolean;
-
-  get generalInformation() {
+  get state() {
     return this.$store.state.details.generalInformation;
   }
 
@@ -126,7 +118,7 @@ export default class GeneralInformationForm extends Vue {
 
   .section-col {
     display: flex;
-    
+
     .labels {
       width: 50%;
       > div {

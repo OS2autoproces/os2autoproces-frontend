@@ -1,13 +1,14 @@
-import { RootState } from "@/store/store";
-import { Module } from "vuex";
-import { actions } from "./actions";
-import { getters } from "./getters";
-import { mutations } from "./mutations";
-import { GeneralInformationState } from "@/store/modules/details/general-information/state";
+import { RootState } from '@/store/store';
+import { Module } from 'vuex';
+import { actions } from './actions';
+import { getters } from './getters';
+import { mutations } from './mutations';
+import { GeneralInformationState } from '@/store/modules/details/general-information/state';
 
 const namespaced = true;
 
 export const state: GeneralInformationState = {
+  disabled: true,
   kleNumber: '',
   paragraf: '',
   field: '',
@@ -20,7 +21,7 @@ export const state: GeneralInformationState = {
   supplier: '',
   resume: '',
   associatedPersons: [],
-  status: '',
+  status: ''
 };
 
 export const generalInformation: Module<GeneralInformationState, RootState> = {

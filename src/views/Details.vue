@@ -4,40 +4,17 @@
 
         <div class="page">
             <div class="details-menu">
-                <DetailsMenu :items="menuItems" />
+                <DetailsMenu @save="save" />
             </div>
 
             <div class="details-wrapper">
                 <DetailsHeader />
 
                 <div class="form-sections">
-                    <FormSection :heading="menuItems[0].heading" :id="menuItems[0].id" :disabled="!editGeneralInformation" always-open @edit="editGeneralInformation = !editGeneralInformation">
-                        <GeneralInformationForm :disabled="!editGeneralInformation" />
-                    </FormSection>
-
-                    <FormSection :heading="menuItems[1].heading" :id="menuItems[1].id">
-                      <ChallengesForm />
-                    </FormSection>
-
-                    <FormSection :heading="menuItems[2].heading" :id="menuItems[2].id">
-
-                    </FormSection>
-
-                    <FormSection :heading="menuItems[3].heading" :id="menuItems[3].id">
-
-                    </FormSection>
-
-                    <FormSection :heading="menuItems[4].heading" :id="menuItems[4].id">
-
-                    </FormSection>
-
-                    <FormSection :heading="menuItems[5].heading" :id="menuItems[5].id">
-
-                    </FormSection>
-
-                    <FormSection :heading="menuItems[6].heading" :id="menuItems[6].id">
-                    </FormSection>
+                    <GeneralInformationForm />
+                    <ChallengesForm />
                 </div>
+
                 <div class="usage">
                     <div class="usage-heading">Antal kommuner der bruger løsningen</div>
                     <IntervalSelector value="10 +" disabled />
@@ -54,6 +31,7 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
+import { Action } from 'vuex-class';
 import NavBar from '../components/common/NavBar.vue';
 import Comments from '../components/comments/Comments.vue';
 import IntervalSelector from '../components/common/inputs/IntervalSelector.vue';
@@ -62,6 +40,8 @@ import DetailsMenu from '@/components/details/DetailsMenu.vue';
 import DetailsHeader from '@/components/details/DetailsHeader.vue';
 import GeneralInformationForm from '@/components/details/general-information/GeneralInformationForm.vue';
 import ChallengesForm from '@/components/details/challenges/ChallengesForm.vue';
+import { detailsGetterTypes } from '@/store/modules/details/getters';
+import { detailsActionTypes } from '@/store/modules/details/actions';
 
 @Component({
   components: {
@@ -72,21 +52,11 @@ import ChallengesForm from '@/components/details/challenges/ChallengesForm.vue';
     GeneralInformationForm,
     Comments,
     IntervalSelector,
-    ChallengesForm,
+    ChallengesForm
   }
 })
 export default class Details extends Vue {
-  editGeneralInformation = false;
-
-  menuItems = [
-    { heading: 'Grundlæggende oplysninger', id: 'general-information' },
-    { heading: 'Problemstillinger', id: 'challenges' },
-    { heading: 'Tids og proces foretagen', id: 'process' },
-    { heading: 'Faglig vurdering', id: 'assessment' },
-    { heading: 'Specifikation', id: 'specification' },
-    { heading: 'Udvikling og implementering', id: 'implementation' },
-    { heading: 'Drift', id: 'operation' }
-  ];
+  @Action(detailsActionTypes.SAVE) save: any;
 }
 </script>
 

@@ -1,15 +1,16 @@
 export interface GeneralInformationState {
-  kleNumber: string;  // KL Nummer
-  paragraf: string;   // paragraf og lov
-  field: string;      // field of study eller fagområde
+  disabled: boolean;
+  kleNumber: string; // KL Nummer
+  paragraf: string; // paragraf og lov
+  field: string; // field of study eller fagområde
   department: string; // afdeling
   visibility: string; // synlighed
   contactPerson: string; // kontaktperson
-  email: string;      // mail
+  email: string; // mail
   procesTime: string; // årlig procestid
-  projectManager: string // projektleder
+  projectManager: string; // projektleder
   supplier: string; // leverrandør
-  resume: string    // resumé
-  associatedPersons: string [];
+  resume: string; // resumé
+  associatedPersons: string[];
   status: string;
 }
