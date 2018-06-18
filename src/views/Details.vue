@@ -30,7 +30,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
+import { Vue, Component, Prop } from 'vue-property-decorator';
 import { Action } from 'vuex-class';
 import NavBar from '../components/common/NavBar.vue';
 import Comments from '../components/comments/Comments.vue';
@@ -56,6 +56,8 @@ import { detailsActionTypes } from '@/store/modules/details/actions';
   }
 })
 export default class Details extends Vue {
+  @Prop() id!: string;
+
   @Action(detailsActionTypes.SAVE) save: any;
 }
 </script>

@@ -9,7 +9,7 @@ Vue.use(Router);
 
 export const routes: RouteConfig[] = [
   { path: '/', component: Home },
-  { path: '/details/:id', component: Details },
+  { path: '/details/:id', component: Details, props: true },
   { path: '/search', component: Search },
   { path: '/report', component: ReportProcess }
 ];
