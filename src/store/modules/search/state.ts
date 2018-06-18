@@ -18,6 +18,11 @@ export interface SearchResult {
   processes: SearchResultProcess[];
 }
 
+export interface SortingOption {
+  property: string;
+  descending: boolean;
+}
+
 export interface SearchFilters {
   reported: boolean;
   related: boolean;
@@ -26,6 +31,7 @@ export interface SearchFilters {
   municipal: boolean;
   intermunicipal: boolean;
   page: number;
+  sorting: SortingOption;
 
   phases: {
     idea: boolean;

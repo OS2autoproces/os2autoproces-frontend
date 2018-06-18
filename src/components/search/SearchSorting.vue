@@ -1,22 +1,22 @@
 <template>
     <div class="search-sorting">
         <div class="sort-option-column">
-            <div @click="toggleProcessSort" role="button">Proces
+            <div @click="clickSortOption('name')" role="button">Proces
                 <SortIcon />
             </div>
         </div>
         <div class="sort-option-column">
-            <div @click="togglePotentialSort" role="button">Vurderet potentiale
+            <div @click="clickSortOption('potential')" role="button">Vurderet potentiale
                 <SortIcon />
             </div>
         </div>
         <div class="sort-option-column">
-            <div @click="toggleFieldSort" role="button">Fagområde
+            <div @click="clickSortOption('field')" role="button">Fagområde
                 <SortIcon />
             </div>
         </div>
         <div class="sort-option-column">
-            <div @click="toggleStatusSort" role="button">Status
+            <div @click="clickSortOption('status')" role="button">Status
                 <SortIcon />
             </div>
         </div>
@@ -26,6 +26,7 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import SortIcon from '../icons/SortIcon.vue';
+import { SortingOption } from '@/store/modules/search/state.ts';
 
 @Component({
   components: {
@@ -33,20 +34,16 @@ import SortIcon from '../icons/SortIcon.vue';
   }
 })
 export default class SearchSorting extends Vue {
-  toggleProcessSort() {
-    this.$emit('process');
-  }
+  @Prop() sorting!: SortingOption;
 
-  togglePotentialSort() {
-    this.$emit('potential');
-  }
+  clickSortOption(property: string) {
+    let descending = false;
 
-  toggleFieldSort() {
-    this.$emit('field');
-  }
+    if (this.sorting && property === this.sorting.property) {
+      descending = !this.sorting.descending;
+    }
 
-  toggleStatusSort() {
-    this.$emit('status');
+    this.$emit('change', { property, descending });
   }
 }
 </script>

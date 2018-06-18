@@ -17,6 +17,10 @@ export const state: SearchState = {
     text: '',
     municipal: false,
     intermunicipal: false,
+    sorting: {
+      property: 'name',
+      descending: false
+    },
     phases: {
       idea: false,
       preliminaryAnalysis: false,
