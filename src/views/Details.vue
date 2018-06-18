@@ -4,7 +4,7 @@
 
         <div class="page">
             <div class="details-menu">
-                <DetailsMenu :isEditing="isEditing" @save="save" />
+                <DetailsMenu @save="save" />
             </div>
 
             <div class="details-wrapper">
@@ -57,10 +57,6 @@ import { detailsActionTypes } from '@/store/modules/details/actions';
 })
 export default class Details extends Vue {
   @Action(detailsActionTypes.SAVE) save: any;
-
-  get isEditing() {
-    return this.$store.getters[detailsGetterTypes.IS_EDITING];
-  }
 }
 </script>
 

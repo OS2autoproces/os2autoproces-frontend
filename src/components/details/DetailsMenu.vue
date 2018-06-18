@@ -8,7 +8,7 @@
             {{item.heading}}
         </div>
 
-        <Button v-if="isEditing" class="save-button" @click="$emit('save')">Gem</Button>
+        <Button class="save-button" @click="$emit('save')">Gem</Button>
     </div>
 </template>
 
@@ -29,8 +29,6 @@ export interface MenuItem {
   }
 })
 export default class DetailsMenu extends Vue {
-  @Prop() isEditing!: boolean;
-
   items: MenuItem[] = [
     { heading: 'Grundlæggende oplysninger', id: 'general-information' },
     { heading: 'Problemstillinger', id: 'challenges' },
