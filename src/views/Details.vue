@@ -4,7 +4,7 @@
 
         <div class="page">
             <div class="details-menu">
-                <DetailsMenu :items="menuItems" />
+                <DetailsMenu />
             </div>
 
             <div class="details-wrapper">
