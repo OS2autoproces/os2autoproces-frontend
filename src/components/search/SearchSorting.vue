@@ -2,22 +2,22 @@
     <div class="search-sorting">
         <div class="sort-option-column">
             <div @click="clickSortOption('name')" role="button">Proces
-                <SortIcon />
+                <SortIcon v-if="sorting.property === 'name'" :descending="sorting.descending" />
             </div>
         </div>
         <div class="sort-option-column">
             <div @click="clickSortOption('potential')" role="button">Vurderet potentiale
-                <SortIcon />
+                <SortIcon v-if="sorting.property === 'potential'" :descending="sorting.descending" />
             </div>
         </div>
         <div class="sort-option-column">
             <div @click="clickSortOption('field')" role="button">Fagområde
-                <SortIcon />
+                <SortIcon v-if="sorting.property === 'field'" :descending="sorting.descending" />
             </div>
         </div>
         <div class="sort-option-column">
             <div @click="clickSortOption('status')" role="button">Status
-                <SortIcon />
+                <SortIcon v-if="sorting.property === 'status'" :descending="sorting.descending" />
             </div>
         </div>
     </div>
