@@ -27,7 +27,7 @@ RUN npm run build
 FROM nginx:1.15.0-alpine
 
 # Expose port
-EXPOSE 8080
+EXPOSE 80
 
 COPY Docker/nginx.conf /etc/nginx/conf.d/default.conf
 COPY Docker/environment-config.json /
