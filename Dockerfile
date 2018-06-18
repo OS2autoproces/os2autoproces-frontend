@@ -24,7 +24,7 @@ RUN npm run build
 
 #==================== Setting up stage ====================
 # Create image based on the official nginx
-FROM nginx:alpine
+FROM nginx:1.15.0-alpine
 
 # Expose port
 EXPOSE 8080
