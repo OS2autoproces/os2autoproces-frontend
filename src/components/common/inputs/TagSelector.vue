@@ -10,9 +10,7 @@
                 </span>
             </div>
         </div>
-        <div class="tag-input-wrap" v-if="!disabled">
-            <input class="tag-input" :placeholder="placeholder" @keyup.enter="valueChanged">
-        </div>
+        <input v-if="!disabled" class="tag-input" :placeholder="placeholder" @keyup.enter="valueChanged">
     </div>
 </template>
 
