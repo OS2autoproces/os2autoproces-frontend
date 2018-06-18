@@ -9,7 +9,6 @@ RUN mkdir -p /app
 WORKDIR /app
 
 # Copies application dependencies
-
 COPY package.json /app
 COPY package-lock.json /app
 
@@ -19,22 +18,24 @@ RUN npm install
 COPY src /app/src
 COPY public /app/public
 COPY tsconfig.json /app
-COPY environment-config.json /app
 
 # Build the App
 RUN npm run build
 
 #==================== Setting up stage ====================
 # Create image based on the official nginx
-FROM nginx:1.15.0
- 
+FROM nginx:alpine
+
 # Expose port
 EXPOSE 8080
 
 COPY Docker/nginx.conf /etc/nginx/conf.d/default.conf
+COPY Docker/environment-config.json /
 
 COPY --from=node /app/dist/ /usr/share/nginx/html
-COPY --from=node /app/environment-config.json /usr/share/nginx/html
 
-ADD Docker/startup.sh /startup.sh
-CMD /startup.sh
+WORKDIR /usr/share/nginx/html
+
+# Overwrite environment variables
+COPY Docker/startup.sh /startup.sh
+CMD /bin/sh -c "/startup.sh"
