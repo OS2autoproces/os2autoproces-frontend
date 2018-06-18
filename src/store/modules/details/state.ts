@@ -1,3 +1,1 @@
-export interface DetailsState {
-    // empty for now
-}
+export interface DetailsState {}

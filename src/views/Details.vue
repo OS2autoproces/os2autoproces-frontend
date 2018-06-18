@@ -4,7 +4,7 @@
 
         <div class="page">
             <div class="details-menu">
-                <DetailsMenu />
+                <DetailsMenu :isEditing="isEditing" @save="save" />
             </div>
 
             <div class="details-wrapper">
@@ -31,6 +31,7 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
+import { Action } from 'vuex-class';
 import NavBar from '../components/common/NavBar.vue';
 import Comments from '../components/comments/Comments.vue';
 import IntervalSelector from '../components/common/inputs/IntervalSelector.vue';
@@ -39,6 +40,8 @@ import DetailsMenu from '@/components/details/DetailsMenu.vue';
 import DetailsHeader from '@/components/details/DetailsHeader.vue';
 import GeneralInformationForm from '@/components/details/general-information/GeneralInformationForm.vue';
 import ChallengesForm from '@/components/details/challenges/ChallengesForm.vue';
+import { detailsGetterTypes } from '@/store/modules/details/getters';
+import { detailsActionTypes } from '@/store/modules/details/actions';
 
 @Component({
   components: {
@@ -52,7 +55,13 @@ import ChallengesForm from '@/components/details/challenges/ChallengesForm.vue';
     ChallengesForm
   }
 })
-export default class Details extends Vue {}
+export default class Details extends Vue {
+  @Action(detailsActionTypes.SAVE) save: any;
+
+  get isEditing() {
+    return this.$store.getters[detailsGetterTypes.IS_EDITING];
+  }
+}
 </script>
 
 <style lang="scss" scoped>

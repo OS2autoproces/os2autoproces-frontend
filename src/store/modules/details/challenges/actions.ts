@@ -1,5 +1,5 @@
 import { ActionTree } from 'vuex';
-import { Challenges } from '@/store/modules/details/challenges/state';
+import { ChallengesState } from '@/store/modules/details/challenges/state';
 import { RootState } from '@/store/store';
 import { ChallengesMutationTypes } from './mutations';
 
@@ -9,8 +9,8 @@ export const ChallengesActionTypes = {
   UPDATE_CHALLENGES: `${namespace}/updateChallenges`
 };
 
-export const actions: ActionTree<Challenges, RootState> = {
-  updateChallenges({ commit }, payload: Partial<Challenges>) {
+export const actions: ActionTree<ChallengesState, RootState> = {
+  updateChallenges({ commit }, payload: Partial<ChallengesState>) {
     commit(ChallengesMutationTypes.UPDATE_CHALLENGES, payload);
   }
 };

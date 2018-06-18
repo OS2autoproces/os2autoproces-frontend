@@ -7,12 +7,15 @@
         <div class="menu-item" v-for="item in this.items" :key="item.id" :class="{ 'in-view': itemInView === item }" @click="scrollTo(item)">
             {{item.heading}}
         </div>
+
+        <Button v-if="isEditing" class="save-button" @click="$emit('save')">Gem</Button>
     </div>
 </template>
 
 <script lang="ts">
 import { Vue, Prop, Component } from 'vue-property-decorator';
 import ArrowLeftIcon from '@/components/icons/ArrowLeftIcon.vue';
+import Button from '@/components/common/inputs/Button.vue';
 
 export interface MenuItem {
   heading: string;
@@ -21,10 +24,13 @@ export interface MenuItem {
 
 @Component({
   components: {
-    ArrowLeftIcon
+    ArrowLeftIcon,
+    Button
   }
 })
 export default class DetailsMenu extends Vue {
+  @Prop() isEditing!: boolean;
+
   items: MenuItem[] = [
     { heading: 'Grundlæggende oplysninger', id: 'general-information' },
     { heading: 'Problemstillinger', id: 'challenges' },
@@ -108,5 +114,9 @@ export default class DetailsMenu extends Vue {
 .in-view {
   @include heading;
   text-decoration: underline;
+}
+
+.save-button {
+  margin: 2 * $size-unit;
 }
 </style>
