@@ -7,15 +7,18 @@
             </div>
             <div class="flex-grow"></div>
             <div class="section-action">
-                <div role="button" @click="expanded = true" v-if="!alwaysOpen && !expanded">
+                <div role="button" @click="expand = true" v-if="isExpandable && !expand">
                     <ArrowDownIcon />
                 </div>
-                <div role="button" @click="expanded = false" v-if="!alwaysOpen && expanded">
+                <div role="button" @click="expand = false" v-if="isExpandable && expand">
                     <ArrowUpIcon />
+                </div>
+                <div class="warning-icon" v-if="invalid">
+                    <WarningIcon />
                 </div>
             </div>
         </div>
-        <div class="section-content" v-if="alwaysOpen || expanded">
+        <div class="section-content" v-if="isExpanded">
             <slot />
         </div>
     </div>
@@ -39,12 +42,21 @@ import WarningIcon from '@/components/icons/WarningIcon.vue';
 export default class FormSection extends Vue {
   @Prop() heading!: string;
   @Prop() alwaysOpen!: boolean;
+  @Prop() invalid!: boolean;
   @Prop() disabled!: boolean;
 
-  expanded = false;
+  expand = false;
 
   toggleEdit() {
-    this.$emit('edit');
+    this.$emit('edit', !this.disabled);
+  }
+
+  get isExpandable() {
+    return !this.alwaysOpen && !this.invalid && this.disabled;
+  }
+
+  get isExpanded() {
+    return this.expand || this.alwaysOpen || this.invalid || !this.disabled;
   }
 }
 </script>
@@ -78,6 +90,13 @@ export default class FormSection extends Vue {
     svg {
       width: 20px;
       height: 20px;
+    }
+
+    .warning-icon {
+      svg {
+        width: 40px;
+        height: 40px;
+      }
     }
   }
 }
