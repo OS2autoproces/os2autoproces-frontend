@@ -25,7 +25,15 @@ export interface MenuItem {
   }
 })
 export default class DetailsMenu extends Vue {
-  @Prop() items!: MenuItem[];
+  items: MenuItem[] = [
+    { heading: 'Grundlæggende oplysninger', id: 'general-information' },
+    { heading: 'Problemstillinger', id: 'challenges' },
+    { heading: 'Tids og proces foretagen', id: 'process' },
+    { heading: 'Faglig vurdering', id: 'assessment' },
+    { heading: 'Specifikation', id: 'specification' },
+    { heading: 'Udvikling og implementering', id: 'implementation' },
+    { heading: 'Drift', id: 'operation' }
+  ];
 
   private itemInView: MenuItem | null = null;
   private listener!: () => void;
