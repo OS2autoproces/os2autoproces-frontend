@@ -43,7 +43,6 @@
           </div>
         </div>
       </Well>
-      <TagSelector placeholder="tilføj teknologier..." :disable="false" />
     </div>
   </div>
 </template>
@@ -59,7 +58,6 @@ import { Action } from 'vuex-class';
 import SelectionField from '@/components/common/inputs/SelectionField.vue';
 import DatePicker from '@/components/common/inputs/DatePicker.vue';
 import Well from '@/components/common/Well.vue';
-import TagSelector from '@/components/common/inputs/TagSelector.vue';
 
 @Component({
   components: {
@@ -67,7 +65,6 @@ import TagSelector from '@/components/common/inputs/TagSelector.vue';
     SelectionField,
     DatePicker,
     Well,
-    TagSelector
   }
 })
 export default class ChallengesForm extends Vue {
