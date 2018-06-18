@@ -1,4 +1,4 @@
-export interface Challenges {
+export interface ChallengesState {
   disabled: boolean;
   description: string; // beskrivelse
   ideasSolution: string; // ideer og løsning
