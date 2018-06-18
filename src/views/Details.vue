@@ -3,25 +3,34 @@
         <NavBar />
 
         <div class="page">
-            <div class="details-menu">
-                <DetailsMenu @save="save" />
+            <div class="side-bar">
+                <div class="side-bar-content">
+                    <router-link to="/search" class="search-page-link">
+                        <ArrowLeftIcon /> Tilbage til søgning
+                    </router-link>
+
+                    <DetailsMenu />
+
+                    <Button v-if="id === 'new'" class="report-button" @click="report">Indberet</Button>
+                    <Button v-else class="save-button" @click="save">Gem</Button>
+                </div>
             </div>
 
-            <div class="details-wrapper">
+            <div class=" details-wrapper ">
                 <DetailsHeader />
 
-                <div class="form-sections">
+                <div class="form-sections ">
                     <GeneralInformationForm />
                     <ChallengesForm />
                 </div>
 
-                <div class="usage">
-                    <div class="usage-heading">Antal kommuner der bruger løsningen</div>
-                    <IntervalSelector value="10 +" disabled />
+                <div class="usage ">
+                    <div class="usage-heading ">Antal kommuner der bruger løsningen</div>
+                    <IntervalSelector value="10 + " disabled />
                 </div>
 
-                <div class="comments">
-                    <div class="comments-heading">Kommentarer</div>
+                <div class="comments ">
+                    <div class="comments-heading ">Kommentarer</div>
                     <Comments />
                 </div>
             </div>
@@ -39,8 +48,10 @@ import FormSection from '@/components/details/FormSection.vue';
 import DetailsMenu from '@/components/details/DetailsMenu.vue';
 import DetailsHeader from '@/components/details/DetailsHeader.vue';
 import GeneralInformationForm from '@/components/details/general-information/GeneralInformationForm.vue';
+import Button from '@/components/common/inputs/Button.vue';
 import ChallengesForm from '@/components/details/challenges/ChallengesForm.vue';
 import { detailsActionTypes } from '@/store/modules/details/actions';
+import ArrowLeftIcon from '@/components/icons/ArrowLeftIcon.vue';
 
 @Component({
   components: {
@@ -51,13 +62,17 @@ import { detailsActionTypes } from '@/store/modules/details/actions';
     GeneralInformationForm,
     Comments,
     IntervalSelector,
-    ChallengesForm
+    ChallengesForm,
+    Button,
+    ArrowLeftIcon
   }
 })
 export default class Details extends Vue {
+  // TODO: Handle deep link to a new report /details/new
   @Prop() id!: string;
 
   @Action(detailsActionTypes.SAVE) save: any;
+  @Action(detailsActionTypes.SAVE) report: any;
 }
 </script>
 
@@ -68,13 +83,17 @@ export default class Details extends Vue {
   display: flex;
 }
 
-.details-menu {
+.side-bar {
   flex: 0 0 200px;
   margin-left: $size-unit;
 
-  > * {
+  .side-bar-content {
     position: fixed;
     top: 80px + 2 * $size-unit;
+  }
+
+  .save-button {
+    margin: 2 * $size-unit;
   }
 }
 
@@ -108,5 +127,24 @@ export default class Details extends Vue {
 .comments-heading {
   font-style: italic;
   margin: $size-unit / 2 0;
+}
+
+.save-button,
+.report-button {
+  margin: 2 * $size-unit;
+}
+
+.search-page-link {
+  @include heading;
+  font-size: 1.2rem;
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+
+  svg {
+    height: $size-unit;
+    width: $size-unit;
+    margin-right: $size-unit / 2;
+  }
 }
 </style>

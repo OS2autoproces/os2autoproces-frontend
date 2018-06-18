@@ -12,12 +12,12 @@
                 <ArrowDownIcon />
 
                 <div class="phases">
-                    <div class="phase" role="button">Idé</div>
-                    <div class="phase" role="button">Foranalyse</div>
-                    <div class="phase" role="button">Specifikation</div>
-                    <div class="phase" role="button">Udvikling</div>
-                    <div class="phase" role="button">Implementering</div>
-                    <div class="phase" role="button">Drift</div>
+                    <div role="button" @click="createProcess(1)">Idé</div>
+                    <div role="button" @click="createProcess(2)">Foranalyse</div>
+                    <div role="button" @click="createProcess(3)">Specifikation</div>
+                    <div role="button" @click="createProcess(4)">Udvikling</div>
+                    <div role="button" @click="createProcess(5)">Implementering</div>
+                    <div role="button" @click="createProcess(6)">Drift</div>
                 </div>
             </div>
         </div>
@@ -29,6 +29,7 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 import ArrowDownIcon from '../components/icons/ArrowDownIcon.vue';
 import ArrowLeftIcon from '../components/icons/ArrowLeftIcon.vue';
 import NavBar from '../components/common/NavBar.vue';
+import { generalInformationActionTypes } from '@/store/modules/details/general-information/actions';
 
 @Component({
   components: {
@@ -37,7 +38,12 @@ import NavBar from '../components/common/NavBar.vue';
     NavBar
   }
 })
-export default class Home extends Vue {}
+export default class Home extends Vue {
+  createProcess(phase: number) {
+    this.$store.dispatch(generalInformationActionTypes.UPDATE_GENERAL_INFORMATION, { phase });
+    this.$router.push({ path: '/details/new' });
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -79,7 +85,7 @@ export default class Home extends Vue {}
     width: 150px;
     text-align: left;
 
-    > .phase {
+    > div {
       padding: $size-unit / 2 0;
 
       &:not(:last-of-type) {
