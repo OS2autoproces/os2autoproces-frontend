@@ -51,6 +51,7 @@ import GeneralInformationForm from '@/components/details/general-information/Gen
 import Button from '@/components/common/inputs/Button.vue';
 import ChallengesForm from '@/components/details/challenges/ChallengesForm.vue';
 import { detailsActionTypes } from '@/store/modules/details/actions';
+import { generalInformationActionTypes } from '@/store/modules/details/general-information/actions';
 import ArrowLeftIcon from '@/components/icons/ArrowLeftIcon.vue';
 
 @Component({
@@ -68,11 +69,18 @@ import ArrowLeftIcon from '@/components/icons/ArrowLeftIcon.vue';
   }
 })
 export default class Details extends Vue {
-  // TODO: Handle deep link to a new report /details/new
   @Prop() id!: string;
+  @Prop() phase!: string;
 
   @Action(detailsActionTypes.SAVE) save: any;
   @Action(detailsActionTypes.SAVE) report: any;
+  @Action(generalInformationActionTypes.UPDATE_GENERAL_INFORMATION) updateGeneralInformation: any;
+
+  mounted() {
+    if (this.phase) {
+      this.updateGeneralInformation({ phase: Number(this.phase) });
+    }
+  }
 }
 </script>
 

@@ -12,12 +12,12 @@
                 <ArrowDownIcon />
 
                 <div class="phases">
-                    <div role="button" @click="createProcess(1)">Idé</div>
-                    <div role="button" @click="createProcess(2)">Foranalyse</div>
-                    <div role="button" @click="createProcess(3)">Specifikation</div>
-                    <div role="button" @click="createProcess(4)">Udvikling</div>
-                    <div role="button" @click="createProcess(5)">Implementering</div>
-                    <div role="button" @click="createProcess(6)">Drift</div>
+                    <router-link to="/details/new/1">Idé</router-link>
+                    <router-link to="/details/new/2">Foranalyse</router-link>
+                    <router-link to="/details/new/3">Specifikation</router-link>
+                    <router-link to="/details/new/4">Udvikling</router-link>
+                    <router-link to="/details/new/5">Implementering</router-link>
+                    <router-link to="/details/new/6">Drift</router-link>
                 </div>
             </div>
         </div>
@@ -29,7 +29,6 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 import ArrowDownIcon from '../components/icons/ArrowDownIcon.vue';
 import ArrowLeftIcon from '../components/icons/ArrowLeftIcon.vue';
 import NavBar from '../components/common/NavBar.vue';
-import { generalInformationActionTypes } from '@/store/modules/details/general-information/actions';
 
 @Component({
   components: {
@@ -38,12 +37,7 @@ import { generalInformationActionTypes } from '@/store/modules/details/general-i
     NavBar
   }
 })
-export default class Home extends Vue {
-  createProcess(phase: number) {
-    this.$store.dispatch(generalInformationActionTypes.UPDATE_GENERAL_INFORMATION, { phase });
-    this.$router.push({ path: '/details/new' });
-  }
-}
+export default class Home extends Vue {}
 </script>
 
 <style lang="scss" scoped>
@@ -85,8 +79,11 @@ export default class Home extends Vue {
     width: 150px;
     text-align: left;
 
-    > div {
+    > * {
+      display: block;
       padding: $size-unit / 2 0;
+      text-decoration: inherit;
+      color: inherit;
 
       &:not(:last-of-type) {
         border-bottom: 1px solid $color-grey;
