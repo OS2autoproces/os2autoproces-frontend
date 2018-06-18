@@ -11,7 +11,7 @@
 
                     <DetailsMenu />
 
-                    <Button v-if="id === 'new'" class="report-button" @click="report">Indberet</Button>
+                    <Button v-if="phase" class="report-button" @click="report">Indberet</Button>
                     <Button v-else class="save-button" @click="save">Gem</Button>
                 </div>
             </div>
