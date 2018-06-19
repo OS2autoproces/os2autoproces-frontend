@@ -16,21 +16,23 @@
             </div>
 
             <div class="details-wrapper">
-                <DetailsHeader />
+                <div class="details-content">
+                    <DetailsHeader />
 
-                <div class="form-sections">
-                    <GeneralInformationForm />
-                    <ChallengesForm />
-                </div>
+                    <div class="form-sections">
+                        <GeneralInformationForm />
+                        <ChallengesForm />
+                    </div>
 
-                <div class="usage">
-                    <div class="usage-heading">Antal kommuner der bruger løsningen</div>
-                    <IntervalSelector value="10 + " disabled />
-                </div>
+                    <div class="usage">
+                        <div class="usage-heading">Antal kommuner der bruger løsningen</div>
+                        <IntervalSelector value="10 +" disabled />
+                    </div>
 
-                <div class="comments">
-                    <div class="comments-heading">Kommentarer</div>
-                    <Comments />
+                    <div class="comments">
+                        <div class="comments-heading">Kommentarer</div>
+                        <Comments />
+                    </div>
                 </div>
             </div>
         </div>
@@ -106,8 +108,11 @@ export default class Details extends Vue {
 
 .details-wrapper {
   flex-grow: 1;
-  margin: 0 auto;
+}
+
+.details-content {
   margin-top: $size-unit;
+  margin: 0 auto;
   max-width: 1200px;
 }
 
