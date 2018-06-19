@@ -33,7 +33,7 @@ function getMockedSearchResult(filters: SearchFilters) {
       {
         name: 'Rekruttering',
         resume:
-          'Resume, resume, resume, resume, resume, resume, resume, resume, resume, resume, resume, resume, resume, resume, resume, resume',
+          'Resume, resume, resume, resume, resume, resume, resume, resume, resume, resume, resume, resume, resume, resume, resume, resume,Resume, resume, resume, resume, resume, resume, resume, resume, resume, resume, resume, resume, resume, resume, resume, resume',
         potential: 2,
         municipality: 'Syddjurs Kommune',
         id: '56472927382',
