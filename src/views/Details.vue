@@ -1,7 +1,6 @@
 <template>
     <div class="details">
         <NavBar />
-
         <div class="page">
             <div class="side-bar">
                 <div class="side-bar-content">
@@ -16,21 +15,21 @@
                 </div>
             </div>
 
-            <div class=" details-wrapper ">
+            <div class="details-wrapper">
                 <DetailsHeader />
 
-                <div class="form-sections ">
+                <div class="form-sections">
                     <GeneralInformationForm />
                     <ChallengesForm />
                 </div>
 
-                <div class="usage ">
-                    <div class="usage-heading ">Antal kommuner der bruger løsningen</div>
+                <div class="usage">
+                    <div class="usage-heading">Antal kommuner der bruger løsningen</div>
                     <IntervalSelector value="10 + " disabled />
                 </div>
 
-                <div class="comments ">
-                    <div class="comments-heading ">Kommentarer</div>
+                <div class="comments">
+                    <div class="comments-heading">Kommentarer</div>
                     <Comments />
                 </div>
             </div>
