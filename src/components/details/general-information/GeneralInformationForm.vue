@@ -56,7 +56,7 @@
                 <TextArea :disabled="state.disabled" @change="update({resume: $event})" :value="state.resume" />
             </div>
             <div class="general-phases">
-                <Phases :disabled="state.disabled" />
+                <Phases :disabled="state.disabled" :value="state.phase" @change="update({phase: $event})" />
                 <SelectionField :disabled="state.disabled" class="status-selection" :value="state.status" @change="update({status: $event})" :items="statusItems" />
             </div>
         </div>
