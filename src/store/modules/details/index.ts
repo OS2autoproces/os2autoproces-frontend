@@ -5,6 +5,7 @@ import { generalInformation } from '@/store/modules/details/general-information'
 import { actions } from '@/store/modules/details/actions';
 import { getters } from '@/store/modules/details/getters';
 import { challenges } from '@/store/modules/details/challenges';
+import { assessment } from '@/store/modules/details/assessment';
 
 const namespaced = true;
 
@@ -18,6 +19,7 @@ export const details: Module<DetailsState, RootState> = {
   actions,
   modules: {
     generalInformation,
-    challenges
+    challenges,
+    assessment
   }
 };
