@@ -15,6 +15,10 @@ COPY src /app/src
 COPY public /app/public
 COPY tsconfig.json /app
 
+# Copy babel for different browser support
+COPY babel.config.js /app
+COPY .postcssrc.js /app
+
 # Build the application
 RUN npm run build
 
