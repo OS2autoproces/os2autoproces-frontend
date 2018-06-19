@@ -2,47 +2,29 @@
   <div class="details">
     <NavBar />
 
-    <div class="page">
-      <div class="details-menu">
-        <DetailsMenu :items="menuItems" />
-      </div>
+        <div class="page">
+            <div class="details-menu">
+                <DetailsMenu @save="save" />
+            </div>
 
             <div class="details-wrapper">
-                <DetailsHeader />
+                <div class="details-content">
+                    <DetailsHeader />
 
-                <div class="form-sections">
-                    <FormSection :heading="menuItems[0].heading" :id="menuItems[0].id" :disabled="!editGeneralInformation" always-open @edit="editGeneralInformation = !editGeneralInformation">
-                        <GeneralInformationForm :disabled="!editGeneralInformation" />
-                    </FormSection>
+                    <div class="form-sections">
+                        <GeneralInformationForm />
+                        <ChallengesForm />
+                    </div>
 
-          <FormSection :heading="menuItems[1].heading" :id="menuItems[1].id">
-            
-          </FormSection>
+                    <div class="usage">
+                        <div class="usage-heading">Antal kommuner der bruger løsningen</div>
+                        <IntervalSelector value="10 +" disabled />
+                    </div>
 
-          <FormSection :heading="menuItems[2].heading" :id="menuItems[2].id">
-            <TimeAndProcess />
-          </FormSection>
-
-          <FormSection :heading="menuItems[3].heading" :id="menuItems[3].id">
-
-          </FormSection>
-
-          <FormSection :heading="menuItems[4].heading" :id="menuItems[4].id">
-
-          </FormSection>
-
-          <FormSection :heading="menuItems[5].heading" :id="menuItems[5].id">
-
-          </FormSection>
-
-          <FormSection :heading="menuItems[6].heading" :id="menuItems[6].id">
-
-          </FormSection>
-        </div>
-
-                <div class="comments">
-                    <div class="comments-heading">Kommentarer</div>
-                    <Comments />
+                    <div class="comments">
+                        <div class="comments-heading">Kommentarer</div>
+                        <Comments />
+                    </div>
                 </div>
             </div>
         </div>
@@ -53,6 +35,7 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
+import { Action } from 'vuex-class';
 import NavBar from '../components/common/NavBar.vue';
 import Comments from '../components/comments/Comments.vue';
 import IntervalSelector from '../components/common/inputs/IntervalSelector.vue';
@@ -60,7 +43,8 @@ import FormSection from '@/components/details/FormSection.vue';
 import DetailsMenu from '@/components/details/DetailsMenu.vue';
 import DetailsHeader from '@/components/details/DetailsHeader.vue';
 import GeneralInformationForm from '@/components/details/general-information/GeneralInformationForm.vue';
-import TimeAndProcess from '@/components/details/time-process/TimeAndProcess.vue';
+import ChallengesForm from '@/components/details/challenges/ChallengesForm.vue';
+import { detailsActionTypes } from '@/store/modules/details/actions';
 
 @Component({
   components: {
@@ -71,21 +55,11 @@ import TimeAndProcess from '@/components/details/time-process/TimeAndProcess.vue
     GeneralInformationForm,
     Comments,
     IntervalSelector,
-    TimeAndProcess
+    ChallengesForm
   }
 })
 export default class Details extends Vue {
-  editGeneralInformation = false;
-
-  menuItems = [
-    { heading: 'Grundlæggende oplysninger', id: 'general-information' },
-    { heading: 'Problemstillinger', id: 'challenges' },
-    { heading: 'Tids og proces foretagen', id: 'process' },
-    { heading: 'Faglig vurdering', id: 'assessment' },
-    { heading: 'Specifikation', id: 'specification' },
-    { heading: 'Udvikling og implementering', id: 'implementation' },
-    { heading: 'Drift', id: 'operation' }
-  ];
+  @Action(detailsActionTypes.SAVE) save: any;
 }
 </script>
 
@@ -108,8 +82,11 @@ export default class Details extends Vue {
 
 .details-wrapper {
   flex-grow: 1;
-  margin: 0 auto;
+}
+
+.details-content {
   margin-top: $size-unit;
+  margin: 0 auto;
   max-width: 1200px;
 }
 

@@ -14,7 +14,7 @@
                         </router-link>
                     </div>
 
-                    <SearchSorting v-if="result" />
+                    <SearchSorting v-if="result" :sorting="filters.sorting" @change="updateFilters({ sorting: $event })" />
 
                     <div class="results" v-if="result">
                         <router-link :to="'/details/' + process.id" class="search-result-link" v-for="process in result.processes" :key="process.id">
@@ -52,12 +52,15 @@ import { searchActionTypes } from '../store/modules/search/actions';
 })
 export default class Search extends Vue {
   // TODO: Search page
-  // Sorting
   // Field, time and system filters
   // Call backend
   // Logout link
 
   @Action(searchActionTypes.UPDATE_FILTERS) updateFilters: any;
+
+  get filters() {
+    return this.$store.state.search.filters;
+  }
 
   get result() {
     return this.$store.state.search.result;
