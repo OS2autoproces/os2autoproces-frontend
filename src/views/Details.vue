@@ -14,6 +14,7 @@
                     <div class="form-sections">
                         <GeneralInformationForm />
                         <ChallengesForm />
+                        <TimeAndProcessForm />
                     </div>
 
                     <div class="usage">
@@ -44,6 +45,7 @@ import DetailsMenu from '@/components/details/DetailsMenu.vue';
 import DetailsHeader from '@/components/details/DetailsHeader.vue';
 import GeneralInformationForm from '@/components/details/general-information/GeneralInformationForm.vue';
 import ChallengesForm from '@/components/details/challenges/ChallengesForm.vue';
+import TimeAndProcessForm from '@/components/details/time-process/TimeAndProcessForm.vue';
 import { detailsActionTypes } from '@/store/modules/details/actions';
 
 @Component({
@@ -55,7 +57,8 @@ import { detailsActionTypes } from '@/store/modules/details/actions';
     GeneralInformationForm,
     Comments,
     IntervalSelector,
-    ChallengesForm
+    ChallengesForm,
+    TimeAndProcessForm
   }
 })
 export default class Details extends Vue {
