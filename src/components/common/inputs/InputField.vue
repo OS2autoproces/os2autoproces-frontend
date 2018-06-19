@@ -1,6 +1,6 @@
 <template>
   <div>
-    <input :placeholder="placeholder" v-if="!disabled" :value="value" @input="valueChanged">
+    <input :placeholder="placeholder" v-if="!disabled" :value="value" @input="valueChanged" @keyup.enter="submit">
     <div v-if="disabled">{{value}}</div>
   </div>
 </template>
@@ -16,6 +16,10 @@ export default class InputField extends Vue {
 
   valueChanged(event: any) {
     this.$emit('change', event.target.value);
+  }
+
+  submit(event: any) {
+    this.$emit('submit', event.target.value);
   }
 }
 </script>
