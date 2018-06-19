@@ -2,25 +2,25 @@
   <div>
     <div class="tag-list">
       <div v-for="(tag, index) in value" :key="index" class="tag-item">
-        <span class="tag">
-          {{tag}}
-        </span>
+        {{tag}}
         <span role="button" @click="removeTag(index)" class="delete-icon" v-if="!disabled">
           <DeleteIcon />
         </span>
       </div>
     </div>
-    <input v-if="!disabled" class="tag-input" :placeholder="placeholder" @keyup.enter="valueChanged">
+    <InputField v-if="!disabled" class="tag-input" :placeholder="placeholder" @submit="valueChanged" />
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import DeleteIcon from '@/components/icons/DeleteIcon.vue';
+import InputField from '@/components/common/inputs/InputField.vue';
 
 @Component({
   components: {
-    DeleteIcon
+    DeleteIcon,
+    InputField
   }
 })
 export default class TagSelector extends Vue {
@@ -42,36 +42,30 @@ export default class TagSelector extends Vue {
 @import '@/styles/variables.scss';
 
 .tag-list {
-  display: flex;
   padding: $size-unit/3 0;
+
   .tag-item {
+    display: inline-block;
+    text-align: center;
     position: relative;
-    display: flex;
     color: $color-background;
     background-color: $color-secondary;
     border-radius: $size-unit;
     padding: 1px 5px;
     margin: $size-unit/2 $size-unit $size-unit/2 0;
-    .tag {
-      display: flex;
-      justify-content: center;
-      min-width: $size-unit * 7;
-    }
+    min-width: $size-unit * 7;
+
     .delete-icon {
       position: absolute;
       right: $size-unit / -2;
       top: $size-unit / -2;
       width: $size-unit;
       height: $size-unit;
-      cursor: pointer;
     }
   }
 }
+
 .tag-input {
-  border: 1px solid $color-primary;
-  border-radius: $size-unit * 2;
-  padding-left: 10px !important;
-  height: $size-unit * 2;
   width: 33%;
 }
 </style>
