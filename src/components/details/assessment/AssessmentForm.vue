@@ -1,5 +1,5 @@
 <template>
-    <FormSection heading="Faglig vurdering" id="assessment" :disabled="state.disabled" @edit="update({ disabled: $event })" always-open>
+    <FormSection heading="Faglig vurdering" id="assessment" :disabled="state.disabled" @edit="update({ disabled: $event })">
         <div class="assessment" :class="{ disabled: state.disabled }">
             <div class="question">
                 <div class="label">I hvor høj grad er der faglig vurdering?
@@ -83,7 +83,7 @@ export default class AssessmentForm extends Vue {
 .assessment {
   margin: 4 * $size-unit;
   margin-top: $size-unit;
-  padding: $size-unit;
+  padding: 2 * $size-unit;
   border: 1px solid transparent;
 
   &:not(.disabled) {
