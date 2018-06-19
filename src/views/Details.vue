@@ -74,7 +74,7 @@ export default class Details extends Vue {
   @Prop() phase!: string;
 
   @Action(detailsActionTypes.SAVE) save: any;
-  @Action(detailsActionTypes.SAVE) report: any;
+  @Action(detailsActionTypes.REPORT) report: any;
   @Action(generalInformationActionTypes.UPDATE_GENERAL_INFORMATION) updateGeneralInformation: any;
 
   mounted() {
