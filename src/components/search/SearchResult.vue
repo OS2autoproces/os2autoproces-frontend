@@ -60,6 +60,12 @@ export default class SearchResult extends Vue {
 <style lang="scss" scoped>
 @import '../../styles/variables';
 
+.resume {
+  overflow: hidden;
+  line-height: $resume-line-height;
+  max-height: $resume-line-height * 4;
+}
+
 .result {
   border: 2px solid $color-secondary;
   border-radius: $size-unit;
