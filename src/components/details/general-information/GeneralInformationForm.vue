@@ -31,7 +31,7 @@
                         <SelectionField :disabled="state.disabled" :value="state.contactPerson" @change="update({contactPerson: $event})" :items="contactPersons" />
                     </WellItem>
                     <WellItem label="Mail:">
-                        <SelectionField :disabled="state.disabled" :value="state.email" @change="update({email: $event})" :items="emails"/>
+                        <SelectionField :disabled="state.disabled" :value="state.email" @change="update({email: $event})" :items="emails" />
                     </WellItem>
                     <WellItem label="Procestid:">
                         <InputField :disabled="state.disabled" :value="state.processTime" @change="update({processTime: $event})" />
@@ -40,10 +40,10 @@
 
                 <div>
                     <WellItem label="Leverandør:">
-                        <SelectionField :disabled="state.disabled" :value="state.supplier" @change="update({supplier: $event})" :items="suppliers"/>
+                        <SelectionField :disabled="state.disabled" :value="state.supplier" @change="update({supplier: $event})" :items="suppliers" />
                     </WellItem>
                     <WellItem label="Projektleder:">
-                        <SelectionField :disabled="state.disabled" :value="state.projectManager" @change="update({projectManager: $event})" :items="projectManagers"/>
+                        <SelectionField :disabled="state.disabled" :value="state.projectManager" @change="update({projectManager: $event})" :items="projectManagers" />
                     </WellItem>
                 </div>
 
@@ -53,12 +53,37 @@
 
         <div class="resume-phases">
             <div class="resume">
-                <p>Resume</p>
+                <h2>Resume</h2>
                 <TextArea :disabled="state.disabled" @change="update({resume: $event})" :value="state.resume" />
             </div>
             <div class="general-phases">
                 <Phases :disabled="state.disabled" :value="state.phase" @change="update({phase: $event})" />
                 <SelectionField :disabled="state.disabled" class="status-selection" :value="state.status" @change="update({status: $event})" :items="statusItems" />
+            </div>
+        </div>
+        <div>
+            <div v-if="state.status === Status.waiting">
+                <WarningIcon />
+                <h2 class="comments-heading">Hvorfor Afventes processen?</h2>
+                <TextArea class="status-comment-field" :disabled="state.disabled" @change="update({waiting: $event})" :value="state.waiting" />
+            </div>
+
+            <div v-if="state.status === Status.disapproved">
+                <WarningIcon />
+                <h2 class="comments-heading">Hvorfor er processen afvist?</h2>
+                <TextArea class="status-comment-field" :disabled="state.disabled" @change="update({disapproved: $event})" :value="state.disapproved" />
+            </div>
+
+            <div v-if="state.status === Status.stored">
+                <WarningIcon />
+                <h2 class="comments-heading">Hvorfor er processen arkiveret?</h2>
+                <TextArea class="status-comment-field" :disabled="state.disabled" @change="update({stored: $event})" :value="state.stored" />
+            </div>
+
+            <div v-if="state.status === Status.unsuccessful">
+                <WarningIcon />
+                <h2 class="comments-heading">Hvorfor er processen mislykket?</h2>
+                <TextArea class="status-comment-field" :disabled="state.disabled" @change="update({unsuccessful: $event})" :value="state.unsuccessful" />
             </div>
         </div>
     </FormSection>
@@ -77,6 +102,8 @@ import AssociatedPersonsInput from '@/components/details/general-information/Ass
 import Well from '@/components/common/Well.vue';
 import WellItem from '@/components/common/WellItem.vue';
 import FormSection from '@/components/details/FormSection.vue';
+import { Status } from '@/store/modules/details/general-information/state';
+import WarningIcon from '@/components/icons/WarningIcon.vue';
 
 @Component({
   components: {
@@ -87,7 +114,8 @@ import FormSection from '@/components/details/FormSection.vue';
     AssociatedPersonsInput,
     Well,
     FormSection,
-    WellItem
+    WellItem,
+    WarningIcon
   }
 })
 export default class GeneralInformationForm extends Vue {
@@ -97,24 +125,33 @@ export default class GeneralInformationForm extends Vue {
     return this.$store.state.details.generalInformation;
   }
 
+  get Status() {
+    return Status;
+  }
+
+  statusItems: string[] = [
+    'Igang',
+    'Afventer',
+    'Afvist',
+    'Arkiveret',
+    'Mislykket'
+  ];
+
   fields = ['Teknik', 'Diverse', 'ETC'];
 
   visibilityLevels = ['Privat', 'Tværkommunalt', 'Kommunalt'];
 
   kleNumbers = ['1234', '134324', '54353'];
 
-  statusItems = ['Afventer', 'Igang', 'Produktions Klar'];
-  
   departments = ['some-department'];
 
   contactPersons = ['Christian', 'Lars', 'Henrik'];
 
   suppliers = ['Christian', 'Lars', 'Henrik'];
-  
+
   emails = ['mail1@1', 'mail2@2', 'mail3@3'];
 
   projectManagers = ['Christian', 'Lars', 'Henrik'];
-
 }
 </script>
 
@@ -139,6 +176,10 @@ export default class GeneralInformationForm extends Vue {
 
   .resume {
     width: 30%;
+    h2 {
+      @include textarea-heading;
+      margin-bottom: $size-unit/2;
+    }
   }
   .general-phases {
     display: flex;
@@ -152,8 +193,20 @@ export default class GeneralInformationForm extends Vue {
   }
 }
 
-p {
-    @include textarea-heading;
-    margin-bottom: $size-unit/2;
+svg {
+  vertical-align: middle;
+  width: 40px;
+  height: 40px;
+}
+
+.comments-heading {
+  @include textarea-heading;
+  display: inline;
+  vertical-align: middle;
+  margin-left: $size-unit;
+}
+
+.status-comment-field {
+  padding-top: $size-unit;
 }
 </style>
