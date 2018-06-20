@@ -1,10 +1,10 @@
 <template>
-  <div class="well-container">
-    <div class="section-wrap">
-      <slot />
+    <div class="well-container">
+        <div class="section-wrap">
+            <slot />
+        </div>
+        <slot name="well-footer" />
     </div>
-    <slot name="well-footer"/>
-  </div>
 </template>
 
 <script lang="ts">
@@ -31,6 +31,10 @@ export default class Well extends Vue {}
     > * {
       flex: 1 1 1px;
       padding: 0 $size-unit/2;
+
+      > *:not(:last-child) {
+        margin-bottom: $size-unit;
+      }
 
       &:not(:last-of-type) {
         border-right: 1px solid $color-background;
