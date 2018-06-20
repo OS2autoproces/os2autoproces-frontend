@@ -2,50 +2,48 @@
     <FormSection heading="Grundlæggende oplysninger" id="general-information" :disabled="state.disabled" @edit="update({disabled: $event})" always-open>
         <div class="general-information-wrapper">
             <Well>
-                <div class="section-col">
-                    <div class="labels">
-                        <div>KLE-nr:</div>
-                        <div>Lov og paragraf:</div>
-                    </div>
-                    <div class="fields">
+                <div>
+                    <WellItem label="KLE-nr:">
                         <SelectionField :disabled="state.disabled" :value="state.kleNumber" @change="update({kleNumber: $event})" :items="kleNumbers" />
+                    </WellItem>
+                    <WellItem label="Lov of paragraf">
                         <InputField :disabled="state.disabled" :value="state.paragraf" @change="update({paragraf: $event})" />
-                    </div>
+                    </WellItem>
                 </div>
-                <div class="section-col">
-                    <div class="labels">
-                        <div>Afdeling:</div>
-                        <div>Fagområde:</div>
-                        <div>Synlighed:</div>
-                    </div>
-                    <div class="fields">
+
+                <div>
+                    <WellItem label="Afdeling:">
                         <InputField :disabled="state.disabled" :value="state.department" @change="update({department: $event})" />
+                    </WellItem>
+                    <WellItem label="Fagområde:">
                         <SelectionField :disabled="state.disabled" :value="state.field" @change="update({field: $event})" :items="fields" />
+                    </WellItem>
+                    <WellItem label="Synlighed:">
                         <SelectionField :disabled="state.disabled" :value="state.visibility" @change="update({visibility: $event})" :items="visibilityLevels" />
-                    </div>
+                    </WellItem>
                 </div>
-                <div class="section-col">
-                    <div class="labels">
-                        <div>Kontaktperson:</div>
-                        <div>Mail:</div>
-                        <div>Procestid:</div>
-                    </div>
-                    <div class="fields">
+
+                <div>
+                    <WellItem label="Kontaktperson:">
                         <InputField :disabled="state.disabled" :value="state.contactPerson" @change="update({contactPerson: $event})" />
-                        <InputField :disabled="state.disabled" :value="state.email" @change="update({email: $event})" />
-                        <InputField :disabled="state.disabled" :value="state.procesTime" @change="update({procesTime: $event})" />
-                    </div>
+                    </WellItem>
+                    <WellItem label="Mail:">
+                        <InputField :disabled="state.disabled" :value="state.contactPerson" @change="update({email: $event})" />
+                    </WellItem>
+                    <WellItem label="Procestid:">
+                        <InputField :disabled="state.disabled" :value="state.contactPerson" @change="update({processTime: $event})" />
+                    </WellItem>
                 </div>
-                <div class="section-col">
-                    <div class="labels">
-                        <div>Leverandør:</div>
-                        <div>Projektleder:</div>
-                    </div>
-                    <div class="fields">
-                        <InputField :disabled="state.disabled" :value="state.supplier" @change="update({supplier: $event})" />
-                        <InputField :disabled="state.disabled" :value="state.projectManager" @change="update({projectManager: $event})" />
-                    </div>
+
+                <div>
+                    <WellItem label="Leverandør:">
+                        <InputField :disabled="state.disabled" :value="state.contactPerson" @change="update({supplier: $event})" />
+                    </WellItem>
+                    <WellItem label="Projektleder::">
+                        <InputField :disabled="state.disabled" :value="state.contactPerson" @change="update({projectManager: $event})" />
+                    </WellItem>
                 </div>
+
                 <AssociatedPersonsInput slot="well-footer" :disabled="state.disabled" />
             </Well>
         </div>
@@ -74,6 +72,7 @@ import TextArea from '@/components/common/inputs/TextArea.vue';
 import Phases from '@/components/common/inputs/Phases.vue';
 import AssociatedPersonsInput from '@/components/details/general-information/AssociatedPersonsInput.vue';
 import Well from '@/components/common/Well.vue';
+import WellItem from '@/components/common/WellItem.vue';
 import FormSection from '@/components/details/FormSection.vue';
 
 @Component({
@@ -84,7 +83,8 @@ import FormSection from '@/components/details/FormSection.vue';
     Phases,
     AssociatedPersonsInput,
     Well,
-    FormSection
+    FormSection,
+    WellItem
   }
 })
 export default class GeneralInformationForm extends Vue {
@@ -114,23 +114,6 @@ export default class GeneralInformationForm extends Vue {
     display: flex;
     flex-direction: row;
     padding: $size-unit;
-  }
-
-  .section-col {
-    display: flex;
-
-    .labels {
-      width: 50%;
-      > div {
-        line-height: $size-unit * 2;
-        text-align: left;
-      }
-    }
-
-    .labels > div,
-    .fields > * {
-      margin-bottom: $size-unit;
-    }
   }
 }
 
