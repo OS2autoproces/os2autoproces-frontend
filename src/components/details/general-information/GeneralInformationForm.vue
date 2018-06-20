@@ -58,7 +58,7 @@
             </div>
             <div class="general-phases">
                 <Phases :disabled="state.disabled" :value="state.phase" @change="update({phase: $event})" />
-                <SelectionField :disabled="state.disabled" class="status-selection" :value="state.status" @change="update({status: $event})" :items="statusItems" />
+                <SelectionField :disabled="state.disabled" class="status-selection" :value="state.status" @change="update({status: $event})" :items="statuses" />
             </div>
         </div>
         <div>
@@ -120,22 +120,16 @@ import WarningIcon from '@/components/icons/WarningIcon.vue';
 })
 export default class GeneralInformationForm extends Vue {
   @Action(generalInformationActionTypes.UPDATE_GENERAL_INFORMATION) update: any;
+      Status = Status;
 
   get state() {
     return this.$store.state.details.generalInformation;
   }
 
-  get Status() {
-    return Status;
+  get statuses() {
+      return Object.values(Status);
   }
 
-  statusItems: string[] = [
-    'Igang',
-    'Afventer',
-    'Afvist',
-    'Arkiveret',
-    'Mislykket'
-  ];
 
   fields = ['Teknik', 'Diverse', 'ETC'];
 
