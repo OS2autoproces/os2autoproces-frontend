@@ -10,12 +10,12 @@ COPY package-lock.json /app
 # Install dependecies
 RUN npm install
 
-# Copy build configuration file
+# Copy soruce files
 COPY src /app/src
 COPY public /app/public
-COPY tsconfig.json /app
 
-# Copy babel for different browser support
+# Copy build configuration file
+COPY tsconfig.json /app
 COPY babel.config.js /app
 COPY .postcssrc.js /app
 
