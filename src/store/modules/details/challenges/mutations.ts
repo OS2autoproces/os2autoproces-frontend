@@ -8,6 +8,6 @@ export const ChallengesMutationTypes = {
 
 export const mutations: MutationTree<ChallengesState> = {
   updateChallenges(state: ChallengesState, payload: Partial<ChallengesState>) {
-    state = merge(state, payload);
+    merge(state, payload);
   }
 };

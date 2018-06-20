@@ -8,6 +8,6 @@ export const TimeAndProcessMutationsTypes = {
 
 export const mutations: MutationTree<TimeAndProcess> = {
   updateTimeAndProcess(state: TimeAndProcess, payload: Partial<TimeAndProcess>) {
-    state = merge(state, payload);
+    merge(state, payload);
   }
 };
