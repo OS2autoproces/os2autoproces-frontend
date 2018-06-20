@@ -6,7 +6,7 @@
                     <WellItem label="KLE-nr:">
                         <SelectionField :disabled="state.disabled" :value="state.kleNumber" @change="update({kleNumber: $event})" :items="kleNumbers" />
                     </WellItem>
-                    <WellItem label="Lov of paragraf">
+                    <WellItem label="Lov of paragraf:">
                         <InputField :disabled="state.disabled" :value="state.paragraf" @change="update({paragraf: $event})" />
                     </WellItem>
                 </div>
@@ -39,7 +39,7 @@
                     <WellItem label="Leverandør:">
                         <InputField :disabled="state.disabled" :value="state.supplier" @change="update({supplier: $event})" />
                     </WellItem>
-                    <WellItem label="Projektleder::">
+                    <WellItem label="Projektleder:">
                         <InputField :disabled="state.disabled" :value="state.projectManager" @change="update({projectManager: $event})" />
                     </WellItem>
                 </div>
