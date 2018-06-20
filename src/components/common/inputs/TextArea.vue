@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="text-area" v-if="!disabled">
-            <textarea v-model="value" @input="valueChanged" :placeholder="placeholder" :class="{ 'no-resize': noResize }" />
+            <textarea :value="value" @input="valueChanged" :placeholder="placeholder" :class="{ 'no-resize': noResize }" />
             <div class="text-area-overlay">
                 <div v-if="maxLength" class="max-length-label">({{currentLength}} ud af {{maxLength}} tegn)</div>
                 <slot />
