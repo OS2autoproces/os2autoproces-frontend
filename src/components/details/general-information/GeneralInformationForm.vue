@@ -57,10 +57,18 @@
                 <TextArea :disabled="state.disabled" @change="update({resume: $event})" :value="state.resume" />
             </div>
             <div class="general-phases">
-                <Phases :disabled="state.disabled" :value="state.phase" @change="update({phase: $event})" />
+                <Phases :disabled="state.disabled" :value="state.phase" @change="phaseChanged($event)" />
                 <SelectionField :disabled="state.disabled" class="status-selection" :value="state.status" @change="update({status: $event})" :items="statuses" />
             </div>
         </div>
+
+        <div v-if="isPhaseChanged" class="phased-changed">
+            <WarningIcon />
+            <div style="{width: 100px}">
+                Når du skifter fase, skal yderligere information om processen udfyldes
+            </div>
+        </div>
+
         <div>
             <div v-if="state.status === Status.waiting">
                 <WarningIcon />
@@ -120,16 +128,22 @@ import WarningIcon from '@/components/icons/WarningIcon.vue';
 })
 export default class GeneralInformationForm extends Vue {
   @Action(generalInformationActionTypes.UPDATE_GENERAL_INFORMATION) update: any;
-      Status = Status;
+  Status = Status;
+
+  isPhaseChanged = false;
 
   get state() {
     return this.$store.state.details.generalInformation;
   }
 
   get statuses() {
-      return Object.values(Status);
+    return Object.values(Status);
   }
 
+  phaseChanged(phase: any) {
+    this.isPhaseChanged = true;
+    this.update({ phase });
+  }
 
   fields = ['Teknik', 'Diverse', 'ETC'];
 
@@ -202,5 +216,17 @@ svg {
 
 .status-comment-field {
   padding-top: $size-unit;
+}
+
+.phased-changed {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: $size-unit;
+    > div {
+        color: $color-secondary;
+        padding-left: $size-unit;
+        width: 300px;
+    }
 }
 </style>
