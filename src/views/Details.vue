@@ -1,41 +1,39 @@
 <template>
-    <div class="details">
-        <NavBar />
-        <div class="page">
-            <div class="side-bar">
-                <div class="side-bar-content">
-                    <router-link to="/search" class="search-page-link">
-                        <ArrowLeftIcon /> Tilbage til søgning
-                    </router-link>
+  <div class="details">
+    <NavBar />
+    <div class="page">
+      <div class="side-bar">
+        <div class="side-bar-content">
+          <router-link to="/search" class="search-page-link">
+            <ArrowLeftIcon /> Tilbage til søgning
+          </router-link>
 
-                    <DetailsMenu />
+          <DetailsMenu />
 
-                    <Button v-if="phase" class="report-button" @click="report">Indberet</Button>
-                    <Button v-else class="save-button" @click="save">Gem</Button>
-                </div>
-            </div>
+          <Button v-if="phase" class="report-button" @click="report">Indberet</Button>
+          <Button v-else class="save-button" @click="save">Gem</Button>
+        </div>
+      </div>
 
-            <div class="details-wrapper">
-                <div class="details-content">
-                    <DetailsHeader />
+      <div class="details-wrapper">
+        <div class="details-content">
+          <DetailsHeader />
 
-                    <div class="form-sections">
-                        <GeneralInformationForm />
-                        <ChallengesForm />
-                        <TimeAndProcessForm />
-                    </div>
+          <div class="form-sections">
+            <GeneralInformationForm />
+            <ChallengesForm />
+            <TimeAndProcessForm />
+          </div>
 
-                    <div class="usage">
-                        <div class="usage-heading">Antal kommuner der bruger løsningen</div>
-                        <IntervalSelector value="10 +" disabled />
-                    </div>
+          <div class="usage">
+            <div class="usage-heading">Antal kommuner der bruger løsningen</div>
+            <IntervalSelector value="10 +" disabled />
+          </div>
 
-                    <div class="comments">
-                        <div class="comments-heading">Kommentarer</div>
-                        <Comments />
-                    </div>
-                </div>
-            </div>
+          <div class="comments">
+            <div class="comments-heading">Kommentarer</div>
+            <Comments />
+          </div>
         </div>
       </div>
     </div>
@@ -80,7 +78,8 @@ export default class Details extends Vue {
 
   @Action(detailsActionTypes.SAVE) save: any;
   @Action(detailsActionTypes.REPORT) report: any;
-  @Action(generalInformationActionTypes.UPDATE_GENERAL_INFORMATION) updateGeneralInformation: any;
+  @Action(generalInformationActionTypes.UPDATE_GENERAL_INFORMATION)
+  updateGeneralInformation: any;
 
   mounted() {
     if (this.phase) {
