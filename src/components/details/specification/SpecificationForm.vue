@@ -50,8 +50,12 @@ export default class SpecificationForm extends Vue {
 h2 {
   @include heading;
   color: $color-secondary;
-  margin-bottom: $size-unit;
+  margin-bottom: $size-unit / 2;
   display: inline-block;
   margin-right: $size-unit;
+
+  &:not(:first-of-type) {
+    margin-top: 2 * $size-unit;
+  }
 }
 </style>
