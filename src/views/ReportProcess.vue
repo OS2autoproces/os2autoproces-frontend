@@ -12,12 +12,12 @@
                 <ArrowDownIcon />
 
                 <div class="phases">
-                    <div class="phase" role="button">Idé</div>
-                    <div class="phase" role="button">Foranalyse</div>
-                    <div class="phase" role="button">Specifikation</div>
-                    <div class="phase" role="button">Udvikling</div>
-                    <div class="phase" role="button">Implementering</div>
-                    <div class="phase" role="button">Drift</div>
+                    <router-link to="/details/new/1">Idé</router-link>
+                    <router-link to="/details/new/2">Foranalyse</router-link>
+                    <router-link to="/details/new/3">Specifikation</router-link>
+                    <router-link to="/details/new/4">Udvikling</router-link>
+                    <router-link to="/details/new/5">Implementering</router-link>
+                    <router-link to="/details/new/6">Drift</router-link>
                 </div>
             </div>
         </div>
@@ -79,8 +79,11 @@ export default class Home extends Vue {}
     width: 150px;
     text-align: left;
 
-    > .phase {
+    > * {
+      display: block;
       padding: $size-unit / 2 0;
+      text-decoration: inherit;
+      color: inherit;
 
       &:not(:last-of-type) {
         border-bottom: 1px solid $color-grey;

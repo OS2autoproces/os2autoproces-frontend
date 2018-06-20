@@ -13,4 +13,5 @@ export interface GeneralInformationState {
   resume: string; // resumé
   associatedPersons: string[];
   status: string;
+  phase: number;
 }
