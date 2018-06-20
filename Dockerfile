@@ -10,10 +10,14 @@ COPY package-lock.json /app
 # Install dependecies
 RUN npm install
 
-# Copy source files and TypeScript configuration for build
+# Copy source files
 COPY src /app/src
 COPY public /app/public
+
+# Copy build configuration files
 COPY tsconfig.json /app
+COPY babel.config.js /app
+COPY .postcssrc.js /app
 
 # Build the application
 RUN npm run build
