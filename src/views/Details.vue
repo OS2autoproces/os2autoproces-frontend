@@ -1,42 +1,43 @@
 <template>
-    <div class="details">
-        <NavBar />
-        <div class="page">
-            <div class="side-bar">
-                <div class="side-bar-content">
-                    <router-link to="/search" class="search-page-link">
-                        <ArrowLeftIcon /> Tilbage til søgning
-                    </router-link>
+  <div class="details">
+    <NavBar />
+    <div class="page">
+      <div class="side-bar">
+        <div class="side-bar-content">
+          <router-link to="/search" class="search-page-link">
+            <ArrowLeftIcon /> Tilbage til søgning
+          </router-link>
 
-                    <DetailsMenu />
+          <DetailsMenu />
 
-                    <Button v-if="phase" class="report-button" @click="report">Indberet</Button>
-                    <Button v-else class="save-button" @click="save">Gem</Button>
-                </div>
-            </div>
-
-            <div class="details-wrapper">
-                <div class="details-content">
-                    <DetailsHeader />
-
-                    <div class="form-sections">
-                        <GeneralInformationForm />
-                        <ChallengesForm />
-                    </div>
-
-                    <div class="usage">
-                        <div class="usage-heading">Antal kommuner der bruger løsningen</div>
-                        <IntervalSelector value="10 +" disabled />
-                    </div>
-
-                    <div class="comments">
-                        <div class="comments-heading">Kommentarer</div>
-                        <Comments />
-                    </div>
-                </div>
-            </div>
+          <Button v-if="phase" class="report-button" @click="report">Indberet</Button>
+          <Button v-else class="save-button" @click="save">Gem</Button>
         </div>
+      </div>
+
+      <div class="details-wrapper">
+        <div class="details-content">
+          <DetailsHeader />
+
+          <div class="form-sections">
+            <GeneralInformationForm />
+            <ChallengesForm />
+            <TimeAndProcessForm />
+          </div>
+
+          <div class="usage">
+            <div class="usage-heading">Antal kommuner der bruger løsningen</div>
+            <IntervalSelector value="10 +" disabled />
+          </div>
+
+          <div class="comments">
+            <div class="comments-heading">Kommentarer</div>
+            <Comments />
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -51,6 +52,7 @@ import DetailsHeader from '@/components/details/DetailsHeader.vue';
 import GeneralInformationForm from '@/components/details/general-information/GeneralInformationForm.vue';
 import Button from '@/components/common/inputs/Button.vue';
 import ChallengesForm from '@/components/details/challenges/ChallengesForm.vue';
+import TimeAndProcessForm from '@/components/details/time-process/TimeAndProcessForm.vue';
 import { detailsActionTypes } from '@/store/modules/details/actions';
 import { generalInformationActionTypes } from '@/store/modules/details/general-information/actions';
 import ArrowLeftIcon from '@/components/icons/ArrowLeftIcon.vue';
@@ -65,6 +67,7 @@ import ArrowLeftIcon from '@/components/icons/ArrowLeftIcon.vue';
     Comments,
     IntervalSelector,
     ChallengesForm,
+    TimeAndProcessForm,
     Button,
     ArrowLeftIcon
   }
@@ -75,7 +78,8 @@ export default class Details extends Vue {
 
   @Action(detailsActionTypes.SAVE) save: any;
   @Action(detailsActionTypes.REPORT) report: any;
-  @Action(generalInformationActionTypes.UPDATE_GENERAL_INFORMATION) updateGeneralInformation: any;
+  @Action(generalInformationActionTypes.UPDATE_GENERAL_INFORMATION)
+  updateGeneralInformation: any;
 
   mounted() {
     if (this.phase) {

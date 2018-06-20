@@ -7,4 +7,5 @@ export interface TimeAndProcess {
     isUserAffected: string;
     isCorporationAffected: string;
     timeConsumptionComments: string;
+    disabled: boolean;
 }
