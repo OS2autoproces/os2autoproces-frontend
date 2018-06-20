@@ -14,7 +14,7 @@ RUN npm install
 COPY src /app/src
 COPY public /app/public
 
-# Copy build configuration file
+# Copy build configuration files
 COPY tsconfig.json /app
 COPY babel.config.js /app
 COPY .postcssrc.js /app
