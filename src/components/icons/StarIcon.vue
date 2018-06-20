@@ -5,14 +5,14 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
+import { Vue, Component } from 'vue-property-decorator';
 
-@Component({})
+@Component
 export default class StarIcon extends Vue {}
 </script>
 
 <style lang="scss" scoped>
-@import "../../styles/variables";
+@import '../../styles/variables';
 
 polygon {
   fill: $color-background;

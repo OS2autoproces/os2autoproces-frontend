@@ -24,6 +24,9 @@
                         <ChallengesForm />
                         <TimeAndProcessForm />
                         <AssessmentForm />
+                        <SpecificationForm />
+                        <ImplementationForm />
+                        <OperationForm />
                     </div>
 
                     <div class="usage">
@@ -54,7 +57,10 @@ import GeneralInformationForm from '@/components/details/general-information/Gen
 import Button from '@/components/common/inputs/Button.vue';
 import ChallengesForm from '@/components/details/challenges/ChallengesForm.vue';
 import AssessmentForm from '@/components/details/assessment/AssessmentForm.vue';
+import SpecificationForm from '@/components/details/specification/SpecificationForm.vue';
+import ImplementationForm from '@/components/details/implementation/ImplementationForm.vue';
 import TimeAndProcessForm from '@/components/details/time-process/TimeAndProcessForm.vue';
+import OperationForm from '@/components/details/operation/OperationForm.vue';
 import { detailsActionTypes } from '@/store/modules/details/actions';
 import { generalInformationActionTypes } from '@/store/modules/details/general-information/actions';
 import ArrowLeftIcon from '@/components/icons/ArrowLeftIcon.vue';
@@ -71,6 +77,9 @@ import ArrowLeftIcon from '@/components/icons/ArrowLeftIcon.vue';
     ChallengesForm,
     AssessmentForm,
     TimeAndProcessForm,
+    SpecificationForm,
+    ImplementationForm,
+    OperationForm,
     Button,
     ArrowLeftIcon
   }

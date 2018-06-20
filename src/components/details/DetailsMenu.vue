@@ -58,12 +58,14 @@ export default class DetailsMenu extends Vue {
   }
 
   private getElementInView(items: MenuItem[]): MenuItem {
-    const viewportCenter = window.pageYOffset + window.innerHeight / 2;
+    const distanceFromTop = .2;
+
+    const breakpoint = window.pageYOffset + window.innerHeight * distanceFromTop;
 
     for (let i = items.length - 1; i >= 0; i--) {
       const element = document.getElementById(items[i].id);
 
-      if (element && element.offsetTop < viewportCenter) {
+      if (element && element.offsetTop < breakpoint) {
         return items[i];
       }
     }

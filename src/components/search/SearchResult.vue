@@ -90,7 +90,7 @@ $resume-line-height: 1em * 1.5;
   width: $size-unit * 2.5;
 }
 
-.rating /deep/ .star {
+.rating /deep/ svg {
   height: 16px;
   width: 16px;
 }
