@@ -53,7 +53,7 @@ export default class TextArea extends Vue {
 }
 
 .text-area-readonly {
-  white-space: pre;
+  white-space: pre-wrap;
 }
 
 textarea {
