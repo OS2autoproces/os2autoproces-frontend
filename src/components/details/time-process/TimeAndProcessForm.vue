@@ -38,7 +38,7 @@
           Lorem, ipsum dolor sit amet consectetur adipisicing elit. Esse unde neque eos, non et vel, aspernatur quod dolore perspiciatis dolorem minus rerum amet animi architecto mollitia alias! Debitis, eveniet sint!
         </InfoTooltip>
       </div>
-      <TextArea :disabled="disabled" @change="update({timeConsumptionComments: $event})" />
+      <TextArea :value="state.timeConsumptionComments" :disabled="disabled" @change="update({timeConsumptionComments: $event})" />
     </div>
 
     <FileUpload :disabled="disabled" />
