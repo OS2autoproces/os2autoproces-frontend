@@ -1,45 +1,33 @@
 <template>
   <FormSection heading="Tid og proces" id="time-and-process" :disabled="state.disabled" @edit="update({disabled: $event})">
+
     <Well>
       <div>
-        <div class="section-col">
-          <div class="labels">
-            <div>Antal gange processen gentages om året pr. medarbejder</div>
-            <div>Tidsforbrug pr. proces i minutter</div>
-            <div>Tidsbesparelse pr. proces i minutter</div>
-          </div>
-          <div class="fields">
-            <InputField :disabled="disabled" @change="update({processRepetition: $event})" />
-            <InputField :disabled="disabled" @change="update({processTimeConsumptionMinutes: $event})" />
-            <InputField :disabled="disabled" @change="update({processTimeSavingMinutes: $event})" />
-          </div>
-        </div>
+        <WellItem label="Antal gange processen gentages om året pr. medarbejder">
+            <InputField :value="state.processRepetition" :disabled="disabled" @change="update({processRepetition: $event})" />
+        </WellItem>
+        <WellItem label="Tidsforbrug pr. proces i minutter">
+            <InputField :disabled="disabled" :value="state.processTimeConsumptionMinutes" @change="update({processTimeConsumptionMinutes: $event})" />
+        </WellItem>
+        <WellItem label="Tidsbesparelse pr. proces i minutter">
+            <InputField :disabled="disabled" :value="state.processTimeSavingMinutes" @change="update({processTimeSavingMinutes: $event})" />
+        </WellItem>
       </div>
 
       <div>
-        <div class="section-col">
-          <div class="labels">
-            <div>Antal medarbejdere der foretager processen</div>
-            <div>Samlet tidsforbrug på nuværende proces</div>
-          </div>
-          <div class="fields">
-            <InputField :disabled="disabled" @change="update({coWorkersUsingTheProcess: $event})"/>
-            <InputField :disabled="disabled" @change="update({totalTimeConsumption: $event})"/>
-          </div>
-        </div>
+        <WellItem label="Antal medarbejdere der foretager processen">
+          <InputField :disabled="disabled" :value="state.coWorkersUsingTheProcess" @change="update({coWorkersUsingTheProcess: $event})" />
+        </WellItem>
+        <WellItem label="Samlet tidsforbrug på nuværende proces">
+          <InputField :disabled="disabled" :value="state.totalTimeConsumption" @change="update({totalTimeConsumption: $event})" />
+        </WellItem>
       </div>
 
       <div>
-        <div class="section-col">
-          <div class="labels">
-            <div>Er borgere påvirket?</div>
-            <div>Er virksomheder påvirket?</div>
-          </div>
-          <div class="fields">
-            <SelectionField :disabled="disabled" @change="update({isUserAffected: $event})"/>
-            <SelectionField :disabled="disabled" @change="update({isCorporationAffected: $event})" />
-          </div>
-        </div>
+        <WellItem label="Er borgere påvirket?">
+          <SelectionField :disabled="disabled" :value="state.isUserAffected" @change="update({isUserAffected: $event})" /> </WellItem>
+        <WellItem label="Er virksomheder påvirket?">
+          <SelectionField :disabled="disabled" :value="state.isCorporationAffected" @change="update({isCorporationAffected: $event})" /> </WellItem>
       </div>
     </Well>
 
@@ -50,7 +38,7 @@
           Lorem, ipsum dolor sit amet consectetur adipisicing elit. Esse unde neque eos, non et vel, aspernatur quod dolore perspiciatis dolorem minus rerum amet animi architecto mollitia alias! Debitis, eveniet sint!
         </InfoTooltip>
       </div>
-      <TextArea :disabled="disabled" @change="update({timeConsumptionComments: $event})"/>
+      <TextArea :disabled="disabled" @change="update({timeConsumptionComments: $event})" />
     </div>
 
     <FileUpload :disabled="disabled" />
@@ -61,6 +49,7 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import Well from '@/components/common/Well.vue';
+import WellItem from '@/components/common/WellItem.vue';
 import InfoTooltip from '@/components/common/InfoTooltip.vue';
 import TextArea from '@/components/common/inputs/TextArea.vue';
 import SelectionField from '@/components/common/inputs/SelectionField.vue';
@@ -78,7 +67,8 @@ import { TimeAndProcessActionTypes } from '@/store/modules/details/time-process/
     FormSection,
     SelectionField,
     FileUpload,
-    InputField
+    InputField,
+    WellItem
   }
 })
 export default class TimeAndProcessForm extends Vue {
@@ -104,23 +94,6 @@ export default class TimeAndProcessForm extends Vue {
     > span {
       margin-right: $size-unit/2;
     }
-  }
-}
-
-.section-col {
-  display: flex;
-  align-items: baseline;
-
-  .labels {
-    width: 70%;
-    margin-bottom: $size-unit;
-    > div {
-      line-height: $size-unit * 1.5;
-    }
-  }
-
-  .fields > * {
-    margin-bottom: $size-unit;
   }
 }
 </style>
