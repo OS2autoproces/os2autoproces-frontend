@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-select v-if="!disabled" :items="items" single-line @change="valueChanged" autocomplete :value="value" :append-icon="iconName" />
+    <v-select v-if="!disabled" :items="items" single-line @change="valueChanged" autocomplete :value="value" :append-icon="iconName" :placeholder="placeholder"/>
     <div v-if="disabled">{{value}}</div>
   </div>
 </template>
@@ -14,6 +14,7 @@ export default class SelectionField extends Vue {
   @Prop() items!: string[];
   @Prop({ default: 'keyboard_arrow_down' })
   iconName!: string;
+  @Prop() placeholder!: string;
   @Prop() disabled!: boolean;
 
   valueChanged(value: any) {
