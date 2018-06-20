@@ -10,7 +10,7 @@ COPY package-lock.json /app
 # Install dependecies
 RUN npm install
 
-# Copy soruce files
+# Copy source files
 COPY src /app/src
 COPY public /app/public
 
