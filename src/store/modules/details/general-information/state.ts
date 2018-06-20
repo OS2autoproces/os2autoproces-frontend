@@ -7,7 +7,7 @@ export interface GeneralInformationState {
   visibility: string; // synlighed
   contactPerson: string; // kontaktperson
   email: string; // mail
-  procesTime: string; // årlig procestid
+  processTime: string; // årlig procestid
   projectManager: string; // projektleder
   supplier: string; // leverrandør
   resume: string; // resumé
