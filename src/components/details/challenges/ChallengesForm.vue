@@ -15,33 +15,21 @@
         <h2>Udfordringer ved nuværende process</h2>
         <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
         <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({challenges: $event})" :disabled="state.disabled" :value="state.challenges" />
-        
+
         <Well>
-            <div class="section-col">
-                <div class="labels">
-                    Nuværende system:
-                </div>
-                <div class="fields">
-                    <SelectionField :items="processItems" :value="state.currentProcessTitle" :disabled="state.disabled" @change="update({currentProcessTitle: $event})" />
-                </div>
-            </div>
             <div>
-                <div class="section-col">
-                    <div class="labels">
-                        Startdato:
-                    </div>
-                    <div class="fields">
-                        <DatePicker :disabled="state.disabled" :value="state.startDate" @change="update({startDate: $event})" />
-                    </div>
-                </div>
-                <div class="section-col">
-                    <div class="labels">
-                        Forventet slutdato:
-                    </div>
-                    <div class="fields">
-                        <DatePicker :disabled="state.disabled" :value="state.expectedEndDate" @change="update({expectedEndDate: $event})" />
-                    </div>
-                </div>
+                <WellItem label="Nuværende system:">
+                    <SelectionField :items="processItems" :value="state.currentProcessTitle" :disabled="state.disabled" @change="update({currentProcessTitle: $event})" />
+                </WellItem>
+            </div>
+
+            <div>
+                <WellItem label="Startdato:">
+                    <DatePicker :disabled="state.disabled" :value="state.startDate" @change="update({startDate: $event})" />
+                </WellItem>
+                <WellItem label="Forventet slutdato:">
+                    <DatePicker :disabled="state.disabled" :value="state.expectedEndDate" @change="update({expectedEndDate: $event})" />
+                </WellItem>
             </div>
         </Well>
     </FormSection>
@@ -57,6 +45,7 @@ import DatePicker from '@/components/common/inputs/DatePicker.vue';
 import FormSection from '@/components/details/FormSection.vue';
 import Well from '@/components/common/Well.vue';
 import InfoTooltip from '@/components/common/InfoTooltip.vue';
+import WellItem from '@/components/common/WellItem.vue';
 
 @Component({
   components: {
@@ -65,7 +54,8 @@ import InfoTooltip from '@/components/common/InfoTooltip.vue';
     DatePicker,
     Well,
     FormSection,
-    InfoTooltip
+    InfoTooltip,
+    WellItem
   }
 })
 export default class ChallengesForm extends Vue {
@@ -90,21 +80,5 @@ h2 {
   margin-bottom: $size-unit;
   display: inline-block;
   margin-right: $size-unit;
-}
-
-.section-col {
-  display: flex;
-  align-items: baseline;
-  .labels {
-    width: 50%;
-    > div {
-      line-height: $size-unit * 2;
-    }
-  }
-
-  .label > div,
-  .fields > * {
-    margin-bottom: $size-unit;
-  }
 }
 </style>

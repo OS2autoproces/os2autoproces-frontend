@@ -1,7 +1,7 @@
 <template>
     <div class="scale" :class="{ disabled }">
         <div class="scale-option" v-for="item in items" :key="item.value" @click="select(item)">
-            <Checkbox :disabled="disabled" :value="item.value === value" />
+            <Checkbox class="checkbox" :disabled="disabled" :value="item.value === value" />
             <div class="label">{{item.name}}</div>
         </div>
     </div>
@@ -59,6 +59,11 @@ export default class LikertScale extends Vue {
   &:last-of-type .checkbox {
     border-color: $color-grey;
   }
+}
+
+.checkbox {
+  height: 2 * $size-unit;
+  width: 2 * $size-unit;
 }
 
 .label {
