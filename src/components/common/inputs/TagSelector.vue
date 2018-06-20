@@ -42,8 +42,6 @@ export default class TagSelector extends Vue {
 @import '@/styles/variables.scss';
 
 .tag-list {
-  padding: $size-unit/3 0;
-
   .tag-item {
     display: inline-block;
     text-align: center;
@@ -51,8 +49,10 @@ export default class TagSelector extends Vue {
     color: $color-background;
     background-color: $color-secondary;
     border-radius: $size-unit;
-    padding: 1px 5px;
-    margin: $size-unit/2 $size-unit $size-unit/2 0;
+    padding: 0 $size-unit/2;
+    line-height: 1.8em;
+    margin: $size-unit/2 0;
+    margin-right: $size-unit;
     min-width: $size-unit * 7;
 
     .delete-icon {
