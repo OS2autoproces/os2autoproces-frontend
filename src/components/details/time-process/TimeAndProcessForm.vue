@@ -3,45 +3,45 @@
 
     <Well>
       <div>
-        <WellItem label="Antal gange processen gentages om året pr. medarbejder">
-            <InputField :value="state.processRepetition" :disabled="disabled" @change="update({processRepetition: $event})" />
+        <WellItem labelWidth="70%" label="Antal gange processen gentages om året pr. medarbejder">
+          <InputField :value="state.processRepetition" :disabled="state.disabled" @change="update({processRepetition: $event})" />
         </WellItem>
-        <WellItem label="Tidsforbrug pr. proces i minutter">
-            <InputField :disabled="disabled" :value="state.processTimeConsumptionMinutes" @change="update({processTimeConsumptionMinutes: $event})" />
+        <WellItem labelWidth="70%" label="Tidsforbrug pr. proces i minutter">
+          <InputField :disabled="state.disabled" :value="state.processTimeConsumptionMinutes" @change="update({processTimeConsumptionMinutes: $event})" />
         </WellItem>
-        <WellItem label="Tidsbesparelse pr. proces i minutter">
-            <InputField :disabled="disabled" :value="state.processTimeSavingMinutes" @change="update({processTimeSavingMinutes: $event})" />
-        </WellItem>
-      </div>
-
-      <div>
-        <WellItem label="Antal medarbejdere der foretager processen">
-          <InputField :disabled="disabled" :value="state.coWorkersUsingTheProcess" @change="update({coWorkersUsingTheProcess: $event})" />
-        </WellItem>
-        <WellItem label="Samlet tidsforbrug på nuværende proces">
-          <InputField :disabled="disabled" :value="state.totalTimeConsumption" @change="update({totalTimeConsumption: $event})" />
+        <WellItem labelWidth="70%" label="Tidsbesparelse pr. proces i minutter">
+          <InputField :disabled="state.disabled" :value="state.processTimeSavingMinutes" @change="update({processTimeSavingMinutes: $event})" />
         </WellItem>
       </div>
 
       <div>
-        <WellItem label="Er borgere påvirket?">
-          <SelectionField :disabled="disabled" :value="state.isUserAffected" @change="update({isUserAffected: $event})" /> </WellItem>
-        <WellItem label="Er virksomheder påvirket?">
-          <SelectionField :disabled="disabled" :value="state.isCorporationAffected" @change="update({isCorporationAffected: $event})" /> </WellItem>
+        <WellItem labelWidth="70%" label="Antal medarbejdere der foretager processen">
+          <InputField :disabled="state.disabled" :value="state.coWorkersUsingTheProcess" @change="update({coWorkersUsingTheProcess: $event})" />
+        </WellItem>
+        <WellItem labelWidth="70%" label="Samlet tidsforbrug på nuværende proces">
+          <InputField :disabled="state.disabled" :value="state.totalTimeConsumption" @change="update({totalTimeConsumption: $event})" />
+        </WellItem>
+      </div>
+
+      <div>
+        <WellItem labelWidth="70%" label="Er borgere påvirket?">
+          <SelectionField :disabled="state.disabled" :value="state.isUserAffected" @change="update({isUserAffected: $event})" />
+        </WellItem>
+        <WellItem labelWidth="70%" label="Er virksomheder påvirket?">
+          <SelectionField :disabled="state.disabled" :value="state.isCorporationAffected" @change="update({isCorporationAffected: $event})" />
+        </WellItem>
       </div>
     </Well>
 
     <div class="comments-wrap">
-      <div class="time-process-tool-tip">
-        <span>Kommentar vedr. tidsforbrug</span>
-        <InfoTooltip>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Esse unde neque eos, non et vel, aspernatur quod dolore perspiciatis dolorem minus rerum amet animi architecto mollitia alias! Debitis, eveniet sint!
-        </InfoTooltip>
-      </div>
-      <TextArea :value="state.timeConsumptionComments" :disabled="disabled" @change="update({timeConsumptionComments: $event})" />
+      <span>Kommentar vedr. tidsforbrug</span>
+      <InfoTooltip class="time-proces-tooltip">
+        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Esse unde neque eos, non et vel, aspernatur quod dolore perspiciatis dolorem minus rerum amet animi architecto mollitia alias! Debitis, eveniet sint!
+      </InfoTooltip>
+      <TextArea :value="state.timeConsumptionComments" :disabled="state.disabled" @change="update({timeConsumptionComments: $event})" />
     </div>
 
-    <FileUpload :disabled="disabled" />
+    <FileUpload :disabled="state.disabled" />
 
   </FormSection>
 </template>
@@ -73,7 +73,6 @@ import { TimeAndProcessActionTypes } from '@/store/modules/details/time-process/
 })
 export default class TimeAndProcessForm extends Vue {
   @Action(TimeAndProcessActionTypes.UPDATE_TIME_AND_PROCESS) update: any;
-  @Prop() disabled!: boolean;
 
   get state() {
     return this.$store.state.details.timeAndProcess;
@@ -87,13 +86,14 @@ export default class TimeAndProcessForm extends Vue {
 .comments-wrap {
   width: 50%;
   padding-top: $size-unit;
+  vertical-align: baseline;
 
-  .time-process-tool-tip {
-    display: flex;
-    align-items: center;
-    > span {
-      margin-right: $size-unit/2;
-    }
+  span {
+    color: $color-secondary;
+    margin-right: $size-unit;
+  }
+  .time-proces-tooltip {
+    vertical-align: middle;
   }
 }
 </style>
