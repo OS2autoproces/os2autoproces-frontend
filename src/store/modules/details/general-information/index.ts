@@ -21,7 +21,8 @@ export const state: GeneralInformationState = {
   supplier: '',
   resume: '',
   associatedPersons: [],
-  status: ''
+  status: '',
+  phase: 1
 };
 
 export const generalInformation: Module<GeneralInformationState, RootState> = {

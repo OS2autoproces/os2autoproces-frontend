@@ -1,28 +1,38 @@
 <template>
     <div class="details">
         <NavBar />
-
         <div class="page">
-            <div class="details-menu">
-                <DetailsMenu @save="save" />
+            <div class="side-bar">
+                <div class="side-bar-content">
+                    <router-link to="/search" class="search-page-link">
+                        <ArrowLeftIcon /> Tilbage til søgning
+                    </router-link>
+
+                    <DetailsMenu />
+
+                    <Button v-if="phase" class="report-button" @click="report">Indberet</Button>
+                    <Button v-else class="save-button" @click="save">Gem</Button>
+                </div>
             </div>
 
             <div class="details-wrapper">
-                <DetailsHeader />
+                <div class="details-content">
+                    <DetailsHeader />
 
-                <div class="form-sections">
-                    <GeneralInformationForm />
-                    <ChallengesForm />
-                </div>
+                    <div class="form-sections">
+                        <GeneralInformationForm />
+                        <ChallengesForm />
+                    </div>
 
-                <div class="usage">
-                    <div class="usage-heading">Antal kommuner der bruger løsningen</div>
-                    <IntervalSelector value="10 +" disabled />
-                </div>
+                    <div class="usage">
+                        <div class="usage-heading">Antal kommuner der bruger løsningen</div>
+                        <IntervalSelector value="10 +" disabled />
+                    </div>
 
-                <div class="comments">
-                    <div class="comments-heading">Kommentarer</div>
-                    <Comments />
+                    <div class="comments">
+                        <div class="comments-heading">Kommentarer</div>
+                        <Comments />
+                    </div>
                 </div>
             </div>
         </div>
@@ -30,7 +40,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
+import { Vue, Component, Prop } from 'vue-property-decorator';
 import { Action } from 'vuex-class';
 import NavBar from '../components/common/NavBar.vue';
 import Comments from '../components/comments/Comments.vue';
@@ -39,8 +49,11 @@ import FormSection from '@/components/details/FormSection.vue';
 import DetailsMenu from '@/components/details/DetailsMenu.vue';
 import DetailsHeader from '@/components/details/DetailsHeader.vue';
 import GeneralInformationForm from '@/components/details/general-information/GeneralInformationForm.vue';
+import Button from '@/components/common/inputs/Button.vue';
 import ChallengesForm from '@/components/details/challenges/ChallengesForm.vue';
 import { detailsActionTypes } from '@/store/modules/details/actions';
+import { generalInformationActionTypes } from '@/store/modules/details/general-information/actions';
+import ArrowLeftIcon from '@/components/icons/ArrowLeftIcon.vue';
 
 @Component({
   components: {
@@ -51,11 +64,24 @@ import { detailsActionTypes } from '@/store/modules/details/actions';
     GeneralInformationForm,
     Comments,
     IntervalSelector,
-    ChallengesForm
+    ChallengesForm,
+    Button,
+    ArrowLeftIcon
   }
 })
 export default class Details extends Vue {
+  @Prop() id!: string;
+  @Prop() phase!: string;
+
   @Action(detailsActionTypes.SAVE) save: any;
+  @Action(detailsActionTypes.REPORT) report: any;
+  @Action(generalInformationActionTypes.UPDATE_GENERAL_INFORMATION) updateGeneralInformation: any;
+
+  mounted() {
+    if (this.phase) {
+      this.updateGeneralInformation({ phase: Number(this.phase) });
+    }
+  }
 }
 </script>
 
@@ -66,20 +92,27 @@ export default class Details extends Vue {
   display: flex;
 }
 
-.details-menu {
+.side-bar {
   flex: 0 0 200px;
   margin-left: $size-unit;
 
-  > * {
+  .side-bar-content {
     position: fixed;
     top: 80px + 2 * $size-unit;
+  }
+
+  .save-button {
+    margin: 2 * $size-unit;
   }
 }
 
 .details-wrapper {
   flex-grow: 1;
-  margin: 0 auto;
+}
+
+.details-content {
   margin-top: $size-unit;
+  margin: 0 auto;
   max-width: 1200px;
 }
 
@@ -106,5 +139,24 @@ export default class Details extends Vue {
 .comments-heading {
   font-style: italic;
   margin: $size-unit / 2 0;
+}
+
+.save-button,
+.report-button {
+  margin: 2 * $size-unit;
+}
+
+.search-page-link {
+  @include heading;
+  font-size: 1.2rem;
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+
+  svg {
+    height: $size-unit;
+    width: $size-unit;
+    margin-right: $size-unit / 2;
+  }
 }
 </style>
