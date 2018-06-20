@@ -31,8 +31,8 @@ export default class Checkbox extends Vue {
 
 .checkbox {
   display: inline-block;
-  width: 19px;
-  height: 19px;
+  width: 20px;
+  height: 20px;
   border: 1px solid $color-primary;
   border-radius: 50%;
   position: relative;
@@ -46,8 +46,8 @@ export default class Checkbox extends Vue {
     bottom: 1px;
     left: -1px;
 
-    height: 20px;
-    width: 20px;
+    height: 110%;
+    width: 110%;
   }
 }
 </style>
