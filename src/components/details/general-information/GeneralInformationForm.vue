@@ -6,6 +6,9 @@
                     <WellItem label="KLE-nr:">
                         <SelectionField :disabled="state.disabled" :value="state.kleNumber" @change="update({kleNumber: $event})" :items="kleNumbers" />
                     </WellItem>
+                    <WellItem label="ID:">
+                        <InputField :disabled="true" :value="state.id" />
+                    </WellItem>
                     <WellItem label="Lov of paragraf:">
                         <InputField :disabled="state.disabled" :value="state.paragraf" @change="update({paragraf: $event})" />
                     </WellItem>
@@ -13,7 +16,7 @@
 
                 <div>
                     <WellItem label="Afdeling:">
-                        <InputField :disabled="state.disabled" :value="state.department" @change="update({department: $event})" />
+                        <SelectionField :disabled="state.disabled" :value="state.department" @change="update({department: $event})" :items="departments" />
                     </WellItem>
                     <WellItem label="Fagområde:">
                         <SelectionField :disabled="state.disabled" :value="state.field" @change="update({field: $event})" :items="fields" />
@@ -25,10 +28,10 @@
 
                 <div>
                     <WellItem label="Kontaktperson:">
-                        <InputField :disabled="state.disabled" :value="state.contactPerson" @change="update({contactPerson: $event})" />
+                        <SelectionField :disabled="state.disabled" :value="state.contactPerson" @change="update({contactPerson: $event})" :items="contactPersons" />
                     </WellItem>
                     <WellItem label="Mail:">
-                        <InputField :disabled="state.disabled" :value="state.email" @change="update({email: $event})" />
+                        <SelectionField :disabled="state.disabled" :value="state.email" @change="update({email: $event})" :items="emails"/>
                     </WellItem>
                     <WellItem label="Procestid:">
                         <InputField :disabled="state.disabled" :value="state.processTime" @change="update({processTime: $event})" />
@@ -37,10 +40,10 @@
 
                 <div>
                     <WellItem label="Leverandør:">
-                        <InputField :disabled="state.disabled" :value="state.supplier" @change="update({supplier: $event})" />
+                        <SelectionField :disabled="state.disabled" :value="state.supplier" @change="update({supplier: $event})" :items="suppliers"/>
                     </WellItem>
                     <WellItem label="Projektleder:">
-                        <InputField :disabled="state.disabled" :value="state.projectManager" @change="update({projectManager: $event})" />
+                        <SelectionField :disabled="state.disabled" :value="state.projectManager" @change="update({projectManager: $event})" :items="projectManagers"/>
                     </WellItem>
                 </div>
 
@@ -101,6 +104,17 @@ export default class GeneralInformationForm extends Vue {
   kleNumbers = ['1234', '134324', '54353'];
 
   statusItems = ['Afventer', 'Igang', 'Produktions Klar'];
+  
+  departments = ['some-department'];
+
+  contactPersons = ['Christian', 'Lars', 'Henrik'];
+
+  suppliers = ['Christian', 'Lars', 'Henrik'];
+  
+  emails = ['mail1@1', 'mail2@2', 'mail3@3'];
+
+  projectManagers = ['Christian', 'Lars', 'Henrik'];
+
 }
 </script>
 
@@ -121,7 +135,7 @@ export default class GeneralInformationForm extends Vue {
   background-color: white;
   border-radius: 0;
   display: flex;
-  margin-top: 50px;
+  margin-top: $size-unit * 5;
 
   .resume {
     width: 30%;
@@ -136,5 +150,10 @@ export default class GeneralInformationForm extends Vue {
       max-width: 230px;
     }
   }
+}
+
+p {
+    @include textarea-heading;
+    margin-bottom: $size-unit/2;
 }
 </style>
