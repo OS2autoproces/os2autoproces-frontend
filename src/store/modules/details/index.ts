@@ -7,6 +7,7 @@ import { getters } from '@/store/modules/details/getters';
 import { challenges } from '@/store/modules/details/challenges';
 import { assessment } from '@/store/modules/details/assessment';
 import { timeAndProcess } from '@/store/modules/details/time-process';
+import { specification } from '@/store/modules/details/specification';
 
 const namespaced = true;
 
@@ -22,6 +23,7 @@ export const details: Module<DetailsState, RootState> = {
     generalInformation,
     challenges,
     assessment,
-    timeAndProcess
+    timeAndProcess,
+    specification
   }
 };
