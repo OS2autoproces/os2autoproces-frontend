@@ -70,7 +70,7 @@ export default class AssociatedPersonsInput extends Vue {
 
 .associated {
   display: flex;
-  padding: $size-unit;
+  padding: $size-unit*3 $size-unit $size-unit*2 $size-unit; 
   .associated-list {
     width: 60%;
     .associated-persons-list {
