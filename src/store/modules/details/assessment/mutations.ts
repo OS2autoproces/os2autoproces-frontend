@@ -8,6 +8,6 @@ export const AssessmentMutationTypes = {
 
 export const mutations: MutationTree<AssessmentState> = {
   update(state: AssessmentState, payload: Partial<AssessmentState>) {
-    state = merge(state, payload);
+    merge(state, payload);
   }
 };

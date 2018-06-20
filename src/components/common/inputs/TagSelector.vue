@@ -1,15 +1,15 @@
 <template>
-  <div>
-    <div class="tag-list">
-      <div v-for="(tag, index) in value" :key="index" class="tag-item">
-        {{tag}}
-        <span role="button" @click="removeTag(index)" class="delete-icon" v-if="!disabled">
-          <DeleteIcon />
-        </span>
-      </div>
+    <div>
+        <div class="tag-list">
+            <div v-for="(tag, index) in value" :key="index" class="tag-item">
+                {{tag}}
+                <span role="button" @click="removeTag(index)" class="delete-icon" v-if="!disabled">
+                    <DeleteIcon />
+                </span>
+            </div>
+        </div>
+        <InputField v-if="!disabled" class="tag-input" :placeholder="placeholder" @submit="addTag" />
     </div>
-    <InputField v-if="!disabled" class="tag-input" :placeholder="placeholder" @submit="valueChanged" />
-  </div>
 </template>
 
 <script lang="ts">
@@ -28,8 +28,8 @@ export default class TagSelector extends Vue {
   @Prop() placeholder!: string;
   @Prop() value!: string[];
 
-  valueChanged(event: any) {
-    this.$emit('change', event.target.value);
+  addTag(tag: string) {
+    this.$emit('add', tag);
   }
 
   removeTag(index: number) {

@@ -8,6 +8,6 @@ export const SpecificationMutationTypes = {
 
 export const mutations: MutationTree<SpecificationState> = {
   update(state: SpecificationState, payload: Partial<SpecificationState>) {
-    state = merge(state, payload);
+    merge(state, payload);
   }
 };
