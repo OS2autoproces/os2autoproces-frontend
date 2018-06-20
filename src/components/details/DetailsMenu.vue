@@ -19,7 +19,7 @@ export default class DetailsMenu extends Vue {
   items: MenuItem[] = [
     { heading: 'Grundlæggende oplysninger', id: 'general-information' },
     { heading: 'Problemstillinger', id: 'challenges' },
-    { heading: 'Tids og proces foretagen', id: 'process' },
+    { heading: 'Tid og proces', id: 'time-and-process' },
     { heading: 'Faglig vurdering', id: 'assessment' },
     { heading: 'Specifikation', id: 'specification' },
     { heading: 'Udvikling og implementering', id: 'implementation' },

@@ -63,7 +63,7 @@ export default class Home extends Vue {
 
 .header {
   background-size: cover;
-  background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Stack_of_Copy_Paper.jpg/1280px-Stack_of_Copy_Paper.jpg');
+  background-image: url('../assets/Stack_of_Copy_Paper.jpg');
   height: 350px;
   display: flex;
   flex-direction: column;
