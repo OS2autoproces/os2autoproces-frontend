@@ -7,7 +7,7 @@
                 <slot />
             </div>
         </div>
-        <div :class="{'double-column': value.length > twoColumnBreakpoint}" v-if="disabled">{{value}}</div>
+        <div class="text-area-readonly" :class="{'double-column': value.length > twoColumnBreakpoint}" v-if="disabled">{{value}}</div>
     </div>
 </template>
 
@@ -50,6 +50,10 @@ export default class TextArea extends Vue {
   .max-length-label {
     padding-bottom: $size-unit/2;
   }
+}
+
+.text-area-readonly {
+  white-space: pre;
 }
 
 textarea {

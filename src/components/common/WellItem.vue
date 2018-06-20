@@ -21,7 +21,7 @@ export default class WellItem extends Vue {
 
 .well-item-wrap {
   display: flex;
-  margin-bottom: $size-unit;
+  align-items: center;
 
   .well-item-label {
     flex-shrink: 0;

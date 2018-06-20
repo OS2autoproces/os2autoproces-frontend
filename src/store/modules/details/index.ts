@@ -9,6 +9,7 @@ import { assessment } from '@/store/modules/details/assessment';
 import { timeAndProcess } from '@/store/modules/details/time-process';
 import { specification } from '@/store/modules/details/specification';
 import { implementation } from '@/store/modules/details/implementation';
+import { operation } from '@/store/modules/details/operation';
 
 const namespaced = true;
 
@@ -26,6 +27,7 @@ export const details: Module<DetailsState, RootState> = {
     assessment,
     timeAndProcess,
     specification,
-    implementation
+    implementation,
+    operation
   }
 };
