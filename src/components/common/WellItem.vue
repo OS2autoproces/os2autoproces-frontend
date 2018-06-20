@@ -21,7 +21,6 @@ export default class WellItem extends Vue {
 
 .well-item-wrap {
   display: flex;
-  justify-content: space-between;
   margin-bottom: $size-unit;
 
   .well-item-label {
