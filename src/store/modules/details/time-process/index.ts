@@ -14,7 +14,8 @@ const state: TimeAndProcess = {
     processTimeConsumptionMinutes: '',
     processTimeSavingMinutes: '',
     timeConsumptionComments: '',
-    totalTimeConsumption: ''
+    totalTimeConsumption: '',
+    disabled: true
 }
 
 export const timeAndProcess: Module<TimeAndProcess, RootState> = {

@@ -23,7 +23,7 @@ export default class ExpandPanel extends Vue {}
 @import '../../styles/variables';
 
 .info-icon {
-  z-index: 1;
+  z-index: 2;
   position: relative;
 
   height: $size-unit;
@@ -33,7 +33,7 @@ export default class ExpandPanel extends Vue {}
 .info-tooltip-wrapper {
   display: inline-block;
   position: relative;
-
+  height: $size-unit;
   cursor: help;
 
   &:not(:hover) .info-tooltip {
@@ -46,6 +46,7 @@ export default class ExpandPanel extends Vue {}
   top: -$size-unit/2;
   left: -$size-unit/2;
   width: 275px;
+  z-index: 1;
 
   padding: $size-unit / 2;
   padding-top: 2 * $size-unit;

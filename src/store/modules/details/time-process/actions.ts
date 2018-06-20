@@ -6,11 +6,11 @@ import { TimeAndProcessMutationsTypes } from '@/store/modules/details/time-proce
 const namespace = 'details/timeAndProcess';
 
 export const TimeAndProcessActionTypes = {
-  UPDATE_TIME_AND_PROCESS: `${namespace}/timeAndProcess`
+  UPDATE_TIME_AND_PROCESS: `${namespace}/updateTimeAndProcess`
 };
 
 export const actions: ActionTree<TimeAndProcess, RootState> = {
   updateTimeAndProcess({ commit }, payload: Partial<TimeAndProcess>) {
-    commit(TimeAndProcessMutationsTypes.UPDATE_TIME_AND_PROCESS, payload, { root: true });
+    commit(TimeAndProcessMutationsTypes.UPDATE_TIME_AND_PROCESS, payload);
   }
 };

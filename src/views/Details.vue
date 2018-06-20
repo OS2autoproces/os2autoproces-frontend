@@ -22,6 +22,7 @@
                     <div class="form-sections">
                         <GeneralInformationForm />
                         <ChallengesForm />
+                        <TimeAndProcessForm />
                         <AssessmentForm />
                     </div>
 
@@ -53,6 +54,7 @@ import GeneralInformationForm from '@/components/details/general-information/Gen
 import Button from '@/components/common/inputs/Button.vue';
 import ChallengesForm from '@/components/details/challenges/ChallengesForm.vue';
 import AssessmentForm from '@/components/details/assessment/AssessmentForm.vue';
+import TimeAndProcessForm from '@/components/details/time-process/TimeAndProcessForm.vue';
 import { detailsActionTypes } from '@/store/modules/details/actions';
 import { generalInformationActionTypes } from '@/store/modules/details/general-information/actions';
 import ArrowLeftIcon from '@/components/icons/ArrowLeftIcon.vue';
@@ -68,6 +70,7 @@ import ArrowLeftIcon from '@/components/icons/ArrowLeftIcon.vue';
     IntervalSelector,
     ChallengesForm,
     AssessmentForm,
+    TimeAndProcessForm,
     Button,
     ArrowLeftIcon
   }
