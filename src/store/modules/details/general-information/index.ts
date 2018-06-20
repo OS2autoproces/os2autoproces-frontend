@@ -16,7 +16,7 @@ export const state: GeneralInformationState = {
   visibility: '',
   contactPerson: '',
   email: '',
-  procesTime: '',
+  processTime: '',
   projectManager: '',
   supplier: '',
   resume: '',
