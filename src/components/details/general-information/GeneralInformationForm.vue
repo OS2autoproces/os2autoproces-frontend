@@ -28,19 +28,19 @@
                         <InputField :disabled="state.disabled" :value="state.contactPerson" @change="update({contactPerson: $event})" />
                     </WellItem>
                     <WellItem label="Mail:">
-                        <InputField :disabled="state.disabled" :value="state.contactPerson" @change="update({email: $event})" />
+                        <InputField :disabled="state.disabled" :value="state.email" @change="update({email: $event})" />
                     </WellItem>
                     <WellItem label="Procestid:">
-                        <InputField :disabled="state.disabled" :value="state.contactPerson" @change="update({processTime: $event})" />
+                        <InputField :disabled="state.disabled" :value="state.processTime" @change="update({processTime: $event})" />
                     </WellItem>
                 </div>
 
                 <div>
                     <WellItem label="Leverandør:">
-                        <InputField :disabled="state.disabled" :value="state.contactPerson" @change="update({supplier: $event})" />
+                        <InputField :disabled="state.disabled" :value="state.supplier" @change="update({supplier: $event})" />
                     </WellItem>
                     <WellItem label="Projektleder::">
-                        <InputField :disabled="state.disabled" :value="state.contactPerson" @change="update({projectManager: $event})" />
+                        <InputField :disabled="state.disabled" :value="state.projectManager" @change="update({projectManager: $event})" />
                     </WellItem>
                 </div>
 
