@@ -21,7 +21,7 @@ export default class Well extends Vue {}
   display: flex;
   flex-direction: column;
   background-color: $color-background-grey;
-  padding: $size-unit;
+  padding: $size-unit * 1.5;
   border-radius: $size-unit;
 
   .section-wrap {

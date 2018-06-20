@@ -22,13 +22,16 @@ export default class WellItem extends Vue {
 .well-item-wrap {
   display: flex;
   margin-bottom: $size-unit;
+  align-items: center;
 
   .well-item-label {
+    @include field-label;
     flex-shrink: 0;
     margin-right: $size-unit;
   }
 
   .well-input {
+    @include field-input-text;
     flex-grow: 1;
   }
 }
