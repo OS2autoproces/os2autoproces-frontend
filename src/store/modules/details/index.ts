@@ -5,11 +5,8 @@ import { generalInformation } from '@/store/modules/details/general-information'
 import { actions } from '@/store/modules/details/actions';
 import { getters } from '@/store/modules/details/getters';
 import { challenges } from '@/store/modules/details/challenges';
-<<<<<<< HEAD
 import { assessment } from '@/store/modules/details/assessment';
-=======
 import { timeAndProcess } from '@/store/modules/details/time-process';
->>>>>>> master
 
 const namespaced = true;
 
@@ -24,10 +21,7 @@ export const details: Module<DetailsState, RootState> = {
   modules: {
     generalInformation,
     challenges,
-<<<<<<< HEAD
-    assessment
-=======
+    assessment,
     timeAndProcess
->>>>>>> master
   }
 };

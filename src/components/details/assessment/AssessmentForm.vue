@@ -104,5 +104,6 @@ export default class AssessmentForm extends Vue {
 
 .tooltip {
   margin-left: $size-unit;
+  vertical-align: middle;
 }
 </style>
