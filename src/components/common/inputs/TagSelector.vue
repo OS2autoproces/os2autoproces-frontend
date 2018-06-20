@@ -8,7 +8,7 @@
                 </span>
             </div>
         </div>
-        <InputField v-if="!disabled" class="tag-input" :placeholder="placeholder" @submit="addTag" />
+        <InputField v-if="!disabled" class="tag-input" :placeholder="placeholder" :value="tagInput" @change="tagInput = $event" @submit="addTag" />
     </div>
 </template>
 
@@ -28,8 +28,14 @@ export default class TagSelector extends Vue {
   @Prop() placeholder!: string;
   @Prop() value!: string[];
 
+  tagInput = '';
+
   addTag(tag: string) {
-    this.$emit('add', tag);
+    this.tagInput = '';
+
+    if (tag) {
+      this.$emit('add', tag);
+    }
   }
 
   removeTag(index: number) {
