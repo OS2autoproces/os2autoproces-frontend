@@ -71,25 +71,21 @@
 
         <div>
             <div v-if="state.status === Status.waiting">
-                <WarningIcon class="general-information-warning-icon" />
                 <h2 class="comments-heading">Hvorfor Afventes processen?</h2>
                 <TextArea class="status-comment-field" :disabled="state.disabled" @change="update({waiting: $event})" :value="state.waiting" />
             </div>
 
             <div v-if="state.status === Status.disapproved">
-                <WarningIcon class="general-information-warning-icon" />
                 <h2 class="comments-heading">Hvorfor er processen afvist?</h2>
                 <TextArea class="status-comment-field" :disabled="state.disabled" @change="update({disapproved: $event})" :value="state.disapproved" />
             </div>
 
             <div v-if="state.status === Status.stored">
-                <WarningIcon class="general-information-warning-icon" />
                 <h2 class="comments-heading">Hvorfor er processen arkiveret?</h2>
                 <TextArea class="status-comment-field" :disabled="state.disabled" @change="update({stored: $event})" :value="state.stored" />
             </div>
 
             <div v-if="state.status === Status.unsuccessful">
-                <WarningIcon class="general-information-warning-icon" />
                 <h2 class="comments-heading">Hvorfor er processen mislykket?</h2>
                 <TextArea class="status-comment-field" :disabled="state.disabled" @change="update({unsuccessful: $event})" :value="state.unsuccessful" />
             </div>
@@ -205,7 +201,6 @@ export default class GeneralInformationForm extends Vue {
   @include textarea-heading;
   display: inline;
   vertical-align: middle;
-  margin-left: $size-unit;
 }
 
 .status-comment-field {
