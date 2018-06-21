@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-select v-if="!disabled" :items="items" single-line @change="valueChanged" autocomplete :value="value" :append-icon="iconName" :placeholder="placeholder" />
-    <div v-if="disabled">{{value}}</div>
+    <div class="selection-field-text" v-if="disabled">{{value}}</div>
   </div>
 </template>
 
@@ -59,5 +59,11 @@ export default class SelectionField extends Vue {
 
 .list__tile__title {
   color: $color-text !important;
+}
+
+.selection-field-text {
+  color: $color-text;
+  font-size: 18px;
+  font-weight: bold;
 }
 </style>
