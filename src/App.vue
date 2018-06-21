@@ -43,6 +43,7 @@ body {
 #app {
   .application.theme--light {
     background: $color-background;
+    color: inherit;
   }
 
   .application--wrap {

@@ -35,6 +35,10 @@ export default class SelectionField extends Vue {
     border-radius: 20px;
     padding-left: 13px;
 
+    .input-group__selections__comma {
+      color: $color-text;
+    }
+
     .icon {
       color: $color-primary !important;
     }
