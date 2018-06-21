@@ -64,7 +64,7 @@
 
         <div v-if="isPhaseChanged" class="phased-changed">
             <WarningIcon />
-            <div style="{width: 100px}">
+            <div>
                 Når du skifter fase, skal yderligere information om processen udfyldes
             </div>
         </div>
