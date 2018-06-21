@@ -1,25 +1,25 @@
 <template>
-    <div class="associated">
-        <div class="associated-list" v-if="!disabled">
-            <div class="associated-label">Tilknyttede personer:</div>
-            <div class="associated-persons-list">
-                <div v-for="(person, index) in associatedPeople" :key="index">
-                    {{person}}
-                    <span @click="removePerson(person)" class="delete-icon">
-                        <DeleteIcon />
-                    </span>
-                </div>
-            </div>
+  <div class="associated">
+    <div class="associated-list" v-if="!disabled">
+      <div class="associated-label">Tilknyttede personer:</div>
+      <div class="associated-persons-list">
+        <div v-for="(person, index) in associatedPeople" :key="index">
+          {{person}}
+          <span @click="removePerson(person)" class="delete-icon">
+            <DeleteIcon />
+          </span>
         </div>
-        <div class="add-person" v-if="!disabled">
-            <div class="associated-label">Tilknyt person</div>
-            <SelectionField @change="addPerson" :items="people" iconName="search" />
-        </div>
-        <div class="associated-list-readonly" v-if="disabled">
-            <div class="associated-label">Tilknyttede personer:</div>
-            {{ this.associatedPersonsDisabled }}
-        </div>
+      </div>
     </div>
+    <div class="add-person" v-if="!disabled">
+      <div class="associated-label">Tilknyt person</div>
+      <SelectionField @change="addPerson" :items="people" iconName="search" />
+    </div>
+    <div class="associated-list-readonly" v-if="disabled">
+      <div class="associated-label">Tilknyttede personer:</div>
+      {{ this.associatedPersonsDisabled }}
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
