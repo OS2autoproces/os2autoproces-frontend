@@ -54,7 +54,7 @@ export default class SelectionField extends Vue {
 }
 
 .list__tile__title {
-  color: $color-text !important;
+  color: inherit;
 }
 
 .selection-field-text {
