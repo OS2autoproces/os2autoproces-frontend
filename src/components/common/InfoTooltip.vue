@@ -54,5 +54,6 @@ export default class ExpandPanel extends Vue {}
   border-radius: $size-unit;
 
   background-color: $color-background;
+  color: $color-text;
 }
 </style>
