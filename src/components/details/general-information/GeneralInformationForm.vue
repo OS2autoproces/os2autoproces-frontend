@@ -62,7 +62,7 @@
             </div>
         </div>
 
-        <div v-if="isPhaseChanged" class="phased-changed">
+        <div v-if="isPhaseChanged" class="phase-changed">
             <WarningIcon />
             <div>
                 Når du skifter fase, skal yderligere information om processen udfyldes
@@ -212,7 +212,7 @@ export default class GeneralInformationForm extends Vue {
   padding-top: $size-unit;
 }
 
-.phased-changed {
+.phase-changed {
   display: flex;
   justify-content: center;
   align-items: center;
