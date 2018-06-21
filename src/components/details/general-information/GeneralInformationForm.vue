@@ -180,7 +180,7 @@ export default class GeneralInformationForm extends Vue {
   background-color: white;
   border-radius: 0;
   display: flex;
-  margin-top: $size-unit * 5;
+  margin-top: $size-unit * 2;
 
   .resume {
     width: 30%;
