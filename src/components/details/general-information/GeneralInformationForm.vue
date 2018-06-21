@@ -7,7 +7,7 @@
                         <SelectionField :disabled="state.disabled" :value="state.kleNumber" @change="update({kleNumber: $event})" :items="kleNumbers" />
                     </WellItem>
                     <WellItem label="ID:">
-                        <InputField :disabled="true" :value="state.id" />
+                        <InputField disabled :value="state.id" />
                     </WellItem>
                     <WellItem label="Lov of paragraf:">
                         <InputField :disabled="state.disabled" :value="state.paragraf" @change="update({paragraf: $event})" />
@@ -201,12 +201,6 @@ export default class GeneralInformationForm extends Vue {
   }
 }
 
-svg {
-  vertical-align: middle;
-  width: 40px;
-  height: 40px;
-}
-
 .comments-heading {
   @include textarea-heading;
   display: inline;
@@ -219,14 +213,19 @@ svg {
 }
 
 .phased-changed {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: $size-unit;
-    > div {
-        color: $color-secondary;
-        padding-left: $size-unit;
-        width: 300px;
-    }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: $size-unit;
+  > div {
+    color: $color-secondary;
+    padding-left: $size-unit;
+    width: 300px;
+  }
+  svg {
+    vertical-align: middle;
+    width: 40px;
+    height: 40px;
+  }
 }
 </style>
