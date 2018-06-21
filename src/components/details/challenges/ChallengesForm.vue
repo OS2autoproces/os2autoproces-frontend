@@ -16,7 +16,7 @@
         <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
         <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({challenges: $event})" :disabled="state.disabled" :value="state.challenges" />
 
-        <Well>
+        <Well class="challenges-well">
             <div>
                 <WellItem label="Nuværende system:">
                     <SelectionField :items="processItems" :value="state.currentProcessTitle" :disabled="state.disabled" @change="update({currentProcessTitle: $event})" />
@@ -32,6 +32,7 @@
                 </WellItem>
             </div>
         </Well>
+        <FileUpload />
     </FormSection>
 </template>
 
@@ -46,6 +47,7 @@ import FormSection from '@/components/details/FormSection.vue';
 import Well from '@/components/common/Well.vue';
 import InfoTooltip from '@/components/common/InfoTooltip.vue';
 import WellItem from '@/components/common/WellItem.vue';
+import FileUpload from '@/components/common/inputs/FileUpload.vue';
 
 @Component({
   components: {
@@ -55,7 +57,8 @@ import WellItem from '@/components/common/WellItem.vue';
     Well,
     FormSection,
     InfoTooltip,
-    WellItem
+    WellItem,
+    FileUpload
   }
 })
 export default class ChallengesForm extends Vue {
@@ -77,8 +80,16 @@ export default class ChallengesForm extends Vue {
 h2 {
   @include heading;
   color: $color-secondary;
-  margin-bottom: $size-unit;
+
+  &:not(:first-of-type) {
+    margin-top: $size-unit * 2;
+  }
+  margin-bottom: $size-unit / 2;
   display: inline-block;
   margin-right: $size-unit;
+}
+
+.challenges-well {
+    margin-top: $size-unit * 1.5;
 }
 </style>
