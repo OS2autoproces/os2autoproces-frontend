@@ -1,7 +1,11 @@
 <template>
   <div class="associated">
     <div class="associated-list" v-if="!disabled">
+<<<<<<< HEAD
       <div class="associated-label">Tilknyttede personer</div>
+=======
+      <div class="associated-label">Tilknyttede personer:</div>
+>>>>>>> master
       <div class="associated-persons-list">
         <div v-for="(person, index) in associatedPeople" :key="index">
           {{person}}
@@ -13,7 +17,11 @@
     </div>
     <div class="add-person" v-if="!disabled">
       <div class="associated-label">Tilknyt person</div>
+<<<<<<< HEAD
       <SelectionField placeholder="Skriv navn" @change="addPerson" :items="people" iconName="search" />
+=======
+      <SelectionField @change="addPerson" :items="people" iconName="search" />
+>>>>>>> master
     </div>
     <div class="associated-list-readonly" v-if="disabled">
       <div class="associated-label">Tilknyttede personer:</div>
