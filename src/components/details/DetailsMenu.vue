@@ -81,6 +81,7 @@ export default class DetailsMenu extends Vue {
 .menu-item {
   @include light-heading;
   margin-top: $size-unit;
+  color: $color-text;
   cursor: pointer;
 }
 
