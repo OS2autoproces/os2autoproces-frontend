@@ -1,47 +1,51 @@
 <template>
-    <div class="details">
-        <NavBar />
-        <div class="page">
-            <div class="side-bar">
-                <div class="side-bar-content">
-                    <router-link to="/search" class="search-page-link">
-                        <ArrowLeftIcon /> Tilbage til søgning
-                    </router-link>
+  <div class="details">
+    <NavBar />
+    <div class="page">
+      <div class="side-bar">
+        <div class="side-bar-content">
+          <router-link to="/search" class="search-page-link">
+            <ArrowLeftIcon /> Tilbage til søgning
+          </router-link>
 
-                    <DetailsMenu />
+          <DetailsMenu />
 
-                    <Button v-if="phase" class="report-button" @click="report">Indberet</Button>
-                    <Button v-else class="save-button" @click="save">Gem</Button>
-                </div>
-            </div>
-
-            <div class="details-wrapper">
-                <div class="details-content">
-                    <DetailsHeader />
-
-                    <div class="form-sections">
-                        <GeneralInformationForm />
-                        <ChallengesForm />
-                        <TimeAndProcessForm />
-                        <AssessmentForm />
-                        <SpecificationForm />
-                        <ImplementationForm />
-                        <OperationForm />
-                    </div>
-
-                    <div class="usage">
-                        <div class="usage-heading">Antal kommuner der bruger løsningen</div>
-                        <IntervalSelector value="10 +" disabled />
-                    </div>
-
-                    <div class="comments">
-                        <div class="comments-heading">Kommentarer</div>
-                        <Comments />
-                    </div>
-                </div>
-            </div>
+          <Button v-if="phase" class="report-button" @click="report">Indberet</Button>
+          <Button v-else class="save-button" @click="save">Gem</Button>
         </div>
+      </div>
+
+      <div class="details-wrapper">
+        <div class="details-content">
+          <DetailsHeader />
+
+          <div class="form-sections">
+            <GeneralInformationForm />
+            <ChallengesForm />
+            <TimeAndProcessForm />
+            <AssessmentForm />
+            <SpecificationForm />
+            <ImplementationForm />
+            <OperationForm />
+          </div>
+
+          <div class="usage">
+            <div :class="{ disabled: state.intervalDisabled }" class="usage-heading">Antal kommuner der bruger løsningen
+              <div role="button" class="usage-edit-icon" @click="updateInterval({intervalDisabled: !state.intervalDisabled})">
+                <EditIcon />
+              </div>
+            </div>
+            <IntervalSelector @change="updateInterval({interval: $event})" :value="state.interval" :disabled="state.intervalDisabled" />
+          </div>
+
+          <div class="comments">
+            <div class="comments-heading">Kommentarer</div>
+            <Comments />
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -64,6 +68,7 @@ import OperationForm from '@/components/details/operation/OperationForm.vue';
 import { detailsActionTypes } from '@/store/modules/details/actions';
 import { generalInformationActionTypes } from '@/store/modules/details/general-information/actions';
 import ArrowLeftIcon from '@/components/icons/ArrowLeftIcon.vue';
+import EditIcon from '@/components/icons/EditIcon.vue';
 
 @Component({
   components: {
@@ -81,7 +86,8 @@ import ArrowLeftIcon from '@/components/icons/ArrowLeftIcon.vue';
     ImplementationForm,
     OperationForm,
     Button,
-    ArrowLeftIcon
+    ArrowLeftIcon,
+    EditIcon
   }
 })
 export default class Details extends Vue {
@@ -90,7 +96,13 @@ export default class Details extends Vue {
 
   @Action(detailsActionTypes.SAVE) save: any;
   @Action(detailsActionTypes.REPORT) report: any;
-  @Action(generalInformationActionTypes.UPDATE_GENERAL_INFORMATION) updateGeneralInformation: any;
+  @Action(generalInformationActionTypes.UPDATE_GENERAL_INFORMATION)
+  updateGeneralInformation: any;
+  @Action(detailsActionTypes.UPDATE) updateInterval: any;
+
+  get state() {
+    return this.$store.state.details;
+  }
 
   mounted() {
     if (this.phase) {
@@ -148,12 +160,30 @@ export default class Details extends Vue {
 
 .usage {
   text-align: center;
-}
 
-.usage-heading,
-.comments-heading {
-  font-style: italic;
-  margin: $size-unit / 2 0;
+  .usage-heading {
+    font-style: italic;
+    margin: $size-unit / 2 0;
+
+    .usage-edit-icon {
+      display: inline-block;
+      margin-left: $size-unit;
+      height: $size-unit;
+      width: $size-unit;
+      fill: $color-secondary;
+    }
+
+    &:not(.disabled) {
+      .usage-edit-icon svg /deep/ path {
+        fill: $color-primary;
+      }
+    }
+  }
+  
+  .comments-heading {
+    font-style: italic;
+    margin: $size-unit / 2 0;
+  }
 }
 
 .save-button,
