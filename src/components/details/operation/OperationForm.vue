@@ -1,7 +1,6 @@
 <template>
     <FormSection heading="Drift" id="operation" :disabled="state.disabled" @edit="update({disabled: $event})">
         <div class="rating-wrapper" :class="{disabled: state.disabled}">
-            <div class="rating-text">I hvor høj grad realiserer processen sit potentiale?</div>
             <Rating class="rating" @change="update({potential: $event})" :disabled="state.disabled" :value="state.potential" />
         </div>
 
@@ -83,7 +82,6 @@ export default class OperationForm extends Vue {
   }
 
   .rating-text {
-      color: $color-text;
   }
 
   .rating {

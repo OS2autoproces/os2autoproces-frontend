@@ -53,7 +53,6 @@ export default class TextArea extends Vue {
 
 .text-area-readonly {
   white-space: pre-wrap;
-  color: $color-text;
 }
 
 textarea {

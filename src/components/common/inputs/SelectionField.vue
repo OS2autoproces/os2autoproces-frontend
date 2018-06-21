@@ -35,14 +35,6 @@ export default class SelectionField extends Vue {
     border-radius: 20px;
     padding-left: 13px;
 
-    .input-group--select__autocomplete {
-      color: $color-text !important;
-    }
-
-    .input-group__selections__comma {
-      color: $color-text !important;
-    }
-
     .icon {
       color: $color-primary !important;
     }
@@ -62,7 +54,6 @@ export default class SelectionField extends Vue {
 }
 
 .selection-field-text {
-  color: $color-text;
   font-size: 18px;
   font-weight: bold;
 }

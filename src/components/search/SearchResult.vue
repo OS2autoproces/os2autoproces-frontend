@@ -96,7 +96,6 @@ $resume-line-height: 1em * 1.5;
 }
 
 .status {
-  color: $color-text;
   text-align: center;
   font-weight: bold;
 }
@@ -111,7 +110,6 @@ $resume-line-height: 1em * 1.5;
   &:nth-child(2),
   &:nth-child(3) {
     display: flex;
-    color: $color-text;
 
     > div:last-of-type {
       padding-left: $size-unit;
