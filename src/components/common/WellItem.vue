@@ -1,8 +1,10 @@
 <template>
-    <div class="well-item-wrap">
-        <div class="well-item-label" :style="{flexBasis: labelWidth}">{{label}}</div>
-        <slot class="well-input" />
+  <div class="well-item-wrap">
+    <div class="well-item-label" :style="{flexBasis: labelWidth}">{{label}}</div>
+    <div class="well-input">
+      <slot/>
     </div>
+  </div>
 </template>
 
 <script lang="ts">
