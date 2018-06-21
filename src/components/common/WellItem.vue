@@ -1,8 +1,8 @@
 <template>
-    <div class="well-item-wrap">
-        <div class="well-item-label" :style="{flexBasis: labelWidth}">{{label}}</div>
-        <slot class="well-input" />
-    </div>
+  <div class="well-item-wrap">
+    <div class="well-item-label" :style="{flexBasis: labelWidth}">{{label}}</div>
+    <slot class="well-input" />
+  </div>
 </template>
 
 <script lang="ts">
@@ -21,7 +21,6 @@ export default class WellItem extends Vue {
 
 .well-item-wrap {
   display: flex;
-  margin-bottom: $size-unit;
   align-items: center;
 
   .well-item-label {
