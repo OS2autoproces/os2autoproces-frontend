@@ -37,7 +37,6 @@ export default class TextArea extends Vue {
 
 .text-area {
   position: relative;
-
   .text-area-overlay {
     display: inline-block;
     position: absolute;

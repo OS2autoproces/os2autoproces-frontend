@@ -81,7 +81,6 @@ export default class OperationForm extends Vue {
     border-color: $color-primary;
     border-radius: $size-unit;
   }
-
   .rating {
     margin-top: $size-unit/2;
     width: 160px;

@@ -1,41 +1,41 @@
 <template>
-    <div class="result">
-        <div class="result-column">
-            <div class="name">{{process.name}}</div>
-            <div class="resume">{{process.resume}}</div>
-        </div>
-        <div class="result-column">
-            <div>
-                <div>Vurderet potentiale:</div>
-                <div>Kommune:</div>
-                <div>Unik ID:</div>
-            </div>
-            <div>
-                <div class="rating">
-                    <Rating :value="process.potential" disabled />
-                </div>
-                <div>{{process.municipality}}</div>
-                <div>{{process.id}}</div>
-            </div>
-        </div>
-        <div class="result-column">
-            <div>
-                <div>Fagområde:</div>
-                <div>KLE-nr:</div>
-                <div>Lov og paragraf:</div>
-            </div>
-            <div>
-                <div>{{process.field}}</div>
-                <div>{{process.kleNumber}}</div>
-                <div>{{process.law}}</div>
-            </div>
-        </div>
-        <div class="result-column">
-            <Phases :value="process.phase" small disabled />
-            <div class="status">{{process.status}}</div>
-        </div>
-        <star-icon class="star-icon" :class="{ selected: process.favorite }" />
+  <div class="result">
+    <div class="result-column">
+      <div class="name">{{process.name}}</div>
+      <div class="resume">{{process.resume}}</div>
     </div>
+    <div class="result-column">
+      <div>
+        <div>Vurderet potentiale:</div>
+        <div>Kommune:</div>
+        <div>Unik ID:</div>
+      </div>
+      <div>
+        <div class="rating">
+          <Rating :value="process.potential" disabled />
+        </div>
+        <div>{{process.municipality}}</div>
+        <div>{{process.id}}</div>
+      </div>
+    </div>
+    <div class="result-column">
+      <div>
+        <div>Fagområde:</div>
+        <div>KLE-nr:</div>
+        <div>Lov og paragraf:</div>
+      </div>
+      <div>
+        <div>{{process.field}}</div>
+        <div>{{process.kleNumber}}</div>
+        <div>{{process.law}}</div>
+      </div>
+    </div>
+    <div class="result-column">
+      <Phases :value="process.phase" small disabled />
+      <div class="status">{{process.status}}</div>
+    </div>
+    <star-icon class="star-icon" :class="{ selected: process.favorite }" />
+  </div>
 </template>
 
 <script lang="ts">
