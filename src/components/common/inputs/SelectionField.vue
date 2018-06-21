@@ -36,7 +36,7 @@ export default class SelectionField extends Vue {
     padding-left: 13px;
 
     .input-group__selections__comma {
-      color: $color-text;
+      color: inherit;
     }
 
     .icon {
