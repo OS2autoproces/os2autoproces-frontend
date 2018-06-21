@@ -154,6 +154,7 @@ export default class Details extends Vue {
 .comments-heading {
   font-style: italic;
   margin: $size-unit / 2 0;
+  color: $color-text;
 }
 
 .save-button,
