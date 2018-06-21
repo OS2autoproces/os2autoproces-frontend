@@ -74,9 +74,12 @@ export default class AssociatedPersonsInput extends Vue {
 
 .associated {
   display: flex;
-  padding: $size-unit * 3 0 $size-unit * 2 0;
+  padding-top: $size-unit;
+  padding-bottom: $size-unit * 2;
+
   .associated-list {
     width: 60%;
+
     .associated-persons-list {
       display: flex;
       flex-direction: column;
@@ -86,10 +89,12 @@ export default class AssociatedPersonsInput extends Vue {
       border: 1px solid $color-primary;
       border-radius: $size-unit;
       padding: $size-unit/2;
+
       > div {
         display: flex;
         align-items: center;
         width: 20%;
+
         .delete-icon {
           width: $size-unit;
           height: $size-unit;
@@ -98,6 +103,7 @@ export default class AssociatedPersonsInput extends Vue {
       }
     }
   }
+
   .add-person {
     margin-left: $size-unit;
 
@@ -107,6 +113,7 @@ export default class AssociatedPersonsInput extends Vue {
   }
 
   /deep/ .input-group--autocomplete {
+    
     .icon {
       transform: none !important;
     }
