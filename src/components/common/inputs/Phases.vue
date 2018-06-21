@@ -32,7 +32,9 @@ export default class Phases extends Vue {
   @Prop() private small!: boolean;
 
   private select(phase: number) {
-    this.$emit("change", phase);
+    if (phase !== this.value) {
+      this.$emit("change", phase);
+    } 
   }
 }
 </script>

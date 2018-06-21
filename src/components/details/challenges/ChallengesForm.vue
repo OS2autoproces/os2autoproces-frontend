@@ -16,7 +16,7 @@
         <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
         <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({challenges: $event})" :disabled="state.disabled" :value="state.challenges" />
 
-        <Well class="well-margin">
+        <Well class="challenges-well">
             <div>
                 <WellItem label="Nuværende system:">
                     <SelectionField :items="processItems" :value="state.currentProcessTitle" :disabled="state.disabled" @change="update({currentProcessTitle: $event})" />
@@ -89,7 +89,7 @@ h2 {
   margin-right: $size-unit;
 }
 
-.well-margin {
+.challenges-well {
     margin-top: $size-unit * 1.5;
 }
 </style>

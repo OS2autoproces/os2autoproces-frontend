@@ -102,7 +102,7 @@ export default class FormSection extends Vue {
 }
 
 .section-content {
-  padding: $size-unit;
+  padding: $size-unit*2;
   padding-top: 0;
 }
 </style>

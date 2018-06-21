@@ -52,7 +52,7 @@ export const getters: GetterTree<GeneralInformationState, RootState> = {
     return isValid(state.email, isEmail);
   },
   isProcesTimeValid(state: GeneralInformationState): boolean {
-    return isValid(state.procesTime, isNumeric);
+    return isValid(state.processTime, isNumeric);
   },
   isProjectManagerValid(state: GeneralInformationState): boolean {
     return isValid(state.projectManager, isNonempty);

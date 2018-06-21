@@ -3,7 +3,7 @@ import { Module } from 'vuex';
 import { actions } from './actions';
 import { getters } from './getters';
 import { mutations } from './mutations';
-import { GeneralInformationState } from '@/store/modules/details/general-information/state';
+import { GeneralInformationState, Status } from '@/store/modules/details/general-information/state';
 
 const namespaced = true;
 
@@ -21,8 +21,13 @@ export const state: GeneralInformationState = {
   supplier: '',
   resume: '',
   associatedPersons: [],
-  status: '',
-  phase: 1
+  status: Status.inProgress,
+  phase: 1,
+  
+  disapproved: '',
+  stored: '',
+  unsuccessful: '',
+  waiting: ''
 };
 
 export const generalInformation: Module<GeneralInformationState, RootState> = {

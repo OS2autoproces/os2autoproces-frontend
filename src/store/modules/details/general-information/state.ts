@@ -1,3 +1,11 @@
+export const Status = {
+  inProgress: 'Igang',
+  waiting: 'Afventer',
+  disapproved: 'Afvist',
+  stored: 'Arkiveret',
+  unsuccessful: 'Mislykket'
+}
+
 export interface GeneralInformationState {
   disabled: boolean;
   kleNumber: string; // KL Nummer
@@ -14,4 +22,12 @@ export interface GeneralInformationState {
   associatedPersons: string[];
   status: string;
   phase: number;
+
+  // Status text
+  waiting: string;
+  disapproved: string;
+  stored: string;
+  unsuccessful: string;
 }
+
+
