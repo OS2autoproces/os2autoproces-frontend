@@ -35,7 +35,7 @@ export default class Rating extends Vue {
 
 <style scoped lang="scss">
 .rating {
-  display: flex;
+  display: inline-flex;
   justify-content: space-between;
 }
 
