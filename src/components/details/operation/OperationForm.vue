@@ -2,7 +2,7 @@
     <FormSection heading="Drift" id="operation" :disabled="state.disabled" @edit="update({disabled: $event})">
         <div class="rating-wrapper" :class="{disabled: state.disabled}">
             <div>I hvor høj grad realiserer processen sit potentiale?</div>
-            <Rating class="rating" @change="update({potential: $event})" :disabled="state.disabled" :value="state.potential" />
+            <Rating class="operation-rating" @change="update({potential: $event})" :disabled="state.disabled" :value="state.potential" />
         </div>
 
         <Well>
@@ -72,22 +72,22 @@ export default class OperationForm extends Vue {
 
 .rating-wrapper {
   padding: $size-unit;
-  display: inline-block;
-  text-align: center;
   margin-bottom: $size-unit;
   border: 1px solid transparent;
+  display: inline-block;
 
   &:not(.disabled) {
     border-color: $color-primary;
     border-radius: $size-unit;
   }
-  .rating {
+  .operation-rating {
+    width: 10 * $size-unit;
+    margin: 0 auto;
     margin-top: $size-unit/2;
-    width: 160px;
 
     /deep/ svg {
       height: 2 * $size-unit;
-      height: 2 * $size-unit;
+      width: 2 * $size-unit;
     }
   }
 }
