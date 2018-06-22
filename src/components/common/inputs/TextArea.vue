@@ -41,7 +41,6 @@ export default class TextArea extends Vue {
   border-radius: 10px;
   padding: 10px;
   padding-bottom: 25px;
-  width: 100%;
   background: $color-background;
 
   .text-area-overlay {
