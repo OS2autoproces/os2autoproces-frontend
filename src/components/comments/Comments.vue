@@ -1,20 +1,20 @@
 <template>
-    <div class="comments-form">
-        <div class="comment-input-wrapper" v-if="!disabled">
-            <text-area :value="newComment" @change="newComment = $event" class="comment-input" placeholder="Skriv en kommentar her" :max-length="maxLength" noResize>
-                <Button @click="submit">Send</Button>
-            </text-area>
-        </div>
-        <div class="comment-list-wrapper">
-            <div class="comment-list">
-                <div class="comment" v-for="comment in comments" :key="comment.id">
-                    <span class="author">{{comment.author}}, {{comment.municipality}}: </span>
-                    <span class="time">{{comment.time}}</span>
-                    <div>{{comment.text}}</div>
-                </div>
-            </div>
-        </div>
+  <div class="comments-form">
+    <div class="comment-input-wrapper" v-if="!disabled">
+      <text-area :value="newComment" @change="newComment = $event" class="comment-input" placeholder="Skriv en kommentar her" :max-length="maxLength" noResize>
+        <Button @click="submit">Send</Button>
+      </text-area>
     </div>
+    <div class="comment-list-wrapper">
+      <div class="comment-list">
+        <div class="comment" v-for="comment in comments" :key="comment.id">
+          <span class="author">{{comment.author}}, {{comment.municipality}}: </span>
+          <span class="time">{{comment.time}}</span>
+          <div>{{comment.text}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -36,14 +36,13 @@ interface Comment {
   }
 })
 export default class Comments extends Vue {
-  @Prop() private disabled!: boolean;
-  @Prop() private comments!: Comment[];
+  @Prop() disabled!: boolean;
+  @Prop() comments!: Comment[];
 
-  private maxLength = 140;
-
+  maxLength = 140;
   newComment = '';
 
-  private submit() {
+  submit() {
     if (!this.newComment || this.newComment.length > this.maxLength) {
       return;
     }
