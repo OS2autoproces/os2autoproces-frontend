@@ -27,6 +27,7 @@ export default class InputField extends Vue {
 <style lang="scss" scoped>
 @import '@/styles/variables.scss';
 input {
+  @include field-input-text;
   border: 1px solid $color-primary;
   border-radius: 30px;
   padding-left: 10px !important;

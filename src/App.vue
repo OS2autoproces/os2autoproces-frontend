@@ -22,7 +22,7 @@ import { Vue, Component } from 'vue-property-decorator';
 })
 export default class App extends Vue {}
 </script>
-  
+
 <style lang="scss">
 @import './styles/variables';
 
@@ -38,6 +38,10 @@ body {
 
 .flex-grow {
   flex-grow: 1;
+}
+
+.menu__content--autocomplete.menuable__content__active {
+  transform: translateY(24px);
 }
 
 #app {
