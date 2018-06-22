@@ -13,7 +13,6 @@ Vue.use(Vuetify, {
   theme: {
     primary: '#ee8a3c',
     secondary: '#3d5386',
-
     error: '#b71c1c',
     background: '#fff'
   }

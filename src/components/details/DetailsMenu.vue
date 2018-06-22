@@ -1,9 +1,9 @@
 <template>
-    <div>
-        <div class="menu-item" v-for="item in this.items" :key="item.id" :class="{ 'in-view': itemInView === item }" @click="scrollTo(item)">
-            {{item.heading}}
-        </div>
+  <div>
+    <div class="menu-item" v-for="item in this.items" :key="item.id" :class="{ 'in-view': itemInView === item }" @click="scrollTo(item)">
+      {{item.heading}}
     </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -58,9 +58,9 @@ export default class DetailsMenu extends Vue {
   }
 
   private getElementInView(items: MenuItem[]): MenuItem {
-    const distanceFromTop = .2;
+    const distanceFromTop = 90;
 
-    const breakpoint = window.pageYOffset + window.innerHeight * distanceFromTop;
+    const breakpoint = window.pageYOffset + distanceFromTop;
 
     for (let i = items.length - 1; i >= 0; i--) {
       const element = document.getElementById(items[i].id);

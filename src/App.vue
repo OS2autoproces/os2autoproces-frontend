@@ -22,7 +22,7 @@ import { Vue, Component } from 'vue-property-decorator';
 })
 export default class App extends Vue {}
 </script>
-
+  
 <style lang="scss">
 @import './styles/variables';
 
