@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <v-select v-if="!disabled" :items="items" single-line @change="valueChanged" autocomplete :value="value" :append-icon="iconName" :placeholder="placeholder" />
-    <div class="selection-field-text" v-if="disabled">{{value}}</div>
+  <div class="selection-wrapper">
+    <v-select class="selection-field" v-if="!disabled" :items="items" single-line @change="valueChanged" autocomplete :value="value" :append-icon="iconName" :placeholder="placeholder" />
+    <div class="selection-text" v-if="disabled">{{value}}</div>
   </div>
 </template>
 
@@ -57,7 +57,11 @@ export default class SelectionField extends Vue {
   color: inherit;
 }
 
-.selection-field-text {
+.selection-wrapper {
+  display: inline-block;
+}
+
+.selection-text {
   font-size: 18px;
   font-weight: bold;
 }

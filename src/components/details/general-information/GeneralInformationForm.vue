@@ -1,96 +1,94 @@
 <template>
-    <FormSection heading="Grundlæggende oplysninger" id="general-information" :disabled="state.disabled" @edit="update({disabled: $event})" always-open>
-        <div class="general-information-wrapper">
-            <Well>
-                <div>
-                    <WellItem label="KLE-nr:">
-                        <SelectionField :disabled="state.disabled" :value="state.kleNumber" @change="update({kleNumber: $event})" :items="kleNumbers" />
-                    </WellItem>
-                    <WellItem label="ID:">
-                        <InputField disabled :value="state.id" />
-                    </WellItem>
-                    <WellItem label="Lov of paragraf:">
-                        <InputField :disabled="state.disabled" :value="state.paragraf" @change="update({paragraf: $event})" />
-                    </WellItem>
-                </div>
-
-                <div>
-                    <WellItem label="Afdeling:">
-                        <SelectionField :disabled="state.disabled" :value="state.department" @change="update({department: $event})" :items="departments" />
-                    </WellItem>
-                    <WellItem label="Fagområde:">
-                        <SelectionField :disabled="state.disabled" :value="state.field" @change="update({field: $event})" :items="fields" />
-                    </WellItem>
-                    <WellItem label="Synlighed:">
-                        <SelectionField :disabled="state.disabled" :value="state.visibility" @change="update({visibility: $event})" :items="visibilityLevels" />
-                    </WellItem>
-                </div>
-
-                <div>
-                    <WellItem label="Kontaktperson:">
-                        <SelectionField :disabled="state.disabled" :value="state.contactPerson" @change="update({contactPerson: $event})" :items="contactPersons" />
-                    </WellItem>
-                    <WellItem label="Mail:">
-                        <SelectionField :disabled="state.disabled" :value="state.email" @change="update({email: $event})" :items="emails" />
-                    </WellItem>
-                    <WellItem label="Procestid:">
-                        <InputField :disabled="state.disabled" :value="state.processTime" @change="update({processTime: $event})" />
-                    </WellItem>
-                </div>
-
-                <div>
-                    <WellItem label="Leverandør:">
-                        <SelectionField :disabled="state.disabled" :value="state.supplier" @change="update({supplier: $event})" :items="suppliers" />
-                    </WellItem>
-                    <WellItem label="Projektleder:">
-                        <SelectionField :disabled="state.disabled" :value="state.projectManager" @change="update({projectManager: $event})" :items="projectManagers" />
-                    </WellItem>
-                </div>
-
-                <AssociatedPersonsInput slot="well-footer" :disabled="state.disabled" />
-            </Well>
-        </div>
-
-        <div class="resume-phases">
-            <div class="resume">
-                <h2>Resume</h2>
-                <TextArea :disabled="state.disabled" @change="update({resume: $event})" :value="state.resume" />
-            </div>
-            <div class="general-phases">
-                <Phases :disabled="state.disabled" :value="state.phase" @change="phaseChanged($event)" />
-                <SelectionField :disabled="state.disabled" class="status-selection" :value="state.status" @change="update({status: $event})" :items="statuses" />
-            </div>
-        </div>
-
-        <div v-if="isPhaseChanged" class="phase-changed">
-            <WarningIcon class="general-information-warning-icon" />
-            <div>
-                Når du skifter fase, skal yderligere information om processen udfyldes
-            </div>
+  <FormSection heading="Grundlæggende oplysninger" id="general-information" :disabled="state.disabled" @edit="update({disabled: $event})" always-open>
+    <div class="general-information-wrapper">
+      <Well>
+        <div>
+          <WellItem label="KLE-nr:">
+            <SelectionField :disabled="state.disabled" :value="state.kleNumber" @change="update({kleNumber: $event})" :items="kleNumbers" />
+          </WellItem>
+          <WellItem label="ID:">
+            <InputField disabled :value="state.id" />
+          </WellItem>
+          <WellItem label="Lov of paragraf:">
+            <InputField :disabled="state.disabled" :value="state.paragraf" @change="update({paragraf: $event})" />
+          </WellItem>
         </div>
 
         <div>
-            <div v-if="state.status === Status.waiting">
-                <h2 class="comments-heading">Hvorfor Afventes processen?</h2>
-                <TextArea class="status-comment-field" :disabled="state.disabled" @change="update({waiting: $event})" :value="state.waiting" />
-            </div>
-
-            <div v-if="state.status === Status.disapproved">
-                <h2 class="comments-heading">Hvorfor er processen afvist?</h2>
-                <TextArea class="status-comment-field" :disabled="state.disabled" @change="update({disapproved: $event})" :value="state.disapproved" />
-            </div>
-
-            <div v-if="state.status === Status.stored">
-                <h2 class="comments-heading">Hvorfor er processen arkiveret?</h2>
-                <TextArea class="status-comment-field" :disabled="state.disabled" @change="update({stored: $event})" :value="state.stored" />
-            </div>
-
-            <div v-if="state.status === Status.unsuccessful">
-                <h2 class="comments-heading">Hvorfor er processen mislykket?</h2>
-                <TextArea class="status-comment-field" :disabled="state.disabled" @change="update({unsuccessful: $event})" :value="state.unsuccessful" />
-            </div>
+          <WellItem label="Afdeling:">
+            <SelectionField :disabled="state.disabled" :value="state.department" @change="update({department: $event})" :items="departments" />
+          </WellItem>
+          <WellItem label="Fagområde:">
+            <SelectionField :disabled="state.disabled" :value="state.field" @change="update({field: $event})" :items="fields" />
+          </WellItem>
+          <WellItem label="Synlighed:">
+            <SelectionField :disabled="state.disabled" :value="state.visibility" @change="update({visibility: $event})" :items="visibilityLevels" />
+          </WellItem>
         </div>
-    </FormSection>
+
+        <div>
+          <WellItem label="Kontaktperson:">
+            <SelectionField :disabled="state.disabled" :value="state.contactPerson" @change="update({contactPerson: $event})" :items="contactPersons" />
+          </WellItem>
+          <WellItem label="Mail:">
+            <SelectionField :disabled="state.disabled" :value="state.email" @change="update({email: $event})" :items="emails" />
+          </WellItem>
+          <WellItem label="Procestid:">
+            <InputField :disabled="state.disabled" :value="state.processTime" @change="update({processTime: $event})" />
+          </WellItem>
+        </div>
+
+        <div>
+          <WellItem label="Leverandør:">
+            <SelectionField :disabled="state.disabled" :value="state.supplier" @change="update({supplier: $event})" :items="suppliers" />
+          </WellItem>
+          <WellItem label="Projektleder:">
+            <SelectionField :disabled="state.disabled" :value="state.projectManager" @change="update({projectManager: $event})" :items="projectManagers" />
+          </WellItem>
+        </div>
+
+        <AssociatedPersonsInput slot="well-footer" :disabled="state.disabled" />
+      </Well>
+    </div>
+
+    <div class="resume-phases">
+      <div class="resume">
+        <h2>Resume</h2>
+        <TextArea :disabled="state.disabled" @change="update({resume: $event})" :value="state.resume" />
+      </div>
+      <div class="general-phases">
+        <Phases :disabled="state.disabled" :value="state.phase" @change="phaseChanged($event)" />
+        <SelectionField :disabled="state.disabled" class="status-selection" :value="state.status" @change="update({status: $event})" :items="statuses" />
+
+        <div v-if="isPhaseChanged" class="phase-changed">
+          <WarningIcon class="general-information-warning-icon" />
+          <div>Når du skifter fase, skal yderligere information om processen udfyldes</div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div v-if="state.status === Status.waiting">
+        <h2 class="comments-heading">Hvorfor Afventes processen?</h2>
+        <TextArea class="status-comment-field" :disabled="state.disabled" @change="update({waiting: $event})" :value="state.waiting" />
+      </div>
+
+      <div v-if="state.status === Status.disapproved">
+        <h2 class="comments-heading">Hvorfor er processen afvist?</h2>
+        <TextArea class="status-comment-field" :disabled="state.disabled" @change="update({disapproved: $event})" :value="state.disapproved" />
+      </div>
+
+      <div v-if="state.status === Status.stored">
+        <h2 class="comments-heading">Hvorfor er processen arkiveret?</h2>
+        <TextArea class="status-comment-field" :disabled="state.disabled" @change="update({stored: $event})" :value="state.stored" />
+      </div>
+
+      <div v-if="state.status === Status.unsuccessful">
+        <h2 class="comments-heading">Hvorfor er processen mislykket?</h2>
+        <TextArea class="status-comment-field" :disabled="state.disabled" @change="update({unsuccessful: $event})" :value="state.unsuccessful" />
+      </div>
+    </div>
+  </FormSection>
 </template>
 
 <script lang="ts">
@@ -179,20 +177,23 @@ export default class GeneralInformationForm extends Vue {
   margin-top: $size-unit * 2;
 
   .resume {
-    width: 30%;
+    flex-grow: 1;
+
     h2 {
       @include textarea-heading;
       margin-bottom: $size-unit/2;
     }
   }
+
   .general-phases {
-    display: flex;
-    flex-direction: column;
-    width: 50%;
-    margin-left: auto;
+    flex: 0 0 400px;
+    margin-left: 2 * $size-unit;
+    text-align: center;
+
     .status-selection {
-      align-self: center;
-      max-width: 230px;
+      width: 200px;
+      text-align: center;
+      margin: 0 auto;
     }
   }
 }
@@ -212,12 +213,19 @@ export default class GeneralInformationForm extends Vue {
   justify-content: center;
   align-items: center;
   padding: $size-unit;
+  text-align: left;
+
+  svg {
+    flex-shrink: 0;
+  }
+
   > div {
     color: $color-secondary;
     padding-left: $size-unit;
-    width: 300px;
+    width: 250px;
   }
 }
+
 .general-information-warning-icon {
   vertical-align: middle;
   width: 40px;
