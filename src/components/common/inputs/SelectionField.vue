@@ -25,19 +25,24 @@ export default class SelectionField extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 @import '@/styles/variables.scss';
-.input-group--autocomplete {
+
+.input-group--autocomplete /deep/ {
   padding-top: 0 !important;
+
+  .input-group__selections__comma,
+  input.input-group--select__autocomplete {
+    @include field-input-text;
+    color: $color-text !important;
+  }
 
   .input-group__input {
     border: 1px solid $color-primary;
     border-radius: 20px;
     padding-left: 13px;
-
-    .input-group__selections__comma {
-      color: inherit;
-    }
+    flex: 1 1 100%;
+    min-height: 2 * $size-unit;
 
     .icon {
       color: $color-primary !important;
@@ -49,20 +54,7 @@ export default class SelectionField extends Vue {
   }
 }
 
-.menu__content--autocomplete.menuable__content__active {
-  transform: translateY(24px);
-}
-
-.list__tile__title {
-  color: inherit;
-}
-
-.selection-wrapper {
-  display: inline-block;
-}
-
 .selection-text {
-  font-size: 18px;
-  font-weight: bold;
+  @include field-input-text;
 }
 </style>

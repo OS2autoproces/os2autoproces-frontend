@@ -13,7 +13,7 @@
     </div>
     <div class="add-person" v-if="!disabled">
       <div class="associated-label">Tilknyt person</div>
-      <SelectionField placeholder="Skriv navn" @change="addPerson" :items="people" iconName="search" />
+      <SelectionField class="search-field" placeholder="Skriv navn" @change="addPerson" :items="people" iconName="search" />
     </div>
     <div class="associated-list-readonly" v-if="disabled">
       <div class="associated-label">Tilknyttede personer:</div>
@@ -36,10 +36,8 @@ import { generalInformationActionTypes } from '@/store/modules/details/general-i
   }
 })
 export default class AssociatedPersonsInput extends Vue {
-  @Action(generalInformationActionTypes.ADD_ASSOCIATED_PERSON)
-  addAssociatedPerson: any;
-  @Action(generalInformationActionTypes.REMOVE_ASSOCIATED_PERSON)
-  removeAssociatedPerson: any;
+  @Action(generalInformationActionTypes.ADD_ASSOCIATED_PERSON) addAssociatedPerson: any;
+  @Action(generalInformationActionTypes.REMOVE_ASSOCIATED_PERSON) removeAssociatedPerson: any;
 
   @Prop() disabled!: boolean;
 
@@ -62,9 +60,7 @@ export default class AssociatedPersonsInput extends Vue {
   }
 
   get associatedPersonsDisabled() {
-    return this.$store.state.details.generalInformation.associatedPersons.join(
-      ', '
-    );
+    return this.$store.state.details.generalInformation.associatedPersons.join(', ');
   }
 }
 </script>
@@ -112,8 +108,11 @@ export default class AssociatedPersonsInput extends Vue {
     }
   }
 
+  .search-field {
+    width: 250px;
+  }
+
   /deep/ .input-group--autocomplete {
-    
     .icon {
       transform: none !important;
     }

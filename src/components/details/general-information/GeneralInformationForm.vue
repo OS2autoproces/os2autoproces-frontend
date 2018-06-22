@@ -3,46 +3,46 @@
     <div class="general-information-wrapper">
       <Well>
         <div>
-          <WellItem label="KLE-nr:">
+          <WellItem labelWidth="100px" label="KLE-nr:">
             <SelectionField :disabled="state.disabled" :value="state.kleNumber" @change="update({kleNumber: $event})" :items="kleNumbers" />
           </WellItem>
-          <WellItem label="ID:">
+          <WellItem labelWidth="100px" label="ID:">
             <InputField disabled :value="state.id" />
           </WellItem>
-          <WellItem label="Lov of paragraf:">
+          <WellItem labelWidth="100px" label="Lov of paragraf:">
             <InputField :disabled="state.disabled" :value="state.paragraf" @change="update({paragraf: $event})" />
           </WellItem>
         </div>
 
         <div>
-          <WellItem label="Afdeling:">
+          <WellItem labelWidth="100px" label="Afdeling:">
             <SelectionField :disabled="state.disabled" :value="state.department" @change="update({department: $event})" :items="departments" />
           </WellItem>
-          <WellItem label="Fagområde:">
+          <WellItem labelWidth="100px" label="Fagområde:">
             <SelectionField :disabled="state.disabled" :value="state.field" @change="update({field: $event})" :items="fields" />
           </WellItem>
-          <WellItem label="Synlighed:">
+          <WellItem labelWidth="100px" label="Synlighed:">
             <SelectionField :disabled="state.disabled" :value="state.visibility" @change="update({visibility: $event})" :items="visibilityLevels" />
           </WellItem>
         </div>
 
         <div>
-          <WellItem label="Kontaktperson:">
+          <WellItem labelWidth="100px" label="Kontaktperson:">
             <SelectionField :disabled="state.disabled" :value="state.contactPerson" @change="update({contactPerson: $event})" :items="contactPersons" />
           </WellItem>
-          <WellItem label="Mail:">
+          <WellItem labelWidth="100px" label="Mail:">
             <SelectionField :disabled="state.disabled" :value="state.email" @change="update({email: $event})" :items="emails" />
           </WellItem>
-          <WellItem label="Procestid:">
+          <WellItem labelWidth="100px" label="Procestid:">
             <InputField :disabled="state.disabled" :value="state.processTime" @change="update({processTime: $event})" />
           </WellItem>
         </div>
 
         <div>
-          <WellItem label="Leverandør:">
+          <WellItem labelWidth="100px" label="Leverandør:">
             <SelectionField :disabled="state.disabled" :value="state.supplier" @change="update({supplier: $event})" :items="suppliers" />
           </WellItem>
-          <WellItem label="Projektleder:">
+          <WellItem labelWidth="100px" label="Projektleder:">
             <SelectionField :disabled="state.disabled" :value="state.projectManager" @change="update({projectManager: $event})" :items="projectManagers" />
           </WellItem>
         </div>
