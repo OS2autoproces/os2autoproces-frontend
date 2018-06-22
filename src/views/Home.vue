@@ -1,28 +1,28 @@
 <template>
-    <div class="page">
-        <div class="header">
-            <!-- TODO: Link to municipality discovery page -->
-            <router-link class="login-button" to="/search">Log ind</router-link>
+  <div class="page">
+    <div class="header">
+      <!-- TODO: Link to municipality discovery page -->
+      <router-link class="login-button" to="/search">Log ind</router-link>
 
-            <h1>AutoProces</h1>
-            <h2>Tværkommunal procesdeling</h2>
-        </div>
-
-        <div class="details" :class="{ editing }">
-            <div class="edit-button" v-if="!editing" @click="editing = true">
-                <EditIcon></EditIcon>
-            </div>
-            <div class="save-button" v-if="editing" @click="save">
-                <Button>Gem</Button>
-            </div>
-            <MarkdownEditor :editing="editing" :value="details" @change="changeDetails" />
-        </div>
-
-        <div class="idea-sharing-icon">
-            <idea-sharing-icon />
-        </div>
-
+      <h1>AutoProces</h1>
+      <h2>Tværkommunal procesdeling</h2>
     </div>
+
+    <div class="details" :class="{ editing }">
+      <div class="edit-button-container" v-if="!editing" @click="editing = true">
+        <EditIcon></EditIcon>
+      </div>
+      <div class="save-button-container" v-if="editing" @click="save">
+        <Button class="save-button">Gem</Button>
+      </div>
+      <MarkdownEditor :editing="editing" :value="details" @change="changeDetails" />
+    </div>
+
+    <div class="idea-sharing-icon">
+      <idea-sharing-icon />
+    </div>
+
+  </div>
 </template>
 
 <script lang="ts">
@@ -119,15 +119,15 @@ export default class Home extends Vue {
   width: 320px;
 }
 
-.edit-button,
-.save-button {
+.edit-button-container,
+.save-button-container {
   position: absolute;
   top: 0;
   left: 0;
   transform: translateX(-100%);
 }
 
-.edit-button {
+.edit-button-container {
   cursor: pointer;
   height: 20px;
   width: 20px;
@@ -135,5 +135,9 @@ export default class Home extends Vue {
   /deep/ path {
     fill: $color-primary;
   }
+}
+
+.save-button {
+  border-color: $color-primary;
 }
 </style>
