@@ -87,7 +87,7 @@ export default class OperationForm extends Vue {
 
     /deep/ svg {
       height: 2 * $size-unit;
-      height: 2 * $size-unit;
+      width: 2 * $size-unit;
     }
   }
 }
