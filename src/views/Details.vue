@@ -31,11 +31,11 @@
 
           <div class="usage">
             <div :class="{ disabled: state.intervalDisabled }" class="usage-heading">Antal kommuner der bruger løsningen
-              <div role="button" class="usage-edit-icon" @click="updateInterval({intervalDisabled: !state.intervalDisabled})">
+              <div role="button" class="usage-edit-icon" @click="udpateDetails({intervalDisabled: !state.intervalDisabled})">
                 <EditIcon />
               </div>
             </div>
-            <IntervalSelector @change="updateInterval({interval: $event})" :value="state.interval" :disabled="state.intervalDisabled" />
+            <IntervalSelector @change="udpateDetails({interval: $event})" :value="state.interval" :disabled="state.intervalDisabled" />
           </div>
 
           <div class="comments">
@@ -98,7 +98,7 @@ export default class Details extends Vue {
   @Action(detailsActionTypes.REPORT) report: any;
   @Action(generalInformationActionTypes.UPDATE_GENERAL_INFORMATION)
   updateGeneralInformation: any;
-  @Action(detailsActionTypes.UPDATE) updateInterval: any;
+  @Action(detailsActionTypes.UPDATE) udpateDetails: any;
 
   get state() {
     return this.$store.state.details;
