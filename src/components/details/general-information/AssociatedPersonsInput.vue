@@ -4,10 +4,10 @@
       <div class="associated-label">Tilknyttede personer</div>
       <div class="associated-persons-list">
         <div v-for="(person, index) in associatedPeople" :key="index">
-          {{person}}
-          <span @click="removePerson(person)" class="delete-icon">
+          <div class="name">{{person}}</div>
+          <div @click="removePerson(person)" class="delete-icon">
             <DeleteIcon />
-          </span>
+          </div>
         </div>
       </div>
     </div>
@@ -89,12 +89,16 @@ export default class AssociatedPersonsInput extends Vue {
       > div {
         display: flex;
         align-items: center;
-        width: 20%;
+        margin-right: $size-unit;
+
+        .name {
+          flex-grow: 1;
+        }
 
         .delete-icon {
           width: $size-unit;
           height: $size-unit;
-          margin-left: auto;
+          margin-left: $size-unit/2;
         }
       }
     }
