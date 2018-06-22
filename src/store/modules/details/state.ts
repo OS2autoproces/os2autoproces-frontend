@@ -1,4 +1,4 @@
 export interface DetailsState {
-    interval: string;
+    interval: string | null;
     intervalDisabled: boolean;
 }

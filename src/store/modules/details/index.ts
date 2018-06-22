@@ -15,7 +15,7 @@ import { mutations } from '@/store/modules/details/mutations';
 const namespaced = true;
 
 export const state: DetailsState = {
-  interval: '1',
+  interval: null,
   intervalDisabled: true
 };
 
