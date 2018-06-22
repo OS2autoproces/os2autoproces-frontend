@@ -1,14 +1,14 @@
 <template>
-    <div>
-        <div class="text-area" v-if="!disabled">
-            <textarea :value="value" @input="valueChanged" :placeholder="placeholder" :class="{ 'no-resize': noResize }" />
-            <div class="text-area-overlay">
-                <div v-if="maxLength" class="max-length-label">({{currentLength}} ud af {{maxLength}} tegn)</div>
-                <slot />
-            </div>
-        </div>
-        <div class="text-area-readonly" :class="{'double-column': value.length > twoColumnBreakpoint}" v-if="disabled">{{value}}</div>
+  <div>
+    <div class="text-area" v-if="!disabled">
+      <textarea :value="value" @input="valueChanged" :placeholder="placeholder" :class="{ 'no-resize': noResize }" />
+      <div class="text-area-overlay">
+        <slot />
+        <div v-if="maxLength" class="max-length-label">({{currentLength}} ud af {{maxLength}} tegn)</div>
+      </div>
     </div>
+    <div class="text-area-readonly" :class="{'double-column': value.length > twoColumnBreakpoint}" v-if="disabled">{{value}}</div>
+  </div>
 </template>
 
 <script lang='ts'>
@@ -37,35 +37,40 @@ export default class TextArea extends Vue {
 
 .text-area {
   position: relative;
+  border: 1px solid $color-primary;
+  border-radius: 10px;
+  padding: 0 10px;
+  padding-bottom: 25px;
+  width: 100%;
+  background: $color-background;
+
   .text-area-overlay {
     display: inline-block;
     position: absolute;
     right: 10px;
-    bottom: 10px;
-
+    bottom: 5px;
     text-align: right;
   }
 
   .max-length-label {
-    padding-bottom: $size-unit/2;
+    padding-right: 20px;
   }
 }
 
 .text-area-readonly {
   white-space: pre-wrap;
+  width: 50%;
 }
 
 textarea {
-  border: 1px solid $color-primary;
-  border-radius: 10px;
-  padding: 10px;
   width: 100%;
-  background: $color-background;
+  min-height: 250px;
 
   &.no-resize {
     resize: none;
   }
 }
+
 .double-column {
   width: 100%;
   column-count: 2;
