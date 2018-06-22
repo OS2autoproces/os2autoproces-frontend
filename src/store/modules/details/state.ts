@@ -1,1 +1,4 @@
-export interface DetailsState {}
+export interface DetailsState {
+    interval: string | null;
+    intervalDisabled: boolean;
+}

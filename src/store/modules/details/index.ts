@@ -10,17 +10,21 @@ import { timeAndProcess } from '@/store/modules/details/time-process';
 import { specification } from '@/store/modules/details/specification';
 import { implementation } from '@/store/modules/details/implementation';
 import { operation } from '@/store/modules/details/operation';
+import { mutations } from '@/store/modules/details/mutations';
 
 const namespaced = true;
 
 export const state: DetailsState = {
-  // empty for now
+  interval: null,
+  intervalDisabled: true
 };
 
 export const details: Module<DetailsState, RootState> = {
   namespaced,
   getters,
   actions,
+  mutations,
+  state,
   modules: {
     generalInformation,
     challenges,
