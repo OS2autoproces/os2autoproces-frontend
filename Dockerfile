@@ -38,9 +38,6 @@ ENV API_AUTOPROCES 'https://dev.os2autoproces.eu/api'
 # Copy nginx configuration file
 COPY Docker/nginx.conf /etc/nginx/conf.d/default.conf
 
-# Copy environment configuration file
-COPY Docker/environment-config.json /
-
 # Copy the built application to the nginx root
 COPY --from=node /app/dist/ /usr/share/nginx/html
 
