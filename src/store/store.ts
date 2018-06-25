@@ -1,7 +1,8 @@
-import Vue from "vue";
-import Vuex, { StoreOptions } from "vuex";
-import { details } from '@/store/modules/details'
+import Vue from 'vue';
+import Vuex, { StoreOptions } from 'vuex';
+import { details } from '@/store/modules/details';
 import { search } from '@/store/modules/search';
+import { auth } from '@/store/modules/auth';
 
 Vue.use(Vuex);
 
@@ -11,6 +12,7 @@ export interface RootState {
 
 const store: StoreOptions<RootState> = {
   modules: {
+    auth,
     details,
     search
   }
