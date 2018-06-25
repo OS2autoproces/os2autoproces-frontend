@@ -8,7 +8,7 @@ interface WhoAmIResponse {
   email: string | null;
   name: string | null;
   cvr: string | null;
-  roles: UserRole[];
+  roles: UserRole[] | null;
 }
 
 const namespace = 'auth';
