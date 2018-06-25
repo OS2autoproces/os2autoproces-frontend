@@ -1,8 +1,7 @@
 <template>
   <div class="page">
     <div class="header">
-      <!-- TODO: Link to municipality discovery page -->
-      <router-link class="login-button" to="/search">Log ind</router-link>
+      <a class="login-button" :href="discoveryUrl">Log ind</a>
 
       <h1>AutoProces</h1>
       <h2>Tværkommunal procesdeling</h2>
@@ -43,6 +42,7 @@ import MarkdownEditor from '../components/common/inputs/MarkdownEditor.vue';
 export default class Home extends Vue {
   editing = false;
   details = '# Overskrift\n\nLorem ipsum dolor, sit amet consectetur adipisicing elit. Non porro ut deserunt nesciunt quidem sint ducimus labore quae dolorum consectetur cum minima, ipsam vero facere officia? Debitis temporibus repudiandae laudantium.Lorem ipsum dolor, sit amet consectetur adipisicing elit. Non porro ut deserunt nesciunt quidem sint ducimus labore quae dolorum consectetur cum minima, ipsam vero facere officia? Debitis temporibus repudiandae laudantium. Lorem ipsum dolor, sit amet consectetur adipisicing elit. Non porro ut deserunt nesciunt quidem sint ducimus labore quae dolorum consectetur cum minima, ipsam vero facere officia? Debitis temporibus repudiandae laudantium. Lorem ipsum dolor, sit amet consectetur adipisicing elit. Non porro ut deserunt nesciunt quidem sint ducimus labore quae dolorum consectetur cum minima, ipsam vero facere officia? Debitis temporibus repudiandae laudantium. Lorem ipsum dolor, sit amet consectetur adipisicing elit. Non porro ut deserunt nesciunt quidem sint ducimus labore quae dolorum consectetur cum minima, ipsam vero facere officia? Debitis temporibus repudiandae laudantium.';
+  discoveryUrl = window.autoProcessConfiguration.discoveryUrl;
 
   changeDetails(value: string) {
     this.details = value;
