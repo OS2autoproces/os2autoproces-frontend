@@ -1,26 +1,32 @@
 <template>
-    <div id="app">
-        <v-app light>
-            <div class="router-view">
-                <router-view/>
-            </div>
-            <div class="app-footer">
-                <div>Her skal der stå noget <br> Her skal der være et link <br> Her kan der stå noget mere</div>
-                <div>Her skal der stå noget <br> Her skal der være et link <br> Her kan der stå noget mere</div>
-                <div>Her skal der stå noget <br> Her skal der være et link <br> Her kan der stå noget mere</div>
-                <div>Her skal der stå noget <br> Her skal der være et link <br> Her kan der stå noget mere</div>
-            </div>
-        </v-app>
-    </div>
+  <div id="app">
+    <v-app light>
+      <div class="router-view">
+        <router-view/>
+      </div>
+      <div class="app-footer">
+        <div>Her skal der stå noget <br> Her skal der være et link <br> Her kan der stå noget mere</div>
+        <div>Her skal der stå noget <br> Her skal der være et link <br> Her kan der stå noget mere</div>
+        <div>Her skal der stå noget <br> Her skal der være et link <br> Her kan der stå noget mere</div>
+        <div>Her skal der stå noget <br> Her skal der være et link <br> Her kan der stå noget mere</div>
+      </div>
+    </v-app>
+  </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
+import { Action } from 'vuex-class';
+import { authActionTypes } from '@/store/modules/auth/actions';
 
-@Component({
-  components: {}
-})
-export default class App extends Vue {}
+@Component
+export default class App extends Vue {
+  @Action(authActionTypes.LOAD_USER) loadUser: any;
+
+  mounted() {
+    this.loadUser();
+  }
+}
 </script>
 
 <style lang="scss">
