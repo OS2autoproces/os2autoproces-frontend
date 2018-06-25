@@ -33,6 +33,8 @@ export const actions: ActionTree<AuthState, RootState> = {
 
     commit(authMutationTypes.SET_USER, null);
 
+    // Fails when importing router for some reason
+    // Possibly because of a side effect in the router.ts file
     router.push('/');
   }
 };
