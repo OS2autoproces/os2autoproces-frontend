@@ -1,6 +1,7 @@
 import { AuthState, User, UserRole } from './state';
 import { RootState } from '@/store/store';
 import { ActionTree } from 'vuex';
+import router from '@/router';
 import { authMutationTypes } from '@/store/modules/auth/mutations';
 
 interface WhoAmIResponse {
@@ -14,7 +15,8 @@ interface WhoAmIResponse {
 const namespace = 'auth';
 
 export const authActionTypes = {
-  LOAD_USER: `${namespace}/loadUser`
+  LOAD_USER: `${namespace}/loadUser`,
+  LOGOUT: `${namespace}/logout`
 };
 
 export const actions: ActionTree<AuthState, RootState> = {
@@ -24,5 +26,13 @@ export const actions: ActionTree<AuthState, RootState> = {
     const user: WhoAmIResponse = await response.json();
 
     commit(authMutationTypes.SET_USER, user.uuid !== null ? user : null);
+  },
+  async logout({ commit }) {
+    // TODO: Use HTTP service
+    await fetch('https://dev.os2autoproces.eu/saml/logout', { credentials: 'include' });
+
+    commit(authMutationTypes.SET_USER, null);
+
+    router.push('/');
   }
 };

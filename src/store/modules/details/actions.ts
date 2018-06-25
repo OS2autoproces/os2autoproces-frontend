@@ -13,7 +13,7 @@ export const detailsActionTypes = {
 };
 
 export const actions: ActionTree<DetailsState, RootState> = {
-  update({commit}, payload: Partial<DetailsState>) {
+  update({ commit }, payload: Partial<DetailsState>) {
     commit(detailsMutationTypes.UPDATE, payload);
   },
   save() {

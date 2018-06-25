@@ -6,8 +6,8 @@
       <div class="user">
         <div>{{user.name}}</div>
         <div>{{roles.join(', ')}}</div>
-        <div>
-          <router-link to="/">Log ud</router-link>
+        <div role="button" class="logout-button" @click="logout">
+          Log ud
         </div>
       </div>
       <ProfileIcon class="profile-icon" />
@@ -19,6 +19,8 @@
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import ProfileIcon from '../icons/ProfileIcon.vue';
 import { AuthState, UserRoleName } from '@/store/modules/auth/state';
+import { Action } from 'vuex-class';
+import { authActionTypes } from '@/store/modules/auth/actions';
 
 @Component({
   components: {
@@ -26,6 +28,8 @@ import { AuthState, UserRoleName } from '@/store/modules/auth/state';
   }
 })
 export default class NavBar extends Vue {
+  @Action(authActionTypes.LOGOUT) logout: any;
+
   get user() {
     return this.$store.state.auth.user;
   }
@@ -74,5 +78,10 @@ export default class NavBar extends Vue {
 .user-info {
   display: flex;
   align-items: center;
+}
+
+.logout-button {
+  text-decoration: underline;
+  color: $color-primary;
 }
 </style>
