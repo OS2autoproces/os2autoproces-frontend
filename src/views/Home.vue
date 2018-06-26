@@ -14,7 +14,7 @@
       <div class="save-button-container" v-if="editing" @click="save">
         <Button class="save-button">Gem</Button>
       </div>
-      <MarkdownEditor :editing="editing" :value="details" @change="changeDetails" />
+      <MarkdownEditor :editing="editing" :value="state.frontPageMarkdown" @change="updateMarkdown({frontPageMarkdown: $event})" />
     </div>
 
     <div class="idea-sharing-icon">
@@ -26,10 +26,12 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
+import { Action } from 'vuex-class';
 import IdeaSharingIcon from '../components/icons/IdeaSharingIcon.vue';
 import EditIcon from '../components/icons/EditIcon.vue';
 import Button from '../components/common/inputs/Button.vue';
 import MarkdownEditor from '../components/common/inputs/MarkdownEditor.vue';
+import { commonActionTypes } from '@/store/modules/common/actions';
 
 @Component({
   components: {
@@ -40,6 +42,12 @@ import MarkdownEditor from '../components/common/inputs/MarkdownEditor.vue';
   }
 })
 export default class Home extends Vue {
+  @Action (commonActionTypes.UPDATE_FRONTPAGE_MARKDOWN) updateMarkdown: any;
+
+  get state () {
+    return this.$store.state.common;
+  }
+
   editing = false;
   details = '# Overskrift\n\nLorem ipsum dolor, sit amet consectetur adipisicing elit. Non porro ut deserunt nesciunt quidem sint ducimus labore quae dolorum consectetur cum minima, ipsam vero facere officia? Debitis temporibus repudiandae laudantium.Lorem ipsum dolor, sit amet consectetur adipisicing elit. Non porro ut deserunt nesciunt quidem sint ducimus labore quae dolorum consectetur cum minima, ipsam vero facere officia? Debitis temporibus repudiandae laudantium. Lorem ipsum dolor, sit amet consectetur adipisicing elit. Non porro ut deserunt nesciunt quidem sint ducimus labore quae dolorum consectetur cum minima, ipsam vero facere officia? Debitis temporibus repudiandae laudantium. Lorem ipsum dolor, sit amet consectetur adipisicing elit. Non porro ut deserunt nesciunt quidem sint ducimus labore quae dolorum consectetur cum minima, ipsam vero facere officia? Debitis temporibus repudiandae laudantium. Lorem ipsum dolor, sit amet consectetur adipisicing elit. Non porro ut deserunt nesciunt quidem sint ducimus labore quae dolorum consectetur cum minima, ipsam vero facere officia? Debitis temporibus repudiandae laudantium.';
   discoveryUrl = window.autoProcessConfiguration.discoveryUrl;
