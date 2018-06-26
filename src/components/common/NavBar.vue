@@ -1,24 +1,24 @@
 <template>
-    <div class="navbar">
-        <div class="logo">AutoProces</div>
-        <div class="flex-grow"></div>
-        <div class="user-info">
-            <div class="user">
-                <div>{{user && user.name}}</div>
-                <div>{{user && user.roles.join(', ')}}</div>
-                <div>
-                    <router-link to="/">Log ud</router-link>
-                </div>
-            </div>
-            <ProfileIcon class="profile-icon" />
+  <div class="navbar">
+    <div class="logo">AutoProces</div>
+    <div class="flex-grow"></div>
+    <div class="user-info" v-if="user">
+      <div class="user">
+        <div>{{user.name}}</div>
+        <div>{{roles.join(', ')}}</div>
+        <div>
+          <router-link to="/">Log ud</router-link>
         </div>
+      </div>
+      <ProfileIcon class="profile-icon" />
     </div>
+  </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
-import { IUser } from '../../models/user';
 import ProfileIcon from '../icons/ProfileIcon.vue';
+import { AuthState, UserRoleName } from '@/store/modules/auth/state';
 
 @Component({
   components: {
@@ -27,12 +27,17 @@ import ProfileIcon from '../icons/ProfileIcon.vue';
 })
 export default class NavBar extends Vue {
   get user() {
-    return (
-      this.$store.state.user || {
-        name: 'Julie',
-        roles: ['superbruger', 'Admin']
-      }
-    );
+    return this.$store.state.auth.user;
+  }
+
+  get roles() {
+    const user: AuthState['user'] = this.$store.state.auth.user;
+
+    if (!user) {
+      return [];
+    }
+
+    return user.roles.map(role => UserRoleName[role]);
   }
 }
 </script>

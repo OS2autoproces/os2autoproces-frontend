@@ -1,42 +1,59 @@
 <template>
-    <div id="app">
-        <v-app light>
-            <div class="router-view">
-                <router-view/>
-            </div>
-            <div class="app-footer">
-                <div>Her skal der stå noget <br> Her skal der være et link <br> Her kan der stå noget mere</div>
-                <div>Her skal der stå noget <br> Her skal der være et link <br> Her kan der stå noget mere</div>
-                <div>Her skal der stå noget <br> Her skal der være et link <br> Her kan der stå noget mere</div>
-                <div>Her skal der stå noget <br> Her skal der være et link <br> Her kan der stå noget mere</div>
-            </div>
-            <button @click="getKles()"> kald </button>
-            <button @click="postBookMark()">sdfsdf</button>
-            <button @click="createTechn()">tech</button>
-        </v-app>
-    </div>
+  <div id="app">
+    <v-app light>
+      <div class="router-view">
+        <router-view/>
+      </div>
+      <div class="app-footer">
+        <div>Her skal der stå noget <br> Her skal der være et link <br> Her kan der stå noget mere</div>
+        <div>Her skal der stå noget <br> Her skal der være et link <br> Her kan der stå noget mere</div>
+        <div>Her skal der stå noget <br> Her skal der være et link <br> Her kan der stå noget mere</div>
+        <div>Her skal der stå noget <br> Her skal der være et link <br> Her kan der stå noget mere</div>
+      </div>
+      <button @click="getKles()"> kald </button>
+      <button @click="postBookMark()">sdfsdf</button>
+      <button @click="createTechn()">tech</button>
+    </v-app>
+  </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 import { HTTP } from '@/services/http-service';
 import { AxiosResponse } from 'axios';
+import { Action } from 'vuex-class';
+import { authActionTypes } from '@/store/modules/auth/actions';
 
-@Component({
-  components: {}
-})
+@Component
 export default class App extends Vue {
+  @Action(authActionTypes.LOAD_USER) loadUser: any;
 
   async getKles() {
     const response: AxiosResponse = await HTTP.get('api/comments/3');
   }
 
   async postBookMark() {
-    const repsonse: AxiosResponse = await HTTP.put('api/comments/3', {"message": "comments Test"});
+    const repsonse: AxiosResponse = await HTTP.put(
+      'api/comments/3',
+      {
+        message: 'comments Test'
+      },
+      {
+        headers: {
+          'x-csrf-token': '466b574b-4791-4683-8cfe-946a1ba000c4'
+        }
+      }
+    );
   }
 
   async createTechn() {
-    const repsonse: AxiosResponse = await HTTP.post('api/technologies', {"name": "technologi Test"});
+    const repsonse: AxiosResponse = await HTTP.post('api/technologies', {
+      name: 'technologi Test'
+    });
+  }
+
+  mounted() {
+    this.loadUser();
   }
 }
 </script>
