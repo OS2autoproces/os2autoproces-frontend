@@ -25,10 +25,10 @@
 
       <div>
         <WellItem labelWidth="70%" label="Er borgere påvirket?">
-          <SelectionField :disabled="state.disabled" :value="state.isUserAffected" @change="update({isUserAffected: $event})" />
+          <SelectionField :disabled="state.disabled" :value="state.isUserAffected" @change="update({isUserAffected: $event})" :items="this.affactedItems" />
         </WellItem>
         <WellItem labelWidth="70%" label="Er virksomheder påvirket?">
-          <SelectionField :disabled="state.disabled" :value="state.isCorporationAffected" @change="update({isCorporationAffected: $event})" />
+          <SelectionField :disabled="state.disabled" :value="state.isCorporationAffected" @change="update({isCorporationAffected: $event})" :items="this.affactedItems" />
         </WellItem>
       </div>
     </Well>
@@ -73,6 +73,11 @@ import { TimeAndProcessActionTypes } from '@/store/modules/details/time-process/
 })
 export default class TimeAndProcessForm extends Vue {
   @Action(TimeAndProcessActionTypes.UPDATE_TIME_AND_PROCESS) update: any;
+
+  affactedItems = [
+    'ja',
+    'nej'
+  ];
 
   get state() {
     return this.$store.state.details.timeAndProcess;
