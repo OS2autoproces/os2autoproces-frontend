@@ -9,6 +9,7 @@ const namespaced = true;
 
 export const state: GeneralInformationState = {
   disabled: true,
+  id: null,
   kleNumber: '',
   paragraf: '',
   field: '',
@@ -23,7 +24,7 @@ export const state: GeneralInformationState = {
   associatedPersons: [],
   status: Status.inProgress,
   phase: 1,
-  
+
   disapproved: '',
   stored: '',
   unsuccessful: '',

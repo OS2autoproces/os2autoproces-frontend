@@ -19,7 +19,6 @@
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import ProfileIcon from '../icons/ProfileIcon.vue';
 import { AuthState, UserRoleName } from '@/store/modules/auth/state';
-import { Action } from 'vuex-class';
 import { authActionTypes } from '@/store/modules/auth/actions';
 
 @Component({
@@ -28,8 +27,6 @@ import { authActionTypes } from '@/store/modules/auth/actions';
   }
 })
 export default class NavBar extends Vue {
-  @Action(authActionTypes.LOGOUT) logout: any;
-
   get user() {
     return this.$store.state.auth.user;
   }
@@ -42,6 +39,11 @@ export default class NavBar extends Vue {
     }
 
     return user.roles.map(role => UserRoleName[role]);
+  }
+
+  async logout() {
+    await this.$store.dispatch(authActionTypes.LOGOUT);
+    this.$router.push(`/`);
   }
 }
 </script>

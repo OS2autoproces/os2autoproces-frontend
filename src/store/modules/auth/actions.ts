@@ -1,8 +1,7 @@
-import { AuthState, User, UserRole } from './state';
-import { RootState } from '@/store/store';
 import { ActionTree } from 'vuex';
-import router from '@/router';
-import { authMutationTypes } from '@/store/modules/auth/mutations';
+import { AuthState, UserRole } from './state';
+import { RootState } from '@/store/store';
+import { authMutationTypes } from './mutations';
 
 interface WhoAmIResponse {
   uuid: string | null;
@@ -29,12 +28,8 @@ export const actions: ActionTree<AuthState, RootState> = {
   },
   async logout({ commit }) {
     // TODO: Use HTTP service
-    await fetch('https://dev.os2autoproces.eu/saml/logout', { credentials: 'include' });
+    await fetch('https://dev.os2autoproces.eu/saml/logout', { credentials: 'include', mode: 'no-cors' });
 
     commit(authMutationTypes.SET_USER, null);
-
-    // Fails when importing router for some reason
-    // Possibly because of a side effect in the router.ts file
-    router.push('/');
   }
 };
