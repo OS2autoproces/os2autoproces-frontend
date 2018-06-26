@@ -10,9 +10,6 @@
         <div>Her skal der stå noget <br> Her skal der være et link <br> Her kan der stå noget mere</div>
         <div>Her skal der stå noget <br> Her skal der være et link <br> Her kan der stå noget mere</div>
       </div>
-      <button @click="getKles()"> kald </button>
-      <button @click="postBookMark()">sdfsdf</button>
-      <button @click="createTechn()">tech</button>
     </v-app>
   </div>
 </template>
@@ -27,30 +24,6 @@ import { authActionTypes } from '@/store/modules/auth/actions';
 @Component
 export default class App extends Vue {
   @Action(authActionTypes.LOAD_USER) loadUser: any;
-
-  async getKles() {
-    const response: AxiosResponse = await HTTP.get('api/comments/3');
-  }
-
-  async postBookMark() {
-    const repsonse: AxiosResponse = await HTTP.put(
-      'api/comments/3',
-      {
-        message: 'comments Test'
-      },
-      {
-        headers: {
-          'x-csrf-token': '466b574b-4791-4683-8cfe-946a1ba000c4'
-        }
-      }
-    );
-  }
-
-  async createTechn() {
-    const repsonse: AxiosResponse = await HTTP.post('api/technologies', {
-      name: 'technologi Test'
-    });
-  }
 
   mounted() {
     this.loadUser();

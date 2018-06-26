@@ -8,7 +8,6 @@ export const HTTP = axios.create({
 
 HTTP.interceptors.response.use((response) => {
     const token = response.headers["x-csrf-token"];
-    debugger
     if (token) {
         HTTP.defaults.headers.common['x-csrf-token'] = token;
     }
