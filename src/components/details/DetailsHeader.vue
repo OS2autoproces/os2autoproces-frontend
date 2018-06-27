@@ -1,33 +1,40 @@
 <template>
-    <div class="details-header">
-        <div class="row">
-            <InputField class="name" :value="name" :disabled="!editName" :class="{ disabled: !editName }" />
-            <div class="edit-button" role="button" @click="editName = !editName" :class="{ editing: editName }">
-                <EditIcon />
-            </div>
-            <div class="favorite-button" role="button" @click="favorite = !favorite">
-                <StarIcon :class="{ selected: favorite }" />
-            </div>
+  <div class="details-header">
+    <div class="row">
+      <InputField class="name" :value="name" :disabled="!editName" :class="{ disabled: !editName }" />
+      <div class="edit-button" role="button" @click="editName = !editName" :class="{ editing: editName }">
+        <EditIcon />
+      </div>
+      <div class="favorite-button" role="button" @click="bookmarkProcess(1)">
+        <StarIcon :class="{ selected: !this.selected }" />
+      </div>
 
-            <div class="flex-grow"></div>
-            <img src="https://www.syddjurs.dk/sites/all/themes/custom/site/dist/img/logo.png" alt="Kommune logo">
-        </div>
-        <div class="row">
-            <Button class="button" @click="deleteProces">Slet proces</Button>
-            <Button class="button" @click="copyProces">Kopier proces</Button>
-            <div class="flex-grow"></div>
-            <Toggle :value="notification" @change="notification = $event">Mail notifikation</Toggle>
-        </div>
+      <div class="flex-grow"></div>
+      <img src="https://www.syddjurs.dk/sites/all/themes/custom/site/dist/img/logo.png" alt="Kommune logo">
     </div>
+    <div class="row">
+      <Button class="button" @click="deleteProces">Slet proces</Button>
+      <Button class="button" @click="copyProces">Kopier proces</Button>
+      <div class="flex-grow"></div>
+      <Toggle :value="notification" @change="notification = $event">Mail notifikation</Toggle>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
 import { Vue, Prop, Component } from 'vue-property-decorator';
+import { Action, Getter } from 'vuex-class';
 import StarIcon from '@/components/icons/StarIcon.vue';
 import EditIcon from '@/components/icons/EditIcon.vue';
 import InputField from '@/components/common/inputs/InputField.vue';
 import Button from '@/components/common/inputs/Button.vue';
 import Toggle from '@/components/common/inputs/Toggle.vue';
+import { detailsActionTypes } from '@/store/modules/details/actions';
+import { authGetterTypes } from '@/store/modules/auth/getters';
+import { DetailsState } from '@/store/modules/details/state';
+import { detailsMutationTypes } from '@/store/modules/details/mutations';
+import { authActionTypes } from '@/store/modules/auth/actions';
+import { Bookmark } from '@/store/modules/auth/state';
 
 @Component({
   components: {
@@ -39,11 +46,30 @@ import Toggle from '@/components/common/inputs/Toggle.vue';
   }
 })
 export default class DetailsMenu extends Vue {
+  @Action(detailsActionTypes.UPDATE)
+  update!: (value: Partial<DetailsState>) => void;
+  @Getter(authGetterTypes.IS_FAVORITE)
+  isFavorite!: (processId: Bookmark) => boolean;
+
   // TODO: Bind these to the store
-  favorite = true;
   notification = true;
   editName = false;
   name = 'Rekruttering';
+  selected = false;
+
+  get() {
+    return this.$store.state;
+  }
+
+  bookmarkProcess(id: number) {
+    this.selected = this.isFavorite({ id });
+
+    if (this.selected) {
+      this.$store.dispatch(authActionTypes.REMOVE_BOOKMARK, { id });
+    } else {
+      this.$store.dispatch(authActionTypes.BOOKMARK, { id });
+    }
+  }
 
   deleteProces() {
     // TODO: Show confirmation

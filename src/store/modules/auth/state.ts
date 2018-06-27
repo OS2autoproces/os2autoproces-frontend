@@ -20,6 +20,11 @@ export interface User {
   name: string;
   cvr: string;
   roles: UserRole[];
+  favorites: Bookmark[];
+}
+
+export interface Bookmark {
+  id: number;
 }
 
 export interface AuthState {
