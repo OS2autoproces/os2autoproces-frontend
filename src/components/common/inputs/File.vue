@@ -1,5 +1,5 @@
 <template>
-  <a :href="url" taget="_blank">
+  <a :href="url" target="_blank">
     <div class="icon-container">
       <FileWordIcon class="file-icon" v-if="type === 'word'" />
       <FileExcelIcon class="file-icon" v-if="type === 'excel'" />
@@ -104,7 +104,7 @@ a {
 }
 
 .file-icon {
-  height: 50px;
-  width: 50px;
+  height: 75px;
+  width: 75px;
 }
 </style>

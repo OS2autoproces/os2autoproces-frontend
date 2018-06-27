@@ -1,6 +1,6 @@
 <template>
-  <FormSection heading="Bilag" id="attachments" :disabled="state.attachmentsDisabled" @edit="update({attachmentsDisabled: $event})">
-    <FileUpload :files="state.attachments" />
+  <FormSection heading="Bilag" id="attachments" :disabled="state.attachmentsDisabled" @edit="update({ attachmentsDisabled: $event })">
+    <FileUpload :files="state.attachments" :disabled="state.attachmentsDisabled" />
   </FormSection>
 </template>
 
@@ -24,6 +24,10 @@ export default class AttachmentsForm extends Vue {
 
   get state() {
     return this.$store.state.details;
+  }
+
+  mounted() {
+    this.$store.dispatch(detailsActionTypes.LOAD_ATTACHMENTS);
   }
 }
 </script>
