@@ -9,5 +9,8 @@ export const routes: RouteConfig[] = [
   { path: '/details/:id', component: Details, props: true },
   { path: '/details/new/:phase', component: Details, props: true },
   { path: '/search', component: Search },
-  { path: '/report', component: ReportProcess }
+  { path: '/report', component: ReportProcess },
+  { path: '/logged-in', redirect: '/search' },
+  { path: '/logged-out', redirect: '/' }
+  // TODO: Route for login/logout errors
 ];
