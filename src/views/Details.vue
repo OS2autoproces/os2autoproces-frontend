@@ -95,13 +95,16 @@ export default class Details extends Vue {
   @Prop() phase!: string;
 
   @Action(detailsActionTypes.SAVE) save: any;
-  @Action(detailsActionTypes.REPORT) report: any;
-  @Action(generalInformationActionTypes.UPDATE_GENERAL_INFORMATION)
-  updateGeneralInformation: any;
+  @Action(generalInformationActionTypes.UPDATE_GENERAL_INFORMATION) updateGeneralInformation: any;
   @Action(detailsActionTypes.UPDATE) udpateDetails: any;
 
   get state() {
     return this.$store.state.details;
+  }
+
+  async report() {
+    const process = await this.$store.dispatch(detailsActionTypes.REPORT);
+    this.$router.push(`/details/${process.id}`);
   }
 
   mounted() {
@@ -179,7 +182,7 @@ export default class Details extends Vue {
       }
     }
   }
-  
+
   .comments-heading {
     font-style: italic;
     margin: $size-unit / 2 0;

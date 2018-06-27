@@ -1,7 +1,6 @@
 import { ActionTree } from 'vuex';
 import { DetailsState } from '@/store/modules/details/state';
 import { RootState } from '@/store/store';
-import router from '@/router';
 import { detailsMutationTypes } from '@/store/modules/details/mutations';
 
 export const namespace = 'details';
@@ -13,7 +12,7 @@ export const detailsActionTypes = {
 };
 
 export const actions: ActionTree<DetailsState, RootState> = {
-  update({commit}, payload: Partial<DetailsState>) {
+  update({ commit }, payload: Partial<DetailsState>) {
     commit(detailsMutationTypes.UPDATE, payload);
   },
   save() {
@@ -24,7 +23,7 @@ export const actions: ActionTree<DetailsState, RootState> = {
     // TODO: Save to backend
     // const process = await backend.post(store.proces);
     // updateGeneralInformation({ id: process.id });
-    const process = { id: '1234' };
-    router.push(`/details/${process.id}`);
+
+    return { id: 123 };
   }
 };
