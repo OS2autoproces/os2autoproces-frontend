@@ -12,5 +12,5 @@ export const routes: RouteConfig[] = [
   { path: '/report', component: ReportProcess },
   { path: '/logged-in', redirect: '/search' },
   { path: '/logged-out', redirect: '/' }
-  // TODO: Route for login/logout errors
+  // TODO: add a route for login/logout errors
 ];

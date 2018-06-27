@@ -17,7 +17,6 @@
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import ProfileIcon from '../icons/ProfileIcon.vue';
 import { AuthState, UserRoleName } from '@/store/modules/auth/state';
-import { authActionTypes } from '@/store/modules/auth/actions';
 
 @Component({
   components: {
