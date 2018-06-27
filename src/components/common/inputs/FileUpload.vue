@@ -1,11 +1,11 @@
 <template>
   <div class="file-upload">
     <div class="file-list">
-      <File v-for="file in files" :key="file.id" :url="file.url" :name="file.fileName"  :disabled="disabled" @delete="$emit('delete', file.id)" />
+      <File v-for="file in files" :key="file.id" :url="file.url" :name="file.fileName" :disabled="disabled" @delete="$emit('delete', file.id)" />
     </div>
 
     <label class="upload-button-wrapper" v-if="!disabled">
-      <input type="file" multiple>
+      <input type="file" multiple @change="$emit('add', $event.target.files)">
       <Button class="upload-button">
         Upload bilag
       </Button>
