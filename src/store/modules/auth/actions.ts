@@ -15,8 +15,7 @@ interface WhoAmIResponse {
 const namespace = 'auth';
 
 export const authActionTypes = {
-  LOAD_USER: `${namespace}/loadUser`,
-  LOGOUT: `${namespace}/logout`
+  LOAD_USER: `${namespace}/loadUser`
 };
 
 export const actions: ActionTree<AuthState, RootState> = {
@@ -24,10 +23,5 @@ export const actions: ActionTree<AuthState, RootState> = {
     const user = (await HTTP.get<WhoAmIResponse>('/public/whoami')).data;
 
     commit(authMutationTypes.SET_USER, user.uuid !== null ? user : null);
-  },
-  async logout({ commit }) {
-    await HTTP.get<void>('/saml/logout');
-
-    commit(authMutationTypes.SET_USER, null);
   }
 };

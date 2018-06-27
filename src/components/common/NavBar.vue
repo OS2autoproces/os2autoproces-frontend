@@ -6,9 +6,7 @@
       <div class="user">
         <div>{{user.name}}</div>
         <div>{{roles.join(', ')}}</div>
-        <div role="button" class="logout-button" @click="logout">
-          Log ud
-        </div>
+        <a class="logout-button" :href="logoutUrl">Log ud</a>
       </div>
       <ProfileIcon class="profile-icon" />
     </div>
@@ -27,6 +25,8 @@ import { authActionTypes } from '@/store/modules/auth/actions';
   }
 })
 export default class NavBar extends Vue {
+  logoutUrl = `${window.autoProcessConfiguration.apiUrl}/saml/logout`;
+
   get user() {
     return this.$store.state.auth.user;
   }
@@ -39,11 +39,6 @@ export default class NavBar extends Vue {
     }
 
     return user.roles.map(role => UserRoleName[role]);
-  }
-
-  async logout() {
-    await this.$store.dispatch(authActionTypes.LOGOUT);
-    this.$router.push(`/`);
   }
 }
 </script>
@@ -80,10 +75,5 @@ export default class NavBar extends Vue {
 .user-info {
   display: flex;
   align-items: center;
-}
-
-.logout-button {
-  text-decoration: underline;
-  color: $color-primary;
 }
 </style>
