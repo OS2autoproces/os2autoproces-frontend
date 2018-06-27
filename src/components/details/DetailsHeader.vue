@@ -5,7 +5,7 @@
       <div class="edit-button" role="button" @click="editName = !editName" :class="{ editing: editName }">
         <EditIcon />
       </div>
-      <div class="favorite-button" role="button" @click="bookmarkProcess(1)">
+      <div class="favorite-button" role="button" @click="bookmarkProcess(state.details.generalInformation.id)">
         <StarIcon :class="{ selected: !this.selected }" />
       </div>
 
@@ -49,19 +49,23 @@ export default class DetailsMenu extends Vue {
   @Action(detailsActionTypes.UPDATE)
   update!: (value: Partial<DetailsState>) => void;
   @Getter(authGetterTypes.IS_FAVORITE)
-  isFavorite!: (processId: Bookmark) => boolean;
+  isFavorite!: (bookmark: Bookmark) => boolean;
 
   // TODO: Bind these to the store
   notification = true;
   editName = false;
   name = 'Rekruttering';
-  selected = false;
+  selected = true;
 
-  get() {
+  get state() {
     return this.$store.state;
   }
 
   bookmarkProcess(id: number) {
+    if (!id) {
+      return;
+    }
+
     this.selected = this.isFavorite({ id });
 
     if (this.selected) {
