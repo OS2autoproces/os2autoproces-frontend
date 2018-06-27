@@ -31,7 +31,7 @@ import IdeaSharingIcon from '../components/icons/IdeaSharingIcon.vue';
 import EditIcon from '../components/icons/EditIcon.vue';
 import Button from '../components/common/inputs/Button.vue';
 import MarkdownEditor from '../components/common/inputs/MarkdownEditor.vue';
-import { commonActionTypes } from '@/store/modules/common/actions';
+import { commonActionTypes, Cms } from '@/store/modules/common/actions';
 
 @Component({
   components: {
@@ -42,21 +42,23 @@ import { commonActionTypes } from '@/store/modules/common/actions';
   }
 })
 export default class Home extends Vue {
-  @Action (commonActionTypes.UPDATE_FRONTPAGE_MARKDOWN) updateMarkdown: any;
+  @Action(commonActionTypes.UPDATE_FRONTPAGE_MARKDOWN) updateMarkdown: any;
+  @Action(commonActionTypes.POST_CMS_LABEL_CONTENT)
+  postCmsLabel!: (cms: Cms) => void;
 
-  get state () {
+  get state() {
     return this.$store.state.common;
   }
 
   editing = false;
-  details = '# Overskrift\n\nLorem ipsum dolor, sit amet consectetur adipisicing elit. Non porro ut deserunt nesciunt quidem sint ducimus labore quae dolorum consectetur cum minima, ipsam vero facere officia? Debitis temporibus repudiandae laudantium.Lorem ipsum dolor, sit amet consectetur adipisicing elit. Non porro ut deserunt nesciunt quidem sint ducimus labore quae dolorum consectetur cum minima, ipsam vero facere officia? Debitis temporibus repudiandae laudantium. Lorem ipsum dolor, sit amet consectetur adipisicing elit. Non porro ut deserunt nesciunt quidem sint ducimus labore quae dolorum consectetur cum minima, ipsam vero facere officia? Debitis temporibus repudiandae laudantium. Lorem ipsum dolor, sit amet consectetur adipisicing elit. Non porro ut deserunt nesciunt quidem sint ducimus labore quae dolorum consectetur cum minima, ipsam vero facere officia? Debitis temporibus repudiandae laudantium. Lorem ipsum dolor, sit amet consectetur adipisicing elit. Non porro ut deserunt nesciunt quidem sint ducimus labore quae dolorum consectetur cum minima, ipsam vero facere officia? Debitis temporibus repudiandae laudantium.';
+
   discoveryUrl = window.autoProcessConfiguration.discoveryUrl;
 
-  changeDetails(value: string) {
-    this.details = value;
-  }
-
   save() {
+    this.$store.dispatch(commonActionTypes.POST_CMS_LABEL_CONTENT, {
+      label: 'frontPageText',
+      content: this.state.frontPageMarkdown
+    });
     this.editing = false;
   }
 }
