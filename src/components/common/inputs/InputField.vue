@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="input-field-wrap">
-      <input :placeholder="placeholder" v-if="!disabled" :value="value" @input="valueChanged" @keyup.enter="submit">
+    <div class="input-field-wrap" v-if="!disabled">
+      <input :placeholder="placeholder" :value="value" @input="valueChanged" @keyup.enter="submit">
       <div class="icon">
         <slot />
       </div>
