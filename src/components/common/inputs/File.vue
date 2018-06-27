@@ -1,19 +1,20 @@
 <template>
-  <a :href="url" target="_blank">
+  <div class="file">
     <div class="icon-container">
-      <FileWordIcon class="file-icon" v-if="type === 'word'" />
-      <FileExcelIcon class="file-icon" v-if="type === 'excel'" />
-      <FilePdfIcon class="file-icon" v-if="type === 'pdf'" />
-      <FilePowerPointIcon class="file-icon" v-if="type === 'powerPoint'" />
-      <FilePlaceholderIcon class="file-icon" v-if="type === 'other'" />
-
-      <div v-if="!disabled" class="delete-button" role="button" @click="$emit('delete')">
+      <a :href="url" target="_blank">
+        <FileWordIcon class="file-icon" v-if="type === 'word'" />
+        <FileExcelIcon class="file-icon" v-if="type === 'excel'" />
+        <FilePdfIcon class="file-icon" v-if="type === 'pdf'" />
+        <FilePowerPointIcon class="file-icon" v-if="type === 'powerPoint'" />
+        <FilePlaceholderIcon class="file-icon" v-if="type === 'other'" />
+      </a>
+      <div v-if="!disabled" class="delete-button" role="button" @click="$emit('remove')">
         <DeleteIcon />
       </div>
     </div>
 
-    <div class="name">{{name}}</div>
-  </a>
+    <a class="name" :href="url" target="_blank">{{name}}</a>
+  </div>
 </template>
 
 <script lang='ts'>
@@ -82,12 +83,19 @@ export default class FileUpload extends Vue {
 <style lang="scss" scoped>
 @import '@/styles/variables.scss';
 
+.file {
+  margin: $size-unit;
+  margin-bottom: 0;
+}
+
 a {
   color: inherit;
   text-decoration: inherit;
   text-align: center;
-  margin: $size-unit;
-  margin-bottom: 0;
+}
+
+.name {
+  display: block;
 }
 
 .icon-container {

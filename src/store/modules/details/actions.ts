@@ -48,22 +48,21 @@ export const actions: ActionTree<DetailsState, RootState> = {
       form.append('files', files[i]);
     }
 
-    const response = await HTTP.put<Attachment>(`/api/attachments/${process.id}`, form, {
+    const response = await HTTP.post<Attachment[]>(`/api/attachments/${process.id}`, form, {
       onUploadProgress: progress => console.log(progress)
     });
 
-    const attachment = response.data;
+    const attachments = response.data;
 
     // TODO: Add attachment in store
     // TODO: Save upload progress in store
     // commit(detailsMutationTypes.ASSIGN, { attachments });
   },
-  async removeAttachment({ commit }, attachment: Attachment) {
+  async removeAttachment({ commit, state }, id: number) {
     const process = { id: '1' };
 
-    // const attachments = await HTTP.delete(`/api/attachments/${process.id}/${attachment}`);
+    await HTTP.delete(`/api/attachments/${process.id}/${id}`);
 
-    // TODO: Remove attachment in store
-    // commit(detailsMutationTypes.ASSIGN, { attachments });
+    commit(detailsMutationTypes.ASSIGN, { attachments: state.attachments.filter(a => a.id !== id) });
   }
 };
