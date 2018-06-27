@@ -40,6 +40,7 @@ export const actions: ActionTree<DetailsState, RootState> = {
     commit(detailsMutationTypes.ASSIGN, { attachments });
   },
   async addAttachments({ commit, state }, files: FileList) {
+    // TODO: Add to correct proces
     const process = { id: '1' };
 
     const form = new FormData();
@@ -61,13 +62,21 @@ export const actions: ActionTree<DetailsState, RootState> = {
       attachments: [...state.attachments, ...placeholders]
     });
 
-    const attachments = (await HTTP.post<Attachment[]>(`/api/attachments/${process.id}`, form)).data;
+    try {
+      const attachments = (await HTTP.post<Attachment[]>(`/api/attachments/${process.id}`, form)).data;
 
-    commit(detailsMutationTypes.ASSIGN, {
-      attachments: [...state.attachments.filter(a => !placeholders.includes(a)), ...attachments]
-    });
+      commit(detailsMutationTypes.ASSIGN, {
+        attachments: [...state.attachments.filter(a => !placeholders.includes(a)), ...attachments]
+      });
+    } catch {
+      // Upload failed - remove placeholders
+      commit(detailsMutationTypes.ASSIGN, {
+        attachments: state.attachments.filter(a => !placeholders.includes(a))
+      });
+    }
   },
   async removeAttachment({ commit, state }, id: number) {
+    // TODO: Add to correct proces
     const process = { id: '1' };
 
     await HTTP.delete(`/api/attachments/${process.id}/${id}`);
