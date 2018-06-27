@@ -15,8 +15,6 @@
         <h2>Organisatorisk implementering</h2>
         <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
         <TextArea :max-length="3000" :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({organizationalImplementation: $event})" :disabled="state.disabled" :value="state.organizationalImplementation" />
-
-        <FileUpload />
     </FormSection>
 </template>
 
@@ -25,7 +23,6 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 import { ImplementationActionTypes } from '@/store/modules/details/implementation/actions';
 import TextArea from '@/components/common/inputs/TextArea.vue';
 import { Action } from 'vuex-class';
-import FileUpload from '@/components/common/inputs/FileUpload.vue';
 import FormSection from '@/components/details/FormSection.vue';
 import InfoTooltip from '@/components/common/InfoTooltip.vue';
 import TagSelector from '@/components/common/inputs/TagSelector.vue';
@@ -33,7 +30,6 @@ import TagSelector from '@/components/common/inputs/TagSelector.vue';
 @Component({
   components: {
     TextArea,
-    FileUpload,
     FormSection,
     InfoTooltip,
     TagSelector
