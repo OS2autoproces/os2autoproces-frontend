@@ -13,16 +13,12 @@ export interface Cms {
 }
 
 export const commonActionTypes = {
-  INCREMENT_NETWORK_CALLS: `${namespace}/IncrementNetworkCalls`,
   UPDATE_FRONTPAGE_MARKDOWN: `${namespace}/updateFrontpageMarkdown`,
   GET_CMS_LABEL_CONTENT: `${namespace}/getCmsLabelContent`,
   POST_CMS_LABEL_CONTENT: `${namespace}/postCmsContent`
 };
 
 export const actions: ActionTree<CommonState, RootState> = {
-  incrementNetworkCalls({ commit }): void {
-    commit(commonMutationTypes.INCREMENT_NETWORK_CALLS);
-  },
   updateFrontpageMarkdown({ commit }, payload: Partial<CommonState>): void {
     commit(commonMutationTypes.UPDATE_COMMON, payload);
   },
