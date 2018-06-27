@@ -14,7 +14,7 @@
       <div class="save-button-container" v-if="editing" @click="save">
         <Button class="save-button">Gem</Button>
       </div>
-      <MarkdownEditor :editing="editing" :value="state.frontPageMarkdown" @change="updateMarkdown({frontPageMarkdown: $event})" />
+      <MarkdownEditor :editing="editing" :value="state.frontPageMarkdown" @change="update({frontPageMarkdown: $event})" />
     </div>
 
     <div class="idea-sharing-icon">
@@ -42,10 +42,10 @@ import { commonActionTypes, Cms } from '@/store/modules/common/actions';
   }
 })
 export default class Home extends Vue {
-  @Action(commonActionTypes.UPDATE_FRONTPAGE_MARKDOWN) updateMarkdown: any;
-  @Action(commonActionTypes.POST_CMS_LABEL_CONTENT)
+  @Action(commonActionTypes.UPDATE) update: any;
+  @Action(commonActionTypes.POST_CMS_CONTENT)
   postCmsLabel!: (cms: Cms) => void;
-  @Action(commonActionTypes.GET_CMS_LABEL_CONTENT)
+  @Action(commonActionTypes.GET_CMS_CONTENT)
   cmsLabelContent!: (label: string) => void;
 
   get state() {
@@ -61,7 +61,7 @@ export default class Home extends Vue {
   }
 
   save() {
-    this.$store.dispatch(commonActionTypes.POST_CMS_LABEL_CONTENT, {
+    this.$store.dispatch(commonActionTypes.POST_CMS_CONTENT, {
       label: 'frontPageText',
       content: this.state.frontPageMarkdown
     });

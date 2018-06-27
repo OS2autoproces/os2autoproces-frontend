@@ -3,11 +3,11 @@ import { CommonState } from "./state";
 import { merge } from 'lodash';
 
 export const commonMutationTypes = {
-  UPDATE_COMMON: "udpateCommon"
+  UPDATE: "update"
 };
 
 export const mutations: MutationTree<CommonState> = {
-  udpateCommon(state: CommonState, payload : Partial<CommonState>) {
+  update(state: CommonState, payload : Partial<CommonState>) {
     merge(state, payload);
   }
 };
