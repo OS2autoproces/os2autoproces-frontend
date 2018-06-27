@@ -4,10 +4,11 @@ export const Status = {
   disapproved: 'Afvist',
   stored: 'Arkiveret',
   unsuccessful: 'Mislykket'
-}
+};
 
 export interface GeneralInformationState {
   disabled: boolean;
+  id: string | null;
   kleNumber: string; // KL Nummer
   paragraf: string; // paragraf og lov
   field: string; // field of study eller fagområde
@@ -29,5 +30,3 @@ export interface GeneralInformationState {
   stored: string;
   unsuccessful: string;
 }
-
-

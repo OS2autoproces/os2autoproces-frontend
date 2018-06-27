@@ -54,7 +54,6 @@ export default class Search extends Vue {
   // TODO: Search page
   // Field, time and system filters
   // Call backend
-  // Logout link
 
   @Action(searchActionTypes.UPDATE_FILTERS) updateFilters: any;
 

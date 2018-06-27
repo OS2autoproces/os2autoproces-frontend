@@ -1,7 +1,6 @@
 import { ActionTree } from 'vuex';
 import { DetailsState, Attachment } from '@/store/modules/details/state';
 import { RootState } from '@/store/store';
-import router from '@/router';
 import { detailsMutationTypes } from '@/store/modules/details/mutations';
 import { HTTP } from '@/services/http-service';
 
@@ -32,8 +31,7 @@ export const actions: ActionTree<DetailsState, RootState> = {
     // TODO: Save to backend
     // const process = await backend.post(store.proces);
     // updateGeneralInformation({ id: process.id });
-    const process = { id: '1234' };
-    router.push(`/details/${process.id}`);
+    return { id: '1234' };
   },
   async loadAttachments({ commit }) {
     const process = { id: '1' };
