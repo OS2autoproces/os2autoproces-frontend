@@ -26,11 +26,6 @@ export const actions: ActionTree<CommonState, RootState> = {
   updateFrontpageMarkdown({ commit }, payload: Partial<CommonState>): void {
     commit(commonMutationTypes.UPDATE_COMMON, payload);
   },
-  async someAsyncAction({ commit }, payload: any) {
-    const serverCall = await new Promise((reject, resolve) => resolve(2));
-
-    commit(commonMutationTypes.INCREMENT_NETWORK_CALLS);
-  },
   async getCmsLabelContent({ commit }, label: string) {
     const response: AxiosResponse = await HTTP.get(`api/cms/${label}`);
 
@@ -40,7 +35,7 @@ export const actions: ActionTree<CommonState, RootState> = {
       frontPageMarkdown: data.content
     });
   },
-  async postCmsContent({commit}, cms: Cms) {
-    const response = await HTTP.post(`api/cms/${cms.label}`, cms.content);
+  async postCmsContent({ commit }, cms: Cms): Promise<void> {
+    await HTTP.post(`api/cms/${cms.label}`, cms.content);
   }
 };

@@ -45,6 +45,8 @@ export default class Home extends Vue {
   @Action(commonActionTypes.UPDATE_FRONTPAGE_MARKDOWN) updateMarkdown: any;
   @Action(commonActionTypes.POST_CMS_LABEL_CONTENT)
   postCmsLabel!: (cms: Cms) => void;
+  @Action(commonActionTypes.GET_CMS_LABEL_CONTENT)
+  cmsLabelContent!: (label: string) => void;
 
   get state() {
     return this.$store.state.common;
@@ -53,6 +55,10 @@ export default class Home extends Vue {
   editing = false;
 
   discoveryUrl = window.autoProcessConfiguration.discoveryUrl;
+
+  mounted() {
+    this.cmsLabelContent('frontPageText');
+  }
 
   save() {
     this.$store.dispatch(commonActionTypes.POST_CMS_LABEL_CONTENT, {

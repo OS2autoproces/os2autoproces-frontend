@@ -25,10 +25,8 @@ import { commonActionTypes, Cms } from '@/store/modules/common/actions';
 @Component
 export default class App extends Vue {
   @Action(authActionTypes.LOAD_USER) loadUser: any;
-  @Action(commonActionTypes.GET_CMS_LABEL_CONTENT) cmsLabeContent!: (label: string) => void;
 
   mounted() {
-    this.cmsLabeContent('frontPageText');
     this.loadUser();
   }
 }
