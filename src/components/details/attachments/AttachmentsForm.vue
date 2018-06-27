@@ -1,6 +1,6 @@
 <template>
-  <FormSection heading="Bilag" id="attachments" :disabled="state.disabled" @edit="update({disabled: $event})">
-    <FileUpload />
+  <FormSection heading="Bilag" id="attachments" :disabled="state.attachmentsDisabled" @edit="update({attachmentsDisabled: $event})">
+    <FileUpload :files="state.attachments" />
   </FormSection>
 </template>
 
@@ -10,6 +10,7 @@ import { Action } from 'vuex-class';
 import FileUpload from '@/components/common/inputs/FileUpload.vue';
 import FormSection from '@/components/details/FormSection.vue';
 import InfoTooltip from '@/components/common/InfoTooltip.vue';
+import { detailsActionTypes } from '@/store/modules/details/actions';
 
 @Component({
   components: {
@@ -19,8 +20,10 @@ import InfoTooltip from '@/components/common/InfoTooltip.vue';
   }
 })
 export default class AttachmentsForm extends Vue {
+  @Action(detailsActionTypes.UPDATE) update: any;
+
   get state() {
-    return this.$store.state.details.operation;
+    return this.$store.state.details;
   }
 }
 </script>

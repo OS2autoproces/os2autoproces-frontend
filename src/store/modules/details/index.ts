@@ -16,7 +16,15 @@ const namespaced = true;
 
 export const state: DetailsState = {
   interval: null,
-  intervalDisabled: true
+  intervalDisabled: true,
+  attachments: [
+    { id: 1, fileName: 'doc.docx', url: 'http://google.dk' },
+    { id: 2, fileName: 'doc.xlsx', url: 'http://google.dk' },
+    { id: 3, fileName: 'doc.pdf', url: 'http://google.dk' },
+    { id: 4, fileName: 'doc.zip', url: 'http://google.dk' },
+    { id: 5, fileName: 'doc.docx', url: 'http://google.dk' }
+  ],
+  attachmentsDisabled: true
 };
 
 export const details: Module<DetailsState, RootState> = {

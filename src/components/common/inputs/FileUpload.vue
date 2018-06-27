@@ -1,30 +1,16 @@
 <template>
-    <div class="file-upload">
-        <div class="file-list">
-            <a v-for="file in files" :key="file.url" :href="file.url">
-                <div class="icon-container">
-                    <FileWordIcon class="file-icon" v-if="file.type === 'word'" />
-                    <FileExcelIcon class="file-icon" v-if="file.type === 'excel'" />
-                    <FilePdfIcon class="file-icon" v-if="file.type === 'pdf'" />
-                    <FilePowerPointIcon class="file-icon" v-if="file.type === 'power-point'" />
-                    <FilePlaceholderIcon class="file-icon" v-if="file.type === 'other'" />
-
-                    <div v-if="!disabled" class="delete-button" role="button" @click="deleteFile(file)">
-                        <DeleteIcon />
-                    </div>
-                </div>
-
-                <div class="name">{{file.name}}</div>
-            </a>
-        </div>
-
-        <label class="upload-button-wrapper">
-            <input type="file" multiple>
-            <Button class="upload-button">
-                Upload bilag
-            </Button>
-        </label>
+  <div class="file-upload">
+    <div class="file-list">
+      <File v-for="file in files" :key="file.id" :url="file.url" :name="file.fileName" @delete="$emit('delete', file.id)" />
     </div>
+
+    <label class="upload-button-wrapper">
+      <input type="file" multiple>
+      <Button class="upload-button">
+        Upload bilag
+      </Button>
+    </label>
+  </div>
 </template>
 
 <script lang='ts'>
@@ -36,12 +22,8 @@ import FilePowerPointIcon from '@/components/icons/FilePowerPointIcon.vue';
 import FilePlaceholderIcon from '@/components/icons/FilePlaceholderIcon.vue';
 import DeleteIcon from '@/components/icons/DeleteIcon.vue';
 import Button from '@/components/common/inputs/Button.vue';
-
-interface File {
-  url: string;
-  type: 'word' | 'excel' | 'pdf' | 'power-point' | 'other';
-  name: string;
-}
+import File from './File.vue';
+import { Attachment } from '@/store/modules/details/state';
 
 @Component({
   components: {
@@ -50,17 +32,14 @@ interface File {
     FilePdfIcon,
     FilePowerPointIcon,
     FilePlaceholderIcon,
+    File,
     DeleteIcon,
     Button
   }
 })
 export default class FileUpload extends Vue {
-  @Prop() files!: File[];
+  @Prop() files!: Attachment[];
   @Prop() disabled!: boolean;
-
-  deleteFile(file: File) {
-    this.$emit('delete', file);
-  }
 }
 </script>
 
@@ -75,32 +54,6 @@ export default class FileUpload extends Vue {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-}
-
-a {
-  color: inherit;
-  text-decoration: inherit;
-  text-align: center;
-  margin: $size-unit;
-  margin-bottom: 0;
-}
-
-.icon-container {
-  position: relative;
-  display: inline-block;
-}
-
-.delete-button {
-  position: absolute;
-  height: $size-unit;
-  width: $size-unit;
-  top: 0;
-  right: 0;
-}
-
-.file-icon {
-  height: 50px;
-  width: 50px;
 }
 
 .upload-button-wrapper {
