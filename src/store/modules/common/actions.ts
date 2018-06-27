@@ -17,19 +17,21 @@ export const commonActionTypes = {
   POST_CMS_CONTENT: `${namespace}/postCmsContent`
 };
 
+const cmsUrl = 'public/cms';
+
 export const actions: ActionTree<CommonState, RootState> = {
   update({ commit }, payload: Partial<CommonState>): void {
     commit(commonMutationTypes.UPDATE, payload);
   },
   async getCmsContent({ commit }, label: string) {
-    const content = (await HTTP.get<Cms>(`api/cms/${label}`)).data.content;
+    const content = (await HTTP.get<Cms>(`${cmsUrl}/${label}`)).data.content;
 
     const frontPageMarkdown = JSON.parse(content);
 
     commit(commonMutationTypes.UPDATE, { frontPageMarkdown });
   },
   async postCmsContent({ commit }, cms: Cms): Promise<void> {
-    await HTTP.post(`api/cms/${cms.label}`, JSON.stringify(cms.content), {
+    await HTTP.post(`${cmsUrl}/${cms.label}`, JSON.stringify(cms.content), {
       headers: {
         'content-type': 'application/json'
       }
