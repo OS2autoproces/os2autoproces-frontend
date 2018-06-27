@@ -6,9 +6,7 @@
       <div class="user">
         <div>{{user.name}}</div>
         <div>{{roles.join(', ')}}</div>
-        <div>
-          <router-link to="/">Log ud</router-link>
-        </div>
+        <a class="logout-button" :href="logoutUrl">Log ud</a>
       </div>
       <ProfileIcon class="profile-icon" />
     </div>
@@ -26,6 +24,8 @@ import { AuthState, UserRoleName } from '@/store/modules/auth/state';
   }
 })
 export default class NavBar extends Vue {
+  logoutUrl = `${window.autoProcessConfiguration.apiUrl}/saml/logout`;
+
   get user() {
     return this.$store.state.auth.user;
   }
