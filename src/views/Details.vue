@@ -27,6 +27,7 @@
             <SpecificationForm />
             <ImplementationForm />
             <OperationForm />
+            <AttachmentsForm />
           </div>
 
           <div class="usage">
@@ -64,6 +65,7 @@ import AssessmentForm from '@/components/details/assessment/AssessmentForm.vue';
 import SpecificationForm from '@/components/details/specification/SpecificationForm.vue';
 import ImplementationForm from '@/components/details/implementation/ImplementationForm.vue';
 import TimeAndProcessForm from '@/components/details/time-process/TimeAndProcessForm.vue';
+import AttachmentsForm from '@/components/details/attachments/AttachmentsForm.vue';
 import OperationForm from '@/components/details/operation/OperationForm.vue';
 import { detailsActionTypes } from '@/store/modules/details/actions';
 import { generalInformationActionTypes } from '@/store/modules/details/general-information/actions';
@@ -82,6 +84,7 @@ import EditIcon from '@/components/icons/EditIcon.vue';
     ChallengesForm,
     AssessmentForm,
     TimeAndProcessForm,
+    AttachmentsForm,
     SpecificationForm,
     ImplementationForm,
     OperationForm,
@@ -96,8 +99,7 @@ export default class Details extends Vue {
 
   @Action(detailsActionTypes.SAVE) save: any;
   @Action(detailsActionTypes.REPORT) report: any;
-  @Action(generalInformationActionTypes.UPDATE_GENERAL_INFORMATION)
-  updateGeneralInformation: any;
+  @Action(generalInformationActionTypes.UPDATE_GENERAL_INFORMATION) updateGeneralInformation: any;
   @Action(detailsActionTypes.UPDATE) udpateDetails: any;
 
   get state() {
@@ -179,7 +181,7 @@ export default class Details extends Vue {
       }
     }
   }
-  
+
   .comments-heading {
     font-style: italic;
     margin: $size-unit / 2 0;
