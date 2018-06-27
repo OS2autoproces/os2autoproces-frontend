@@ -16,6 +16,8 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
+import { HTTP } from '@/services/http-service';
+import { AxiosResponse } from 'axios';
 import { Action } from 'vuex-class';
 import { authActionTypes } from '@/store/modules/auth/actions';
 

@@ -17,7 +17,7 @@
     ),
     apiUrl: getEnvironmentVariable(
       '${API_AUTOPROCES}',
-      'https://dev.os2autoproces.eu/api'
+      'https://dev.os2autoproces.eu'
     )
   };
 })();
