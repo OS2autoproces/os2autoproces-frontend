@@ -1,7 +1,8 @@
-import { AuthState, User, UserRole } from './state';
-import { RootState } from '@/store/store';
 import { ActionTree } from 'vuex';
-import { authMutationTypes } from '@/store/modules/auth/mutations';
+import { AuthState, UserRole } from './state';
+import { RootState } from '@/store/store';
+import { authMutationTypes } from './mutations';
+import { HTTP } from '@/services/http-service';
 
 interface WhoAmIResponse {
   uuid: string | null;
@@ -19,9 +20,7 @@ export const authActionTypes = {
 
 export const actions: ActionTree<AuthState, RootState> = {
   async loadUser({ commit }): Promise<void> {
-    // TODO: Use HTTP service
-    const response = await fetch('https://dev.os2autoproces.eu/public/whoami', { credentials: 'include' });
-    const user: WhoAmIResponse = await response.json();
+    const user = (await HTTP.get<WhoAmIResponse>('/public/whoami')).data;
 
     commit(authMutationTypes.SET_USER, user.uuid !== null ? user : null);
   }
