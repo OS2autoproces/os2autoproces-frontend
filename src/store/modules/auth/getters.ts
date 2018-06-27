@@ -23,9 +23,9 @@ export const getters: GetterTree<AuthState, RootState> = {
   isFavorite(state: AuthState) {
     return (bookmark: Bookmark) => {
       if (state.user) {
-        if (state.user.favorites) {
-          return state.user.favorites.some(b => b.id === bookmark.id);
-        }
+        return state.user.favorites
+          ? state.user.favorites.some(b => b.id === bookmark.id)
+          : false;
       }
     };
   }
