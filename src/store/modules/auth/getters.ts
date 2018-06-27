@@ -5,7 +5,7 @@ import { GetterTree } from 'vuex';
 const namespace = 'auth';
 
 export const authGetterTypes = {
-  IS_FAVORITE: `${namespace}/isFavorite`,
+  IS_FAVORITE: `${namespace}/isFavorite`
 };
 
 export const getters: GetterTree<AuthState, RootState> = {
@@ -24,11 +24,9 @@ export const getters: GetterTree<AuthState, RootState> = {
     return (bookmark: Bookmark) => {
       if (state.user) {
         if (state.user.favorites) {
-          const mark = state.user.favorites.some((b => b.id === bookmark.id));
-          console.log(mark);
-          return mark;
+          return state.user.favorites.some(b => b.id === bookmark.id);
         }
       }
-    }
+    };
   }
 };
