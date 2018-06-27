@@ -1,7 +1,8 @@
 <template>
     <div class="search-field">
-        <InputField placeholder="Søg f.eks. på KLE-numre" :value="value" @change="valueChanged" />
-        <SearchIcon class="search-icon" />
+        <InputField placeholder="Søg f.eks. på KLE-numre" :value="value" @change="valueChanged">
+          <SearchIcon />
+        </InputField>
     </div>
 </template>
 
@@ -31,13 +32,5 @@ export default class SearchField extends Vue {
 
 div.search-field {
     position: relative;
-}
-
-.search-icon {
-    position: absolute;
-    right: 8px;
-    top: 6px;
-    height: 20px;
-    width: 20px;
 }
 </style>

@@ -1,6 +1,11 @@
 <template>
   <div>
-    <input :placeholder="placeholder" v-if="!disabled" :value="value" @input="valueChanged" @keyup.enter="submit">
+    <div class="input-field-wrap" v-if="!disabled">
+      <input :placeholder="placeholder" :value="value" @input="valueChanged" @keyup.enter="submit">
+      <div class="icon">
+        <slot />
+      </div>
+    </div>
     <div v-if="disabled">{{value}}</div>
   </div>
 </template>
@@ -26,12 +31,24 @@ export default class InputField extends Vue {
 
 <style lang="scss" scoped>
 @import '@/styles/variables.scss';
-input {
-  @include field-input-text;
+.input-field-wrap {
+  display: flex;
   border: 1px solid $color-primary;
   border-radius: 30px;
-  padding-left: 10px !important;
-  height: 32px;
-  width: 100%;
+  align-items: center;
+  padding-right: 7px;
+
+  .icon {
+    height: 20px;
+    width: 20px;
+  }
+
+  input {
+    @include field-input-text;
+    padding-left: 10px !important;
+    padding-right: 5px;
+    height: 32px;
+    width: 90%;
+  }
 }
 </style>
