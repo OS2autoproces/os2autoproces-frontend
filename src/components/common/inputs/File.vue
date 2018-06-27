@@ -1,19 +1,20 @@
 <template>
   <div class="file">
     <div class="icon-container">
-      <a :href="url" target="_blank">
+      <a :href="file.url" target="_blank">
         <FileWordIcon class="file-icon" v-if="type === 'word'" />
         <FileExcelIcon class="file-icon" v-if="type === 'excel'" />
         <FilePdfIcon class="file-icon" v-if="type === 'pdf'" />
         <FilePowerPointIcon class="file-icon" v-if="type === 'powerPoint'" />
         <FilePlaceholderIcon class="file-icon" v-if="type === 'other'" />
       </a>
-      <div v-if="!disabled" class="delete-button" role="button" @click="$emit('remove')">
+      <div v-if="!disabled && !file.uploading" class="delete-button" role="button" @click="$emit('remove')">
         <DeleteIcon />
       </div>
+      <v-icon v-if="file.uploading" class="upload-icon">cloud_upload</v-icon>
     </div>
 
-    <a class="name" :href="url" target="_blank">{{name}}</a>
+    <a class="name" :href="file.url" target="_blank">{{file.fileName}}</a>
   </div>
 </template>
 
@@ -25,6 +26,7 @@ import FilePdfIcon from '@/components/icons/FilePdfIcon.vue';
 import FilePowerPointIcon from '@/components/icons/FilePowerPointIcon.vue';
 import FilePlaceholderIcon from '@/components/icons/FilePlaceholderIcon.vue';
 import DeleteIcon from '@/components/icons/DeleteIcon.vue';
+import { Attachment } from '@/store/modules/details/state';
 
 @Component({
   components: {
@@ -36,9 +38,8 @@ import DeleteIcon from '@/components/icons/DeleteIcon.vue';
     DeleteIcon
   }
 })
-export default class FileUpload extends Vue {
-  @Prop() url!: string;
-  @Prop() name!: string;
+export default class File extends Vue {
+  @Prop() file!: Attachment;
   @Prop() disabled!: boolean;
 
   get type() {
@@ -59,19 +60,19 @@ export default class FileUpload extends Vue {
       '.sldm'
     ];
 
-    if (this.name.endsWith('.pdf')) {
+    if (this.file.fileName.endsWith('.pdf')) {
       return 'pdf';
     }
 
-    if (word.some(extension => this.name.endsWith(extension))) {
+    if (word.some(extension => this.file.fileName.endsWith(extension))) {
       return 'word';
     }
 
-    if (excel.some(extension => this.name.endsWith(extension))) {
+    if (excel.some(extension => this.file.fileName.endsWith(extension))) {
       return 'excel';
     }
 
-    if (powerPoint.some(extension => this.name.endsWith(extension))) {
+    if (powerPoint.some(extension => this.file.fileName.endsWith(extension))) {
       return 'powerPoint';
     }
 
@@ -103,12 +104,17 @@ a {
   display: inline-block;
 }
 
+.upload-icon,
 .delete-button {
   position: absolute;
   height: $size-unit;
   width: $size-unit;
   top: 0;
   right: 0;
+}
+
+.upload-icon {
+  animation: blink 1s linear infinite;
 }
 
 .file-icon {

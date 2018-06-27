@@ -1,7 +1,7 @@
 <template>
   <div class="file-upload">
     <div class="file-list">
-      <File v-for="file in files" :key="file.id" :url="file.url" :name="file.fileName" :disabled="disabled" @remove="$emit('remove', file.id)" />
+      <File v-for="file in files" :key="file.id" :file="file" :disabled="disabled" @remove="$emit('remove', file.id)" />
     </div>
 
     <label class="upload-button-wrapper" v-if="!disabled">

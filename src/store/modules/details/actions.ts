@@ -39,24 +39,33 @@ export const actions: ActionTree<DetailsState, RootState> = {
 
     commit(detailsMutationTypes.ASSIGN, { attachments });
   },
-  async addAttachments({ commit }, files: FileList) {
+  async addAttachments({ commit, state }, files: FileList) {
     const process = { id: '1' };
 
     const form = new FormData();
 
+    // Placeholders are attachments which are shown while the real attachments are uploading.
+    // When the attachments are done uploading, the placeholders are replaced with the real attachments.
+    const placeholders: Attachment[] = [];
+
     for (let i = 0; i < files.length; i++) {
       form.append('files', files[i]);
+
+      placeholders.push({
+        fileName: files[i].name,
+        uploading: true
+      });
     }
 
-    const response = await HTTP.post<Attachment[]>(`/api/attachments/${process.id}`, form, {
-      onUploadProgress: progress => console.log(progress)
+    commit(detailsMutationTypes.ASSIGN, {
+      attachments: [...state.attachments, ...placeholders]
     });
 
-    const attachments = response.data;
+    const attachments = (await HTTP.post<Attachment[]>(`/api/attachments/${process.id}`, form)).data;
 
-    // TODO: Add attachment in store
-    // TODO: Save upload progress in store
-    // commit(detailsMutationTypes.ASSIGN, { attachments });
+    commit(detailsMutationTypes.ASSIGN, {
+      attachments: [...state.attachments.filter(a => !placeholders.includes(a)), ...attachments]
+    });
   },
   async removeAttachment({ commit, state }, id: number) {
     const process = { id: '1' };

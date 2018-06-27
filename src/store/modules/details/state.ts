@@ -1,7 +1,8 @@
 export interface Attachment {
-  id: number;
   fileName: string;
-  url: string;
+  id?: number;
+  url?: string;
+  uploading?: boolean;
 }
 
 export interface DetailsState {
