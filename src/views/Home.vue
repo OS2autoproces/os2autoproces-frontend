@@ -43,10 +43,8 @@ import { commonActionTypes, Cms } from '@/store/modules/common/actions';
 })
 export default class Home extends Vue {
   @Action(commonActionTypes.UPDATE) update: any;
-  @Action(commonActionTypes.POST_CMS_CONTENT)
-  postCmsLabel!: (cms: Cms) => void;
   @Action(commonActionTypes.GET_CMS_CONTENT)
-  cmsLabelContent!: (label: string) => void;
+  getCmsContent!: (label: string) => void;
 
   get state() {
     return this.$store.state.common;
@@ -57,7 +55,7 @@ export default class Home extends Vue {
   discoveryUrl = window.autoProcessConfiguration.discoveryUrl;
 
   mounted() {
-    this.cmsLabelContent('frontPageText');
+    this.getCmsContent('frontPageText');
   }
 
   save() {
