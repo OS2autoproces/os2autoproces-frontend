@@ -6,7 +6,7 @@
         <ExcelIcon class="attachment-icon" v-if="type === 'excel'" />
         <PdfIcon class="attachment-icon" v-if="type === 'pdf'" />
         <PowerPointIcon class="attachment-icon" v-if="type === 'powerPoint'" />
-        <PlaceholderIcon class="attachment-icon" v-if="type === 'other'" />
+        <FileIcon class="attachment-icon" v-if="type === 'other'" />
       </a>
       <div v-if="!disabled && !attachment.uploading" class="delete-button" role="button" @click="$emit('remove')">
         <DeleteIcon />
