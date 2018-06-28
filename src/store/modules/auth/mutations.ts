@@ -18,7 +18,7 @@ export const mutations: MutationTree<AuthState> = {
   removeBookmark(state: AuthState, id: number) {
     if (state.user) {
       state.user.bookmarks = state.user.bookmarks.filter(
-        f => f !== id
+        bookmark => bookmark !== id
       );
     }
   }
