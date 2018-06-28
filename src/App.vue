@@ -20,6 +20,7 @@ import { HTTP } from '@/services/http-service';
 import { AxiosResponse } from 'axios';
 import { Action } from 'vuex-class';
 import { authActionTypes } from '@/store/modules/auth/actions';
+import { commonActionTypes, Cms } from '@/store/modules/common/actions';
 
 @Component
 export default class App extends Vue {

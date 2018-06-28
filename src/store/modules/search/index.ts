@@ -13,7 +13,7 @@ export const state: SearchState = {
     page: 0,
     reported: true,
     related: false,
-    favorites: false,
+    bookmarks: false,
     text: '',
     municipal: false,
     intermunicipal: false,

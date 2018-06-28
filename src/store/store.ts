@@ -3,6 +3,7 @@ import Vuex, { StoreOptions } from 'vuex';
 import { details } from '@/store/modules/details';
 import { search } from '@/store/modules/search';
 import { auth } from '@/store/modules/auth';
+import { common } from '@/store/modules/common';
 
 Vue.use(Vuex);
 
@@ -14,7 +15,8 @@ const store: StoreOptions<RootState> = {
   modules: {
     auth,
     details,
-    search
+    search,
+    common
   }
 };
 
