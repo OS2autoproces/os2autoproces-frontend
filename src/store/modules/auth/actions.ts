@@ -2,7 +2,7 @@ import { HTTP } from '@/services/http-service';
 import { authMutationTypes } from '@/store/modules/auth/mutations';
 import { RootState } from '@/store/store';
 import { ActionTree } from 'vuex';
-import { AuthState, Bookmark, UserRole } from './state';
+import { AuthState, UserRole } from './state';
 
 interface WhoAmIResponse {
   uuid: string | null;
@@ -35,24 +35,24 @@ export const actions: ActionTree<AuthState, RootState> = {
   },
 
   async loadBookmarks({ commit }): Promise<void> {
-    const favorites = (await HTTP.get<BookmarkResponse[]>(
+    const bookmarks = (await HTTP.get<BookmarkResponse[]>(
       'api/bookmarks'
-    )).data.map(f => f.id);
+    )).data.map(b => b.id);
 
-    commit(authMutationTypes.UPDATE_USER, { user: { favorites } });
+    commit(authMutationTypes.UPDATE_USER, { user: { bookmarks } });
   },
 
-  async bookmark({ commit, state }, bookmark: Bookmark): Promise<void> {
-    await HTTP.put(`api/bookmarks/${bookmark.id}`);
+  async bookmark({ commit, state }, id: number): Promise<void> {
+    await HTTP.put(`api/bookmarks/${id}`);
     if (state.user) {
       commit(authMutationTypes.UPDATE_USER, {
-        user: { favorites: [...state.user.favorites, bookmark] }
+        user: { bookmarks: [...state.user.bookmarks, id] }
       });
     }
   },
 
-  async removeBookmark({ commit }, bookmark: Bookmark): Promise<void> {
-    await HTTP.delete(`api/bookmarks/${bookmark.id}`);
-    commit(authMutationTypes.REMOVE_BOOKMARK, bookmark);
+  async removeBookmark({ commit }, id: number): Promise<void> {
+    await HTTP.delete(`api/bookmarks/${id}`);
+    commit(authMutationTypes.REMOVE_BOOKMARK, id);
   }
 };

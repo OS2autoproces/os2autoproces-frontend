@@ -9,7 +9,7 @@ export interface SearchResultProcess {
   law: string;
   phase: number;
   status: string;
-  favorite: boolean;
+  bookmark: boolean;
 }
 
 export interface SearchResult {
@@ -26,7 +26,7 @@ export interface SortingOption {
 export interface SearchFilters {
   reported: boolean;
   related: boolean;
-  favorites: boolean;
+  bookmarks: boolean;
   text: string;
   municipal: boolean;
   intermunicipal: boolean;

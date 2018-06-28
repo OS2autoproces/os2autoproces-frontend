@@ -4,7 +4,7 @@
             <div class="types">
                 <PillCheckbox :value="filters.reported" @change="updateFilters({ reported: $event })">Indberettede</PillCheckbox>
                 <PillCheckbox :value="filters.related" @change="updateFilters({ related: $event })">Tilknyttede</PillCheckbox>
-                <PillCheckbox :value="filters.favorites" @change="updateFilters({ favorites: $event })">Favoritter</PillCheckbox>
+                <PillCheckbox :value="filters.bookmarks" @change="updateFilters({ bookmarks: $event })">Favoritter</PillCheckbox>
             </div>
 
             <SearchField class="search-text" :value="filters.text" @change="updateFilters({ text: $event })" />

@@ -5,7 +5,7 @@
       <div class="edit-button" role="button" @click="editName = !editName" :class="{ editing: editName }">
         <EditIcon />
       </div>
-      <div class="favorite-button" role="button" @click="toggleBookmark">
+      <div class="bookmark-button" role="button" @click="toggleBookmark">
         <StarIcon :class="{ selected }" />
       </div>
 
@@ -34,7 +34,6 @@ import { authGetterTypes } from '@/store/modules/auth/getters';
 import { DetailsState } from '@/store/modules/details/state';
 import { detailsMutationTypes } from '@/store/modules/details/mutations';
 import { authActionTypes } from '@/store/modules/auth/actions';
-import { Bookmark } from '@/store/modules/auth/state';
 
 @Component({
   components: {
@@ -48,8 +47,7 @@ import { Bookmark } from '@/store/modules/auth/state';
 export default class DetailsMenu extends Vue {
   @Action(detailsActionTypes.UPDATE)
   update!: (value: Partial<DetailsState>) => void;
-  @Getter(authGetterTypes.IS_FAVORITE)
-  isFavorite!: (bookmark: Bookmark) => boolean;
+  @Getter(authGetterTypes.IS_BOOKMARKED) isBookmarked!: (id: number) => boolean;
 
   // TODO: Bind these to the store
   notification = true;
@@ -62,21 +60,21 @@ export default class DetailsMenu extends Vue {
   }
 
   toggleBookmark() {
-    const id = this.state.details.generalInformation.id;
+    const id = 1;
 
     if (!id) {
       return;
     }
 
-    const isFavorite = this.isFavorite({ id });
+    const isBookmarked = this.isBookmarked(id);
 
-    const action = isFavorite
+    const action = isBookmarked
       ? authActionTypes.REMOVE_BOOKMARK
       : authActionTypes.BOOKMARK;
 
-    this.$store.dispatch(action, { id });
+    this.$store.dispatch(action, id);
 
-    this.selected = !isFavorite;
+    this.selected = !isBookmarked;
   }
 
   deleteProces() {
@@ -117,7 +115,7 @@ export default class DetailsMenu extends Vue {
   }
 }
 
-.favorite-button {
+.bookmark-button {
   height: 2 * $size-unit;
   width: 2 * $size-unit;
   margin-left: 50px;
