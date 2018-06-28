@@ -42,7 +42,7 @@ function getMockedSearchResult(filters: SearchFilters) {
         law: 'Lov om aktiv social politik §128',
         phase: 1,
         status: 'Afventer',
-        favorite: false
+        bookmark: false
       },
       {
         name: 'Rekruttering',
@@ -56,7 +56,7 @@ function getMockedSearchResult(filters: SearchFilters) {
         law: 'Lov om aktiv social politik §128',
         phase: 2,
         status: 'Mislykket',
-        favorite: true
+        bookmark: true
       }
     ]
   };

@@ -1,8 +1,8 @@
+import { HTTP } from '@/services/http-service';
+import { authMutationTypes } from '@/store/modules/auth/mutations';
+import { RootState } from '@/store/store';
 import { ActionTree } from 'vuex';
 import { AuthState, UserRole } from './state';
-import { RootState } from '@/store/store';
-import { authMutationTypes } from './mutations';
-import { HTTP } from '@/services/http-service';
 
 interface WhoAmIResponse {
   uuid: string | null;
@@ -12,16 +12,47 @@ interface WhoAmIResponse {
   roles: UserRole[] | null;
 }
 
-const namespace = 'auth';
+interface BookmarkResponse {
+  id: number;
+}
+
+export const namespace = 'auth';
 
 export const authActionTypes = {
-  LOAD_USER: `${namespace}/loadUser`
+  LOAD_USER: `${namespace}/loadUser`,
+  LOAD_BOOKMARKS: `${namespace}/loadBookmarks`,
+  BOOKMARK: `${namespace}/bookmark`,
+  REMOVE_BOOKMARK: `${namespace}/removeBookmark`
 };
 
 export const actions: ActionTree<AuthState, RootState> = {
-  async loadUser({ commit }): Promise<void> {
-    const user = (await HTTP.get<WhoAmIResponse>('/public/whoami')).data;
+  async loadUser({ commit, dispatch }): Promise<void> {
+    const user = (await HTTP.get<WhoAmIResponse>('public/whoami')).data;
 
     commit(authMutationTypes.SET_USER, user.uuid !== null ? user : null);
+
+    dispatch(authActionTypes.LOAD_BOOKMARKS, {}, {root: true});
+  },
+
+  async loadBookmarks({ commit }): Promise<void> {
+    const bookmarks = (await HTTP.get<BookmarkResponse[]>(
+      'api/bookmarks'
+    )).data.map(bookmark => bookmark.id);
+
+    commit(authMutationTypes.UPDATE, { user: { bookmarks } });
+  },
+
+  async bookmark({ commit, state }, id: number): Promise<void> {
+    await HTTP.put(`api/bookmarks/${id}`);
+    if (state.user) {
+      commit(authMutationTypes.UPDATE, {
+        user: { bookmarks: [...state.user.bookmarks, id] }
+      });
+    }
+  },
+
+  async removeBookmark({ commit }, id: number): Promise<void> {
+    await HTTP.delete(`api/bookmarks/${id}`);
+    commit(authMutationTypes.REMOVE_BOOKMARK, id);
   }
 };
