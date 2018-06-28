@@ -40,7 +40,7 @@
 
           <div class="comments">
             <div class="comments-heading">Kommentarer</div>
-            <Comments />
+            <Comments :comments="state.comments" @submit="udpateDetails({comments: $event})" />
           </div>
         </div>
       </div>
@@ -95,7 +95,8 @@ export default class Details extends Vue {
   @Prop() phase!: string;
 
   @Action(detailsActionTypes.SAVE) save: any;
-  @Action(generalInformationActionTypes.UPDATE_GENERAL_INFORMATION) updateGeneralInformation: any;
+  @Action(generalInformationActionTypes.UPDATE_GENERAL_INFORMATION)
+  updateGeneralInformation: any;
   @Action(detailsActionTypes.UPDATE) udpateDetails: any;
 
   get state() {
