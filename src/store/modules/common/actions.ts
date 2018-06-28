@@ -7,14 +7,14 @@ import { CommonState } from './state';
 const namespace = 'common';
 
 export interface Cms {
-  label: string;
+  label: keyof CommonState;
   content: string;
 }
 
 export const commonActionTypes = {
   UPDATE: `${namespace}/update`,
-  GET_CMS_CONTENT: `${namespace}/getCmsContent`,
-  POST_CMS_CONTENT: `${namespace}/postCmsContent`
+  LOAD_CMS_CONTENT: `${namespace}/loadCmsContent`,
+  SAVE_CMS_CONTENT: `${namespace}/saveCmsContent`
 };
 
 const cmsUrl = 'public/cms';
@@ -23,14 +23,14 @@ export const actions: ActionTree<CommonState, RootState> = {
   update({ commit }, payload: Partial<CommonState>): void {
     commit(commonMutationTypes.UPDATE, payload);
   },
-  async getCmsContent({ commit }, label: string) {
-    const content = (await HTTP.get<Cms>(`${cmsUrl}/${label}`)).data.content;
+  async loadCmsContent({ commit }, label: keyof CommonState) {
+    const jsonContent = (await HTTP.get<Cms>(`${cmsUrl}/${label}`)).data.content;
 
-    const frontPageMarkdown = JSON.parse(content);
+    const content = JSON.parse(jsonContent);
 
-    commit(commonMutationTypes.UPDATE, { frontPageMarkdown });
+    commit(commonMutationTypes.UPDATE, { [label]: content });
   },
-  async postCmsContent({ commit }, cms: Cms): Promise<void> {
+  async saveCmsContent({ commit }, cms: Cms): Promise<void> {
     await HTTP.post(`${cmsUrl}/${cms.label}`, JSON.stringify(cms.content), {
       headers: {
         'content-type': 'application/json'

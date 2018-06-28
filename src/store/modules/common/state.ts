@@ -1,3 +1,3 @@
 export interface CommonState {
-  frontPageMarkdown: string;
+  frontPage: string;
 }

@@ -8,7 +8,7 @@ import { CommonState } from "./state";
 const namespaced = true;
 
 export const state: CommonState = {
-  frontPageMarkdown: ''
+  frontPage: ''
 };
 
 export const common: Module<CommonState, RootState> = {

@@ -32,6 +32,7 @@ import EditIcon from '../components/icons/EditIcon.vue';
 import Button from '../components/common/inputs/Button.vue';
 import MarkdownEditor from '../components/common/inputs/MarkdownEditor.vue';
 import { commonActionTypes, Cms } from '@/store/modules/common/actions';
+import { CommonState } from '@/store/modules/common/state';
 
 @Component({
   components: {
@@ -43,8 +44,10 @@ import { commonActionTypes, Cms } from '@/store/modules/common/actions';
 })
 export default class Home extends Vue {
   @Action(commonActionTypes.UPDATE) update: any;
-  @Action(commonActionTypes.GET_CMS_CONTENT)
-  getCmsContent!: (label: string) => void;
+  @Action(commonActionTypes.LOAD_CMS_CONTENT)
+  loadCmsContent!: (label: keyof CommonState) => Promise<void>;
+  @Action(commonActionTypes.SAVE_CMS_CONTENT)
+  saveCmsContent!: (cms: Cms) => Promise<void>;
 
   get state() {
     return this.$store.state.common;
@@ -55,13 +58,13 @@ export default class Home extends Vue {
   discoveryUrl = window.autoProcessConfiguration.discoveryUrl;
 
   mounted() {
-    this.getCmsContent('frontPageText');
+    this.loadCmsContent('frontPage');
   }
 
   save() {
-    this.$store.dispatch(commonActionTypes.POST_CMS_CONTENT, {
-      label: 'frontPageText',
-      content: this.state.frontPageMarkdown
+    this.saveCmsContent({
+      label: 'frontPage',
+      content: this.state.frontPage
     });
     this.editing = false;
   }
