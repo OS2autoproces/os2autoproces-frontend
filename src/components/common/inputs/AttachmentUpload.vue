@@ -5,7 +5,7 @@
     </div>
 
     <label class="upload-button-wrapper" v-if="!disabled">
-      <input type="file" multiple @change="$emit('add', $event.target.files)">
+      <input type="file" multiple @change="addFiles($event.target.files)">
       <Button class="upload-button">
         Upload bilag
       </Button>
@@ -28,6 +28,10 @@ import { IAttachment } from '@/store/modules/details/state';
 export default class AttachmentUpload extends Vue {
   @Prop() attachments!: IAttachment[];
   @Prop() disabled!: boolean;
+
+  addFiles(files: FileList) {
+    this.$emit('add', Array.from(files));
+  }
 }
 </script>
 

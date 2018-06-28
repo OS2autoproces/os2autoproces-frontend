@@ -1,5 +1,5 @@
 import { ActionTree } from 'vuex';
-import { DetailsState, Attachment } from '@/store/modules/details/state';
+import { DetailsState, IAttachment } from '@/store/modules/details/state';
 import { RootState } from '@/store/store';
 import { detailsMutationTypes } from '@/store/modules/details/mutations';
 import { HTTP } from '@/services/http-service';
@@ -36,35 +36,30 @@ export const actions: ActionTree<DetailsState, RootState> = {
   async loadAttachments({ commit }) {
     // TODO: Use correct process
     const process = { id: '1' };
-    const attachments = (await HTTP.get<Attachment[]>(`/api/attachments/${process.id}`)).data;
+    const attachments = (await HTTP.get<IAttachment[]>(`/api/attachments/${process.id}`)).data;
 
     commit(detailsMutationTypes.ASSIGN, { attachments });
   },
-  async addAttachments({ commit, state }, files: FileList) {
+  async addAttachments({ commit, state }, files: File[]) {
     // TODO: Use correct process
     const process = { id: '1' };
 
     const form = new FormData();
+    files.forEach(file => form.append('files', file));
 
     // Placeholders are attachments which are shown while the real attachments are uploading.
     // When the attachments are done uploading, the placeholders are replaced with the real attachments.
-    const placeholders: Attachment[] = [];
-
-    for (let i = 0; i < files.length; i++) {
-      form.append('files', files[i]);
-
-      placeholders.push({
-        fileName: files[i].name,
-        uploading: true
-      });
-    }
+    const placeholders: IAttachment[] = files.map(file => ({
+      fileName: file.name,
+      uploading: true
+    }));
 
     commit(detailsMutationTypes.ASSIGN, {
       attachments: [...state.attachments, ...placeholders]
     });
 
     try {
-      const attachments = (await HTTP.post<Attachment[]>(`/api/attachments/${process.id}`, form)).data;
+      const attachments = (await HTTP.post<IAttachment[]>(`/api/attachments/${process.id}`, form)).data;
 
       commit(detailsMutationTypes.ASSIGN, {
         attachments: [...state.attachments.filter(a => !placeholders.includes(a)), ...attachments]

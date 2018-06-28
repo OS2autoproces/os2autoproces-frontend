@@ -9,15 +9,12 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 import { Action } from 'vuex-class';
 import AttachmentUpload from '@/components/common/inputs/AttachmentUpload.vue';
 import FormSection from '@/components/details/FormSection.vue';
-import InfoTooltip from '@/components/common/InfoTooltip.vue';
 import { detailsActionTypes } from '@/store/modules/details/actions';
-import { Attachment } from '@/store/modules/details/state';
 
 @Component({
   components: {
     FormSection,
-    AttachmentUpload,
-    InfoTooltip
+    AttachmentUpload
   }
 })
 export default class AttachmentsForm extends Vue {
