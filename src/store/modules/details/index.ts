@@ -17,7 +17,6 @@ const namespaced = true;
 export const state: DetailsState = {
   interval: null,
   intervalDisabled: true,
-  favorite: false,
 };
 
 export const details: Module<DetailsState, RootState> = {
