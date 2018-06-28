@@ -16,7 +16,7 @@ interface BookmarkResponse {
   id: number;
 }
 
-const namespace = 'auth';
+export const namespace = 'auth';
 
 export const authActionTypes = {
   LOAD_USER: `${namespace}/loadUser`,
