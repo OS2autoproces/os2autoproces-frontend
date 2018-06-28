@@ -52,7 +52,7 @@
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import { Action } from 'vuex-class';
 import NavBar from '../components/common/NavBar.vue';
-import Comments from '../components/comments/Comments.vue';
+import Comments from '../components/details/Comments.vue';
 import IntervalSelector from '../components/common/inputs/IntervalSelector.vue';
 import FormSection from '@/components/details/FormSection.vue';
 import DetailsMenu from '@/components/details/DetailsMenu.vue';
