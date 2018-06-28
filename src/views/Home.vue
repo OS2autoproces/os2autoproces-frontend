@@ -14,7 +14,7 @@
       <div class="save-button-container" v-if="editing" @click="save">
         <Button class="save-button">Gem</Button>
       </div>
-      <MarkdownEditor :editing="editing" :value="state.frontPageMarkdown" @change="update({frontPageMarkdown: $event})" />
+      <MarkdownEditor :editing="editing" :value="state.frontPage" @change="update({frontPage: $event})" />
     </div>
 
     <div class="idea-sharing-icon">
