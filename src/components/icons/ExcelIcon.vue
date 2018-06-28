@@ -21,7 +21,7 @@
 import { Vue, Component } from "vue-property-decorator";
 
 @Component({})
-export default class FileExcelIcon extends Vue {}
+export default class ExcelIcon extends Vue {}
 </script>
 
 <style lang="scss" scoped>

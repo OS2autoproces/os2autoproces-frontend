@@ -20,6 +20,7 @@ import { HTTP } from '@/services/http-service';
 import { AxiosResponse } from 'axios';
 import { Action } from 'vuex-class';
 import { authActionTypes } from '@/store/modules/auth/actions';
+import { commonActionTypes, Cms } from '@/store/modules/common/actions';
 
 @Component
 export default class App extends Vue {
@@ -33,6 +34,18 @@ export default class App extends Vue {
 
 <style lang="scss">
 @import './styles/variables';
+
+@keyframes blink {
+  0% {
+    color: $color-primary;
+  }
+  80% {
+    color: rgba($color-primary, 0.3);
+  }
+  100% {
+    color: $color-primary;
+  }
+}
 
 html {
   font-size: 16px;

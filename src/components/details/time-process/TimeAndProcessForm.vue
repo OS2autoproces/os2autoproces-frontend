@@ -40,9 +40,6 @@
       </InfoTooltip>
       <TextArea :value="state.timeConsumptionComments" :disabled="state.disabled" @change="update({timeConsumptionComments: $event})" />
     </div>
-
-    <FileUpload :disabled="state.disabled" />
-
   </FormSection>
 </template>
 
@@ -53,7 +50,6 @@ import WellItem from '@/components/common/WellItem.vue';
 import InfoTooltip from '@/components/common/InfoTooltip.vue';
 import TextArea from '@/components/common/inputs/TextArea.vue';
 import SelectionField from '@/components/common/inputs/SelectionField.vue';
-import FileUpload from '@/components/common/inputs/FileUpload.vue';
 import InputField from '@/components/common/inputs/InputField.vue';
 import FormSection from '@/components/details/FormSection.vue';
 import { Action } from 'vuex-class';
@@ -66,7 +62,6 @@ import { TimeAndProcessActionTypes } from '@/store/modules/details/time-process/
     TextArea,
     FormSection,
     SelectionField,
-    FileUpload,
     InputField,
     WellItem
   }

@@ -27,6 +27,7 @@
             <SpecificationForm />
             <ImplementationForm />
             <OperationForm />
+            <AttachmentsForm />
           </div>
 
           <div class="usage">
@@ -64,6 +65,7 @@ import AssessmentForm from '@/components/details/assessment/AssessmentForm.vue';
 import SpecificationForm from '@/components/details/specification/SpecificationForm.vue';
 import ImplementationForm from '@/components/details/implementation/ImplementationForm.vue';
 import TimeAndProcessForm from '@/components/details/time-process/TimeAndProcessForm.vue';
+import AttachmentsForm from '@/components/details/attachments/AttachmentsForm.vue';
 import OperationForm from '@/components/details/operation/OperationForm.vue';
 import { detailsActionTypes } from '@/store/modules/details/actions';
 import { generalInformationActionTypes } from '@/store/modules/details/general-information/actions';
@@ -82,6 +84,7 @@ import EditIcon from '@/components/icons/EditIcon.vue';
     ChallengesForm,
     AssessmentForm,
     TimeAndProcessForm,
+    AttachmentsForm,
     SpecificationForm,
     ImplementationForm,
     OperationForm,

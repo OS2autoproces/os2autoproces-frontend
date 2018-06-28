@@ -32,7 +32,6 @@
                 </WellItem>
             </div>
         </Well>
-        <FileUpload />
     </FormSection>
 </template>
 
@@ -47,7 +46,6 @@ import FormSection from '@/components/details/FormSection.vue';
 import Well from '@/components/common/Well.vue';
 import InfoTooltip from '@/components/common/InfoTooltip.vue';
 import WellItem from '@/components/common/WellItem.vue';
-import FileUpload from '@/components/common/inputs/FileUpload.vue';
 
 @Component({
   components: {
@@ -57,8 +55,7 @@ import FileUpload from '@/components/common/inputs/FileUpload.vue';
     Well,
     FormSection,
     InfoTooltip,
-    WellItem,
-    FileUpload
+    WellItem
   }
 })
 export default class ChallengesForm extends Vue {

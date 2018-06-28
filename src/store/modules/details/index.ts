@@ -18,6 +18,8 @@ export const state: DetailsState = {
   interval: null,
   intervalDisabled: true,
   comments: [],
+  attachments: [],
+  attachmentsDisabled: true
 };
 
 export const details: Module<DetailsState, RootState> = {

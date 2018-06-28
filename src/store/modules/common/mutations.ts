@@ -1,12 +1,13 @@
-import { MutationTree } from "vuex";
-import { CommonState } from "./state";
+import { merge } from 'lodash';
+import { MutationTree } from 'vuex';
+import { CommonState } from './state';
 
 export const commonMutationTypes = {
-  INCREMENT_NETWORK_CALLS: "common/IncrementNetworkCalls"
+  UPDATE: 'update'
 };
 
 export const mutations: MutationTree<CommonState> = {
-  incrementNetworkCalls(state: CommonState) {
-    state.networkCalls = state.networkCalls + 1;
+  update(state: CommonState, payload: Partial<CommonState>) {
+    merge(state, payload);
   }
 };

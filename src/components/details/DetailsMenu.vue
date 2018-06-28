@@ -23,7 +23,8 @@ export default class DetailsMenu extends Vue {
     { heading: 'Faglig vurdering', id: 'assessment' },
     { heading: 'Specifikation', id: 'specification' },
     { heading: 'Udvikling og implementering', id: 'implementation' },
-    { heading: 'Drift', id: 'operation' }
+    { heading: 'Drift', id: 'operation' },
+    { heading: 'Bilag', id: 'attachments' },
   ];
 
   private itemInView: MenuItem | null = null;

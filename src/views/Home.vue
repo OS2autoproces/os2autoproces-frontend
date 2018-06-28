@@ -14,7 +14,7 @@
       <div class="save-button-container" v-if="editing" @click="save">
         <Button class="save-button">Gem</Button>
       </div>
-      <MarkdownEditor :editing="editing" :value="details" @change="changeDetails" />
+      <MarkdownEditor :editing="editing" :value="state.frontPage" @change="update({frontPage: $event})" />
     </div>
 
     <div class="idea-sharing-icon">
@@ -26,10 +26,13 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
+import { Action } from 'vuex-class';
 import IdeaSharingIcon from '../components/icons/IdeaSharingIcon.vue';
 import EditIcon from '../components/icons/EditIcon.vue';
 import Button from '../components/common/inputs/Button.vue';
 import MarkdownEditor from '../components/common/inputs/MarkdownEditor.vue';
+import { commonActionTypes, Cms } from '@/store/modules/common/actions';
+import { CommonState } from '@/store/modules/common/state';
 
 @Component({
   components: {
@@ -40,15 +43,29 @@ import MarkdownEditor from '../components/common/inputs/MarkdownEditor.vue';
   }
 })
 export default class Home extends Vue {
+  @Action(commonActionTypes.UPDATE) update: any;
+  @Action(commonActionTypes.LOAD_CMS_CONTENT)
+  loadCmsContent!: (label: keyof CommonState) => Promise<void>;
+  @Action(commonActionTypes.SAVE_CMS_CONTENT)
+  saveCmsContent!: (cms: Cms) => Promise<void>;
+
+  get state() {
+    return this.$store.state.common;
+  }
+
   editing = false;
-  details = '# Overskrift\n\nLorem ipsum dolor, sit amet consectetur adipisicing elit. Non porro ut deserunt nesciunt quidem sint ducimus labore quae dolorum consectetur cum minima, ipsam vero facere officia? Debitis temporibus repudiandae laudantium.Lorem ipsum dolor, sit amet consectetur adipisicing elit. Non porro ut deserunt nesciunt quidem sint ducimus labore quae dolorum consectetur cum minima, ipsam vero facere officia? Debitis temporibus repudiandae laudantium. Lorem ipsum dolor, sit amet consectetur adipisicing elit. Non porro ut deserunt nesciunt quidem sint ducimus labore quae dolorum consectetur cum minima, ipsam vero facere officia? Debitis temporibus repudiandae laudantium. Lorem ipsum dolor, sit amet consectetur adipisicing elit. Non porro ut deserunt nesciunt quidem sint ducimus labore quae dolorum consectetur cum minima, ipsam vero facere officia? Debitis temporibus repudiandae laudantium. Lorem ipsum dolor, sit amet consectetur adipisicing elit. Non porro ut deserunt nesciunt quidem sint ducimus labore quae dolorum consectetur cum minima, ipsam vero facere officia? Debitis temporibus repudiandae laudantium.';
+
   discoveryUrl = window.autoProcessConfiguration.discoveryUrl;
 
-  changeDetails(value: string) {
-    this.details = value;
+  mounted() {
+    this.loadCmsContent('frontPage');
   }
 
   save() {
+    this.saveCmsContent({
+      label: 'frontPage',
+      content: this.state.frontPage
+    });
     this.editing = false;
   }
 }

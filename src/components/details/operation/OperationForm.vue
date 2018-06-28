@@ -26,8 +26,6 @@
         <h2>Kommentar til realiseret løsningspotentiale</h2>
         <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
         <TextArea :max-length="1200" :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({realizedPotential: $event})" :disabled="state.disabled" :value="state.realizedPotential" />
-
-        <FileUpload />
     </FormSection>
 </template>
 
@@ -37,7 +35,6 @@ import { OperationActionTypes } from '@/store/modules/details/operation/actions'
 import TextArea from '@/components/common/inputs/TextArea.vue';
 import Rating from '@/components/common/inputs/Rating.vue';
 import { Action } from 'vuex-class';
-import FileUpload from '@/components/common/inputs/FileUpload.vue';
 import DatePicker from '@/components/common/inputs/DatePicker.vue';
 import FormSection from '@/components/details/FormSection.vue';
 import InfoTooltip from '@/components/common/InfoTooltip.vue';
@@ -47,7 +44,6 @@ import WellItem from '@/components/common/WellItem.vue';
 @Component({
   components: {
     TextArea,
-    FileUpload,
     DatePicker,
     FormSection,
     Well,
