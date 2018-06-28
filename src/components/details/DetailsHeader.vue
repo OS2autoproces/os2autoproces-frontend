@@ -6,7 +6,7 @@
         <EditIcon />
       </div>
       <div class="bookmark-button" role="button" @click="toggleBookmark">
-        <StarIcon :class="{ selected }" />
+        <StarIcon :class="{ selected: bookmarked }" />
       </div>
 
       <div class="flex-grow"></div>
@@ -44,7 +44,7 @@ import { authActionTypes } from '@/store/modules/auth/actions';
     Button
   }
 })
-export default class DetailsMenu extends Vue {
+export default class DetailsHeader extends Vue {
   @Action(detailsActionTypes.UPDATE)
   update!: (value: Partial<DetailsState>) => void;
   @Getter(authGetterTypes.IS_BOOKMARKED) isBookmarked!: (id: number) => boolean;
@@ -53,7 +53,7 @@ export default class DetailsMenu extends Vue {
   notification = true;
   editName = false;
   name = 'Rekruttering';
-  selected = false;
+  bookmarked = false;
 
   get state() {
     return this.$store.state;
@@ -74,7 +74,7 @@ export default class DetailsMenu extends Vue {
 
     this.$store.dispatch(action, id);
 
-    this.selected = !isBookmarked;
+    this.bookmarked = !isBookmarked;
   }
 
   deleteProces() {
