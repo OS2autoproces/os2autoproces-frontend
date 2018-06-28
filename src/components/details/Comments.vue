@@ -7,10 +7,10 @@
     </div>
     <div class="comment-list-wrapper">
       <div class="comment-list">
-        <div class="comment" v-for="comment in comments" :key="comment.id">
-          <span class="author">{{comment.author}}, {{comment.municipality}}: </span>
-          <span class="time">{{comment.time}}</span>
-          <div>{{comment.text}}</div>
+        <div class="comment" v-for="(comment, index) in comments" :key="index">
+          <span class="author"> {{comment.name}} </span>
+          <span class="time">{{comment.created}}</span>
+          <div>{{comment.message}}</div>
         </div>
       </div>
     </div>
@@ -21,13 +21,7 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import TextArea from '../common/inputs/TextArea.vue';
 import Button from '../common/inputs/Button.vue';
-
-interface Comment {
-  author: string;
-  municipality: string;
-  time: string;
-  text: string;
-}
+import { Comment } from '@/store/modules/details/state'
 
 @Component({
   components: {

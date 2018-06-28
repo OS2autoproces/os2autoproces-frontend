@@ -1,8 +1,8 @@
-import { ActionTree } from 'vuex';
-import { DetailsState, IAttachment } from '@/store/modules/details/state';
-import { RootState } from '@/store/store';
-import { detailsMutationTypes } from '@/store/modules/details/mutations';
 import { HTTP } from '@/services/http-service';
+import { detailsMutationTypes } from '@/store/modules/details/mutations';
+import { Comment, DetailsState, IAttachment } from '@/store/modules/details/state';
+import { RootState } from '@/store/store';
+import { ActionTree } from 'vuex';
 
 export const namespace = 'details';
 
@@ -13,8 +13,16 @@ export const detailsActionTypes = {
   ASSIGN: `${namespace}/assign`,
   LOAD_ATTACHMENTS: `${namespace}/loadAttachments`,
   ADD_ATTACHMENTS: `${namespace}/addAttachments`,
-  REMOVE_ATTACHMENT: `${namespace}/removeAttachment`
+  REMOVE_ATTACHMENT: `${namespace}/removeAttachment`,
+  SAVE_COMMENT: `${namespace}/saveComment`,
+  LOAD_COMMENTS: `${namespace}/loadComments`
 };
+
+
+export interface AddCommentType {
+  message: string;
+  processId: number;
+}
 
 export const actions: ActionTree<DetailsState, RootState> = {
   update({ commit }, payload: Partial<DetailsState>) {
@@ -22,6 +30,23 @@ export const actions: ActionTree<DetailsState, RootState> = {
   },
   assign({ commit }, payload: Partial<DetailsState>) {
     commit(detailsMutationTypes.ASSIGN, payload);
+  },
+  async saveComment(
+    { commit, state },
+    newComment: AddCommentType
+  ): Promise<void> {
+    const { processId, message } = newComment;
+    const comment = (await HTTP.put<Comment>(`api/comments/${processId}`, {
+      message
+    })).data;
+
+    commit(detailsMutationTypes.UPDATE, {
+      comments: [...state.comments, comment]
+    });
+  },
+  async loadComments({ commit }, processId: number) { 
+    const comments = (await HTTP.get<Comment[]>(`api/comments/${processId}`)).data;
+    commit(detailsMutationTypes.UPDATE, { comments })
   },
   save() {
     // TODO: Save to backend
@@ -36,7 +61,9 @@ export const actions: ActionTree<DetailsState, RootState> = {
   async loadAttachments({ commit }) {
     // TODO: Use correct process
     const process = { id: '1' };
-    const attachments = (await HTTP.get<IAttachment[]>(`/api/attachments/${process.id}`)).data;
+    const attachments = (await HTTP.get<IAttachment[]>(
+      `/api/attachments/${process.id}`
+    )).data;
 
     commit(detailsMutationTypes.ASSIGN, { attachments });
   },
@@ -59,10 +86,16 @@ export const actions: ActionTree<DetailsState, RootState> = {
     });
 
     try {
-      const attachments = (await HTTP.post<IAttachment[]>(`/api/attachments/${process.id}`, form)).data;
+      const attachments = (await HTTP.post<IAttachment[]>(
+        `/api/attachments/${process.id}`,
+        form
+      )).data;
 
       commit(detailsMutationTypes.ASSIGN, {
-        attachments: [...state.attachments.filter(a => !placeholders.includes(a)), ...attachments]
+        attachments: [
+          ...state.attachments.filter(a => !placeholders.includes(a)),
+          ...attachments
+        ]
       });
     } catch {
       // Upload failed - remove placeholders
@@ -77,6 +110,8 @@ export const actions: ActionTree<DetailsState, RootState> = {
 
     await HTTP.delete(`/api/attachments/${process.id}/${id}`);
 
-    commit(detailsMutationTypes.ASSIGN, { attachments: state.attachments.filter(a => a.id !== id) });
+    commit(detailsMutationTypes.ASSIGN, {
+      attachments: state.attachments.filter(a => a.id !== id)
+    });
   }
 };

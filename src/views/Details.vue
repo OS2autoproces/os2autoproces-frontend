@@ -41,7 +41,10 @@
 
           <div class="comments">
             <div class="comments-heading">Kommentarer</div>
-            <Comments :comments="state.comments" @submit="udpateDetails({comments: $event})" />
+
+            {{state.comments}}
+            <!-- Todo: set procesid to state -->
+            <Comments :comments="state.comments" @submit="saveComment({ processId: 14, message: $event })" />
           </div>
         </div>
       </div>
@@ -67,7 +70,10 @@ import ImplementationForm from '@/components/details/implementation/Implementati
 import TimeAndProcessForm from '@/components/details/time-process/TimeAndProcessForm.vue';
 import AttachmentsForm from '@/components/details/attachments/AttachmentsForm.vue';
 import OperationForm from '@/components/details/operation/OperationForm.vue';
-import { detailsActionTypes } from '@/store/modules/details/actions';
+import {
+  AddCommentType,
+  detailsActionTypes
+} from '@/store/modules/details/actions';
 import { generalInformationActionTypes } from '@/store/modules/details/general-information/actions';
 import ArrowLeftIcon from '@/components/icons/ArrowLeftIcon.vue';
 import EditIcon from '@/components/icons/EditIcon.vue';
@@ -101,6 +107,10 @@ export default class Details extends Vue {
   @Action(generalInformationActionTypes.UPDATE_GENERAL_INFORMATION)
   updateGeneralInformation: any;
   @Action(detailsActionTypes.UPDATE) udpateDetails: any;
+  @Action(detailsActionTypes.SAVE_COMMENT)
+  saveComment!: (newComment: AddCommentType) => Promise<void>;
+  @Action(detailsActionTypes.LOAD_COMMENTS)
+  loadComments!: (processId: number) => Promise<void>;
 
   get state() {
     return this.$store.state.details;
@@ -115,6 +125,9 @@ export default class Details extends Vue {
     if (this.phase) {
       this.updateGeneralInformation({ phase: Number(this.phase) });
     }
+      // Todo: switch when process id is ready
+      // this.loadComments(this.state.generalInformation.id);
+    this.loadComments(14);
   }
 }
 </script>
