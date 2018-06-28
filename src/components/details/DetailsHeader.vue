@@ -5,8 +5,8 @@
       <div class="edit-button" role="button" @click="editName = !editName" :class="{ editing: editName }">
         <EditIcon />
       </div>
-      <div class="favorite-button" role="button" @click="bookmarkProcess(state.details.generalInformation.id)">
-        <StarIcon :class="{ selected: !this.selected }" />
+      <div class="favorite-button" role="button" @click="toggleBookmark">
+        <StarIcon :class="{ selected }" />
       </div>
 
       <div class="flex-grow"></div>
@@ -55,24 +55,28 @@ export default class DetailsMenu extends Vue {
   notification = true;
   editName = false;
   name = 'Rekruttering';
-  selected = true;
+  selected = false;
 
   get state() {
     return this.$store.state;
   }
 
-  bookmarkProcess(id: number) {
+  toggleBookmark() {
+    const id = this.state.details.generalInformation.id;
+
     if (!id) {
       return;
     }
 
-    this.selected = this.isFavorite({ id });
+    const isFavorite = this.isFavorite({ id });
 
-    if (this.selected) {
-      this.$store.dispatch(authActionTypes.REMOVE_BOOKMARK, { id });
-    } else {
-      this.$store.dispatch(authActionTypes.BOOKMARK, { id });
-    }
+    const action = isFavorite
+      ? authActionTypes.REMOVE_BOOKMARK
+      : authActionTypes.BOOKMARK;
+
+    this.$store.dispatch(action, { id });
+
+    this.selected = !isFavorite;
   }
 
   deleteProces() {
