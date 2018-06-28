@@ -34,7 +34,7 @@
       <Phases :value="process.phase" small disabled />
       <div class="status">{{process.status}}</div>
     </div>
-    <star-icon class="star-icon" :class="{ selected: process.favorite }" />
+    <star-icon class="star-icon" :class="{ selected: process.bookmark }" />
   </div>
 </template>
 
