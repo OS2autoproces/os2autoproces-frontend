@@ -1,3 +1,3 @@
 export interface CommonState {
-  networkCalls: number;
+  frontPage: string;
 }
