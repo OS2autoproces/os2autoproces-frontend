@@ -35,6 +35,18 @@ export default class App extends Vue {
 <style lang="scss">
 @import './styles/variables';
 
+@keyframes blink {
+  0% {
+    color: $color-primary;
+  }
+  80% {
+    color: rgba($color-primary, 0.3);
+  }
+  100% {
+    color: $color-primary;
+  }
+}
+
 html {
   font-size: 16px;
   font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
