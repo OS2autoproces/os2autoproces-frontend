@@ -34,13 +34,14 @@ export const actions: ActionTree<DetailsState, RootState> = {
     return { id: '1234' };
   },
   async loadAttachments({ commit }) {
+    // TODO: Use correct process
     const process = { id: '1' };
     const attachments = (await HTTP.get<Attachment[]>(`/api/attachments/${process.id}`)).data;
 
     commit(detailsMutationTypes.ASSIGN, { attachments });
   },
   async addAttachments({ commit, state }, files: FileList) {
-    // TODO: Add to correct proces
+    // TODO: Use correct process
     const process = { id: '1' };
 
     const form = new FormData();
@@ -76,7 +77,7 @@ export const actions: ActionTree<DetailsState, RootState> = {
     }
   },
   async removeAttachment({ commit, state }, id: number) {
-    // TODO: Add to correct proces
+    // TODO: Use correct process
     const process = { id: '1' };
 
     await HTTP.delete(`/api/attachments/${process.id}/${id}`);
