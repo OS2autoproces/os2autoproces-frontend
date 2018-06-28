@@ -1,7 +1,7 @@
 <template>
-  <div class="file-upload">
-    <div class="file-list">
-      <File v-for="file in files" :key="file.id" :file="file" :disabled="disabled" @remove="$emit('remove', file.id)" />
+  <div class="attachment-upload">
+    <div class="attachment-list">
+      <Attachment v-for="attachment in attachments" :key="attachment.id" :attachment="attachment" :disabled="disabled" @remove="$emit('remove', attachment.id)" />
     </div>
 
     <label class="upload-button-wrapper" v-if="!disabled">
@@ -15,30 +15,18 @@
 
 <script lang='ts'>
 import { Vue, Component, Prop } from 'vue-property-decorator';
-import FileWordIcon from '@/components/icons/FileWordIcon.vue';
-import FileExcelIcon from '@/components/icons/FileExcelIcon.vue';
-import FilePdfIcon from '@/components/icons/FilePdfIcon.vue';
-import FilePowerPointIcon from '@/components/icons/FilePowerPointIcon.vue';
-import FilePlaceholderIcon from '@/components/icons/FilePlaceholderIcon.vue';
-import DeleteIcon from '@/components/icons/DeleteIcon.vue';
 import Button from '@/components/common/inputs/Button.vue';
-import File from './File.vue';
-import { Attachment } from '@/store/modules/details/state';
+import Attachment from './Attachment.vue';
+import { IAttachment } from '@/store/modules/details/state';
 
 @Component({
   components: {
-    FileWordIcon,
-    FileExcelIcon,
-    FilePdfIcon,
-    FilePowerPointIcon,
-    FilePlaceholderIcon,
-    File,
-    DeleteIcon,
+    Attachment,
     Button
   }
 })
-export default class FileUpload extends Vue {
-  @Prop() files!: Attachment[];
+export default class AttachmentUpload extends Vue {
+  @Prop() attachments!: IAttachment[];
   @Prop() disabled!: boolean;
 }
 </script>
@@ -46,11 +34,11 @@ export default class FileUpload extends Vue {
 <style lang="scss" scoped>
 @import '@/styles/variables.scss';
 
-.file-upload {
+.attachment-upload {
   text-align: center;
 }
 
-.file-list {
+.attachment-list {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;

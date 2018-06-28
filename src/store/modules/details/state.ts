@@ -1,4 +1,4 @@
-export interface Attachment {
+export interface IAttachment {
   fileName: string;
   id?: number;
   url?: string;
@@ -8,6 +8,6 @@ export interface Attachment {
 export interface DetailsState {
   interval: string | null;
   intervalDisabled: boolean;
-  attachments: Attachment[];
+  attachments: IAttachment[];
   attachmentsDisabled: boolean;
 }
