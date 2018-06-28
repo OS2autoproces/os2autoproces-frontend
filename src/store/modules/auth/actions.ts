@@ -20,7 +20,7 @@ const namespace = 'auth';
 
 export const authActionTypes = {
   LOAD_USER: `${namespace}/loadUser`,
-  GET_BOOKMARKS: `getBookmarks`,
+  LOAD_BOOKMARKS: `${namespace}/loadBookmarks`,
   BOOKMARK: `${namespace}/bookmark`,
   REMOVE_BOOKMARK: `${namespace}/removeBookmark`
 };
@@ -31,10 +31,10 @@ export const actions: ActionTree<AuthState, RootState> = {
 
     commit(authMutationTypes.SET_USER, user.uuid !== null ? user : null);
 
-    dispatch(authActionTypes.GET_BOOKMARKS);
+    dispatch(authActionTypes.LOAD_BOOKMARKS, {}, {root: true});
   },
 
-  async getBookmarks({ commit }): Promise<void> {
+  async loadBookmarks({ commit }): Promise<void> {
     const favorites = (await HTTP.get<BookmarkResponse[]>(
       'api/bookmarks'
     )).data.map(f => f.id);
