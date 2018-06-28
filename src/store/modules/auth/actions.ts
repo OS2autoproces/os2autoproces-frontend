@@ -39,13 +39,13 @@ export const actions: ActionTree<AuthState, RootState> = {
       'api/bookmarks'
     )).data.map(b => b.id);
 
-    commit(authMutationTypes.UPDATE_USER, { user: { bookmarks } });
+    commit(authMutationTypes.UPDATE, { user: { bookmarks } });
   },
 
   async bookmark({ commit, state }, id: number): Promise<void> {
     await HTTP.put(`api/bookmarks/${id}`);
     if (state.user) {
-      commit(authMutationTypes.UPDATE_USER, {
+      commit(authMutationTypes.UPDATE, {
         user: { bookmarks: [...state.user.bookmarks, id] }
       });
     }

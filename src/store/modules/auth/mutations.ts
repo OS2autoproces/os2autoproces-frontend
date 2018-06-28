@@ -4,7 +4,7 @@ import { AuthState, User } from './state';
 
 export const authMutationTypes = {
   SET_USER: 'setUser',
-  UPDATE_USER: 'updateUser',
+  UPDATE: 'update',
   REMOVE_BOOKMARK: 'removeBookmark'
 };
 
@@ -12,8 +12,8 @@ export const mutations: MutationTree<AuthState> = {
   setUser(state: AuthState, user: User | null) {
     state.user = user;
   },
-  updateUser(state: AuthState, user: Partial<User>) {
-    merge(state, user);
+  update(state: AuthState, auth: Partial<AuthState>) {
+    merge(state, auth);
   },
   removeBookmark(state: AuthState, id: number) {
     if (state.user) {
