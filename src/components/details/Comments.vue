@@ -103,8 +103,11 @@ export default class Comments extends Vue {
   height: 300px;
 }
 
-.comment:not(:last-of-type) {
-  margin-bottom: $size-unit;
+.comment {
+  white-space: pre;
+  :not(:last-of-type) {
+    margin-bottom: $size-unit;
+  }
 }
 
 .author {
