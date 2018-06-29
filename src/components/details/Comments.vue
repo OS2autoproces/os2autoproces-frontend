@@ -21,7 +21,7 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import TextArea from '../common/inputs/TextArea.vue';
 import Button from '../common/inputs/Button.vue';
-import { Comment } from '@/store/modules/details/state'
+import { Comment } from '@/store/modules/details/state';
 
 @Component({
   components: {
@@ -54,20 +54,32 @@ export default class Comments extends Vue {
   display: flex;
   border-radius: $size-unit;
   background-color: rgba($color-secondary, 0.3);
-  padding: $size-unit;
+  padding: 2 * $size-unit;
 }
 
 .comment-input-wrapper {
-  flex: 1 1 30%;
-  margin-right: $size-unit;
+  flex: 1 1 45%;
+  margin-right: 2 * $size-unit;
 }
 
 .comment-input {
   height: 100%;
 
   /deep/ {
-    textarea {
-      border-color: $color-secondary;
+    div.text-area {
+      border: 1px solid $color-secondary;
+      
+      .text-area-overlay {
+        text-align: center;
+        
+        > button {
+          padding: 4px 58px;
+        }
+      }
+      
+      .max-length-label {
+        padding: 0;
+      }
     }
 
     > div,
