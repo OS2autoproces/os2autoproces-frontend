@@ -74,20 +74,6 @@ export default class Comments extends Vue {
   /deep/ {
     .text-area {
       border: 1px solid $color-secondary;
-
-      .text-area-overlay {
-        display: flex;
-        flex-direction: column-reverse;
-
-        > button {
-          padding: 4px 58px;
-          box-ordinal-group: 2;
-        }
-      }
-
-      .max-length-label {
-        padding: 0;
-      }
     }
 
     > div,

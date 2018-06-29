@@ -3,8 +3,8 @@
     <div class="text-area" v-if="!disabled">
       <textarea :value="value" @input="valueChanged" :placeholder="placeholder" :class="{ 'no-resize': noResize }" />
       <div class="text-area-overlay">
+        <div v-if="maxLength">({{currentLength}} ud af {{maxLength}} tegn)</div>
         <slot />
-        <div v-if="maxLength" class="max-length-label">({{currentLength}} ud af {{maxLength}} tegn)</div>
       </div>
     </div>
     <div class="text-area-readonly" :class="{'double-column': value.length > twoColumnBreakpoint}" v-if="disabled">{{value}}</div>
@@ -46,13 +46,9 @@ export default class TextArea extends Vue {
   .text-area-overlay {
     display: inline-block;
     position: absolute;
-    right: 10px;
-    bottom: 5px;
+    right: $size-unit / 2;
+    bottom: $size-unit / 2;
     text-align: right;
-  }
-
-  .max-length-label {
-    padding-right: 20px;
   }
 }
 
