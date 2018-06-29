@@ -68,7 +68,7 @@ import TimeAndProcessForm from '@/components/details/time-process/TimeAndProcess
 import AttachmentsForm from '@/components/details/attachments/AttachmentsForm.vue';
 import OperationForm from '@/components/details/operation/OperationForm.vue';
 import {
-  AddCommentType,
+  NewComment,
   detailsActionTypes
 } from '@/store/modules/details/actions';
 import { generalInformationActionTypes } from '@/store/modules/details/general-information/actions';
@@ -105,7 +105,7 @@ export default class Details extends Vue {
   updateGeneralInformation: any;
   @Action(detailsActionTypes.UPDATE) udpateDetails: any;
   @Action(detailsActionTypes.SAVE_COMMENT)
-  saveComment!: (newComment: AddCommentType) => Promise<void>;
+  saveComment!: (newComment: NewComment) => Promise<void>;
   @Action(detailsActionTypes.LOAD_COMMENTS)
   loadComments!: (processId: number) => Promise<void>;
 

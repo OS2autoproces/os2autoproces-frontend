@@ -1,6 +1,10 @@
 import { HTTP } from '@/services/http-service';
 import { detailsMutationTypes } from '@/store/modules/details/mutations';
-import { Comment, DetailsState, IAttachment } from '@/store/modules/details/state';
+import {
+  Comment,
+  DetailsState,
+  IAttachment
+} from '@/store/modules/details/state';
 import { RootState } from '@/store/store';
 import { ActionTree } from 'vuex';
 
@@ -18,7 +22,7 @@ export const detailsActionTypes = {
   LOAD_COMMENTS: `${namespace}/loadComments`
 };
 
-export interface AddCommentType {
+export interface NewComment {
   message: string;
   processId: number;
 }
@@ -32,9 +36,8 @@ export const actions: ActionTree<DetailsState, RootState> = {
   },
   async saveComment(
     { commit, state },
-    newComment: AddCommentType
+    { processId, message }: NewComment
   ): Promise<void> {
-    const { processId, message } = newComment;
     const comment = (await HTTP.put<Comment>(`api/comments/${processId}`, {
       message
     })).data;

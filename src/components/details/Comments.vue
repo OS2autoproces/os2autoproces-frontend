@@ -66,7 +66,7 @@ export default class Comments extends Vue {
   height: 100%;
 
   /deep/ {
-    div.text-area {
+    .text-area {
       border: 1px solid $color-secondary;
 
       .text-area-overlay {
