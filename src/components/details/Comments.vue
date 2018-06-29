@@ -6,9 +6,9 @@
       </text-area>
     </div>
     <div class="comment-list-wrapper">
-      <div class="comment-list">
+      <div class="comment-list" ref="comments-list">
         <div class="comment" v-for="(comment, index) in comments" :key="index">
-          <span class="author"> {{comment.name}} </span>
+          <span class="author">{{comment.name}}:</span>
           <span class="time">{{comment.created}}</span>
           <div>{{comment.message}}</div>
         </div>
@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import TextArea from '../common/inputs/TextArea.vue';
 import Button from '../common/inputs/Button.vue';
 import { Comment } from '@/store/modules/details/state';
@@ -30,11 +30,17 @@ import { Comment } from '@/store/modules/details/state';
   }
 })
 export default class Comments extends Vue {
-  @Prop() disabled!: boolean;
-  @Prop() comments!: Comment[];
-
   maxLength = 140;
   newComment = '';
+  
+  @Prop() disabled!: boolean;
+  @Prop() comments!: Comment[];
+  @Watch('comments') onCommentsChanged() {
+    const commentList = this.$refs['comments-list'] as HTMLElement;
+    this.$nextTick(() => {
+      commentList.scrollTop = commentList.scrollHeight;
+    });
+  };
 
   submit() {
     if (!this.newComment || this.newComment.length > this.maxLength) {
