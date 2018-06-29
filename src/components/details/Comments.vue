@@ -68,15 +68,15 @@ export default class Comments extends Vue {
   /deep/ {
     div.text-area {
       border: 1px solid $color-secondary;
-      
+
       .text-area-overlay {
         text-align: center;
-        
+
         > button {
           padding: 4px 58px;
         }
       }
-      
+
       .max-length-label {
         padding: 0;
       }
