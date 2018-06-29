@@ -18,7 +18,6 @@ export const detailsActionTypes = {
   LOAD_COMMENTS: `${namespace}/loadComments`
 };
 
-
 export interface AddCommentType {
   message: string;
   processId: number;
@@ -40,13 +39,12 @@ export const actions: ActionTree<DetailsState, RootState> = {
       message
     })).data;
 
-    commit(detailsMutationTypes.UPDATE, {
-      comments: [...state.comments, comment]
-    });
+    commit(detailsMutationTypes.SAVE_COMMENTS, [...state.comments, comment]);
   },
-  async loadComments({ commit }, processId: number) { 
-    const comments = (await HTTP.get<Comment[]>(`api/comments/${processId}`)).data;
-    commit(detailsMutationTypes.UPDATE, { comments })
+  async loadComments({ commit }, processId: number) {
+    const comments = (await HTTP.get<Comment[]>(`api/comments/${processId}`))
+      .data;
+    commit(detailsMutationTypes.SAVE_COMMENTS, comments);
   },
   save() {
     // TODO: Save to backend

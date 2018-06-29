@@ -41,10 +41,7 @@
 
           <div class="comments">
             <div class="comments-heading">Kommentarer</div>
-
-            {{state.comments}}
-            <!-- Todo: set procesid to state -->
-            <Comments :comments="state.comments" @submit="saveComment({ processId: 14, message: $event })" />
+            <Comments :comments="state.comments" @submit="saveComment({ processId: state.generalInformation.id, message: $event })" />
           </div>
         </div>
       </div>
@@ -125,9 +122,7 @@ export default class Details extends Vue {
     if (this.phase) {
       this.updateGeneralInformation({ phase: Number(this.phase) });
     }
-      // Todo: switch when process id is ready
-      // this.loadComments(this.state.generalInformation.id);
-    this.loadComments(14);
+    this.loadComments(this.state.generalInformation.id);
   }
 }
 </script>
