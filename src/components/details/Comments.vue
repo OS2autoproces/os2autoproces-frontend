@@ -76,10 +76,12 @@ export default class Comments extends Vue {
       border: 1px solid $color-secondary;
 
       .text-area-overlay {
-        text-align: center;
+        display: flex;
+        flex-direction: column-reverse;
 
         > button {
           padding: 4px 58px;
+          box-ordinal-group: 2;
         }
       }
 
