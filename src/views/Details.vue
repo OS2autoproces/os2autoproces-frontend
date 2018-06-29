@@ -41,7 +41,7 @@
 
           <div class="comments">
             <div class="comments-heading">Kommentarer</div>
-            <Comments />
+            <Comments :comments="state.comments" @submit="saveComment({ processId: state.generalInformation.id, message: $event })" />
           </div>
         </div>
       </div>
@@ -53,7 +53,7 @@
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import { Action } from 'vuex-class';
 import NavBar from '../components/common/NavBar.vue';
-import Comments from '../components/comments/Comments.vue';
+import Comments from '../components/details/Comments.vue';
 import IntervalSelector from '../components/common/inputs/IntervalSelector.vue';
 import FormSection from '@/components/details/FormSection.vue';
 import DetailsMenu from '@/components/details/DetailsMenu.vue';
@@ -67,7 +67,10 @@ import ImplementationForm from '@/components/details/implementation/Implementati
 import TimeAndProcessForm from '@/components/details/time-process/TimeAndProcessForm.vue';
 import AttachmentsForm from '@/components/details/attachments/AttachmentsForm.vue';
 import OperationForm from '@/components/details/operation/OperationForm.vue';
-import { detailsActionTypes } from '@/store/modules/details/actions';
+import {
+  NewComment,
+  detailsActionTypes
+} from '@/store/modules/details/actions';
 import { generalInformationActionTypes } from '@/store/modules/details/general-information/actions';
 import ArrowLeftIcon from '@/components/icons/ArrowLeftIcon.vue';
 import EditIcon from '@/components/icons/EditIcon.vue';
@@ -98,8 +101,13 @@ export default class Details extends Vue {
   @Prop() phase!: string;
 
   @Action(detailsActionTypes.SAVE) save: any;
-  @Action(generalInformationActionTypes.UPDATE_GENERAL_INFORMATION) updateGeneralInformation: any;
+  @Action(generalInformationActionTypes.UPDATE_GENERAL_INFORMATION)
+  updateGeneralInformation: any;
   @Action(detailsActionTypes.UPDATE) udpateDetails: any;
+  @Action(detailsActionTypes.SAVE_COMMENT)
+  saveComment!: (newComment: NewComment) => Promise<void>;
+  @Action(detailsActionTypes.LOAD_COMMENTS)
+  loadComments!: (processId: number) => Promise<void>;
 
   get state() {
     return this.$store.state.details;
@@ -114,6 +122,7 @@ export default class Details extends Vue {
     if (this.phase) {
       this.updateGeneralInformation({ phase: Number(this.phase) });
     }
+    this.loadComments(this.state.generalInformation.id);
   }
 }
 </script>
