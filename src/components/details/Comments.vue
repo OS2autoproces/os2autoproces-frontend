@@ -112,7 +112,7 @@ export default class Comments extends Vue {
 }
 
 .comment {
-  white-space: pre;
+  white-space: pre-wrap;
   :not(:last-of-type) {
     margin-bottom: $size-unit;
   }
