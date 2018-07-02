@@ -13,6 +13,7 @@ export const searchActionTypes = {
 };
 
 const debouncedSearch = debounce(async (filters: SearchFilters, commit: Commit) => {
+  commit(searchMutationTypes.SET_SEARCH_RESULT, undefined);
   commit(searchMutationTypes.SET_SEARCH_RESULT, await search(filters));
 }, 250);
 
