@@ -11,6 +11,7 @@ export const state: SearchState = {
   result: undefined,
   filters: {
     page: 0,
+    size: 5,
     reported: true,
     related: false,
     bookmarks: false,

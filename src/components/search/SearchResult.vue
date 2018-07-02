@@ -1,8 +1,8 @@
 <template>
   <div class="result">
     <div class="result-column">
-      <div class="name">{{process.name}}</div>
-      <div class="resume">{{process.resume}}</div>
+      <div class="name">{{process.title}}</div>
+      <div class="resume">{{process.shortDescription}}</div>
     </div>
     <div class="result-column">
       <div>
@@ -12,7 +12,7 @@
       </div>
       <div>
         <div class="rating">
-          <Rating :value="process.potential" disabled />
+          <Rating :value="process.rating" disabled />
         </div>
         <div>{{process.municipality}}</div>
         <div>{{process.id}}</div>
@@ -25,9 +25,9 @@
         <div>Lov og paragraf:</div>
       </div>
       <div>
-        <div>{{process.field}}</div>
-        <div>{{process.kleNumber}}</div>
-        <div>{{process.law}}</div>
+        <div>{{process.domain}}</div>
+        <div>{{process.kle}}</div>
+        <div>{{process.legalClause}}</div>
       </div>
     </div>
     <div class="result-column">

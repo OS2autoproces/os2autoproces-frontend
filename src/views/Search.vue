@@ -22,7 +22,7 @@
                         </router-link>
                     </div>
 
-                    <SearchPagination v-if="result" :page="result.page" :pageTotal="result.numberOfPages" @change="updateFilters({ page: $event })" />
+                    <SearchPagination v-if="result" :page="result.page.number" :pageTotal="result.page.totalPages" @change="updateFilters({ page: $event })" />
                 </div>
             </div>
         </div>

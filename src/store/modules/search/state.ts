@@ -1,21 +1,21 @@
-export interface SearchResultProcess {
-  id: string;
-  name: string;
-  resume: string;
-  potential: number;
-  municipality: string;
-  field: string;
-  kleNumber: string;
-  law: string;
-  phase: number;
-  status: string;
-  bookmark: boolean;
+export interface SearchResult {
+  page: {
+    totalPages: number;
+    number: number;
+  };
+  processes: SearchResultProcess[]
 }
 
-export interface SearchResult {
-  page: number;
-  numberOfPages: number;
-  processes: SearchResultProcess[];
+export interface SearchResultProcess {
+  id: number;
+  title: string;
+  shortDescription: string;
+  rating: string;
+  phase: string;
+  status: string;
+  domain: string;
+  kle: string;
+  legalClause: string;
 }
 
 export interface SortingOption {
@@ -31,6 +31,7 @@ export interface SearchFilters {
   municipal: boolean;
   intermunicipal: boolean;
   page: number;
+  size: number;
   sorting: SortingOption;
 
   phases: {
