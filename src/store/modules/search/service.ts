@@ -1,34 +1,8 @@
-import { HTTP } from '@/services/http-service';
+import { HTTP } from '@/services/http-service'
 import {SearchFilters, SearchResult} from '@/store/modules/search/state';
-
-const phaseLabels: {[x in Phase]: string} = {
-  IDEA: 'Idé',
-  PREANALYSIS: 'Foranalyse',
-  SPECIFICATION: 'Specifikation',
-  DEVELOPMENT: 'Udvikling',
-  IMPLEMENTATION: 'Implementering',
-  OPERATION: 'Drift'
-};
-
-const statusLabels: {[x in Status]: string} = {
-  REJECTED: 'Afvist',
-  FAILED: 'Mislykket',
-  PENDING: 'Afventer',
-  INPROGRESS: 'Igang'
-};
-
-const domainLabels: {[x in Domain]: string} = {
-  WORK: 'Arbejdsmarked & Erhverv',
-  HEALTH: 'Social & Sundhed',
-  CHILDREN: 'Børn & Læring',
-  ENVIRONMENT: 'Miljø, Teknik & Forsyning',
-  DEMOCRACY: 'Demokrati & Involvering',
-  ADMINISTRATION: 'Administation & Organisation',
-};
-
-type Phase = 'IDEA' | 'PREANALYSIS' | 'SPECIFICATION' | 'DEVELOPMENT' | 'IMPLEMENTATION' | 'OPERATION';
-type Status = 'REJECTED' | 'FAILED' | 'PENDING' | 'INPROGRESS';
-type Domain = 'WORK' | 'HEALTH' | 'CHILDREN' | 'ENVIRONMENT' | 'DEMOCRACY' | 'ADMINISTRATION';
+import {Phase, PhaseLabels} from "@/models/phase";
+import {Status, StatusLabels} from "@/models/status";
+import {Domain, DomainLabels} from "@/models/domain";
 
 interface ProcessSearchResponse {
   id: number;
@@ -42,7 +16,6 @@ interface ProcessSearchResponse {
   legalClause: string;
 }
 
-
 interface SearchResponse {
   page: {
     size: number;
@@ -55,16 +28,10 @@ interface SearchResponse {
   };
 }
 
-
-
 function mapSearchResponse(response: SearchResponse): SearchResult {
   return {
     page: response.page,
-    processes: response._embedded.processes.map(process => Object.assign(process, {
-      domain: domainLabels[process.domain],
-      phase: phaseLabels[process.phase],
-      status: statusLabels[process.status],
-    }))
+    processes: response._embedded.processes
   }
 }
 

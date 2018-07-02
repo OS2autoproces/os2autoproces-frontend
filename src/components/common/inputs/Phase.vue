@@ -1,6 +1,6 @@
 <template>
-    <div class="phase" @click="clicked()" :class="{ reverse, selected, disabled, small }">
-        <div class="text">{{ text }}</div>
+    <div class="phase" @click="clicked" :class="{ reverse, disabled, small, selected }">
+        <div class="text">{{ PhaseLabels[phase] }}</div>
         <div class="angled-line-container">
             <div class="angled-line"></div>
         </div>
@@ -11,18 +11,25 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
+import {Phase, PhaseLabels} from "../../../models/phase";
 
 @Component
-export default class Phase extends Vue {
-  @Prop() private text!: string;
+export default class PhaseComponent extends Vue {
+  @Prop() private phase!: Phase;
+  @Prop() private value!: Phase;
   @Prop() private reverse!: boolean;
-  @Prop() private selected!: boolean;
   @Prop() private disabled!: boolean;
   @Prop() private small!: boolean;
 
-  private clicked() {
+  PhaseLabels = PhaseLabels;
+
+  get selected() {
+    return this.phase === this.value;
+  }
+
+  clicked() {
     if (!this.disabled) {
-      this.$emit("select");
+      this.$emit("select", this.phase);
     }
   }
 }
