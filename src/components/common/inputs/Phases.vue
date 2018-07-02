@@ -1,40 +1,43 @@
 <template>
     <div class="phases" :class="{ small }">
         <div class="row">
-            <Phase text="Foranalyse" @select="select(2)" :small="small" :disabled="disabled" :selected="value === 2" />
-            <Phase text="Specifikation" @select="select(3)" :small="small" :disabled="disabled" :selected="value === 3" reverse />
+            <PhaseComponent :phase="PhaseKeys.PREANALYSIS" :value="value" @select="select" :small="small" :disabled="disabled" />
+            <PhaseComponent :phase="PhaseKeys.SPECIFICATION" :value="value" @select="select" :small="small" :disabled="disabled" reverse />
         </div>
 
         <div class="row">
-            <Phase text="Idé" @select="select(1)" :small="small" :disabled="disabled" :selected="value === 1" />
-            <Phase text="Udvikling" @select="select(4)" :small="small" :disabled="disabled" :selected="value === 4" reverse />
+            <PhaseComponent :phase="PhaseKeys.IDEA" :value="value" @select="select" :small="small" :disabled="disabled" />
+            <PhaseComponent :phase="PhaseKeys.DEVELOPMENT" :value="value" @select="select" :small="small" :disabled="disabled" reverse />
         </div>
 
         <div class="row">
-            <Phase text="Drift" @select="select(6)" :small="small" :disabled="disabled" :selected="value === 6" />
-            <Phase text="Implementering" @select="select(5)" :small="small" :disabled="disabled" :selected="value === 5" reverse />
+            <PhaseComponent :phase="PhaseKeys.OPERATION" :value="value" @select="select" :small="small" :disabled="disabled" />
+            <PhaseComponent :phase="PhaseKeys.IMPLEMENTATION" :value="value" @select="select" :small="small" :disabled="disabled" reverse />
         </div>
     </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import Phase from "./Phase.vue";
+import PhaseComponent from "./Phase.vue";
+import { Phase, PhaseKeys } from '@/models/phase';
 
 @Component({
   components: {
-    Phase
+    PhaseComponent
   }
 })
 export default class Phases extends Vue {
-  @Prop() private value!: number;
+  @Prop() private value!: string;
   @Prop() private disabled!: boolean;
   @Prop() private small!: boolean;
 
-  private select(phase: number) {
+  private PhaseKeys = PhaseKeys;
+
+  private select(phase: Phase) {
     if (phase !== this.value) {
       this.$emit("change", phase);
-    } 
+    }
   }
 }
 </script>

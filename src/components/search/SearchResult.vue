@@ -1,132 +1,154 @@
 <template>
   <div class="result">
     <div class="result-column">
-      <div class="name">{{process.name}}</div>
-      <div class="resume">{{process.resume}}</div>
+      <div class="name">{{process.title}}</div>
+      <div class="resume">{{process.shortDescription}}</div>
+    </div>
+    <div class="result-column potential">
+      <div>
+        <div class="field">Vurderet potentiale:</div>
+        <div class="value"><Rating class="rating" :value="process.rating" disabled/></div>
+      </div>
+      <div>
+        <div class="field">Kommune:</div>
+        <div class="value">{{process.municipality}}</div>
+      </div>
+      <div>
+        <div class="field">Unik ID:</div>
+        <div class="value">{{process.id}}</div>
+      </div>
+    </div>
+    <div class="result-column domain">
+      <div>
+        <div class="field">Fagområde:</div>
+        <div class="value">{{DomainLabels[process.domain]}}</div>
+      </div>
+      <div>
+        <div class="field">KLE-nr:</div>
+        <div class="value">{{process.kle}}</div>
+      </div>
+      <div>
+        <div class="field">Lov og paragraf:</div>
+        <div class="value">{{process.legalClause}}</div>
+      </div>
     </div>
     <div class="result-column">
-      <div>
-        <div>Vurderet potentiale:</div>
-        <div>Kommune:</div>
-        <div>Unik ID:</div>
-      </div>
-      <div>
-        <div class="rating">
-          <Rating :value="process.potential" disabled />
-        </div>
-        <div>{{process.municipality}}</div>
-        <div>{{process.id}}</div>
-      </div>
+      <Phases :value="process.phase" small disabled/>
+      <div class="status">{{StatusLabels[process.status]}}</div>
     </div>
-    <div class="result-column">
-      <div>
-        <div>Fagområde:</div>
-        <div>KLE-nr:</div>
-        <div>Lov og paragraf:</div>
-      </div>
-      <div>
-        <div>{{process.field}}</div>
-        <div>{{process.kleNumber}}</div>
-        <div>{{process.law}}</div>
-      </div>
-    </div>
-    <div class="result-column">
-      <Phases :value="process.phase" small disabled />
-      <div class="status">{{process.status}}</div>
-    </div>
-    <star-icon class="star-icon" :class="{ selected: process.bookmark }" />
+    <star-icon class="star-icon" :class="{ selected: process.bookmark }"/>
   </div>
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator';
-import StarIcon from '../icons/StarIcon.vue';
-import Rating from '../common/inputs/Rating.vue';
-import Phases from '../common/inputs/Phases.vue';
-import { SearchResultProcess } from '../../store/modules/search/state';
+  import {Vue, Component, Prop} from 'vue-property-decorator';
+  import StarIcon from '../icons/StarIcon.vue';
+  import Rating from '../common/inputs/Rating.vue';
+  import Phases from '../common/inputs/Phases.vue';
+  import {SearchResultProcess} from '../../store/modules/search/state';
+  import {StatusLabels} from "../../models/status";
+  import {DomainLabels} from "../../models/domain";
 
-@Component({
-  components: {
-    StarIcon,
-    Rating,
-    Phases
+  @Component({
+    components: {
+      StarIcon,
+      Rating,
+      Phases
+    }
+  })
+  export default class SearchResult extends Vue {
+    @Prop() process!: SearchResultProcess;
+
+    StatusLabels = StatusLabels;
+    DomainLabels = DomainLabels;
   }
-})
-export default class SearchResult extends Vue {
-  @Prop() process!: SearchResultProcess;
-}
 </script>
 
 <style lang="scss" scoped>
-@import '../../styles/variables';
+  @import '../../styles/variables';
 
-$resume-line-height: 1em * 1.5;
+  $resume-line-height: 1em * 1.5;
 
-.resume {
-  overflow: hidden;
-  line-height: $resume-line-height;
-  max-height: $resume-line-height * 4;
-}
-
-.result {
-  border: 2px solid $color-secondary;
-  border-radius: $size-unit;
-  padding: $size-unit;
-  display: flex;
-  position: relative;
-}
-
-.name {
-  @include heading;
-  font-size: 1.5rem;
-  color: $color-secondary;
-}
-
-.star-icon {
-  position: absolute;
-  top: -$size-unit;
-  right: -$size-unit;
-  height: $size-unit * 2.5;
-  width: $size-unit * 2.5;
-}
-
-.rating /deep/ svg {
-  height: 16px;
-  width: 16px;
-}
-
-.status {
-  text-align: center;
-  font-weight: bold;
-}
-
-.result-column {
-  flex: 0 0 25%;
-
-  &:not(:last-of-type) {
-    padding-right: $size-unit;
+  .resume {
+    overflow: hidden;
+    line-height: $resume-line-height;
+    max-height: $resume-line-height * 4;
   }
 
-  &:nth-child(2),
-  &:nth-child(3) {
+  .result {
+    border: 2px solid $color-secondary;
+    border-radius: $size-unit;
+    padding: $size-unit;
     display: flex;
+    position: relative;
+  }
 
-    > div:last-of-type {
-      padding-left: $size-unit;
-      font-weight: bold;
-    }
+  .name {
+    @include heading;
+    font-size: 1.5rem;
+    color: $color-secondary;
+  }
 
-    > div > div:not(:last-of-type) {
-      padding-bottom: $size-unit;
+  .star-icon {
+    position: absolute;
+    top: -$size-unit;
+    right: -$size-unit;
+    height: $size-unit * 2.5;
+    width: $size-unit * 2.5;
+  }
+
+  .rating /deep/ svg {
+    height: 16px;
+    width: 16px;
+  }
+
+  .status {
+    text-align: center;
+    font-weight: bold;
+  }
+
+  .result-column {
+    flex: 0 0 25%;
+
+    &:not(:last-of-type) {
+      padding-right: $size-unit;
     }
   }
-}
 
-/*
-    IE11 fix
-    https://github.com/philipwalton/flexbugs/issues/3#issuecomment-69036362
-*/
-.result-column {
-  max-width: 25%;
-}
+  .domain, .potential {
+    > div {
+      display: flex;
+
+      &:not(:last-of-type) {
+        padding-bottom: $size-unit;
+      }
+
+      .field {
+        flex-shrink: 0;
+        flex-grow: 0;
+        padding-right: $size-unit;
+      }
+
+      .value {
+        font-weight: bold;
+        padding-right: $size-unit;
+      }
+    }
+  }
+
+  .domain .field {
+    flex-basis: 120px;
+  }
+
+  .potential .field {
+    flex-basis: 140px;
+  }
+
+  /*
+      IE11 fix
+      https://github.com/philipwalton/flexbugs/issues/3#issuecomment-69036362
+  */
+  .result-column {
+    max-width: 25%;
+  }
 </style>
