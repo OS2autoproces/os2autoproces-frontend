@@ -27,10 +27,10 @@ export interface SortingOption {
 }
 
 export interface SearchFilters {
-  reported: boolean;
-  related: boolean;
-  bookmarks: boolean;
-  text: string;
+  reporter: boolean;
+  users: boolean; // TODO: Use in search
+  bookmarked: boolean; // TODO: Use in search
+  text: string; // TODO: Use in search
   municipality: boolean;
   public: boolean;
   page: number;
@@ -38,8 +38,8 @@ export interface SearchFilters {
   sorting: SortingOption;
   phase: {[x in Phase]: boolean};
   domain: {[x in Domain]: boolean};
-  time?: string[];
-  system?: string[];
+  time?: string[]; // TODO: Use in search
+  system?: string[]; // TODO: Use in search
 }
 
 export interface SearchState {

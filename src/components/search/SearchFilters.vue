@@ -2,10 +2,10 @@
   <div>
     <div class="wrapper">
       <div class="types">
-        <PillCheckbox :value="filters.reported" @change="updateFilters({ reported: $event })">Indberettede
+        <PillCheckbox :value="filters.reporter" @change="updateFilters({ reporter: $event })">Indberettede
         </PillCheckbox>
-        <PillCheckbox :value="filters.related" @change="updateFilters({ related: $event })">Tilknyttede</PillCheckbox>
-        <PillCheckbox :value="filters.bookmarks" @change="updateFilters({ bookmarks: $event })">Favoritter
+        <PillCheckbox :value="filters.users" @change="updateFilters({ users: $event })">Tilknyttede</PillCheckbox>
+        <PillCheckbox :value="filters.bookmarked" @change="updateFilters({ bookmarked: $event })">Favoritter
         </PillCheckbox>
       </div>
 
