@@ -15,8 +15,8 @@ import {Phase, PhaseLabels} from "../../../models/phase";
 
 @Component
 export default class PhaseComponent extends Vue {
-  @Prop() private phase!: Phase;
-  @Prop() private value!: Phase;
+  @Prop() private phase!: string;
+  @Prop() private value!: string;
   @Prop() private reverse!: boolean;
   @Prop() private disabled!: boolean;
   @Prop() private small!: boolean;
