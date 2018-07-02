@@ -1,10 +1,13 @@
-export interface ChallengesState {
+export interface ChallengesState extends Challenges {
   disabled: boolean;
-  description: string; // beskrivelse
-  ideasSolution: string; // ideer og løsning
-  currentProcess: string; // nuværende proces
-  challenges: string; // nuværende proces udfordringer
-  currentProcessTitle: string; // Nuværende system
-  startDate: string; // Start Dato
-  expectedEndDate: string; // Forventet slut dato
+}
+
+export interface Challenges {
+  longDescription: string; // beskrivelse
+  processChallenges: string; // nuværende proces udfordringer
+  solutionRequests: string;
+  itSystems: string; // enum KITOS
+  created: string;
+  lastChanged: string;
+  decommissioned: string | null;
 }

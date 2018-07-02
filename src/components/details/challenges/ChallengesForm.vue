@@ -2,33 +2,32 @@
     <FormSection heading="Problemstillinger" id="challenges" :disabled="state.disabled" @edit="update({disabled: $event})">
         <h2>Beskrivelse</h2>
         <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
-        <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({description: $event})" :disabled="state.disabled" :value="state.description" />
+        <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({longDescription: $event})" :disabled="state.disabled" :value="state.longDescription" />
 
-        <h2>Idéer og løsning</h2>
+        <h2>Løsningsbeskrivelse</h2>
         <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
-        <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({ideasSolution: $event})" :disabled="state.disabled" :value="state.ideasSolution" />
+        <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({solutionRequests: $event})" :disabled="state.disabled" :value="state.solutionRequests" />
 
-        <h2>Nuværende process</h2>
+        <h2>Proces udfordringer</h2>
         <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
-        <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({currentProcess: $event})" :disabled="state.disabled" :value="state.currentProcess" />
-
-        <h2>Udfordringer ved nuværende process</h2>
-        <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
-        <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({challenges: $event})" :disabled="state.disabled" :value="state.challenges" />
+        <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({processChallenges: $event})" :disabled="state.disabled" :value="state.processChallenges" />
 
         <Well class="challenges-well">
             <div>
                 <WellItem label="Nuværende system:">
-                    <SelectionField :items="processItems" :value="state.currentProcessTitle" :disabled="state.disabled" @change="update({currentProcessTitle: $event})" />
+                    <SelectionField :items="processItems" :value="state.itSystems" :disabled="state.disabled" @change="update({itSystems: $event})" />
                 </WellItem>
             </div>
 
             <div>
-                <WellItem label="Startdato:">
-                    <DatePicker :disabled="state.disabled" :value="state.startDate" @change="update({startDate: $event})" />
+                <WellItem label="Oprettet:">
+                    <DatePicker :disabled="state.disabled" :value="state.created" @change="update({created: $event})" />
                 </WellItem>
-                <WellItem label="Forventet slutdato:">
-                    <DatePicker :disabled="state.disabled" :value="state.expectedEndDate" @change="update({expectedEndDate: $event})" />
+                <WellItem label="Sidst ændret:">
+                    <DatePicker :disabled="state.disabled" :value="state.lastChanged" @change="update({lastChanged: $event})" />
+                </WellItem>
+                <WellItem label="Nedlagt:">
+                    <DatePicker :disabled="state.disabled" :value="state.decommissioned" @change="update({decommissioned: $event})" />
                 </WellItem>
             </div>
         </Well>
