@@ -1,25 +1,28 @@
-export interface SearchResultProcess {
-  id: string;
-  name: string;
-  resume: string;
-  potential: number;
-  municipality: string;
-  field: string;
-  kleNumber: string;
-  law: string;
-  phase: number;
-  status: string;
-  bookmark: boolean;
-}
+import {Phase} from "@/models/phase";
+import {Domain} from "@/models/domain";
 
 export interface SearchResult {
-  page: number;
-  numberOfPages: number;
-  processes: SearchResultProcess[];
+  page: {
+    totalPages: number;
+    number: number;
+  };
+  processes: SearchResultProcess[]
+}
+
+export interface SearchResultProcess {
+  id: number;
+  title: string;
+  shortDescription: string;
+  rating: string;
+  phase: string;
+  status: string;
+  domain: string;
+  kle: string;
+  legalClause: string;
 }
 
 export interface SortingOption {
-  property: string;
+  property: keyof SearchResultProcess;
   descending: boolean;
 }
 
@@ -28,21 +31,13 @@ export interface SearchFilters {
   related: boolean;
   bookmarks: boolean;
   text: string;
-  municipal: boolean;
-  intermunicipal: boolean;
+  municipality: boolean;
+  public: boolean;
   page: number;
+  size: number;
   sorting: SortingOption;
-
-  phases: {
-    idea: boolean;
-    preliminaryAnalysis: boolean;
-    specification: boolean;
-    development: boolean;
-    implementation: boolean;
-    operating: boolean;
-  };
-
-  fields?: string[];
+  phase: {[x in Phase]: boolean};
+  domain: {[x in Domain]: boolean};
   time?: string[];
   system?: string[];
 }

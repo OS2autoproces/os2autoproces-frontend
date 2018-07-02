@@ -17,15 +17,15 @@ export const commonActionTypes = {
   SAVE_CMS_CONTENT: `${namespace}/saveCmsContent`
 };
 
-
 export const actions: ActionTree<CommonState, RootState> = {
   update({ commit }, payload: Partial<CommonState>): void {
     commit(commonMutationTypes.UPDATE, payload);
   },
   async loadCmsContent({ commit }, label: keyof CommonState) {
-    const jsonContent = (await HTTP.get<Cms>(`public/cms/${label}`)).data.content;
+    const jsonContent = (await HTTP.get<Cms>(`public/cms/${label}`)).data
+      .content;
 
-    const content = JSON.parse(jsonContent);
+    const content = jsonContent ? JSON.parse(jsonContent) : '';
 
     commit(commonMutationTypes.UPDATE, { [label]: content });
   },

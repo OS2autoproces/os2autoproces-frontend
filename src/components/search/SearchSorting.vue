@@ -1,18 +1,18 @@
 <template>
     <div class="search-sorting">
         <div class="sort-option-column">
-            <div @click="clickSortOption('name')" role="button">Proces
-                <SortIcon v-if="sorting.property === 'name'" :descending="sorting.descending" />
+            <div @click="clickSortOption('title')" role="button">Proces
+                <SortIcon v-if="sorting.property === 'title'" :descending="sorting.descending" />
             </div>
         </div>
         <div class="sort-option-column">
-            <div @click="clickSortOption('potential')" role="button">Vurderet potentiale
-                <SortIcon v-if="sorting.property === 'potential'" :descending="sorting.descending" />
+            <div @click="clickSortOption('rating')" role="button">Vurderet potentiale
+                <SortIcon v-if="sorting.property === 'rating'" :descending="sorting.descending" />
             </div>
         </div>
         <div class="sort-option-column">
-            <div @click="clickSortOption('field')" role="button">Fagområde
-                <SortIcon v-if="sorting.property === 'field'" :descending="sorting.descending" />
+            <div @click="clickSortOption('domain')" role="button">Fagområde
+                <SortIcon v-if="sorting.property === 'domain'" :descending="sorting.descending" />
             </div>
         </div>
         <div class="sort-option-column">
@@ -36,7 +36,7 @@ import { SortingOption } from '@/store/modules/search/state.ts';
 export default class SearchSorting extends Vue {
   @Prop() sorting!: SortingOption;
 
-  clickSortOption(property: string) {
+  clickSortOption(property: SortingOption['property']) {
     let descending = false;
 
     if (this.sorting && property === this.sorting.property) {
