@@ -21,7 +21,7 @@
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import TextArea from '../common/inputs/TextArea.vue';
 import Button from '../common/inputs/Button.vue';
-import { Comment } from '@/store/modules/details/state';
+import { Comment } from '@/store/modules/process/state';
 
 @Component({
   components: {

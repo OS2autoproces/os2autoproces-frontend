@@ -53,7 +53,7 @@ import SelectionField from '@/components/common/inputs/SelectionField.vue';
 import InputField from '@/components/common/inputs/InputField.vue';
 import FormSection from '@/components/details/FormSection.vue';
 import { Action } from 'vuex-class';
-import { TimeAndProcessActionTypes } from '@/store/modules/details/time-process/actions';
+import { processActionTypes } from '@/store/modules/process/actions';
 
 @Component({
   components: {
@@ -67,7 +67,7 @@ import { TimeAndProcessActionTypes } from '@/store/modules/details/time-process/
   }
 })
 export default class TimeAndProcessForm extends Vue {
-  @Action(TimeAndProcessActionTypes.UPDATE_TIME_AND_PROCESS) update: any;
+  @Action(processActionTypes.UPDATE) update: any;
 
   affectedItems = [
     'ja',
@@ -75,7 +75,7 @@ export default class TimeAndProcessForm extends Vue {
   ];
 
   get state() {
-    return this.$store.state.details.timeAndProcess;
+    return this.$store.state.process;
   }
 }
 </script>

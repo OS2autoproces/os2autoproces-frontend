@@ -55,12 +55,12 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
-import { AssessmentActionTypes } from '@/store/modules/details/assessment/actions';
-import { AssessmentState } from '@/store/modules/details/assessment/state';
 import { Action } from 'vuex-class';
 import LikertScale from '@/components/common/inputs/LikertScale.vue';
 import InfoTooltip from '@/components/common/InfoTooltip.vue';
 import FormSection from '@/components/details/FormSection.vue';
+import { processActionTypes } from '@/store/modules/process/actions';
+import { ProcessState } from '@/store/modules/process/state';
 
 @Component({
   components: {
@@ -70,10 +70,10 @@ import FormSection from '@/components/details/FormSection.vue';
   }
 })
 export default class AssessmentForm extends Vue {
-  @Action(AssessmentActionTypes.UPDATE) update: any;
+  @Action(processActionTypes.UPDATE) update!: (state: Partial<ProcessState>) => void;
 
   get state() {
-    return this.$store.state.details.assessment as AssessmentState;
+    return this.$store.state.process;
   }
 }
 </script>

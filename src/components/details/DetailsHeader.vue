@@ -32,8 +32,9 @@ import Toggle from '@/components/common/inputs/Toggle.vue';
 import { detailsActionTypes } from '@/store/modules/details/actions';
 import { authGetterTypes } from '@/store/modules/auth/getters';
 import { DetailsState } from '@/store/modules/details/state';
-import { detailsMutationTypes } from '@/store/modules/details/mutations';
 import { authActionTypes } from '@/store/modules/auth/actions';
+import { processActionTypes } from '@/store/modules/process/actions';
+import { ProcessState } from '@/store/modules/process/state';
 
 @Component({
   components: {
@@ -45,8 +46,8 @@ import { authActionTypes } from '@/store/modules/auth/actions';
   }
 })
 export default class DetailsHeader extends Vue {
-  @Action(detailsActionTypes.UPDATE)
-  update!: (value: Partial<DetailsState>) => void;
+  @Action(processActionTypes.UPDATE)
+  update!: (value: Partial<ProcessState>) => void;
   @Getter(authGetterTypes.IS_BOOKMARKED) isBookmarked!: (id: number) => boolean;
 
   // TODO: Bind these to the store
@@ -60,7 +61,7 @@ export default class DetailsHeader extends Vue {
   }
 
   toggleBookmark() {
-    const id = this.state.details.generalInformation.id;
+    const id = this.state.process.id;
 
     if (!id) {
       return;

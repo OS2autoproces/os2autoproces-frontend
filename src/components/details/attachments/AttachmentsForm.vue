@@ -9,7 +9,7 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 import { Action } from 'vuex-class';
 import AttachmentUpload from '@/components/common/inputs/AttachmentUpload.vue';
 import FormSection from '@/components/details/FormSection.vue';
-import { detailsActionTypes } from '@/store/modules/details/actions';
+import { processActionTypes } from '@/store/modules/process/actions';
 
 @Component({
   components: {
@@ -18,16 +18,16 @@ import { detailsActionTypes } from '@/store/modules/details/actions';
   }
 })
 export default class AttachmentsForm extends Vue {
-  @Action(detailsActionTypes.UPDATE) update: any;
-  @Action(detailsActionTypes.ADD_ATTACHMENTS) add: any;
-  @Action(detailsActionTypes.REMOVE_ATTACHMENT) remove: any;
+  @Action(processActionTypes.UPDATE) update: any;
+  @Action(processActionTypes.ADD_ATTACHMENTS) add: any;
+  @Action(processActionTypes.REMOVE_ATTACHMENTS) remove: any;
 
   get state() {
-    return this.$store.state.details;
+    return this.$store.state.process;
   }
 
   mounted() {
-    this.$store.dispatch(detailsActionTypes.LOAD_ATTACHMENTS);
+    this.$store.dispatch(processActionTypes.LOAD_ATTACHMENTS);
   }
 }
 </script>

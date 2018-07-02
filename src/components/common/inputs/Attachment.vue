@@ -26,7 +26,7 @@ import PdfIcon from '@/components/icons/PdfIcon.vue';
 import PowerPointIcon from '@/components/icons/PowerPointIcon.vue';
 import FileIcon from '@/components/icons/FileIcon.vue';
 import DeleteIcon from '@/components/icons/DeleteIcon.vue';
-import { IAttachment } from '@/store/modules/details/state';
+import { Attachment as IAttachment } from '@/store/modules/process/state';
 
 @Component({
   components: {

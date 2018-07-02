@@ -16,11 +16,11 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
-import { SpecificationActionTypes } from '@/store/modules/details/specification/actions';
 import TextArea from '@/components/common/inputs/TextArea.vue';
 import { Action } from 'vuex-class';
 import FormSection from '@/components/details/FormSection.vue';
 import InfoTooltip from '@/components/common/InfoTooltip.vue';
+import { processActionTypes } from '@/store/modules/process/actions';
 
 @Component({
   components: {
@@ -30,12 +30,12 @@ import InfoTooltip from '@/components/common/InfoTooltip.vue';
   }
 })
 export default class SpecificationForm extends Vue {
-  @Action(SpecificationActionTypes.UPDATE) update: any;
+  @Action(processActionTypes.UPDATE) update: any;
 
   twoColumnBreakpoint = 1600;
 
   get state() {
-    return this.$store.state.details.specification;
+    return this.$store.state.process;
   }
 }
 </script>

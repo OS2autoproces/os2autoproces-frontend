@@ -17,8 +17,6 @@ const namespaced = true;
 export const state: DetailsState = {
   interval: null,
   intervalDisabled: true,
-  comments: [],
-  attachments: [],
   attachmentsDisabled: true
 };
 

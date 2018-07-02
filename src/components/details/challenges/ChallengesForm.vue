@@ -36,7 +36,6 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
-import { ChallengesActionTypes } from '@/store/modules/details/challenges/actions';
 import TextArea from '@/components/common/inputs/TextArea.vue';
 import { Action } from 'vuex-class';
 import SelectionField from '@/components/common/inputs/SelectionField.vue';
@@ -45,6 +44,7 @@ import FormSection from '@/components/details/FormSection.vue';
 import Well from '@/components/common/Well.vue';
 import InfoTooltip from '@/components/common/InfoTooltip.vue';
 import WellItem from '@/components/common/WellItem.vue';
+import { processActionTypes } from '@/store/modules/process/actions';
 
 @Component({
   components: {
@@ -58,12 +58,12 @@ import WellItem from '@/components/common/WellItem.vue';
   }
 })
 export default class ChallengesForm extends Vue {
-  @Action(ChallengesActionTypes.UPDATE_CHALLENGES) update: any;
+  @Action(processActionTypes.UPDATE) update: any;
 
   twoColumnBreakpoint = 1600;
 
   get state() {
-    return this.$store.state.details.challenges;
+    return this.$store.state.process;
   }
 
   processItems = ['KITOS', 'KITOS1', 'KITOS2', 'KITOS3'];

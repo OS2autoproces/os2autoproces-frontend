@@ -17,7 +17,7 @@
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import Button from '@/components/common/inputs/Button.vue';
 import Attachment from './Attachment.vue';
-import { IAttachment } from '@/store/modules/details/state';
+import { Attachment as IAttachment } from '@/store/modules/process/state';
 
 @Component({
   components: {

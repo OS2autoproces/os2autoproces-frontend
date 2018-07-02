@@ -66,6 +66,8 @@ export const state: ProcessState = {
     lastChanged: '',
     legalClause: '',
     legalClauseLastVerified: null,
+    attachments: null,
+    comments: [],
 };
 
 export const process: Module<ProcessState, RootState> = {

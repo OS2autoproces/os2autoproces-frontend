@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-function encode(value: string) {
-  return encodeURIComponent(value)
+function encode(val: string) {
+  return encodeURIComponent(val)
     .replace(/%40/gi, '@')
     .replace(/%3A/gi, ':')
     .replace(/%24/g, '$')
@@ -11,7 +11,7 @@ function encode(value: string) {
     .replace(/%5D/gi, ']');
 }
 
-function paramsSerializer(params: Object): string {
+function paramsSerializer(params: object): string {
   return Object.entries(params)
     .filter(([key, value]) => {
       const isDefined = value !== null && value !== undefined;
@@ -24,15 +24,15 @@ function paramsSerializer(params: Object): string {
         value = [value];
       }
 
-      return value.map((value: any) => {
-        if (value instanceof Date) {
-          value = value.toISOString();
+      return value.map((val: any) => {
+        if (val instanceof Date) {
+          val = val.toISOString();
         }
-        else if (typeof value === 'object') {
-          value = JSON.stringify(value);
+        else if (typeof val === 'object') {
+          val = JSON.stringify(val);
         }
 
-        return encode(key) + '=' + encode(value);
+        return encode(key) + '=' + encode(val);
       })
         .join('&');
     })

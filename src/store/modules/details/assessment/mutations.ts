@@ -1,13 +1,7 @@
-import { MutationTree } from 'vuex';
 import { AssessmentState } from '@/store/modules/details/assessment/state';
-import { merge } from 'lodash';
+import { MutationTree } from 'vuex';
 
-export const AssessmentMutationTypes = {
-  UPDATE: 'update'
-};
+
 
 export const mutations: MutationTree<AssessmentState> = {
-  update(state: AssessmentState, payload: Partial<AssessmentState>) {
-    merge(state, payload);
-  }
 };

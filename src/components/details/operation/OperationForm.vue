@@ -31,7 +31,6 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
-import { OperationActionTypes } from '@/store/modules/details/operation/actions';
 import TextArea from '@/components/common/inputs/TextArea.vue';
 import Rating from '@/components/common/inputs/Rating.vue';
 import { Action } from 'vuex-class';
@@ -40,6 +39,7 @@ import FormSection from '@/components/details/FormSection.vue';
 import InfoTooltip from '@/components/common/InfoTooltip.vue';
 import Well from '@/components/common/Well.vue';
 import WellItem from '@/components/common/WellItem.vue';
+import { processActionTypes } from '@/store/modules/process/actions';
 
 @Component({
   components: {
@@ -53,12 +53,12 @@ import WellItem from '@/components/common/WellItem.vue';
   }
 })
 export default class OperationForm extends Vue {
-  @Action(OperationActionTypes.UPDATE) update: any;
+  @Action(processActionTypes.UPDATE) update: any;
 
   twoColumnBreakpoint = 1600;
 
   get state() {
-    return this.$store.state.details.operation;
+    return this.$store.state.process;
   }
 }
 </script>

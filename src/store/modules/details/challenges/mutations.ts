@@ -1,13 +1,6 @@
-import { MutationTree } from 'vuex';
 import { ChallengesState } from '@/store/modules/details/challenges/state';
-import { merge } from 'lodash';
+import { MutationTree } from 'vuex';
 
-export const ChallengesMutationTypes = {
-  UPDATE_CHALLENGES: 'updateChallenges'
-};
 
 export const mutations: MutationTree<ChallengesState> = {
-  updateChallenges(state: ChallengesState, payload: Partial<ChallengesState>) {
-    merge(state, payload);
-  }
 };

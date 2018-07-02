@@ -20,12 +20,12 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
-import { ImplementationActionTypes } from '@/store/modules/details/implementation/actions';
 import TextArea from '@/components/common/inputs/TextArea.vue';
 import { Action } from 'vuex-class';
 import FormSection from '@/components/details/FormSection.vue';
 import InfoTooltip from '@/components/common/InfoTooltip.vue';
 import TagSelector from '@/components/common/inputs/TagSelector.vue';
+import { processActionTypes } from '@/store/modules/process/actions';
 
 @Component({
   components: {
@@ -36,14 +36,14 @@ import TagSelector from '@/components/common/inputs/TagSelector.vue';
   }
 })
 export default class ImplementationForm extends Vue {
-  @Action(ImplementationActionTypes.UPDATE) update: any;
-  @Action(ImplementationActionTypes.ADD_TECHNOLOGY) addTechnology: any;
-  @Action(ImplementationActionTypes.REMOVE_TECHNOLOGY) removeTechnology: any;
+  @Action(processActionTypes.UPDATE) update: any;
+  @Action(processActionTypes.ADD_TECHNOLOGY) addTechnology: any;
+  @Action(processActionTypes.REMOVE_TECHNOLOGY) removeTechnology: any;
 
   twoColumnBreakpoint = 1600;
 
   get state() {
-    return this.$store.state.details.implementation;
+    return this.$store.state.process;
   }
 }
 </script>

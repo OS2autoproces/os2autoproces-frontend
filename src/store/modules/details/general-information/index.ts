@@ -1,7 +1,6 @@
 import { RootState } from '@/store/store';
 import { Module } from 'vuex';
 import { actions } from './actions';
-import { getters } from './getters';
 import { mutations } from './mutations';
 import { GeneralInformationState, Status } from '@/store/modules/details/general-information/state';
 
@@ -37,6 +36,5 @@ export const generalInformation: Module<GeneralInformationState, RootState> = {
   namespaced,
   state,
   actions,
-  getters,
   mutations
 };

@@ -86,7 +86,6 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import { Action } from 'vuex-class';
-import { generalInformationActionTypes } from '@/store/modules/details/general-information/actions';
 
 import InputField from '@/components/common/inputs/InputField.vue';
 import SelectionField from '@/components/common/inputs/SelectionField.vue';
@@ -98,6 +97,7 @@ import WellItem from '@/components/common/WellItem.vue';
 import FormSection from '@/components/details/FormSection.vue';
 import { Status } from '@/store/modules/details/general-information/state';
 import WarningIcon from '@/components/icons/WarningIcon.vue';
+import { processActionTypes } from "@/store/modules/process/actions";
 
 @Component({
   components: {
@@ -113,13 +113,13 @@ import WarningIcon from '@/components/icons/WarningIcon.vue';
   }
 })
 export default class GeneralInformationForm extends Vue {
-  @Action(generalInformationActionTypes.UPDATE_GENERAL_INFORMATION) update: any;
+  @Action(processActionTypes.UPDATE) update: any;
   Status = Status;
 
   isPhaseChanged = false;
 
   get state() {
-    return this.$store.state.details.generalInformation;
+    return this.$store.state.process;
   }
 
   get statuses() {
