@@ -47,7 +47,7 @@ function mapSearchResponse(response: SearchResponse): SearchResult {
 
 // TODO: Add municipality name and bookmarked to result
 export async function search(filters: SearchFilters): Promise<SearchResult> {
-  let visibility: Visibility[] = [];
+  const visibility: Visibility[] = [];
 
   if (filters.municipality) {
     visibility.push(VisibilityKeys.MUNICIPALITY);

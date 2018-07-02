@@ -9,7 +9,7 @@ export const authMutationTypes = {
 };
 
 export const mutations: MutationTree<AuthState> = {
-  setUser(state: AuthState, user: User | null) {
+  setUser(state: AuthState, user?: User) {
     state.user = user;
   },
   update(state: AuthState, auth: Partial<AuthState>) {

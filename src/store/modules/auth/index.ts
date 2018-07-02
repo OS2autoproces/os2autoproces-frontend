@@ -8,7 +8,7 @@ import { AuthState } from './state';
 const namespaced = true;
 
 export const state: AuthState = {
-  user: null
+  user: undefined
 };
 
 export const auth: Module<AuthState, RootState> = {

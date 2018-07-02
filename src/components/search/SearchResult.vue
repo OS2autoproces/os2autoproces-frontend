@@ -36,7 +36,7 @@
       <Phases :value="process.phase" small disabled/>
       <div class="status">{{StatusLabels[process.status]}}</div>
     </div>
-    <star-icon class="star-icon" :class="{ selected: process.bookmark }"/>
+    <star-icon class="star-icon" :class="{ selected: bookmarked }"/>
   </div>
 </template>
 
@@ -58,6 +58,7 @@
   })
   export default class SearchResult extends Vue {
     @Prop() process!: SearchResultProcess;
+    @Prop() bookmarked!: boolean;
 
     StatusLabels = StatusLabels;
     DomainLabels = DomainLabels;
