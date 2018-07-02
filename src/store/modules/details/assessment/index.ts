@@ -8,13 +8,13 @@ const namespaced = true;
 
 export const state: AssessmentState = {
   disabled: true,
-  degreeOfAssessment: null,
-  degreeOfFrequentChanges: null,
-  degreeOfStructuredInformation: null,
-  degreeOfSolutionVariation: null,
-  degreeOfAvailableInformation: null,
-  degreeOfAutomationGain: null,
-  degreeOfAutomationPotential: null
+  evaluatedLevelOfRoi: null,
+  levelOfChange: null,
+  levelOfDigitalInformation: null,
+  levelOfProfessionalAssessment: null,
+  levelOfRoiFromAutomization: null,
+  levelOfStructuredInformation: null,
+  levelOfUniformity: null
 };
 
 export const assessment: Module<AssessmentState, RootState> = {

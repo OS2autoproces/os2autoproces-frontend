@@ -1,12 +1,15 @@
 export type AssessmentChoice = number | null;
 
-export interface AssessmentState {
+export interface AssessmentState extends Assessment {
   disabled: boolean;
-  degreeOfAssessment: AssessmentChoice;
-  degreeOfFrequentChanges: AssessmentChoice;
-  degreeOfStructuredInformation: AssessmentChoice;
-  degreeOfSolutionVariation: AssessmentChoice;
-  degreeOfAvailableInformation: AssessmentChoice;
-  degreeOfAutomationGain: AssessmentChoice;
-  degreeOfAutomationPotential: AssessmentChoice;
+}
+
+export interface Assessment {
+  levelOfProfessionalAssessment: AssessmentChoice;
+  levelOfChange: AssessmentChoice;
+  levelOfStructuredInformation: AssessmentChoice;
+  levelOfUniformity: AssessmentChoice;
+  levelOfDigitalInformation: AssessmentChoice;
+  levelOfRoiFromAutomization: AssessmentChoice;
+  evaluatedLevelOfRoi: AssessmentChoice;
 }
