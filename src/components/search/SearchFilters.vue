@@ -14,9 +14,11 @@
       <h1>AVANCERET SØGNING</h1>
 
       <div class="municipality-level">
-        <SearchOption :value="filters.municipal" @change="updateFilters({ municipal: $event })">Kommunalt</SearchOption>
-        <SearchOption :value="filters.intermunicipal" @change="updateFilters({ intermunicipal: $event })">
-          Tværkommunalt
+        <SearchOption :value="filters.municipality" @change="updateFilters({ municipality: $event })">
+          {{VisibilityLabels.MUNICIPALITY}}
+        </SearchOption>
+        <SearchOption :value="filters.public" @change="updateFilters({ public: $event })">
+          {{VisibilityLabels.PUBLIC}}
         </SearchOption>
       </div>
 
@@ -82,6 +84,7 @@
   import {searchActionTypes} from '@/store/modules/search/actions';
   import {PhaseLabels} from '@/models/phase';
   import {DomainLabels} from '@/models/domain';
+  import {VisibilityLabels} from '@/models/visibility';
 
   @Component({
     components: {
@@ -97,6 +100,7 @@
 
     PhaseLabels = PhaseLabels;
     DomainLabels = DomainLabels;
+    VisibilityLabels = VisibilityLabels;
 
     get filters() {
       return this.$store.state.search.filters;

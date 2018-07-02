@@ -16,8 +16,8 @@ export const state: SearchState = {
     related: false,
     bookmarks: false,
     text: '',
-    municipal: false,
-    intermunicipal: false,
+    municipality: false,
+    public: false,
     sorting: {
       property: 'title',
       descending: false

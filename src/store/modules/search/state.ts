@@ -31,8 +31,8 @@ export interface SearchFilters {
   related: boolean;
   bookmarks: boolean;
   text: string;
-  municipal: boolean;
-  intermunicipal: boolean;
+  municipality: boolean;
+  public: boolean;
   page: number;
   size: number;
   sorting: SortingOption;
