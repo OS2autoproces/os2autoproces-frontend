@@ -28,6 +28,10 @@ interface SearchResponse {
   };
 }
 
+interface SearchParams {
+  sort: string
+}
+
 function mapSearchResponse(response: SearchResponse): SearchResult {
   return {
     page: response.page,
@@ -36,7 +40,11 @@ function mapSearchResponse(response: SearchResponse): SearchResult {
 }
 
 // TODO: Add municipality name and bookmarked to result
-export async function search(params: SearchFilters): Promise<SearchResult> {
+export async function search(filters: SearchFilters): Promise<SearchResult> {
+  const params: SearchParams = {
+    sort: `${filters.sorting.property},${filters.sorting.descending ? 'desc' : 'asc'}`
+  };
+
   const response = await HTTP.get<SearchResponse>('api/processes', { params });
 
   return mapSearchResponse(response.data);

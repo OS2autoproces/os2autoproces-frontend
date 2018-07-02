@@ -1,3 +1,6 @@
+import {Phase} from "@/models/phase";
+import {Domain} from "@/models/domain";
+
 export interface SearchResult {
   page: {
     totalPages: number;
@@ -19,7 +22,7 @@ export interface SearchResultProcess {
 }
 
 export interface SortingOption {
-  property: string;
+  property: keyof SearchResultProcess;
   descending: boolean;
 }
 
@@ -33,17 +36,8 @@ export interface SearchFilters {
   page: number;
   size: number;
   sorting: SortingOption;
-
-  phases: {
-    idea: boolean;
-    preliminaryAnalysis: boolean;
-    specification: boolean;
-    development: boolean;
-    implementation: boolean;
-    operating: boolean;
-  };
-
-  fields?: string[];
+  phase: {[x in Phase]: boolean};
+  domain: {[x in Domain]: boolean};
   time?: string[];
   system?: string[];
 }

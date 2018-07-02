@@ -14,7 +14,7 @@
                         </router-link>
                     </div>
 
-                    <SearchSorting v-if="result" :sorting="filters.sorting" @change="updateFilters({ sorting: $event })" />
+                    <SearchSorting :sorting="filters.sorting" @change="updateFilters({ sorting: $event })" />
 
                     <div class="results" v-if="result">
                         <router-link :to="'/details/' + process.id" class="search-result-link" v-for="process in result.processes" :key="process.id">
