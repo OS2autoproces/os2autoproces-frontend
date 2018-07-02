@@ -4,13 +4,19 @@
       <Well>
         <div>
           <WellItem labelWidth="100px" label="KLE-nr:">
-            <SelectionField :disabled="state.disabled" :value="state.kleNumber" @change="update({kleNumber: $event})" :items="kleNumbers" />
+            <SelectionField :disabled="state.disabled" :value="state.kle" @change="update({kle: $event})" :items="kleNumbers" />
           </WellItem>
           <WellItem labelWidth="100px" label="ID:">
             <InputField disabled :value="state.id" />
           </WellItem>
+          <WellItem labelWidth="100px" label="Lokalt ID:">
+            <InputField disabled :value="state.localId" />
+          </WellItem>
+          <WellItem labelWidth="100px" label="KL ID:">
+            <InputField disabled :value="state.klId" />
+          </WellItem>
           <WellItem labelWidth="100px" label="Lov of paragraf:">
-            <InputField :disabled="state.disabled" :value="state.paragraf" @change="update({paragraf: $event})" />
+            <InputField :disabled="state.disabled" :value="state.legalClause" @change="update({paragraf: $event})" />
           </WellItem>
         </div>
 
@@ -19,7 +25,7 @@
             <SelectionField :disabled="state.disabled" :value="state.department" @change="update({department: $event})" :items="departments" />
           </WellItem>
           <WellItem labelWidth="100px" label="Fagområde:">
-            <SelectionField :disabled="state.disabled" :value="state.field" @change="update({field: $event})" :items="fields" />
+            <SelectionField :disabled="state.disabled" :value="state.domain" @change="update({domain: $event})" :items="fields" />
           </WellItem>
           <WellItem labelWidth="100px" label="Synlighed:">
             <SelectionField :disabled="state.disabled" :value="state.visibility" @change="update({visibility: $event})" :items="visibilityLevels" />
@@ -68,26 +74,12 @@
     </div>
 
     <div>
-      <div v-if="state.status === Status.waiting">
-        <h2 class="comments-heading">Hvorfor Afventes processen?</h2>
-        <TextArea class="status-comment-field" :disabled="state.disabled" @change="update({waiting: $event})" :value="state.waiting" />
-      </div>
-
-      <div v-if="state.status === Status.disapproved">
-        <h2 class="comments-heading">Hvorfor er processen afvist?</h2>
-        <TextArea class="status-comment-field" :disabled="state.disabled" @change="update({disapproved: $event})" :value="state.disapproved" />
-      </div>
-
-      <div v-if="state.status === Status.stored">
-        <h2 class="comments-heading">Hvorfor er processen arkiveret?</h2>
-        <TextArea class="status-comment-field" :disabled="state.disabled" @change="update({stored: $event})" :value="state.stored" />
-      </div>
-
-      <div v-if="state.status === Status.unsuccessful">
-        <h2 class="comments-heading">Hvorfor er processen mislykket?</h2>
-        <TextArea class="status-comment-field" :disabled="state.disabled" @change="update({unsuccessful: $event})" :value="state.unsuccessful" />
+      <div v-if="state.status">
+        <h2 class="comments-heading">Kommentar til status: </h2>
+        <TextArea class="status-comment-field" :disabled="state.disabled" @change="update({statusText: $event})" :value="state.statusText" />
       </div>
     </div>
+
   </FormSection>
 </template>
 

@@ -8,27 +8,29 @@ import { GeneralInformationState, Status } from '@/store/modules/details/general
 const namespaced = true;
 
 export const state: GeneralInformationState = {
-  disabled: true,
   id: null,
-  kleNumber: '',
-  paragraf: '',
-  field: '',
-  department: '',
-  visibility: '',
-  contactPerson: '',
-  email: '',
-  processTime: '',
-  projectManager: '',
-  supplier: '',
-  resume: '',
-  associatedPersons: [],
-  status: Status.inProgress,
+  localId: null,
+  klId: null,
   phase: 1,
-
-  disapproved: '',
-  stored: '',
-  unsuccessful: '',
-  waiting: ''
+  status: 'Afventer',
+  statusText: '',
+  kle: null,
+  contact: null,
+  department: null,
+  disabled: true,
+  domain: '',
+  kla: null,
+  klaProcess: false,
+  legalClause: null,
+  orgUnits: null,
+  owner: null,
+  processTime: '',
+  reporter: null,
+  shortDescription: '',
+  users: null,
+  visibility: '',
+  created: '',
+  lastUpdated: '',
 };
 
 export const generalInformation: Module<GeneralInformationState, RootState> = {

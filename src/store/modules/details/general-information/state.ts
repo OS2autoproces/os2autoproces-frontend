@@ -1,3 +1,5 @@
+import { User } from "@/store/modules/auth/state";
+
 export const Status = {
   inProgress: 'Igang',
   waiting: 'Afventer',
@@ -6,27 +8,37 @@ export const Status = {
   unsuccessful: 'Mislykket'
 };
 
-export interface GeneralInformationState {
+export interface GeneralInformationState extends GeneralInformation {
   disabled: boolean;
-  id: string | null;
-  kleNumber: string; // KL Nummer
-  paragraf: string; // paragraf og lov
-  field: string; // field of study eller fagområde
-  department: string; // afdeling
-  visibility: string; // synlighed
-  contactPerson: string; // kontaktperson
-  email: string; // mail
-  processTime: string; // årlig procestid
-  projectManager: string; // projektleder
-  supplier: string; // leverrandør
-  resume: string; // resumé
-  associatedPersons: string[];
-  status: string;
-  phase: number;
+}
 
-  // Status text
-  waiting: string;
-  disapproved: string;
-  stored: string;
-  unsuccessful: string;
+export interface GeneralInformation {
+  id: number | null;
+  localId: string | null;
+  klId: string | null;
+  phase: number;
+  status: string;
+  statusText: string;
+  kle: string | null;
+  kla: string | null;
+  klaProcess: boolean;
+  shortDescription: string;
+
+  legalClause: string | null;
+
+  created: string;
+  lastUpdated: string;
+
+  visibility: string; // synlighed
+  domain: string; // fagområde, enum
+
+  owner: User | null; 
+  reporter: User | null;
+  contact: User | null;
+  users: User[] | null; // associated
+
+  orgUnits: string | null;
+
+  department: string | null; // afdeling
+  processTime: string; // årlig procestid
 }
