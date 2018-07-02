@@ -4,32 +4,32 @@
       <div class="name">{{process.title}}</div>
       <div class="resume">{{process.shortDescription}}</div>
     </div>
-    <div class="result-column">
+    <div class="result-column potential">
       <div>
-        <div>Vurderet potentiale:</div>
-        <div><Rating class="rating" :value="process.rating" disabled/></div>
+        <div class="field">Vurderet potentiale:</div>
+        <div class="value"><Rating class="rating" :value="process.rating" disabled/></div>
       </div>
       <div>
-        <div>Kommune:</div>
-        <div>{{process.municipality}}</div>
+        <div class="field">Kommune:</div>
+        <div class="value">{{process.municipality}}</div>
       </div>
       <div>
-        <div>Unik ID:</div>
-        <div>{{process.id}}</div>
+        <div class="field">Unik ID:</div>
+        <div class="value">{{process.id}}</div>
       </div>
     </div>
-    <div class="result-column">
+    <div class="result-column domain">
       <div>
-        <div>Fagområde:</div>
-        <div>{{DomainLabels[process.domain]}}</div>
+        <div class="field">Fagområde:</div>
+        <div class="value">{{DomainLabels[process.domain]}}</div>
       </div>
       <div>
-        <div>KLE-nr:</div>
-        <div>{{process.kle}}</div>
+        <div class="field">KLE-nr:</div>
+        <div class="value">{{process.kle}}</div>
       </div>
       <div>
-        <div>Lov og paragraf:</div>
-        <div>{{process.legalClause}}</div>
+        <div class="field">Lov og paragraf:</div>
+        <div class="value">{{process.legalClause}}</div>
       </div>
     </div>
     <div class="result-column">
@@ -89,10 +89,6 @@
     color: $color-secondary;
   }
 
-  .field {
-    min-height: 1em;
-  }
-
   .star-icon {
     position: absolute;
     top: -$size-unit;
@@ -101,7 +97,7 @@
     width: $size-unit * 2.5;
   }
 
-  .rating {
+  .rating /deep/ svg {
     height: 16px;
     width: 16px;
   }
@@ -117,27 +113,35 @@
     &:not(:last-of-type) {
       padding-right: $size-unit;
     }
+  }
 
-    &:nth-child(2),
-    &:nth-child(3) {
-      > div {
-        display: flex;
+  .domain, .potential {
+    > div {
+      display: flex;
 
-        &:not(:last-of-type) {
-          padding-bottom: $size-unit;
-        }
+      &:not(:last-of-type) {
+        padding-bottom: $size-unit;
+      }
 
-        > div:first-of-type {
-          flex: 0 0 140px;
-          padding-right: $size-unit;
-        }
+      .field {
+        flex-shrink: 0;
+        flex-grow: 0;
+        padding-right: $size-unit;
+      }
 
-        > div:last-of-type {
-          font-weight: bold;
-          padding-right: $size-unit;
-        }
+      .value {
+        font-weight: bold;
+        padding-right: $size-unit;
       }
     }
+  }
+
+  .domain .field {
+    flex-basis: 120px;
+  }
+
+  .potential .field {
+    flex-basis: 140px;
   }
 
   /*
