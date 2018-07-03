@@ -31,7 +31,7 @@ export const state: ProcessState = {
   status: StatusKeys.PENDING,
   statusText: null,
   klaProcess: false,
-
+  
   
   /* Assessment */
   levelOfProfessionalAssessment: LikertScaleKeys.UNKNOWN,
@@ -47,6 +47,7 @@ export const state: ProcessState = {
   processChallenges: null,
   longDescription: null,
   itSystems: null,
+  created: '',
   
   /* Time and process */
   targestsCitizens: false,
@@ -83,7 +84,6 @@ export const state: ProcessState = {
   searchWords: '',
   internalNotes: null,
   comments: [],
-  created: '',
   cvr: '',
   
   disabled: {

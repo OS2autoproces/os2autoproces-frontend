@@ -10,7 +10,7 @@
 
         <h2>Proces udfordringer</h2>
         <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
-        <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({challenges: $event})" :disabled="state.disabled.challengesEdit" :value="state.challenges" />
+        <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({processChallenges: $event})" :disabled="state.disabled.challengesEdit" :value="state.processChallenges" />
 
         <Well class="challenges-well">
             <div>
@@ -22,12 +22,6 @@
             <div>
                 <WellItem label="Oprettet:">
                     <DatePicker :disabled="state.disabled.challengesEdit" :value="state.created" @change="update({created: $event})" />
-                </WellItem>
-                <WellItem label="Sidst ændret:">
-                    <DatePicker :disabled="state.disabled.challengesEdit" :value="state.lastChanged" @change="update({lastChanged: $event})" />
-                </WellItem>
-                <WellItem label="Nedlagt:">
-                    <DatePicker :disabled="state.disabled.challengesEdit" :value="state.decommissioned" @change="update({decommissioned: $event})" />
                 </WellItem>
             </div>
         </Well>
