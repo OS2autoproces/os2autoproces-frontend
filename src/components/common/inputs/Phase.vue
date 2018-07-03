@@ -11,12 +11,12 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import {PhaseLabels} from "../../../models/phase";
+import {Phase, PhaseLabels} from "../../../models/phase";
 
 @Component
 export default class PhaseComponent extends Vue {
-  @Prop() phase!: string;
-  @Prop() value!: string;
+  @Prop({type: String}) phase!: Phase;
+  @Prop({type: String}) value!: Phase;
   @Prop() reverse!: boolean;
   @Prop() disabled!: boolean;
   @Prop() small!: boolean;
