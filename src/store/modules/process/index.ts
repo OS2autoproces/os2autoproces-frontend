@@ -13,6 +13,7 @@ const namespaced = true;
 
 export const state: ProcessState = {
   /* General information */
+  id: 4,
   kle: null,
   localId: null,
   contact: null,
@@ -79,7 +80,6 @@ export const state: ProcessState = {
   attachments: null,
   
   /* Details */
-  id: 1,
   title: '',
   searchWords: '',
   internalNotes: null,

@@ -67,7 +67,7 @@ export default class DetailsHeader extends Vue {
   }
 
   toggleBookmark() {
-    const id = this.state.process.id;
+    const id = this.state.id;
 
     if (!id) {
       return;

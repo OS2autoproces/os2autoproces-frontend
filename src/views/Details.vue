@@ -30,15 +30,6 @@
             <AttachmentsForm />
           </div>
 
-          <div class="usage">
-            <div :class="{ disabled: state.disabled.municipalityUsingEdit }" class="usage-heading">Antal kommuner der bruger løsningen
-              <div role="button" class="usage-edit-icon" @click="update({disabled: { municipalityUsingEdit: !state.disabled.municipalityUsingEdit }})">
-                <EditIcon />
-              </div>
-            </div>
-            <IntervalSelector @change="update({interval: $event})" :value="state.interval" :disabled="state.disabled.municipalityUsingEdit" />
-          </div>
-
           <div class="comments">
             <div class="comments-heading">Kommentarer</div>
             <Comments :comments="state.comments" @submit="saveComment({ id: state.id, message: $event })" />
@@ -93,7 +84,6 @@ import { processActionTypes, NewComment } from "@/store/modules/process/actions"
   }
 })
 export default class Details extends Vue {
-  @Prop() id!: string;
   @Prop() phase!: string;
 
   @Action(processActionTypes.SAVE) save: any;
