@@ -1,34 +1,34 @@
 <template>
-  <FormSection heading="Tid og proces" id="time-and-process" :disabled="state.disabled" @edit="update({disabled: $event})">
+  <FormSection heading="Tid og proces" id="time-and-process" :disabled="state.disabled.timeAndProcessEdit" @edit="update({disabled: {timeAndProcessEdit: $event}})">
 
     <Well>
       <div>
         <WellItem labelWidth="70%" label="Antal gange processen gentages om året pr. medarbejder">
-          <InputField :value="state.processRepetition" :disabled="state.disabled" @change="update({processRepetition: $event})" />
+          <InputField :value="state.timeSpendOccurancesPerEmployee" :disabled="state.disabled.timeAndProcessEdit" @change="update({timeSpendOccurancesPerEmployee: $event})" />
+        </WellItem>
+        <WellItem labelWidth="70%" label="Total tidsforbrug">
+          <InputField :disabled="state.disabled.timeAndProcessEdit" :value="state.timeSpendComputedTotal" @change="update({timeSpendComputedTotal: $event})" />
         </WellItem>
         <WellItem labelWidth="70%" label="Tidsforbrug pr. proces i minutter">
-          <InputField :disabled="state.disabled" :value="state.processTimeConsumptionMinutes" @change="update({processTimeConsumptionMinutes: $event})" />
-        </WellItem>
-        <WellItem labelWidth="70%" label="Tidsbesparelse pr. proces i minutter">
-          <InputField :disabled="state.disabled" :value="state.processTimeSavingMinutes" @change="update({processTimeSavingMinutes: $event})" />
+          <InputField :disabled="state.disabled.timeAndProcessEdit" :value="state.timeSpendPerOccurance" @change="update({timeSpendPerOccurance: $event})" />
         </WellItem>
       </div>
 
       <div>
         <WellItem labelWidth="70%" label="Antal medarbejdere der foretager processen">
-          <InputField :disabled="state.disabled" :value="state.coWorkersUsingTheProcess" @change="update({coWorkersUsingTheProcess: $event})" />
+          <InputField :disabled="state.disabled.timeAndProcessEdit" :value="state.timeSpendEmployeesDoingProcess" @change="update({timeSpendEmployeesDoingProcess: $event})" />
         </WellItem>
-        <WellItem labelWidth="70%" label="Samlet tidsforbrug på nuværende proces">
-          <InputField :disabled="state.disabled" :value="state.totalTimeConsumption" @change="update({totalTimeConsumption: $event})" />
+        <WellItem labelWidth="70%" label="Digital procent besparelse">
+          <InputField :disabled="state.disabled.timeAndProcessEdit" :value="state.timeSpendPercentageDigital" @change="update({timeSpendPercentageDigital: $event})" />
         </WellItem>
       </div>
 
       <div>
         <WellItem labelWidth="70%" label="Er borgere påvirket?">
-          <SelectionField :disabled="state.disabled" :value="state.isUserAffected" @change="update({isUserAffected: $event})" :items="this.affectedItems" />
+          <SelectionField :disabled="state.disabled.timeAndProcessEdit" :value="state.targestsCitizens" @change="update({targestsCitizens: $event})" :items="this.affectedItems" />
         </WellItem>
         <WellItem labelWidth="70%" label="Er virksomheder påvirket?">
-          <SelectionField :disabled="state.disabled" :value="state.isCorporationAffected" @change="update({isCorporationAffected: $event})" :items="this.affectedItems" />
+          <SelectionField :disabled="state.disabled.timeAndProcessEdit" :value="state.targetsCompanies" @change="update({targetsCompanies: $event})" :items="this.affectedItems" />
         </WellItem>
       </div>
     </Well>
@@ -38,7 +38,7 @@
       <InfoTooltip class="time-proces-tooltip">
         Lorem, ipsum dolor sit amet consectetur adipisicing elit. Esse unde neque eos, non et vel, aspernatur quod dolore perspiciatis dolorem minus rerum amet animi architecto mollitia alias! Debitis, eveniet sint!
       </InfoTooltip>
-      <TextArea :value="state.timeConsumptionComments" :disabled="state.disabled" @change="update({timeConsumptionComments: $event})" />
+      <TextArea :value="state.timeSpendComment" :disabled="state.disabled.timeAndProcessEdit" @change="update({timeSpendComment: $event})" />
     </div>
   </FormSection>
 </template>

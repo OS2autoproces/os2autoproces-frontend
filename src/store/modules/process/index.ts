@@ -71,7 +71,8 @@ export const state: ProcessState = {
     disabled: {
       titleEdit: false,
       generalInformationEdit: false,
-      
+      challengesEdit: false,
+      timeAndProcessEdit: false,
     }
 };
 

@@ -1,33 +1,33 @@
 <template>
-    <FormSection heading="Problemstillinger" id="challenges" :disabled="state.disabled" @edit="update({disabled: $event})">
+    <FormSection heading="Problemstillinger" id="challenges" :disabled="state.disabled.challengesEdit" @edit="update({disabled: {challengesEdit: $event}})">
         <h2>Beskrivelse</h2>
         <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
-        <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({longDescription: $event})" :disabled="state.disabled" :value="state.longDescription" />
+        <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({longDescription: $event})" :disabled="state.disabled.challengesEdit" :value="state.longDescription" />
 
         <h2>Løsningsbeskrivelse</h2>
         <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
-        <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({solutionRequests: $event})" :disabled="state.disabled" :value="state.solutionRequests" />
+        <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({solutionRequests: $event})" :disabled="state.disabled.challengesEdit" :value="state.solutionRequests" />
 
         <h2>Proces udfordringer</h2>
         <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
-        <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({processChallenges: $event})" :disabled="state.disabled" :value="state.processChallenges" />
+        <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({challenges: $event})" :disabled="state.disabled.challengesEdit" :value="state.challenges" />
 
         <Well class="challenges-well">
             <div>
                 <WellItem label="Nuværende system:">
-                    <SelectionField :items="processItems" :value="state.itSystems" :disabled="state.disabled" @change="update({itSystems: $event})" />
+                    <SelectionField :items="processItems" :value="state.itSystems" :disabled="state.disabled.challengesEdit" @change="update({itSystems: $event})" />
                 </WellItem>
             </div>
 
             <div>
                 <WellItem label="Oprettet:">
-                    <DatePicker :disabled="state.disabled" :value="state.created" @change="update({created: $event})" />
+                    <DatePicker :disabled="state.disabled.challengesEdit" :value="state.created" @change="update({created: $event})" />
                 </WellItem>
                 <WellItem label="Sidst ændret:">
-                    <DatePicker :disabled="state.disabled" :value="state.lastChanged" @change="update({lastChanged: $event})" />
+                    <DatePicker :disabled="state.disabled.challengesEdit" :value="state.lastChanged" @change="update({lastChanged: $event})" />
                 </WellItem>
                 <WellItem label="Nedlagt:">
-                    <DatePicker :disabled="state.disabled" :value="state.decommissioned" @change="update({decommissioned: $event})" />
+                    <DatePicker :disabled="state.disabled.challengesEdit" :value="state.decommissioned" @change="update({decommissioned: $event})" />
                 </WellItem>
             </div>
         </Well>
@@ -86,6 +86,6 @@ h2 {
 }
 
 .challenges-well {
-    margin-top: $size-unit * 1.5;
+  margin-top: $size-unit * 1.5;
 }
 </style>
