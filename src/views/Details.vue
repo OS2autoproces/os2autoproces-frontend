@@ -31,12 +31,12 @@
           </div>
 
           <div class="usage">
-            <div :class="{ disabled: state.intervalDisabled }" class="usage-heading">Antal kommuner der bruger løsningen
-              <div role="button" class="usage-edit-icon" @click="update({intervalDisabled: !state.intervalDisabled})">
+            <div :class="{ disabled: state.disabled.municipalityUsingEdit }" class="usage-heading">Antal kommuner der bruger løsningen
+              <div role="button" class="usage-edit-icon" @click="update({disabled: { municipalityUsingEdit: !state.disabled.municipalityUsingEdit }})">
                 <EditIcon />
               </div>
             </div>
-            <IntervalSelector @change="update({interval: $event})" :value="state.interval" :disabled="state.intervalDisabled" />
+            <IntervalSelector @change="update({interval: $event})" :value="state.interval" :disabled="state.disabled.municipalityUsingEdit" />
           </div>
 
           <div class="comments">

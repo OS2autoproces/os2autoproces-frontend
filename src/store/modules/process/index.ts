@@ -12,12 +12,16 @@ import { Module } from 'vuex';
 const namespaced = true;
 
 export const state: ProcessState = {
+
+    /* General information */
     contact: null,
     created: '',
     cvr: '',
     decommissioned: null,
     domain: '',
     esdhReference: null,
+
+    /* Assessment */
     evaluatedLevelOfRoi: LikertScaleKeys.UNKNOWN,
     levelOfChange: LikertScaleKeys.UNKNOWN,
     levelOfDigitalInformation: LikertScaleKeys.UNKNOWN,
@@ -25,6 +29,8 @@ export const state: ProcessState = {
     levelOfRoiFromAutomization: LikertScaleKeys.UNKNOWN,
     levelOfStructuredInformation: LikertScaleKeys.UNKNOWN,
     levelOfUniformity: LikertScaleKeys.UNKNOWN,
+
+    /*  */
     links: null,
     localId: null,
     longDescription: null,
@@ -76,6 +82,9 @@ export const state: ProcessState = {
       assessmentEdit: false,
       operationEdit: false,
       specificationEdit: false,
+      implementationEdit: false,
+      attachmentsEdit: false,
+      municipalityUsingEdit: false,
     }
 };
 

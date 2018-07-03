@@ -113,5 +113,8 @@ export interface Disabled {
   timeAndProcessEdit: boolean;
   assessmentEdit: boolean;
   operationEdit: boolean;
-  specificationEdit: boolean; 
+  specificationEdit: boolean;
+  implementationEdit: boolean;
+  attachmentsEdit: boolean;
+  municipalityUsingEdit: boolean;
 }

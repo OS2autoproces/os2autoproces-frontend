@@ -1,6 +1,6 @@
 <template>
-  <FormSection heading="Bilag" id="attachments" :disabled="state.attachmentsDisabled" @edit="update({ attachmentsDisabled: $event })">
-    <AttachmentUpload :attachments="state.attachments" :disabled="state.attachmentsDisabled" @add="add" @remove="remove" />
+  <FormSection heading="Bilag" id="attachments" :disabled="state.disabled.attachmentsEdit" @edit="update({ disabled: {attachmentsEdit: $event} })">
+    <AttachmentUpload :attachments="state.attachments" :disabled="state.disabled.attachmentsEdit" @add="add" @remove="remove" />
   </FormSection>
 </template>
 
