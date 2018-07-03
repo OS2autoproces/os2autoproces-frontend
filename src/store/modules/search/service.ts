@@ -38,6 +38,7 @@ interface SearchParams {
   visibility: Visibility[];
   page: number;
   size: number;
+  freetext: string;
   sort: string;
   'reporter.uuid': string | null;
   'users.uuid': string | null;
@@ -61,7 +62,8 @@ export async function search(filters: SearchFilters): Promise<SearchResult> {
     page: filters.page,
     size: filters.size,
     'reporter.uuid': filters.reporterId,
-    'users.uuid': filters.usersId
+    'users.uuid': filters.usersId,
+    freetext: filters.text
   };
 
   if (filters.municipality) {
