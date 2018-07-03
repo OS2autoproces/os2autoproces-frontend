@@ -112,4 +112,5 @@ export interface Disabled {
   challengesEdit: boolean;
   timeAndProcessEdit: boolean;
   assessmentEdit: boolean;
+  operationEdit: boolean;
 }

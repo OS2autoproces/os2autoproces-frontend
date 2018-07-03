@@ -1,31 +1,31 @@
 <template>
-    <FormSection heading="Drift" id="operation" :disabled="state.disabled" @edit="update({disabled: $event})">
-        <div class="rating-wrapper" :class="{disabled: state.disabled}">
+    <FormSection heading="Drift" id="operation" :disabled="state.disabled.operationEdit" @edit="update({disabled: {operationEdit: $event}})">
+        <div class="rating-wrapper" :class="{disabled: state.disabled.operationEdit}">
             <div>I hvor høj grad realiserer processen sit potentiale?</div>
-            <Rating class="rating" @change="update({potential: $event})" :disabled="state.disabled" :value="state.potential" />
+            <Rating class="rating" @change="update({potential: $event})" :disabled="state.disabled.operationEdit" :value="state.potential" />
         </div>
 
         <Well>
             <div>
                 <WellItem labelWidth="55%" label="Sidst opdateret">
-                    <DatePicker @change="update({lastUpdated: $event})" :disabled="state.disabled" :value="state.lastUpdated" />
+                    <DatePicker @change="update({lastChanged: $event})" :disabled="state.disabled.operationEdit" :value="state.lastChanged" />
                 </WellItem>
             </div>
             <div>
                 <WellItem labelWidth="55%" label="Sidst kontrolleret i forhold til §">
-                    <DatePicker @change="update({lastChecked: $event})" :disabled="state.disabled" :value="state.lastChecked" />
+                    <DatePicker @change="update({legalClauseLastVerified: $event})" :disabled="state.disabled.operationEdit" :value="state.legalClauseLastVerified" />
                 </WellItem>
             </div>
             <div>
                 <WellItem labelWidth="55%" label="Løsning taget ud af drift">
-                    <DatePicker @change="update({decommissioned: $event})" :disabled="state.disabled" :value="state.decommissioned" />
+                    <DatePicker @change="update({decommissioned: $event})" :disabled="state.disabled.operationEdit" :value="state.decommissioned" />
                 </WellItem>
             </div>
         </Well>
 
         <h2>Kommentar til realiseret løsningspotentiale</h2>
         <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
-        <TextArea :max-length="1200" :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({realizedPotential: $event})" :disabled="state.disabled" :value="state.realizedPotential" />
+        <TextArea :max-length="1200" :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({ratingComment: $event})" :disabled="state.disabled.operationEdit" :value="state.ratingComment" />
     </FormSection>
 </template>
 
