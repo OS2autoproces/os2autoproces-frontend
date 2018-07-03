@@ -31,10 +31,9 @@ export default class LikertScale extends Vue {
 
   LikertScaleLabels = LikertScaleLabels;
 
-  select(item: any) {
-    console.log(item)
+  select(key: any) {
     if (!this.disabled) {
-      this.$emit('change', item.value);
+      this.$emit('change', key.value);
     }
   }
 }

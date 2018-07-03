@@ -92,7 +92,6 @@ import AssociatedPersonsInput from '@/components/details/general-information/Ass
 import Well from '@/components/common/Well.vue';
 import WellItem from '@/components/common/WellItem.vue';
 import FormSection from '@/components/details/FormSection.vue';
-import { Status } from '@/store/modules/details/general-information/state';
 import WarningIcon from '@/components/icons/WarningIcon.vue';
 import { processActionTypes } from '@/store/modules/process/actions';
 import { StatusKeys, StatusLabels } from '@/models/status';
@@ -115,8 +114,7 @@ import { HTTP } from '@/services/http-service';
 })
 export default class GeneralInformationForm extends Vue {
   @Action(processActionTypes.UPDATE) update: any;
-  Status = Status;
-
+  
   isPhaseChanged = false;
 
   get state() {
