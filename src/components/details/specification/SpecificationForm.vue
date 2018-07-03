@@ -1,16 +1,10 @@
 <template>
   <FormSection heading="Specifikation" id="specification" :disabled="state.disabled.specificationEdit" @edit="update({disabled: { specificationEdit: $event}})">
-    <h2>Proces udfordringer</h2>
-    <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
-    <TextArea :max-length="1200" :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({challenges: $event})" :disabled="state.disabled.specificationEdit" :value="state.challenges" />
-
-    <h2>Forventet løsningsdesign</h2>
-    <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
-    <TextArea :max-length="2400" :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({solution: $event})" :disabled="state.disabled.specificationEdit" :value="state.solution" />
 
     <h2>Sagsreference i ESDH</h2>
     <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
-    <TextArea :max-length="300" :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({esdhCaseReference: $event})" :disabled="state.disabled.specificationEdit" :value="state.esdhCaseReference" />
+    <TextArea :max-length="300" @change="update({esdhCaseReference: $event})" :disabled="state.disabled.specificationEdit" :value="state.esdhCaseReference" />
+
   </FormSection>
 </template>
 
@@ -31,8 +25,6 @@ import { processActionTypes } from '@/store/modules/process/actions';
 })
 export default class SpecificationForm extends Vue {
   @Action(processActionTypes.UPDATE) update: any;
-
-  twoColumnBreakpoint = 1600;
 
   get state() {
     return this.$store.state.process;
