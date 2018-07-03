@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import {Phase, PhaseLabels} from "../../../models/phase";
+import {Phase, PhaseLabels} from "@/models/phase";
 
 @Component
 export default class PhaseComponent extends Vue {

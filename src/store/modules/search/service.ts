@@ -42,6 +42,7 @@ interface SearchParams {
   sort: string;
   'reporter.uuid': string | null;
   'users.uuid': string | null;
+  'bookmarkUsers.uuid': string | null;
 }
 
 function mapSearchResponse(response: SearchResponse): SearchResult {
@@ -63,6 +64,7 @@ export async function search(filters: SearchFilters): Promise<SearchResult> {
     size: filters.size,
     'reporter.uuid': filters.reporterId,
     'users.uuid': filters.usersId,
+    'bookmarkUsers.uuid': filters.bookmarkedId,
     freetext: filters.text
   };
 
