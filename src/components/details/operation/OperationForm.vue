@@ -2,7 +2,7 @@
     <FormSection heading="Drift" id="operation" :disabled="state.disabled.operationEdit" @edit="update({disabled: {operationEdit: $event}})">
         <div class="rating-wrapper" :class="{disabled: state.disabled.operationEdit}">
             <div>I hvor høj grad realiserer processen sit potentiale?</div>
-            <Rating class="rating" @change="update({potential: $event})" :disabled="state.disabled.operationEdit" :value="state.potential" />
+            <Rating class="rating" @change="update({rating: $event})" :disabled="state.disabled.operationEdit" :value="state.rating" />
         </div>
 
         <Well>
@@ -25,7 +25,7 @@
 
         <h2>Kommentar til realiseret løsningspotentiale</h2>
         <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
-        <TextArea :max-length="1200" :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({ratingComment: $event})" :disabled="state.disabled.operationEdit" :value="state.ratingComment" />
+        <TextArea :max-length="1200" @change="update({ratingComment: $event})" :disabled="state.disabled.operationEdit" :value="state.ratingComment" />
     </FormSection>
 </template>
 
@@ -54,8 +54,6 @@ import { processActionTypes } from '@/store/modules/process/actions';
 })
 export default class OperationForm extends Vue {
   @Action(processActionTypes.UPDATE) update: any;
-
-  twoColumnBreakpoint = 1600;
 
   get state() {
     return this.$store.state.process;
