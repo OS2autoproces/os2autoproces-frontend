@@ -17,7 +17,6 @@
           </WellItem>
         </div>
 
-
         <div>
           <WellItem labelWidth="100px" label="Leverandør:">
             <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.vendor" @change="update({vendor: $event})" :items="suppliers" />
@@ -35,7 +34,7 @@
 
         <div>
           <WellItem labelWidth="100px" label="Afdeling:">
-            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="departments" @change="update({orgUnits: getOrgUnit($event)})" :items="departments" />
+            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="displayDepartments" @change="update({orgUnits: getOrgUnit($event)})" :items="departments" />
           </WellItem>
           <WellItem labelWidth="100px" label="Fagområde:">
             <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.domain" @change="update({domain: $event})" :items="fields" />
@@ -124,12 +123,20 @@ export default class GeneralInformationForm extends Vue {
     return this.$store.state.process;
   }
 
-  get departments(): string {
+  get displayDepartments(): string {
     const orgs: OrgUnit[] = this.$store.state.process.orgUnits;
     if (!orgs) {
       return '';
     }
     return orgs.map(d => d.name).join(', ');
+  }
+
+  get departments(): string[] {
+    const orgs: OrgUnit[] = this.$store.state.process.orgUnits;
+    if (!orgs) {
+      return [''];
+    }
+    return orgs.map(d => d.name);
   }
 
   get statuses() {
