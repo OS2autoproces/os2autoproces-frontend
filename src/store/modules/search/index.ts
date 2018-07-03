@@ -12,9 +12,9 @@ export const state: SearchState = {
   filters: {
     page: 0,
     size: 5,
-    reported: true,
-    related: false,
-    bookmarks: false,
+    reporterId: null,
+    usersId: null,
+    bookmarkedId: null,
     text: '',
     municipality: false,
     public: false,

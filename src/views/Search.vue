@@ -18,7 +18,7 @@
 
                     <div class="results" v-if="result">
                         <router-link :to="'/details/' + process.id" class="search-result-link" v-for="process in result.processes" :key="process.id">
-                            <SearchResult :process="process" />
+                            <SearchResult :process="process" :bookmarked="isBookmarked(process.id)" />
                         </router-link>
                     </div>
 
@@ -39,6 +39,7 @@ import SearchSorting from '../components/search/SearchSorting.vue';
 import PlusIcon from '../components/icons/PlusIcon.vue';
 import { Action } from 'vuex-class';
 import { searchActionTypes } from '../store/modules/search/actions';
+import {SearchResultProcess} from "../store/modules/search/state";
 
 @Component({
   components: {
@@ -63,6 +64,12 @@ export default class Search extends Vue {
 
   get result() {
     return this.$store.state.search.result;
+  }
+
+  isBookmarked(id: SearchResultProcess['id']) {
+    const user = this.$store.state.auth.user;
+    
+    return !!user && user.bookmarks.includes(id);
   }
 
   mounted() {

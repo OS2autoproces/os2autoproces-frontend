@@ -19,14 +19,14 @@ function paramsSerializer(params: object): string {
 
       return isDefined && isNonEmpty;
     })
-    .map(([key, value]) => {
-      if (!Array.isArray(value)) {
-        value = [value];
+    .map(([key, values]) => {
+      if (!Array.isArray(values)) {
+        values = [values];
       }
 
-      return value.map((val: any) => {
-        if (val instanceof Date) {
-          val = val.toISOString();
+      return values.map((value: any) => {
+        if (value instanceof Date) {
+          value = value.toISOString();
         }
         else if (typeof val === 'object') {
           val = JSON.stringify(val);
