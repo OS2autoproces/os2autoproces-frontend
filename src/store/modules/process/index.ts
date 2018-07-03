@@ -13,29 +13,26 @@ const namespaced = true;
 
 export const state: ProcessState = {
   /* General information */
-  contact: null,
-  created: '',
-  cvr: '',
-  decommissioned: null,
-  domain: '',
-  vendor: null,
-  visibility: VisibilityKeys.PERSONAL,
-  phase: PhaseKeys.IDEA,
+  kle: null,
   localId: null,
-  longDescription: null,
+  contact: null,
+  klId: null,
+  kla: null,
+  legalClause: '',
+  orgUnits: null,
+  domain: '',
+  visibility: VisibilityKeys.PERSONAL,
+  vendor: null,
   owner: null,
-  reporter: null,
+  users: null,
   shortDescription: '',
+  phase: PhaseKeys.IDEA,
+  reporter: null,
   status: StatusKeys.PENDING,
   statusText: null,
-  users: null,
-  legalClause: '',
-  kla: null,
   klaProcess: false,
-  kle: null,
-  klId: null,
-  orgUnits: null,
 
+  
   /* Assessment */
   evaluatedLevelOfRoi: LikertScaleKeys.UNKNOWN,
   levelOfChange: LikertScaleKeys.UNKNOWN,
@@ -44,10 +41,11 @@ export const state: ProcessState = {
   levelOfRoiFromAutomization: LikertScaleKeys.UNKNOWN,
   levelOfStructuredInformation: LikertScaleKeys.UNKNOWN,
   levelOfUniformity: LikertScaleKeys.UNKNOWN,
-
+  
   /* Challenges */
   solutionRequests: null,
   processChallenges: null,
+  longDescription: null,
   itSystems: null,
   
   /* Time and process */
@@ -59,7 +57,7 @@ export const state: ProcessState = {
   timeSpendOccurancesPerEmployee: 0,
   timeSpendPercentageDigital: 0,
   timeSpendPerOccurance: 0,
-
+  
   /* Specification */
   esdhReference: null,
   
@@ -70,6 +68,7 @@ export const state: ProcessState = {
   
   /* Operation */
   lastChanged: '',
+  decommissioned: null,
   legalClauseLastVerified: null,
   rating: null,
   ratingComment: null,
@@ -84,7 +83,9 @@ export const state: ProcessState = {
   searchWords: '',
   internalNotes: null,
   comments: [],
-
+  created: '',
+  cvr: '',
+  
   disabled: {
     titleEdit: false,
     generalInformationEdit: false,

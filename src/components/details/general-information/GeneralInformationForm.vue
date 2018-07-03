@@ -3,11 +3,11 @@
     <div class="general-information-wrapper">
       <Well>
         <div>
-          <WellItem labelWidth="100px" label="KLE-nr:">
-            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.kle" @change="update({kle: $event})" :items="kleNumbers" />
-          </WellItem>
           <WellItem labelWidth="100px" label="ID:">
             <InputField disabled :value="state.id" />
+          </WellItem>
+          <WellItem labelWidth="100px" label="KLE-nr:">
+            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.kle" @change="update({kle: $event})" :items="kleNumbers" />
           </WellItem>
           <WellItem labelWidth="100px" label="Lokalt ID:">
             <InputField :disabled="state.disabled.generalInformationEdit" :value="state.localId" />
@@ -15,14 +15,27 @@
           <WellItem labelWidth="100px" label="KL ID:">
             <InputField :disabled="state.disabled.generalInformationEdit" :value="state.klId" />
           </WellItem>
-          <WellItem labelWidth="100px" label="Lov of paragraf:">
-            <InputField :disabled="state.disabled.generalInformationEdit" :value="state.legalClause" @change="update({legalClause: $event})" />
+        </div>
+
+
+        <div>
+          <WellItem labelWidth="100px" label="Leverandør:">
+            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.vendor" @change="update({vendor: $event})" :items="suppliers" />
+          </WellItem>
+          <WellItem labelWidth="100px" label="Projektleder:">
+            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.projectManager" @change="update({projectManager: $event})" :items="projectManagers" />
+          </WellItem>
+          <WellItem labelWidth="100px" label="Kontaktperson:">
+            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.contact" @change="update({contact: $event})" :items="contactPersons" />
+          </WellItem>
+          <WellItem labelWidth="100px" label="Mail:">
+            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.contact" @change="update({email: $event})" :items="emails" />
           </WellItem>
         </div>
 
         <div>
           <WellItem labelWidth="100px" label="Afdeling:">
-            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.department" @change="update({department: $event})" :items="departments" />
+            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="departments" @change="update({orgUnits: getOrgUnit($event)})" :items="departments" />
           </WellItem>
           <WellItem labelWidth="100px" label="Fagområde:">
             <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.domain" @change="update({domain: $event})" :items="fields" />
@@ -33,23 +46,8 @@
         </div>
 
         <div>
-          <WellItem labelWidth="100px" label="Kontaktperson:">
-            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.contactPerson" @change="update({contactPerson: $event})" :items="contactPersons" />
-          </WellItem>
-          <WellItem labelWidth="100px" label="Mail:">
-            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.email" @change="update({email: $event})" :items="emails" />
-          </WellItem>
-          <WellItem labelWidth="100px" label="Procestid:">
-            <InputField :disabled="state.disabled.generalInformationEdit" :value="state.processTime" @change="update({processTime: $event})" />
-          </WellItem>
-        </div>
-
-        <div>
-          <WellItem labelWidth="100px" label="Leverandør:">
-            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.supplier" @change="update({supplier: $event})" :items="suppliers" />
-          </WellItem>
-          <WellItem labelWidth="100px" label="Projektleder:">
-            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.projectManager" @change="update({projectManager: $event})" :items="projectManagers" />
+          <WellItem labelWidth="100px" label="Lov of paragraf:">
+            <InputField :disabled="state.disabled.generalInformationEdit" :value="state.legalClause" @change="update({legalClause: $event})" />
           </WellItem>
         </div>
 
@@ -74,7 +72,7 @@
     </div>
 
     <div>
-      <div v-if="state.status !== pending">
+      <div>
         <h2 class="comments-heading">Kommentar til status: </h2>
         <TextArea class="status-comment-field" :disabled="state.disabled.generalInformationEdit" @change="update({statusText: $event})" :value="state.statusText" />
       </div>
@@ -98,7 +96,10 @@ import FormSection from '@/components/details/FormSection.vue';
 import { Status } from '@/store/modules/details/general-information/state';
 import WarningIcon from '@/components/icons/WarningIcon.vue';
 import { processActionTypes } from '@/store/modules/process/actions';
-import { StatusKeys } from '@/models/status';
+import { StatusKeys, StatusLabels } from '@/models/status';
+import { OrgUnit } from '@/store/modules/process/state';
+import { VisibilityLabels, VisibilityKeys } from '@/models/visibility';
+import { HTTP } from '@/services/http-service';
 
 @Component({
   components: {
@@ -117,16 +118,30 @@ export default class GeneralInformationForm extends Vue {
   @Action(processActionTypes.UPDATE) update: any;
   Status = Status;
 
-  pending = StatusKeys.PENDING;
-
   isPhaseChanged = false;
 
   get state() {
     return this.$store.state.process;
   }
 
+  get departments(): string {
+    const orgs: OrgUnit[] = this.$store.state.process.orgUnits;
+    if (!orgs) {
+      return '';
+    }
+    return orgs.map(d => d.name).join(', ');
+  }
+
   get statuses() {
-    return Object.values(Status);
+    return Object.values(StatusLabels);
+  }
+
+  getOrgUnit(deparmentName: string) {
+    const orgs: OrgUnit[] = this.$store.state.process.orgUnits;
+    if (!orgs) {
+      return '';
+    }
+    return orgs.find((o: OrgUnit) => o.name === deparmentName);
   }
 
   phaseChanged(phase: any) {
@@ -136,11 +151,13 @@ export default class GeneralInformationForm extends Vue {
 
   fields = ['Teknik', 'Diverse', 'ETC'];
 
-  visibilityLevels = ['Privat', 'Tværkommunalt', 'Kommunalt'];
+  visibilityLevels = [
+    VisibilityLabels.PERSONAL,
+    VisibilityLabels.MUNICIPALITY,
+    VisibilityLabels.PUBLIC
+  ];
 
   kleNumbers = ['1234', '134324', '54353'];
-
-  departments = ['some-department'];
 
   contactPersons = ['Christian', 'Lars', 'Henrik'];
 
