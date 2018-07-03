@@ -28,11 +28,11 @@ function paramsSerializer(params: object): string {
         if (value instanceof Date) {
           value = value.toISOString();
         }
-        else if (typeof val === 'object') {
-          val = JSON.stringify(val);
+        else if (typeof value === 'object') {
+          value = JSON.stringify(value);
         }
 
-        return encode(key) + '=' + encode(val);
+        return encode(key) + '=' + encode(value);
       })
         .join('&');
     })
