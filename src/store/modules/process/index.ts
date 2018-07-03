@@ -75,6 +75,7 @@ export const state: ProcessState = {
       timeAndProcessEdit: false,
       assessmentEdit: false,
       operationEdit: false,
+      specificationEdit: false,
     }
 };
 

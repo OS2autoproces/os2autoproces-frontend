@@ -113,4 +113,5 @@ export interface Disabled {
   timeAndProcessEdit: boolean;
   assessmentEdit: boolean;
   operationEdit: boolean;
+  specificationEdit: boolean; 
 }
