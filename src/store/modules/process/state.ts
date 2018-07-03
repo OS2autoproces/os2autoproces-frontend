@@ -8,7 +8,6 @@ export interface ProcessState extends Process {
   disabled: Disabled;
   attachments: Attachment[] | null;
   comments: Comment[];
-
 }
 
 export interface Process {
