@@ -50,14 +50,14 @@ export const state: ProcessState = {
   created: '',
   
   /* Time and process */
+  timeSpendOccurancesPerEmployee: 0,
+  timeSpendPerOccurance: 0,
+  timeSpendComputedTotal: 0,
+  timeSpendEmployeesDoingProcess: 0,
+  timeSpendPercentageDigital: 0,
   targestsCitizens: false,
   targetsCompanies: false,
   timeSpendComment: '',
-  timeSpendComputedTotal: 0,
-  timeSpendEmployeesDoingProcess: 0,
-  timeSpendOccurancesPerEmployee: 0,
-  timeSpendPercentageDigital: 0,
-  timeSpendPerOccurance: 0,
   
   /* Specification */
   esdhReference: null,

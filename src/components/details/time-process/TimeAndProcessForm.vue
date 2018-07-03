@@ -6,11 +6,11 @@
         <WellItem labelWidth="70%" label="Antal gange processen gentages om året pr. medarbejder">
           <InputField :value="state.timeSpendOccurancesPerEmployee" :disabled="state.disabled.timeAndProcessEdit" @change="update({timeSpendOccurancesPerEmployee: $event})" />
         </WellItem>
-        <WellItem labelWidth="70%" label="Total tidsforbrug">
-          <InputField :disabled="state.disabled.timeAndProcessEdit" :value="state.timeSpendComputedTotal" @change="update({timeSpendComputedTotal: $event})" />
-        </WellItem>
         <WellItem labelWidth="70%" label="Tidsforbrug pr. proces i minutter">
           <InputField :disabled="state.disabled.timeAndProcessEdit" :value="state.timeSpendPerOccurance" @change="update({timeSpendPerOccurance: $event})" />
+        </WellItem>
+        <WellItem labelWidth="70%" label="Total tidsforbrug">
+          <InputField :disabled="state.disabled.timeAndProcessEdit" :value="state.timeSpendComputedTotal" @change="update({timeSpendComputedTotal: $event})" />
         </WellItem>
       </div>
 
