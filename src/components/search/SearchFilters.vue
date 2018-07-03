@@ -2,10 +2,10 @@
   <div>
     <div class="wrapper">
       <div class="types">
-        <PillCheckbox :value="filters.reporter" @change="updateFilters({ reporter: $event })">Indberettede
+        <PillCheckbox :value="!!filters.reporterId" @change="setReporterId">Indberettede
         </PillCheckbox>
-        <PillCheckbox :value="filters.users" @change="updateFilters({ users: $event })">Tilknyttede</PillCheckbox>
-        <PillCheckbox :value="filters.bookmarked" @change="updateFilters({ bookmarked: $event })">Favoritter
+        <PillCheckbox :value="!!filters.usersId" @change="setUsersId">Tilknyttede</PillCheckbox>
+        <PillCheckbox :value="!!filters.bookmarkedId" @change="setBookmarkedId">Favoritter
         </PillCheckbox>
       </div>
 
@@ -104,6 +104,25 @@
 
     get filters() {
       return this.$store.state.search.filters;
+    }
+
+    get user() {
+      return this.$store.state.auth.user;
+    }
+
+    setReporterId(value: boolean) {
+      const reporterId = value && this.user ? this.user.uuid : null;
+      this.updateFilters({ reporterId });
+    }
+
+    setUsersId(value: boolean) {
+      const usersId = value && this.user ? this.user.uuid : null;
+      this.updateFilters({ usersId });
+    }
+
+    setBookmarkedId(value: boolean) {
+      const bookmarkedId = value && this.user ? this.user.uuid : null;
+      this.updateFilters({ bookmarkedId });
     }
   }
 </script>

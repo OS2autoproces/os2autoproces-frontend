@@ -37,8 +37,8 @@ interface SearchParams {
   page: number;
   size: number;
   sort: string;
-  'reporter.uuid': string;
-  'users.uuid': string;
+  'reporter.uuid': string | null;
+  'users.uuid': string | null;
 }
 
 function mapSearchResponse(response: SearchResponse): SearchResult {
@@ -49,7 +49,7 @@ function mapSearchResponse(response: SearchResponse): SearchResult {
 }
 
 // TODO: Add municipality name to search result
-export async function search(filters: SearchFilters, user?: User): Promise<SearchResult> {
+export async function search(filters: SearchFilters): Promise<SearchResult> {
   const params: SearchParams = {
     phase: Object.entries(filters.phase).filter(([phase, isSelected]) => isSelected).map(([phase]) => phase) as Phase[],
     domain: Object.entries(filters.domain).filter(([phase, isSelected]) => isSelected).map(([domain]) => domain) as Domain[],
@@ -57,17 +57,9 @@ export async function search(filters: SearchFilters, user?: User): Promise<Searc
     visibility: [],
     page: filters.page,
     size: filters.size,
-    'reporter.uuid': '',
-    'users.uuid': ''
+    'reporter.uuid': filters.reporterId,
+    'users.uuid': filters.usersId
   };
-
-  if (user && filters.reporter) {
-    params['reporter.uuid'] = user.uuid;
-  }
-
-  if (user && filters.users) {
-    params['users.uuid'] = user.uuid;
-  }
 
   if (filters.municipality) {
     params.visibility.push(VisibilityKeys.MUNICIPALITY);

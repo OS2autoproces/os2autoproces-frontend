@@ -27,9 +27,9 @@ export interface SortingOption {
 }
 
 export interface SearchFilters {
-  reporter: boolean;
-  users: boolean; // TODO: Use in search
-  bookmarked: boolean; // TODO: Use in search
+  reporterId: string | null;
+  usersId: string | null; // TODO: Use in search
+  bookmarkedId: string | null; // TODO: Use in search
   text: string; // TODO: Use in search
   municipality: boolean;
   public: boolean;
