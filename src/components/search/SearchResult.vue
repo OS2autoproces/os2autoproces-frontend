@@ -11,7 +11,7 @@
       </div>
       <div>
         <div class="field">Kommune:</div>
-        <div class="value">{{process.municipality}}</div>
+        <div class="value">{{process.municipalityName}}</div>
       </div>
       <div>
         <div class="field">Unik ID:</div>

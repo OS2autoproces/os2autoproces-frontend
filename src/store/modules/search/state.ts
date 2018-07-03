@@ -16,6 +16,7 @@ export interface SearchResultProcess {
   rating: string;
   phase: string;
   status: string;
+  municipalityName: string;
   domain: string;
   kle: string;
   legalClause: string;

@@ -10,6 +10,7 @@ interface ProcessSearchResponse {
   id: number;
   title: string;
   shortDescription: string;
+  municipalityName: string;
   rating: string;
   phase: Phase;
   status: Status;
@@ -31,6 +32,7 @@ interface SearchResponse {
 }
 
 interface SearchParams {
+  projection: 'grid' | 'extended';
   phase: Phase[];
   domain: Domain[];
   visibility: Visibility[];
@@ -51,6 +53,7 @@ function mapSearchResponse(response: SearchResponse): SearchResult {
 // TODO: Add municipality name to search result
 export async function search(filters: SearchFilters): Promise<SearchResult> {
   const params: SearchParams = {
+    projection: 'grid',
     phase: Object.entries(filters.phase).filter(([phase, isSelected]) => isSelected).map(([phase]) => phase) as Phase[],
     domain: Object.entries(filters.domain).filter(([phase, isSelected]) => isSelected).map(([domain]) => domain) as Domain[],
     sort: `${filters.sorting.property},${filters.sorting.descending ? 'desc' : 'asc'}`,
