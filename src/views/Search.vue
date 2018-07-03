@@ -68,12 +68,8 @@ export default class Search extends Vue {
 
   isBookmarked(id: SearchResultProcess['id']) {
     const user = this.$store.state.auth.user;
-
-    if (!user) {
-      return false;
-    }
-
-    return user.bookmarks.includes(id);
+    
+    return !!user && user.bookmarks.includes(id);
   }
 
   mounted() {
