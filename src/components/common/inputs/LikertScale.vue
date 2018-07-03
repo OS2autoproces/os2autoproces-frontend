@@ -1,8 +1,8 @@
 <template>
     <div class="scale" :class="{ disabled }">
-        <div class="scale-option" v-for="item in items" :key="item.value" @click="select(item)">
-            <Checkbox class="checkbox" :disabled="disabled" :value="item.value === value" />
-            <div class="label">{{item.name}}</div>
+        <div class="scale-option" v-for="key in items" :key="key" @click="select(key)">
+            <Checkbox class="checkbox" :disabled="disabled" :value="key === value" />
+            <div class="label">{{LikertScaleLabels[key]}}</div>
         </div>
     </div>
 </template>
@@ -10,11 +10,7 @@
 <script lang='ts'>
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import Checkbox from './Checkbox.vue';
-
-interface Item {
-  value: number;
-  name: string;
-}
+import { LikertScaleKeys, LikertScaleLabels } from '@/models/likert-scale';
 
 @Component({
   components: {
@@ -22,18 +18,21 @@ interface Item {
   }
 })
 export default class LikertScale extends Vue {
-  @Prop() value!: number;
+  @Prop() value!: string;
   @Prop() disabled!: boolean;
 
-  items: Item[] = [
-    { value: 0, name: 'Slet ikke' },
-    { value: 1, name: 'I mindre grad' },
-    { value: 2, name: 'I nogen grad' },
-    { value: 3, name: 'I høj grad' },
-    { value: 4, name: 'Ved ikke' }
+  items = [
+    LikertScaleKeys.VERY_LOW,
+    LikertScaleKeys.LOW,
+    LikertScaleKeys.HIGH,
+    LikertScaleKeys.VERY_HIGH,
+    LikertScaleKeys.UNKNOWN,
   ];
 
-  select(item: Item) {
+  LikertScaleLabels = LikertScaleLabels;
+
+  select(item: any) {
+    console.log(item)
     if (!this.disabled) {
       this.$emit('change', item.value);
     }
