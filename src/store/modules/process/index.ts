@@ -73,6 +73,7 @@ export const state: ProcessState = {
       generalInformationEdit: false,
       challengesEdit: false,
       timeAndProcessEdit: false,
+      assessmentEdit: false,
     }
 };
 

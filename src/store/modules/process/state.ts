@@ -111,4 +111,5 @@ export interface Disabled {
   generalInformationEdit: boolean;
   challengesEdit: boolean;
   timeAndProcessEdit: boolean;
+  assessmentEdit: boolean;
 }

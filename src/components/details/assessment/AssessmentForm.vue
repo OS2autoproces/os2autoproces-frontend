@@ -1,53 +1,53 @@
 <template>
-    <FormSection heading="Faglig vurdering" id="assessment" :disabled="state.disabled" @edit="update({ disabled: $event })">
+    <FormSection heading="Faglig vurdering" id="assessment" :disabled="state.disabled.assessmentEdit" @edit="update({ disabled: { assessmentEdit: $event} })">
         <div class="assessment" :class="{ disabled: state.disabled }">
             <div class="question">
                 <div class="label">I hvor høj grad er der faglig vurdering?
                     <InfoTooltip class="tooltip" />
                 </div>
-                <LikertScale :disabled="state.disabled" :value="state.levelOfProfessionalAssessment" @change="update({ levelOfProfessionalAssessment: $event })" />
+                <LikertScale :disabled="state.disabled.assessmentEdit" :value="state.levelOfProfessionalAssessment" @change="update({ levelOfProfessionalAssessment: $event })" />
             </div>
 
             <div class="question">
                 <div class="label">I hvor høj grad er processen præget af hyppige ændringer?
                     <InfoTooltip class="tooltip" />
                 </div>
-                <LikertScale :disabled="state.disabled" :value="state.levelOfChange" @change="update({ levelOfChange: $event })" />
+                <LikertScale :disabled="state.disabled.assessmentEdit" :value="state.levelOfChange" @change="update({ levelOfChange: $event })" />
             </div>
 
             <div class="question">
                 <div class="label">I hvor høj grad er processen baseret på struktureret information?
                     <InfoTooltip class="tooltip" />
                 </div>
-                <LikertScale :disabled="state.disabled" :value="state.levelOfStructuredInformation" @change="update({ levelOfStructuredInformation: $event })" />
+                <LikertScale :disabled="state.disabled.assessmentEdit" :value="state.levelOfStructuredInformation" @change="update({ levelOfStructuredInformation: $event })" />
             </div>
 
             <div class="question">
                 <div class="label">Er der variation i hvordan processen løses?
                     <InfoTooltip class="tooltip" />
                 </div>
-                <LikertScale :disabled="state.disabled" :value="state.levelOfUniformity" @change="update({ levelOfUniformity: $event })" />
+                <LikertScale :disabled="state.disabled.assessmentEdit" :value="state.levelOfUniformity" @change="update({ levelOfUniformity: $event })" />
             </div>
 
             <div class="question">
                 <div class="label">Er data og informationer, der skal bruges i processen tilgængelige?
                     <InfoTooltip class="tooltip" />
                 </div>
-                <LikertScale :disabled="state.disabled" :value="state.levelOfDigitalInformation" @change="update({ levelOfDigitalInformation: $event })" />
+                <LikertScale :disabled="state.disabled.assessmentEdit" :value="state.levelOfDigitalInformation" @change="update({ levelOfDigitalInformation: $event })" />
             </div>
 
             <div class="question">
                 <div class="label">Bidrager automatisering til højere kvalitet eller højere service?
                     <InfoTooltip class="tooltip" />
                 </div>
-                <LikertScale :disabled="state.disabled" :value="state.levelOfRoiFromAutomization" @change="update({ levelOfRoiFromAutomization: $event })" />
+                <LikertScale :disabled="state.disabled.assessmentEdit" :value="state.levelOfRoiFromAutomization" @change="update({ levelOfRoiFromAutomization: $event })" />
             </div>
 
             <div class="question">
                 <div class="label">I hvor høj grad vurderes det at processen kan automatiseres?
                     <InfoTooltip class="tooltip" />
                 </div>
-                <LikertScale :disabled="state.disabled" :value="state.evaluatedLevelOfRoi	" @change="update({ evaluatedLevelOfRoi	: $event })" />
+                <LikertScale :disabled="state.disabled.assessmentEdit" :value="state.evaluatedLevelOfRoi	" @change="update({ evaluatedLevelOfRoi	: $event })" />
             </div>
         </div>
     </FormSection>
