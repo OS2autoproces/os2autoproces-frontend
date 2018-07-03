@@ -73,7 +73,7 @@
     <div>
       <div>
         <h2 class="comments-heading">Kommentar til status: </h2>
-        <TextArea class="status-comment-field" :disabled="state.disabled.generalInformationEdit" @change="update({statusText: $event})" :value="state.statusText" />
+        <TextArea class="status-comment-field" :disabled="state.disabled.generalInformationEdit" @change="update({statusText: $event})" :value="state.statusText ? state.statusText : ''" />
       </div>
     </div>
 
