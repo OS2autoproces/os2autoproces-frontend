@@ -34,13 +34,13 @@ export const state: ProcessState = {
 
   
   /* Assessment */
-  evaluatedLevelOfRoi: LikertScaleKeys.UNKNOWN,
-  levelOfChange: LikertScaleKeys.UNKNOWN,
-  levelOfDigitalInformation: LikertScaleKeys.UNKNOWN,
   levelOfProfessionalAssessment: LikertScaleKeys.UNKNOWN,
-  levelOfRoiFromAutomization: LikertScaleKeys.UNKNOWN,
+  levelOfChange: LikertScaleKeys.UNKNOWN,
   levelOfStructuredInformation: LikertScaleKeys.UNKNOWN,
   levelOfUniformity: LikertScaleKeys.UNKNOWN,
+  levelOfDigitalInformation: LikertScaleKeys.UNKNOWN,
+  levelOfRoiFromAutomization: LikertScaleKeys.UNKNOWN,
+  evaluatedLevelOfRoi: LikertScaleKeys.UNKNOWN,
   
   /* Challenges */
   solutionRequests: null,
