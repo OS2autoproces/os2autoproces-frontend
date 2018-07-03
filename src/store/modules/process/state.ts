@@ -5,9 +5,10 @@ import { LikertScale } from '@/models/likert-scale';
 import { User } from '@/store/modules/auth/state';
 
 export interface ProcessState extends Process {
-  disabled: boolean;
+  disabled: Disabled;
   attachments: Attachment[] | null;
   comments: Comment[];
+
 }
 
 export interface Process {
@@ -103,4 +104,9 @@ export interface Comment {
     name: string;
     message: string;
     created: string;  
+}
+
+export interface Disabled {
+  titleEdit: boolean;
+  generalInformationEdit: boolean
 }

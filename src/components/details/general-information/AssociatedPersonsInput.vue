@@ -28,6 +28,7 @@ import { Action } from 'vuex-class';
 import SelectionField from '@/components/common/inputs/SelectionField.vue';
 import DeleteIcon from '@/components/icons/DeleteIcon.vue';
 import { processActionTypes } from '@/store/modules/process/actions';
+import { User } from '@/store/modules/auth/state';
 
 @Component({
   components: {
@@ -45,14 +46,14 @@ export default class AssociatedPersonsInput extends Vue {
 
   people = ['Christian Branstrup Bondesdfsdfa', 'Rasmus', 'Jakob'];
 
-  addPerson(name: string) {
-    this.associatedPeople.push(name);
-    this.addAssociatedPerson(name);
+  addPerson(user: User) {
+    this.associatedPeople.push(user.name);
+    this.addAssociatedPerson(user);
   }
 
-  removePerson(person: string) {
-    this.associatedPeople = this.associatedPeople.filter(p => p !== person);
-    this.removeAssociatedPerson(person);
+  removePerson(user: User) {
+    this.associatedPeople = this.associatedPeople.filter(p => p !== user.name);
+    this.removeAssociatedPerson(user);
   }
 
   get getAssociatedPersons() {
@@ -60,6 +61,10 @@ export default class AssociatedPersonsInput extends Vue {
   }
 
   get associatedPersonsDisabled() {
+    const users = this.$store.state.process.users;
+    if (!users) {
+      return;
+    }
     return this.$store.state.process.users.join(', ');
   }
 }

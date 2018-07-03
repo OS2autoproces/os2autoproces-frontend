@@ -16,7 +16,6 @@ export const state: ProcessState = {
     created: '',
     cvr: '',
     decommissioned: null,
-    disabled: false,
     domain: '',
     esdhReference: null,
     evaluatedLevelOfRoi: LikertScaleKeys.UNKNOWN,
@@ -68,6 +67,12 @@ export const state: ProcessState = {
     legalClauseLastVerified: null,
     attachments: null,
     comments: [],
+    
+    disabled: {
+      titleEdit: false,
+      generalInformationEdit: false,
+      
+    }
 };
 
 export const process: Module<ProcessState, RootState> = {

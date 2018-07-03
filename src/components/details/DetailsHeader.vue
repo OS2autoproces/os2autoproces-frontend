@@ -1,8 +1,8 @@
 <template>
   <div class="details-header">
     <div class="row">
-      <InputField class="name" :value="name" :disabled="!editName" :class="{ disabled: !editName }" />
-      <div class="edit-button" role="button" @click="editName = !editName" :class="{ editing: editName }">
+      <InputField class="name" :value="name" :disabled="!state.disabled.titleEdit" :class="{ disabled: !state.disabled.titleEdit }" />
+      <div class="edit-button" role="button" @click="toggleEdit" :class="{ editing: state.disabled.titleEdit }">
         <EditIcon />
       </div>
       <div class="bookmark-button" role="button" @click="toggleBookmark">
@@ -46,18 +46,24 @@ import { ProcessState } from '@/store/modules/process/state';
   }
 })
 export default class DetailsHeader extends Vue {
-  @Action(processActionTypes.UPDATE)
-  update!: (value: Partial<ProcessState>) => void;
+  @Action(processActionTypes.UPDATE) update!: any;
   @Getter(authGetterTypes.IS_BOOKMARKED) isBookmarked!: (id: number) => boolean;
 
   // TODO: Bind these to the store
   notification = true;
-  editName = false;
   name = 'Rekruttering';
   bookmarked = false;
 
   get state() {
-    return this.$store.state;
+    return this.$store.state.process;
+  }
+
+  toggleEdit() {
+    this.update({
+      disabled: {
+        titleEdit: !this.state.disabled.titleEdit
+      }
+    });
   }
 
   toggleBookmark() {

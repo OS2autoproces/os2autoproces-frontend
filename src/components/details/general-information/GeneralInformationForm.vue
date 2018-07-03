@@ -1,70 +1,70 @@
 <template>
-  <FormSection heading="Grundlæggende oplysninger" id="general-information" :disabled="state.disabled" @edit="update({disabled: $event})" always-open>
+  <FormSection heading="Grundlæggende oplysninger" id="general-information" :disabled="state.disabled.generalInformationEdit" @edit="update({disabled: { generalInformationEdit: $event} })" always-open>
     <div class="general-information-wrapper">
       <Well>
         <div>
           <WellItem labelWidth="100px" label="KLE-nr:">
-            <SelectionField :disabled="state.disabled" :value="state.kle" @change="update({kle: $event})" :items="kleNumbers" />
+            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.kle" @change="update({kle: $event})" :items="kleNumbers" />
           </WellItem>
           <WellItem labelWidth="100px" label="ID:">
             <InputField disabled :value="state.id" />
           </WellItem>
           <WellItem labelWidth="100px" label="Lokalt ID:">
-            <InputField disabled :value="state.localId" />
+            <InputField :disabled="state.disabled.generalInformationEdit" :value="state.localId" />
           </WellItem>
           <WellItem labelWidth="100px" label="KL ID:">
-            <InputField disabled :value="state.klId" />
+            <InputField :disabled="state.disabled.generalInformationEdit" :value="state.klId" />
           </WellItem>
           <WellItem labelWidth="100px" label="Lov of paragraf:">
-            <InputField :disabled="state.disabled" :value="state.legalClause" @change="update({paragraf: $event})" />
+            <InputField :disabled="state.disabled.generalInformationEdit" :value="state.legalClause" @change="update({legalClause: $event})" />
           </WellItem>
         </div>
 
         <div>
           <WellItem labelWidth="100px" label="Afdeling:">
-            <SelectionField :disabled="state.disabled" :value="state.department" @change="update({department: $event})" :items="departments" />
+            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.department" @change="update({department: $event})" :items="departments" />
           </WellItem>
           <WellItem labelWidth="100px" label="Fagområde:">
-            <SelectionField :disabled="state.disabled" :value="state.domain" @change="update({domain: $event})" :items="fields" />
+            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.domain" @change="update({domain: $event})" :items="fields" />
           </WellItem>
           <WellItem labelWidth="100px" label="Synlighed:">
-            <SelectionField :disabled="state.disabled" :value="state.visibility" @change="update({visibility: $event})" :items="visibilityLevels" />
+            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.visibility" @change="update({visibility: $event})" :items="visibilityLevels" />
           </WellItem>
         </div>
 
         <div>
           <WellItem labelWidth="100px" label="Kontaktperson:">
-            <SelectionField :disabled="state.disabled" :value="state.contactPerson" @change="update({contactPerson: $event})" :items="contactPersons" />
+            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.contactPerson" @change="update({contactPerson: $event})" :items="contactPersons" />
           </WellItem>
           <WellItem labelWidth="100px" label="Mail:">
-            <SelectionField :disabled="state.disabled" :value="state.email" @change="update({email: $event})" :items="emails" />
+            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.email" @change="update({email: $event})" :items="emails" />
           </WellItem>
           <WellItem labelWidth="100px" label="Procestid:">
-            <InputField :disabled="state.disabled" :value="state.processTime" @change="update({processTime: $event})" />
+            <InputField :disabled="state.disabled.generalInformationEdit" :value="state.processTime" @change="update({processTime: $event})" />
           </WellItem>
         </div>
 
         <div>
           <WellItem labelWidth="100px" label="Leverandør:">
-            <SelectionField :disabled="state.disabled" :value="state.supplier" @change="update({supplier: $event})" :items="suppliers" />
+            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.supplier" @change="update({supplier: $event})" :items="suppliers" />
           </WellItem>
           <WellItem labelWidth="100px" label="Projektleder:">
-            <SelectionField :disabled="state.disabled" :value="state.projectManager" @change="update({projectManager: $event})" :items="projectManagers" />
+            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.projectManager" @change="update({projectManager: $event})" :items="projectManagers" />
           </WellItem>
         </div>
 
-        <AssociatedPersonsInput slot="well-footer" :disabled="state.disabled" />
+        <AssociatedPersonsInput slot="well-footer" :disabled="state.disabled.generalInformationEdit" />
       </Well>
     </div>
 
     <div class="resume-phases">
       <div class="resume">
         <h2>Resume</h2>
-        <TextArea :disabled="state.disabled" @change="update({resume: $event})" :value="state.resume" />
+        <TextArea :disabled="state.disabled.generalInformationEdit" @change="update({shortDescription: $event})" :value="state.shortDescription" />
       </div>
       <div class="general-phases">
-        <Phases :disabled="state.disabled" :value="state.phase" @change="phaseChanged($event)" />
-        <SelectionField :disabled="state.disabled" class="status-selection" :value="state.status" @change="update({status: $event})" :items="statuses" />
+        <Phases :disabled="state.disabled.generalInformationEdit" :value="state.phase" @change="phaseChanged($event)" />
+        <SelectionField :disabled="state.disabled.generalInformationEdit" class="status-selection" :value="state.status" @change="update({status: $event})" :items="statuses" />
 
         <div v-if="isPhaseChanged" class="phase-changed">
           <WarningIcon class="general-information-warning-icon" />
@@ -74,9 +74,9 @@
     </div>
 
     <div>
-      <div v-if="state.status">
+      <div v-if="state.status !== pending">
         <h2 class="comments-heading">Kommentar til status: </h2>
-        <TextArea class="status-comment-field" :disabled="state.disabled" @change="update({statusText: $event})" :value="state.statusText" />
+        <TextArea class="status-comment-field" :disabled="state.disabled.generalInformationEdit" @change="update({statusText: $event})" :value="state.statusText" />
       </div>
     </div>
 
@@ -97,7 +97,8 @@ import WellItem from '@/components/common/WellItem.vue';
 import FormSection from '@/components/details/FormSection.vue';
 import { Status } from '@/store/modules/details/general-information/state';
 import WarningIcon from '@/components/icons/WarningIcon.vue';
-import { processActionTypes } from "@/store/modules/process/actions";
+import { processActionTypes } from '@/store/modules/process/actions';
+import { StatusKeys } from '@/models/status';
 
 @Component({
   components: {
@@ -115,6 +116,8 @@ import { processActionTypes } from "@/store/modules/process/actions";
 export default class GeneralInformationForm extends Vue {
   @Action(processActionTypes.UPDATE) update: any;
   Status = Status;
+
+  pending = StatusKeys.PENDING;
 
   isPhaseChanged = false;
 
