@@ -13,9 +13,9 @@
 <script lang='ts'>
 import { Vue, Component, Prop } from 'vue-property-decorator';
 
-@Component({})
+@Component
 export default class InputField extends Vue {
-  @Prop() value!: string;
+  @Prop({type: [Number, String]}) value!: any;
   @Prop() placeholder!: string;
   @Prop() disabled!: boolean;
 
