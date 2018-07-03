@@ -1,12 +1,5 @@
 <template>
     <FormSection heading="Udvikling og implementering" id="implementation" :disabled="state.disabled.implementationEdit" @edit="update({disabled: {implementationEdit: $event}})">
-        <h2>Løsnings beskrivelse</h2>
-        <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
-        <TextArea :max-length="1200" :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({solution: $event})" :disabled="state.disabled.implementationEdit" :value="state.solution" />
-
-        <h2>Anvendt teknologi</h2>
-        <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
-        <TagSelector @add="addTechnology($event)" @remove="removeTechnology($event)" :disabled="state.disabled.implementationEdit" :value="state.technologies" />
 
         <h2>Teknisk implementering</h2>
         <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
@@ -15,6 +8,10 @@
         <h2>Organisatorisk implementering</h2>
         <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
         <TextArea :max-length="3000" :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({organizationalImplementation: $event})" :disabled="state.disabled.implementationEdit" :value="state.organizationalImplementation" />
+        
+        <h2>Anvendt teknologi</h2>
+        <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
+        <TagSelector @add="addTechnology($event)" @remove="removeTechnology($event)" :disabled="state.disabled.implementationEdit" :value="state.technologies" />
     </FormSection>
 </template>
 
