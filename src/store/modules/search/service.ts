@@ -4,6 +4,7 @@ import {Phase, PhaseLabels} from "@/models/phase";
 import {Status, StatusLabels} from "@/models/status";
 import {Domain, DomainLabels} from "@/models/domain";
 import {Visibility, VisibilityKeys} from "@/models/visibility";
+import {User} from "@/store/modules/auth/state";
 
 interface ProcessSearchResponse {
   id: number;
@@ -36,6 +37,8 @@ interface SearchParams {
   page: number;
   size: number;
   sort: string;
+  'reporter.uuid': string | null;
+  'users.uuid': string | null;
 }
 
 function mapSearchResponse(response: SearchResponse): SearchResult {
@@ -45,26 +48,26 @@ function mapSearchResponse(response: SearchResponse): SearchResult {
   }
 }
 
-// TODO: Add municipality name and bookmarked to result
+// TODO: Add municipality name to search result
 export async function search(filters: SearchFilters): Promise<SearchResult> {
-  let visibility: Visibility[] = [];
-
-  if (filters.municipality) {
-    visibility.push(VisibilityKeys.MUNICIPALITY);
-  }
-
-  if (filters.public) {
-    visibility.push(VisibilityKeys.PUBLIC);
-  }
-
   const params: SearchParams = {
     phase: Object.entries(filters.phase).filter(([phase, isSelected]) => isSelected).map(([phase]) => phase) as Phase[],
     domain: Object.entries(filters.domain).filter(([phase, isSelected]) => isSelected).map(([domain]) => domain) as Domain[],
     sort: `${filters.sorting.property},${filters.sorting.descending ? 'desc' : 'asc'}`,
-    visibility,
+    visibility: [],
     page: filters.page,
     size: filters.size,
+    'reporter.uuid': filters.reporterId,
+    'users.uuid': filters.usersId
   };
+
+  if (filters.municipality) {
+    params.visibility.push(VisibilityKeys.MUNICIPALITY);
+  }
+
+  if (filters.public) {
+    params.visibility.push(VisibilityKeys.PUBLIC);
+  }
 
   const response = await HTTP.get<SearchResponse>('api/processes', {params});
 

@@ -11,7 +11,7 @@ function encode(value: string) {
     .replace(/%5D/gi, ']');
 }
 
-function paramsSerializer(params: Object): string {
+function paramsSerializer(params: object): string {
   return Object.entries(params)
     .filter(([key, value]) => {
       const isDefined = value !== null && value !== undefined;
@@ -19,12 +19,12 @@ function paramsSerializer(params: Object): string {
 
       return isDefined && isNonEmpty;
     })
-    .map(([key, value]) => {
-      if (!Array.isArray(value)) {
-        value = [value];
+    .map(([key, values]) => {
+      if (!Array.isArray(values)) {
+        values = [values];
       }
 
-      return value.map((value: any) => {
+      return values.map((value: any) => {
         if (value instanceof Date) {
           value = value.toISOString();
         }

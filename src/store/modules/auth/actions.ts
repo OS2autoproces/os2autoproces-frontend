@@ -2,7 +2,7 @@ import { HTTP } from '@/services/http-service';
 import { authMutationTypes } from '@/store/modules/auth/mutations';
 import { RootState } from '@/store/store';
 import { ActionTree } from 'vuex';
-import { AuthState, UserRole } from './state';
+import {AuthState, User, UserRole} from './state';
 
 interface WhoAmIResponse {
   uuid: string | null;
@@ -27,9 +27,22 @@ export const authActionTypes = {
 
 export const actions: ActionTree<AuthState, RootState> = {
   async loadUser({ commit, dispatch }): Promise<void> {
-    const user = (await HTTP.get<WhoAmIResponse>('public/whoami')).data;
+    const data = (await HTTP.get<WhoAmIResponse>('public/whoami')).data;
 
-    commit(authMutationTypes.SET_USER, user.uuid !== null ? user : null);
+    if (data.uuid !== null) {
+      const user: User = {
+        uuid: data.uuid || '',
+        email: data.email || '',
+        name: data.name || '',
+        cvr: data.cvr || '',
+        roles: data.roles || [],
+        bookmarks: []
+      };
+
+      commit(authMutationTypes.SET_USER, user);
+    } else {
+      commit(authMutationTypes.SET_USER, undefined);
+    }
 
     dispatch(authActionTypes.LOAD_BOOKMARKS, {}, {root: true});
   },
