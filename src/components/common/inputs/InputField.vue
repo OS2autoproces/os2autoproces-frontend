@@ -13,7 +13,7 @@
 <script lang='ts'>
 import { Vue, Component, Prop } from 'vue-property-decorator';
 
-@Component({})
+@Component
 export default class InputField extends Vue {
   @Prop() value!: string;
   @Prop() placeholder!: string;
@@ -41,6 +41,11 @@ export default class InputField extends Vue {
   .icon {
     height: 20px;
     width: 20px;
+
+    /deep/ svg {
+      height: 20px;
+      width: 20px;
+    }
   }
 
   input {
