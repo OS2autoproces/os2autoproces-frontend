@@ -8,10 +8,16 @@
 <script lang='ts'>
 import { Vue, Component, Prop } from 'vue-property-decorator';
 
+interface Item {
+  text: string;
+  value: any;
+}
+
 @Component
 export default class SelectionField extends Vue {
-  @Prop({type: [String, Boolean]}) value!: any;
-  @Prop() items!: string[];
+  @Prop({ type: [String, Boolean] })
+  value!: any;
+  @Prop() items!: Item[];
   @Prop({ default: 'keyboard_arrow_down' })
   iconName!: string;
   @Prop() placeholder!: string;

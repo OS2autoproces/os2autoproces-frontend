@@ -37,7 +37,7 @@
             <SelectionField :disabled="state.disabled.generalInformationEdit" :value="displayDepartments" @change="update({orgUnits: getOrgUnit($event)})" :items="departments" />
           </WellItem>
           <WellItem labelWidth="100px" label="Fagområde:">
-            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.domain" @change="update({domain: $event})" :items="fields" />
+            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.domain" @change="update({domain: $event})" :items="domainLevels" />
           </WellItem>
           <WellItem labelWidth="100px" label="Synlighed:">
             <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.visibility" @change="update({visibility: $event})" :items="visibilityLevels" />
@@ -61,7 +61,7 @@
       </div>
       <div class="general-phases">
         <Phases :disabled="state.disabled.generalInformationEdit" :value="state.phase" @change="phaseChanged($event)" />
-        <SelectionField :disabled="state.disabled.generalInformationEdit" class="status-selection" :value="state.status" @change="update({status: $event})" :items="statuses" />
+        <SelectionField :disabled="state.disabled.generalInformationEdit" class="status-selection" :value="state.status" @change="update({status: $event})" :items="statusLevels" />
 
         <div v-if="isPhaseChanged" class="phase-changed">
           <WarningIcon class="general-information-warning-icon" />
@@ -98,6 +98,7 @@ import { StatusKeys, StatusLabels } from '@/models/status';
 import { OrgUnit } from '@/store/modules/process/state';
 import { VisibilityLabels, VisibilityKeys } from '@/models/visibility';
 import { HTTP } from '@/services/http-service';
+import { DomainKeys, DomainLabels } from '@/models/domain';
 
 @Component({
   components: {
@@ -114,7 +115,7 @@ import { HTTP } from '@/services/http-service';
 })
 export default class GeneralInformationForm extends Vue {
   @Action(processActionTypes.UPDATE) update: any;
-  
+
   isPhaseChanged = false;
 
   get state() {
@@ -137,10 +138,6 @@ export default class GeneralInformationForm extends Vue {
     return orgs.map(d => d.name);
   }
 
-  get statuses() {
-    return Object.values(StatusLabels);
-  }
-
   getOrgUnit(deparmentName: string) {
     const orgs: OrgUnit[] = this.$store.state.process.orgUnits;
     if (!orgs) {
@@ -154,13 +151,27 @@ export default class GeneralInformationForm extends Vue {
     this.update({ phase });
   }
 
-  fields = ['Teknik', 'Diverse', 'ETC'];
-
   visibilityLevels = [
-    VisibilityLabels.PERSONAL,
-    VisibilityLabels.MUNICIPALITY,
-    VisibilityLabels.PUBLIC
+    { value: VisibilityKeys.PERSONAL, text: VisibilityLabels.PERSONAL },
+    { value: VisibilityKeys.MUNICIPALITY, text: VisibilityLabels.MUNICIPALITY },
+    { value: VisibilityKeys.PUBLIC, text: VisibilityLabels.PUBLIC },
   ];
+
+  domainLevels = [
+    { value: DomainKeys.WORK, text: DomainLabels.WORK },
+    { value: DomainKeys.HEALTH, text: DomainLabels.HEALTH },
+    { value: DomainKeys.CHILDREN, text: DomainLabels.CHILDREN },
+    { value: DomainKeys.ENVIRONMENT, text: DomainLabels.ENVIRONMENT },
+    { value: DomainKeys.DEMOCRACY, text: DomainLabels.DEMOCRACY },
+    { value: DomainKeys.ADMINISTRATION, text: DomainLabels.ADMINISTRATION },
+  ];
+
+  statusLevels = [
+    {value: StatusKeys.REJECTED, text: StatusLabels.REJECTED},
+    {value: StatusKeys.FAILED, text: StatusLabels.FAILED},
+    {value: StatusKeys.PENDING, text: StatusLabels.PENDING},
+    {value: StatusKeys.INPROGRESS, text: StatusLabels.INPROGRESS},
+  ]
 
   kleNumbers = ['1234', '134324', '54353'];
 

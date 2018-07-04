@@ -61,6 +61,7 @@ import OperationForm from '@/components/details/operation/OperationForm.vue';
 import ArrowLeftIcon from '@/components/icons/ArrowLeftIcon.vue';
 import EditIcon from '@/components/icons/EditIcon.vue';
 import { processActionTypes, NewComment } from "@/store/modules/process/actions";
+import { Phase } from '@/models/phase';
 
 @Component({
   components: {
@@ -84,7 +85,8 @@ import { processActionTypes, NewComment } from "@/store/modules/process/actions"
   }
 })
 export default class Details extends Vue {
-  @Prop() phase!: string;
+  @Prop({type: String}) phase!: Phase;
+  @Prop() id!: string;
 
   @Action(processActionTypes.SAVE) save: any;
   @Action(processActionTypes.UPDATE)
@@ -99,15 +101,16 @@ export default class Details extends Vue {
   }
 
   async report() {
-    const process = await this.$store.dispatch(processActionTypes.REPORT);
-    this.$router.push(`/details/${process.id}`);
+    const processId = await this.$store.dispatch(processActionTypes.REPORT);
+    this.$router.push(`/details/${processId}`);
   }
 
   mounted() {
+    this.$store.dispatch(processActionTypes.LOAD_PROCESS_DETAILS, Number(this.id));
+    
     if (this.phase) {
-      this.update({ phase: Number(this.phase) });
+      this.update({ phase: this.phase });
     }
-    this.loadComments(this.state.id);
   }
 }
 </script>

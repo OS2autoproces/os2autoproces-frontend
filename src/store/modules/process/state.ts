@@ -3,6 +3,7 @@ import { Status } from '@/models/status';
 import { Visibility } from '@/models/visibility';
 import { LikertScale } from '@/models/likert-scale';
 import { User } from '@/store/modules/auth/state';
+import { Domain } from '@/models/domain';
 
 export interface ProcessState extends Process {
   disabled: Disabled;
@@ -11,7 +12,7 @@ export interface ProcessState extends Process {
 }
 
 export interface Process {
-  id: number;
+  id: number | null;
   localId: string | null;
   klId: string | null;
   esdhReference: string | null;
@@ -24,7 +25,7 @@ export interface Process {
   title: string;
   shortDescription: string;
   longDescription: string | null;
-  domain: string;
+  domain: Domain;
   visibility: Visibility;
   legalClause: string | null;
   legalClauseLastVerified: string | null;
@@ -45,12 +46,17 @@ export interface Process {
   timeSpendComment: string;
   targetsCompanies: boolean;
   targestsCitizens: boolean;
+  municipalityName: string;
   levelOfProfessionalAssessment: LikertScale;
   levelOfChange: LikertScale;
   levelOfStructuredInformation: LikertScale;
   levelOfUniformity: LikertScale;
   levelOfDigitalInformation: LikertScale;
-  levelOfRoiFromAutomization: LikertScale;
+
+  levelOfQuality: LikertScale;
+  levelOfSpeed: LikertScale;
+  levelOfRoutineWorkReduction: LikertScale;
+
   evaluatedLevelOfRoi: LikertScale;
   technicalImplementationNotes: string | null;
   organizationalImplementationNotes: string | null;
@@ -58,7 +64,6 @@ export interface Process {
   ratingComment: string | null;
   searchWords: string | null;
 
-  reporter: User | null;
   users: User[] | null;
   owner: User | null;
   contact: User | null;

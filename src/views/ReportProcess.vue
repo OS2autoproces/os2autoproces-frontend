@@ -1,27 +1,27 @@
 <template>
-    <div class="page">
-        <NavBar />
+  <div class="page">
+    <NavBar />
 
-        <div class="wrapper">
-            <router-link to="/search" class="search-page-link">
-                <ArrowLeftIcon /> Tilbage til søgning
-            </router-link>
+    <div class="wrapper">
+      <router-link to="/search" class="search-page-link">
+        <ArrowLeftIcon /> Tilbage til søgning
+      </router-link>
 
-            <div class="phase-selector">
-                <h1>Hvad ønsker du at indberette?</h1>
-                <ArrowDownIcon />
+      <div class="phase-selector">
+        <h1>Hvad ønsker du at indberette?</h1>
+        <ArrowDownIcon />
 
-                <div class="phases">
-                    <router-link to="/details/new/1">Idé</router-link>
-                    <router-link to="/details/new/2">Foranalyse</router-link>
-                    <router-link to="/details/new/3">Specifikation</router-link>
-                    <router-link to="/details/new/4">Udvikling</router-link>
-                    <router-link to="/details/new/5">Implementering</router-link>
-                    <router-link to="/details/new/6">Drift</router-link>
-                </div>
-            </div>
+        <div class="phases">
+          <router-link :to="`/details/new/${phaseKeys.IDEA}`">Idé</router-link>
+          <router-link :to="`/details/new/${phaseKeys.PREANALYSIS}`">Foranalyse</router-link>
+          <router-link :to="`/details/new/${phaseKeys.SPECIFIKATION}`">Specifikation</router-link>
+          <router-link :to="`/details/new/${phaseKeys.DEVELOPMENT}`">Udvikling</router-link>
+          <router-link :to="`/details/new/${phaseKeys.IMPLEMENTERING}`">Implementering</router-link>
+          <router-link :to="`/details/new/${phaseKeys.OPERATION}`">Drift</router-link>
         </div>
+      </div>
     </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -29,6 +29,7 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 import ArrowDownIcon from '../components/icons/ArrowDownIcon.vue';
 import ArrowLeftIcon from '../components/icons/ArrowLeftIcon.vue';
 import NavBar from '../components/common/NavBar.vue';
+import { PhaseKeys } from '@/models/phase';
 
 @Component({
   components: {
@@ -37,7 +38,9 @@ import NavBar from '../components/common/NavBar.vue';
     NavBar
   }
 })
-export default class Home extends Vue {}
+export default class Home extends Vue {
+  phaseKeys = PhaseKeys;
+}
 </script>
 
 <style lang="scss" scoped>

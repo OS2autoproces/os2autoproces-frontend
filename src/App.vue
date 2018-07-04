@@ -28,7 +28,7 @@ export default class App extends Vue {
   @Action(authActionTypes.LOAD_USER) loadUser: any;
 
   mounted() {
-    this.$store.dispatch(processActionTypes.LOAD_PROCESS_DETAILS, 770);
+    // this.$store.dispatch(processActionTypes.LOAD_PROCESS_DETAILS, 770);
     this.loadUser();
   }
 }

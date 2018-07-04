@@ -9,6 +9,7 @@ import { ActionTree } from 'vuex';
 import { processMutationTypes } from '@/store/modules/process/mutations';
 import { HTTP } from '@/services/http-service';
 import { User } from '@/store/modules/auth/state';
+import { DatamodelProcess, convertToDatamodel } from '@/services/process-converter';
 
 export const namespace = 'process';
 
@@ -28,17 +29,20 @@ export const processActionTypes = {
 
   LOAD_PROCESS_DETAILS: `${namespace}/loadProcessDetails`,
   CREATE_PROCESS: `${namespace}/createProcess`,
+  COPY_PROCESS: `${namespace}/copyProcess`,
 };
 
 export const actions: ActionTree<ProcessState, RootState> = {
   update({ commit }, payload: Partial<ProcessState>) {
     commit(processMutationTypes.UPDATE, payload);
   },
-  async loadAttachments({ commit }) {
-    // TODO: Use correct process
-    const process = { id: '1' };
+  async loadAttachments({ commit, state }) {
+    if (!state.id) {
+      return;
+    }
+
     const attachments = (await HTTP.get<Attachment[]>(
-      `/api/attachments/${process.id}`
+      `/api/attachments/${state.id}`
     )).data;
 
     commit(processMutationTypes.ASSIGN, { attachments });
@@ -121,6 +125,10 @@ export const actions: ActionTree<ProcessState, RootState> = {
     commit(processMutationTypes.REMOVE_TECHNOLOGY, index);
   },
   async loadProcessDetails({ commit }, id: number) {
+    if (!id) {
+      return;
+    }
+
     const process = (await HTTP.get<Process>(`api/processes/${id}`)).data;
 
     commit(processMutationTypes.ADD_PROCESS_DETAILS, process);
@@ -131,16 +139,25 @@ export const actions: ActionTree<ProcessState, RootState> = {
     commit(processMutationTypes.PROCESS_CREATED, created);
   },
 
-  save() {
-    // TODO: Save to backend
-    // const process = await backend.put(store.proces);
+  async report({commit, state}): Promise<number| null> {
+    const converted: DatamodelProcess = await convertToDatamodel(state);
+    const process = (await HTTP.post<Process>(`api/processes`, converted)).data;
+    
+    await commit(processMutationTypes.UPDATE, process);
+    return state.id;
   },
-  async report() {
-    // TODO: Save to backend
-    // const process = await backend.post(store.proces);
-    // updateGeneralInformation({ id: process.id });
-    return { id: '1234' };
-  }
+  async copyProcess({commit, state}): Promise<number | null> {
+    const copy = (await HTTP.post<Process>(`api/processes/${state.id}/copy`)).data;
+    // TODO: notify copy complete
+    commit(processMutationTypes.UPDATE, copy);
+    return copy.id;
+  },
+  async save({commit, state}) {
+    const converted = await convertToDatamodel(state);
+    const updated = (await HTTP.put(`api/processes/${state.id}`, converted)).data;
+    // TODO: notify update
+    commit(processMutationTypes.UPDATE, updated);
+  } 
 };
 
 export interface NewComment {

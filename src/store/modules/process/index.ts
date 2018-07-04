@@ -8,12 +8,13 @@ import { mutations } from '@/store/modules/process/mutations';
 import { ProcessState } from '@/store/modules/process/state';
 import { RootState } from '@/store/store';
 import { Module } from 'vuex';
+import { DomainKeys } from '@/models/domain';
 
 const namespaced = true;
 
 export const state: ProcessState = {
   /* General information */
-  id: 4,
+  id: null,
   kle: null,
   localId: null,
   contact: null,
@@ -21,18 +22,17 @@ export const state: ProcessState = {
   kla: null,
   legalClause: '',
   orgUnits: null,
-  domain: '',
+  domain: DomainKeys.WORK,
   visibility: VisibilityKeys.PERSONAL,
   vendor: null,
   owner: null,
   users: null,
   shortDescription: '',
   phase: PhaseKeys.IDEA,
-  reporter: null,
   status: StatusKeys.PENDING,
   statusText: null,
   klaProcess: false,
-  
+  municipalityName: '',
   
   /* Assessment */
   levelOfProfessionalAssessment: LikertScaleKeys.UNKNOWN,
@@ -40,8 +40,11 @@ export const state: ProcessState = {
   levelOfStructuredInformation: LikertScaleKeys.UNKNOWN,
   levelOfUniformity: LikertScaleKeys.UNKNOWN,
   levelOfDigitalInformation: LikertScaleKeys.UNKNOWN,
-  levelOfRoiFromAutomization: LikertScaleKeys.UNKNOWN,
   evaluatedLevelOfRoi: LikertScaleKeys.UNKNOWN,
+  levelOfQuality: LikertScaleKeys.UNKNOWN,
+  levelOfRoutineWorkReduction: LikertScaleKeys.UNKNOWN,
+  levelOfSpeed: LikertScaleKeys.UNKNOWN,
+
   
   /* Challenges */
   solutionRequests: null,
