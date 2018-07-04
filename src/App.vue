@@ -21,7 +21,6 @@ import { AxiosResponse } from 'axios';
 import { Action } from 'vuex-class';
 import { authActionTypes } from '@/store/modules/auth/actions';
 import { commonActionTypes, Cms } from '@/store/modules/common/actions';
-import { processActionTypes } from '@/store/modules/process/actions';
 
 @Component
 export default class App extends Vue {
