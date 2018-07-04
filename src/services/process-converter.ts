@@ -3,10 +3,10 @@ import { LikertScale, LikertScaleKeys } from '@/models/likert-scale';
 import { Phase, PhaseKeys } from '@/models/phase';
 import { Status, StatusKeys } from '@/models/status';
 import { Visibility, VisibilityKeys } from '@/models/visibility';
-import { ITSystem, Link, OrgUnit, ProcessState, Technology } from '@/store/modules/process/state';
+import { ITSystem, Link, OrgUnit, ProcessState, Technology, Process } from '@/store/modules/process/state';
 import { User } from '@/store/modules/auth/state';
 
-export interface DatamodelProcess {
+export interface ProcessRequest {
     localId: string | null;
     klId: string | null;
     esdhReference: string | null;
@@ -72,6 +72,13 @@ export interface DatamodelProcess {
 
 }
 
+export interface ProcessResponse extends ProcessRequest {
+    id: number;
+    klaProcess: boolean;
+    cvr: string;
+    municipalityName: string;
+}
+
 function defaultNull(prop: any): any {
     return prop ? prop : null;
 }
@@ -80,7 +87,7 @@ function defaultZero(prop: any) {
     return prop ? Number(prop) : 0;
 }
 
-export function convertToDatamodel(state: ProcessState): DatamodelProcess {
+export function stateToRequest(state: ProcessState): ProcessRequest {
     return {
         localId: defaultNull(state.localId),
         klId: defaultNull(state.klId),
@@ -137,3 +144,16 @@ export function convertToDatamodel(state: ProcessState): DatamodelProcess {
         itSystems: defaultNull(state.itSystems),
     }
 }
+
+export function responseToState(process: ProcessResponse): Process {
+    return {
+        ...process,
+        id: null,
+        timeSpendComputedTotal: process.timeSpendComputedTotal.toString(),
+        timeSpendEmployeesDoingProcess: process.timeSpendEmployeesDoingProcess.toString(),
+        timeSpendOccurancesPerEmployee: process.timeSpendOccurancesPerEmployee.toString(),
+        timeSpendPercentageDigital: process.timeSpendPercentageDigital.toString(),
+        timeSpendPerOccurance: process.timeSpendPerOccurance.toString(),
+        rating: process.rating ? process.rating.toString() : '0',
+    }
+} 

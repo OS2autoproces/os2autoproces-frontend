@@ -19,9 +19,9 @@ export interface Process {
   phase: Phase;
   status: Status;
   statusText: string | null;
-  created: string;
-  lastChanged: string;
-  decommissioned: string | null;
+  created: Date | null;
+  lastChanged: Date | null;
+  decommissioned: Date | null;
   title: string;
   shortDescription: string;
   longDescription: string | null;

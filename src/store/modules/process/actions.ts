@@ -9,7 +9,7 @@ import { ActionTree } from 'vuex';
 import { processMutationTypes } from '@/store/modules/process/mutations';
 import { HTTP } from '@/services/http-service';
 import { User } from '@/store/modules/auth/state';
-import { DatamodelProcess, convertToDatamodel } from '@/services/process-converter';
+import { ProcessRequest, stateToRequest, responseToState, ProcessResponse } from '@/services/process-converter';
 
 export const namespace = 'process';
 
@@ -130,9 +130,11 @@ export const actions: ActionTree<ProcessState, RootState> = {
       return;
     }
 
-    const process = (await HTTP.get<Process>(`api/processes/${id}`)).data;
+    const process = (await HTTP.get<ProcessResponse>(`api/processes/${id}`)).data;
 
-    commit(processMutationTypes.ADD_PROCESS_DETAILS, process);
+    const converted = responseToState(process);
+
+    commit(processMutationTypes.ADD_PROCESS_DETAILS, converted);
   },
   async createProcess({ commit }, process: ProcessState) {
     const created = await HTTP.post(`api/processes`, process);
@@ -141,7 +143,7 @@ export const actions: ActionTree<ProcessState, RootState> = {
   },
 
   async report({commit, state}): Promise<string | null> {
-    const converted: DatamodelProcess = await convertToDatamodel(state);
+    const converted: ProcessRequest = await stateToRequest(state);
     const process = (await HTTP.post<Process>(`api/processes`, converted)).data;
     
     await commit(processMutationTypes.UPDATE, process);
@@ -154,7 +156,7 @@ export const actions: ActionTree<ProcessState, RootState> = {
     return copy.id;
   },
   async save({commit, state}) {
-    const converted = await convertToDatamodel(state);
+    const converted = await stateToRequest(state);
     const updated = (await HTTP.put(`api/processes/${state.id}`, converted)).data;
     // TODO: notify update
     commit(processMutationTypes.UPDATE, updated);

@@ -51,7 +51,7 @@ export const state: ProcessState = {
   processChallenges: null,
   longDescription: null,
   itSystems: null,
-  created: '',
+  created: null,
   
   /* Time and process */
   timeSpendOccurancesPerEmployee: '0',
@@ -72,7 +72,7 @@ export const state: ProcessState = {
   technologies: null,
   
   /* Operation */
-  lastChanged: '',
+  lastChanged: null,
   decommissioned: null,
   legalClauseLastVerified: null,
   rating: null,
