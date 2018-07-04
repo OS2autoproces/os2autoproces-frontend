@@ -25,7 +25,9 @@ export const processActionTypes = {
   REMOVE_ASSOCIATED_PERSON: `${namespace}/removeAssociatedPerson`,
   ADD_TECHNOLOGY: `${namespace}/addTechnology`,
   REMOVE_TECHNOLOGY: `${namespace}/removeTechnology`,
-  LOAD_PROCESS_DETAILS: `${namespace}/loadProcessDetails`
+
+  LOAD_PROCESS_DETAILS: `${namespace}/loadProcessDetails`,
+  CREATE_PROCESS: `${namespace}/createProcess`,
 };
 
 export const actions: ActionTree<ProcessState, RootState> = {
@@ -122,6 +124,11 @@ export const actions: ActionTree<ProcessState, RootState> = {
     const process = (await HTTP.get<Process>(`api/processes/${id}`)).data;
 
     commit(processMutationTypes.ADD_PROCESS_DETAILS, process);
+  },
+  async createProcess({ commit }, process: ProcessState) {
+    const created = await HTTP.post(`api/processes`, process);
+
+    commit(processMutationTypes.PROCESS_CREATED, created);
   },
 
   save() {

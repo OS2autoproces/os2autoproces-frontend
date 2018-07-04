@@ -1,7 +1,7 @@
 <template>
   <div class="details-header">
     <div class="row">
-      <InputField class="name" :value="name" :disabled="!state.disabled.titleEdit" :class="{ disabled: !state.disabled.titleEdit }" />
+      <InputField class="name" :value="state.title" :disabled="!state.disabled.titleEdit" :class="{ disabled: !state.disabled.titleEdit }" />
       <div class="edit-button" role="button" @click="toggleEdit" :class="{ editing: state.disabled.titleEdit }">
         <EditIcon />
       </div>
@@ -49,7 +49,6 @@ export default class DetailsHeader extends Vue {
 
   // TODO: Bind these to the store
   notification = true;
-  name = 'Rekruttering';
   bookmarked = false;
 
   get state() {
