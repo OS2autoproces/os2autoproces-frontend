@@ -7,35 +7,30 @@
                 </div>
                 <LikertScale :disabled="state.disabled.assessmentEdit" :value="state.levelOfProfessionalAssessment" @change="update({ levelOfProfessionalAssessment: $event })" />
             </div>
-
             <div class="question">
                 <div class="label">I hvor høj grad er processen præget af hyppige ændringer?
                     <InfoTooltip class="tooltip" />
                 </div>
                 <LikertScale :disabled="state.disabled.assessmentEdit" :value="state.levelOfChange" @change="update({ levelOfChange: $event })" />
             </div>
-
             <div class="question">
                 <div class="label">I hvor høj grad er processen baseret på struktureret information?
                     <InfoTooltip class="tooltip" />
                 </div>
                 <LikertScale :disabled="state.disabled.assessmentEdit" :value="state.levelOfStructuredInformation" @change="update({ levelOfStructuredInformation: $event })" />
             </div>
-
             <div class="question">
                 <div class="label">Er der variation i hvordan processen løses?
                     <InfoTooltip class="tooltip" />
                 </div>
                 <LikertScale :disabled="state.disabled.assessmentEdit" :value="state.levelOfUniformity" @change="update({ levelOfUniformity: $event })" />
             </div>
-
             <div class="question">
                 <div class="label">Er data og informationer, der skal bruges i processen tilgængelige?
                     <InfoTooltip class="tooltip" />
                 </div>
                 <LikertScale :disabled="state.disabled.assessmentEdit" :value="state.levelOfDigitalInformation" @change="update({ levelOfDigitalInformation: $event })" />
             </div>
-
             <div class="question">
                 <div class="label">Bidrager løsningen til en højere kvalitet, som er mere ensrettet og med færre fejl?
                     <InfoTooltip class="tooltip" />
@@ -54,12 +49,11 @@
                 </div>
                 <LikertScale :disabled="state.disabled.assessmentEdit" :value="state.levelOfRoutineWorkReduction" @change="update({ levelOfRoutineWorkReduction: $event })" />
             </div>
-
             <div class="question">
                 <div class="label">I hvor høj grad vurderes det at processen kan automatiseres?
                     <InfoTooltip class="tooltip" />
                 </div>
-                <LikertScale :disabled="state.disabled.assessmentEdit" :value="state.evaluatedLevelOfRoi	" @change="update({ evaluatedLevelOfRoi	: $event })" />
+                <LikertScale :disabled="state.disabled.assessmentEdit" :value="state.evaluatedLevelOfRoi" @change="update({ evaluatedLevelOfRoi: $event })" />
             </div>
         </div>
     </FormSection>
@@ -82,7 +76,8 @@ import { ProcessState } from '@/store/modules/process/state';
   }
 })
 export default class AssessmentForm extends Vue {
-  @Action(processActionTypes.UPDATE) update!: (state: Partial<ProcessState>) => void;
+  @Action(processActionTypes.UPDATE)
+  update!: (state: Partial<ProcessState>) => void;
 
   get state() {
     return this.$store.state.process;
