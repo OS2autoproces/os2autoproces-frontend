@@ -17,6 +17,7 @@ interface ProcessSearchResponse {
   domain: Domain;
   kle: string;
   legalClause: string;
+  hasBookmarked: boolean;
 }
 
 interface SearchResponse {
