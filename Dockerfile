@@ -33,7 +33,7 @@ WORKDIR /usr/share/nginx/html
 ENV API_DISCOVERY 'https://dev.os2autoproces.eu/saml/discovery?entityID=https%3A%2F%2Fdev.os2autoproces.eu%2F'
 
 # URL for os2autoproces api - defaults to development URL
-ENV API_AUTOPROCES 'https://dev.os2autoproces.eu/api'
+ENV API_AUTOPROCES 'https://dev.os2autoproces.eu'
 
 # Copy nginx configuration file
 COPY Docker/nginx.conf /etc/nginx/conf.d/default.conf
