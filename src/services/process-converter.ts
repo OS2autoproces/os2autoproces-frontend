@@ -77,7 +77,7 @@ function defaultNull(prop: any): any {
 }
 
 function defaultZero(prop: any) {
-    return prop ? prop : 0;
+    return prop ? Number(prop) : 0;
 }
 
 export function convertToDatamodel(state: ProcessState): DatamodelProcess {
@@ -122,7 +122,6 @@ export function convertToDatamodel(state: ProcessState): DatamodelProcess {
         levelOfQuality: state.levelOfQuality ? state.levelOfQuality: LikertScaleKeys.UNKNOWN,
         levelOfSpeed: state.levelOfSpeed ? state.levelOfSpeed: LikertScaleKeys.UNKNOWN,
         levelOfRoutineWorkReduction: state.levelOfRoutineWorkReduction ? state.levelOfRoutineWorkReduction: LikertScaleKeys.UNKNOWN,
-
         technicalImplementationNotes: defaultNull(state.technicalImplementationNotes),
         organizationalImplementationNotes: defaultNull(state.organizationalImplementationNotes),
         rating: defaultNull(state.rating),
@@ -130,10 +129,7 @@ export function convertToDatamodel(state: ProcessState): DatamodelProcess {
         // TODO: fix when brian returns
         // searchWords: defaultNull(state.searchWords),
         searchWords: '',
-        
-
         contact: defaultNull(state.contact),
-
         owner: defaultNull(state.owner),
         orgUnits: defaultNull(state.orgUnits),
         users: defaultNull(state.users),
@@ -141,7 +137,3 @@ export function convertToDatamodel(state: ProcessState): DatamodelProcess {
         itSystems: defaultNull(state.itSystems),
     }
 }
-
-// export function convertToStoreProcess(process: Process) {
-
-// } 
