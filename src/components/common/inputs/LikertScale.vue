@@ -33,7 +33,6 @@ export default class LikertScale extends Vue {
 
   select(key: any) {
     if (!this.disabled) {
-      console.log(key)
       this.$emit('change', key);
     }
   }
