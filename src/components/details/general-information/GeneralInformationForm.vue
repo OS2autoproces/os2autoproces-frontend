@@ -97,7 +97,6 @@ import { processActionTypes } from '@/store/modules/process/actions';
 import { StatusKeys, StatusLabels } from '@/models/status';
 import { OrgUnit } from '@/store/modules/process/state';
 import { VisibilityLabels, VisibilityKeys } from '@/models/visibility';
-import { HTTP } from '@/services/http-service';
 import { DomainKeys, DomainLabels } from '@/models/domain';
 
 @Component({
