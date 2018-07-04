@@ -17,6 +17,7 @@ interface ProcessSearchResponse {
   domain: Domain;
   kle: string;
   legalClause: string;
+  hasBookmarked: boolean;
 }
 
 interface SearchResponse {
@@ -52,7 +53,6 @@ function mapSearchResponse(response: SearchResponse): SearchResult {
   }
 }
 
-// TODO: Add municipality name to search result
 export async function search(filters: SearchFilters): Promise<SearchResult> {
   const params: SearchParams = {
     projection: 'grid',
