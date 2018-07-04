@@ -30,6 +30,7 @@ export const processActionTypes = {
   LOAD_PROCESS_DETAILS: `${namespace}/loadProcessDetails`,
   CREATE_PROCESS: `${namespace}/createProcess`,
   COPY_PROCESS: `${namespace}/copyProcess`,
+  DELETE: `${namespace}/delete`,
 };
 
 export const actions: ActionTree<ProcessState, RootState> = {
@@ -157,7 +158,10 @@ export const actions: ActionTree<ProcessState, RootState> = {
     const updated = (await HTTP.put(`api/processes/${state.id}`, converted)).data;
     // TODO: notify update
     commit(processMutationTypes.UPDATE, updated);
-  } 
+  },
+  async delete({commit, state}) {
+    // TODO: delete process
+  }
 };
 
 export interface NewComment {
