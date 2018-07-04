@@ -1,10 +1,10 @@
 <template>
-    <div class="scale" :class="{ disabled }">
-        <div class="scale-option" v-for="key in items" :key="key" @click="select(key)">
-            <Checkbox class="checkbox" :disabled="disabled" :value="key === value" />
-            <div class="label">{{LikertScaleLabels[key]}}</div>
-        </div>
+  <div class="scale" :class="{ disabled }">
+    <div class="scale-option" v-for="likert in items" :key="likert.value" @click="select(likert.value)">
+      <Checkbox class="checkbox" :disabled="disabled" :value="likert.value === value" />
+      <div class="label">{{likert.label}}</div>
     </div>
+  </div>
 </template>
 
 <script lang='ts'>
@@ -22,16 +22,16 @@ export default class LikertScale extends Vue {
   @Prop() disabled!: boolean;
 
   items = [
-    LikertScaleKeys.VERY_LOW,
-    LikertScaleKeys.LOW,
-    LikertScaleKeys.HIGH,
-    LikertScaleKeys.VERY_HIGH,
-    LikertScaleKeys.UNKNOWN,
+    { value: LikertScaleKeys.VERY_LOW, label: LikertScaleLabels.VERY_LOW },
+    { value: LikertScaleKeys.HIGH, label: LikertScaleLabels.HIGH },
+    { value: LikertScaleKeys.LOW, label: LikertScaleLabels.LOW },
+    { value: LikertScaleKeys.UNKNOWN, label: LikertScaleLabels.UNKNOWN },
+    { value: LikertScaleKeys.VERY_HIGH, label: LikertScaleLabels.VERY_HIGH }
   ];
 
   LikertScaleLabels = LikertScaleLabels;
 
-  select(key: LikertScale) {
+  select(key: string) {
     if (!this.disabled) {
       this.$emit('change', key);
     }
