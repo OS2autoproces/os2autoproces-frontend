@@ -12,12 +12,7 @@
         <ArrowDownIcon />
 
         <div class="phases">
-          <router-link :to="`/details/new/${phaseKeys.IDEA}`">Idé</router-link>
-          <router-link :to="`/details/new/${phaseKeys.PREANALYSIS}`">Foranalyse</router-link>
-          <router-link :to="`/details/new/${phaseKeys.SPECIFIKATION}`">Specifikation</router-link>
-          <router-link :to="`/details/new/${phaseKeys.DEVELOPMENT}`">Udvikling</router-link>
-          <router-link :to="`/details/new/${phaseKeys.IMPLEMENTERING}`">Implementering</router-link>
-          <router-link :to="`/details/new/${phaseKeys.OPERATION}`">Drift</router-link>
+          <router-link v-for="phase in phasesLevels" :key="phase.label" :to="`/details/new/${phase.route}`"> {{phase.label}} </router-link>
         </div>
       </div>
     </div>
@@ -29,7 +24,7 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 import ArrowDownIcon from '../components/icons/ArrowDownIcon.vue';
 import ArrowLeftIcon from '../components/icons/ArrowLeftIcon.vue';
 import NavBar from '../components/common/NavBar.vue';
-import { PhaseKeys } from '@/models/phase';
+import { PhaseKeys, PhaseLabels } from '@/models/phase';
 
 @Component({
   components: {
@@ -39,7 +34,14 @@ import { PhaseKeys } from '@/models/phase';
   }
 })
 export default class Home extends Vue {
-  phaseKeys = PhaseKeys;
+  phasesLevels = [
+    { route: PhaseKeys.IDEA, label: PhaseLabels.IDEA },
+    { route: PhaseKeys.PREANALYSIS, label: PhaseLabels.PREANALYSIS },
+    { route: PhaseKeys.SPECIFICATION, label: PhaseLabels.SPECIFICATION },
+    { route: PhaseKeys.DEVELOPMENT, label: PhaseLabels.DEVELOPMENT },
+    { route: PhaseKeys.IMPLEMENTATION, label: PhaseLabels.IMPLEMENTATION },
+    { route: PhaseKeys.OPERATION, label: PhaseLabels.OPERATION }
+  ];
 }
 </script>
 
