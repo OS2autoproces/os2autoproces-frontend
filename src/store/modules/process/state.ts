@@ -12,7 +12,7 @@ export interface ProcessState extends Process {
 }
 
 export interface Process {
-  id: number | null;
+  id: string | null;
   localId: string | null;
   klId: string | null;
   esdhReference: string | null;
@@ -38,11 +38,11 @@ export interface Process {
   internalNotes: string | null;
   processChallenges: string | null;
   solutionRequests: string | null;
-  timeSpendOccurancesPerEmployee: number;
-  timeSpendPerOccurance: number;
-  timeSpendEmployeesDoingProcess: number;
-  timeSpendPercentageDigital: number;
-  timeSpendComputedTotal: number;
+  timeSpendOccurancesPerEmployee: string;
+  timeSpendPerOccurance: string;
+  timeSpendEmployeesDoingProcess: string;
+  timeSpendPercentageDigital: string;
+  timeSpendComputedTotal: string;
   timeSpendComment: string;
   targetsCompanies: boolean;
   targestsCitizens: boolean;
@@ -60,7 +60,7 @@ export interface Process {
   evaluatedLevelOfRoi: LikertScale;
   technicalImplementationNotes: string | null;
   organizationalImplementationNotes: string | null;
-  rating: number | null;
+  rating: string | null;
   ratingComment: string | null;
   searchWords: string | null;
 
@@ -79,13 +79,13 @@ export interface Link {
 }
 
 export interface ITSystem {
-  id: number;
+  id: string;
   name: string;
   vendor: string | null;
 }
 
 export interface OrgUnit {
-  id: number;
+  id: string;
   uuid: string;
   name: string;
   active: boolean;
@@ -93,13 +93,13 @@ export interface OrgUnit {
 }
 
 export interface Technology {
-  id: number;
+  id: string;
   name: string;
 }
 
 export interface Attachment {
   fileName: string;
-  id?: number;
+  id?: string;
   url?: string;
   uploading?: boolean;
 }
