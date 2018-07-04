@@ -29,9 +29,6 @@ EXPOSE 80
 
 WORKDIR /usr/share/nginx/html
 
-# URL for discovery page - defaults to development URL
-ENV API_DISCOVERY 'https://dev.os2autoproces.eu/saml/discovery?entityID=https%3A%2F%2Fdev.os2autoproces.eu%2F'
-
 # URL for os2autoproces api - defaults to development URL
 ENV API_AUTOPROCES 'https://dev.os2autoproces.eu'
 

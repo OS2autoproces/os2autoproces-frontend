@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <div class="header">
-      <a class="login-button" :href="discoveryUrl">Log ind</a>
+      <a class="login-button" :href="loginUrl">Log ind</a>
 
       <h1>AutoProces</h1>
       <h2>Tværkommunal procesdeling</h2>
@@ -55,7 +55,7 @@ export default class Home extends Vue {
 
   editing = false;
 
-  discoveryUrl = window.autoProcessConfiguration.discoveryUrl;
+  loginUrl = `${window.autoProcessConfiguration.apiUrl}/saml/login`;
 
   mounted() {
     this.loadCmsContent('frontPage');
