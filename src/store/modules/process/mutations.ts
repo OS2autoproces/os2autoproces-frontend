@@ -1,4 +1,4 @@
-import { ProcessState, Technology } from '@/store/modules/process/state';
+import { ProcessState, Technology, Process } from '@/store/modules/process/state';
 import { MutationTree } from 'vuex';
 import { merge } from 'lodash';
 import Vue from 'vue';
@@ -11,7 +11,8 @@ export const processMutationTypes = {
   ADD_ASSOCIATED_PERSON: 'addAssociatedPerson',
   REMOVE_ASSOCIATED_PERSON: 'removeAssociatedPerson',
   ADD_TECHNOLOGY: 'addTechnology',
-  REMOVE_TECHNOLOGY: 'removeTechnology'
+  REMOVE_TECHNOLOGY: 'removeTechnology',
+  ADD_PROCESS_DETAILS: 'addProcessDetails'
 };
 
 export const mutations: MutationTree<ProcessState> = {
@@ -43,5 +44,8 @@ export const mutations: MutationTree<ProcessState> = {
     if (state.technologies) {
       state.technologies = state.technologies.filter((_, i) => i !== index);
     }
+  },
+  addProcessDetails(state: ProcessState, process: Process) {
+    merge(state, process);
   }
 };

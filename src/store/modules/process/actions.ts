@@ -1,5 +1,10 @@
 import { RootState } from '@/store/store';
-import { ProcessState, Attachment, Technology } from '@/store/modules/process/state';
+import {
+  ProcessState,
+  Attachment,
+  Technology,
+  Process
+} from '@/store/modules/process/state';
 import { ActionTree } from 'vuex';
 import { processMutationTypes } from '@/store/modules/process/mutations';
 import { HTTP } from '@/services/http-service';
@@ -19,7 +24,8 @@ export const processActionTypes = {
   ADD_ASSOCIATED_PERSON: `${namespace}/addAssociatedPerson`,
   REMOVE_ASSOCIATED_PERSON: `${namespace}/removeAssociatedPerson`,
   ADD_TECHNOLOGY: `${namespace}/addTechnology`,
-  REMOVE_TECHNOLOGY: `${namespace}/removeTechnology`,  
+  REMOVE_TECHNOLOGY: `${namespace}/removeTechnology`,
+  LOAD_PROCESS_DETAILS: `${namespace}/loadProcessDetails`
 };
 
 export const actions: ActionTree<ProcessState, RootState> = {
@@ -36,8 +42,6 @@ export const actions: ActionTree<ProcessState, RootState> = {
     commit(processMutationTypes.ASSIGN, { attachments });
   },
   async addAttachments({ commit, state }, files: File[]) {
-    // TODO: Use correct process
-    const process = { id: '1' };
 
     const form = new FormData();
     files.forEach(file => form.append('files', file));
@@ -56,7 +60,7 @@ export const actions: ActionTree<ProcessState, RootState> = {
 
     try {
       const attachments = (await HTTP.post<Attachment[]>(
-        `/api/attachments/${process.id}`,
+        `/api/attachments/${state.id}`,
         form
       )).data;
       if (!state.attachments) {
@@ -79,12 +83,9 @@ export const actions: ActionTree<ProcessState, RootState> = {
     }
   },
   async removeAttachment({ commit, state }, id: number) {
-    // TODO: Use correct process
-    const process = { id: '1' };
-
-    await HTTP.delete(`/api/attachments/${process.id}/${id}`);
+    await HTTP.delete(`/api/attachments/${state.id}/${id}`);
     if (!state.attachments) {
-        return;
+      return;
     }
     commit(processMutationTypes.ASSIGN, {
       attachments: state.attachments.filter(a => a.id !== id)
@@ -117,6 +118,11 @@ export const actions: ActionTree<ProcessState, RootState> = {
   removeTechnology({ commit }, index: number) {
     commit(processMutationTypes.REMOVE_TECHNOLOGY, index);
   },
+  async loadProcessDetails({ commit }, id: number) {
+    const process = (await HTTP.get<Process>(`api/processes/${id}`)).data;
+
+    commit(processMutationTypes.ADD_PROCESS_DETAILS, process);
+  },
 
   save() {
     // TODO: Save to backend
@@ -127,10 +133,10 @@ export const actions: ActionTree<ProcessState, RootState> = {
     // const process = await backend.post(store.proces);
     // updateGeneralInformation({ id: process.id });
     return { id: '1234' };
-  },
+  }
 };
 
 export interface NewComment {
-    message: string;
-    processId: number;
+  message: string;
+  processId: number;
 }
