@@ -14,8 +14,9 @@ function encode(val: string) {
 function paramsSerializer(params: object): string {
   return Object.entries(params)
     .filter(([key, value]) => {
-      const isDefined = value !== null && value !== undefined;
+      const isDefined = value !== null && value !== undefined && value !== '';
       const isNonEmpty = !Array.isArray(value) || value.length > 0;
+
 
       return isDefined && isNonEmpty;
     })

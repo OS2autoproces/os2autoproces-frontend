@@ -28,7 +28,7 @@ import { Phase, PhaseKeys } from '@/models/phase';
   }
 })
 export default class Phases extends Vue {
-  @Prop() private value!: string;
+  @Prop({type: String}) private value!: string;
   @Prop() private disabled!: boolean;
   @Prop() private small!: boolean;
 
