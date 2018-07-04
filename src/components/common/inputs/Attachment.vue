@@ -26,7 +26,7 @@ import PdfIcon from '@/components/icons/PdfIcon.vue';
 import PowerPointIcon from '@/components/icons/PowerPointIcon.vue';
 import FileIcon from '@/components/icons/FileIcon.vue';
 import DeleteIcon from '@/components/icons/DeleteIcon.vue';
-import { Attachment as IAttachment } from '@/store/modules/process/state';
+import { Attachment } from '@/store/modules/process/state';
 
 @Component({
   components: {
@@ -38,8 +38,8 @@ import { Attachment as IAttachment } from '@/store/modules/process/state';
     DeleteIcon
   }
 })
-export default class Attachment extends Vue {
-  @Prop() attachment!: IAttachment;
+export default class AttachmentComponent extends Vue {
+  @Prop() attachment!: Attachment;
   @Prop() disabled!: boolean;
 
   get type() {

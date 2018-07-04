@@ -1,7 +1,7 @@
 <template>
   <div class="attachment-upload">
     <div class="attachment-list">
-      <Attachment v-for="attachment in attachments" :key="attachment.id" :attachment="attachment" :disabled="disabled" @remove="$emit('remove', attachment.id)" />
+      <AttachmentComponent v-for="attachment in attachments" :key="attachment.id" :attachment="attachment" :disabled="disabled" @remove="$emit('remove', attachment.id)" />
     </div>
 
     <label class="upload-button-wrapper" v-if="!disabled">
@@ -16,17 +16,17 @@
 <script lang='ts'>
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import Button from '@/components/common/inputs/Button.vue';
-import Attachment from './Attachment.vue';
-import { Attachment as IAttachment } from '@/store/modules/process/state';
+import AttachmentComponent from './Attachment.vue';
+import { Attachment } from '@/store/modules/process/state';
 
 @Component({
   components: {
-    Attachment,
+    AttachmentComponent,
     Button
   }
 })
 export default class AttachmentUpload extends Vue {
-  @Prop() attachments!: IAttachment[];
+  @Prop() attachments!: Attachment[];
   @Prop() disabled!: boolean;
 
   addFiles(files: FileList) {
