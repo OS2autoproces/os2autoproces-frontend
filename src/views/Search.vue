@@ -4,7 +4,7 @@
 
         <div class="page">
             <div>
-                <SearchFilters />
+                <SearchFiltersComponent :filters="filters" @change="updateFilters" />
             </div>
             <div>
                 <div class="results-wrapper">
@@ -30,34 +30,27 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator';
+import { Vue, Component } from 'vue-property-decorator';
 import NavBar from '../components/common/NavBar.vue';
-import SearchFilters from '../components/search/SearchFilters.vue';
+import SearchFiltersComponent from '../components/search/SearchFilters.vue';
 import SearchPagination from '../components/search/SearchPagination.vue';
 import SearchResult from '../components/search/SearchResult.vue';
 import SearchSorting from '../components/search/SearchSorting.vue';
 import PlusIcon from '../components/icons/PlusIcon.vue';
-import { Action } from 'vuex-class';
 import { searchActionTypes } from '../store/modules/search/actions';
-import {SearchResultProcess} from "../store/modules/search/state";
+import {SearchFilters, SearchResultProcess} from "../store/modules/search/state";
 
 @Component({
   components: {
     PlusIcon,
     NavBar,
-    SearchFilters,
+    SearchFiltersComponent,
     SearchPagination,
     SearchResult,
     SearchSorting
   }
 })
 export default class Search extends Vue {
-  // TODO: Search page
-  // Field, time and system filters
-  // Call backend
-
-  @Action(searchActionTypes.UPDATE_FILTERS) updateFilters: any;
-
   get filters() {
     return this.$store.state.search.filters;
   }
@@ -68,8 +61,15 @@ export default class Search extends Vue {
 
   isBookmarked(id: SearchResultProcess['id']) {
     const user = this.$store.state.auth.user;
-    
+
     return !!user && user.bookmarks.includes(id);
+  }
+
+  updateFilters(filters: Partial<SearchFilters>) {
+    this.$store.dispatch(searchActionTypes.UPDATE_FILTERS, {
+      page: 0,
+      ...filters
+    })
   }
 
   mounted() {

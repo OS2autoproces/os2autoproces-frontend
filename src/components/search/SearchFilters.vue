@@ -85,6 +85,7 @@
   import {PhaseLabels} from '@/models/phase';
   import {DomainLabels} from '@/models/domain';
   import {VisibilityLabels} from '@/models/visibility';
+  import {SearchFilters} from "../../store/modules/search/state";
 
   @Component({
     components: {
@@ -95,16 +96,12 @@
       PillCheckbox
     }
   })
-  export default class SearchFilters extends Vue {
-    @Action(searchActionTypes.UPDATE_FILTERS) updateFilters: any;
-
+  export default class SearchFiltersComponent extends Vue {
     PhaseLabels = PhaseLabels;
     DomainLabels = DomainLabels;
     VisibilityLabels = VisibilityLabels;
 
-    get filters() {
-      return this.$store.state.search.filters;
-    }
+    @Prop() filters!: SearchFilters;
 
     get user() {
       return this.$store.state.auth.user;
@@ -123,6 +120,10 @@
     setBookmarkedId(value: boolean) {
       const bookmarkedId = value && this.user ? this.user.uuid : null;
       this.updateFilters({ bookmarkedId });
+    }
+
+    updateFilters(filters: Partial<SearchFilters>) {
+      this.$emit('change', filters);
     }
   }
 </script>
