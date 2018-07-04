@@ -89,7 +89,7 @@ export const actions: ActionTree<ProcessState, RootState> = {
       });
     }
   },
-  async removeAttachment({ commit, state }, id: number) {
+  async removeAttachment({ commit, state }, id: string) {
     await HTTP.delete(`/api/attachments/${state.id}/${id}`);
     if (!state.attachments) {
       return;
@@ -108,7 +108,7 @@ export const actions: ActionTree<ProcessState, RootState> = {
 
     commit(processMutationTypes.SAVE_COMMENTS, [...state.comments, comment]);
   },
-  async loadComments({ commit }, processId: number) {
+  async loadComments({ commit }, processId: string) {
     const comments = (await HTTP.get<Comment[]>(`api/comments/${processId}`))
       .data;
     commit(processMutationTypes.SAVE_COMMENTS, comments);
@@ -125,7 +125,7 @@ export const actions: ActionTree<ProcessState, RootState> = {
   removeTechnology({ commit }, index: number) {
     commit(processMutationTypes.REMOVE_TECHNOLOGY, index);
   },
-  async loadProcessDetails({ commit }, id: number) {
+  async loadProcessDetails({ commit }, id: string) {
     if (!id) {
       return;
     }
@@ -140,14 +140,14 @@ export const actions: ActionTree<ProcessState, RootState> = {
     commit(processMutationTypes.PROCESS_CREATED, created);
   },
 
-  async report({commit, state}): Promise<number | null> {
+  async report({commit, state}): Promise<string | null> {
     const converted: DatamodelProcess = await convertToDatamodel(state);
     const process = (await HTTP.post<Process>(`api/processes`, converted)).data;
     
     await commit(processMutationTypes.UPDATE, process);
     return state.id;
   },
-  async copyProcess({commit, state}): Promise<number | null> {
+  async copyProcess({commit, state}): Promise<string | null> {
     const copy = (await HTTP.post<Process>(`api/processes/${state.id}/copy`)).data;
     // TODO: notify copy complete
     commit(processMutationTypes.UPDATE, copy);
@@ -166,5 +166,5 @@ export const actions: ActionTree<ProcessState, RootState> = {
 
 export interface NewComment {
   message: string;
-  processId: number;
+  processId: string;
 }
