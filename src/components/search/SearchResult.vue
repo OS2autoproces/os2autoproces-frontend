@@ -36,7 +36,7 @@
       <Phases :value="process.phase" small disabled/>
       <div class="status">{{StatusLabels[process.status]}}</div>
     </div>
-    <star-icon class="star-icon" :class="{ selected: bookmarked }"/>
+    <star-icon class="star-icon" :class="{ selected: process.hasBookmarked }"/>
   </div>
 </template>
 

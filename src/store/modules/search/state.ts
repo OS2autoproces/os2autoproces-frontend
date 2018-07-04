@@ -20,6 +20,7 @@ export interface SearchResultProcess {
   domain: string;
   kle: string;
   legalClause: string;
+  hasBookmarked: boolean;
 }
 
 export interface SortingOption {

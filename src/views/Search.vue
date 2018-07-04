@@ -18,7 +18,7 @@
 
                     <div class="results" v-if="result">
                         <router-link :to="'/details/' + process.id" class="search-result-link" v-for="process in result.processes" :key="process.id">
-                            <SearchResult :process="process" :bookmarked="isBookmarked(process.id)" />
+                            <SearchResult :process="process" />
                         </router-link>
                     </div>
 
@@ -57,12 +57,6 @@ export default class Search extends Vue {
 
   get result() {
     return this.$store.state.search.result;
-  }
-
-  isBookmarked(id: SearchResultProcess['id']) {
-    const user = this.$store.state.auth.user;
-
-    return !!user && user.bookmarks.includes(id);
   }
 
   updateFilters(filters: Partial<SearchFilters>) {
