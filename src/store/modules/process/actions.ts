@@ -140,7 +140,7 @@ export const actions: ActionTree<ProcessState, RootState> = {
     commit(processMutationTypes.PROCESS_CREATED, created);
   },
 
-  async report({commit, state}): Promise<number| null> {
+  async report({commit, state}): Promise<number | null> {
     const converted: DatamodelProcess = await convertToDatamodel(state);
     const process = (await HTTP.post<Process>(`api/processes`, converted)).data;
     
