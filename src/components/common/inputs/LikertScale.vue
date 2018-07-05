@@ -22,11 +22,11 @@ export default class LikertScale extends Vue {
   @Prop() disabled!: boolean;
 
   items = [
-    { value: LikertScaleKeys.VERY_LOW, label: LikertScaleLabels.VERY_LOW },
+    { value: LikertScaleKeys.VERY_HIGH, label: LikertScaleLabels.VERY_HIGH },
     { value: LikertScaleKeys.HIGH, label: LikertScaleLabels.HIGH },
     { value: LikertScaleKeys.LOW, label: LikertScaleLabels.LOW },
-    { value: LikertScaleKeys.UNKNOWN, label: LikertScaleLabels.UNKNOWN },
-    { value: LikertScaleKeys.VERY_HIGH, label: LikertScaleLabels.VERY_HIGH }
+    { value: LikertScaleKeys.VERY_LOW, label: LikertScaleLabels.VERY_LOW },
+    { value: LikertScaleKeys.UNKNOWN, label: LikertScaleLabels.UNKNOWN }
   ];
 
   LikertScaleLabels = LikertScaleLabels;
