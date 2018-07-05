@@ -19,12 +19,4 @@ export const getters: GetterTree<AuthState, RootState> = {
       return state.user.roles.some(role => validRoles.includes(role));
     };
   },
-  isBookmarked(state: AuthState) {
-    return (id: number) => {
-      if (!state.user || !state.user.bookmarks) {
-        return false;
-      }
-      return state.user.bookmarks.includes(id);
-    };
-  }
 };
