@@ -3,11 +3,11 @@
 
         <h2>Teknisk implementering</h2>
         <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
-        <TextArea :max-length="3000" :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({technicalImplementation: $event})" :disabled="state.disabled.implementationEdit" :value="state.technicalImplementation" />
+        <TextArea :max-length="3000" :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({technicalImplementationNotes: $event})" :disabled="state.disabled.implementationEdit" :value="state.technicalImplementationNotes" />
 
         <h2>Organisatorisk implementering</h2>
         <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
-        <TextArea :max-length="3000" :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({organizationalImplementation: $event})" :disabled="state.disabled.implementationEdit" :value="state.organizationalImplementation" />
+        <TextArea :max-length="3000" :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({organizationalImplementationNotes: $event})" :disabled="state.disabled.implementationEdit" :value="state.organizationalImplementationNotes" />
         
         <h2>Anvendt teknologi</h2>
         <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>

@@ -70,10 +70,10 @@
       </div>
     </div>
 
-    <div>
-      <div>
-        <h2 class="comments-heading">Kommentar til status: </h2>
-        <TextArea class="status-comment-field" :disabled="state.disabled.generalInformationEdit" @change="update({statusText: $event})" :value="state.statusText" />
+    <div> 
+      <div v-if="state.status !== StatusKeys.INPROGRESS">
+        <h2 class="comments-heading">Kommentar til status</h2>
+        <TextArea :disabled="state.disabled.generalInformationEdit" @change="update({statusText: $event})" :value="state.statusText" />
       </div>
     </div>
 
@@ -116,6 +116,7 @@ export default class GeneralInformationForm extends Vue {
   @Action(processActionTypes.UPDATE) update: any;
 
   isPhaseChanged = false;
+  StatusKeys = StatusKeys;
 
   get state() {
     return this.$store.state.process;
@@ -227,12 +228,8 @@ export default class GeneralInformationForm extends Vue {
 
 .comments-heading {
   @include textarea-heading;
-  display: inline;
   vertical-align: middle;
-}
-
-.status-comment-field {
-  padding-top: $size-unit;
+  padding: $size-unit 0;
 }
 
 .phase-changed {

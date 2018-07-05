@@ -158,6 +158,13 @@ export function responseToState(process: ProcessResponse): Process {
         timeSpendPerOccurance: process.timeSpendPerOccurance.toString(),
         rating: process.rating ? process.rating : 0,
         hasBookmarked: process.hasBookmarked,
+        shortDescription: process.shortDescription ? process.shortDescription : '',
+        longDescription: process.longDescription ? process.longDescription : '',
         canEdit: process.canEdit,
+        statusText: process.statusText ? process.statusText : '',
+        esdhReference: process.esdhReference ? process.esdhReference : '',
+        organizationalImplementationNotes: process.organizationalImplementationNotes ? process.organizationalImplementationNotes  : '',
+        ratingComment: process.ratingComment ? process.ratingComment : '',
+        timeSpendComment: process.timeSpendComment ? process.timeSpendComment : '',
     }
 } 

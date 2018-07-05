@@ -3,7 +3,7 @@
 
     <h2>Sagsreference i ESDH</h2>
     <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
-    <TextArea :max-length="300" @change="update({esdhCaseReference: $event})" :disabled="state.disabled.specificationEdit" :value="state.esdhCaseReference" />
+    <TextArea :max-length="300" @change="update({esdhReference: $event})" :disabled="state.disabled.specificationEdit" :value="state.esdhReference" />
 
   </FormSection>
 </template>
