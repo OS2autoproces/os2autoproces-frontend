@@ -133,7 +133,7 @@ export const actions: ActionTree<ProcessState, RootState> = {
 
     const converted = responseToState(process);
 
-    commit(processMutationTypes.ADD_PROCESS_DETAILS, converted);
+    commit(processMutationTypes.UPDATE, converted);
   },
   async createProcess({ commit }, process: ProcessState) {
     const created = await HTTP.post(`api/processes`, process);
