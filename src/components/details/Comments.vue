@@ -8,7 +8,7 @@
     <div class="comment-list-wrapper">
       <div class="comment-list" ref="comments-list">
         <div class="comment" v-for="(comment, index) in comments" :key="index">
-          <span class="author">{{comment.name}}:</span>
+          <span class="author">{{comment.name}}: </span>
           <span class="time">{{comment.created}}</span>
           <div>{{comment.message}}</div>
         </div>
@@ -21,7 +21,7 @@
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import TextArea from '../common/inputs/TextArea.vue';
 import Button from '../common/inputs/Button.vue';
-import { Comment } from '@/store/modules/details/state';
+import { Comment } from '@/store/modules/process/state';
 
 @Component({
   components: {
@@ -32,7 +32,7 @@ import { Comment } from '@/store/modules/details/state';
 export default class Comments extends Vue {
   maxLength = 140;
   newComment = '';
-  
+
   @Prop() disabled!: boolean;
   @Prop() comments!: Comment[];
   @Watch('comments') onCommentsChanged() {
@@ -99,7 +99,8 @@ export default class Comments extends Vue {
 
 .comment {
   white-space: pre-wrap;
-  :not(:last-of-type) {
+
+  &:not(:last-child) {
     margin-bottom: $size-unit;
   }
 }

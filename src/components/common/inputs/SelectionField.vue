@@ -1,26 +1,35 @@
 <template>
   <div class="selection-wrapper">
     <v-select class="selection-field" v-if="!disabled" :items="items" single-line @change="valueChanged" autocomplete :value="value" :append-icon="iconName" :placeholder="placeholder" />
-    <div class="selection-text" v-if="disabled">{{value}}</div>
+    <div class="selection-text" v-if="disabled">{{text}}</div>
   </div>
 </template>
 
 <script lang='ts'>
 import { Vue, Component, Prop } from 'vue-property-decorator';
 
-@Component({})
+interface Item {
+  text: string;
+  value: any;
+}
+
+@Component
 export default class SelectionField extends Vue {
-  @Prop() value!: string;
-  @Prop() items!: string[];
+  @Prop({ type: [Boolean, Object, String,  Array] })
+  value!: any;
+  @Prop() items!: Item[];
   @Prop({ default: 'keyboard_arrow_down' })
   iconName!: string;
   @Prop() placeholder!: string;
   @Prop() disabled!: boolean;
+  
+  get text() {
+    const item = this.items.find(i => i.value === this.value);
+    return item ? item.text : '';
+  }
 
   valueChanged(value: any) {
-    if (typeof value === 'string') {
-      this.$emit('change', value);
-    }
+    this.$emit('change', value);
   }
 }
 </script>

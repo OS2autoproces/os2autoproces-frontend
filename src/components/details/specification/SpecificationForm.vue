@@ -1,26 +1,20 @@
 <template>
-    <FormSection heading="Specifikation" id="specification" :disabled="state.disabled" @edit="update({disabled: $event})">
-        <h2>Proces udfordringer</h2>
-        <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
-        <TextArea :max-length="1200" :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({challenges: $event})" :disabled="state.disabled" :value="state.challenges" />
+  <FormSection heading="Specifikation" id="specification" :disabled="state.disabled.specificationEdit" @edit="update({disabled: { specificationEdit: $event}})">
 
-        <h2>Forventet løsningsdesign</h2>
-        <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
-        <TextArea :max-length="2400" :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({solution: $event})" :disabled="state.disabled" :value="state.solution" />
+    <h2>Sagsreference i ESDH</h2>
+    <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
+    <TextArea :max-length="300" @change="update({esdhReference: $event})" :disabled="state.disabled.specificationEdit" :value="state.esdhReference" />
 
-        <h2>Sagsreference i ESDH</h2>
-        <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
-        <TextArea :max-length="300" :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({esdhCaseReference: $event})" :disabled="state.disabled" :value="state.esdhCaseReference" />
-    </FormSection>
+  </FormSection>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
-import { SpecificationActionTypes } from '@/store/modules/details/specification/actions';
 import TextArea from '@/components/common/inputs/TextArea.vue';
 import { Action } from 'vuex-class';
 import FormSection from '@/components/details/FormSection.vue';
 import InfoTooltip from '@/components/common/InfoTooltip.vue';
+import { processActionTypes } from '@/store/modules/process/actions';
 
 @Component({
   components: {
@@ -30,12 +24,10 @@ import InfoTooltip from '@/components/common/InfoTooltip.vue';
   }
 })
 export default class SpecificationForm extends Vue {
-  @Action(SpecificationActionTypes.UPDATE) update: any;
-
-  twoColumnBreakpoint = 1600;
+  @Action(processActionTypes.UPDATE) update: any;
 
   get state() {
-    return this.$store.state.details.specification;
+    return this.$store.state.process;
   }
 }
 </script>

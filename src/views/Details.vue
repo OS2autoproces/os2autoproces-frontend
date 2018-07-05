@@ -30,18 +30,9 @@
             <AttachmentsForm />
           </div>
 
-          <div class="usage">
-            <div :class="{ disabled: state.intervalDisabled }" class="usage-heading">Antal kommuner der bruger løsningen
-              <div role="button" class="usage-edit-icon" @click="udpateDetails({intervalDisabled: !state.intervalDisabled})">
-                <EditIcon />
-              </div>
-            </div>
-            <IntervalSelector @change="udpateDetails({interval: $event})" :value="state.interval" :disabled="state.intervalDisabled" />
-          </div>
-
           <div class="comments">
             <div class="comments-heading">Kommentarer</div>
-            <Comments :comments="state.comments" @submit="saveComment({ processId: state.generalInformation.id, message: $event })" />
+            <Comments :comments="state.comments" @submit="saveComment({ message: $event })" />
           </div>
         </div>
       </div>
@@ -67,13 +58,10 @@ import ImplementationForm from '@/components/details/implementation/Implementati
 import TimeAndProcessForm from '@/components/details/time-process/TimeAndProcessForm.vue';
 import AttachmentsForm from '@/components/details/attachments/AttachmentsForm.vue';
 import OperationForm from '@/components/details/operation/OperationForm.vue';
-import {
-  NewComment,
-  detailsActionTypes
-} from '@/store/modules/details/actions';
-import { generalInformationActionTypes } from '@/store/modules/details/general-information/actions';
 import ArrowLeftIcon from '@/components/icons/ArrowLeftIcon.vue';
 import EditIcon from '@/components/icons/EditIcon.vue';
+import { processActionTypes, NewComment } from "@/store/modules/process/actions";
+import { Phase } from '@/models/phase';
 
 @Component({
   components: {
@@ -97,32 +85,32 @@ import EditIcon from '@/components/icons/EditIcon.vue';
   }
 })
 export default class Details extends Vue {
+  @Prop({type: String}) phase!: Phase;
   @Prop() id!: string;
-  @Prop() phase!: string;
 
-  @Action(detailsActionTypes.SAVE) save: any;
-  @Action(generalInformationActionTypes.UPDATE_GENERAL_INFORMATION)
-  updateGeneralInformation: any;
-  @Action(detailsActionTypes.UPDATE) udpateDetails: any;
-  @Action(detailsActionTypes.SAVE_COMMENT)
-  saveComment!: (newComment: NewComment) => Promise<void>;
-  @Action(detailsActionTypes.LOAD_COMMENTS)
-  loadComments!: (processId: number) => Promise<void>;
+  @Action(processActionTypes.SAVE) save: any;
+  @Action(processActionTypes.UPDATE)
+  update: any;
+  @Action(processActionTypes.SAVE_COMMENT)
+  saveComment!: (message: string) => Promise<void>;
+  @Action(processActionTypes.LOAD_COMMENTS)
+  loadComments!: () => Promise<void>;
 
   get state() {
-    return this.$store.state.details;
+    return this.$store.state.process;
   }
 
   async report() {
-    const process = await this.$store.dispatch(detailsActionTypes.REPORT);
-    this.$router.push(`/details/${process.id}`);
+    const processId = await this.$store.dispatch(processActionTypes.REPORT);
+    this.$router.push(`/details/${processId}`);
   }
 
   mounted() {
+    this.$store.dispatch(processActionTypes.LOAD_PROCESS_DETAILS, Number(this.id));
+    
     if (this.phase) {
-      this.updateGeneralInformation({ phase: Number(this.phase) });
+      this.update({ phase: this.phase });
     }
-    this.loadComments(this.state.generalInformation.id);
   }
 }
 </script>

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-function encode(value: string) {
-  return encodeURIComponent(value)
+function encode(val: string) {
+  return encodeURIComponent(val)
     .replace(/%40/gi, '@')
     .replace(/%3A/gi, ':')
     .replace(/%24/g, '$')

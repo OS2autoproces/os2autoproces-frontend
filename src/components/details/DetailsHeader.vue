@@ -1,12 +1,12 @@
 <template>
   <div class="details-header">
     <div class="row">
-      <InputField class="name" :value="name" :disabled="!editName" :class="{ disabled: !editName }" />
-      <div class="edit-button" role="button" @click="editName = !editName" :class="{ editing: editName }">
+      <InputField class="name" :value="state.title" :disabled="state.disabled.titleEdit" :class="{ disabled: state.disabled.titleEdit }" @change="update({ title: $event })" />
+      <div class="edit-button" role="button" @click="toggleEdit" :class="{ editing: state.disabled.titleEdit }">
         <EditIcon />
       </div>
       <div class="bookmark-button" role="button" @click="toggleBookmark">
-        <StarIcon :class="{ selected: bookmarked }" />
+        <StarIcon :class="{ selected: state.hasBookmarked }" />
       </div>
 
       <div class="flex-grow"></div>
@@ -14,7 +14,7 @@
     </div>
     <div class="row">
       <Button class="button" @click="deleteProces">Slet proces</Button>
-      <Button class="button" @click="copyProces">Kopier proces</Button>
+      <Button class="button" @click="copyProcess">Kopier proces</Button>
       <div class="flex-grow"></div>
       <Toggle :value="notification" @change="notification = $event">Mail notifikation</Toggle>
     </div>
@@ -29,11 +29,10 @@ import EditIcon from '@/components/icons/EditIcon.vue';
 import InputField from '@/components/common/inputs/InputField.vue';
 import Button from '@/components/common/inputs/Button.vue';
 import Toggle from '@/components/common/inputs/Toggle.vue';
-import { detailsActionTypes } from '@/store/modules/details/actions';
 import { authGetterTypes } from '@/store/modules/auth/getters';
-import { DetailsState } from '@/store/modules/details/state';
-import { detailsMutationTypes } from '@/store/modules/details/mutations';
 import { authActionTypes } from '@/store/modules/auth/actions';
+import { processActionTypes } from '@/store/modules/process/actions';
+import { ProcessState } from '@/store/modules/process/state';
 
 @Component({
   components: {
@@ -45,44 +44,34 @@ import { authActionTypes } from '@/store/modules/auth/actions';
   }
 })
 export default class DetailsHeader extends Vue {
-  @Action(detailsActionTypes.UPDATE)
-  update!: (value: Partial<DetailsState>) => void;
-  @Getter(authGetterTypes.IS_BOOKMARKED) isBookmarked!: (id: number) => boolean;
+  @Action(processActionTypes.UPDATE) update!: any;
 
   // TODO: Bind these to the store
   notification = true;
-  editName = false;
-  name = 'Rekruttering';
-  bookmarked = false;
 
   get state() {
-    return this.$store.state;
+    return this.$store.state.process;
+  }
+
+  toggleEdit() {
+    this.update({
+      disabled: {
+        titleEdit: !this.state.disabled.titleEdit
+      }
+    });
   }
 
   toggleBookmark() {
-    const id = this.state.details.generalInformation.id;
-
-    if (!id) {
-      return;
-    }
-
-    const isBookmarked = this.isBookmarked(id);
-
-    const action = isBookmarked
-      ? authActionTypes.REMOVE_BOOKMARK
-      : authActionTypes.BOOKMARK;
-
-    this.$store.dispatch(action, id);
-
-    this.bookmarked = !isBookmarked;
+    this.update({ hasBookmarked: !this.state.hasBookmarked });
   }
 
   deleteProces() {
     // TODO: Show confirmation
   }
 
-  copyProces() {
-    // TODO: copy proces
+  async copyProcess() {
+    const id = await this.$store.dispatch(processActionTypes.COPY_PROCESS); 
+    this.$router.push(`/details/${id}`);    
   }
 }
 </script>

@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuex, { StoreOptions } from 'vuex';
-import { details } from '@/store/modules/details';
+import { process } from '@/store/modules/process';
 import { search } from '@/store/modules/search';
 import { auth } from '@/store/modules/auth';
 import { common } from '@/store/modules/common';
@@ -14,7 +14,7 @@ export interface RootState {
 const store: StoreOptions<RootState> = {
   modules: {
     auth,
-    details,
+    process,
     search,
     common
   }

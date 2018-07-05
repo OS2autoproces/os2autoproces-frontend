@@ -1,27 +1,22 @@
 <template>
-    <div class="page">
-        <NavBar />
+  <div class="page">
+    <NavBar />
 
-        <div class="wrapper">
-            <router-link to="/search" class="search-page-link">
-                <ArrowLeftIcon /> Tilbage til søgning
-            </router-link>
+    <div class="wrapper">
+      <router-link to="/search" class="search-page-link">
+        <ArrowLeftIcon /> Tilbage til søgning
+      </router-link>
 
-            <div class="phase-selector">
-                <h1>Hvad ønsker du at indberette?</h1>
-                <ArrowDownIcon />
+      <div class="phase-selector">
+        <h1>Hvad ønsker du at indberette?</h1>
+        <ArrowDownIcon />
 
-                <div class="phases">
-                    <router-link to="/details/new/1">Idé</router-link>
-                    <router-link to="/details/new/2">Foranalyse</router-link>
-                    <router-link to="/details/new/3">Specifikation</router-link>
-                    <router-link to="/details/new/4">Udvikling</router-link>
-                    <router-link to="/details/new/5">Implementering</router-link>
-                    <router-link to="/details/new/6">Drift</router-link>
-                </div>
-            </div>
+        <div class="phases">
+          <router-link v-for="phase in phasesLevels" :key="phase.label" :to="`/details/new/${phase.route}`"> {{phase.label}} </router-link>
         </div>
+      </div>
     </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -29,6 +24,7 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 import ArrowDownIcon from '../components/icons/ArrowDownIcon.vue';
 import ArrowLeftIcon from '../components/icons/ArrowLeftIcon.vue';
 import NavBar from '../components/common/NavBar.vue';
+import { PhaseKeys, PhaseLabels } from '@/models/phase';
 
 @Component({
   components: {
@@ -37,7 +33,16 @@ import NavBar from '../components/common/NavBar.vue';
     NavBar
   }
 })
-export default class Home extends Vue {}
+export default class Home extends Vue {
+  phasesLevels = [
+    { route: PhaseKeys.IDEA, label: PhaseLabels.IDEA },
+    { route: PhaseKeys.PREANALYSIS, label: PhaseLabels.PREANALYSIS },
+    { route: PhaseKeys.SPECIFICATION, label: PhaseLabels.SPECIFICATION },
+    { route: PhaseKeys.DEVELOPMENT, label: PhaseLabels.DEVELOPMENT },
+    { route: PhaseKeys.IMPLEMENTATION, label: PhaseLabels.IMPLEMENTATION },
+    { route: PhaseKeys.OPERATION, label: PhaseLabels.OPERATION }
+  ];
+}
 </script>
 
 <style lang="scss" scoped>

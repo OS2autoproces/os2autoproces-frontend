@@ -1,43 +1,36 @@
 <template>
-    <FormSection heading="Problemstillinger" id="challenges" :disabled="state.disabled" @edit="update({disabled: $event})">
-        <h2>Beskrivelse</h2>
-        <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
-        <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({description: $event})" :disabled="state.disabled" :value="state.description" />
+  <FormSection heading="Problemstillinger" id="challenges" :disabled="state.disabled.challengesEdit" @edit="update({disabled: {challengesEdit: $event}})">
+    <h2>Beskrivelse</h2>
+    <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
+    <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({longDescription: $event})" :disabled="state.disabled.challengesEdit" :value="state.longDescription" />
 
-        <h2>Idéer og løsning</h2>
-        <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
-        <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({ideasSolution: $event})" :disabled="state.disabled" :value="state.ideasSolution" />
+    <h2>Løsningsbeskrivelse</h2>
+    <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
+    <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({solutionRequests: $event})" :disabled="state.disabled.challengesEdit" :value="state.solutionRequests" />
 
-        <h2>Nuværende process</h2>
-        <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
-        <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({currentProcess: $event})" :disabled="state.disabled" :value="state.currentProcess" />
+    <h2>Proces udfordringer</h2>
+    <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
+    <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({processChallenges: $event})" :disabled="state.disabled.challengesEdit" :value="state.processChallenges" />
 
-        <h2>Udfordringer ved nuværende process</h2>
-        <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
-        <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({challenges: $event})" :disabled="state.disabled" :value="state.challenges" />
+    <Well class="challenges-well">
+      <div>
+        <WellItem label="Nuværende system:">
+          <!-- TODO: implement It-stystems when implemented -->
+          <SelectionField :items="processItems" :value="state.itSystems" :disabled="state.disabled.challengesEdit" @change="update({itSystems: ($event)})" />
+        </WellItem>
+      </div>
 
-        <Well class="challenges-well">
-            <div>
-                <WellItem label="Nuværende system:">
-                    <SelectionField :items="processItems" :value="state.currentProcessTitle" :disabled="state.disabled" @change="update({currentProcessTitle: $event})" />
-                </WellItem>
-            </div>
-
-            <div>
-                <WellItem label="Startdato:">
-                    <DatePicker :disabled="state.disabled" :value="state.startDate" @change="update({startDate: $event})" />
-                </WellItem>
-                <WellItem label="Forventet slutdato:">
-                    <DatePicker :disabled="state.disabled" :value="state.expectedEndDate" @change="update({expectedEndDate: $event})" />
-                </WellItem>
-            </div>
-        </Well>
-    </FormSection>
+      <div>
+        <WellItem label="Oprettet:">
+          <DatePicker :disabled="state.disabled.challengesEdit" :value="state.created" @change="update({created: $event})" />
+        </WellItem>
+      </div>
+    </Well>
+  </FormSection>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
-import { ChallengesActionTypes } from '@/store/modules/details/challenges/actions';
 import TextArea from '@/components/common/inputs/TextArea.vue';
 import { Action } from 'vuex-class';
 import SelectionField from '@/components/common/inputs/SelectionField.vue';
@@ -46,6 +39,7 @@ import FormSection from '@/components/details/FormSection.vue';
 import Well from '@/components/common/Well.vue';
 import InfoTooltip from '@/components/common/InfoTooltip.vue';
 import WellItem from '@/components/common/WellItem.vue';
+import { processActionTypes } from '@/store/modules/process/actions';
 
 @Component({
   components: {
@@ -59,15 +53,20 @@ import WellItem from '@/components/common/WellItem.vue';
   }
 })
 export default class ChallengesForm extends Vue {
-  @Action(ChallengesActionTypes.UPDATE_CHALLENGES) update: any;
+  @Action(processActionTypes.UPDATE) update: any;
 
   twoColumnBreakpoint = 1600;
 
   get state() {
-    return this.$store.state.details.challenges;
+    return this.$store.state.process;
   }
 
-  processItems = ['KITOS', 'KITOS1', 'KITOS2', 'KITOS3'];
+  processItems = [
+    { value: { id:1, name: 'KITOS', vendor: 'Christian' }, text: 'KITOS' },
+    { value: { id:2, name: 'KITOS', vendor: 'Christian' }, text: 'KITOS1' },
+    { value: { id:3, name: 'KITOS', vendor: 'Christian' }, text: 'KITOS2' },
+    { value: { id:4, name: 'KITOS', vendor: 'Christian' }, text: 'KITOS3' }
+  ];
 }
 </script>
 
@@ -87,6 +86,6 @@ h2 {
 }
 
 .challenges-well {
-    margin-top: $size-unit * 1.5;
+  margin-top: $size-unit * 1.5;
 }
 </style>

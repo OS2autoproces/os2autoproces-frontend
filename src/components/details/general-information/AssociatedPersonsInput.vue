@@ -27,7 +27,8 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 import { Action } from 'vuex-class';
 import SelectionField from '@/components/common/inputs/SelectionField.vue';
 import DeleteIcon from '@/components/icons/DeleteIcon.vue';
-import { generalInformationActionTypes } from '@/store/modules/details/general-information/actions';
+import { processActionTypes } from '@/store/modules/process/actions';
+import { User } from '@/store/modules/auth/state';
 
 @Component({
   components: {
@@ -36,8 +37,8 @@ import { generalInformationActionTypes } from '@/store/modules/details/general-i
   }
 })
 export default class AssociatedPersonsInput extends Vue {
-  @Action(generalInformationActionTypes.ADD_ASSOCIATED_PERSON) addAssociatedPerson: any;
-  @Action(generalInformationActionTypes.REMOVE_ASSOCIATED_PERSON) removeAssociatedPerson: any;
+  @Action(processActionTypes.ADD_ASSOCIATED_PERSON) addAssociatedPerson: any;
+  @Action(processActionTypes.REMOVE_ASSOCIATED_PERSON) removeAssociatedPerson: any;
 
   @Prop() disabled!: boolean;
 
@@ -45,22 +46,26 @@ export default class AssociatedPersonsInput extends Vue {
 
   people = ['Christian Branstrup Bondesdfsdfa', 'Rasmus', 'Jakob'];
 
-  addPerson(name: string) {
-    this.associatedPeople.push(name);
-    this.addAssociatedPerson(name);
+  addPerson(user: User) {
+    this.associatedPeople.push(user.name);
+    this.addAssociatedPerson(user);
   }
 
-  removePerson(person: string) {
-    this.associatedPeople = this.associatedPeople.filter(p => p !== person);
-    this.removeAssociatedPerson(person);
+  removePerson(user: User) {
+    this.associatedPeople = this.associatedPeople.filter(p => p !== user.name);
+    this.removeAssociatedPerson(user);
   }
 
   get getAssociatedPersons() {
-    return this.$store.state.details.generalInformation.associatedPersons;
+    return this.$store.state.process.users;
   }
 
   get associatedPersonsDisabled() {
-    return this.$store.state.details.generalInformation.associatedPersons.join(', ');
+    const users = this.$store.state.process.users;
+    if (!users) {
+      return;
+    }
+    return this.$store.state.process.users.join(', ');
   }
 }
 </script>
