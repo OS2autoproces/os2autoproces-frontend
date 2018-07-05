@@ -71,6 +71,8 @@ export interface Process {
   itSystems: ITSystem[] | null;
   orgUnits: OrgUnit[] | null;
   technologies: Technology[] | null;
+  hasBookmarked: boolean;
+  canEdit: boolean;
 }
 
 export interface Link {

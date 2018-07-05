@@ -77,6 +77,8 @@ export interface ProcessResponse extends ProcessRequest {
     klaProcess: boolean;
     cvr: string;
     municipalityName: string;
+    hasBookmarked: boolean;
+    canEdit: boolean;
 }
 
 function defaultNull(prop: any): any {
@@ -155,5 +157,7 @@ export function responseToState(process: ProcessResponse): Process {
         timeSpendPercentageDigital: process.timeSpendPercentageDigital.toString(),
         timeSpendPerOccurance: process.timeSpendPerOccurance.toString(),
         rating: process.rating ? process.rating.toString() : '0',
+        hasBookmarked: process.hasBookmarked,
+        canEdit: process.canEdit,
     }
 } 

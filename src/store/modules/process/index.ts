@@ -88,6 +88,8 @@ export const state: ProcessState = {
   internalNotes: null,
   comments: [],
   cvr: '',
+  hasBookmarked: false,
+  canEdit: false,
   
   disabled: {
     titleEdit: false,

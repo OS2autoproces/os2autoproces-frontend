@@ -130,7 +130,7 @@ export const actions: ActionTree<ProcessState, RootState> = {
       return;
     }
 
-    const process = (await HTTP.get<ProcessResponse>(`api/processes/${id}`)).data;
+    const process = (await HTTP.get<ProcessResponse>(`api/processes/${id}?projection=extended`)).data;
 
     const converted = responseToState(process);
 
@@ -162,7 +162,8 @@ export const actions: ActionTree<ProcessState, RootState> = {
     commit(processMutationTypes.UPDATE, updated);
   },
   async delete({commit, state}) {
-    // TODO: delete process
+    const deleted = (await HTTP.delete(`api/processes/${state.id}`)).status;
+    // notify user, process is deleted
   }
 };
 
