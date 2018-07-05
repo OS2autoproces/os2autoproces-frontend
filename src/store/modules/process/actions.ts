@@ -3,7 +3,8 @@ import {
   ProcessState,
   Attachment,
   Technology,
-  Process
+  Process,
+  ITSystem
 } from '@/store/modules/process/state';
 import { ActionTree } from 'vuex';
 import { processMutationTypes } from '@/store/modules/process/mutations';
@@ -26,6 +27,8 @@ export const processActionTypes = {
   REMOVE_ASSOCIATED_PERSON: `${namespace}/removeAssociatedPerson`,
   ADD_TECHNOLOGY: `${namespace}/addTechnology`,
   REMOVE_TECHNOLOGY: `${namespace}/removeTechnology`,
+
+  SAVE_IT_SYSTEM: `${namespace}/saveItSystem`,
 
   LOAD_PROCESS_DETAILS: `${namespace}/loadProcessDetails`,
   CREATE_PROCESS: `${namespace}/createProcess`,
@@ -161,6 +164,12 @@ export const actions: ActionTree<ProcessState, RootState> = {
   async delete({commit, state}) {
     const deleted = (await HTTP.delete(`api/processes/${state.id}`)).status;
     // notify user, process is deleted
+  },
+  saveItSystem({commit, state}, itSystem: ITSystem) {
+    if (!state.itSystems || state.itSystems.some(s => itSystem === s)) {
+      return;
+    }
+    commit(processMutationTypes.ASSIGN, { itSystems: [...state.itSystems, itSystem]});
   }
 };
 

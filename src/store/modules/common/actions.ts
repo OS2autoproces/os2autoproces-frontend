@@ -3,18 +3,26 @@ import { commonMutationTypes } from '@/store/modules/common/mutations';
 import { RootState } from '@/store/store';
 import { ActionTree } from 'vuex';
 import { CommonState } from './state';
+import { ITSystem } from '@/store/modules/process/state';
 
-const namespace = 'common';
+export const namespace = 'common';
 
 export interface Cms {
   label: keyof CommonState;
   content: string;
 }
 
+interface ItSystemsResponse {
+  '_embedded': {
+    itSystems: ITSystem[]
+  }
+}
+
 export const commonActionTypes = {
   UPDATE: `${namespace}/update`,
   LOAD_CMS_CONTENT: `${namespace}/loadCmsContent`,
-  SAVE_CMS_CONTENT: `${namespace}/saveCmsContent`
+  SAVE_CMS_CONTENT: `${namespace}/saveCmsContent`,
+  LOAD_IT_SYSTEMS: `${namespace}/loadItSystems`,
 };
 
 export const actions: ActionTree<CommonState, RootState> = {
@@ -35,5 +43,9 @@ export const actions: ActionTree<CommonState, RootState> = {
         'content-type': 'application/json'
       }
     });
+  },
+  async loadItSystems({ commit }) {
+    const itSystems = (await HTTP.get<ItSystemsResponse>(`api/itSystems`)).data._embedded.itSystems;
+    commit(commonMutationTypes.UPDATE, { itSystems });
   }
 };
