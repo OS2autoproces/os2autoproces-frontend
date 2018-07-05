@@ -137,8 +137,6 @@ export const actions: ActionTree<ProcessState, RootState> = {
   },
   async createProcess({ commit }, process: ProcessState) {
     const created = await HTTP.post(`api/processes`, process);
-
-    commit(processMutationTypes.PROCESS_CREATED, created);
   },
 
   async report({commit, state}): Promise<string | null> {

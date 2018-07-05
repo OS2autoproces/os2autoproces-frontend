@@ -12,7 +12,6 @@ export const processMutationTypes = {
   REMOVE_ASSOCIATED_PERSON: 'removeAssociatedPerson',
   ADD_TECHNOLOGY: 'addTechnology',
   REMOVE_TECHNOLOGY: 'removeTechnology',
-  PROCESS_CREATED: 'processCreated',
 };
 
 export const mutations: MutationTree<ProcessState> = {
