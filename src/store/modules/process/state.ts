@@ -60,7 +60,7 @@ export interface Process {
   evaluatedLevelOfRoi: LikertScale;
   technicalImplementationNotes: string | null;
   organizationalImplementationNotes: string | null;
-  rating: string | null;
+  rating: number | null;
   ratingComment: string | null;
   searchWords: string | null;
 

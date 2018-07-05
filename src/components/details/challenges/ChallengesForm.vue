@@ -1,31 +1,32 @@
 <template>
-    <FormSection heading="Problemstillinger" id="challenges" :disabled="state.disabled.challengesEdit" @edit="update({disabled: {challengesEdit: $event}})">
-        <h2>Beskrivelse</h2>
-        <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
-        <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({longDescription: $event})" :disabled="state.disabled.challengesEdit" :value="state.longDescription" />
+  <FormSection heading="Problemstillinger" id="challenges" :disabled="state.disabled.challengesEdit" @edit="update({disabled: {challengesEdit: $event}})">
+    <h2>Beskrivelse</h2>
+    <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
+    <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({longDescription: $event})" :disabled="state.disabled.challengesEdit" :value="state.longDescription" />
 
-        <h2>Løsningsbeskrivelse</h2>
-        <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
-        <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({solutionRequests: $event})" :disabled="state.disabled.challengesEdit" :value="state.solutionRequests" />
+    <h2>Løsningsbeskrivelse</h2>
+    <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
+    <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({solutionRequests: $event})" :disabled="state.disabled.challengesEdit" :value="state.solutionRequests" />
 
-        <h2>Proces udfordringer</h2>
-        <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
-        <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({processChallenges: $event})" :disabled="state.disabled.challengesEdit" :value="state.processChallenges" />
+    <h2>Proces udfordringer</h2>
+    <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
+    <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({processChallenges: $event})" :disabled="state.disabled.challengesEdit" :value="state.processChallenges" />
 
-        <Well class="challenges-well">
-            <div>
-                <WellItem label="Nuværende system:">
-                    <SelectionField :items="processItems" :value="state.itSystems" :disabled="state.disabled.challengesEdit" @change="update({itSystems: $event})" />
-                </WellItem>
-            </div>
+    <Well class="challenges-well">
+      <div>
+        <WellItem label="Nuværende system:">
+          <!-- TODO: implement It-stystems when implemented -->
+          <SelectionField :items="processItems" :value="state.itSystems" :disabled="state.disabled.challengesEdit" @change="update({itSystems: ($event)})" />
+        </WellItem>
+      </div>
 
-            <div>
-                <WellItem label="Oprettet:">
-                    <DatePicker :disabled="state.disabled.challengesEdit" :value="state.created" @change="update({created: $event})" />
-                </WellItem>
-            </div>
-        </Well>
-    </FormSection>
+      <div>
+        <WellItem label="Oprettet:">
+          <DatePicker :disabled="state.disabled.challengesEdit" :value="state.created" @change="update({created: $event})" />
+        </WellItem>
+      </div>
+    </Well>
+  </FormSection>
 </template>
 
 <script lang="ts">
@@ -60,7 +61,12 @@ export default class ChallengesForm extends Vue {
     return this.$store.state.process;
   }
 
-  processItems = ['KITOS', 'KITOS1', 'KITOS2', 'KITOS3'];
+  processItems = [
+    { value: { id:1, name: 'KITOS', vendor: 'Christian' }, text: 'KITOS' },
+    { value: { id:2, name: 'KITOS', vendor: 'Christian' }, text: 'KITOS1' },
+    { value: { id:3, name: 'KITOS', vendor: 'Christian' }, text: 'KITOS2' },
+    { value: { id:4, name: 'KITOS', vendor: 'Christian' }, text: 'KITOS3' }
+  ];
 }
 </script>
 

@@ -92,16 +92,16 @@ export const state: ProcessState = {
   canEdit: false,
   
   disabled: {
-    titleEdit: false,
-    generalInformationEdit: false,
-    challengesEdit: false,
-    timeAndProcessEdit: false,
-    assessmentEdit: false,
-    operationEdit: false,
-    specificationEdit: false,
-    implementationEdit: false,
-    attachmentsEdit: false,
-    municipalityUsingEdit: false
+    titleEdit: true,
+    generalInformationEdit: true,
+    challengesEdit: true,
+    timeAndProcessEdit: true,
+    assessmentEdit: true,
+    operationEdit: true,
+    specificationEdit: true,
+    implementationEdit: true,
+    attachmentsEdit: true,
+    municipalityUsingEdit: true
   }
 };
 

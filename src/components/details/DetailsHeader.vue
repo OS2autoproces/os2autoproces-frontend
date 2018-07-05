@@ -1,7 +1,7 @@
 <template>
   <div class="details-header">
     <div class="row">
-      <InputField class="name" :value="state.title" :disabled="!state.disabled.titleEdit" :class="{ disabled: !state.disabled.titleEdit }" @change="update({ title: $event })" />
+      <InputField class="name" :value="state.title" :disabled="state.disabled.titleEdit" :class="{ disabled: state.disabled.titleEdit }" @change="update({ title: $event })" />
       <div class="edit-button" role="button" @click="toggleEdit" :class="{ editing: state.disabled.titleEdit }">
         <EditIcon />
       </div>

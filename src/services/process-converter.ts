@@ -150,13 +150,13 @@ export function stateToRequest(state: ProcessState): ProcessRequest {
 export function responseToState(process: ProcessResponse): Process {
     return {
         ...process,
-        id: null,
+        id: process.id.toString(),
         timeSpendComputedTotal: process.timeSpendComputedTotal.toString(),
         timeSpendEmployeesDoingProcess: process.timeSpendEmployeesDoingProcess.toString(),
         timeSpendOccurancesPerEmployee: process.timeSpendOccurancesPerEmployee.toString(),
         timeSpendPercentageDigital: process.timeSpendPercentageDigital.toString(),
         timeSpendPerOccurance: process.timeSpendPerOccurance.toString(),
-        rating: process.rating ? process.rating.toString() : '0',
+        rating: process.rating ? process.rating : 0,
         hasBookmarked: process.hasBookmarked,
         canEdit: process.canEdit,
     }
