@@ -32,7 +32,7 @@
 
           <div class="comments">
             <div class="comments-heading">Kommentarer</div>
-            <Comments :comments="state.comments" @submit="saveComment({ id: state.id, message: $event })" />
+            <Comments :comments="state.comments" @submit="saveComment({ message: $event })" />
           </div>
         </div>
       </div>
@@ -92,9 +92,9 @@ export default class Details extends Vue {
   @Action(processActionTypes.UPDATE)
   update: any;
   @Action(processActionTypes.SAVE_COMMENT)
-  saveComment!: (newComment: NewComment) => Promise<void>;
+  saveComment!: (message: string) => Promise<void>;
   @Action(processActionTypes.LOAD_COMMENTS)
-  loadComments!: (processId: number) => Promise<void>;
+  loadComments!: () => Promise<void>;
 
   get state() {
     return this.$store.state.process;

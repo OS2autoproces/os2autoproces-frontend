@@ -99,17 +99,16 @@ export const actions: ActionTree<ProcessState, RootState> = {
     });
   },
   async saveComment(
-    { commit, state },
-    { processId, message }: NewComment
+    { commit, state }, message: string
   ): Promise<void> {
-    const comment = (await HTTP.put<Comment>(`api/comments/${processId}`, {
-      message
-    })).data;
+    const comment = (await HTTP.put<Comment>(`api/comments/${state.id}`, 
+       message 
+    )).data;
 
     commit(processMutationTypes.SAVE_COMMENTS, [...state.comments, comment]);
   },
-  async loadComments({ commit }, processId: string) {
-    const comments = (await HTTP.get<Comment[]>(`api/comments/${processId}`))
+  async loadComments({ commit, state }) {
+    const comments = (await HTTP.get<Comment[]>(`api/comments/${state.id}`))
       .data;
     commit(processMutationTypes.SAVE_COMMENTS, comments);
   },
