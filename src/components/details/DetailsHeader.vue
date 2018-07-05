@@ -6,7 +6,7 @@
         <EditIcon />
       </div>
       <div class="bookmark-button" role="button" @click="toggleBookmark">
-        <StarIcon :class="{ selected: bookmarked }" />
+        <StarIcon :class="{ selected: state.hasBookmarked }" />
       </div>
 
       <div class="flex-grow"></div>
@@ -45,11 +45,9 @@ import { ProcessState } from '@/store/modules/process/state';
 })
 export default class DetailsHeader extends Vue {
   @Action(processActionTypes.UPDATE) update!: any;
-  @Getter(authGetterTypes.IS_BOOKMARKED) isBookmarked!: (id: number) => boolean;
 
   // TODO: Bind these to the store
   notification = true;
-  bookmarked = false;
 
   get state() {
     return this.$store.state.process;
@@ -64,21 +62,7 @@ export default class DetailsHeader extends Vue {
   }
 
   toggleBookmark() {
-    const id = this.state.id;
-
-    if (!id) {
-      return;
-    }
-
-    const isBookmarked = this.isBookmarked(id);
-
-    const action = isBookmarked
-      ? authActionTypes.REMOVE_BOOKMARK
-      : authActionTypes.BOOKMARK;
-
-    this.$store.dispatch(action, id);
-
-    this.bookmarked = !isBookmarked;
+    this.update({ hasBookmarked: !this.state.hasBookmarked });
   }
 
   deleteProces() {
