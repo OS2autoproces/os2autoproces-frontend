@@ -8,7 +8,7 @@
         <Well>
             <div>
                 <WellItem labelWidth="55%" label="Sidst opdateret">
-                    {{state.lastChanged}}
+                    <DatePicker :value="state.lastChanged" disabled />
                 </WellItem>
             </div>
             <div>
@@ -40,6 +40,7 @@ import InfoTooltip from '@/components/common/InfoTooltip.vue';
 import Well from '@/components/common/Well.vue';
 import WellItem from '@/components/common/WellItem.vue';
 import { processActionTypes } from '@/store/modules/process/actions';
+import { DateTime } from 'luxon';
 
 @Component({
   components: {

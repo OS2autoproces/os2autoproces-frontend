@@ -1,8 +1,8 @@
 <template>
     <div class="date-picker-wrap">
-        <InputField :disabled="disabled" :value="value" placeholder="DD/MM/YYYY" @change="onInputChange($event)" />
+        <InputField :disabled="disabled" :value="inputValue" placeholder="DD/MM/YYYY" @change="onInputChange($event)" />
         <v-menu v-if="!disabled" :close-on-content-click="false" transition="scale-transition">
-            <v-date-picker :value="datePickerValue" no-title @input="onDatePickerChange($event)" />
+            <v-date-picker :value="value" no-title @input="onDatePickerChange($event)" />
             <i slot="activator" class="material-icons md-36 calender-icon">today</i>
         </v-menu>
     </div>
@@ -24,9 +24,15 @@ export default class DatePicker extends Vue {
 
   format = 'dd/MM/yyyy';
 
-  get datePickerValue(): string {
-    const date = this.parseDate(this.value);
-    return date.isValid ? date.toISODate() : '';
+  get inputValue() {
+    const date = DateTime.fromISO(this.value);
+    return date.isValid ? date.toFormat(this.format) : '';
+  }
+
+  onInputChange(date: string): void {
+    if (date && date.match(/^\d{2}\/\d{2}\/\d{4}$/)) {
+      this.valueChanged(DateTime.fromFormat(date, this.format));
+    }
   }
 
   onDatePickerChange(date: string): void {
@@ -35,20 +41,10 @@ export default class DatePicker extends Vue {
     }
   }
 
-  onInputChange(date: string): void {
-    if (date && date.match(/^\d{2}\/\d{2}\/\d{4}$/)) {
-      this.valueChanged(this.parseDate(date));
-    }
-  }
-
   valueChanged(date: DateTime): void {
     if (date.isValid) {
-      this.$emit('change', date.toFormat(this.format));
+      this.$emit('change', date.toISO());
     }
-  }
-
-  parseDate(date: string): DateTime {
-    return date ? DateTime.fromFormat(date, this.format) : DateTime.invalid('invalid format');
   }
 }
 </script>

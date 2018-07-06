@@ -22,7 +22,7 @@
 
       <div>
         <WellItem label="Oprettet:">
-          {{formattedCreatedDate}}
+          <DatePicker :value="state.created" disabled/>
         </WellItem>
       </div>
     </Well>
@@ -58,8 +58,6 @@ export default class ChallengesForm extends Vue {
 
   twoColumnBreakpoint = 1600;
 
-  format = 'dd/MM/yyyy';
-
   processItems = [
     { value: { id:1, name: 'KITOS', vendor: 'Christian' }, text: 'KITOS' },
     { value: { id:2, name: 'KITOS', vendor: 'Christian' }, text: 'KITOS1' },
@@ -70,11 +68,6 @@ export default class ChallengesForm extends Vue {
   get state() {
     return this.$store.state.process;
   }
-
-  get formattedCreatedDate() {
-    return this.state.created ? DateTime.fromISO(this.state.created).toFormat(this.format) : '';
-  }
-
 }
 </script>
 
