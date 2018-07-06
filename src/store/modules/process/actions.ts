@@ -1,15 +1,20 @@
-import { RootState } from '@/store/store';
-import {
-  ProcessState,
-  Attachment,
-  Technology,
-  Process
-} from '@/store/modules/process/state';
-import { ActionTree } from 'vuex';
-import { processMutationTypes } from '@/store/modules/process/mutations';
 import { HTTP } from '@/services/http-service';
+import {
+  ProcessRequest,
+  ProcessResponse,
+  responseToState,
+  stateToRequest
+} from '@/services/process-converter';
 import { User } from '@/store/modules/auth/state';
-import { ProcessRequest, stateToRequest, responseToState, ProcessResponse } from '@/services/process-converter';
+import { processMutationTypes } from '@/store/modules/process/mutations';
+import {
+  Attachment,
+  ProcessState,
+  Technology
+} from '@/store/modules/process/state';
+import { RootState } from '@/store/store';
+import { ActionTree } from 'vuex';
+import { initialProcessState } from '@/store/modules/process';
 
 export const namespace = 'process';
 
@@ -30,7 +35,7 @@ export const processActionTypes = {
   LOAD_PROCESS_DETAILS: `${namespace}/loadProcessDetails`,
   CREATE_PROCESS: `${namespace}/createProcess`,
   COPY_PROCESS: `${namespace}/copyProcess`,
-  DELETE: `${namespace}/delete`,
+  DELETE: `${namespace}/delete`
 };
 
 export const actions: ActionTree<ProcessState, RootState> = {
@@ -49,7 +54,6 @@ export const actions: ActionTree<ProcessState, RootState> = {
     commit(processMutationTypes.ASSIGN, { attachments });
   },
   async addAttachments({ commit, state }, files: File[]) {
-
     const form = new FormData();
     files.forEach(file => form.append('files', file));
 
@@ -98,73 +102,153 @@ export const actions: ActionTree<ProcessState, RootState> = {
       attachments: state.attachments.filter(a => a.id !== id)
     });
   },
-  async saveComment(
-    { commit, state }, message: string
-  ): Promise<void> {
-    const comment = (await HTTP.put<Comment>(`api/comments/${state.id}`, 
-       message 
+
+  async saveComment({ commit, state }, message: string): Promise<void> {
+    const comment = (await HTTP.put<Comment>(
+      `api/comments/${state.id}`,
+      message
     )).data;
 
-    commit(processMutationTypes.SAVE_COMMENTS, [...state.comments, comment]);
+    commit(processMutationTypes.ASSIGN, {
+      comments: [...state.comments, comment]
+    });
   },
   async loadComments({ commit, state }) {
     const comments = (await HTTP.get<Comment[]>(`api/comments/${state.id}`))
       .data;
-    commit(processMutationTypes.SAVE_COMMENTS, comments);
+    commit(processMutationTypes.ASSIGN, { comments });
   },
-  addAssociatedPerson({ commit }, user: User): void {
-    commit(processMutationTypes.ADD_ASSOCIATED_PERSON, user);
+
+  addAssociatedPerson({ commit, state }, user: User): void {
+    commit(processMutationTypes.ADD_ASSOCIATED_PERSON, {
+      users: [...state.users, user]
+    });
   },
-  removeAssociatedPerson({ commit }, user: User): void {
-    commit(processMutationTypes.REMOVE_ASSOCIATED_PERSON, user);
+  removeAssociatedPerson({ commit, state }, user: User): void {
+    commit(processMutationTypes.ASSIGN, {
+      users: state.users.filter(u => u.name !== user.name)
+    });
   },
-  addTechnology({ commit }, technology: Technology) {
-    commit(processMutationTypes.ADD_TECHNOLOGY, technology);
+
+  addTechnology({ commit, state }, technology: Technology) {
+    commit(processMutationTypes.ASSIGN, {
+      technologies: [...state.technologies, technology]
+    });
   },
-  removeTechnology({ commit }, index: number) {
-    commit(processMutationTypes.REMOVE_TECHNOLOGY, index);
+  removeTechnology({ commit, state }, index: number) {
+    commit(processMutationTypes.ASSIGN, {
+      technologies: state.technologies.filter((_, i) => i !== index)
+    });
   },
+
   async loadProcessDetails({ commit }, id: string) {
     if (!id) {
       return;
     }
 
-    const process = (await HTTP.get<ProcessResponse>(`api/processes/${id}?projection=extended`)).data;
+    const process = (await HTTP.get<ProcessResponse>(
+      `api/processes/${id}?projection=extended`
+    )).data;
 
     const converted = responseToState(process);
 
     commit(processMutationTypes.UPDATE, converted);
   },
-  async createProcess({ commit }, process: ProcessState) {
-    const created = await HTTP.post(`api/processes`, process);
-  },
-
-  async report({commit, state}): Promise<string | null> {
+  async report({ commit, state }): Promise<string | null> {
     const converted: ProcessRequest = await stateToRequest(state);
-    const process = (await HTTP.post<Process>(`api/processes`, converted)).data;
-    
-    await commit(processMutationTypes.UPDATE, process);
-    return state.id;
+    const response = (await HTTP.post<ProcessResponse>(
+      `api/processes`,
+      converted
+    )).data;
+    const {
+      id,
+      created,
+      timeSpendComputedTotal,
+      lastChanged,
+      klaProcess,
+      cvr,
+      municipalityName
+    }: BackendManagedFields = responseToState(response);
+    await commit(processMutationTypes.UPDATE, {
+      id,
+      created,
+      timeSpendComputedTotal,
+      lastChanged,
+      klaProcess,
+      cvr,
+      municipalityName
+    });
+    return id;
   },
-  async copyProcess({commit, state}): Promise<string | null> {
-    const copy = (await HTTP.post<Process>(`api/processes/${state.id}/copy`)).data;
+  async copyProcess({ commit, state }): Promise<string> {
+    const response = (await HTTP.post<ProcessResponse>(
+      `api/processes/${state.id}/copy`
+    )).data;
+    const {
+      id,
+      created,
+      timeSpendComputedTotal,
+      lastChanged,
+      klaProcess,
+      cvr,
+      municipalityName
+    }: BackendManagedFields = responseToState(response);
     // TODO: notify copy complete
-    commit(processMutationTypes.UPDATE, copy);
-    return copy.id;
+    commit(processMutationTypes.UPDATE, {
+      created,
+      timeSpendComputedTotal,
+      lastChanged,
+      klaProcess,
+      cvr,
+      municipalityName
+    });
+    return id;
   },
-  async save({commit, state}) {
+  async save({ commit, state }) {
     const converted = await stateToRequest(state);
-    const updated = (await HTTP.put(`api/processes/${state.id}`, converted)).data;
+    const response = (await HTTP.put<ProcessResponse>(
+      `api/processes/${state.id}`,
+      converted
+    )).data;
+
+    const {
+      id,
+      created,
+      timeSpendComputedTotal,
+      lastChanged,
+      klaProcess,
+      cvr,
+      municipalityName
+    }: BackendManagedFields = responseToState(response);
     // TODO: notify update
-    commit(processMutationTypes.UPDATE, updated);
+    commit(processMutationTypes.UPDATE, {
+      id,
+      created,
+      timeSpendComputedTotal,
+      lastChanged,
+      klaProcess,
+      cvr,
+      municipalityName
+    });
   },
-  async delete({commit, state}) {
+  async delete({ commit, state }) {
     const deleted = (await HTTP.delete(`api/processes/${state.id}`)).status;
-    // notify user, process is deleted
+    // Todo: notify user, process is deleted
+    commit(processMutationTypes.UPDATE, initialProcessState());
   }
 };
 
 export interface NewComment {
   message: string;
   processId: string;
+}
+
+interface BackendManagedFields {
+  id: string;
+  created: Date | null;
+  lastChanged: Date | null;
+  timeSpendComputedTotal: string;
+  klaProcess: boolean;
+  cvr: string;
+  municipalityName: string;
 }
