@@ -9,13 +9,12 @@ import { User } from '@/store/modules/auth/state';
 import { processMutationTypes } from '@/store/modules/process/mutations';
 import {
   Attachment,
+  Process,
   ProcessState,
-  Technology,
-  Process
+  Technology
 } from '@/store/modules/process/state';
 import { RootState } from '@/store/store';
 import { ActionTree } from 'vuex';
-import { initialProcessState } from '@/store/modules/process';
 
 export const namespace = 'process';
 
@@ -62,8 +61,8 @@ function setBackendManagedFields(process: Process): BackendManagedFields {
     lastChanged: process.lastChanged,
     klaProcess: process.klaProcess,
     cvr: process.cvr,
-    municipalityName: process.municipalityName,
-  }
+    municipalityName: process.municipalityName
+  };
 }
 
 export const actions: ActionTree<ProcessState, RootState> = {
@@ -215,5 +214,5 @@ export const actions: ActionTree<ProcessState, RootState> = {
   async remove({ commit, state }) {
     await HTTP.delete(`api/processes/${state.id}`);
     // Todo: notify user, process is deleted
-  },
+  }
 };

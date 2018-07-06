@@ -1,9 +1,9 @@
+import { Domain } from '@/models/domain';
+import { LikertScale } from '@/models/likert-scale';
 import { Phase } from '@/models/phase';
 import { Status } from '@/models/status';
 import { Visibility } from '@/models/visibility';
-import { LikertScale } from '@/models/likert-scale';
 import { User } from '@/store/modules/auth/state';
-import { Domain } from '@/models/domain';
 
 export interface ProcessState extends Process {
   disabled: Disabled;
@@ -107,9 +107,9 @@ export interface Attachment {
 }
 
 export interface Comment {
-    name: string;
-    message: string;
-    created: string;  
+  name: string;
+  message: string;
+  created: string;
 }
 
 export interface Disabled {

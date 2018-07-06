@@ -1,3 +1,4 @@
+import { DomainKeys } from '@/models/domain';
 import { LikertScaleKeys } from '@/models/likert-scale';
 import { PhaseKeys } from '@/models/phase';
 import { StatusKeys } from '@/models/status';
@@ -8,7 +9,6 @@ import { mutations } from '@/store/modules/process/mutations';
 import { ProcessState } from '@/store/modules/process/state';
 import { RootState } from '@/store/store';
 import { Module } from 'vuex';
-import { DomainKeys } from '@/models/domain';
 
 const namespaced = true;
 
@@ -33,7 +33,7 @@ export function initialProcessState(): ProcessState {
     statusText: '',
     klaProcess: false,
     municipalityName: '',
-    
+
     /* Assessment */
     levelOfProfessionalAssessment: LikertScaleKeys.UNKNOWN,
     levelOfChange: LikertScaleKeys.UNKNOWN,
@@ -44,15 +44,14 @@ export function initialProcessState(): ProcessState {
     levelOfQuality: LikertScaleKeys.UNKNOWN,
     levelOfRoutineWorkReduction: LikertScaleKeys.UNKNOWN,
     levelOfSpeed: LikertScaleKeys.UNKNOWN,
-  
-    
+
     /* Challenges */
     solutionRequests: '',
     processChallenges: '',
     longDescription: '',
     itSystems: [],
     created: '',
-    
+
     /* Time and process */
     timeSpendOccurancesPerEmployee: '0',
     timeSpendPerOccurance: '0',
@@ -62,26 +61,26 @@ export function initialProcessState(): ProcessState {
     targestsCitizens: false,
     targetsCompanies: false,
     timeSpendComment: '',
-    
+
     /* Specification */
     esdhReference: '',
-    
+
     /* Implementation */
     organizationalImplementationNotes: '',
     technicalImplementationNotes: '',
     technologies: [],
-    
+
     /* Operation */
     lastChanged: '',
     decommissioned: '',
     legalClauseLastVerified: null,
     rating: 0,
     ratingComment: '',
-    
+
     /* Attachments */
     links: [],
     attachments: [],
-    
+
     /* Details */
     title: '',
     searchWords: '',
@@ -90,7 +89,7 @@ export function initialProcessState(): ProcessState {
     cvr: '',
     hasBookmarked: false,
     canEdit: true,
-    
+
     disabled: {
       titleEdit: true,
       generalInformationEdit: true,
@@ -103,8 +102,8 @@ export function initialProcessState(): ProcessState {
       attachmentsEdit: true,
       municipalityUsingEdit: true
     }
-  }
-};
+  };
+}
 
 export const state: ProcessState = initialProcessState();
 
@@ -113,5 +112,5 @@ export const process: Module<ProcessState, RootState> = {
   mutations,
   getters,
   namespaced,
-  state,
+  state
 };

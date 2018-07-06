@@ -40,7 +40,6 @@ import Well from '@/components/common/Well.vue';
 import InfoTooltip from '@/components/common/InfoTooltip.vue';
 import WellItem from '@/components/common/WellItem.vue';
 import { processActionTypes } from '@/store/modules/process/actions';
-import { DateTime } from 'luxon';
 
 @Component({
   components: {
