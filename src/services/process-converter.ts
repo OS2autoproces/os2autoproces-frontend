@@ -5,6 +5,7 @@ import { Status, StatusKeys } from '@/models/status';
 import { Visibility, VisibilityKeys } from '@/models/visibility';
 import { ITSystem, Link, OrgUnit, ProcessState, Technology, Process } from '@/store/modules/process/state';
 import { User } from '@/store/modules/auth/state';
+import { DateTime } from 'luxon';
 
 export interface ProcessRequest {
     localId: string | null;
@@ -14,9 +15,9 @@ export interface ProcessRequest {
     status: Status;
     statusText: string | null;
 
-    created: Date | null;
-    lastChanged: Date | null;
-    decommissioned: Date | null;
+    created: string | null;
+    lastChanged: string | null;
+    decommissioned: string | null;
 
     title: string;
     shortDescription: string;
@@ -181,5 +182,9 @@ export function responseToState(process: ProcessResponse): Process {
         searchWords: process.searchWords || '',
         itSystems: process.itSystems || [],
         orgUnits: process.orgUnits || [],
+        created: process.created || '',
+        decommissioned: process.decommissioned || '',
+        lastChanged: process.lastChanged || '',
+        
     }
 }

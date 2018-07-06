@@ -10,7 +10,8 @@ import { processMutationTypes } from '@/store/modules/process/mutations';
 import {
   Attachment,
   ProcessState,
-  Technology
+  Technology,
+  Process
 } from '@/store/modules/process/state';
 import { RootState } from '@/store/store';
 import { ActionTree } from 'vuex';
@@ -45,12 +46,24 @@ export interface NewComment {
 
 interface BackendManagedFields {
   id: string;
-  created: Date | null;
-  lastChanged: Date | null;
+  created: string | null;
+  lastChanged: string | null;
   timeSpendComputedTotal: string;
   klaProcess: boolean;
   cvr: string;
   municipalityName: string;
+}
+
+function setBackendManagedFields(process: Process): BackendManagedFields {
+  return {
+    id: process.id,
+    created: process.created,
+    timeSpendComputedTotal: process.timeSpendComputedTotal,
+    lastChanged: process.lastChanged,
+    klaProcess: process.klaProcess,
+    cvr: process.cvr,
+    municipalityName: process.municipalityName,
+  }
 }
 
 export const actions: ActionTree<ProcessState, RootState> = {
@@ -175,49 +188,18 @@ export const actions: ActionTree<ProcessState, RootState> = {
       `api/processes`,
       converted
     )).data;
-    const {
-      id,
-      created,
-      timeSpendComputedTotal,
-      lastChanged,
-      klaProcess,
-      cvr,
-      municipalityName
-    }: BackendManagedFields = responseToState(response);
-    await commit(processMutationTypes.UPDATE, {
-      id,
-      created,
-      timeSpendComputedTotal,
-      lastChanged,
-      klaProcess,
-      cvr,
-      municipalityName
-    });
-    return id;
+    const process = responseToState(response);
+    await commit(processMutationTypes.UPDATE, setBackendManagedFields(process));
+    return process.id;
   },
   async copyProcess({ commit, state }): Promise<string> {
     const response = (await HTTP.post<ProcessResponse>(
       `api/processes/${state.id}/copy`
     )).data;
-    const {
-      id,
-      created,
-      timeSpendComputedTotal,
-      lastChanged,
-      klaProcess,
-      cvr,
-      municipalityName
-    }: BackendManagedFields = responseToState(response);
+    const process = responseToState(response);
     // TODO: notify copy complete
-    commit(processMutationTypes.UPDATE, {
-      created,
-      timeSpendComputedTotal,
-      lastChanged,
-      klaProcess,
-      cvr,
-      municipalityName
-    });
-    return id;
+    commit(processMutationTypes.UPDATE, setBackendManagedFields(process));
+    return process.id;
   },
   async save({ commit, state }) {
     const converted = await stateToRequest(state);
@@ -226,25 +208,9 @@ export const actions: ActionTree<ProcessState, RootState> = {
       converted
     )).data;
 
-    const {
-      id,
-      created,
-      timeSpendComputedTotal,
-      lastChanged,
-      klaProcess,
-      cvr,
-      municipalityName
-    }: BackendManagedFields = responseToState(response);
+    const process = responseToState(response);
     // TODO: notify update
-    commit(processMutationTypes.UPDATE, {
-      id,
-      created,
-      timeSpendComputedTotal,
-      lastChanged,
-      klaProcess,
-      cvr,
-      municipalityName
-    });
+    commit(processMutationTypes.UPDATE, setBackendManagedFields(process));
   },
   async remove({ commit, state }) {
     await HTTP.delete(`api/processes/${state.id}`);

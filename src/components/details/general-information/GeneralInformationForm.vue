@@ -27,9 +27,9 @@
           <WellItem labelWidth="100px" label="Kontaktperson:">
             <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.contact" @change="update({contact: $event})" :items="contactPersons" />
           </WellItem>
-          <!-- <WellItem labelWidth="100px" label="Mail:">
+          <WellItem v-if="state.cantact" labelWidth="100px" label="Mail:">
             {{state.contact.email}}
-          </WellItem> -->
+          </WellItem>
         </div>
 
         <div>

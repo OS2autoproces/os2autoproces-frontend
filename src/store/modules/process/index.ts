@@ -51,7 +51,7 @@ export function initialProcessState(): ProcessState {
     processChallenges: '',
     longDescription: '',
     itSystems: [],
-    created: null,
+    created: '',
     
     /* Time and process */
     timeSpendOccurancesPerEmployee: '0',
@@ -72,10 +72,10 @@ export function initialProcessState(): ProcessState {
     technologies: [],
     
     /* Operation */
-    lastChanged: null,
-    decommissioned: null,
+    lastChanged: '',
+    decommissioned: '',
     legalClauseLastVerified: null,
-    rating: 1,
+    rating: 0,
     ratingComment: '',
     
     /* Attachments */
