@@ -22,7 +22,7 @@
 
       <div>
         <WellItem label="Oprettet:">
-          {{state.created}}
+          {{formattedCreatedDate}}
         </WellItem>
       </div>
     </Well>
@@ -40,6 +40,7 @@ import Well from '@/components/common/Well.vue';
 import InfoTooltip from '@/components/common/InfoTooltip.vue';
 import WellItem from '@/components/common/WellItem.vue';
 import { processActionTypes } from '@/store/modules/process/actions';
+import { DateTime } from 'luxon';
 
 @Component({
   components: {
@@ -57,9 +58,7 @@ export default class ChallengesForm extends Vue {
 
   twoColumnBreakpoint = 1600;
 
-  get state() {
-    return this.$store.state.process;
-  }
+  format = 'dd/MM/yyyy';
 
   processItems = [
     { value: { id:1, name: 'KITOS', vendor: 'Christian' }, text: 'KITOS' },
@@ -67,6 +66,15 @@ export default class ChallengesForm extends Vue {
     { value: { id:3, name: 'KITOS', vendor: 'Christian' }, text: 'KITOS2' },
     { value: { id:4, name: 'KITOS', vendor: 'Christian' }, text: 'KITOS3' }
   ];
+
+  get state() {
+    return this.$store.state.process;
+  }
+
+  get formattedCreatedDate() {
+    return this.state.created ? DateTime.fromISO(this.state.created).toFormat(this.format) : '';
+  }
+
 }
 </script>
 
