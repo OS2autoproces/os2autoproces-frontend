@@ -15,13 +15,13 @@ const namespaced = true;
 export function initialProcessState(): ProcessState {
   return {
     id: '',
-    kle: null,
+    kle: '',
     localId: '',
     contact: null,
     klId: '',
-    kla: null,
+    kla: '',
     legalClause: '',
-    orgUnits: null,
+    orgUnits: [],
     domain: DomainKeys.WORK,
     visibility: VisibilityKeys.PERSONAL,
     vendor: null,
@@ -30,7 +30,7 @@ export function initialProcessState(): ProcessState {
     shortDescription: '',
     phase: PhaseKeys.IDEA,
     status: StatusKeys.PENDING,
-    statusText: null,
+    statusText: '',
     klaProcess: false,
     municipalityName: '',
     
@@ -47,10 +47,10 @@ export function initialProcessState(): ProcessState {
   
     
     /* Challenges */
-    solutionRequests: null,
-    processChallenges: null,
-    longDescription: null,
-    itSystems: null,
+    solutionRequests: '',
+    processChallenges: '',
+    longDescription: '',
+    itSystems: [],
     created: null,
     
     /* Time and process */
@@ -64,32 +64,32 @@ export function initialProcessState(): ProcessState {
     timeSpendComment: '',
     
     /* Specification */
-    esdhReference: null,
+    esdhReference: '',
     
     /* Implementation */
-    organizationalImplementationNotes: null,
-    technicalImplementationNotes: null,
+    organizationalImplementationNotes: '',
+    technicalImplementationNotes: '',
     technologies: [],
     
     /* Operation */
     lastChanged: null,
     decommissioned: null,
     legalClauseLastVerified: null,
-    rating: null,
-    ratingComment: null,
+    rating: 1,
+    ratingComment: '',
     
     /* Attachments */
-    links: null,
-    attachments: null,
+    links: [],
+    attachments: [],
     
     /* Details */
     title: '',
     searchWords: '',
-    internalNotes: null,
+    internalNotes: '',
     comments: [],
     cvr: '',
     hasBookmarked: false,
-    canEdit: false,
+    canEdit: true,
     
     disabled: {
       titleEdit: true,
@@ -109,9 +109,9 @@ export function initialProcessState(): ProcessState {
 export const state: ProcessState = initialProcessState();
 
 export const process: Module<ProcessState, RootState> = {
+  actions,
+  mutations,
+  getters,
   namespaced,
   state,
-  actions,
-  getters,
-  mutations
 };

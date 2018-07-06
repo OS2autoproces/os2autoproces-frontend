@@ -168,5 +168,18 @@ export function responseToState(process: ProcessResponse): Process {
         timeSpendComment: process.timeSpendComment || '',
         technologies: process.technologies || [],
         users: process.users || [],
+        localId: process.localId || '',
+        klId: process.klId || '',
+        legalClause: process.legalClause || '',
+        kle: process.kle || '',
+        kla: process.kla || '',
+        links: process.links || [],
+        internalNotes: process.internalNotes || '',
+        processChallenges: process.processChallenges || '',
+        solutionRequests: process.solutionRequests || '',
+        technicalImplementationNotes: process.technicalImplementationNotes || '',
+        searchWords: process.searchWords || '',
+        itSystems: process.itSystems || [],
+        orgUnits: process.orgUnits || [],
     }
 }

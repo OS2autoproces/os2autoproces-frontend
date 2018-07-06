@@ -35,8 +35,23 @@ export const processActionTypes = {
   LOAD_PROCESS_DETAILS: `${namespace}/loadProcessDetails`,
   CREATE_PROCESS: `${namespace}/createProcess`,
   COPY_PROCESS: `${namespace}/copyProcess`,
-  DELETE: `${namespace}/delete`
+  DELETE: `${namespace}/remove`
 };
+
+export interface NewComment {
+  message: string;
+  processId: string;
+}
+
+interface BackendManagedFields {
+  id: string;
+  created: Date | null;
+  lastChanged: Date | null;
+  timeSpendComputedTotal: string;
+  klaProcess: boolean;
+  cvr: string;
+  municipalityName: string;
+}
 
 export const actions: ActionTree<ProcessState, RootState> = {
   update({ commit }, payload: Partial<ProcessState>) {
@@ -120,7 +135,7 @@ export const actions: ActionTree<ProcessState, RootState> = {
   },
 
   addAssociatedPerson({ commit, state }, user: User): void {
-    commit(processMutationTypes.ADD_ASSOCIATED_PERSON, {
+    commit(processMutationTypes.ASSIGN, {
       users: [...state.users, user]
     });
   },
@@ -231,24 +246,8 @@ export const actions: ActionTree<ProcessState, RootState> = {
       municipalityName
     });
   },
-  async delete({ commit, state }) {
-    const deleted = (await HTTP.delete(`api/processes/${state.id}`)).status;
+  async remove({ commit, state }) {
+    await HTTP.delete(`api/processes/${state.id}`);
     // Todo: notify user, process is deleted
-    commit(processMutationTypes.UPDATE, initialProcessState());
-  }
+  },
 };
-
-export interface NewComment {
-  message: string;
-  processId: string;
-}
-
-interface BackendManagedFields {
-  id: string;
-  created: Date | null;
-  lastChanged: Date | null;
-  timeSpendComputedTotal: string;
-  klaProcess: boolean;
-  cvr: string;
-  municipalityName: string;
-}

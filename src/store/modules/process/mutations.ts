@@ -5,11 +5,6 @@ import { MutationTree } from 'vuex';
 export const processMutationTypes = {
   UPDATE: 'update',
   ASSIGN: 'assign',
-  SAVE_COMMENTS: 'saveComments',
-  ADD_ASSOCIATED_PERSON: 'addAssociatedPerson',
-  REMOVE_ASSOCIATED_PERSON: 'removeAssociatedPerson',
-  ADD_TECHNOLOGY: 'addTechnology',
-  REMOVE_TECHNOLOGY: 'removeTechnology'
 };
 
 export const mutations: MutationTree<ProcessState> = {
@@ -18,5 +13,5 @@ export const mutations: MutationTree<ProcessState> = {
   },
   assign(state: ProcessState, payload: Partial<ProcessState>) {
     Object.assign(state, payload);
-  }
+  },
 };
