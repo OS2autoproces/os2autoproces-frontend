@@ -10,10 +10,10 @@
             <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.kle" @change="update({kle: $event})" :items="kleNumbers" />
           </WellItem>
           <WellItem labelWidth="100px" label="Lokalt ID:">
-            <InputField :disabled="state.disabled.generalInformationEdit" :value="state.localId" />
+            <InputField :disabled="state.disabled.generalInformationEdit" :value="state.localId" @change="update({localId: $event})"/>
           </WellItem>
           <WellItem labelWidth="100px" label="KL ID:">
-            <InputField :disabled="state.disabled.generalInformationEdit" :value="state.klId" />
+            <InputField :disabled="state.disabled.generalInformationEdit" :value="state.klId" @change="update({klId: $event})"/>
           </WellItem>
         </div>
 
@@ -22,13 +22,13 @@
             <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.vendor" @change="update({vendor: $event})" :items="suppliers" />
           </WellItem>
           <WellItem labelWidth="100px" label="Projektleder:">
-            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.projectManager" @change="update({projectManager: $event})" :items="projectManagers" />
+            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.owner" @change="update({owner: $event})" :items="projectManagers" />
           </WellItem>
           <WellItem labelWidth="100px" label="Kontaktperson:">
             <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.contact" @change="update({contact: $event})" :items="contactPersons" />
           </WellItem>
           <WellItem labelWidth="100px" label="Mail:">
-            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.contact" @change="update({email: $event})" :items="emails" />
+            {{state.contact.email}}
           </WellItem>
         </div>
 
