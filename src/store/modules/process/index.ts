@@ -14,11 +14,11 @@ const namespaced = true;
 
 export const state: ProcessState = {
   /* General information */
-  id: null,
+  id: '',
   kle: null,
-  localId: null,
+  localId: '',
   contact: null,
-  klId: null,
+  klId: '',
   kla: null,
   legalClause: '',
   orgUnits: null,
@@ -26,7 +26,7 @@ export const state: ProcessState = {
   visibility: VisibilityKeys.PERSONAL,
   vendor: null,
   owner: null,
-  users: null,
+  users: [],
   shortDescription: '',
   phase: PhaseKeys.IDEA,
   status: StatusKeys.PENDING,
@@ -69,7 +69,7 @@ export const state: ProcessState = {
   /* Implementation */
   organizationalImplementationNotes: null,
   technicalImplementationNotes: null,
-  technologies: null,
+  technologies: [],
   
   /* Operation */
   lastChanged: null,

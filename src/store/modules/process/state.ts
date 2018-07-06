@@ -12,9 +12,9 @@ export interface ProcessState extends Process {
 }
 
 export interface Process {
-  id: string | null;
-  localId: string | null;
-  klId: string | null;
+  id: string;
+  localId: string;
+  klId: string;
   esdhReference: string | null;
   phase: Phase;
   status: Status;
@@ -64,13 +64,13 @@ export interface Process {
   ratingComment: string | null;
   searchWords: string | null;
 
-  users: User[] | null;
+  users: User[];
   owner: User | null;
   contact: User | null;
 
   itSystems: ITSystem[] | null;
   orgUnits: OrgUnit[] | null;
-  technologies: Technology[] | null;
+  technologies: Technology[];
   hasBookmarked: boolean;
   canEdit: boolean;
 }
