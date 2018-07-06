@@ -166,5 +166,7 @@ export function responseToState(process: ProcessResponse): Process {
         organizationalImplementationNotes: process.organizationalImplementationNotes || '',
         ratingComment: process.ratingComment || '',
         timeSpendComment: process.timeSpendComment || '',
+        technologies: process.technologies || [],
+        users: process.users || [],
     }
 }
