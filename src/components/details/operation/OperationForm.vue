@@ -8,7 +8,7 @@
         <Well>
             <div>
                 <WellItem labelWidth="55%" label="Sidst opdateret">
-                    <DatePicker @change="update({lastChanged: $event})" :disabled="state.disabled.operationEdit" :value="state.lastChanged" />
+                    {{state.lastChanged}}
                 </WellItem>
             </div>
             <div>
