@@ -38,7 +38,6 @@ export default class Comments extends Vue {
   @Watch('comments') onCommentsChanged() {
     const commentList = this.$refs['comments-list'] as HTMLElement;
     this.$nextTick(() => {
-      debugger
       commentList.scrollTop = commentList.scrollHeight;
     });
   };
