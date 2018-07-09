@@ -183,8 +183,6 @@ export default class GeneralInformationForm extends Vue {
     {value: StatusKeys.INPROGRESS, text: StatusLabels.INPROGRESS},
   ]
 
-  kleNumbers = ['1234', '134324', '54353'];
-
   contactPersons = ['Christian', 'Lars', 'Henrik'];
 
   suppliers = ['Christian', 'Lars', 'Henrik'];
