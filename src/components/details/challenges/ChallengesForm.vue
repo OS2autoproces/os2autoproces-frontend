@@ -21,7 +21,7 @@
 
       <div>
         <WellItem label="Oprettet:">
-          <DatePicker :disabled="state.process.disabled.challengesEdit" :value="state.process.created" @change="update({created: $event})" />
+          <DatePicker :value="state.process.created" disabled/>
         </WellItem>
       </div>
     </Well>

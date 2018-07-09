@@ -12,32 +12,32 @@ export interface ProcessState extends Process {
 }
 
 export interface Process {
-  id: string | null;
-  localId: string | null;
-  klId: string | null;
-  esdhReference: string | null;
+  id: string;
+  localId: string;
+  klId: string;
+  esdhReference: string;
   phase: Phase;
   status: Status;
-  statusText: string | null;
-  created: Date | null;
-  lastChanged: Date | null;
-  decommissioned: Date | null;
+  statusText: string;
+  created: string;
+  lastChanged: string;
+  decommissioned: string;
   title: string;
   shortDescription: string;
-  longDescription: string | null;
+  longDescription: string;
   domain: Domain;
   visibility: Visibility;
-  legalClause: string | null;
+  legalClause: string;
   legalClauseLastVerified: string | null;
   kle: string;
   kla: string | null;
   klaProcess: boolean;
-  links: Link[] | null;
+  links: Link[];
   vendor: string | null;
   cvr: string;
-  internalNotes: string | null;
-  processChallenges: string | null;
-  solutionRequests: string | null;
+  internalNotes: string;
+  processChallenges: string;
+  solutionRequests: string;
   timeSpendOccurancesPerEmployee: string;
   timeSpendPerOccurance: string;
   timeSpendEmployeesDoingProcess: string;
@@ -58,19 +58,19 @@ export interface Process {
   levelOfRoutineWorkReduction: LikertScale;
 
   evaluatedLevelOfRoi: LikertScale;
-  technicalImplementationNotes: string | null;
-  organizationalImplementationNotes: string | null;
-  rating: number | null;
-  ratingComment: string | null;
-  searchWords: string | null;
+  technicalImplementationNotes: string;
+  organizationalImplementationNotes: string;
+  rating: number;
+  ratingComment: string;
+  searchWords: string;
 
-  users: User[] | null;
+  users: User[];
   owner: User | null;
   contact: User | null;
 
-  itSystems: ITSystem[] | null;
-  orgUnits: OrgUnit[] | null;
-  technologies: Technology[] | null;
+  itSystems: ITSystem[];
+  orgUnits: OrgUnit[];
+  technologies: Technology[];
   hasBookmarked: boolean;
   canEdit: boolean;
 }

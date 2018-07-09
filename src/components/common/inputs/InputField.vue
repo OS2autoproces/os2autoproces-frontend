@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div class="input-field-wrap" v-if="!disabled">
+    <div class="input-field-wrap" :class="{'has-icon': this.$slots.default }" v-if="!disabled">
       <input :placeholder="placeholder" :value="value" @input="valueChanged" @keyup.enter="submit">
-      <div class="icon">
+      <div class="icon" v-if="this.$slots.default">
         <slot />
       </div>
     </div>
@@ -36,24 +36,24 @@ export default class InputField extends Vue {
   border: 1px solid $color-primary;
   border-radius: 30px;
   align-items: center;
-  padding-right: 7px;
+
+  &.has-icon {
+    padding-right: 2px;
+  }
 
   .icon {
-    height: 20px;
-    width: 20px;
-
+    margin-right: 3px;
     /deep/ svg {
-      height: 20px;
-      width: 20px;
+      height: 17px;
+      width: 17px;
     }
   }
 
   input {
     @include field-input-text;
     padding-left: 10px !important;
-    padding-right: 5px;
     height: 32px;
-    width: 90%;
+    width: 100%;
   }
 }
 </style>
