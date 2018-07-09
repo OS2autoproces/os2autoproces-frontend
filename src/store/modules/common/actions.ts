@@ -1,10 +1,9 @@
 import { HTTP } from '@/services/http-service';
 import { commonMutationTypes } from '@/store/modules/common/mutations';
+import { ITSystem } from '@/store/modules/process/state';
 import { RootState } from '@/store/store';
 import { ActionTree } from 'vuex';
 import { CommonState } from './state';
-import { ITSystem } from '@/store/modules/process/state';
-import { merge } from 'lodash';
 
 export const namespace = 'common';
 

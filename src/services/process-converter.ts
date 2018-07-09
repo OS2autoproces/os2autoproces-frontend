@@ -3,8 +3,8 @@ import { LikertScale, LikertScaleKeys } from '@/models/likert-scale';
 import { Phase, PhaseKeys } from '@/models/phase';
 import { Status, StatusKeys } from '@/models/status';
 import { Visibility, VisibilityKeys } from '@/models/visibility';
-import { ITSystem, Link, OrgUnit, ProcessState, Technology, Process } from '@/store/modules/process/state';
 import { User } from '@/store/modules/auth/state';
+import { ITSystem, Link, OrgUnit, Process, ProcessState, Technology } from '@/store/modules/process/state';
 
 export interface ProcessRequest {
     localId: string | null;
@@ -26,7 +26,7 @@ export interface ProcessRequest {
 
     legalClause: string | null;
     legalClauseLastVerified: string | null;
-    kle: string | null;
+    kle: string;
     kla: string | null;
     links: Link[] | null;
 
@@ -166,5 +166,6 @@ export function responseToState(process: ProcessResponse): Process {
         organizationalImplementationNotes: process.organizationalImplementationNotes || '',
         ratingComment: process.ratingComment || '',
         timeSpendComment: process.timeSpendComment || '',
+        kle: process.kle || '',
     }
 }

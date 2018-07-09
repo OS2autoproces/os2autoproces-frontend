@@ -70,7 +70,7 @@
       </div>
     </div>
 
-    <div> 
+    <div>
       <div v-if="state.status !== StatusKeys.INPROGRESS">
         <h2 class="comments-heading">Kommentar til status</h2>
         <TextArea :disabled="state.disabled.generalInformationEdit" @change="update({statusText: $event})" :value="state.statusText" />
@@ -100,11 +100,6 @@ import { VisibilityLabels, VisibilityKeys } from '@/models/visibility';
 import { DomainKeys, DomainLabels } from '@/models/domain';
 import { Kle } from '@/store/modules/common/actions';
 
-interface KlesItem {
-  value: any;
-  text: string;
-}
-
 @Component({
   components: {
     InputField,
@@ -129,7 +124,10 @@ export default class GeneralInformationForm extends Vue {
   }
 
   get kles() {
-    return this.$store.state.common.kles.map((kle: Kle) => ({value: kle, text: kle.code}));
+    return this.$store.state.common.kles.map((kle: Kle) => ({
+      value: kle.code,
+      text: kle.code
+    }));
   }
 
   get displayDepartments(): string {
@@ -164,7 +162,7 @@ export default class GeneralInformationForm extends Vue {
   visibilityLevels = [
     { value: VisibilityKeys.PERSONAL, text: VisibilityLabels.PERSONAL },
     { value: VisibilityKeys.MUNICIPALITY, text: VisibilityLabels.MUNICIPALITY },
-    { value: VisibilityKeys.PUBLIC, text: VisibilityLabels.PUBLIC },
+    { value: VisibilityKeys.PUBLIC, text: VisibilityLabels.PUBLIC }
   ];
 
   domainLevels = [
@@ -173,15 +171,15 @@ export default class GeneralInformationForm extends Vue {
     { value: DomainKeys.CHILDREN, text: DomainLabels.CHILDREN },
     { value: DomainKeys.ENVIRONMENT, text: DomainLabels.ENVIRONMENT },
     { value: DomainKeys.DEMOCRACY, text: DomainLabels.DEMOCRACY },
-    { value: DomainKeys.ADMINISTRATION, text: DomainLabels.ADMINISTRATION },
+    { value: DomainKeys.ADMINISTRATION, text: DomainLabels.ADMINISTRATION }
   ];
 
   statusLevels = [
-    {value: StatusKeys.REJECTED, text: StatusLabels.REJECTED},
-    {value: StatusKeys.FAILED, text: StatusLabels.FAILED},
-    {value: StatusKeys.PENDING, text: StatusLabels.PENDING},
-    {value: StatusKeys.INPROGRESS, text: StatusLabels.INPROGRESS},
-  ]
+    { value: StatusKeys.REJECTED, text: StatusLabels.REJECTED },
+    { value: StatusKeys.FAILED, text: StatusLabels.FAILED },
+    { value: StatusKeys.PENDING, text: StatusLabels.PENDING },
+    { value: StatusKeys.INPROGRESS, text: StatusLabels.INPROGRESS }
+  ];
 
   contactPersons = ['Christian', 'Lars', 'Henrik'];
 

@@ -15,7 +15,7 @@ const namespaced = true;
 export const state: ProcessState = {
   /* General information */
   id: null,
-  kle: null,
+  kle: '',
   localId: null,
   contact: null,
   klId: null,
