@@ -161,6 +161,10 @@ export const actions: ActionTree<ProcessState, RootState> = {
   },
 
   addTechnology({ commit, state }, technology: Technology) {
+    const hasTech = state.technologies.some(t => t.name === technology.name);
+    if (hasTech) {
+      return;
+    }
     commit(processMutationTypes.ASSIGN, {
       technologies: [...state.technologies, technology]
     });
