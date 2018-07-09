@@ -100,6 +100,7 @@ export default class Details extends Vue {
   @Action(processActionTypes.LOAD_COMMENTS) loadComments!: () => Promise<void>;
   @Action(commonActionTypes.LOAD_IT_SYSTEMS)
   loadItSystems!: () => Promise<void>;
+  @Action(commonActionTypes.LOAD_KLES) loadKles!: () => Promise<void>;  
 
   get state() {
     return this.$store.state.process;
@@ -116,6 +117,7 @@ export default class Details extends Vue {
       Number(this.id)
     );
     this.loadItSystems();
+    this.loadKles();
 
     if (this.phase) {
       this.update({ phase: this.phase });

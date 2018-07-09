@@ -7,7 +7,7 @@
             <InputField disabled :value="state.id" />
           </WellItem>
           <WellItem labelWidth="100px" label="KLE-nr:">
-            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.kle" @change="update({kle: $event})" :items="kleNumbers" />
+            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.kle" @change="update({kle: $event})" :items="kles" />
           </WellItem>
           <WellItem labelWidth="100px" label="Lokalt ID:">
             <InputField :disabled="state.disabled.generalInformationEdit" :value="state.localId" />
@@ -98,6 +98,12 @@ import { StatusKeys, StatusLabels } from '@/models/status';
 import { OrgUnit } from '@/store/modules/process/state';
 import { VisibilityLabels, VisibilityKeys } from '@/models/visibility';
 import { DomainKeys, DomainLabels } from '@/models/domain';
+import { Kle } from '@/store/modules/common/actions';
+
+interface KlesItem {
+  value: any;
+  text: string;
+}
 
 @Component({
   components: {
@@ -120,6 +126,10 @@ export default class GeneralInformationForm extends Vue {
 
   get state() {
     return this.$store.state.process;
+  }
+
+  get kles() {
+    return this.$store.state.common.kles.map((kle: Kle) => ({value: kle, text: kle.code}));
   }
 
   get displayDepartments(): string {

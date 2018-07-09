@@ -13,9 +13,29 @@ export interface Cms {
   content: string;
 }
 
+export interface Kle {
+  code: string;
+  name: string;
+}
+
 interface ItSystemsResponse {
   _embedded: {
     itSystems: ITSystem[];
+  };
+  _links: {
+    next: {
+      href: string;
+    };
+  };
+  page: {
+    size: number;
+    totalPages: number;
+  };
+}
+
+interface KleResponse {
+  _embedded: {
+    kles: Kle[];
   };
   _links: {
     next: {
@@ -32,7 +52,8 @@ export const commonActionTypes = {
   UPDATE: `${namespace}/update`,
   LOAD_CMS_CONTENT: `${namespace}/loadCmsContent`,
   SAVE_CMS_CONTENT: `${namespace}/saveCmsContent`,
-  LOAD_IT_SYSTEMS: `${namespace}/loadItSystems`
+  LOAD_IT_SYSTEMS: `${namespace}/loadItSystems`,
+  LOAD_KLES: `${namespace}/loadKles`
 };
 
 export const actions: ActionTree<CommonState, RootState> = {
@@ -85,6 +106,41 @@ export const actions: ActionTree<CommonState, RootState> = {
         }
       }
       commit(commonMutationTypes.ASSIGN, { itSystems });
+    } catch (e) {
+      throw e;
+    }
+  },
+  async loadKles({ commit }) {
+    const response = (await HTTP.get<KleResponse>(
+      `api/kles?size=${500}`
+    )).data;
+    const kles = response._embedded.kles;
+    const { _links, page } = response;
+
+    try {
+      if (!_links.next) {
+        commit(commonMutationTypes.ASSIGN, {
+          kles
+        });
+      } else {
+        if (_links.next) {
+          let next = response._links.next.href.replace(
+            'https://dev.os2autoproces.eu/',
+            ''
+          );
+          for (let i = 0; i < page.totalPages; i++) {
+            const temp = (await HTTP.get<KleResponse>(next)).data;
+            if (temp._links.next) {
+              next = temp._links.next.href.replace(
+                'https://dev.os2autoproces.eu/',
+                ''
+              );
+            }
+            kles.push.apply(kles, temp._embedded.kles);
+          }
+        }
+      }
+      commit(commonMutationTypes.ASSIGN, { kles });
     } catch (e) {
       throw e;
     }
