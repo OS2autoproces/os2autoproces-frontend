@@ -60,8 +60,12 @@ import AttachmentsForm from '@/components/details/attachments/AttachmentsForm.vu
 import OperationForm from '@/components/details/operation/OperationForm.vue';
 import ArrowLeftIcon from '@/components/icons/ArrowLeftIcon.vue';
 import EditIcon from '@/components/icons/EditIcon.vue';
-import { processActionTypes, NewComment } from "@/store/modules/process/actions";
+import {
+  processActionTypes,
+  NewComment
+} from '@/store/modules/process/actions';
 import { Phase } from '@/models/phase';
+import { commonActionTypes } from '@/store/modules/common/actions';
 
 @Component({
   components: {
@@ -85,16 +89,17 @@ import { Phase } from '@/models/phase';
   }
 })
 export default class Details extends Vue {
-  @Prop({type: String}) phase!: Phase;
+  @Prop({ type: String })
+  phase!: Phase;
   @Prop() id!: string;
 
   @Action(processActionTypes.SAVE) save: any;
-  @Action(processActionTypes.UPDATE)
-  update: any;
+  @Action(processActionTypes.UPDATE) update: any;
   @Action(processActionTypes.SAVE_COMMENT)
   saveComment!: (message: string) => Promise<void>;
-  @Action(processActionTypes.LOAD_COMMENTS)
-  loadComments!: () => Promise<void>;
+  @Action(processActionTypes.LOAD_COMMENTS) loadComments!: () => Promise<void>;
+  @Action(commonActionTypes.LOAD_IT_SYSTEMS)
+  loadItSystems!: () => Promise<void>;
 
   get state() {
     return this.$store.state.process;
@@ -106,8 +111,12 @@ export default class Details extends Vue {
   }
 
   mounted() {
-    this.$store.dispatch(processActionTypes.LOAD_PROCESS_DETAILS, Number(this.id));
-    
+    this.$store.dispatch(
+      processActionTypes.LOAD_PROCESS_DETAILS,
+      Number(this.id)
+    );
+    this.loadItSystems();
+
     if (this.phase) {
       this.update({ phase: this.phase });
     }

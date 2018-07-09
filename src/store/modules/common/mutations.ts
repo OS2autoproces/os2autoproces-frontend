@@ -3,11 +3,15 @@ import { MutationTree } from 'vuex';
 import { CommonState } from './state';
 
 export const commonMutationTypes = {
-  UPDATE: 'update'
+  UPDATE: 'update',
+  ASSIGN: 'assign',
 };
 
 export const mutations: MutationTree<CommonState> = {
   update(state: CommonState, payload: Partial<CommonState>) {
     merge(state, payload);
+  },
+  assign(state: CommonState, payload: Partial<CommonState>) {
+    Object.assign(state, payload);
   }
 };

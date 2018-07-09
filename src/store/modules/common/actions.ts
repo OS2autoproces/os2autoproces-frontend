@@ -4,6 +4,7 @@ import { RootState } from '@/store/store';
 import { ActionTree } from 'vuex';
 import { CommonState } from './state';
 import { ITSystem } from '@/store/modules/process/state';
+import { merge } from 'lodash';
 
 export const namespace = 'common';
 
@@ -13,16 +14,25 @@ export interface Cms {
 }
 
 interface ItSystemsResponse {
-  '_embedded': {
-    itSystems: ITSystem[]
-  }
+  _embedded: {
+    itSystems: ITSystem[];
+  };
+  _links: {
+    next: {
+      href: string;
+    };
+  };
+  page: {
+    size: number;
+    totalPages: number;
+  };
 }
 
 export const commonActionTypes = {
   UPDATE: `${namespace}/update`,
   LOAD_CMS_CONTENT: `${namespace}/loadCmsContent`,
   SAVE_CMS_CONTENT: `${namespace}/saveCmsContent`,
-  LOAD_IT_SYSTEMS: `${namespace}/loadItSystems`,
+  LOAD_IT_SYSTEMS: `${namespace}/loadItSystems`
 };
 
 export const actions: ActionTree<CommonState, RootState> = {
@@ -45,7 +55,38 @@ export const actions: ActionTree<CommonState, RootState> = {
     });
   },
   async loadItSystems({ commit }) {
-    const itSystems = (await HTTP.get<ItSystemsResponse>(`api/itSystems`)).data._embedded.itSystems;
-    commit(commonMutationTypes.UPDATE, { itSystems });
+    const response = (await HTTP.get<ItSystemsResponse>(
+      `api/itSystems?size=${500}`
+    )).data;
+    const itSystems = response._embedded.itSystems;
+    const { _links, page } = response;
+
+    try {
+      if (!_links.next) {
+        commit(commonMutationTypes.ASSIGN, {
+          itSystems
+        });
+      } else {
+        if (_links.next) {
+          let next = response._links.next.href.replace(
+            'https://dev.os2autoproces.eu/',
+            ''
+          );
+          for (let i = 0; i < page.totalPages; i++) {
+            const temp = (await HTTP.get<ItSystemsResponse>(next)).data;
+            if (temp._links.next) {
+              next = temp._links.next.href.replace(
+                'https://dev.os2autoproces.eu/',
+                ''
+              );
+            }
+            itSystems.push.apply(itSystems, temp._embedded.itSystems);
+          }
+        }
+      }
+      commit(commonMutationTypes.ASSIGN, { itSystems });
+    } catch (e) {
+      throw e;
+    }
   }
 };

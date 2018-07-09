@@ -15,7 +15,7 @@
     <Well class="challenges-well">
       <div>
         <WellItem label="Nuværende system:">
-          <SelectionField :items="itSystems" :value="state.process.itSystems" :disabled="state.process.disabled.challengesEdit" @change="saveItSystem($event)" />
+          <SelectionField :items="itSystems" :value="state.process.itSystems[0]" :disabled="state.process.disabled.challengesEdit" @change="saveItSystem($event)" />
         </WellItem>
       </div>
 
@@ -42,10 +42,6 @@ import { processActionTypes } from '@/store/modules/process/actions';
 import { ITSystem } from '@/store/modules/process/state';
 import { HTTP } from '@/services/http-service';
 import { commonActionTypes } from '@/store/modules/common/actions';
-import {
-  commonGetterTypes,
-  ItSystemItem
-} from '@/store/modules/common/getters';
 import { CommonState } from '@/store/modules/common/state';
 
 interface Item {
@@ -66,18 +62,14 @@ interface Item {
 })
 export default class ChallengesForm extends Vue {
   @Action(processActionTypes.UPDATE) update: any;
-  @Action(commonActionTypes.LOAD_IT_SYSTEMS)
-  loadItSystems!: () => Promise<void>;
-  @Action(processActionTypes.SAVE_IT_SYSTEM) saveItSystem!: (itSystem: ITSystem) => void;
+  @Action(processActionTypes.SAVE_IT_SYSTEM)
+  saveItSystem!: (itSystem: ITSystem) => void;
 
   twoColumnBreakpoint = 1600;
 
-  mounted() {
-    this.loadItSystems();
-  }
-
   get itSystems() {
-    return this.state.common.itSystems.map((s: ITSystem) => ({ text: s.name, value: s }));
+    const systems = this.$store.state.common.itSystems as ITSystem[];
+    return systems.map((s: ITSystem) => ({ text: s.name, value: s }));
   }
 
   get state() {

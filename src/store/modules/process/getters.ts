@@ -60,5 +60,5 @@ export const getters: GetterTree<ProcessState, RootState> = {
   },
   isResumeValid(state: ProcessState): boolean {
     return isValid(state.shortDescription, isMinMax(1, 140));
-  }
+  },
 };
