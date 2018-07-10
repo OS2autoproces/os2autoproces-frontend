@@ -3,9 +3,9 @@
     <div class="associated-list" v-if="!disabled">
       <div class="associated-label">Tilknyttede personer</div>
       <div class="associated-persons-list">
-        <div v-for="(person, index) in associatedPeople" :key="index">
-          <div class="name">{{person}}</div>
-          <div @click="removePerson(person)" class="delete-icon">
+        <div v-for="(user, index) in state.process.users" :key="index">
+          <div class="name">{{user.name}}</div>
+          <div @click="removeUser(user)" class="delete-icon">
             <DeleteIcon />
           </div>
         </div>
@@ -13,11 +13,10 @@
     </div>
     <div class="add-person" v-if="!disabled">
       <div class="associated-label">Tilknyt person</div>
-      <SelectionField class="search-field" placeholder="Skriv navn" @change="addPerson" :items="people" iconName="search" />
+      <SelectionField class="search-field" placeholder="Skriv navn" @search="search($event)" @change="addUser($event)" :items="users" iconName="search" />
     </div>
     <div class="associated-list-readonly" v-if="disabled">
       <div class="associated-label">Tilknyttede personer:</div>
-      {{ this.associatedPersonsDisabled }}
     </div>
   </div>
 </template>
@@ -28,6 +27,7 @@ import { Action } from 'vuex-class';
 import SelectionField from '@/components/common/inputs/SelectionField.vue';
 import DeleteIcon from '@/components/icons/DeleteIcon.vue';
 import { processActionTypes } from '@/store/modules/process/actions';
+import { commonActionTypes, UserSearchRequest } from '@/store/modules/common/actions';
 import { User } from '@/store/modules/auth/state';
 
 @Component({
@@ -37,35 +37,23 @@ import { User } from '@/store/modules/auth/state';
   }
 })
 export default class AssociatedPersonsInput extends Vue {
-  @Action(processActionTypes.ADD_ASSOCIATED_PERSON) addAssociatedPerson: any;
-  @Action(processActionTypes.REMOVE_ASSOCIATED_PERSON) removeAssociatedPerson: any;
-
-  @Prop() disabled!: boolean;
-
   associatedPeople: string[] = [];
 
-  people = ['Christian Branstrup Bondesdfsdfa', 'Rasmus', 'Jakob'];
+  @Action(processActionTypes.ADD_USER) addUser!: (user: User) => void;
+  @Action(processActionTypes.REMOVE_USER) removeUser!: (user: User) => void;
+  @Action(commonActionTypes.SEARCH_USERS) searchUsers!: ({name, cvr}: UserSearchRequest) => Promise<void>;
+  @Prop() disabled!: boolean;
 
-  addPerson(user: User) {
-    this.associatedPeople.push(user.name);
-    this.addAssociatedPerson(user);
+  get state() {
+    return this.$store.state;
   }
 
-  removePerson(user: User) {
-    this.associatedPeople = this.associatedPeople.filter(p => p !== user.name);
-    this.removeAssociatedPerson(user);
+  get users() {
+    return this.$store.state.common.users.map((u: User) => ({value: u, text: u.name}));
   }
 
-  get getAssociatedPersons() {
-    return this.$store.state.process.users;
-  }
-
-  get associatedPersonsDisabled() {
-    const users = this.$store.state.process.users;
-    if (!users) {
-      return;
-    }
-    return this.$store.state.process.users.join(', ');
+  search(name: string) {
+    this.searchUsers({ name, cvr: this.state.auth.user.cvr });
   }
 }
 </script>

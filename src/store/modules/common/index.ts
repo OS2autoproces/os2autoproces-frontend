@@ -10,7 +10,8 @@ const namespaced = true;
 export const state: CommonState = {
   frontPage: '',
   itSystems: [],
-  kles: []
+  kles: [],
+  users: [],
 };
 
 export const common: Module<CommonState, RootState> = {

@@ -28,8 +28,10 @@ export const processActionTypes = {
   LOAD_COMMENTS: `${namespace}/loadComments`,
   SAVE: `${namespace}/save`,
   REPORT: `${namespace}/report`,
-  ADD_ASSOCIATED_PERSON: `${namespace}/addAssociatedPerson`,
-  REMOVE_ASSOCIATED_PERSON: `${namespace}/removeAssociatedPerson`,
+  
+  ADD_USER: `${namespace}/addUser`,
+  REMOVE_USER: `${namespace}/removeUser`,
+  
   ADD_TECHNOLOGY: `${namespace}/addTechnology`,
   REMOVE_TECHNOLOGY: `${namespace}/removeTechnology`,
 
@@ -149,14 +151,14 @@ export const actions: ActionTree<ProcessState, RootState> = {
     commit(processMutationTypes.ASSIGN, { comments });
   },
 
-  addAssociatedPerson({ commit, state }, user: User): void {
+  addUser({ commit, state }, user: User): void {
     commit(processMutationTypes.ASSIGN, {
       users: [...state.users, user]
     });
   },
-  removeAssociatedPerson({ commit, state }, user: User): void {
+  removeUser({ commit, state }, user: User): void {
     commit(processMutationTypes.ASSIGN, {
-      users: state.users.filter(u => u.name !== user.name)
+      users: state.users.filter(u => u.uuid !== user.uuid)
     });
   },
 

@@ -1,12 +1,12 @@
 <template>
   <div>
-    <v-autocomplete v-if="!disabled" :items="items" single-line @change="valueChanged" :value="value" :append-icon="iconName" :placeholder="placeholder" />
+    <v-autocomplete v-if="!disabled" :items="items" single-line @change="valueChanged" :value="value" :append-icon="iconName" :placeholder="placeholder" :search-input.sync="search" />
     <div class="selection-text" v-if="disabled">{{text}}</div>
   </div>
 </template>
 
 <script lang='ts'>
-import { Vue, Component, Prop } from 'vue-property-decorator';
+import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 
 interface Item {
   text: string;
@@ -15,6 +15,7 @@ interface Item {
 
 @Component
 export default class SelectionField extends Vue {
+  search = '';
   @Prop({ type: [Boolean, Object, String, Array] })
   value!: any;
   @Prop() items!: Item[];
@@ -22,6 +23,12 @@ export default class SelectionField extends Vue {
   iconName!: string;
   @Prop() placeholder!: string;
   @Prop() disabled!: boolean;
+  @Watch('search')
+  function(search: string) {
+    if (search) {
+      this.$emit('search', search);
+    }
+  }
 
   get text() {
     const item = this.items.find(i => i.value === this.value);

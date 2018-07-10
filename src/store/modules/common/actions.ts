@@ -2,8 +2,10 @@ import { HTTP } from '@/services/http-service';
 import { commonMutationTypes } from '@/store/modules/common/mutations';
 import { ITSystem } from '@/store/modules/process/state';
 import { RootState } from '@/store/store';
-import { ActionTree } from 'vuex';
+import { ActionTree, Commit } from 'vuex';
 import { CommonState } from './state';
+import { User } from '@/store/modules/auth/state';
+import { debounce } from 'lodash';
 
 export const namespace = 'common';
 
@@ -47,12 +49,25 @@ interface KleResponse {
   };
 }
 
+interface UserResponse {
+  _embedded: {
+    users: User[];
+  };
+}
+
+export interface UserSearchRequest {
+  cvr: string;
+  name: string;
+}
+
 export const commonActionTypes = {
   UPDATE: `${namespace}/update`,
   LOAD_CMS_CONTENT: `${namespace}/loadCmsContent`,
   SAVE_CMS_CONTENT: `${namespace}/saveCmsContent`,
   LOAD_IT_SYSTEMS: `${namespace}/loadItSystems`,
-  LOAD_KLES: `${namespace}/loadKles`
+  LOAD_KLES: `${namespace}/loadKles`,
+
+  SEARCH_USERS: `${namespace}/searchUsers`
 };
 
 export const actions: ActionTree<CommonState, RootState> = {
@@ -110,9 +125,7 @@ export const actions: ActionTree<CommonState, RootState> = {
     }
   },
   async loadKles({ commit }) {
-    const response = (await HTTP.get<KleResponse>(
-      `api/kles?size=${500}`
-    )).data;
+    const response = (await HTTP.get<KleResponse>(`api/kles?size=${500}`)).data;
     const kles = response._embedded.kles;
     const { _links, page } = response;
 
@@ -143,5 +156,19 @@ export const actions: ActionTree<CommonState, RootState> = {
     } catch (e) {
       throw e;
     }
+  },
+
+  searchUsers({ commit }, { cvr, name }): void {
+    if(!cvr || name < 3) {
+      return;
+    }
+    debouncedSearch({cvr, name}, commit);
   }
 };
+
+const debouncedSearch = debounce(async ({name , cvr}: UserSearchRequest, commit: Commit) => {
+  const users = (await HTTP.get<UserResponse>(
+    `api/users?name=${name}&cvr=${cvr}`
+  )).data._embedded.users;
+  commit(commonMutationTypes.ASSIGN, { users });
+}, 250);
