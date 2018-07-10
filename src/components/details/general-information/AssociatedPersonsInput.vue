@@ -121,8 +121,8 @@ export default class AssociatedPersonsInput extends Vue {
     width: 250px;
   }
 
-  /deep/ .input-group--autocomplete {
-    .icon {
+  /deep/ .v-autocomplete {
+    .v-icon {
       transform: none !important;
     }
   }
