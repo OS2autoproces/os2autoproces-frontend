@@ -1,11 +1,11 @@
 <template>
   <div class="associated">
-    <div class="associated-list" v-if="!disabled">
+    <div class="associated-list">
       <div class="associated-label">Tilknyttede personer</div>
-      <div class="associated-persons-list">
+      <div class="associated-persons-list" :class="{ disabled }">
         <div v-for="(user, index) in state.process.users" :key="index">
           <div class="name">{{user.name}}</div>
-          <div @click="removeUser(user)" class="delete-icon">
+          <div v-if="!disabled" @click="removeUser(user)" class="delete-icon">
             <DeleteIcon />
           </div>
         </div>
@@ -14,9 +14,6 @@
     <div class="add-person" v-if="!disabled">
       <div class="associated-label">Tilknyt person</div>
       <SelectionField class="search-field" placeholder="Skriv navn" @search="search($event)" @change="addUser($event)" :items="users" iconName="search" />
-    </div>
-    <div class="associated-list-readonly" v-if="disabled">
-      <div class="associated-label">Tilknyttede personer:</div>
     </div>
   </div>
 </template>
@@ -78,6 +75,10 @@ export default class AssociatedPersonsInput extends Vue {
       border: 1px solid $color-primary;
       border-radius: $size-unit;
       padding: $size-unit/2;
+
+      &.disabled {
+        border: none;
+      }
 
       > div {
         display: flex;
