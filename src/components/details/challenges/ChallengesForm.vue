@@ -15,7 +15,7 @@
     <Well class="challenges-well">
       <div>
         <WellItem label="Nuværende system:">
-          <SelectionField :items="itSystems" :value="state.process.itSystems[0]" :disabled="state.process.disabled.challengesEdit" @change="saveItSystem($event)" />
+          <SelectionField v-if="state.process.itSystems[0]" :items="itSystems" :text="state.process.itSystems[0].name" :value="state.process.itSystems[0]" :disabled="state.process.disabled.challengesEdit" @change="saveItSystem($event)" />
         </WellItem>
       </div>
 

@@ -7,7 +7,7 @@
             <InputField disabled :value="state.id" />
           </WellItem>
           <WellItem labelWidth="100px" label="KLE-nr:">
-            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.kle" @change="update({kle: $event})" :items="kles" />
+            <SelectionField :disabled="state.disabled.generalInformationEdit" :itemText="state.kle" :value="state.kle" :text="state.kle" @change="update({kle: $event})" :items="kles" />
           </WellItem>
           <WellItem labelWidth="100px" label="Lokalt ID:">
             <InputField :disabled="state.disabled.generalInformationEdit" :value="state.localId" @change="update({localId: $event})"/>
@@ -19,22 +19,22 @@
 
         <div>
           <WellItem labelWidth="100px" label="Leverandør:">
-            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.vendor" @change="update({vendor: $event})" :items="suppliers" />
+            <SelectionField v-if="state.vendor" :disabled="state.disabled.generalInformationEdit" :value="state.vendor" :text="state.vendor.name" @change="update({vendor: $event})" :items="users" />
           </WellItem>
           <WellItem labelWidth="100px" label="Projektleder:">
-            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.owner" @change="update({owner: $event})" :items="projectManagers" />
+            <SelectionField v-if="state.owner" :disabled="state.disabled.generalInformationEdit" :value="state.owner" :text="state.owner.name" @change="update({owner: $event})" :items="users" />
           </WellItem>
           <WellItem labelWidth="100px" label="Kontaktperson:">
-            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.contact" @change="update({contact: $event})" :items="contactPersons" />
+            <SelectionField v-if="state.contact" :disabled="state.disabled.generalInformationEdit" :value="state.contact" :text="state.contact.name" @change="update({contact: $event})" :items="users" />
           </WellItem>
-          <WellItem v-if="state.cantact" labelWidth="100px" label="Mail:">
+          <WellItem v-if="state.contact" labelWidth="100px" label="Mail:">
             {{state.contact.email}}
           </WellItem>
         </div>
 
         <div>
           <WellItem labelWidth="100px" label="Afdeling:">
-            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="displayDepartments" @change="update({orgUnits: getOrgUnit($event)})" :items="departments" />
+            <SelectionField v-if="state.departments" :disabled="state.disabled.generalInformationEdit" :value="displayDepartments" @change="update({orgUnits: getOrgUnit($event)})" :items="departments" />
           </WellItem>
           <WellItem labelWidth="100px" label="Fagområde:">
             <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.domain" @change="update({domain: $event})" :items="domainLevels" />
@@ -110,7 +110,7 @@ import { Kle } from '@/store/modules/common/actions';
     Well,
     FormSection,
     WellItem,
-    WarningIcon
+    WarningIcon,
   }
 })
 export default class GeneralInformationForm extends Vue {
@@ -123,40 +123,17 @@ export default class GeneralInformationForm extends Vue {
     return this.$store.state.process;
   }
 
-  get kles() {
-    return this.$store.state.common.kles.map((kle: Kle) => ({
-      value: kle.code,
-      text: kle.code
-    }));
-  }
-
-  get displayDepartments(): string {
-    const orgs: OrgUnit[] = this.$store.state.process.orgUnits;
-    if (!orgs) {
-      return '';
-    }
-    return orgs.map(d => d.name).join(', ');
-  }
-
-  get departments(): string[] {
-    const orgs: OrgUnit[] = this.$store.state.process.orgUnits;
-    if (!orgs) {
-      return [''];
-    }
-    return orgs.map(d => d.name);
-  }
-
-  getOrgUnit(deparmentName: string) {
-    const orgs: OrgUnit[] = this.$store.state.process.orgUnits;
-    if (!orgs) {
-      return '';
-    }
-    return orgs.find((o: OrgUnit) => o.name === deparmentName);
+  get users() {
+    return this.$store.state.common.users.map((u: User) => ({value: u, text: u.name}));
   }
 
   phaseChanged(phase: any) {
     this.isPhaseChanged = true;
     this.update({ phase });
+  }
+
+  get kles() {
+    return this.$store.state.common.kles.map((i: Kle) => ({value: i.code, text: i.code}));
   }
 
   visibilityLevels = [
@@ -181,13 +158,6 @@ export default class GeneralInformationForm extends Vue {
     { value: StatusKeys.INPROGRESS, text: StatusLabels.INPROGRESS }
   ];
 
-  contactPersons = ['Christian', 'Lars', 'Henrik'];
-
-  suppliers = ['Christian', 'Lars', 'Henrik'];
-
-  emails = ['mail1@1', 'mail2@2', 'mail3@3'];
-
-  projectManagers = ['Christian', 'Lars', 'Henrik'];
 }
 </script>
 

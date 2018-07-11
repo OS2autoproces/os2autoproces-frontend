@@ -3,7 +3,7 @@
     <div class="associated-list">
       <div class="associated-label">Tilknyttede personer</div>
       <div class="associated-persons-list" :class="{ disabled }">
-        <div v-for="(user, index) in state.process.users" :key="index">
+        <div v-for="user in state.process.users" :key="user.uuid">
           <div class="name">{{user.name}}</div>
           <div v-if="!disabled" @click="removeUser(user)" class="delete-icon">
             <DeleteIcon />
@@ -13,7 +13,7 @@
     </div>
     <div class="add-person" v-if="!disabled">
       <div class="associated-label">Tilknyt person</div>
-      <SelectionField class="search-field" placeholder="Skriv navn" @search="search($event)" @change="addUser($event)" :items="users" iconName="search" />
+      <SelectionField class="search-field" placeholder="Skriv navn for at søge" @search="search($event)" @change="addUser($event)" :items="users" iconName="search" />
     </div>
   </div>
 </template>
@@ -34,12 +34,11 @@ import { User } from '@/store/modules/auth/state';
   }
 })
 export default class AssociatedPersonsInput extends Vue {
-  associatedPeople: string[] = [];
+  @Prop() disabled!: boolean;
 
   @Action(processActionTypes.ADD_USER) addUser!: (user: User) => void;
   @Action(processActionTypes.REMOVE_USER) removeUser!: (user: User) => void;
   @Action(commonActionTypes.SEARCH_USERS) searchUsers!: ({name, cvr}: UserSearchRequest) => Promise<void>;
-  @Prop() disabled!: boolean;
 
   get state() {
     return this.$store.state;
@@ -86,6 +85,7 @@ export default class AssociatedPersonsInput extends Vue {
         margin-right: $size-unit;
 
         .name {
+          @include field-input-text;
           flex-grow: 1;
         }
 
