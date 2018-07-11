@@ -1,7 +1,16 @@
 <template>
   <div>
-    <v-autocomplete v-if="!disabled" :items="items" single-line @change="valueChanged" :value="value" :append-icon="iconName" :placeholder="placeholder" :search-input.sync="search" />
-    <div class="selection-text" v-if="disabled">{{text}}</div>
+    <v-autocomplete 
+      v-if="!disabled"
+      :label="placeholder"
+      :items="items"
+      single-line
+      :append-icon="iconName" 
+      :search-input.sync="search"
+      @change="valueChanged"
+      :value="value"
+      />
+    <div class="selection-text" v-if="disabled">{{text ? text : inputText }}</div>
   </div>
 </template>
 
@@ -16,6 +25,8 @@ interface Item {
 @Component
 export default class SelectionField extends Vue {
   search = '';
+  
+  @Prop() text!: string;
   @Prop({ type: [Boolean, Object, String, Array] })
   value!: any;
   @Prop() items!: Item[];
@@ -23,6 +34,7 @@ export default class SelectionField extends Vue {
   iconName!: string;
   @Prop() placeholder!: string;
   @Prop() disabled!: boolean;
+  
   @Watch('search')
   function(search: string) {
     if (search) {
@@ -30,7 +42,7 @@ export default class SelectionField extends Vue {
     }
   }
 
-  get text() {
+  get inputText() {
     const item = this.items.find(i => i.value === this.value);
     return item ? item.text : '';
   }
