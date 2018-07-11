@@ -10,22 +10,22 @@
             <SelectionField :disabled="state.disabled.generalInformationEdit" :itemText="state.kle" :value="state.kle" :text="state.kle" @change="update({kle: $event})" :items="kles" />
           </WellItem>
           <WellItem labelWidth="100px" label="Lokalt ID:">
-            <InputField :disabled="state.disabled.generalInformationEdit" :value="state.localId" @change="update({localId: $event})"/>
+            <InputField :disabled="state.disabled.generalInformationEdit" :value="state.localId" @change="update({localId: $event})" />
           </WellItem>
           <WellItem labelWidth="100px" label="KL ID:">
-            <InputField :disabled="state.disabled.generalInformationEdit" :value="state.klId" @change="update({klId: $event})"/>
+            <InputField :disabled="state.disabled.generalInformationEdit" :value="state.klId" @change="update({klId: $event})" />
           </WellItem>
         </div>
 
         <div>
           <WellItem labelWidth="100px" label="Leverandør:">
-            <SelectionField v-if="state.vendor" :disabled="state.disabled.generalInformationEdit" :value="state.vendor" :text="state.vendor.name" @change="update({vendor: $event})" :items="users" />
+            <SelectionField v-if="state.vendor" :disabled="state.disabled.generalInformationEdit" :value="state.vendor" :text="state.vendor.name" @search="search($event)" @change="update({vendor: $event})" :items="users" />
           </WellItem>
           <WellItem labelWidth="100px" label="Projektleder:">
-            <SelectionField v-if="state.owner" :disabled="state.disabled.generalInformationEdit" :value="state.owner" :text="state.owner.name" @change="update({owner: $event})" :items="users" />
+            <SelectionField v-if="state.owner" :disabled="state.disabled.generalInformationEdit" :value="state.owner" :text="state.owner.name" @search="search($event)" @change="update({owner: $event})" :items="users" />
           </WellItem>
           <WellItem labelWidth="100px" label="Kontaktperson:">
-            <SelectionField v-if="state.contact" :disabled="state.disabled.generalInformationEdit" :value="state.contact" :text="state.contact.name" @change="update({contact: $event})" :items="users" />
+            <SelectionField v-if="state.contact" :disabled="state.disabled.generalInformationEdit" :value="state.contact" :text="state.contact.name" @search="search($event)" @change="update({contact: $event})" :items="users" />
           </WellItem>
           <WellItem v-if="state.contact" labelWidth="100px" label="Mail:">
             {{state.contact.email}}
@@ -94,6 +94,11 @@ import WellItem from '@/components/common/WellItem.vue';
 import FormSection from '@/components/details/FormSection.vue';
 import WarningIcon from '@/components/icons/WarningIcon.vue';
 import { processActionTypes } from '@/store/modules/process/actions';
+import {
+  commonActionTypes,
+  UserSearchRequest
+} from '@/store/modules/common/actions';
+import { User } from '@/store/modules/auth/state';
 import { StatusKeys, StatusLabels } from '@/models/status';
 import { OrgUnit } from '@/store/modules/process/state';
 import { VisibilityLabels, VisibilityKeys } from '@/models/visibility';
@@ -110,11 +115,13 @@ import { Kle } from '@/store/modules/common/actions';
     Well,
     FormSection,
     WellItem,
-    WarningIcon,
+    WarningIcon
   }
 })
 export default class GeneralInformationForm extends Vue {
   @Action(processActionTypes.UPDATE) update: any;
+  @Action(commonActionTypes.SEARCH_USERS)
+  searchUsers!: ({ name, cvr }: UserSearchRequest) => Promise<void>;
 
   isPhaseChanged = false;
   StatusKeys = StatusKeys;
@@ -124,7 +131,16 @@ export default class GeneralInformationForm extends Vue {
   }
 
   get users() {
-    return this.$store.state.common.users.map((u: User) => ({value: u, text: u.name}));
+    return this.$store.state.common.users.map((u: User) => ({
+      value: u,
+      text: u.name
+    }));
+  }
+  get kles() {
+    return this.$store.state.common.kles.map((i: Kle) => ({
+      value: i.code,
+      text: i.code
+    }));
   }
 
   phaseChanged(phase: any) {
@@ -132,8 +148,8 @@ export default class GeneralInformationForm extends Vue {
     this.update({ phase });
   }
 
-  get kles() {
-    return this.$store.state.common.kles.map((i: Kle) => ({value: i.code, text: i.code}));
+  search(name: string) {
+    this.searchUsers({ name, cvr: this.$store.state.auth.user.cvr });
   }
 
   visibilityLevels = [
@@ -157,7 +173,6 @@ export default class GeneralInformationForm extends Vue {
     { value: StatusKeys.PENDING, text: StatusLabels.PENDING },
     { value: StatusKeys.INPROGRESS, text: StatusLabels.INPROGRESS }
   ];
-
 }
 </script>
 

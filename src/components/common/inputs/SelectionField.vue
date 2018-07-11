@@ -9,6 +9,7 @@
       :search-input.sync="search"
       @change="valueChanged"
       :value="value"
+      cache-items
       />
     <div class="selection-text" v-if="disabled">{{text ? text : inputText }}</div>
   </div>
