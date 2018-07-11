@@ -188,7 +188,7 @@ export const actions: ActionTree<ProcessState, RootState> = {
 
     const converted = responseToState(process);
 
-    commit(processMutationTypes.UPDATE, converted);
+    commit(processMutationTypes.ASSIGN, converted);
   },
   async report({ commit, state }): Promise<string | null> {
     const converted: ProcessRequest = await stateToRequest(state);
