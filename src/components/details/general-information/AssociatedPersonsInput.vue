@@ -3,7 +3,7 @@
     <div class="associated-list">
       <div class="associated-label">Tilknyttede personer</div>
       <div class="associated-persons-list" :class="{ disabled }">
-        <div v-for="user in state.process.users" :key="user.uuid">
+        <div v-for="(user, index) in state.process.users" :key="index">
           <div class="name">{{user.name}}</div>
           <div v-if="!disabled" @click="removeUser(user)" class="delete-icon">
             <DeleteIcon />
