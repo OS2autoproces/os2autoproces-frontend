@@ -8,7 +8,7 @@
             </div>
             <div>
                 <div class="results-wrapper">
-                    <div class="report" @click="clear">
+                    <div class="report">
                         <router-link to="/report">
                             <PlusIcon/> Indberet
                         </router-link>
@@ -71,6 +71,7 @@ export default class Search extends Vue {
   }
 
   mounted() {
+    this.clear(); 
     this.$store.dispatch(searchActionTypes.SEARCH);
   }
 }

@@ -21,10 +21,12 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
+import { Action } from 'vuex-class';
 import ArrowDownIcon from '../components/icons/ArrowDownIcon.vue';
 import ArrowLeftIcon from '../components/icons/ArrowLeftIcon.vue';
 import NavBar from '../components/common/NavBar.vue';
 import { PhaseKeys, PhaseLabels } from '@/models/phase';
+import { processActionTypes } from '@/store/modules/process/actions';
 
 @Component({
   components: {
@@ -34,6 +36,8 @@ import { PhaseKeys, PhaseLabels } from '@/models/phase';
   }
 })
 export default class Home extends Vue {
+  @Action(processActionTypes.CLEAR_PROCESS) clear!: () => void;
+
   phasesLevels = [
     { route: PhaseKeys.IDEA, label: PhaseLabels.IDEA },
     { route: PhaseKeys.PREANALYSIS, label: PhaseLabels.PREANALYSIS },
@@ -42,6 +46,10 @@ export default class Home extends Vue {
     { route: PhaseKeys.IMPLEMENTATION, label: PhaseLabels.IMPLEMENTATION },
     { route: PhaseKeys.OPERATION, label: PhaseLabels.OPERATION }
   ];
+
+  mounted() {
+    this.clear();
+  }
 }
 </script>
 
