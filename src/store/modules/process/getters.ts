@@ -36,9 +36,6 @@ export const getters: GetterTree<ProcessState, RootState> = {
   isParagrafValid(state: ProcessState): boolean {
     return isValid(state.legalClause, isNonempty);
   },
-  isFieldValid(state: ProcessState): boolean {
-    return isValid(state.domain, isNonempty);
-  },
   isVisibilityValid(state: ProcessState): boolean {
     return isValid(state.visibility, isNonempty);
   },

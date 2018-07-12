@@ -12,6 +12,7 @@ import {
   ProcessState,
   Technology
 } from '@/store/modules/process/state';
+import { TypeKeys, Type } from '@/models/types';
 
 export interface ProcessRequest {
   localId: string | null;
@@ -20,6 +21,7 @@ export interface ProcessRequest {
   phase: Phase;
   status: Status;
   statusText: string | null;
+  type: Type;
 
   created: string | null;
   lastChanged: string | null;
@@ -28,7 +30,7 @@ export interface ProcessRequest {
   title: string;
   shortDescription: string;
   longDescription: string | null;
-  domain: Domain;
+  domains: Domain[];
   visibility: Visibility;
 
   legalClause: string | null;
@@ -76,6 +78,7 @@ export interface ProcessRequest {
   itSystems: ITSystem[] | null;
   orgUnits: OrgUnit[] | null;
   technologies: Technology[] | null;
+  children: string[];
 }
 
 export interface ProcessResponse extends ProcessRequest {
@@ -109,7 +112,7 @@ export function stateToRequest(state: ProcessState): ProcessRequest {
     title: state.title,
     shortDescription: state.shortDescription,
     longDescription: defaultNull(state.longDescription),
-    domain: state.domain || DomainKeys.WORK,
+    domains: state.domains || [],
     visibility: state.visibility || VisibilityKeys.PERSONAL,
     legalClause: defaultNull(state.legalClause),
     legalClauseLastVerified: defaultNull(state.legalClauseLastVerified),
@@ -161,7 +164,9 @@ export function stateToRequest(state: ProcessState): ProcessRequest {
     orgUnits: defaultNull(state.orgUnits),
     users: defaultNull(state.users),
     technologies: defaultNull(state.technologies),
-    itSystems: defaultNull(state.itSystems)
+    itSystems: defaultNull(state.itSystems),
+    children: defaultNull(state.children),
+    type: state.type || TypeKeys.CHILD
   };
 }
 
@@ -202,6 +207,9 @@ export function responseToState(process: ProcessResponse): Process {
     orgUnits: process.orgUnits || [],
     created: process.created || '',
     decommissioned: process.decommissioned || '',
-    lastChanged: process.lastChanged || ''
+    lastChanged: process.lastChanged || '',
+    children: process.children || [],
+    type: process.type || TypeKeys.CHILD,
+    owner: process.owner,
   };
 }

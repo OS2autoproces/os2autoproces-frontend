@@ -100,7 +100,8 @@ export default class Details extends Vue {
   @Action(processActionTypes.LOAD_COMMENTS) loadComments!: () => Promise<void>;
   @Action(commonActionTypes.LOAD_IT_SYSTEMS)
   loadItSystems!: () => Promise<void>;
-  @Action(commonActionTypes.LOAD_KLES) loadKles!: () => Promise<void>;  
+  @Action(commonActionTypes.LOAD_KLES) loadKles!: () => Promise<void>;
+  @Action(processActionTypes.CLEAR_PROCESS) clear!: () => Promise<void>;
 
   get state() {
     return this.$store.state.process;

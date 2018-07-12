@@ -16,11 +16,18 @@ import {
 } from '@/store/modules/process/state';
 import { RootState } from '@/store/store';
 import { ActionTree } from 'vuex';
+import { PhaseKeys } from '@/models/phase';
+import { DomainKeys } from '@/models/domain';
+import { VisibilityKeys } from '@/models/visibility';
+import { StatusKeys } from '@/models/status';
+import { LikertScaleKeys } from '@/models/likert-scale';
+import { TypeKeys } from '@/models/types';
 
 export const namespace = 'process';
 
 export const processActionTypes = {
   UPDATE: `${namespace}/update`,
+  CLEAR_PROCESS: `${namespace}/clear`,
   ADD_ATTACHMENTS: `${namespace}/addAttachments`,
   REMOVE_ATTACHMENTS: `${namespace}/removeAttachments`,
   LOAD_ATTACHMENTS: `${namespace}/loadAttachments`,
@@ -35,6 +42,8 @@ export const processActionTypes = {
   ADD_TECHNOLOGY: `${namespace}/addTechnology`,
   REMOVE_TECHNOLOGY: `${namespace}/removeTechnology`,
 
+  ADD_DOMAIN: `${namespace}/addDomain`,
+  
   SAVE_IT_SYSTEM: `${namespace}/saveItSystem`,
 
   LOAD_PROCESS_DETAILS: `${namespace}/loadProcessDetails`,
@@ -73,6 +82,9 @@ function setBackendManagedFields(process: Process): BackendManagedFields {
 export const actions: ActionTree<ProcessState, RootState> = {
   update({ commit }, payload: Partial<ProcessState>) {
     commit(processMutationTypes.UPDATE, payload);
+  },
+  clear({commit}) {
+    commit(processMutationTypes.UPDATE, initialProcessState() )
   },
   async loadAttachments({ commit, state }) {
     if (!state.id) {
@@ -229,5 +241,103 @@ export const actions: ActionTree<ProcessState, RootState> = {
       return;
     }
     commit(processMutationTypes.ASSIGN, { itSystems: [...state.itSystems, itSystem]});
+  },
+  addDomain({commit, state}, domain: string) {
+    commit(processMutationTypes.ASSIGN, { domains: [...state.domains, domain]})
   }
 };
+
+export function initialProcessState() {
+  return {
+    id: '',
+    localId: '',
+    kle: '',
+    contact: null,
+    klId: '',
+    kla: null,
+    legalClause: '',
+    orgUnits: [],
+    domains: [DomainKeys.WORK],
+    visibility: VisibilityKeys.PERSONAL,
+    vendor: null,
+    owner: null,
+    users: [],
+    shortDescription: '',
+    phase: PhaseKeys.IDEA,
+    status: StatusKeys.INPROGRESS,
+    statusText: '',
+    klaProcess: false,
+    municipalityName: '',
+    type: TypeKeys.CHILD,
+    children: [],
+
+    /* Assessment */
+    levelOfProfessionalAssessment: LikertScaleKeys.UNKNOWN,
+    levelOfChange: LikertScaleKeys.UNKNOWN,
+    levelOfStructuredInformation: LikertScaleKeys.UNKNOWN,
+    levelOfUniformity: LikertScaleKeys.UNKNOWN,
+    levelOfDigitalInformation: LikertScaleKeys.UNKNOWN,
+    evaluatedLevelOfRoi: LikertScaleKeys.UNKNOWN,
+    levelOfQuality: LikertScaleKeys.UNKNOWN,
+    levelOfRoutineWorkReduction: LikertScaleKeys.UNKNOWN,
+    levelOfSpeed: LikertScaleKeys.UNKNOWN,
+
+    /* Challenges */
+    solutionRequests: '',
+    processChallenges: '',
+    longDescription: '',
+    itSystems: [],
+    created: '',
+
+    /* Time and process */
+    timeSpendOccurancesPerEmployee: '0',
+    timeSpendPerOccurance: '0',
+    timeSpendComputedTotal: '0',
+    timeSpendEmployeesDoingProcess: '0',
+    timeSpendPercentageDigital: '0',
+    targestsCitizens: false,
+    targetsCompanies: false,
+    timeSpendComment: '',
+
+    /* Specification */
+    esdhReference: '',
+
+    /* Implementation */
+    organizationalImplementationNotes: '',
+    technicalImplementationNotes: '',
+    technologies: [],
+
+    /* Operation */
+    lastChanged: '',
+    decommissioned: '',
+    legalClauseLastVerified: null,
+    rating: 0,
+    ratingComment: '',
+
+    /* Attachments */
+    links: [],
+    attachments: [],
+
+    /* Details */
+    title: '',
+    searchWords: '',
+    internalNotes: '',
+    comments: [],
+    cvr: '',
+    hasBookmarked: false,
+    canEdit: true,
+
+    disabled: {
+      titleEdit: true,
+      generalInformationEdit: true,
+      challengesEdit: true,
+      timeAndProcessEdit: true,
+      assessmentEdit: true,
+      operationEdit: true,
+      specificationEdit: true,
+      implementationEdit: true,
+      attachmentsEdit: true,
+      municipalityUsingEdit: true
+    }
+  };
+}

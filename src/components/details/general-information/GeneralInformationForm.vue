@@ -7,7 +7,7 @@
             <InputField disabled :value="state.id" />
           </WellItem>
           <WellItem labelWidth="100px" label="KLE-nr:">
-            <SelectionField :disabled="state.disabled.generalInformationEdit" :itemText="state.kle" :value="state.kle" :text="state.kle" @change="update({kle: $event})" :items="kles" />
+            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.kle" :text="state.kle" @change="update({kle: $event})" :items="kles" />
           </WellItem>
           <WellItem labelWidth="100px" label="Lokalt ID:">
             <InputField :disabled="state.disabled.generalInformationEdit" :value="state.localId" @change="update({localId: $event})" />
@@ -19,13 +19,13 @@
 
         <div>
           <WellItem labelWidth="100px" label="Leverandør:">
-            <SelectionField v-if="state.vendor" :disabled="state.disabled.generalInformationEdit" :value="state.vendor" :text="state.vendor.name" @search="search($event)" @change="update({vendor: $event})" :items="users" />
+            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.vendor" :text="state.vendor ? state.vendor.name : ''" @search="search($event)" @change="update({vendor: $event})" :items="users" />
           </WellItem>
-          <WellItem labelWidth="100px" label="Projektleder:">
-            <SelectionField v-if="state.owner" :disabled="state.disabled.generalInformationEdit" :value="state.owner" :text="state.owner.name" @search="search($event)" @change="update({owner: $event})" :items="users" />
+          <WellItem labelWidth="100px" label="Ejer:">
+            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.owner" :text="state.owner ? state.owner.name : ''" @search="search($event)" @change="update({owner: $event})" :items="users" />
           </WellItem>
           <WellItem labelWidth="100px" label="Kontaktperson:">
-            <SelectionField v-if="state.contact" :disabled="state.disabled.generalInformationEdit" :value="state.contact" :text="state.contact.name" @search="search($event)" @change="update({contact: $event})" :items="users" />
+            <SelectionField v-if="state.contact" :disabled="state.disabled.generalInformationEdit" :text="state.contact ? state.contact.name : ''" :value="state.contact" @search="search($event)" @change="update({contact: $event})" :items="users" />
           </WellItem>
           <WellItem v-if="state.contact" labelWidth="100px" label="Mail:">
             {{state.contact.email}}
@@ -33,11 +33,8 @@
         </div>
 
         <div>
-          <WellItem labelWidth="100px" label="Afdeling:">
-            <SelectionField v-if="state.departments" :disabled="state.disabled.generalInformationEdit" :value="displayDepartments" @change="update({orgUnits: getOrgUnit($event)})" :items="departments" />
-          </WellItem>
-          <WellItem labelWidth="100px" label="Fagområde:">
-            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.domain" @change="update({domain: $event})" :items="domainLevels" />
+          <WellItem labelWidth="100px" label="Fagområder:">
+            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.domains" :text="domainsText" @change="addDomain($event)" :items="domainLevels" />
           </WellItem>
           <WellItem labelWidth="100px" label="Synlighed:">
             <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.visibility" @change="update({visibility: $event})" :items="visibilityLevels" />
@@ -104,6 +101,7 @@ import { OrgUnit } from '@/store/modules/process/state';
 import { VisibilityLabels, VisibilityKeys } from '@/models/visibility';
 import { DomainKeys, DomainLabels } from '@/models/domain';
 import { Kle } from '@/store/modules/common/actions';
+import { Domain } from '@/models/domain';
 
 @Component({
   components: {
@@ -120,14 +118,27 @@ import { Kle } from '@/store/modules/common/actions';
 })
 export default class GeneralInformationForm extends Vue {
   @Action(processActionTypes.UPDATE) update: any;
+  @Action(processActionTypes.ADD_DOMAIN)
+  addDomain!: (domain: any) => Promise<void>;
   @Action(commonActionTypes.SEARCH_USERS)
   searchUsers!: ({ name, cvr }: UserSearchRequest) => Promise<void>;
 
   isPhaseChanged = false;
   StatusKeys = StatusKeys;
 
+  get vendorValue() {
+    const contact = this.$store.state.process.contact;
+    return ({value: contact, text: contact.name });
+  }
+
   get state() {
     return this.$store.state.process;
+  }
+
+  get domainsText() {
+    return this.$store.state.process.domains
+      .map((d: Domain) => DomainLabels[d])
+      .join(', ');
   }
 
   get users() {
@@ -136,6 +147,7 @@ export default class GeneralInformationForm extends Vue {
       text: u.name
     }));
   }
+
   get kles() {
     return this.$store.state.common.kles.map((i: Kle) => ({
       value: i.code,

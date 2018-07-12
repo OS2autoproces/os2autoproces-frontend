@@ -4,6 +4,7 @@ import { Phase } from '@/models/phase';
 import { Status } from '@/models/status';
 import { Visibility } from '@/models/visibility';
 import { User } from '@/store/modules/auth/state';
+import { Type } from '@/models/types';
 
 export interface ProcessState extends Process {
   disabled: Disabled;
@@ -15,6 +16,8 @@ export interface Process {
   id: string;
   localId: string;
   klId: string;
+  children: string[];
+
   esdhReference: string;
   phase: Phase;
   status: Status;
@@ -23,9 +26,10 @@ export interface Process {
   lastChanged: string;
   decommissioned: string;
   title: string;
+  type: Type;
   shortDescription: string;
   longDescription: string;
-  domain: Domain;
+  domains: Domain[];
   visibility: Visibility;
   legalClause: string;
   legalClauseLastVerified: string | null;
