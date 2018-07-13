@@ -1,5 +1,5 @@
 <template>
-    <FormSection heading="Faglig vurdering" id="assessment" :disabled="state.disabled.assessmentEdit" @edit="update({ disabled: { assessmentEdit: $event} })">
+    <FormSection v-if="isVisibleFromAnalysis" heading="Faglig vurdering" id="assessment" :disabled="state.disabled.assessmentEdit" @edit="update({ disabled: { assessmentEdit: $event} })">
         <div class="assessment" :class="{ disabled: state.disabled.assessmentEdit }">
             <div class="question">
                 <div class="label">I hvor høj grad er der faglig vurdering?
@@ -61,12 +61,13 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
-import { Action } from 'vuex-class';
+import { Action, Getter } from 'vuex-class';
 import LikertScale from '@/components/common/inputs/LikertScale.vue';
 import InfoTooltip from '@/components/common/InfoTooltip.vue';
 import FormSection from '@/components/details/FormSection.vue';
 import { processActionTypes } from '@/store/modules/process/actions';
 import { ProcessState } from '@/store/modules/process/state';
+import { processGetterTypes } from '@/store/modules/process/getters';
 
 @Component({
   components: {
@@ -78,6 +79,7 @@ import { ProcessState } from '@/store/modules/process/state';
 export default class AssessmentForm extends Vue {
   @Action(processActionTypes.UPDATE)
   update!: (state: Partial<ProcessState>) => void;
+    @Getter(processGetterTypes.IS_VISIBLE_FROM_ANALYSIS) isVisibleFromAnalysis!: () => boolean;
 
   get state() {
     return this.$store.state.process;

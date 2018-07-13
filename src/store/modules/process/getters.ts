@@ -2,7 +2,12 @@ import { ProcessState } from '@/store/modules/process/state';
 import { RootState } from '@/store/store';
 import { GetterTree } from 'vuex';
 import * as validateJs from 'validate.js';
+import { PhaseKeys } from '@/models/phase';
+import { namespace } from '@/store/modules/process/actions';
 
+export const processGetterTypes = {
+  IS_VISIBLE_FROM_ANALYSIS: `${namespace}/isVisibleFromAnalysis`
+}
 
 const isNonempty = {
   length: {
@@ -30,6 +35,9 @@ function isValid(value: any, constraints: any): boolean {
 }
 
 export const getters: GetterTree<ProcessState, RootState> = {
+  isVisibleFromAnalysis(state: ProcessState): boolean {
+    return state.phase !== PhaseKeys.IDEA;
+  },
   isKleNumberValid(state: ProcessState): boolean {
     return isValid(state.kle, isNumeric);
   },

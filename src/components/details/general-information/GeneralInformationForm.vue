@@ -41,13 +41,13 @@
           </WellItem>
         </div>
 
-        <div>
+        <div v-if="isVisibleFromAnalysis">
           <WellItem labelWidth="100px" label="Lov of paragraf:">
             <InputField :disabled="state.disabled.generalInformationEdit" :value="state.legalClause" @change="update({legalClause: $event})" />
           </WellItem>
         </div>
 
-        <AssociatedPersonsInput slot="well-footer" :disabled="state.disabled.generalInformationEdit" />
+        <AssociatedPersonsInput v-if="isVisibleFromAnalysis" slot="well-footer" :disabled="state.disabled.generalInformationEdit" />
       </Well>
     </div>
 
@@ -79,7 +79,7 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
-import { Action } from 'vuex-class';
+import { Action, Getter } from 'vuex-class';
 
 import InputField from '@/components/common/inputs/InputField.vue';
 import SelectionField from '@/components/common/inputs/SelectionField.vue';
@@ -91,6 +91,7 @@ import WellItem from '@/components/common/WellItem.vue';
 import FormSection from '@/components/details/FormSection.vue';
 import WarningIcon from '@/components/icons/WarningIcon.vue';
 import { processActionTypes } from '@/store/modules/process/actions';
+import { processGetterTypes } from '@/store/modules/process/getters';
 import {
   commonActionTypes,
   UserSearchRequest
@@ -122,6 +123,7 @@ export default class GeneralInformationForm extends Vue {
   addDomain!: (domain: any) => Promise<void>;
   @Action(commonActionTypes.SEARCH_USERS)
   searchUsers!: ({ name, cvr }: UserSearchRequest) => Promise<void>;
+  @Getter(processGetterTypes.IS_VISIBLE_FROM_ANALYSIS) isVisibleFromAnalysis!: () => boolean;
 
   isPhaseChanged = false;
   StatusKeys = StatusKeys;

@@ -1,15 +1,16 @@
 <template>
-  <FormSection heading="Bilag" id="attachments" :disabled="state.disabled.attachmentsEdit" @edit="update({ disabled: {attachmentsEdit: $event} })">
+  <FormSection v-if="isVisibleFromAnalysis" heading="Bilag" id="attachments" :disabled="state.disabled.attachmentsEdit" @edit="update({ disabled: {attachmentsEdit: $event} })">
     <AttachmentUpload :attachments="state.attachments" :disabled="state.disabled.attachmentsEdit" @add="add" @remove="remove" />
   </FormSection>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
-import { Action } from 'vuex-class';
+import { Action, Getter } from 'vuex-class';
 import AttachmentUpload from '@/components/common/inputs/AttachmentUpload.vue';
 import FormSection from '@/components/details/FormSection.vue';
 import { processActionTypes } from '@/store/modules/process/actions';
+import { processGetterTypes } from '@/store/modules/process/getters';
 
 @Component({
   components: {
@@ -21,6 +22,7 @@ export default class AttachmentsForm extends Vue {
   @Action(processActionTypes.UPDATE) update: any;
   @Action(processActionTypes.ADD_ATTACHMENTS) add: any;
   @Action(processActionTypes.REMOVE_ATTACHMENTS) remove: any;
+  @Getter(processGetterTypes.IS_VISIBLE_FROM_ANALYSIS) isVisibleFromAnalysis!: () => boolean;
 
   get state() {
     return this.$store.state.process;

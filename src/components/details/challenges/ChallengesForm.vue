@@ -4,16 +4,21 @@
     <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
     <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({longDescription: $event})" :disabled="state.process.disabled.challengesEdit" :value="state.process.longDescription" />
 
-    <h2>Løsningsbeskrivelse</h2>
-    <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
-    <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({solutionRequests: $event})" :disabled="state.process.disabled.challengesEdit" :value="state.process.solutionRequests" />
+    <div v-if="isVisibleFromAnalysis">
+      <h2>Løsningsbeskrivelse</h2>
+      <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
+      <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({solutionRequests: $event})" :disabled="state.process.disabled.challengesEdit" :value="state.process.solutionRequests" />
+    </div>
 
-    <h2>Proces udfordringer</h2>
-    <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
-    <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({processChallenges: $event})" :disabled="state.process.disabled.challengesEdit" :value="state.process.processChallenges" />
+
+    <div v-if="isVisibleFromAnalysis">
+      <h2>Proces udfordringer</h2>
+      <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
+      <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({processChallenges: $event})" :disabled="state.process.disabled.challengesEdit" :value="state.process.processChallenges" />
+    </div>
 
     <Well class="challenges-well">
-      <div>
+      <div v-if="isVisibleFromAnalysis">
         <WellItem label="Nuværende system:">
           <SelectionField v-if="state.process.itSystems[0]" :items="itSystems" :text="state.process.itSystems[0].name" :value="state.process.itSystems[0]" :disabled="state.process.disabled.challengesEdit" @change="saveItSystem($event)" />
         </WellItem>
@@ -43,6 +48,7 @@ import { ITSystem } from '@/store/modules/process/state';
 import { HTTP } from '@/services/http-service';
 import { commonActionTypes } from '@/store/modules/common/actions';
 import { CommonState } from '@/store/modules/common/state';
+import { processGetterTypes } from '@/store/modules/process/getters';
 
 interface Item {
   value: any;
@@ -64,6 +70,7 @@ export default class ChallengesForm extends Vue {
   @Action(processActionTypes.UPDATE) update: any;
   @Action(processActionTypes.SAVE_IT_SYSTEM)
   saveItSystem!: (itSystem: ITSystem) => void;
+  @Getter(processGetterTypes.IS_VISIBLE_FROM_ANALYSIS) isVisibleFromAnalysis!: () => boolean;
 
   twoColumnBreakpoint = 1600;
 
