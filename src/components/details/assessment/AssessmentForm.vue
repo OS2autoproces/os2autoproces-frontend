@@ -1,5 +1,5 @@
 <template>
-    <FormSection v-if="isVisibleFromAnalysis" heading="Faglig vurdering" id="assessment" :disabled="state.disabled.assessmentEdit" @edit="update({ disabled: { assessmentEdit: $event} })">
+    <FormSection v-if="isVisibleFromPhaseNumber(1)" heading="Faglig vurdering" id="assessment" :disabled="state.disabled.assessmentEdit" @edit="update({ disabled: { assessmentEdit: $event} })">
         <div class="assessment" :class="{ disabled: state.disabled.assessmentEdit }">
             <div class="question">
                 <div class="label">I hvor høj grad er der faglig vurdering?
@@ -79,7 +79,7 @@ import { processGetterTypes } from '@/store/modules/process/getters';
 export default class AssessmentForm extends Vue {
   @Action(processActionTypes.UPDATE)
   update!: (state: Partial<ProcessState>) => void;
-    @Getter(processGetterTypes.IS_VISIBLE_FROM_ANALYSIS) isVisibleFromAnalysis!: () => boolean;
+    @Getter(processGetterTypes.IS_VISIBLE_FROM_PHASE_NUMBER) isVisibleFromPhaseNumber!: (phase: number) => boolean;
 
   get state() {
     return this.$store.state.process;

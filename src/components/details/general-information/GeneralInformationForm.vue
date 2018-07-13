@@ -41,13 +41,13 @@
           </WellItem>
         </div>
 
-        <div v-if="isVisibleFromAnalysis">
+        <div v-if="isVisibleFromPhaseNumber(1)">
           <WellItem labelWidth="100px" label="Lov of paragraf:">
             <InputField :disabled="state.disabled.generalInformationEdit" :value="state.legalClause" @change="update({legalClause: $event})" />
           </WellItem>
         </div>
 
-        <AssociatedPersonsInput v-if="isVisibleFromAnalysis" slot="well-footer" :disabled="state.disabled.generalInformationEdit" />
+        <AssociatedPersonsInput v-if="isVisibleFromPhaseNumber(1)" slot="well-footer" :disabled="state.disabled.generalInformationEdit" />
       </Well>
     </div>
 
@@ -123,7 +123,7 @@ export default class GeneralInformationForm extends Vue {
   addDomain!: (domain: any) => Promise<void>;
   @Action(commonActionTypes.SEARCH_USERS)
   searchUsers!: ({ name, cvr }: UserSearchRequest) => Promise<void>;
-  @Getter(processGetterTypes.IS_VISIBLE_FROM_ANALYSIS) isVisibleFromAnalysis!: () => boolean;
+  @Getter(processGetterTypes.IS_VISIBLE_FROM_PHASE_NUMBER) isVisibleFromPhaseNumber!: (phase: number) => boolean;
 
   isPhaseChanged = false;
   StatusKeys = StatusKeys;

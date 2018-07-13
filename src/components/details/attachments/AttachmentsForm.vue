@@ -1,5 +1,5 @@
 <template>
-  <FormSection v-if="isVisibleFromAnalysis" heading="Bilag" id="attachments" :disabled="state.disabled.attachmentsEdit" @edit="update({ disabled: {attachmentsEdit: $event} })">
+  <FormSection v-if="isVisibleFromPhaseNumber(1)" heading="Bilag" id="attachments" :disabled="state.disabled.attachmentsEdit" @edit="update({ disabled: {attachmentsEdit: $event} })">
     <AttachmentUpload :attachments="state.attachments" :disabled="state.disabled.attachmentsEdit" @add="add" @remove="remove" />
   </FormSection>
 </template>
@@ -22,7 +22,8 @@ export default class AttachmentsForm extends Vue {
   @Action(processActionTypes.UPDATE) update: any;
   @Action(processActionTypes.ADD_ATTACHMENTS) add: any;
   @Action(processActionTypes.REMOVE_ATTACHMENTS) remove: any;
-  @Getter(processGetterTypes.IS_VISIBLE_FROM_ANALYSIS) isVisibleFromAnalysis!: () => boolean;
+    @Getter(processGetterTypes.IS_VISIBLE_FROM_PHASE_NUMBER) isVisibleFromPhaseNumber!: (phase: number) => boolean;
+
 
   get state() {
     return this.$store.state.process;

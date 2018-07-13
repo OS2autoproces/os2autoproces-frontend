@@ -6,7 +6,7 @@ import { PhaseKeys } from '@/models/phase';
 import { namespace } from '@/store/modules/process/actions';
 
 export const processGetterTypes = {
-  IS_VISIBLE_FROM_ANALYSIS: `${namespace}/isVisibleFromAnalysis`
+  IS_VISIBLE_FROM_PHASE_NUMBER: `${namespace}/isVisibleFromPhaseNumber`
 }
 
 const isNonempty = {
@@ -35,8 +35,16 @@ function isValid(value: any, constraints: any): boolean {
 }
 
 export const getters: GetterTree<ProcessState, RootState> = {
-  isVisibleFromAnalysis(state: ProcessState): boolean {
-    return state.phase !== PhaseKeys.IDEA;
+  isVisibleFromPhaseNumber(state: ProcessState) {
+    return (phase: number) => {
+      let i = 0;
+      Object.keys(PhaseKeys).map((key: string, index: number) => {
+        if(key === state.phase) {
+          i = index;
+        }
+      });
+      return phase <= i;
+    }
   },
   isKleNumberValid(state: ProcessState): boolean {
     return isValid(state.kle, isNumeric);

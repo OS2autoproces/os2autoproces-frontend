@@ -4,21 +4,21 @@
     <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
     <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({longDescription: $event})" :disabled="state.process.disabled.challengesEdit" :value="state.process.longDescription" />
 
-    <div v-if="isVisibleFromAnalysis">
+    <div v-if="isVisibleFromPhaseNumber(1)">
       <h2>Løsningsbeskrivelse</h2>
       <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
       <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({solutionRequests: $event})" :disabled="state.process.disabled.challengesEdit" :value="state.process.solutionRequests" />
     </div>
 
 
-    <div v-if="isVisibleFromAnalysis">
+    <div v-if="isVisibleFromPhaseNumber(1)">
       <h2>Proces udfordringer</h2>
       <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
       <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({processChallenges: $event})" :disabled="state.process.disabled.challengesEdit" :value="state.process.processChallenges" />
     </div>
 
     <Well class="challenges-well">
-      <div v-if="isVisibleFromAnalysis">
+      <div v-if="isVisibleFromPhaseNumber(1)">
         <WellItem label="Nuværende system:">
           <SelectionField v-if="state.process.itSystems[0]" :items="itSystems" :text="state.process.itSystems[0].name" :value="state.process.itSystems[0]" :disabled="state.process.disabled.challengesEdit" @change="saveItSystem($event)" />
         </WellItem>
@@ -70,7 +70,7 @@ export default class ChallengesForm extends Vue {
   @Action(processActionTypes.UPDATE) update: any;
   @Action(processActionTypes.SAVE_IT_SYSTEM)
   saveItSystem!: (itSystem: ITSystem) => void;
-  @Getter(processGetterTypes.IS_VISIBLE_FROM_ANALYSIS) isVisibleFromAnalysis!: () => boolean;
+    @Getter(processGetterTypes.IS_VISIBLE_FROM_PHASE_NUMBER) isVisibleFromPhaseNumber!: (phase: number) => boolean;
 
   twoColumnBreakpoint = 1600;
 
