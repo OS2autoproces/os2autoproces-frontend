@@ -9,7 +9,6 @@ export interface ItSystemItem {
 }
 
 export const commonGetterTypes = {
-  MAPPED_IT_SYSTEMS: `${namespace}/mappedItSystems`
 };
 
 export const getters: GetterTree<CommonState, RootState> = {};

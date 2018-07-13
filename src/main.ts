@@ -1,13 +1,15 @@
 import 'babel-polyfill';
 import Vue from 'vue';
-import App from './App.vue';
-import { routes } from './routes';
-import store from './store/store';
 import Vuetify from 'vuetify';
-import Router from 'vue-router';
 import 'vuetify/dist/vuetify.min.css';
+import App from './App.vue';
+import { router } from './routes';
+import store from './store/store';
+import { sync } from 'vuex-router-sync';
 
 Vue.config.productionTip = false;
+
+export const unsync = sync(store, router);
 
 Vue.use(Vuetify, {
   theme: {
@@ -18,15 +20,9 @@ Vue.use(Vuetify, {
   }
 });
 
-Vue.use(Router);
-
-const router = new Router({
-  routes,
-  mode: 'history'
-});
-
 new Vue({
   router,
   store,
   render: h => h(App)
 }).$mount('#app');
+

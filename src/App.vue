@@ -26,9 +26,11 @@ import { commonActionTypes, Cms } from '@/store/modules/common/actions';
 export default class App extends Vue {
   @Action(authActionTypes.LOAD_USER) loadUser: any;
 
-  mounted() {
+  beforeCreate() {}
+  created() {
     this.loadUser();
   }
+  mounted() {}
 }
 </script>
 

@@ -1,16 +1,78 @@
-import { RouteConfig } from 'vue-router';
-import Home from './views/Home.vue';
-import Search from './views/Search.vue';
+import store from '@/store/store';
+import Vue from 'vue';
+import Router, { Route, RouteConfig } from 'vue-router';
 import Details from './views/Details.vue';
+import Home from './views/Home.vue';
 import ReportProcess from './views/ReportProcess.vue';
+import Search from './views/Search.vue';
+
+Vue.use(Router);
+
+async function requireAuth(to: Route, from: Route, next: any) {
+  function proceed() {
+    // @ts-ignore
+    if (store.state.auth.user) {
+      next();
+    } else {
+      window.location.href = `${
+        window.autoProcessConfiguration.apiUrl
+      }/saml/login`;
+    }
+  }
+  // @ts-ignore
+  if (!store.state.auth.user) {
+    await store.dispatch('auth/loadUser');
+
+    store.watch(
+      // @ts-ignore
+      state => state.auth,
+      user => {
+        if (user) {
+          proceed();
+        } else {
+          // todo: handle network error
+          proceed();
+        }
+      }
+    );
+    proceed();
+  } else {
+    proceed();
+  }
+}
 
 export const routes: RouteConfig[] = [
-  { path: '/', component: Home },
-  { path: '/details/:id', component: Details, props: true },
-  { path: '/details/new/:phase', component: Details, props: true },
-  { path: '/search', component: Search },
-  { path: '/report', component: ReportProcess },
+  {
+    path: '/',
+    component: Home
+  },
+  {
+    path: '/search',
+    component: Search,
+    beforeEnter: requireAuth
+  },
+  {
+    path: '/details/:id',
+    component: Details,
+    props: true,
+    beforeEnter: requireAuth
+  },
+  { 
+    path: '/details/new/:phase', 
+    component: Details, 
+    props: true,
+    beforeEnter: requireAuth
+  },
+  { 
+    path: '/report', 
+    component: ReportProcess,
+    beforeEnter: requireAuth
+  },
   { path: '/logged-in', redirect: '/search' },
   { path: '/logged-out', redirect: '/' }
-  // TODO: add a route for login/logout errors
 ];
+
+export const router = new Router({
+  routes,
+  mode: 'history'
+});
