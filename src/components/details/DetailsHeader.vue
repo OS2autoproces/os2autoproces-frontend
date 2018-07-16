@@ -13,7 +13,7 @@
       <img src="https://www.syddjurs.dk/sites/all/themes/custom/site/dist/img/logo.png" alt="Kommune logo">
     </div>
     <div class="row">
-      <Button class="button" @click="deleteProces">Slet proces</Button>
+      <Button class="button" @click="deleteProcess">Slet proces</Button>
       <Button class="button" @click="copyProcess">Kopier proces</Button>
       <div class="flex-grow"></div>
       <Toggle :value="notification" @change="notification = $event">Mail notifikation</Toggle>
@@ -45,6 +45,7 @@ import { ProcessState } from '@/store/modules/process/state';
 })
 export default class DetailsHeader extends Vue {
   @Action(processActionTypes.UPDATE) update!: any;
+  @Action(processActionTypes.DELETE) deleteProcess!: () => Promise<void>;
 
   // TODO: Bind these to the store
   notification = true;
@@ -63,10 +64,6 @@ export default class DetailsHeader extends Vue {
 
   toggleBookmark() {
     this.update({ hasBookmarked: !this.state.hasBookmarked });
-  }
-
-  deleteProces() {
-    // TODO: Show confirmation
   }
 
   async copyProcess() {

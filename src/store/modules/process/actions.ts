@@ -49,7 +49,7 @@ export const processActionTypes = {
   LOAD_PROCESS_DETAILS: `${namespace}/loadProcessDetails`,
   CREATE_PROCESS: `${namespace}/createProcess`,
   COPY_PROCESS: `${namespace}/copyProcess`,
-  DELETE: `${namespace}/remove`
+  DELETE: `${namespace}/delete`
 };
 
 export interface NewComment {
@@ -234,6 +234,10 @@ export const actions: ActionTree<ProcessState, RootState> = {
   },
   async delete({commit, state}) {
     const deleted = (await HTTP.delete(`api/processes/${state.id}`)).status;
+    if(deleted === 204) {
+      // redirect when deleted
+      window.location.assign(`${window.autoProcessConfiguration.apiUrl}/search`); 
+    } 
     // notify user, process is deleted
   },
   saveItSystem({commit, state}, itSystem: ITSystem) {
