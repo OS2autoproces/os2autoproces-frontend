@@ -30,10 +30,16 @@
             <AttachmentsForm />
           </div>
 
+          <div>
+            <div class="interne-noter-heading">Interne noter</div>
+            <InternalNotes title="Interne noter" :internalNotes="state.internalNotes" />
+          </div>
+
           <div class="comments">
             <div class="comments-heading">Kommentarer</div>
             <Comments :comments="state.comments" @submit="saveComment({ message: $event })" />
           </div>
+
         </div>
       </div>
     </div>
@@ -44,6 +50,7 @@
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import { Action } from 'vuex-class';
 import NavBar from '../components/common/NavBar.vue';
+import InternalNotes from '@/components/common/inputs/InternalNotes.vue';
 import Comments from '../components/details/Comments.vue';
 import IntervalSelector from '../components/common/inputs/IntervalSelector.vue';
 import FormSection from '@/components/details/FormSection.vue';
@@ -85,7 +92,8 @@ import { commonActionTypes } from '@/store/modules/common/actions';
     OperationForm,
     Button,
     ArrowLeftIcon,
-    EditIcon
+    EditIcon,
+    InternalNotes
   }
 })
 export default class Details extends Vue {
@@ -218,5 +226,10 @@ export default class Details extends Vue {
     width: $size-unit;
     margin-right: $size-unit / 2;
   }
+}
+
+.interne-noter-heading {
+  @include textarea-heading;
+  margin-top: 2 * $size-unit;
 }
 </style>
