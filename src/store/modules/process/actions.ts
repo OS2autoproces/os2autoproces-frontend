@@ -215,8 +215,12 @@ export const actions: ActionTree<ProcessState, RootState> = {
   async copyProcess({ commit, state }): Promise<string> {
     const response = (await HTTP.post<ProcessResponse>(
       `api/processes/${state.id}/copy`
-    )).data;
-    const process = responseToState(response);
+    ));
+    if(response.status === 400) {
+      alert('Du har allerede kopieret en proces, vent lidt...');
+      return state.id;
+    }
+    const process = responseToState(response.data);
     // TODO: notify copy complete
     commit(processMutationTypes.UPDATE, setBackendManagedFields(process));
     return process.id;

@@ -72,7 +72,6 @@ export default class DetailsHeader extends Vue {
 
   async copy() {
     const id = await this.copyProcess();
-    debugger
     this.$router.push(`/details/${id}`);    
   }
 }
