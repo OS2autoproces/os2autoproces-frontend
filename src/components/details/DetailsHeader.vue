@@ -16,7 +16,7 @@
       <Button class="button" @click="deleteProces">Slet proces</Button>
       <Button class="button" @click="copyProcess">Kopier proces</Button>
       <div class="flex-grow"></div>
-      <Toggle :value="notification" @change="notification = $event">Mail notifikation</Toggle>
+      <Toggle :value="state.emailNotification" @change="toggleEmailNotification( $event )">Mail notifikation</Toggle>
     </div>
   </div>
 </template>
@@ -45,9 +45,7 @@ import { ProcessState } from '@/store/modules/process/state';
 })
 export default class DetailsHeader extends Vue {
   @Action(processActionTypes.UPDATE) update!: any;
-
-  // TODO: Bind these to the store
-  notification = true;
+  @Action(processActionTypes.TOGGLE_EMAIL_NOTIFICATION) toggleEmailNotification!: (email: boolean) => Promise<void>; 
 
   get state() {
     return this.$store.state.process;

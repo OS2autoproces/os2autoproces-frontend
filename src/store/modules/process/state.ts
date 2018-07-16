@@ -77,6 +77,7 @@ export interface Process {
   technologies: Technology[];
   hasBookmarked: boolean;
   canEdit: boolean;
+  emailNotification: boolean;
 }
 
 export interface Link {

@@ -49,7 +49,9 @@ export const processActionTypes = {
   LOAD_PROCESS_DETAILS: `${namespace}/loadProcessDetails`,
   CREATE_PROCESS: `${namespace}/createProcess`,
   COPY_PROCESS: `${namespace}/copyProcess`,
-  DELETE: `${namespace}/remove`
+  DELETE: `${namespace}/remove`,
+
+  TOGGLE_EMAIL_NOTIFICATION: `${namespace}/toggleEmailNotification`
 };
 
 export interface NewComment {
@@ -244,6 +246,15 @@ export const actions: ActionTree<ProcessState, RootState> = {
   },
   addDomain({commit, state}, domain: string) {
     commit(processMutationTypes.ASSIGN, { domains: [...state.domains, domain]})
+  },
+  async toggleEmailNotification({commit, state}, emailNotification: boolean) {
+
+    if(emailNotification) {
+      await HTTP.put(`api/notifications/${state.id}`);
+    } else {
+      await HTTP.delete(`api/notifications/${state.id}`);
+    }
+    commit(processMutationTypes.UPDATE, { emailNotification })
   }
 };
 
@@ -338,6 +349,8 @@ export function initialProcessState() {
       implementationEdit: true,
       attachmentsEdit: true,
       municipalityUsingEdit: true
-    }
+    },
+
+    emailNotification: false,
   };
 }
