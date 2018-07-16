@@ -10,7 +10,6 @@
       <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({solutionRequests: $event})" :disabled="state.process.disabled.challengesEdit" :value="state.process.solutionRequests" />
     </div>
 
-
     <div v-if="isVisibleFromPhaseNumber(1)">
       <h2>Proces udfordringer</h2>
       <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
@@ -18,15 +17,19 @@
     </div>
 
     <Well class="challenges-well">
-      <div v-if="isVisibleFromPhaseNumber(1)">
-        <WellItem label="Nuværende system:">
-          <SelectionField v-if="state.process.itSystems[0]" :items="itSystems" :text="state.process.itSystems[0].name" :value="state.process.itSystems[0]" :disabled="state.process.disabled.challengesEdit" @change="saveItSystem($event)" />
-        </WellItem>
-      </div>
-
       <div>
         <WellItem label="Oprettet:">
           <DatePicker :value="state.process.created" disabled/>
+        </WellItem>
+      </div>
+      <div>
+        <WellItem labelWidth="55%" label="Sidst opdateret:">
+          <DatePicker :value="state.process.lastChanged" disabled />
+        </WellItem>
+      </div>
+      <div slot="well-footer" class="well-item-footer" v-if="isVisibleFromPhaseNumber(1)">
+        <WellItem label="Nuværende system:">
+          <SelectionField :items="itSystems" :value="state.process.itSystems[0]" :disabled="state.process.disabled.challengesEdit" @change="saveItSystem($event)" />
         </WellItem>
       </div>
     </Well>
@@ -70,17 +73,20 @@ export default class ChallengesForm extends Vue {
   @Action(processActionTypes.UPDATE) update: any;
   @Action(processActionTypes.SAVE_IT_SYSTEM)
   saveItSystem!: (itSystem: ITSystem) => void;
-    @Getter(processGetterTypes.IS_VISIBLE_FROM_PHASE_NUMBER) isVisibleFromPhaseNumber!: (phase: number) => boolean;
+  @Getter(processGetterTypes.IS_VISIBLE_FROM_PHASE_NUMBER)
+  isVisibleFromPhaseNumber!: (phase: number) => boolean;
 
   twoColumnBreakpoint = 1600;
 
-  get itSystems() {
-    const systems = this.$store.state.common.itSystems as ITSystem[];
-    return systems.map((s: ITSystem) => ({ text: s.name, value: s }));
-  }
-
   get state() {
     return this.$store.state;
+  }
+
+  get itSystems() {
+    return this.$store.state.common.itSystems.map((s: ITSystem) => ({
+      value: s,
+      text: s.name
+    }));
   }
 }
 </script>
@@ -102,5 +108,9 @@ h2 {
 
 .challenges-well {
   margin-top: $size-unit * 1.5;
+}
+
+.well-item-footer {
+  padding-top: $size-unit;
 }
 </style>

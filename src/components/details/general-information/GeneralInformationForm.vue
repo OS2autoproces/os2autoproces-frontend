@@ -18,7 +18,7 @@
         </div>
 
         <div>
-          <WellItem labelWidth="100px" label="Leverandør:">
+          <WellItem v-if="isVisibleFromPhaseNumber(3)" labelWidth="100px" label="Leverandør:">
             <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.vendor" :text="state.vendor ? state.vendor.name : ''" @search="search($event)" @change="update({vendor: $event})" :items="users" />
           </WellItem>
           <WellItem labelWidth="100px" label="Ejer:">
@@ -123,18 +123,19 @@ export default class GeneralInformationForm extends Vue {
   addDomain!: (domain: any) => Promise<void>;
   @Action(commonActionTypes.SEARCH_USERS)
   searchUsers!: ({ name, cvr }: UserSearchRequest) => Promise<void>;
-  @Getter(processGetterTypes.IS_VISIBLE_FROM_PHASE_NUMBER) isVisibleFromPhaseNumber!: (phase: number) => boolean;
+  @Getter(processGetterTypes.IS_VISIBLE_FROM_PHASE_NUMBER)
+  isVisibleFromPhaseNumber!: (phase: number) => boolean;
 
   isPhaseChanged = false;
   StatusKeys = StatusKeys;
 
-  get vendorValue() {
-    const contact = this.$store.state.process.contact;
-    return ({value: contact, text: contact.name });
-  }
-
   get state() {
     return this.$store.state.process;
+  }
+  
+  get vendorValue() {
+    const contact = this.$store.state.process.contact;
+    return { value: contact, text: contact.name };
   }
 
   get domainsText() {

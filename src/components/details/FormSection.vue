@@ -2,7 +2,7 @@
     <div class="form-section">
         <div class="section-header" :class="{ disabled }">
             <div>{{heading}}</div>
-            <div class="edit-button" role="button" @click="toggleEdit">
+            <div v-if="state.process.canEdit" class="edit-button" role="button" @click="toggleEdit">
                 <EditIcon />
             </div>
             <div class="flex-grow"></div>
@@ -49,6 +49,10 @@ export default class FormSection extends Vue {
 
   toggleEdit() {
     this.$emit('edit', !this.disabled);
+  }
+
+  get state() {
+    return this.$store.state;
   }
 
   get isExpandable() {
