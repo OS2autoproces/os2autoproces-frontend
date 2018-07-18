@@ -5,10 +5,10 @@ import { isEmpty } from "lodash";
 import * as validateJs from "validate.js";
 import { GetterTree } from "vuex";
 import { DateTime } from "luxon";
+
 import { namespace } from "./actions";
 
 export const processGetterTypes = {
-  IS_LOCAL_ID_VALID: `${namespace}/isLocalIdValid`
 };
 
 const isNonempty = {
@@ -62,16 +62,16 @@ export const getters: GetterTree<ProcessState, RootState> = {
     return isValid(state.longDescription, isMinMax(0, 1200));
   },
   isVisibilityValid(state: ProcessState): boolean {
-    return isEmpty(state.visibility);
+    return !isEmpty(state.visibility);
   },
   isContactPersonValid(state: ProcessState): boolean {
-    return isEmpty(state.contact);
+    return !isEmpty(state.contact);
   },
   isLegalClauseValid(state: ProcessState): boolean {
     return isValid(state.legalClause, isMinMax(0, 140));
   },
   isKleValid(state: ProcessState): boolean {
-    return isEmpty(state.kle);
+    return !isEmpty(state.kle);
   },
   isKlaValid(state: ProcessState): boolean {
     return isValid(state.kla, isMinMax(1, 16));
@@ -108,25 +108,27 @@ export const getters: GetterTree<ProcessState, RootState> = {
   isLevelOfProfessionalAssessmentValid(state: ProcessState): boolean {
     return state.phase === PhaseKeys.IDEA
       ? true
-      : isEmpty(state.levelOfProfessionalAssessment);
+      : !isEmpty(state.levelOfProfessionalAssessment);
   },
   isLevelOfChangeValid(state: ProcessState): boolean {
-    return state.phase === PhaseKeys.IDEA ? true : isEmpty(state.levelOfChange);
+    return state.phase === PhaseKeys.IDEA
+      ? true
+      : !isEmpty(state.levelOfChange);
   },
   isLevelOfStructeredInformationValid(state: ProcessState): boolean {
     return state.phase === PhaseKeys.IDEA
       ? true
-      : isEmpty(state.levelOfStructuredInformation);
+      : !isEmpty(state.levelOfStructuredInformation);
   },
   isLevelOfUniformityValid(state: ProcessState): boolean {
     return state.phase === PhaseKeys.IDEA
       ? true
-      : isEmpty(state.levelOfUniformity);
+      : !isEmpty(state.levelOfUniformity);
   },
   isLevelOfDigitalInformationValid(state: ProcessState): boolean {
     return state.phase === PhaseKeys.IDEA
       ? true
-      : isEmpty(state.levelOfDigitalInformation);
+      : !isEmpty(state.levelOfDigitalInformation);
   },
   isLevelOfQualityValid({ phase, levelOfQuality }: ProcessState): boolean {
     return phase === PhaseKeys.IDEA ? true : isEmpty(levelOfQuality);
@@ -134,16 +136,16 @@ export const getters: GetterTree<ProcessState, RootState> = {
   isLevelOfRoutineWorkReductionValid(state: ProcessState): boolean {
     return state.phase === PhaseKeys.IDEA
       ? true
-      : isEmpty(state.levelOfRoutineWorkReduction);
+      : !isEmpty(state.levelOfRoutineWorkReduction);
   },
   isLevelOfSpeedValid({ phase, levelOfSpeed }: ProcessState): boolean {
-    return phase === PhaseKeys.IDEA ? true : isEmpty(levelOfSpeed);
+    return phase === PhaseKeys.IDEA ? true : !isEmpty(levelOfSpeed);
   },
   isEvaluatedLevelOfRoiValid({
     phase,
     evaluatedLevelOfRoi
   }: ProcessState): boolean {
-    return phase === PhaseKeys.IDEA ? true : isEmpty(evaluatedLevelOfRoi);
+    return phase === PhaseKeys.IDEA ? true : !isEmpty(evaluatedLevelOfRoi);
   },
   isEsdhReferenceValid({ phase, esdhReference }: ProcessState): boolean {
     return phase === PhaseKeys.IDEA || phase === PhaseKeys.PREANALYSIS
@@ -153,14 +155,14 @@ export const getters: GetterTree<ProcessState, RootState> = {
   isOwnerValid({ phase, owner }: ProcessState): boolean {
     return phase === PhaseKeys.IDEA || phase === PhaseKeys.PREANALYSIS
       ? true
-      : isEmpty(owner);
+      : !isEmpty(owner);
   },
   isVendorValid({ phase, vendor }: ProcessState): boolean {
     return phase === PhaseKeys.IDEA ||
       phase === PhaseKeys.PREANALYSIS ||
       phase === PhaseKeys.SPECIFICATION
       ? true
-      : isEmpty(vendor);
+      : !isEmpty(vendor);
   },
   isTechnologiesValid({ phase, technologies }: ProcessState): boolean {
     return phase === PhaseKeys.IDEA ||
@@ -225,9 +227,6 @@ export const getters: GetterTree<ProcessState, RootState> = {
     }
     return true;
   },
-  isDecommissionedValid({ decommissioned }: ProcessState): boolean {
-    return !!decommissioned;
-  },
   isInternalNotesValid({ internalNotes }: ProcessState): boolean {
     return !!internalNotes;
   }
@@ -237,10 +236,15 @@ export function processValidation(state: ProcessState): string[] {
   const invalidProps: string[] = [];
 
   Object.keys(getters).forEach((key: string) => {
-    const valid = getters[key](state, {}, { version: "1" }, {});
+    const valid = getters[key](state, {}, { version: '1' } as RootState, {});
     if (!valid) {
-      invalidProps.push(key);
+      invalidProps.push(getPropName(key));
     }
   });
   return invalidProps;
+}
+
+function getPropName(getter: string): string {
+  const prop = getter.replace("is", "").replace("Valid", "");
+  return prop.replace(prop.charAt(0), prop.charAt(0).toLowerCase());
 }
