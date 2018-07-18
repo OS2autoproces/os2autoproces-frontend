@@ -1,5 +1,5 @@
 <template>
-  <div class="well-item-wrap" :class="{invalid}">
+  <div class="well-item-wrap" >
     <div class="well-item-label" :style="{flexBasis: labelWidth}">{{label}}</div>
     <div class="well-input">
       <slot/>
@@ -25,13 +25,6 @@ export default class WellItem extends Vue {
 .well-item-wrap {
   display: flex;
   align-items: center;
-
-   &.invalid {
-    > .well-item-label {
-     color: red !important;
-     font-style: italic;
-    }
-  }
 
   .well-item-label {
     @include field-label;
