@@ -37,6 +37,14 @@
         </div>
       </div>
     </div>
+    <SnackBar :timeout="0" color="error" :value="snack" @clicked="updateProcessErrors({processErrors: []})">
+      <div>
+        <p>Kunne ikke gemme, følgende felter er invalide:</p>
+        <p v-for="field in errors" :key="field">
+          {{field}}
+        </p>
+      </div>
+    </SnackBar>
   </div>
 </template>
 
@@ -66,6 +74,11 @@ import {
 } from '@/store/modules/process/actions';
 import { Phase } from '@/models/phase';
 import { commonActionTypes } from '@/store/modules/common/actions';
+import { errorActionTypes } from '@/store/modules/error/actions';
+import { ErrorState } from '@/store/modules/error/state';
+import SnackBar from "@/components/common/SnackBar.vue";
+import { isEmpty } from 'lodash';
+import store from '@/store/store';
 
 @Component({
   components: {
@@ -85,7 +98,8 @@ import { commonActionTypes } from '@/store/modules/common/actions';
     OperationForm,
     Button,
     ArrowLeftIcon,
-    EditIcon
+    EditIcon,
+    SnackBar
   }
 })
 export default class Details extends Vue {
@@ -102,9 +116,18 @@ export default class Details extends Vue {
   loadItSystems!: () => Promise<void>;
   @Action(commonActionTypes.LOAD_KLES) loadKles!: () => Promise<void>;
   @Action(processActionTypes.CLEAR_PROCESS) clear!: () => Promise<void>;
+  @Action(errorActionTypes.UPDATE_PROCESS_ERRORS) updateProcessErrors!: (processErrors: Partial<ErrorState>) => void;
 
   get state() {
-    return this.$store.state.process;
+    return store.state.process;
+  }
+
+  get errors() {
+    return store.state.error.processErrors;
+  }
+
+  get snack() {
+    return !isEmpty(this.$store.state.error.processErrors);
   }
 
   async report() {

@@ -78,30 +78,32 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator';
-import { Action } from 'vuex-class';
+import { Vue, Component, Prop } from "vue-property-decorator";
+import { Action, Getter } from "vuex-class";
 
-import InputField from '@/components/common/inputs/InputField.vue';
-import SelectionField from '@/components/common/inputs/SelectionField.vue';
-import TextArea from '@/components/common/inputs/TextArea.vue';
-import Phases from '@/components/common/inputs/Phases.vue';
-import AssociatedPersonsInput from '@/components/details/general-information/AssociatedPersonsInput.vue';
-import Well from '@/components/common/Well.vue';
-import WellItem from '@/components/common/WellItem.vue';
-import FormSection from '@/components/details/FormSection.vue';
-import WarningIcon from '@/components/icons/WarningIcon.vue';
-import { processActionTypes } from '@/store/modules/process/actions';
+import InputField from "@/components/common/inputs/InputField.vue";
+import SelectionField from "@/components/common/inputs/SelectionField.vue";
+import TextArea from "@/components/common/inputs/TextArea.vue";
+import Phases from "@/components/common/inputs/Phases.vue";
+import AssociatedPersonsInput from "@/components/details/general-information/AssociatedPersonsInput.vue";
+import Well from "@/components/common/Well.vue";
+import WellItem from "@/components/common/WellItem.vue";
+import FormSection from "@/components/details/FormSection.vue";
+import WarningIcon from "@/components/icons/WarningIcon.vue";
+import { processActionTypes } from "@/store/modules/process/actions";
 import {
   commonActionTypes,
   UserSearchRequest
-} from '@/store/modules/common/actions';
-import { User } from '@/store/modules/auth/state';
-import { StatusKeys, StatusLabels } from '@/models/status';
-import { OrgUnit } from '@/store/modules/process/state';
-import { VisibilityLabels, VisibilityKeys } from '@/models/visibility';
-import { DomainKeys, DomainLabels } from '@/models/domain';
-import { Kle } from '@/store/modules/common/actions';
-import { Domain } from '@/models/domain';
+} from "@/store/modules/common/actions";
+import { User } from "@/store/modules/auth/state";
+import { StatusKeys, StatusLabels } from "@/models/status";
+import { OrgUnit } from "@/store/modules/process/state";
+import { VisibilityLabels, VisibilityKeys } from "@/models/visibility";
+import { DomainKeys, DomainLabels } from "@/models/domain";
+import { Kle } from "@/store/modules/common/actions";
+import { Domain } from "@/models/domain";
+import { processGetterTypes, processValidation } from "@/store/modules/process/getters";
+import { isEmpty } from "lodash";
 
 @Component({
   components: {
@@ -126,19 +128,19 @@ export default class GeneralInformationForm extends Vue {
   isPhaseChanged = false;
   StatusKeys = StatusKeys;
 
-  get vendorValue() {
-    const contact = this.$store.state.process.contact;
-    return ({value: contact, text: contact.name });
-  }
-
   get state() {
     return this.$store.state.process;
+  }
+
+  get vendorValue() { 
+    const contact = this.$store.state.process.contact;
+    return { value: contact, text: contact.name };
   }
 
   get domainsText() {
     return this.$store.state.process.domains
       .map((d: Domain) => DomainLabels[d])
-      .join(', ');
+      .join(", ");
   }
 
   get users() {
@@ -189,7 +191,7 @@ export default class GeneralInformationForm extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/variables.scss';
+@import "@/styles/variables.scss";
 .general-information-wrapper {
   background-color: $color-edit-background;
   border-radius: 12px;
