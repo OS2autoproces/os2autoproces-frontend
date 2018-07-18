@@ -22,6 +22,9 @@ import { VisibilityKeys } from '@/models/visibility';
 import { StatusKeys } from '@/models/status';
 import { LikertScaleKeys } from '@/models/likert-scale';
 import { TypeKeys } from '@/models/types';
+import { processValidation } from '@/store/modules/process/getters';
+import { errorMutationTypes } from '@/store/modules/error/mutations';
+import { errorActionTypes } from '@/store/modules/error/actions';
 
 export const namespace = 'process';
 
@@ -221,16 +224,21 @@ export const actions: ActionTree<ProcessState, RootState> = {
     commit(processMutationTypes.UPDATE, setBackendManagedFields(process));
     return process.id;
   },
-  async save({ commit, state }) {
-    const converted = await stateToRequest(state);
-    const response = (await HTTP.put<ProcessResponse>(
-      `api/processes/${state.id}`,
-      converted
-    )).data;
-
-    const process = responseToState(response);
-    // TODO: notify update
-    commit(processMutationTypes.UPDATE, setBackendManagedFields(process));
+  async save({ commit, state, dispatch }) {
+    const invalidFields: string[] = processValidation(state);
+    if(invalidFields) {
+      dispatch(errorActionTypes.UPDATE_PROCESS_ERRORS, { processErrors: invalidFields}, {root: true});
+    } else {
+      const converted = await stateToRequest(state);
+      const response = (await HTTP.put<ProcessResponse>(
+        `api/processes/${state.id}`,
+        converted
+      )).data;
+  
+      const process = responseToState(response);
+      // TODO: notify update
+      commit(processMutationTypes.UPDATE, setBackendManagedFields(process));
+    }
   },
   async delete({commit, state}) {
     const deleted = (await HTTP.delete(`api/processes/${state.id}`)).status;
