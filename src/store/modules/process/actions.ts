@@ -1,3 +1,9 @@
+import { DomainKeys } from "@/models/domain";
+import { LikertScaleKeys } from "@/models/likert-scale";
+import { PhaseKeys } from "@/models/phase";
+import { StatusKeys } from "@/models/status";
+import { TypeKeys } from "@/models/types";
+import { VisibilityKeys } from "@/models/visibility";
 import { HTTP } from "@/services/http-service";
 import {
   ProcessRequest,
@@ -6,28 +12,21 @@ import {
   stateToRequest
 } from "@/services/process-converter";
 import { User } from "@/store/modules/auth/state";
+import { errorActionTypes } from "@/store/modules/error/actions";
+import {
+  processFieldsValidation,
+  sectionValidation
+} from "@/store/modules/process/getters";
 import { processMutationTypes } from "@/store/modules/process/mutations";
 import {
   Attachment,
-  Technology,
-  Process,
   ITSystem,
-  ProcessState
+  Process,
+  ProcessState,
+  Technology
 } from "@/store/modules/process/state";
 import { RootState } from "@/store/store";
 import { ActionTree } from "vuex";
-import { PhaseKeys } from "@/models/phase";
-import { DomainKeys } from "@/models/domain";
-import { VisibilityKeys } from "@/models/visibility";
-import { StatusKeys } from "@/models/status";
-import { LikertScaleKeys } from "@/models/likert-scale";
-import { TypeKeys } from "@/models/types";
-import {
-  sectionValidation,
-  processFieldsValidationFunction
-} from "@/store/modules/process/getters";
-import { errorMutationTypes } from "@/store/modules/error/mutations";
-import { errorActionTypes } from "@/store/modules/error/actions";
 
 export const namespace = "process";
 
@@ -230,7 +229,7 @@ export const actions: ActionTree<ProcessState, RootState> = {
   async save({ commit, state, dispatch }) {
     const invalidFields: string[] = sectionValidation(
       state,
-      Object.keys(processFieldsValidationFunction)
+      Object.keys(processFieldsValidation)
     );
     if (invalidFields) {
       dispatch(

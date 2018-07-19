@@ -14,7 +14,7 @@ import { ErrorState } from '@/store/modules/error/state';
 Vue.use(Vuex);
 
 export interface RootState {
-  version: string;
+  version?: string;
   auth: AuthState;
   process: ProcessState;
   search: SearchState;

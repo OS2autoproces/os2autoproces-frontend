@@ -15,7 +15,7 @@ import {
   operationLabels
 } from "@/store/modules/error/actions";
 
-const namespace = 'process' // import doens't work
+const namespace = "process"; // import doens't work
 
 export const processGetterTypes = {
   IS_GERNERAL_INFORMATION_VALID: `${namespace}/isGeneralInformationValid`,
@@ -24,7 +24,7 @@ export const processGetterTypes = {
   IS_ASSESMENT_VALID: `${namespace}/isAssesmentValid`,
   IS_SPECIFICATION_VALID: `${namespace}/isSpecificationValid`,
   IS_IMPLEMENTATION_VALID: `${namespace}/isImplementationValid`,
-  IS_OPERATION_VALID: `${namespace}/isOperationValid`,
+  IS_OPERATION_VALID: `${namespace}/isOperationValid`
 };
 
 const isNonempty = {
@@ -63,7 +63,7 @@ function getPropName(getter: string): string {
   return prop.replace(prop.charAt(0), prop.charAt(0).toLowerCase());
 }
 
-export const processFieldsValidationFunction = {
+export const processFieldsValidation = {
   isLocalIdValid(state: ProcessState): boolean {
     return isValid(state.localId, isMinMax(1, 64));
   },
@@ -158,7 +158,7 @@ export const processFieldsValidationFunction = {
       : !isEmpty(state.levelOfDigitalInformation);
   },
   isLevelOfQualityValid({ phase, levelOfQuality }: ProcessState): boolean {
-    return phase === PhaseKeys.IDEA ? true : isEmpty(levelOfQuality);
+    return phase === PhaseKeys.IDEA ? true : !isEmpty(levelOfQuality);
   },
   isLevelOfRoutineWorkReductionValid(state: ProcessState): boolean {
     return state.phase === PhaseKeys.IDEA
@@ -272,35 +272,54 @@ export const processFieldsValidationFunction = {
   isTimeSpendComputedTotalValid(state: ProcessState) {
     return !isEmpty(state.timeSpendComputedTotal);
   },
+  isDecommissionedValid(state: ProcessState) {
+    return true; // never required
+  }
+};
+
+const detailsSectionValidation = {
+  isGeneralInformationValid(state: ProcessState) {
+    return state.canEdit
+      ? !isEmpty(
+          sectionValidation(state, Object.keys(generalInformationLabels))
+        )
+      : false;
+  },
+  isChallengesValid(state: ProcessState) {
+    return state.canEdit
+      ? !isEmpty(sectionValidation(state, Object.keys(challengesLabels)))
+      : false;
+  },
+  isTimeAndProcessValid(state: ProcessState) {
+    return state.canEdit
+      ? !isEmpty(sectionValidation(state, Object.keys(timeAndProcessLabels)))
+      : false;
+  },
+  isAssesmentValid(state: ProcessState) {
+    return state.canEdit
+      ? !isEmpty(sectionValidation(state, Object.keys(assesmentLabels)))
+      : false;
+  },
+  isSpecificationValid(state: ProcessState) {
+    return state.canEdit
+      ? !isEmpty(sectionValidation(state, Object.keys(specificationLabels)))
+      : false;
+  },
+  isImplementationValid(state: ProcessState) {
+    return state.canEdit
+      ? !isEmpty(sectionValidation(state, Object.keys(implementationLabels)))
+      : false;
+  },
+  isOperationValid(state: ProcessState) {
+    return state.canEdit
+      ? !isEmpty(sectionValidation(state, Object.keys(operationLabels)))
+      : false;
+  }
 };
 
 export const getters: GetterTree<ProcessState, RootState> = {
-  ...processFieldsValidationFunction,
-  isGeneralInformationValid(state: ProcessState) {
-    return !isEmpty(
-      sectionValidation(state, Object.keys(generalInformationLabels))
-    );
-  },
-  isChallengesValid(state: ProcessState) {
-    return !isEmpty(
-      sectionValidation(state, Object.keys(challengesLabels))
-    );
-  },
-  isTimeAndProcessValid(state: ProcessState) {
-    return !isEmpty(sectionValidation(state, Object.keys(timeAndProcessLabels)));
-  },
-  isAssesmentValid(state: ProcessState) {
-    return !isEmpty(sectionValidation(state, Object.keys(assesmentLabels)));
-  },
-  isSpecificationValid(state: ProcessState) {
-    return !isEmpty(sectionValidation(state, Object.keys(specificationLabels)));
-  },
-  isImplementationValid(state: ProcessState) {
-    return !isEmpty(sectionValidation(state, Object.keys(implementationLabels)));
-  },
-  isOperationValid(state: ProcessState) {
-    return !isEmpty(sectionValidation(state, Object.keys(operationLabels)));
-  }
+  ...processFieldsValidation,
+  ...detailsSectionValidation
 };
 
 export function sectionValidation(
@@ -310,12 +329,12 @@ export function sectionValidation(
   const invalidProps: string[] = [];
 
   propertyKeys.forEach((key: string) => {
-    const func = constructFunctionName(key);
-    if(typeof getters[func] === 'function') {
-      const valid = getters[func](state, {}, { version: "1" } as RootState, {});
-      if (!valid) {
-        invalidProps.push(key);
-      }
+    let func = key;
+    if (typeof getters[func] !== "function") {
+      func = constructFunctionName(func);
+    }
+    if (!getters[func](state, {}, {} as RootState, {})) {
+      invalidProps.push(getPropName(func));
     }
   });
   return invalidProps;
