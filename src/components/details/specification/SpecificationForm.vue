@@ -1,5 +1,5 @@
 <template>
-  <FormSection heading="Specifikation" id="specification" :disabled="state.disabled.specificationEdit" @edit="update({disabled: { specificationEdit: $event}})">
+  <FormSection :invalid="isSpecificationValid" heading="Specifikation" id="specification" :disabled="state.disabled.specificationEdit" @edit="update({disabled: { specificationEdit: $event}})">
 
     <h2>Sagsreference i ESDH</h2>
     <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
@@ -11,10 +11,11 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import TextArea from '@/components/common/inputs/TextArea.vue';
-import { Action } from 'vuex-class';
+import { Action, Getter } from 'vuex-class';
 import FormSection from '@/components/details/FormSection.vue';
 import InfoTooltip from '@/components/common/InfoTooltip.vue';
 import { processActionTypes } from '@/store/modules/process/actions';
+import { processGetterTypes } from '@/store/modules/process/getters';
 
 @Component({
   components: {
@@ -25,6 +26,7 @@ import { processActionTypes } from '@/store/modules/process/actions';
 })
 export default class SpecificationForm extends Vue {
   @Action(processActionTypes.UPDATE) update: any;
+  @Getter(processGetterTypes.IS_SPECIFICATION_VALID) isSpecificationValid!: any;
 
   get state() {
     return this.$store.state.process;

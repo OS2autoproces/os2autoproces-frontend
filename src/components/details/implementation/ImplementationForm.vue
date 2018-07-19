@@ -1,5 +1,5 @@
 <template>
-    <FormSection heading="Udvikling og implementering" id="implementation" :disabled="state.disabled.implementationEdit" @edit="update({disabled: {implementationEdit: $event}})">
+    <FormSection :invalid="isImplementationValid" heading="Udvikling og implementering" id="implementation" :disabled="state.disabled.implementationEdit" @edit="update({disabled: {implementationEdit: $event}})">
 
         <h2>Teknisk implementering</h2>
         <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
@@ -18,11 +18,12 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import TextArea from '@/components/common/inputs/TextArea.vue';
-import { Action } from 'vuex-class';
+import { Action, Getter } from 'vuex-class';
 import FormSection from '@/components/details/FormSection.vue';
 import InfoTooltip from '@/components/common/InfoTooltip.vue';
 import TagSelector from '@/components/common/inputs/TagSelector.vue';
 import { processActionTypes } from '@/store/modules/process/actions';
+import { processGetterTypes } from '@/store/modules/process/getters';
 
 @Component({
   components: {
@@ -36,6 +37,7 @@ export default class ImplementationForm extends Vue {
   @Action(processActionTypes.UPDATE) update: any;
   @Action(processActionTypes.ADD_TECHNOLOGY) addTechnology: any;
   @Action(processActionTypes.REMOVE_TECHNOLOGY) removeTechnology: any;
+  @Getter(processGetterTypes.IS_IMPLEMENTATION_VALID) isImplementationValid!: any;
 
   twoColumnBreakpoint = 1600;
 

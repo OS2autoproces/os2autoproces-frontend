@@ -1,32 +1,35 @@
-import { HTTP } from '@/services/http-service';
+import { HTTP } from "@/services/http-service";
 import {
   ProcessRequest,
   ProcessResponse,
   responseToState,
   stateToRequest
-} from '@/services/process-converter';
-import { User } from '@/store/modules/auth/state';
-import { processMutationTypes } from '@/store/modules/process/mutations';
+} from "@/services/process-converter";
+import { User } from "@/store/modules/auth/state";
+import { processMutationTypes } from "@/store/modules/process/mutations";
 import {
   Attachment,
   Technology,
   Process,
   ITSystem,
   ProcessState
-} from '@/store/modules/process/state';
-import { RootState } from '@/store/store';
-import { ActionTree } from 'vuex';
-import { PhaseKeys } from '@/models/phase';
-import { DomainKeys } from '@/models/domain';
-import { VisibilityKeys } from '@/models/visibility';
-import { StatusKeys } from '@/models/status';
-import { LikertScaleKeys } from '@/models/likert-scale';
-import { TypeKeys } from '@/models/types';
-import { processValidation } from '@/store/modules/process/getters';
-import { errorMutationTypes } from '@/store/modules/error/mutations';
-import { errorActionTypes } from '@/store/modules/error/actions';
+} from "@/store/modules/process/state";
+import { RootState } from "@/store/store";
+import { ActionTree } from "vuex";
+import { PhaseKeys } from "@/models/phase";
+import { DomainKeys } from "@/models/domain";
+import { VisibilityKeys } from "@/models/visibility";
+import { StatusKeys } from "@/models/status";
+import { LikertScaleKeys } from "@/models/likert-scale";
+import { TypeKeys } from "@/models/types";
+import {
+  sectionValidation,
+  processFieldsValidationFunction
+} from "@/store/modules/process/getters";
+import { errorMutationTypes } from "@/store/modules/error/mutations";
+import { errorActionTypes } from "@/store/modules/error/actions";
 
-export const namespace = 'process';
+export const namespace = "process";
 
 export const processActionTypes = {
   UPDATE: `${namespace}/update`,
@@ -38,15 +41,15 @@ export const processActionTypes = {
   LOAD_COMMENTS: `${namespace}/loadComments`,
   SAVE: `${namespace}/save`,
   REPORT: `${namespace}/report`,
-  
+
   ADD_USER: `${namespace}/addUser`,
   REMOVE_USER: `${namespace}/removeUser`,
-  
+
   ADD_TECHNOLOGY: `${namespace}/addTechnology`,
   REMOVE_TECHNOLOGY: `${namespace}/removeTechnology`,
 
   ADD_DOMAIN: `${namespace}/addDomain`,
-  
+
   SAVE_IT_SYSTEM: `${namespace}/saveItSystem`,
 
   LOAD_PROCESS_DETAILS: `${namespace}/loadProcessDetails`,
@@ -86,8 +89,8 @@ export const actions: ActionTree<ProcessState, RootState> = {
   update({ commit }, payload: Partial<ProcessState>) {
     commit(processMutationTypes.UPDATE, payload);
   },
-  clear({commit}) {
-    commit(processMutationTypes.UPDATE, initialProcessState() )
+  clear({ commit }) {
+    commit(processMutationTypes.UPDATE, initialProcessState());
   },
   async loadAttachments({ commit, state }) {
     if (!state.id) {
@@ -102,7 +105,7 @@ export const actions: ActionTree<ProcessState, RootState> = {
   },
   async addAttachments({ commit, state }, files: File[]) {
     const form = new FormData();
-    files.forEach(file => form.append('files', file));
+    files.forEach(file => form.append("files", file));
 
     // Placeholders are attachments which are shown while the real attachments are uploading.
     // When the attachments are done uploading, the placeholders are replaced with the real attachments.
@@ -225,57 +228,68 @@ export const actions: ActionTree<ProcessState, RootState> = {
     return process.id;
   },
   async save({ commit, state, dispatch }) {
-    const invalidFields: string[] = processValidation(state);
-    if(invalidFields) {
-      dispatch(errorActionTypes.UPDATE_PROCESS_ERRORS, { processErrors: invalidFields}, {root: true});
+    const invalidFields: string[] = sectionValidation(
+      state,
+      Object.keys(processFieldsValidationFunction)
+    );
+    if (invalidFields) {
+      dispatch(
+        errorActionTypes.UPDATE_PROCESS_ERRORS,
+        { processErrors: invalidFields },
+        { root: true }
+      );
     } else {
       const converted = await stateToRequest(state);
       const response = (await HTTP.put<ProcessResponse>(
         `api/processes/${state.id}`,
         converted
       )).data;
-  
+
       const process = responseToState(response);
       // TODO: notify update
       commit(processMutationTypes.UPDATE, setBackendManagedFields(process));
     }
   },
-  async delete({commit, state}) {
+  async delete({ commit, state }) {
     const deleted = (await HTTP.delete(`api/processes/${state.id}`)).status;
     // notify user, process is deleted
   },
-  saveItSystem({commit, state}, itSystem: ITSystem) {
+  saveItSystem({ commit, state }, itSystem: ITSystem) {
     if (!state.itSystems || state.itSystems.some(s => itSystem === s)) {
       return;
     }
-    commit(processMutationTypes.ASSIGN, { itSystems: [...state.itSystems, itSystem]});
+    commit(processMutationTypes.ASSIGN, {
+      itSystems: [...state.itSystems, itSystem]
+    });
   },
-  addDomain({commit, state}, domain: string) {
-    commit(processMutationTypes.ASSIGN, { domains: [...state.domains, domain]})
+  addDomain({ commit, state }, domain: string) {
+    commit(processMutationTypes.ASSIGN, {
+      domains: [...state.domains, domain]
+    });
   }
 };
 
 export function initialProcessState() {
   return {
-    id: '',
-    localId: '',
-    kle: '',
+    id: "",
+    localId: "",
+    kle: "",
     contact: null,
-    klId: '',
+    klId: "",
     kla: null,
-    legalClause: '',
+    legalClause: "",
     orgUnits: [],
     domains: [DomainKeys.WORK],
     visibility: VisibilityKeys.PERSONAL,
     vendor: null,
     owner: null,
     users: [],
-    shortDescription: '',
+    shortDescription: "",
     phase: PhaseKeys.IDEA,
     status: StatusKeys.INPROGRESS,
-    statusText: '',
+    statusText: "",
     klaProcess: false,
-    municipalityName: '',
+    municipalityName: "",
     type: TypeKeys.CHILD,
     children: [],
 
@@ -291,47 +305,47 @@ export function initialProcessState() {
     levelOfSpeed: LikertScaleKeys.UNKNOWN,
 
     /* Challenges */
-    solutionRequests: '',
-    processChallenges: '',
-    longDescription: '',
+    solutionRequests: "",
+    processChallenges: "",
+    longDescription: "",
     itSystems: [],
-    created: '',
+    created: "",
 
     /* Time and process */
-    timeSpendOccurancesPerEmployee: '0',
-    timeSpendPerOccurance: '0',
-    timeSpendComputedTotal: '0',
-    timeSpendEmployeesDoingProcess: '0',
-    timeSpendPercentageDigital: '0',
+    timeSpendOccurancesPerEmployee: "0",
+    timeSpendPerOccurance: "0",
+    timeSpendComputedTotal: "0",
+    timeSpendEmployeesDoingProcess: "0",
+    timeSpendPercentageDigital: "0",
     targestsCitizens: false,
     targetsCompanies: false,
-    timeSpendComment: '',
+    timeSpendComment: "",
 
     /* Specification */
-    esdhReference: '',
+    esdhReference: "",
 
     /* Implementation */
-    organizationalImplementationNotes: '',
-    technicalImplementationNotes: '',
+    organizationalImplementationNotes: "",
+    technicalImplementationNotes: "",
     technologies: [],
 
     /* Operation */
-    lastChanged: '',
-    decommissioned: '',
+    lastChanged: "",
+    decommissioned: "",
     legalClauseLastVerified: null,
     rating: 0,
-    ratingComment: '',
+    ratingComment: "",
 
     /* Attachments */
     links: [],
     attachments: [],
 
     /* Details */
-    title: '',
-    searchWords: '',
-    internalNotes: '',
+    title: "",
+    searchWords: "",
+    internalNotes: "",
     comments: [],
-    cvr: '',
+    cvr: "",
     hasBookmarked: false,
     canEdit: true,
 

@@ -9,34 +9,42 @@ export const errorActionTypes = {
   UPDATE_PROCESS_ERRORS: `${namespace}/updateProcessErrors`
 };
 
-export const processPropLabels: { [key: string]: string } = {
+export const generalInformationLabels: { [key: string]: string } = {
   localId: "Lokalt ID",
-  klId: "KL ID",
-  esdhReference: "ESDH Reference",
   phase: "Fase",
+  owner: "Ejer",
+  contact: "Kontaktperson",
   status: "Status",
   statusText: "Statustekst",
-  decommissioned: "Løsning taget ud af drift",
   title: "Title/Name",
   shortDescription: "Resumé",
-  longDescription: "Beskrivelse",
   domains: "Domæner",
   visibility: "Synlighed",
   legalClause: "Lov og paragraf",
-  legalClauseLastVerified: "Sidst kontrolleret i forhold til §",
   kle: "KLE NR.",
   kla: "KLA NR",
   vendor: "Leverandør",
-  internalNotes: "Interne Noter",
+  klId: "KL ID"
+};
+
+export const challengesLabels: { [key: string]: string } = {
+  longDescription: "Beskrivelse",
   processChallenges: "Process udfordringer",
   solutionRequests: "Løsningsbeskrivelse",
+  itSystems: "Nuværende system"
+};
+
+export const timeAndProcessLabels: { [key: string]: string } = {
   timeSpendOccurancesPerEmployee:
     "Antal gange processen gentages om året pr. medarbejder",
   timeSpendPerOccurance: "Tidsforbrug pr. proces i minutter",
   timeSpendEmployeesDoingProcess: "Antal medarbejdere der foretager processen",
   timeSpendPercentageDigital: "Tidsbesparelse i %",
   timeSpendComputedTotal: "Total besparelse",
-  timeSpendComment: "Kommentar vedr. tidsforbrug",
+  timeSpendComment: "Kommentar vedr. tidsforbrug"
+};
+
+export const assesmentLabels: { [key: string]: string } = {
   levelOfProfessionalAssessment: "I hvor høj grad er der faglig vurdering?",
   levelOfChange: "I hvor høj grad er processen præget af hyppige ændringer?",
   levelOfStructuredInformation:
@@ -50,15 +58,36 @@ export const processPropLabels: { [key: string]: string } = {
   levelOfRoutineWorkReduction:
     "Frigiver løsningen tid og nedbringer rutineopgaver",
   evaluatedLevelOfRoi:
-    "I hvor høj grad vurderes det at processen kan automatiseres?",
+    "I hvor høj grad vurderes det at processen kan automatiseres?"
+};
+
+export const specificationLabels: { [key: string]: string } = {
+  esdhReference: "ESDH Reference"
+};
+
+export const implementationLabels: { [key: string]: string } = {
+  technologies: "Anvendt teknologi",
   technicalImplementationNotes: "Teknisk implementering",
-  organizationalImplementationNotes: "Organisatorisk implementering",
+  organizationalImplementationNotes: "Organisatorisk implementering"
+};
+
+export const operationLabels: { [key: string]: string } = {
   rating: "I hvor højgrad realiserer processen sit potentiale",
   ratingComment: "Kommentar til realiseret løsningspotentiale",
-  owner: "Ejer",
-  contact: "Kontaktperson",
-  itSystems: "Nuværende system",
-  technologies: "Anvendt teknologi"
+  decommissioned: "Løsning taget ud af drift",
+  legalClauseLastVerified: "Sidst kontrolleret i forhold til §"
+};
+
+export const processPropLabels: { [key: string]: string } = {
+  ...generalInformationLabels,
+  ...challengesLabels,
+  ...timeAndProcessLabels,
+  ...assesmentLabels,
+  ...specificationLabels,
+  ...implementationLabels,
+  ...operationLabels,
+
+  internalNotes: "Interne Noter"
 };
 
 export const actions: ActionTree<ErrorState, RootState> = {

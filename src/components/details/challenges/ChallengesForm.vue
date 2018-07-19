@@ -1,5 +1,5 @@
 <template>
-  <FormSection heading="Problemstillinger" id="challenges" :disabled="state.process.disabled.challengesEdit" @edit="update({ disabled: { challengesEdit: $event}})">
+  <FormSection :invalid="isChallangesValid" heading="Problemstillinger" id="challenges" :disabled="state.process.disabled.challengesEdit" @edit="update({ disabled: { challengesEdit: $event}})">
     <h2>Beskrivelse</h2>
     <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
     <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({longDescription: $event})" :disabled="state.process.disabled.challengesEdit" :value="state.process.longDescription" />
@@ -43,6 +43,7 @@ import { ITSystem } from '@/store/modules/process/state';
 import { HTTP } from '@/services/http-service';
 import { commonActionTypes } from '@/store/modules/common/actions';
 import { CommonState } from '@/store/modules/common/state';
+import { processGetterTypes } from '@/store/modules/process/getters';
 
 interface Item {
   value: any;
@@ -64,6 +65,7 @@ export default class ChallengesForm extends Vue {
   @Action(processActionTypes.UPDATE) update: any;
   @Action(processActionTypes.SAVE_IT_SYSTEM)
   saveItSystem!: (itSystem: ITSystem) => void;
+  @Getter(processGetterTypes.IS_CHALLENGES_VALID) isChallangesValid!: any;
 
   twoColumnBreakpoint = 1600;
 

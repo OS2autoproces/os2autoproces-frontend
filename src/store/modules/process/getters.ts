@@ -5,10 +5,26 @@ import { isEmpty } from "lodash";
 import * as validateJs from "validate.js";
 import { GetterTree } from "vuex";
 import { DateTime } from "luxon";
+import {
+  generalInformationLabels,
+  challengesLabels,
+  timeAndProcessLabels,
+  assesmentLabels,
+  specificationLabels,
+  implementationLabels,
+  operationLabels
+} from "@/store/modules/error/actions";
 
-import { namespace } from "./actions";
+const namespace = 'process' // import doens't work
 
 export const processGetterTypes = {
+  IS_GERNERAL_INFORMATION_VALID: `${namespace}/isGeneralInformationValid`,
+  IS_CHALLENGES_VALID: `${namespace}/isChallengesValid`,
+  IS_TIME_AND_PROCESS_VALID: `${namespace}/isTimeAndProcessValid`,
+  IS_ASSESMENT_VALID: `${namespace}/isAssesmentValid`,
+  IS_SPECIFICATION_VALID: `${namespace}/isSpecificationValid`,
+  IS_IMPLEMENTATION_VALID: `${namespace}/isImplementationValid`,
+  IS_OPERATION_VALID: `${namespace}/isOperationValid`,
 };
 
 const isNonempty = {
@@ -36,11 +52,22 @@ function isValid(value: any, constraints: any): boolean {
   return !validateJs({ value }, { value: constraints });
 }
 
-export const getters: GetterTree<ProcessState, RootState> = {
+function constructFunctionName(prop: string) {
+  return (
+    "is" + prop.replace(prop.charAt(0), prop.charAt(0).toUpperCase()) + "Valid"
+  );
+}
+
+function getPropName(getter: string): string {
+  const prop = getter.replace("is", "").replace("Valid", "");
+  return prop.replace(prop.charAt(0), prop.charAt(0).toLowerCase());
+}
+
+export const processFieldsValidationFunction = {
   isLocalIdValid(state: ProcessState): boolean {
     return isValid(state.localId, isMinMax(1, 64));
   },
-  isKlValid(state: ProcessState): boolean {
+  isKlIdValid(state: ProcessState): boolean {
     return isValid(state.klId, isMinMax(1, 64));
   },
   isPhaseValid(state: ProcessState): boolean {
@@ -55,7 +82,7 @@ export const getters: GetterTree<ProcessState, RootState> = {
   isTitleValid(state: ProcessState): boolean {
     return isValid(state.title ? state.title : false, isMinMax(1, 50));
   },
-  isShortDecriptionValid(state: ProcessState): boolean {
+  isShortDescriptionValid(state: ProcessState): boolean {
     return isValid(state.shortDescription, isMinMax(1, 140));
   },
   isLongDescriptionValid(state: ProcessState): boolean {
@@ -64,7 +91,7 @@ export const getters: GetterTree<ProcessState, RootState> = {
   isVisibilityValid(state: ProcessState): boolean {
     return !isEmpty(state.visibility);
   },
-  isContactPersonValid(state: ProcessState): boolean {
+  isContactValid(state: ProcessState): boolean {
     return !isEmpty(state.contact);
   },
   isLegalClauseValid(state: ProcessState): boolean {
@@ -115,7 +142,7 @@ export const getters: GetterTree<ProcessState, RootState> = {
       ? true
       : !isEmpty(state.levelOfChange);
   },
-  isLevelOfStructeredInformationValid(state: ProcessState): boolean {
+  isLevelOfStructuredInformationValid(state: ProcessState): boolean {
     return state.phase === PhaseKeys.IDEA
       ? true
       : !isEmpty(state.levelOfStructuredInformation);
@@ -171,7 +198,7 @@ export const getters: GetterTree<ProcessState, RootState> = {
       ? true
       : technologies.length > 0;
   },
-  isTechnicalImplementationsNotesValid({
+  isTechnicalImplementationNotesValid({
     phase,
     technicalImplementationNotes
   }: ProcessState): boolean {
@@ -182,7 +209,7 @@ export const getters: GetterTree<ProcessState, RootState> = {
       ? true
       : isValid(technicalImplementationNotes, isMinMax(1, 3000));
   },
-  isOrganizationImplementationNotesValid({
+  isOrganizationalImplementationNotesValid({
     phase,
     organizationalImplementationNotes
   }: ProcessState): boolean {
@@ -229,22 +256,67 @@ export const getters: GetterTree<ProcessState, RootState> = {
   },
   isInternalNotesValid({ internalNotes }: ProcessState): boolean {
     return !!internalNotes;
+  },
+  isDomainsValid(state: ProcessState): boolean {
+    return true;
+  },
+  isItSystemsValid(state: ProcessState): boolean {
+    return true;
+  },
+  isTimeSpendPerOccuranceValid(state: ProcessState) {
+    return !isEmpty(state.timeSpendOccurancesPerEmployee);
+  },
+  isTimeSpendPercentageDigitalValid(state: ProcessState) {
+    return !isEmpty(state.timeSpendPercentageDigital);
+  },
+  isTimeSpendComputedTotalValid(state: ProcessState) {
+    return !isEmpty(state.timeSpendComputedTotal);
+  },
+};
+
+export const getters: GetterTree<ProcessState, RootState> = {
+  ...processFieldsValidationFunction,
+  isGeneralInformationValid(state: ProcessState) {
+    return !isEmpty(
+      sectionValidation(state, Object.keys(generalInformationLabels))
+    );
+  },
+  isChallengesValid(state: ProcessState) {
+    return !isEmpty(
+      sectionValidation(state, Object.keys(challengesLabels))
+    );
+  },
+  isTimeAndProcessValid(state: ProcessState) {
+    return !isEmpty(sectionValidation(state, Object.keys(timeAndProcessLabels)));
+  },
+  isAssesmentValid(state: ProcessState) {
+    return !isEmpty(sectionValidation(state, Object.keys(assesmentLabels)));
+  },
+  isSpecificationValid(state: ProcessState) {
+    return !isEmpty(sectionValidation(state, Object.keys(specificationLabels)));
+  },
+  isImplementationValid(state: ProcessState) {
+    return !isEmpty(sectionValidation(state, Object.keys(implementationLabels)));
+  },
+  isOperationValid(state: ProcessState) {
+    return !isEmpty(sectionValidation(state, Object.keys(operationLabels)));
   }
 };
 
-export function processValidation(state: ProcessState): string[] {
+export function sectionValidation(
+  state: ProcessState,
+  propertyKeys: string[]
+): string[] {
   const invalidProps: string[] = [];
 
-  Object.keys(getters).forEach((key: string) => {
-    const valid = getters[key](state, {}, { version: '1' } as RootState, {});
-    if (!valid) {
-      invalidProps.push(getPropName(key));
+  propertyKeys.forEach((key: string) => {
+    const func = constructFunctionName(key);
+    if(typeof getters[func] === 'function') {
+      const valid = getters[func](state, {}, { version: "1" } as RootState, {});
+      if (!valid) {
+        invalidProps.push(key);
+      }
     }
   });
   return invalidProps;
-}
-
-function getPropName(getter: string): string {
-  const prop = getter.replace("is", "").replace("Valid", "");
-  return prop.replace(prop.charAt(0), prop.charAt(0).toLowerCase());
 }

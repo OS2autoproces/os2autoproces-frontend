@@ -1,5 +1,5 @@
 <template>
-  <FormSection heading="Tid og proces" id="time-and-process" :disabled="state.disabled.timeAndProcessEdit" @edit="update({disabled: {timeAndProcessEdit: $event}})">
+  <FormSection :invalid="isTimeAndProcessValid" heading="Tid og proces" id="time-and-process" :disabled="state.disabled.timeAndProcessEdit" @edit="update({disabled: {timeAndProcessEdit: $event}})">
 
     <Well>
       <div>
@@ -52,8 +52,9 @@ import TextArea from '@/components/common/inputs/TextArea.vue';
 import SelectionField from '@/components/common/inputs/SelectionField.vue';
 import InputField from '@/components/common/inputs/InputField.vue';
 import FormSection from '@/components/details/FormSection.vue';
-import { Action } from 'vuex-class';
+import { Action, Getter } from 'vuex-class';
 import { processActionTypes } from '@/store/modules/process/actions';
+import { processGetterTypes } from '@/store/modules/process/getters';
 
 @Component({
   components: {
@@ -68,6 +69,7 @@ import { processActionTypes } from '@/store/modules/process/actions';
 })
 export default class TimeAndProcessForm extends Vue {
   @Action(processActionTypes.UPDATE) update: any;
+  @Getter(processGetterTypes.IS_TIME_AND_PROCESS_VALID) isTimeAndProcessValid!: any;
 
   affectedItems = [{ value: true, text: 'Ja' }, { value: false, text: 'Nej' }];
 
