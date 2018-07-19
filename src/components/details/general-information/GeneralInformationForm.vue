@@ -1,5 +1,5 @@
 <template>
-  <FormSection heading="Grundlæggende oplysninger" id="general-information" :disabled="state.disabled.generalInformationEdit" @edit="update({disabled: { generalInformationEdit: $event} })" always-open>
+  <FormSection :invalid="isGeneralInformationValid" heading="Grundlæggende oplysninger" id="general-information" :disabled="state.disabled.generalInformationEdit" @edit="update({disabled: { generalInformationEdit: $event} })" always-open>
     <div class="general-information-wrapper">
       <Well>
         <div>
@@ -102,7 +102,7 @@ import { VisibilityLabels, VisibilityKeys } from "@/models/visibility";
 import { DomainKeys, DomainLabels } from "@/models/domain";
 import { Kle } from "@/store/modules/common/actions";
 import { Domain } from "@/models/domain";
-import { processGetterTypes, processValidation } from "@/store/modules/process/getters";
+import { processGetterTypes } from "@/store/modules/process/getters";
 import { isEmpty } from "lodash";
 
 @Component({
@@ -124,6 +124,7 @@ export default class GeneralInformationForm extends Vue {
   addDomain!: (domain: any) => Promise<void>;
   @Action(commonActionTypes.SEARCH_USERS)
   searchUsers!: ({ name, cvr }: UserSearchRequest) => Promise<void>;
+  @Getter(processGetterTypes.IS_GERNERAL_INFORMATION_VALID) isGeneralInformationValid!: any;
 
   isPhaseChanged = false;
   StatusKeys = StatusKeys;
