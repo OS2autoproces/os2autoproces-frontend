@@ -45,7 +45,7 @@ import { ProcessState } from '@/store/modules/process/state';
 })
 export default class DetailsHeader extends Vue {
   @Action(processActionTypes.UPDATE) update!: any;
-  @Action(processActionTypes.DELETE) removeProcess!: () => Promise<void>;
+  @Action(processActionTypes.REMOVE_PROCESS) removeProcess!: () => Promise<void>;
   @Action(processActionTypes.COPY_PROCESS) copyProcess!: () => Promise<string>;
 
   // TODO: Bind these to the store
