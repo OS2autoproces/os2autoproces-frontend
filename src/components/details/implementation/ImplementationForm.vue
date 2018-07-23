@@ -1,10 +1,10 @@
 <template>
-    <FormSection heading="Udvikling og implementering" id="implementation" :disabled="state.disabled.implementationEdit" @edit="update({disabled: {implementationEdit: $event}})">
+    <FormSection v-if="isVisibleFromPhaseNumber(3)" heading="Udvikling og implementering" id="implementation" :disabled="state.disabled.implementationEdit" @edit="update({disabled: {implementationEdit: $event}})">
 
         <div v-if="isVisibleFromPhaseNumber(4)">
           <h2>Teknisk implementering</h2>
           <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
-          <TextArea :max-length="3000" :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({technicalImplementationNotes: $event})" :disabled="state.disabled.implementationEdit" :value="state.technicalImplementationNotes" /> 
+          <TextArea :max-length="3000" :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({technicalImplementationNotes: $event})" :disabled="state.disabled.implementationEdit" :value="state.technicalImplementationNotes" />
         </div>
 
         <div v-if="isVisibleFromPhaseNumber(4)">
@@ -13,11 +13,11 @@
           <TextArea :max-length="3000" :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({organizationalImplementationNotes: $event})" :disabled="state.disabled.implementationEdit" :value="state.organizationalImplementationNotes" />
         </div>
 
-        <div v-if="isVisibleFromPhaseNumber(3)">
+        <div>
           <h2>Anvendt teknologi</h2>
           <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
           <TagSelector @add="addTechnology($event)" @remove="removeTechnology($event)" :disabled="state.disabled.implementationEdit" :value="state.technologies" />
-        </div>        
+        </div>
     </FormSection>
 </template>
 
