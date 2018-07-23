@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-autocomplete v-if="!disabled" :label="placeholder" :items="_items" single-line no-data-text="Ingen resultater" :item-text="itemText" :append-icon="iconName" :search-input.sync="searchQuery" @change="valueChanged" :value="value" cache-items return-object />
-    <div class="selection-text" v-if="disabled && value">{{ value[itemText] }}</div>
+    <div class="selection-text" v-if="disabled && value">{{ value[itemText] || value }}</div>
   </div>
 </template>
 
