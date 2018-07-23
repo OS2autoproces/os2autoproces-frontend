@@ -30,10 +30,16 @@
             <AttachmentsForm />
           </div>
 
+          <div>
+            <h2 class="internal-notes-heading">Interne noter</h2>
+            <InternalNotes title="Interne noter" :internalNotes="state.internalNotes" />
+          </div>
+
           <div class="comments">
-            <div class="comments-heading">Kommentarer</div>
+            <h2 class="comments-heading">Kommentarer</h2>
             <Comments :comments="state.comments" @submit="saveComment({ message: $event })" />
           </div>
+
         </div>
       </div>
     </div>
@@ -44,10 +50,8 @@
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import { Action } from 'vuex-class';
 import NavBar from '../components/common/NavBar.vue';
-import {
-  processActionTypes,
-  NewComment
-} from '@/store/modules/process/actions';
+import InternalNotes from '@/components/common/inputs/InternalNotes.vue';
+import { processActionTypes, NewComment } from '@/store/modules/process/actions';
 import { Phase } from '@/models/phase';
 import { commonActionTypes } from '@/store/modules/common/actions';
 
@@ -86,7 +90,8 @@ import EditIcon from '@/components/icons/EditIcon.vue';
     OperationForm,
     Button,
     ArrowLeftIcon,
-    EditIcon
+    EditIcon,
+    InternalNotes
   }
 })
 export default class Details extends Vue {
@@ -96,11 +101,9 @@ export default class Details extends Vue {
 
   @Action(processActionTypes.SAVE) save: any;
   @Action(processActionTypes.UPDATE) update: any;
-  @Action(processActionTypes.SAVE_COMMENT)
-  saveComment!: (message: string) => Promise<void>;
+  @Action(processActionTypes.SAVE_COMMENT) saveComment!: (message: string) => Promise<void>;
   @Action(processActionTypes.LOAD_COMMENTS) loadComments!: () => Promise<void>;
-  @Action(commonActionTypes.LOAD_IT_SYSTEMS)
-  loadItSystems!: () => Promise<void>;
+  @Action(commonActionTypes.LOAD_IT_SYSTEMS) loadItSystems!: () => Promise<void>;
   @Action(commonActionTypes.LOAD_KLES) loadKles!: () => Promise<void>;
   @Action(processActionTypes.CLEAR_PROCESS) clear!: () => Promise<void>;
 
@@ -109,10 +112,7 @@ export default class Details extends Vue {
   }
 
   mounted() {
-    this.$store.dispatch(
-      processActionTypes.LOAD_PROCESS_DETAILS,
-      Number(this.id)
-    );
+    this.$store.dispatch(processActionTypes.LOAD_PROCESS_DETAILS, Number(this.id));
     this.loadItSystems();
     this.loadKles();
 
@@ -120,7 +120,7 @@ export default class Details extends Vue {
       this.update({ phase: this.phase });
     }
   }
-  
+
   async report() {
     const processId = await this.$store.dispatch(processActionTypes.REPORT);
     this.$router.push(`/details/${processId}`);
@@ -169,37 +169,8 @@ export default class Details extends Vue {
   }
 }
 
-.usage,
 .comments {
   margin: 5 * $size-unit 0;
-}
-
-.usage {
-  text-align: center;
-
-  .usage-heading {
-    font-style: italic;
-    margin: $size-unit / 2 0;
-
-    .usage-edit-icon {
-      display: inline-block;
-      margin-left: $size-unit;
-      height: $size-unit;
-      width: $size-unit;
-      fill: $color-secondary;
-    }
-
-    &:not(.disabled) {
-      .usage-edit-icon svg /deep/ path {
-        fill: $color-primary;
-      }
-    }
-  }
-
-  .comments-heading {
-    font-style: italic;
-    margin: $size-unit / 2 0;
-  }
 }
 
 .save-button,
@@ -219,5 +190,13 @@ export default class Details extends Vue {
     width: $size-unit;
     margin-right: $size-unit / 2;
   }
+}
+
+.comments-heading,
+.internal-notes-heading {
+  @include heading;
+  color: $color-secondary;
+  margin-top: 2 * $size-unit;
+  padding: $size-unit 2 * $size-unit;
 }
 </style>
