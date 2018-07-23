@@ -1,35 +1,33 @@
 <template>
-  <FormSection heading="Problemstillinger" id="challenges" :disabled="state.process.disabled.challengesEdit" @edit="update({ disabled: { challengesEdit: $event}})">
-    <h2>Beskrivelse</h2>
-    <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
-    <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({longDescription: $event})" :disabled="state.process.disabled.challengesEdit" :value="state.process.longDescription" />
-
+  <FormSection heading="Problemstillinger" id="challenges" :disabled="state.disabled.challengesEdit" @edit="update({ disabled: { challengesEdit: $event}})">
     <div v-if="isVisibleFromPhaseNumber(1)">
       <h2>Løsningsbeskrivelse</h2>
       <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
-      <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({solutionRequests: $event})" :disabled="state.process.disabled.challengesEdit" :value="state.process.solutionRequests" />
+      <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({solutionRequests: $event})" :disabled="state.disabled.challengesEdit" :value="state.solutionRequests" />
     </div>
 
     <div v-if="isVisibleFromPhaseNumber(1)">
       <h2>Proces udfordringer</h2>
       <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
-      <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({processChallenges: $event})" :disabled="state.process.disabled.challengesEdit" :value="state.process.processChallenges" />
+      <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({processChallenges: $event})" :disabled="state.disabled.challengesEdit" :value="state.processChallenges" />
     </div>
 
     <Well class="challenges-well">
       <div>
         <WellItem label="Oprettet:">
-          <DatePicker :value="state.process.created" disabled/>
+          <DatePicker :value="state.created" disabled/>
         </WellItem>
       </div>
+
       <div>
         <WellItem labelWidth="55%" label="Sidst opdateret:">
-          <DatePicker :value="state.process.lastChanged" disabled />
+          <DatePicker :value="state.lastChanged" disabled />
         </WellItem>
       </div>
+
       <div slot="well-footer" class="well-item-footer" v-if="isVisibleFromPhaseNumber(1)">
         <WellItem label="Nuværende system:">
-          <SelectionField :items="itSystems" :value="state.process.itSystems[0]" :disabled="state.process.disabled.challengesEdit" @change="saveItSystem($event)" />
+          <SelectionField :items="itSystems" :value="state.itSystems[0]" itemText="name" :disabled="state.disabled.challengesEdit" @change="saveItSystem($event)" />
         </WellItem>
       </div>
     </Well>
@@ -53,11 +51,6 @@ import { commonActionTypes } from '@/store/modules/common/actions';
 import { CommonState } from '@/store/modules/common/state';
 import { processGetterTypes } from '@/store/modules/process/getters';
 
-interface Item {
-  value: any;
-  text: string;
-}
-
 @Component({
   components: {
     TextArea,
@@ -71,22 +64,18 @@ interface Item {
 })
 export default class ChallengesForm extends Vue {
   @Action(processActionTypes.UPDATE) update: any;
-  @Action(processActionTypes.SAVE_IT_SYSTEM)
-  saveItSystem!: (itSystem: ITSystem) => void;
-  @Getter(processGetterTypes.IS_VISIBLE_FROM_PHASE_NUMBER)
-  isVisibleFromPhaseNumber!: (phase: number) => boolean;
+  @Action(processActionTypes.SAVE_IT_SYSTEM) saveItSystem!: (itSystem: ITSystem) => void;
+
+  @Getter(processGetterTypes.IS_VISIBLE_FROM_PHASE_NUMBER) isVisibleFromPhaseNumber!: (phase: number) => boolean;
 
   twoColumnBreakpoint = 1600;
 
   get state() {
-    return this.$store.state;
+    return this.$store.state.process;
   }
 
   get itSystems() {
-    return this.$store.state.common.itSystems.map((s: ITSystem) => ({
-      value: s,
-      text: s.name
-    }));
+    return this.$store.state.common.itSystems;
   }
 }
 </script>
