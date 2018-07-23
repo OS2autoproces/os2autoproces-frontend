@@ -101,7 +101,7 @@ export const actions: ActionTree<CommonState, RootState> = {
     commit(commonMutationTypes.ASSIGN, { kles });
   },
   searchUsers({ commit }, { cvr, name }): void {
-    if (!cvr || name < 3) {
+    if (!cvr) {
       return;
     }
     debouncedSearch({ cvr, name }, commit);

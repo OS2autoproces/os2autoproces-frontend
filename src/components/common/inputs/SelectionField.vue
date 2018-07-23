@@ -69,7 +69,7 @@ export default class SelectionField<T extends any> extends Vue {
 
     &::before,
     &::after {
-      height: 0;
+      display: none !important;
     }
 
     input {

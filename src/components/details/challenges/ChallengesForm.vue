@@ -1,27 +1,27 @@
 <template>
-  <FormSection heading="Problemstillinger" id="challenges" :disabled="state.process.disabled.challengesEdit" @edit="update({ disabled: { challengesEdit: $event}})">
+  <FormSection heading="Problemstillinger" id="challenges" :disabled="state.disabled.challengesEdit" @edit="update({ disabled: { challengesEdit: $event}})">
     <h2>Beskrivelse</h2>
     <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
-    <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({longDescription: $event})" :disabled="state.process.disabled.challengesEdit" :value="state.process.longDescription" />
+    <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({longDescription: $event})" :disabled="state.disabled.challengesEdit" :value="state.longDescription" />
 
     <h2>Løsningsbeskrivelse</h2>
     <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
-    <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({solutionRequests: $event})" :disabled="state.process.disabled.challengesEdit" :value="state.process.solutionRequests" />
+    <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({solutionRequests: $event})" :disabled="state.disabled.challengesEdit" :value="state.solutionRequests" />
 
     <h2>Proces udfordringer</h2>
     <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
-    <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({processChallenges: $event})" :disabled="state.process.disabled.challengesEdit" :value="state.process.processChallenges" />
+    <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({processChallenges: $event})" :disabled="state.disabled.challengesEdit" :value="state.processChallenges" />
 
     <Well class="challenges-well">
       <div>
         <WellItem label="Nuværende system:">
-          <SelectionField v-if="state.process.itSystems[0]" :items="itSystems" :text="state.process.itSystems[0].name" :value="state.process.itSystems[0]" :disabled="state.process.disabled.challengesEdit" @change="saveItSystem($event)" />
+          <SelectionField :items="itSystems" :value="state.itSystems[0]" itemText="name" :disabled="state.disabled.challengesEdit" @change="saveItSystem($event)" />
         </WellItem>
       </div>
 
       <div>
         <WellItem label="Oprettet:">
-          <DatePicker :value="state.process.created" disabled/>
+          <DatePicker :value="state.created" disabled/>
         </WellItem>
       </div>
     </Well>
@@ -57,20 +57,16 @@ import { CommonState } from '@/store/modules/common/state';
 })
 export default class ChallengesForm extends Vue {
   @Action(processActionTypes.UPDATE) update: any;
-  @Action(processActionTypes.SAVE_IT_SYSTEM)
-  saveItSystem!: (itSystem: ITSystem) => void;
+  @Action(processActionTypes.SAVE_IT_SYSTEM) saveItSystem!: (itSystem: ITSystem) => void;
 
   twoColumnBreakpoint = 1600;
 
   get itSystems() {
-    return this.$store.state.common.itSystems.map((s: ITSystem) => ({
-      text: s.name,
-      value: s
-    }));
+    return this.$store.state.common.itSystems;
   }
 
   get state() {
-    return this.$store.state;
+    return this.$store.state.process;
   }
 }
 </script>
