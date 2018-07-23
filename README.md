@@ -27,3 +27,6 @@ This README would normally document whatever steps are necessary to get your app
 
 * Repo owner or admin
 * Other community or team contact
+
+### Attribution ###
+* frontpage background image: "A stack of copy paper" - by Jonathan Joseph Bondhus, link: https://commons.wikimedia.org/wiki/File:Stack_of_Copy_Paper.jpg
