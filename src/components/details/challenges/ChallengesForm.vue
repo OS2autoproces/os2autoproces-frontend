@@ -31,7 +31,7 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import TextArea from '@/components/common/inputs/TextArea.vue';
-import { Action, Getter } from 'vuex-class';
+import { Action } from 'vuex-class';
 import SelectionField from '@/components/common/inputs/SelectionField.vue';
 import DatePicker from '@/components/common/inputs/DatePicker.vue';
 import FormSection from '@/components/details/FormSection.vue';
@@ -43,11 +43,6 @@ import { ITSystem } from '@/store/modules/process/state';
 import { HTTP } from '@/services/http-service';
 import { commonActionTypes } from '@/store/modules/common/actions';
 import { CommonState } from '@/store/modules/common/state';
-
-interface Item {
-  value: any;
-  text: string;
-}
 
 @Component({
   components: {
@@ -68,8 +63,10 @@ export default class ChallengesForm extends Vue {
   twoColumnBreakpoint = 1600;
 
   get itSystems() {
-    const systems = this.$store.state.common.itSystems as ITSystem[];
-    return systems.map((s: ITSystem) => ({ text: s.name, value: s }));
+    return this.$store.state.common.itSystems.map((s: ITSystem) => ({
+      text: s.name,
+      value: s
+    }));
   }
 
   get state() {
