@@ -1,51 +1,45 @@
 <template>
   <div>
-    <v-autocomplete 
-      v-if="!disabled"
-      :label="placeholder"
-      :items="items"
-      single-line
-      :append-icon="iconName" 
-      :search-input.sync="search"
-      @change="valueChanged"
-      :value="value"
-      cache-items
-      />
-    <div class="selection-text" v-if="disabled">{{text ? text : inputText }}</div>
+    <v-autocomplete v-if="!disabled" :label="placeholder" :items="_items" single-line no-data-text="Ingen resultater" :item-text="itemText" :append-icon="iconName" :search-input.sync="searchQuery" @change="valueChanged" :value="value" cache-items return-object />
+    <div class="selection-text" v-if="disabled && value">{{ value[itemText] }}</div>
   </div>
 </template>
 
 <script lang='ts'>
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 
-interface Item {
-  text: string;
-  value: any;
-}
-
 @Component
-export default class SelectionField extends Vue {
-  search = '';
-  
-  @Prop() text!: string;
+export default class SelectionField<T extends any> extends Vue {
+  searchQuery = '';
+
   @Prop({ type: [Boolean, Object, String, Array] })
-  value!: any;
-  @Prop() items!: Item[];
+  value!: T;
   @Prop({ default: 'keyboard_arrow_down' })
   iconName!: string;
+  @Prop() items!: T[];
+  @Prop() itemText!: string;
   @Prop() placeholder!: string;
   @Prop() disabled!: boolean;
-  
-  @Watch('search')
-  function(search: string) {
-    if (search) {
-      this.$emit('search', search);
+
+  private get _items(): T[] {
+    let items: T[] = [];
+
+    if (this.items && this.items.length > 0) {
+      items = this.items.slice();
     }
+
+    if (this.value) {
+      items.push(this.value);
+    }
+
+    return items;
   }
 
-  get inputText() {
-    const item = this.items.find(i => i.value === this.value);
-    return item ? item.text : '';
+  @Watch('searchQuery')
+  search(searchQuery: string) {
+    if (searchQuery) {
+      this.$emit('search', searchQuery);
+    }
   }
 
   valueChanged(value: any) {
