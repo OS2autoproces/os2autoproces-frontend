@@ -51,6 +51,10 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 import { Action } from 'vuex-class';
 import NavBar from '../components/common/NavBar.vue';
 import InternalNotes from '@/components/common/inputs/InternalNotes.vue';
+import { processActionTypes, NewComment } from '@/store/modules/process/actions';
+import { Phase } from '@/models/phase';
+import { commonActionTypes } from '@/store/modules/common/actions';
+
 import Comments from '../components/details/Comments.vue';
 import IntervalSelector from '../components/common/inputs/IntervalSelector.vue';
 import FormSection from '@/components/details/FormSection.vue';
@@ -67,12 +71,6 @@ import AttachmentsForm from '@/components/details/attachments/AttachmentsForm.vu
 import OperationForm from '@/components/details/operation/OperationForm.vue';
 import ArrowLeftIcon from '@/components/icons/ArrowLeftIcon.vue';
 import EditIcon from '@/components/icons/EditIcon.vue';
-import {
-  processActionTypes,
-  NewComment
-} from '@/store/modules/process/actions';
-import { Phase } from '@/models/phase';
-import { commonActionTypes } from '@/store/modules/common/actions';
 
 @Component({
   components: {
@@ -103,11 +101,9 @@ export default class Details extends Vue {
 
   @Action(processActionTypes.SAVE) save: any;
   @Action(processActionTypes.UPDATE) update: any;
-  @Action(processActionTypes.SAVE_COMMENT)
-  saveComment!: (message: string) => Promise<void>;
+  @Action(processActionTypes.SAVE_COMMENT) saveComment!: (message: string) => Promise<void>;
   @Action(processActionTypes.LOAD_COMMENTS) loadComments!: () => Promise<void>;
-  @Action(commonActionTypes.LOAD_IT_SYSTEMS)
-  loadItSystems!: () => Promise<void>;
+  @Action(commonActionTypes.LOAD_IT_SYSTEMS) loadItSystems!: () => Promise<void>;
   @Action(commonActionTypes.LOAD_KLES) loadKles!: () => Promise<void>;
   @Action(processActionTypes.CLEAR_PROCESS) clear!: () => Promise<void>;
 
@@ -115,22 +111,19 @@ export default class Details extends Vue {
     return this.$store.state.process;
   }
 
-  async report() {
-    const processId = await this.$store.dispatch(processActionTypes.REPORT);
-    this.$router.push(`/details/${processId}`);
-  }
-
   mounted() {
-    this.$store.dispatch(
-      processActionTypes.LOAD_PROCESS_DETAILS,
-      Number(this.id)
-    );
+    this.$store.dispatch(processActionTypes.LOAD_PROCESS_DETAILS, Number(this.id));
     this.loadItSystems();
     this.loadKles();
 
     if (this.phase) {
       this.update({ phase: this.phase });
     }
+  }
+
+  async report() {
+    const processId = await this.$store.dispatch(processActionTypes.REPORT);
+    this.$router.push(`/details/${processId}`);
   }
 }
 </script>

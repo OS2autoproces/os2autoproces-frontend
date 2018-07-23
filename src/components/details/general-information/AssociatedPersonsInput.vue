@@ -38,18 +38,18 @@ export default class AssociatedPersonsInput extends Vue {
 
   @Action(processActionTypes.ADD_USER) addUser!: (user: User) => void;
   @Action(processActionTypes.REMOVE_USER) removeUser!: (user: User) => void;
-  @Action(commonActionTypes.SEARCH_USERS) searchUsers!: ({name, cvr}: UserSearchRequest) => Promise<void>;
+  @Action(commonActionTypes.SEARCH_USERS) searchUsers!: (request: UserSearchRequest) => Promise<void>;
 
   get state() {
     return this.$store.state;
   }
 
   get users() {
-    return this.$store.state.common.users.map((u: User) => ({value: u, text: u.name}));
+    return this.$store.state.common.users;
   }
 
   search(name: string) {
-    this.searchUsers({ name, cvr: this.state.auth.user.cvr });
+    this.searchUsers({ name, cvr: this.$store.state.auth.user.cvr });
   }
 }
 </script>
