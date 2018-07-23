@@ -13,10 +13,10 @@
       <img src="https://www.syddjurs.dk/sites/all/themes/custom/site/dist/img/logo.png" alt="Kommune logo">
     </div>
     <div class="row">
-      <Button class="button" @click="deleteProces">Slet proces</Button>
-      <Button class="button" @click="copyProcess">Kopier proces</Button>
+      <Button class="button" @click="remove">Slet proces</Button>
+      <Button class="button" @click="copy">Kopier proces</Button>
       <div class="flex-grow"></div>
-      <Toggle :value="state.emailNotification" @change="toggleEmailNotification( $event )">Mail notifikation</Toggle>
+      <Toggle :value="state.emailNotification" @change="setEmailNotification($event)">Mail notifikation</Toggle>
     </div>
   </div>
 </template>
@@ -45,7 +45,9 @@ import { ProcessState } from '@/store/modules/process/state';
 })
 export default class DetailsHeader extends Vue {
   @Action(processActionTypes.UPDATE) update!: any;
-  @Action(processActionTypes.TOGGLE_EMAIL_NOTIFICATION) toggleEmailNotification!: (email: boolean) => Promise<void>; 
+  @Action(processActionTypes.SET_EMAIL_NOTIFICATION) setEmailNotification!: (email: boolean) => Promise<void>;
+  @Action(processActionTypes.REMOVE_PROCESS) removeProcess!: () => Promise<void>;
+  @Action(processActionTypes.COPY_PROCESS) copyProcess!: () => Promise<string>;
 
   get state() {
     return this.$store.state.process;
@@ -63,13 +65,14 @@ export default class DetailsHeader extends Vue {
     this.update({ hasBookmarked: !this.state.hasBookmarked });
   }
 
-  deleteProces() {
-    // TODO: Show confirmation
+  async copy() {
+    const id = await this.copyProcess();
+    this.$router.push(`/details/${id}`);
   }
 
-  async copyProcess() {
-    const id = await this.$store.dispatch(processActionTypes.COPY_PROCESS); 
-    this.$router.push(`/details/${id}`);    
+  async remove() {
+    await this.removeProcess();
+    this.$router.push(`/search`);
   }
 }
 </script>

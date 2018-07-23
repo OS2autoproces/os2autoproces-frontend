@@ -2,9 +2,9 @@ import { Domain } from '@/models/domain';
 import { LikertScale } from '@/models/likert-scale';
 import { Phase } from '@/models/phase';
 import { Status } from '@/models/status';
+import { Type } from '@/models/types';
 import { Visibility } from '@/models/visibility';
 import { User } from '@/store/modules/auth/state';
-import { Type } from '@/models/types';
 
 export interface ProcessState extends Process {
   disabled: Disabled;
