@@ -2,7 +2,7 @@
   <div class="details-header">
     <div class="row">
       <InputField class="name" :value="state.title" :disabled="state.disabled.titleEdit" :class="{ disabled: state.disabled.titleEdit }" @change="update({ title: $event })" />
-      <div class="edit-button" role="button" @click="toggleEdit" :class="{ editing: !state.disabled.titleEdit }">
+      <div class="edit-button" role="button" @click="toggleEdit" :class="{ editing: state.disabled.titleEdit }">
         <EditIcon />
       </div>
       <div class="bookmark-button" role="button" @click="toggleBookmark">
@@ -99,7 +99,7 @@ export default class DetailsHeader extends Vue {
   width: $size-unit;
   margin-left: $size-unit / 2;
 
-  &.editing /deep/ path {
+  &:not(.editing) /deep/ path {
     fill: $color-primary;
   }
 }
