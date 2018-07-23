@@ -38,7 +38,7 @@ export const processActionTypes = {
   LOAD_PROCESS_DETAILS: `${namespace}/loadProcessDetails`,
   CREATE_PROCESS: `${namespace}/createProcess`,
   COPY_PROCESS: `${namespace}/copyProcess`,
-  DELETE: `${namespace}/remove`
+  REMOVE_PROCESS: `${namespace}/removeProcess`
 };
 
 export interface NewComment {
@@ -202,9 +202,8 @@ export const actions: ActionTree<ProcessState, RootState> = {
     // TODO: notify update
     commit(processMutationTypes.UPDATE, setBackendManagedFields(process));
   },
-  async delete({ commit, state }) {
-    const deleted = (await HTTP.delete(`api/processes/${state.id}`)).status;
-    // notify user, process is deleted
+  async removeProcess({ state }) {
+    await HTTP.delete(`api/processes/${state.id}`);
   },
   saveItSystem({ commit, state }, itSystem: ITSystem) {
     if (!state.itSystems || state.itSystems.some(s => itSystem === s)) {
