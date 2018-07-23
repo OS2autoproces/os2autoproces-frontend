@@ -126,13 +126,13 @@ export default class GeneralInformationForm extends Vue {
   isPhaseChanged = false;
   StatusKeys = StatusKeys;
 
+  get state() {
+    return this.$store.state.process;
+  }
+
   get vendorValue() {
     const contact = this.$store.state.process.contact;
     return ({value: contact, text: contact.name });
-  }
-
-  get state() {
-    return this.$store.state.process;
   }
 
   get domainsText() {
