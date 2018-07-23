@@ -24,7 +24,10 @@ import { Action } from 'vuex-class';
 import SelectionField from '@/components/common/inputs/SelectionField.vue';
 import DeleteIcon from '@/components/icons/DeleteIcon.vue';
 import { processActionTypes } from '@/store/modules/process/actions';
-import { commonActionTypes, UserSearchRequest } from '@/store/modules/common/actions';
+import {
+  commonActionTypes,
+  UserSearchRequest
+} from '@/store/modules/common/actions';
 import { User } from '@/store/modules/auth/state';
 
 @Component({
@@ -38,14 +41,18 @@ export default class AssociatedPersonsInput extends Vue {
 
   @Action(processActionTypes.ADD_USER) addUser!: (user: User) => void;
   @Action(processActionTypes.REMOVE_USER) removeUser!: (user: User) => void;
-  @Action(commonActionTypes.SEARCH_USERS) searchUsers!: ({name, cvr}: UserSearchRequest) => Promise<void>;
+  @Action(commonActionTypes.SEARCH_USERS)
+  searchUsers!: (request: UserSearchRequest) => Promise<void>;
 
   get state() {
     return this.$store.state;
   }
 
   get users() {
-    return this.$store.state.common.users.map((u: User) => ({value: u, text: u.name}));
+    return this.$store.state.common.users.map((u: User) => ({
+      value: u,
+      text: u.name
+    }));
   }
 
   search(name: string) {
