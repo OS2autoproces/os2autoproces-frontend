@@ -31,12 +31,12 @@
           </div>
 
           <div>
-            <div class="interne-noter-heading">Interne noter</div>
+            <h2 class="internal-notes-heading">Interne noter</h2>
             <InternalNotes title="Interne noter" :internalNotes="state.internalNotes" />
           </div>
 
           <div class="comments">
-            <div class="comments-heading">Kommentarer</div>
+            <h2 class="comments-heading">Kommentarer</h2>
             <Comments :comments="state.comments" @submit="saveComment({ message: $event })" />
           </div>
 
@@ -169,37 +169,8 @@ export default class Details extends Vue {
   }
 }
 
-.usage,
 .comments {
   margin: 5 * $size-unit 0;
-}
-
-.usage {
-  text-align: center;
-
-  .usage-heading {
-    font-style: italic;
-    margin: $size-unit / 2 0;
-
-    .usage-edit-icon {
-      display: inline-block;
-      margin-left: $size-unit;
-      height: $size-unit;
-      width: $size-unit;
-      fill: $color-secondary;
-    }
-
-    &:not(.disabled) {
-      .usage-edit-icon svg /deep/ path {
-        fill: $color-primary;
-      }
-    }
-  }
-
-  .comments-heading {
-    font-style: italic;
-    margin: $size-unit / 2 0;
-  }
 }
 
 .save-button,
@@ -221,8 +192,11 @@ export default class Details extends Vue {
   }
 }
 
-.interne-noter-heading {
-  @include textarea-heading;
+.comments-heading,
+.internal-notes-heading {
+  @include heading;
+  color: $color-secondary;
   margin-top: 2 * $size-unit;
+  padding: $size-unit 2 * $size-unit;
 }
 </style>

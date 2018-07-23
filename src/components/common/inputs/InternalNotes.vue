@@ -26,7 +26,6 @@ export default class InternalNotesComponent extends Vue {
 <style scoped lang="scss">
 @import '@/styles/variables.scss';
 .internal-notes {
-  width: 100%;
   border-radius: $size-unit;
   background-color: rgba($color-secondary, 0.3);
   padding: 2 * $size-unit;
