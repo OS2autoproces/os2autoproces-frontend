@@ -14,7 +14,7 @@
     </div>
     <div class="row">
       <Button class="button" @click="deleteProces">Slet proces</Button>
-      <Button class="button" @click="copyProcess">Kopier proces</Button>
+      <Button class="button" @click="copy">Kopier proces</Button>
       <div class="flex-grow"></div>
       <Toggle :value="notification" @change="notification = $event">Mail notifikation</Toggle>
     </div>
@@ -45,6 +45,7 @@ import { ProcessState } from '@/store/modules/process/state';
 })
 export default class DetailsHeader extends Vue {
   @Action(processActionTypes.UPDATE) update!: any;
+  @Action(processActionTypes.COPY_PROCESS) copyProcess!: () => Promise<string>;
 
   // TODO: Bind these to the store
   notification = true;
@@ -69,8 +70,8 @@ export default class DetailsHeader extends Vue {
     // TODO: Show confirmation
   }
 
-  async copyProcess() {
-    const id = await this.$store.dispatch(processActionTypes.COPY_PROCESS); 
+  async copy() {
+    const id = await this.copyProcess();
     this.$router.push(`/details/${id}`);    
   }
 }
