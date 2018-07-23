@@ -1,12 +1,12 @@
 <template>
   <FormSection heading="Problemstillinger" id="challenges" :disabled="state.disabled.challengesEdit" @edit="update({ disabled: { challengesEdit: $event}})">
-    <div v-if="isVisibleFromPhaseNumber(1)">
+    <div v-if="minPhase(PhaseKeys.PREANALYSIS)">
       <h2>Løsningsbeskrivelse</h2>
       <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
       <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({solutionRequests: $event})" :disabled="state.disabled.challengesEdit" :value="state.solutionRequests" />
     </div>
 
-    <div v-if="isVisibleFromPhaseNumber(1)">
+    <div v-if="minPhase(PhaseKeys.PREANALYSIS)">
       <h2>Proces udfordringer</h2>
       <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
       <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({processChallenges: $event})" :disabled="state.disabled.challengesEdit" :value="state.processChallenges" />
@@ -25,7 +25,7 @@
         </WellItem>
       </div>
 
-      <div slot="well-footer" class="well-item-footer" v-if="isVisibleFromPhaseNumber(1)">
+      <div slot="well-footer" class="well-item-footer" v-if="minPhase(PhaseKeys.PREANALYSIS)">
         <WellItem label="Nuværende system:">
           <SelectionField :items="itSystems" :value="state.itSystems[0]" itemText="name" :disabled="state.disabled.challengesEdit" @change="saveItSystem($event)" />
         </WellItem>
@@ -50,6 +50,7 @@ import { HTTP } from '@/services/http-service';
 import { commonActionTypes } from '@/store/modules/common/actions';
 import { CommonState } from '@/store/modules/common/state';
 import { processGetterTypes } from '@/store/modules/process/getters';
+import { Phase, PhaseKeys } from '@/models/phase';
 
 @Component({
   components: {
@@ -68,6 +69,7 @@ export default class ChallengesForm extends Vue {
   @Getter(processGetterTypes.MIN_PHASE) minPhase!: (phase: Phase) => boolean;
 
   twoColumnBreakpoint = 1600;
+  PhaseKeys = PhaseKeys;
 
   get state() {
     return this.$store.state.process;

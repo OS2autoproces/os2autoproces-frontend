@@ -1,9 +1,9 @@
+import { Phase, PhaseOrder } from '@/models/phase';
+import { namespace } from '@/store/modules/process/actions';
 import { ProcessState } from '@/store/modules/process/state';
 import { RootState } from '@/store/store';
-import { GetterTree } from 'vuex';
 import * as validateJs from 'validate.js';
-import { PhaseKeys, Phase, PhaseOrder } from '@/models/phase';
-import { namespace } from '@/store/modules/process/actions';
+import { GetterTree } from 'vuex';
 
 export const processGetterTypes = {
   MIN_PHASE: `${namespace}/minPhase`
@@ -36,7 +36,7 @@ function isValid(value: any, constraints: any): boolean {
 
 export const getters: GetterTree<ProcessState, RootState> = {
   minPhase(state: ProcessState) {
-    return (phase: Phase) => PhaseOrder.indexOf(phase) >= PhaseOrder.indexOf(state.phase);
+    return (phase: Phase) => PhaseOrder.indexOf(phase) <= PhaseOrder.indexOf(state.phase);
   },
   isKleNumberValid(state: ProcessState): boolean {
     return isValid(state.kle, isNumeric);

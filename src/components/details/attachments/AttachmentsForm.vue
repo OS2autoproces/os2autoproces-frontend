@@ -11,7 +11,7 @@ import AttachmentUpload from '@/components/common/inputs/AttachmentUpload.vue';
 import FormSection from '@/components/details/FormSection.vue';
 import { processActionTypes } from '@/store/modules/process/actions';
 import { processGetterTypes } from '@/store/modules/process/getters';
-import { Phase } from '@/models/phase';
+import { Phase, PhaseKeys } from '@/models/phase';
 
 @Component({
   components: {
@@ -24,6 +24,8 @@ export default class AttachmentsForm extends Vue {
   @Action(processActionTypes.ADD_ATTACHMENTS) add: any;
   @Action(processActionTypes.REMOVE_ATTACHMENTS) remove: any;
   @Getter(processGetterTypes.MIN_PHASE) minPhase!: (phase: Phase) => boolean;
+
+  PhaseKeys = PhaseKeys;
 
   get state() {
     return this.$store.state.process;

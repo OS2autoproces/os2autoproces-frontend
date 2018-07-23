@@ -18,7 +18,7 @@
         </div>
 
         <div>
-          <WellItem v-if="isVisibleFromPhaseNumber(3)" labelWidth="100px" label="Leverandør:">
+          <WellItem v-if="minPhase(PhaseKeys.DEVELOPMENT)" labelWidth="100px" label="Leverandør:">
             <InputField :disabled="state.disabled.generalInformationEdit" :value="state.vendor" @change="update({vendor: $event})" />
           </WellItem>
           <WellItem labelWidth="100px" label="Ejer:">
@@ -39,12 +39,12 @@
           <WellItem labelWidth="100px" label="Synlighed:">
             <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.visibility" itemText="text" @change="update({visibility: $event})" :items="visibilityLevels" />
           </WellItem>
-          <WellItem v-if="isVisibleFromPhaseNumber(1)" labelWidth="100px" label="Lov of paragraf:">
+          <WellItem v-if="minPhase(PhaseKeys.PREANALYSIS)" labelWidth="100px" label="Lov of paragraf:">
             <InputField :disabled="state.disabled.generalInformationEdit" :value="state.legalClause" @change="update({legalClause: $event})" />
           </WellItem>
         </div>
 
-        <AssociatedPersonsInput v-if="isVisibleFromPhaseNumber(1)" slot="well-footer" :disabled="state.disabled.generalInformationEdit" />
+        <AssociatedPersonsInput v-if="minPhase(PhaseKeys.PREANALYSIS)" slot="well-footer" :disabled="state.disabled.generalInformationEdit" />
       </Well>
     </div>
 
@@ -97,6 +97,7 @@ import { VisibilityLabels, VisibilityKeys } from '@/models/visibility';
 import { DomainKeys, DomainLabels } from '@/models/domain';
 import { Kle } from '@/store/modules/common/actions';
 import { Domain } from '@/models/domain';
+import { Phase, PhaseKeys } from '@/models/phase';
 
 @Component({
   components: {
@@ -115,10 +116,12 @@ export default class GeneralInformationForm extends Vue {
   @Action(processActionTypes.UPDATE) update: any;
   @Action(processActionTypes.ADD_DOMAIN) addDomain!: (domain: any) => Promise<void>;
   @Action(commonActionTypes.SEARCH_USERS) searchUsers!: ({ name, cvr }: UserSearchRequest) => Promise<void>;
-  @Getter(processGetterTypes.IS_VISIBLE_FROM_PHASE_NUMBER) isVisibleFromPhaseNumber!: (phase: number) => boolean;
+  @Getter(processGetterTypes.MIN_PHASE) minPhase!: (phase: Phase) => boolean;
 
   isPhaseChanged = false;
   StatusKeys = StatusKeys;
+  PhaseKeys = PhaseKeys;
+
 
   get state() {
     return this.$store.state.process;
