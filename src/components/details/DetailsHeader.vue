@@ -13,7 +13,7 @@
       <img src="https://www.syddjurs.dk/sites/all/themes/custom/site/dist/img/logo.png" alt="Kommune logo">
     </div>
     <div class="row">
-      <Button class="button" @click="deleteProcess">Slet proces</Button>
+      <Button class="button" @click="remove">Slet proces</Button>
       <Button class="button" @click="copy">Kopier proces</Button>
       <div class="flex-grow"></div>
       <Toggle :value="notification" @change="notification = $event">Mail notifikation</Toggle>
@@ -45,7 +45,7 @@ import { ProcessState } from '@/store/modules/process/state';
 })
 export default class DetailsHeader extends Vue {
   @Action(processActionTypes.UPDATE) update!: any;
-  @Action(processActionTypes.DELETE) deleteProcess!: () => Promise<void>;
+  @Action(processActionTypes.DELETE) removeProcess!: () => Promise<void>;
   @Action(processActionTypes.COPY_PROCESS) copyProcess!: () => Promise<string>;
 
   // TODO: Bind these to the store
@@ -70,6 +70,11 @@ export default class DetailsHeader extends Vue {
   async copy() {
     const id = await this.copyProcess();
     this.$router.push(`/details/${id}`);
+  }
+
+  async remove() {
+    await this.removeProcess();
+    this.$router.push(`/search`);
   }
 }
 </script>

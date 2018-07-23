@@ -202,13 +202,8 @@ export const actions: ActionTree<ProcessState, RootState> = {
     // TODO: notify update
     commit(processMutationTypes.UPDATE, setBackendManagedFields(process));
   },
-  async delete({ commit, state }) {
-    const deleted = (await HTTP.delete(`api/processes/${state.id}`)).status;
-    if(deleted === 204) {
-      // redirect when deleted
-      window.location.assign(`${window.autoProcessConfiguration.apiUrl}/search`); 
-    } 
-    // notify user, process is deleted
+  async delete({ state }) {
+    await HTTP.delete(`api/processes/${state.id}`);
   },
   saveItSystem({ commit, state }, itSystem: ITSystem) {
     if (!state.itSystems || state.itSystems.some(s => itSystem === s)) {
