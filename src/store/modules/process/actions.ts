@@ -35,15 +35,15 @@ export const processActionTypes = {
   LOAD_COMMENTS: `${namespace}/loadComments`,
   SAVE: `${namespace}/save`,
   REPORT: `${namespace}/report`,
-  
+
   ADD_USER: `${namespace}/addUser`,
   REMOVE_USER: `${namespace}/removeUser`,
-  
+
   ADD_TECHNOLOGY: `${namespace}/addTechnology`,
   REMOVE_TECHNOLOGY: `${namespace}/removeTechnology`,
 
   ADD_DOMAIN: `${namespace}/addDomain`,
-  
+
   SAVE_IT_SYSTEM: `${namespace}/saveItSystem`,
 
   LOAD_PROCESS_DETAILS: `${namespace}/loadProcessDetails`,
@@ -83,8 +83,8 @@ export const actions: ActionTree<ProcessState, RootState> = {
   update({ commit }, payload: Partial<ProcessState>) {
     commit(processMutationTypes.UPDATE, payload);
   },
-  clear({commit}) {
-    commit(processMutationTypes.UPDATE, initialProcessState() )
+  clear({ commit }) {
+    commit(processMutationTypes.UPDATE, initialProcessState());
   },
   async loadAttachments({ commit, state }) {
     if (!state.id) {
@@ -175,8 +175,7 @@ export const actions: ActionTree<ProcessState, RootState> = {
   },
 
   addTechnology({ commit, state }, technology: Technology) {
-    const hasTech = state.technologies.some(t => t.name === technology.name);
-    if (hasTech) {
+    if (state.technologies.some(t => t.name === technology.name)) {
       return;
     }
     commit(processMutationTypes.ASSIGN, {
@@ -197,10 +196,8 @@ export const actions: ActionTree<ProcessState, RootState> = {
     const process = (await HTTP.get<ProcessResponse>(
       `api/processes/${id}?projection=extended`
     )).data;
-
-    const converted = responseToState(process);
-
-    commit(processMutationTypes.ASSIGN, converted);
+    
+    commit(processMutationTypes.ASSIGN, responseToState(process));
   },
   async report({ commit, state }): Promise<string | null> {
     const converted: ProcessRequest = await stateToRequest(state);
@@ -232,18 +229,22 @@ export const actions: ActionTree<ProcessState, RootState> = {
     // TODO: notify update
     commit(processMutationTypes.UPDATE, setBackendManagedFields(process));
   },
-  async delete({commit, state}) {
+  async delete({ commit, state }) {
     const deleted = (await HTTP.delete(`api/processes/${state.id}`)).status;
     // notify user, process is deleted
   },
-  saveItSystem({commit, state}, itSystem: ITSystem) {
+  saveItSystem({ commit, state }, itSystem: ITSystem) {
     if (!state.itSystems || state.itSystems.some(s => itSystem === s)) {
       return;
     }
-    commit(processMutationTypes.ASSIGN, { itSystems: [...state.itSystems, itSystem]});
+    commit(processMutationTypes.ASSIGN, {
+      itSystems: [...state.itSystems, itSystem]
+    });
   },
-  addDomain({commit, state}, domain: string) {
-    commit(processMutationTypes.ASSIGN, { domains: [...state.domains, domain]})
+  addDomain({ commit, state }, domain: string) {
+    commit(processMutationTypes.ASSIGN, {
+      domains: [...state.domains, domain]
+    });
   }
 };
 
