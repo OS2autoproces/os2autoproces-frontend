@@ -1,5 +1,5 @@
 <template>
-  <FormSection v-if="isVisibleFromPhaseNumber(2)" heading="Specifikation" id="specification" :disabled="state.disabled.specificationEdit" @edit="update({disabled: { specificationEdit: $event}})">
+  <FormSection v-if="minPhase(PhaseKeys.SPECIFICATION)" heading="Specifikation" id="specification" :disabled="state.disabled.specificationEdit" @edit="update({disabled: { specificationEdit: $event}})">
 
     <h2>Sagsreference i ESDH</h2>
     <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
@@ -16,6 +16,7 @@ import FormSection from '@/components/details/FormSection.vue';
 import InfoTooltip from '@/components/common/InfoTooltip.vue';
 import { processActionTypes } from '@/store/modules/process/actions';
 import { processGetterTypes } from '@/store/modules/process/getters';
+import { Phase } from '@/models/phase';
 
 @Component({
   components: {
@@ -26,7 +27,8 @@ import { processGetterTypes } from '@/store/modules/process/getters';
 })
 export default class SpecificationForm extends Vue {
   @Action(processActionTypes.UPDATE) update: any;
-  @Getter(processGetterTypes.IS_VISIBLE_FROM_PHASE_NUMBER) isVisibleFromPhaseNumber!: (phase: number) => boolean;
+  @Getter(processGetterTypes.MIN_PHASE) minPhase!: (phase: Phase) => boolean;
+
   get state() {
     return this.$store.state.process;
   }
