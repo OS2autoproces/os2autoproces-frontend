@@ -152,8 +152,7 @@ export const actions: ActionTree<ProcessState, RootState> = {
   },
 
   addTechnology({ commit, state }, technology: Technology) {
-    const hasTech = state.technologies.some(t => t.name === technology.name);
-    if (hasTech) {
+    if (state.technologies.some(t => t.name === technology.name)) {
       return;
     }
     commit(processMutationTypes.ASSIGN, {
@@ -173,9 +172,7 @@ export const actions: ActionTree<ProcessState, RootState> = {
 
     const process = (await HTTP.get<ProcessResponse>(`api/processes/${id}?projection=extended`)).data;
 
-    const converted = responseToState(process);
-
-    commit(processMutationTypes.ASSIGN, converted);
+    commit(processMutationTypes.ASSIGN, responseToState(process));
   },
   async report({ commit, state }): Promise<string | null> {
     const converted: ProcessRequest = await stateToRequest(state);
