@@ -1,8 +1,8 @@
 <template>
-    <div>
-        <img v-if="!showDefault" :src="src" @error="showDefault = true" alt="Kommune logo" class="image">
-        <MunicipalityLogo class="logo" v-if="showDefault" />
-    </div>
+  <div>
+    <img v-if="!showDefault" :src="src" @error="showDefault = true" alt="Kommune logo" class="image">
+    <MunicipalityLogo class="logo" v-if="showDefault" />
+  </div>
 </template>
 
 <script lang="ts">
@@ -15,13 +15,14 @@ import MunicipalityLogo from '@/components/icons/MunicipalityLogo.vue';
   }
 })
 export default class MunicipalityLogoComponent extends Vue {
+  showDefault = false;
+
   @Prop() src!: string;
+
   @Watch('src')
   changed() {
     this.showDefault = false;
   }
-
-  showDefault = false;
 
   mounted() {
     this.showDefault = false;
