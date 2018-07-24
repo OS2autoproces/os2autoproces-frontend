@@ -106,7 +106,7 @@ export default class DetailsHeader extends Vue {
   width: $size-unit;
   margin-left: $size-unit / 2;
 
-  &:not(.editing) /deep/ path {
+  &.editing /deep/ path {
     fill: $color-primary;
   }
 }
