@@ -20,7 +20,7 @@ import ArrowDownIcon from '../icons/ArrowDownIcon.vue';
   }
 })
 export default class ExpandPanel extends Vue {
-  @Prop() title!: string;
+  @Prop(String) title!: string;
 
   expanded = false;
 }

@@ -1,10 +1,10 @@
 <template>
-    <div class="checkbox" role="checkbox" :aria-checked="value.toString()" @click="click" :class="{ disabled, selected: value }">
-        <div>
-            <slot />
-        </div>
-        <CheckIcon v-if="value" />
+  <div class="checkbox" role="checkbox" :aria-checked="value.toString()" @click="click" :class="{ disabled, selected: value }">
+    <div>
+      <slot />
     </div>
+    <CheckIcon v-if="value" />
+  </div>
 </template>
 
 <script lang='ts'>
@@ -17,9 +17,8 @@ import CheckIcon from '../../icons/CheckIcon.vue';
   }
 })
 export default class Checkbox extends Vue {
-  @Prop({ default: false })
-  value!: boolean;
-  @Prop() disabled!: boolean;
+  @Prop(Boolean) value!: boolean;
+  @Prop(Boolean) disabled!: boolean;
 
   click() {
     if (!this.disabled) {

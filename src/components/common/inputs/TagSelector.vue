@@ -24,9 +24,9 @@ import InputField from '@/components/common/inputs/InputField.vue';
   }
 })
 export default class TagSelector extends Vue {
-  @Prop() disabled!: boolean;
-  @Prop() placeholder!: string;
-  @Prop() value!: string[];
+  @Prop(Boolean) disabled!: boolean;
+  @Prop(String) placeholder!: string;
+  @Prop(Array) value!: string[];
 
   tagInput = '';
 

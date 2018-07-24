@@ -18,8 +18,8 @@ import { LikertScaleKeys, LikertScaleLabels } from '@/models/likert-scale';
   }
 })
 export default class LikertScale extends Vue {
-  @Prop() value!: string;
-  @Prop() disabled!: boolean;
+  @Prop(String) value!: string;
+  @Prop(Boolean) disabled!: boolean;
 
   items = [
     { value: LikertScaleKeys.VERY_HIGH, label: LikertScaleLabels.VERY_HIGH },

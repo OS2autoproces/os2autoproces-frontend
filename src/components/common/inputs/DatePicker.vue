@@ -19,8 +19,8 @@ import { DateTime } from 'luxon';
   }
 })
 export default class DatePicker extends Vue {
-  @Prop() disabled!: boolean;
-  @Prop() value!: string;
+  @Prop(Boolean) disabled!: boolean;
+  @Prop(String) value!: string;
 
   format = 'dd/MM/yyyy';
 

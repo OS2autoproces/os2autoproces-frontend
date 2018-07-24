@@ -1,20 +1,20 @@
 <template>
-  <div class="comments-form">
-    <div class="comment-input-wrapper" v-if="!disabled">
-      <text-area :value="newComment" @change="newComment = $event" class="comment-input" placeholder="Skriv en kommentar her" :max-length="maxLength" noResize>
-        <Button @click="submit">Send</Button>
-      </text-area>
-    </div>
-    <div class="comment-list-wrapper">
-      <div class="comment-list" ref="comments-list">
-        <div class="comment" v-for="(comment, index) in comments" :key="index">
-          <span class="author">{{comment.name}}: </span>
-          <span class="time">{{comment.created}}</span>
-          <div>{{comment.message}}</div>
+    <div class="comments-form">
+        <div class="comment-input-wrapper" v-if="!disabled">
+            <text-area :value="newComment" @change="newComment = $event" class="comment-input" placeholder="Skriv en kommentar her" :max-length="maxLength" noResize>
+                <Button @click="submit">Send</Button>
+            </text-area>
         </div>
-      </div>
+        <div class="comment-list-wrapper">
+            <div class="comment-list" ref="comments-list">
+                <div class="comment" v-for="(comment, index) in comments" :key="index">
+                    <span class="author">{{comment.name}}: </span>
+                    <span class="time">{{comment.created}}</span>
+                    <div>{{comment.message}}</div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 </template>
 
 <script lang="ts">
@@ -33,14 +33,15 @@ export default class Comments extends Vue {
   maxLength = 140;
   newComment = '';
 
-  @Prop() disabled!: boolean;
-  @Prop() comments!: Comment[];
-  @Watch('comments') onCommentsChanged() {
+  @Prop(Boolean) disabled!: boolean;
+  @Prop(Array) comments!: Comment[];
+  @Watch('comments')
+  onCommentsChanged() {
     const commentList = this.$refs['comments-list'] as HTMLElement;
     this.$nextTick(() => {
       commentList.scrollTop = commentList.scrollHeight;
     });
-  };
+  }
 
   submit() {
     if (!this.newComment || this.newComment.length > this.maxLength) {

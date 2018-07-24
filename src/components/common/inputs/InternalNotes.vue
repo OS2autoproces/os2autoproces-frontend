@@ -17,7 +17,7 @@ import { ProcessState } from '@/store/modules/process/state';
   }
 })
 export default class InternalNotesComponent extends Vue {
-  @Prop() internalNotes!: string;
+  @Prop(String) internalNotes!: string;
   @Action(processActionTypes.UPDATE)
   update!: (notes: Partial<ProcessState>) => void;
 }

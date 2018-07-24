@@ -109,9 +109,8 @@ import store from '@/store/store';
   }
 })
 export default class Details extends Vue {
-  @Prop({ type: String })
-  phase!: Phase;
-  @Prop() id!: string;
+  @Prop(String) phase!: Phase;
+  @Prop(String) id!: string;
 
   @Action(processActionTypes.SAVE) save: any;
   @Action(processActionTypes.UPDATE) update: any;

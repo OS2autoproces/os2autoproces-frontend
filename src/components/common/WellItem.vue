@@ -12,8 +12,8 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 
 @Component
 export default class WellItem extends Vue {
-  @Prop() label!: string;
-  @Prop({ default: '50%' })
+  @Prop(String) label!: string;
+  @Prop({ default: '50%', type: String })
   labelWidth!: string;
 }
 </script>

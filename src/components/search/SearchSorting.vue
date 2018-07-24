@@ -34,7 +34,7 @@ import { SortingOption } from '@/store/modules/search/state.ts';
   }
 })
 export default class SearchSorting extends Vue {
-  @Prop() sorting!: SortingOption;
+  @Prop(Object) sorting!: SortingOption;
 
   clickSortOption(property: SortingOption['property']) {
     let descending = false;

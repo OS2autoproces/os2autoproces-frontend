@@ -34,7 +34,7 @@ import { User } from '@/store/modules/auth/state';
   }
 })
 export default class AssociatedPersonsInput extends Vue {
-  @Prop() disabled!: boolean;
+  @Prop(Boolean) disabled!: boolean;
 
   @Action(processActionTypes.ADD_USER) addUser!: (user: User) => void;
   @Action(processActionTypes.REMOVE_USER) removeUser!: (user: User) => void;
