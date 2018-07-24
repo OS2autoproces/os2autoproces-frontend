@@ -44,7 +44,7 @@ export const timeAndProcessLabels: { [key: string]: string } = {
   timeSpendComment: "Kommentar vedr. tidsforbrug"
 };
 
-export const assesmentLabels: { [key: string]: string } = {
+export const assessmentLabels: { [key: string]: string } = {
   levelOfProfessionalAssessment: "I hvor høj grad er der faglig vurdering?",
   levelOfChange: "I hvor høj grad er processen præget af hyppige ændringer?",
   levelOfStructuredInformation:
@@ -82,7 +82,7 @@ export const processPropLabels: { [key: string]: string } = {
   ...generalInformationLabels,
   ...challengesLabels,
   ...timeAndProcessLabels,
-  ...assesmentLabels,
+  ...assessmentLabels,
   ...specificationLabels,
   ...implementationLabels,
   ...operationLabels,

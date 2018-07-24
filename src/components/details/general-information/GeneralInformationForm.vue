@@ -75,7 +75,6 @@
 </template>
 
 <script lang="ts">
-import { isEmpty } from 'lodash';
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import { Action, Getter } from 'vuex-class';
 

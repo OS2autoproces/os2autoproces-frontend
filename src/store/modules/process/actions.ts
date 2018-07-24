@@ -1,18 +1,18 @@
-import { DomainKeys } from "@/models/domain";
-import { LikertScaleKeys } from "@/models/likert-scale";
-import { PhaseKeys } from "@/models/phase";
-import { StatusKeys } from "@/models/status";
-import { TypeKeys } from "@/models/types";
-import { VisibilityKeys } from "@/models/visibility";
-import { HTTP } from "@/services/http-service";
-import { ProcessRequest, ProcessResponse, responseToState, stateToRequest } from "@/services/process-converter";
-import { User } from "@/store/modules/auth/state";
-import { errorActionTypes } from "@/store/modules/error/actions";
-import { processFieldsValidators, sectionValidators } from "@/store/modules/process/getters";
-import { processMutationTypes } from "@/store/modules/process/mutations";
-import { Attachment, ITSystem, Process, ProcessState, Technology } from "@/store/modules/process/state";
-import { RootState } from "@/store/store";
-import { ActionTree } from "vuex";
+import { DomainKeys } from '@/models/domain';
+import { LikertScaleKeys } from '@/models/likert-scale';
+import { PhaseKeys } from '@/models/phase';
+import { StatusKeys } from '@/models/status';
+import { TypeKeys } from '@/models/types';
+import { VisibilityKeys } from '@/models/visibility';
+import { HTTP } from '@/services/http-service';
+import { ProcessRequest, ProcessResponse, responseToState, stateToRequest } from '@/services/process-converter';
+import { User } from '@/store/modules/auth/state';
+import { errorActionTypes } from '@/store/modules/error/actions';
+import { processFieldsValidators, sectionValidation } from '@/store/modules/process/getters';
+import { processMutationTypes } from '@/store/modules/process/mutations';
+import { Attachment, ITSystem, Process, ProcessState, Technology } from '@/store/modules/process/state';
+import { RootState } from '@/store/store';
+import { ActionTree } from 'vuex';
 
 export const namespace = 'process';
 
@@ -90,7 +90,7 @@ export const actions: ActionTree<ProcessState, RootState> = {
   },
   async addAttachments({ commit, state }, files: File[]) {
     const form = new FormData();
-    files.forEach(file => form.append("files", file));
+    files.forEach(file => form.append('files', file));
 
     // Placeholders are attachments which are shown while the real attachments are uploading.
     // When the attachments are done uploading, the placeholders are replaced with the real attachments.
@@ -199,7 +199,7 @@ export const actions: ActionTree<ProcessState, RootState> = {
     return process.id;
   },
   async save({ commit, state, dispatch }) {
-    const invalidFields: string[] = sectionValidators(state, Object.keys(processFieldsValidators));
+    const invalidFields = sectionValidation(state, Object.keys(processFieldsValidators));
 
     if (invalidFields) {
       dispatch(errorActionTypes.UPDATE_PROCESS_ERRORS, { processErrors: invalidFields }, { root: true });
@@ -236,25 +236,25 @@ export const actions: ActionTree<ProcessState, RootState> = {
 
 export function initialProcessState() {
   return {
-    id: "",
-    localId: "",
-    kle: "",
+    id: '',
+    localId: '',
+    kle: '',
     contact: null,
-    klId: "",
+    klId: '',
     kla: null,
-    legalClause: "",
+    legalClause: '',
     orgUnits: [],
     domains: [DomainKeys.WORK],
     visibility: VisibilityKeys.PERSONAL,
     vendor: null,
     owner: null,
     users: [],
-    shortDescription: "",
+    shortDescription: '',
     phase: PhaseKeys.IDEA,
     status: StatusKeys.INPROGRESS,
-    statusText: "",
+    statusText: '',
     klaProcess: false,
-    municipalityName: "",
+    municipalityName: '',
     type: TypeKeys.CHILD,
     children: [],
 
@@ -270,47 +270,47 @@ export function initialProcessState() {
     levelOfSpeed: LikertScaleKeys.UNKNOWN,
 
     /* Challenges */
-    solutionRequests: "",
-    processChallenges: "",
-    longDescription: "",
+    solutionRequests: '',
+    processChallenges: '',
+    longDescription: '',
     itSystems: [],
-    created: "",
+    created: '',
 
     /* Time and process */
-    timeSpendOccurancesPerEmployee: "0",
-    timeSpendPerOccurance: "0",
-    timeSpendComputedTotal: "0",
-    timeSpendEmployeesDoingProcess: "0",
-    timeSpendPercentageDigital: "0",
+    timeSpendOccurancesPerEmployee: '0',
+    timeSpendPerOccurance: '0',
+    timeSpendComputedTotal: '0',
+    timeSpendEmployeesDoingProcess: '0',
+    timeSpendPercentageDigital: '0',
     targestsCitizens: false,
     targetsCompanies: false,
-    timeSpendComment: "",
+    timeSpendComment: '',
 
     /* Specification */
-    esdhReference: "",
+    esdhReference: '',
 
     /* Implementation */
-    organizationalImplementationNotes: "",
-    technicalImplementationNotes: "",
+    organizationalImplementationNotes: '',
+    technicalImplementationNotes: '',
     technologies: [],
 
     /* Operation */
-    lastChanged: "",
-    decommissioned: "",
+    lastChanged: '',
+    decommissioned: '',
     legalClauseLastVerified: null,
     rating: 0,
-    ratingComment: "",
+    ratingComment: '',
 
     /* Attachments */
     links: [],
     attachments: [],
 
     /* Details */
-    title: "",
-    searchWords: "",
-    internalNotes: "",
+    title: '',
+    searchWords: '',
+    internalNotes: '',
     comments: [],
-    cvr: "",
+    cvr: '',
     hasBookmarked: false,
     canEdit: true,
 

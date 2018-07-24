@@ -1,26 +1,26 @@
-import { PhaseKeys, Phase, PhaseOrder } from '@/models/phase';
+import { Phase, PhaseKeys, PhaseOrder } from '@/models/phase';
+import {
+  assessmentLabels,
+  challengesLabels,
+  generalInformationLabels,
+  implementationLabels,
+  operationLabels,
+  specificationLabels,
+  timeAndProcessLabels
+} from '@/store/modules/error/actions';
+import { namespace } from '@/store/modules/process/actions';
 import { ProcessState } from '@/store/modules/process/state';
 import { RootState } from '@/store/store';
 import { isEmpty } from 'lodash';
+import { DateTime } from 'luxon';
 import * as validateJs from 'validate.js';
 import { GetterTree } from 'vuex';
-import { DateTime } from 'luxon';
-import {
-  generalInformationLabels,
-  challengesLabels,
-  timeAndProcessLabels,
-  assesmentLabels,
-  specificationLabels,
-  implementationLabels,
-  operationLabels
-} from '@/store/modules/error/actions';
-import { namespace } from '@/store/modules/process/actions';
 
 export const processGetterTypes = {
   IS_GERNERAL_INFORMATION_VALID: `${namespace}/isGeneralInformationValid`,
   IS_CHALLENGES_VALID: `${namespace}/isChallengesValid`,
   IS_TIME_AND_PROCESS_VALID: `${namespace}/isTimeAndProcessValid`,
-  IS_ASSESMENT_VALID: `${namespace}/isAssesmentValid`,
+  IS_ASSESSMENT_VALID: `${namespace}/isAssessmentValid`,
   IS_SPECIFICATION_VALID: `${namespace}/isSpecificationValid`,
   IS_IMPLEMENTATION_VALID: `${namespace}/isImplementationValid`,
   IS_OPERATION_VALID: `${namespace}/isOperationValid`,
@@ -251,8 +251,8 @@ const sectionValidators = {
   isTimeAndProcessValid(state: ProcessState) {
     return state.canEdit && !isEmpty(sectionValidation(state, Object.keys(timeAndProcessLabels)));
   },
-  isAssesmentValid(state: ProcessState) {
-    return state.canEdit && !isEmpty(sectionValidation(state, Object.keys(assesmentLabels)));
+  isAssessmentValid(state: ProcessState) {
+    return state.canEdit && !isEmpty(sectionValidation(state, Object.keys(assessmentLabels)));
   },
   isSpecificationValid(state: ProcessState) {
     return state.canEdit && !isEmpty(sectionValidation(state, Object.keys(specificationLabels)));

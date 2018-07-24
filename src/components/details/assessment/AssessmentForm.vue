@@ -1,5 +1,5 @@
 <template>
-  <FormSection :invalid="isAssesmentValid" v-if="minPhase(PhaseKeys.PREANALYSIS)" heading="Faglig vurdering" id="assessment" :disabled="state.disabled.assessmentEdit" @edit="update({ disabled: { assessmentEdit: $event} })">
+  <FormSection :invalid="isAssessmentValid" v-if="minPhase(PhaseKeys.PREANALYSIS)" heading="Faglig vurdering" id="assessment" :disabled="state.disabled.assessmentEdit" @edit="update({ disabled: { assessmentEdit: $event} })">
     <div class="assessment" :class="{ disabled: state.disabled.assessmentEdit }">
       <div class="question">
         <div class="label">I hvor høj grad er der faglig vurdering?
@@ -79,7 +79,7 @@ import { PhaseKeys, Phase } from '@/models/phase';
 })
 export default class AssessmentForm extends Vue {
   @Action(processActionTypes.UPDATE) update!: (state: Partial<ProcessState>) => void;
-  @Getter(processGetterTypes.IS_ASSESMENT_VALID) isAssesmentValid!: any;
+  @Getter(processGetterTypes.IS_ASSESSMENT_VALID) isAssessmentValid!: any;
   @Getter(processGetterTypes.MIN_PHASE) minPhase!: (phase: Phase) => boolean;
 
   PhaseKeys = PhaseKeys;

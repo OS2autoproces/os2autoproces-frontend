@@ -1,5 +1,5 @@
 <template>
-  <div class="well-item-wrap" >
+  <div class="well-item-wrap">
     <div class="well-item-label" :style="{flexBasis: labelWidth}">{{label}}</div>
     <div class="well-input">
       <slot/>
@@ -8,19 +8,18 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { Vue, Component, Prop } from 'vue-property-decorator';
 
 @Component
 export default class WellItem extends Vue {
   @Prop() label!: string;
-  @Prop({ default: "50%" })
+  @Prop({ default: '50%' })
   labelWidth!: string;
-  @Prop() invalid!: boolean;
 }
 </script>
 
 <style lang="scss">
-@import "@/styles/variables.scss";
+@import '@/styles/variables.scss';
 
 .well-item-wrap {
   display: flex;
@@ -39,5 +38,4 @@ export default class WellItem extends Vue {
     min-width: 1px;
   }
 }
-
 </style>
