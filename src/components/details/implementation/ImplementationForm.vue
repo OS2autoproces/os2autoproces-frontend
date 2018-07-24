@@ -1,18 +1,24 @@
 <template>
-    <FormSection :invalid="isImplementationValid" heading="Udvikling og implementering" id="implementation" :disabled="state.disabled.implementationEdit" @edit="update({disabled: {implementationEdit: $event}})">
+  <FormSection :invalid="isImplementationValid" v-if="minPhase(PhaseKeys.DEVELOPMENT)" heading="Udvikling og implementering" id="implementation" :disabled="state.disabled.implementationEdit" @edit="update({disabled: {implementationEdit: $event}})">
 
-        <h2>Teknisk implementering</h2>
-        <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
-        <TextArea :max-length="3000" :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({technicalImplementationNotes: $event})" :disabled="state.disabled.implementationEdit" :value="state.technicalImplementationNotes" />
+    <div v-if="minPhase(PhaseKeys.IMPLEMENTATION)">
+      <h2>Teknisk implementering</h2>
+      <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
+      <TextArea :max-length="3000" :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({technicalImplementationNotes: $event})" :disabled="state.disabled.implementationEdit" :value="state.technicalImplementationNotes" />
+    </div>
 
-        <h2>Organisatorisk implementering</h2>
-        <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
-        <TextArea :max-length="3000" :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({organizationalImplementationNotes: $event})" :disabled="state.disabled.implementationEdit" :value="state.organizationalImplementationNotes" />
-        
-        <h2>Anvendt teknologi</h2>
-        <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
-        <TagSelector @add="addTechnology($event)" @remove="removeTechnology($event)" :disabled="state.disabled.implementationEdit" :value="state.technologies" />
-    </FormSection>
+    <div v-if="minPhase(PhaseKeys.IMPLEMENTATION)">
+      <h2>Organisatorisk implementering</h2>
+      <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
+      <TextArea :max-length="3000" :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({organizationalImplementationNotes: $event})" :disabled="state.disabled.implementationEdit" :value="state.organizationalImplementationNotes" />
+    </div>
+
+    <div>
+      <h2>Anvendt teknologi</h2>
+      <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
+      <TagSelector @add="addTechnology($event)" @remove="removeTechnology($event)" :disabled="state.disabled.implementationEdit" :value="state.technologies" />
+    </div>
+  </FormSection>
 </template>
 
 <script lang="ts">
@@ -24,6 +30,7 @@ import InfoTooltip from '@/components/common/InfoTooltip.vue';
 import TagSelector from '@/components/common/inputs/TagSelector.vue';
 import { processActionTypes } from '@/store/modules/process/actions';
 import { processGetterTypes } from '@/store/modules/process/getters';
+import { PhaseKeys, Phase } from '@/models/phase';
 
 @Component({
   components: {
@@ -37,7 +44,11 @@ export default class ImplementationForm extends Vue {
   @Action(processActionTypes.UPDATE) update: any;
   @Action(processActionTypes.ADD_TECHNOLOGY) addTechnology: any;
   @Action(processActionTypes.REMOVE_TECHNOLOGY) removeTechnology: any;
+
   @Getter(processGetterTypes.IS_IMPLEMENTATION_VALID) isImplementationValid!: any;
+  @Getter(processGetterTypes.MIN_PHASE) minPhase!: (phase: Phase) => boolean;
+
+  PhaseKeys = PhaseKeys;
 
   twoColumnBreakpoint = 1600;
 

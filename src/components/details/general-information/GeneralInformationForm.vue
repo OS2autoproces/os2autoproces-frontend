@@ -7,7 +7,7 @@
             <InputField disabled :value="state.id" />
           </WellItem>
           <WellItem labelWidth="100px" label="KLE-nr:">
-            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.kle" :text="state.kle" @change="update({kle: $event})" :items="kles" />
+            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.kle" @change="update({kle: $event})" :items="kles" />
           </WellItem>
           <WellItem labelWidth="100px" label="Lokalt ID:">
             <InputField :disabled="state.disabled.generalInformationEdit" :value="state.localId" @change="update({localId: $event})" />
@@ -18,14 +18,14 @@
         </div>
 
         <div>
-          <WellItem labelWidth="100px" label="Leverandør:">
-            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.vendor" :text="state.vendor ? state.vendor.name : ''" @search="search($event)" @change="update({vendor: $event})" :items="users" />
+          <WellItem v-if="minPhase(PhaseKeys.DEVELOPMENT)" labelWidth="100px" label="Leverandør:">
+            <InputField :disabled="state.disabled.generalInformationEdit" :value="state.vendor" @change="update({vendor: $event})" />
           </WellItem>
           <WellItem labelWidth="100px" label="Ejer:">
-            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.owner" :text="state.owner ? state.owner.name : ''" @search="search($event)" @change="update({owner: $event})" :items="users" />
+            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.owner" itemText="name" @search="search($event)" @change="update({owner: $event})" :items="users" />
           </WellItem>
           <WellItem labelWidth="100px" label="Kontaktperson:">
-            <SelectionField v-if="state.contact" :disabled="state.disabled.generalInformationEdit" :text="state.contact ? state.contact.name : ''" :value="state.contact" @search="search($event)" @change="update({contact: $event})" :items="users" />
+            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.contact" itemText="name" @search="search($event)" @change="update({contact: $event})" :items="users" />
           </WellItem>
           <WellItem v-if="state.contact" labelWidth="100px" label="Mail:">
             {{state.contact.email}}
@@ -37,17 +37,14 @@
             <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.domains" :text="domainsText" @change="addDomain($event)" :items="domainLevels" />
           </WellItem>
           <WellItem labelWidth="100px" label="Synlighed:">
-            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.visibility" @change="update({visibility: $event})" :items="visibilityLevels" />
+            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.visibility" itemText="text" @change="update({visibility: $event})" :items="visibilityLevels" />
           </WellItem>
-        </div>
-
-        <div>
-          <WellItem labelWidth="100px" label="Lov of paragraf:">
+          <WellItem v-if="minPhase(PhaseKeys.PREANALYSIS)" labelWidth="100px" label="Lov of paragraf:">
             <InputField :disabled="state.disabled.generalInformationEdit" :value="state.legalClause" @change="update({legalClause: $event})" />
           </WellItem>
         </div>
 
-        <AssociatedPersonsInput slot="well-footer" :disabled="state.disabled.generalInformationEdit" />
+        <AssociatedPersonsInput v-if="minPhase(PhaseKeys.PREANALYSIS)" slot="well-footer" :disabled="state.disabled.generalInformationEdit" />
       </Well>
     </div>
 
@@ -78,32 +75,30 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
-import { Action, Getter } from "vuex-class";
+import { isEmpty } from 'lodash';
+import { Vue, Component, Prop } from 'vue-property-decorator';
+import { Action, Getter } from 'vuex-class';
 
-import InputField from "@/components/common/inputs/InputField.vue";
-import SelectionField from "@/components/common/inputs/SelectionField.vue";
-import TextArea from "@/components/common/inputs/TextArea.vue";
-import Phases from "@/components/common/inputs/Phases.vue";
-import AssociatedPersonsInput from "@/components/details/general-information/AssociatedPersonsInput.vue";
-import Well from "@/components/common/Well.vue";
-import WellItem from "@/components/common/WellItem.vue";
-import FormSection from "@/components/details/FormSection.vue";
-import WarningIcon from "@/components/icons/WarningIcon.vue";
-import { processActionTypes } from "@/store/modules/process/actions";
-import {
-  commonActionTypes,
-  UserSearchRequest
-} from "@/store/modules/common/actions";
-import { User } from "@/store/modules/auth/state";
-import { StatusKeys, StatusLabels } from "@/models/status";
-import { OrgUnit } from "@/store/modules/process/state";
-import { VisibilityLabels, VisibilityKeys } from "@/models/visibility";
-import { DomainKeys, DomainLabels } from "@/models/domain";
-import { Kle } from "@/store/modules/common/actions";
-import { Domain } from "@/models/domain";
-import { processGetterTypes } from "@/store/modules/process/getters";
-import { isEmpty } from "lodash";
+import InputField from '@/components/common/inputs/InputField.vue';
+import SelectionField from '@/components/common/inputs/SelectionField.vue';
+import TextArea from '@/components/common/inputs/TextArea.vue';
+import Phases from '@/components/common/inputs/Phases.vue';
+import AssociatedPersonsInput from '@/components/details/general-information/AssociatedPersonsInput.vue';
+import Well from '@/components/common/Well.vue';
+import WellItem from '@/components/common/WellItem.vue';
+import FormSection from '@/components/details/FormSection.vue';
+import WarningIcon from '@/components/icons/WarningIcon.vue';
+import { processActionTypes } from '@/store/modules/process/actions';
+import { processGetterTypes } from '@/store/modules/process/getters';
+import { commonActionTypes, UserSearchRequest } from '@/store/modules/common/actions';
+import { User } from '@/store/modules/auth/state';
+import { StatusKeys, StatusLabels } from '@/models/status';
+import { OrgUnit } from '@/store/modules/process/state';
+import { VisibilityLabels, VisibilityKeys } from '@/models/visibility';
+import { DomainKeys, DomainLabels } from '@/models/domain';
+import { Kle } from '@/store/modules/common/actions';
+import { Domain } from '@/models/domain';
+import { Phase, PhaseKeys } from '@/models/phase';
 
 @Component({
   components: {
@@ -120,42 +115,30 @@ import { isEmpty } from "lodash";
 })
 export default class GeneralInformationForm extends Vue {
   @Action(processActionTypes.UPDATE) update: any;
-  @Action(processActionTypes.ADD_DOMAIN)
-  addDomain!: (domain: any) => Promise<void>;
-  @Action(commonActionTypes.SEARCH_USERS)
-  searchUsers!: ({ name, cvr }: UserSearchRequest) => Promise<void>;
+  @Action(processActionTypes.ADD_DOMAIN) addDomain!: (domain: any) => Promise<void>;
+  @Action(commonActionTypes.SEARCH_USERS) searchUsers!: ({ name, cvr }: UserSearchRequest) => Promise<void>;
+
   @Getter(processGetterTypes.IS_GERNERAL_INFORMATION_VALID) isGeneralInformationValid!: any;
+  @Getter(processGetterTypes.MIN_PHASE) minPhase!: (phase: Phase) => boolean;
 
   isPhaseChanged = false;
   StatusKeys = StatusKeys;
+  PhaseKeys = PhaseKeys;
 
   get state() {
     return this.$store.state.process;
   }
 
-  get vendorValue() { 
-    const contact = this.$store.state.process.contact;
-    return { value: contact, text: contact.name };
-  }
-
-  get domainsText() {
-    return this.$store.state.process.domains
-      .map((d: Domain) => DomainLabels[d])
-      .join(", ");
-  }
-
   get users() {
-    return this.$store.state.common.users.map((u: User) => ({
-      value: u,
-      text: u.name
-    }));
+    return this.$store.state.common.users;
   }
 
   get kles() {
-    return this.$store.state.common.kles.map((i: Kle) => ({
-      value: i.code,
-      text: i.code
-    }));
+    return this.$store.state.common.kles;
+  }
+
+  get domainsText() {
+    return this.$store.state.process.domains.map((d: Domain) => DomainLabels[d]).join(', ');
   }
 
   phaseChanged(phase: any) {
@@ -192,7 +175,7 @@ export default class GeneralInformationForm extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import "@/styles/variables.scss";
+@import '@/styles/variables.scss';
 .general-information-wrapper {
   background-color: $color-edit-background;
   border-radius: 12px;

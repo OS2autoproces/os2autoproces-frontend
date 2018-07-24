@@ -1,11 +1,11 @@
 import { HTTP } from '@/services/http-service';
+import { User } from '@/store/modules/auth/state';
 import { commonMutationTypes } from '@/store/modules/common/mutations';
 import { ITSystem } from '@/store/modules/process/state';
 import { RootState } from '@/store/store';
-import { ActionTree, Commit } from 'vuex';
-import { CommonState } from './state';
-import { User } from '@/store/modules/auth/state';
 import { debounce } from 'lodash';
+import { ActionTree, Commit } from 'vuex';
+import { CommonState } from '@/store/modules/common/state';
 
 export const namespace = 'common';
 
@@ -75,8 +75,7 @@ export const actions: ActionTree<CommonState, RootState> = {
     commit(commonMutationTypes.UPDATE, payload);
   },
   async loadCmsContent({ commit }, label: keyof CommonState) {
-    const jsonContent = (await HTTP.get<Cms>(`public/cms/${label}`)).data
-      .content;
+    const jsonContent = (await HTTP.get<Cms>(`public/cms/${label}`)).data.content;
 
     const content = jsonContent ? JSON.parse(jsonContent) : '';
 
@@ -90,85 +89,26 @@ export const actions: ActionTree<CommonState, RootState> = {
     });
   },
   async loadItSystems({ commit }) {
-    const response = (await HTTP.get<ItSystemsResponse>(
-      `api/itSystems?size=${500}`
-    )).data;
-    const itSystems = response._embedded.itSystems;
-    const { _links, page } = response;
+    const response = await HTTP.get<ItSystemsResponse>(`api/itSystems?size=100000`);
+    const itSystems = response.data._embedded.itSystems;
 
-    try {
-      if (!_links.next) {
-        commit(commonMutationTypes.ASSIGN, {
-          itSystems
-        });
-      } else {
-        if (_links.next) {
-          let next = response._links.next.href.replace(
-            'https://dev.os2autoproces.eu/',
-            ''
-          );
-          for (let i = 0; i < page.totalPages; i++) {
-            const temp = (await HTTP.get<ItSystemsResponse>(next)).data;
-            if (temp._links.next) {
-              next = temp._links.next.href.replace(
-                'https://dev.os2autoproces.eu/',
-                ''
-              );
-            }
-            itSystems.push.apply(itSystems, temp._embedded.itSystems);
-          }
-        }
-      }
-      commit(commonMutationTypes.ASSIGN, { itSystems });
-    } catch (e) {
-      throw e;
-    }
+    commit(commonMutationTypes.ASSIGN, { itSystems });
   },
   async loadKles({ commit }) {
-    const response = (await HTTP.get<KleResponse>(`api/kles?size=${500}`)).data;
-    const kles = response._embedded.kles;
-    const { _links, page } = response;
+    const response = await HTTP.get<KleResponse>(`api/kles?size=100000`);
+    const kles = response.data._embedded.kles.map(kle => kle.code);
 
-    try {
-      if (!_links.next) {
-        commit(commonMutationTypes.ASSIGN, {
-          kles
-        });
-      } else {
-        if (_links.next) {
-          let next = response._links.next.href.replace(
-            'https://dev.os2autoproces.eu/',
-            ''
-          );
-          for (let i = 0; i < page.totalPages; i++) {
-            const temp = (await HTTP.get<KleResponse>(next)).data;
-            if (temp._links.next) {
-              next = temp._links.next.href.replace(
-                'https://dev.os2autoproces.eu/',
-                ''
-              );
-            }
-            kles.push.apply(kles, temp._embedded.kles);
-          }
-        }
-      }
-      commit(commonMutationTypes.ASSIGN, { kles });
-    } catch (e) {
-      throw e;
-    }
+    commit(commonMutationTypes.ASSIGN, { kles });
   },
-
   searchUsers({ commit }, { cvr, name }): void {
-    if(!cvr || name < 3) {
+    if (!cvr) {
       return;
     }
-    debouncedSearch({cvr, name}, commit);
+    debouncedSearch({ cvr, name }, commit);
   }
 };
 
-const debouncedSearch = debounce(async ({name , cvr}: UserSearchRequest, commit: Commit) => {
-  const users = (await HTTP.get<UserResponse>(
-    `api/users?name=${name}&cvr=${cvr}`
-  )).data._embedded.users;
+const debouncedSearch = debounce(async ({ name, cvr }: UserSearchRequest, commit: Commit) => {
+  const users = (await HTTP.get<UserResponse>(`api/users?name=${name}&cvr=${cvr}`)).data._embedded.users;
   commit(commonMutationTypes.ASSIGN, { users });
 }, 250);

@@ -1,6 +1,6 @@
 import { merge } from 'lodash';
 import { MutationTree } from 'vuex';
-import { AuthState, User } from './state';
+import { AuthState, User } from '@/store/modules/auth/state';
 
 export const authMutationTypes = {
   SET_USER: 'setUser',

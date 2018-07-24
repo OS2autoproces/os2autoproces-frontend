@@ -1,20 +1,19 @@
-import Vue from 'vue';
-import Vuex, { StoreOptions } from 'vuex';
-import { process } from '@/store/modules/process';
-import { search } from '@/store/modules/search';
 import { auth } from '@/store/modules/auth';
-import { common } from '@/store/modules/common';
-import { error } from '@/store/modules/error';
 import { AuthState } from '@/store/modules/auth/state';
-import { ProcessState } from '@/store/modules/process/state';
-import { SearchState } from '@/store/modules/search/state';
+import { common } from '@/store/modules/common';
 import { CommonState } from '@/store/modules/common/state';
+import { error } from '@/store/modules/error';
 import { ErrorState } from '@/store/modules/error/state';
+import { process } from '@/store/modules/process';
+import { ProcessState } from '@/store/modules/process/state';
+import { search } from '@/store/modules/search';
+import { SearchState } from '@/store/modules/search/state';
+import Vue from 'vue';
+import Vuex from 'vuex';
 
 Vue.use(Vuex);
 
 export interface RootState {
-  version?: string;
   auth: AuthState;
   process: ProcessState;
   search: SearchState;
@@ -22,7 +21,7 @@ export interface RootState {
   error: ErrorState;
 }
 
-const store: StoreOptions<RootState> = {
+export default new Vuex.Store<RootState>({
   modules: {
     auth,
     process,
@@ -30,6 +29,4 @@ const store: StoreOptions<RootState> = {
     common,
     error
   }
-};
-
-export default new Vuex.Store<RootState>(store);
+});

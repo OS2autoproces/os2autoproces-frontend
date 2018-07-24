@@ -1,9 +1,8 @@
 import { RootState } from "@/store/store";
 import { Module } from "vuex";
-import { actions } from "./actions";
-import { getters } from "./getters";
-import { mutations } from "./mutations";
-import { CommonState } from "./state";
+import { actions } from "@/store/modules/common/actions";
+import { mutations } from "@/store/modules/common/mutations";
+import { CommonState } from "@/store/modules/common/state";
 
 const namespaced = true;
 
@@ -18,6 +17,5 @@ export const common: Module<CommonState, RootState> = {
   namespaced,
   state,
   actions,
-  getters,
   mutations
 };

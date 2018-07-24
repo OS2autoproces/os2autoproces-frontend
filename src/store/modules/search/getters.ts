@@ -1,4 +1,4 @@
-import { SearchState } from "./state";
+import { SearchState } from "@/store/modules/search/state";
 import { RootState } from "@/store/store";
 import { GetterTree } from "vuex";
 

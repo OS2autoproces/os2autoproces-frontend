@@ -1,10 +1,10 @@
-import { PhaseKeys } from "@/models/phase";
-import { ProcessState } from "@/store/modules/process/state";
-import { RootState } from "@/store/store";
-import { isEmpty } from "lodash";
-import * as validateJs from "validate.js";
-import { GetterTree } from "vuex";
-import { DateTime } from "luxon";
+import { PhaseKeys, Phase, PhaseOrder } from '@/models/phase';
+import { ProcessState } from '@/store/modules/process/state';
+import { RootState } from '@/store/store';
+import { isEmpty } from 'lodash';
+import * as validateJs from 'validate.js';
+import { GetterTree } from 'vuex';
+import { DateTime } from 'luxon';
 import {
   generalInformationLabels,
   challengesLabels,
@@ -13,9 +13,8 @@ import {
   specificationLabels,
   implementationLabels,
   operationLabels
-} from "@/store/modules/error/actions";
-
-const namespace = "process"; // import doens't work
+} from '@/store/modules/error/actions';
+import { namespace } from '@/store/modules/process/actions';
 
 export const processGetterTypes = {
   IS_GERNERAL_INFORMATION_VALID: `${namespace}/isGeneralInformationValid`,
@@ -24,7 +23,8 @@ export const processGetterTypes = {
   IS_ASSESMENT_VALID: `${namespace}/isAssesmentValid`,
   IS_SPECIFICATION_VALID: `${namespace}/isSpecificationValid`,
   IS_IMPLEMENTATION_VALID: `${namespace}/isImplementationValid`,
-  IS_OPERATION_VALID: `${namespace}/isOperationValid`
+  IS_OPERATION_VALID: `${namespace}/isOperationValid`,
+  MIN_PHASE: `${namespace}/minPhase`
 };
 
 const isNonempty = {
@@ -53,17 +53,19 @@ function isValid(value: any, constraints: any): boolean {
 }
 
 function constructFunctionName(prop: string) {
-  return (
-    "is" + prop.replace(prop.charAt(0), prop.charAt(0).toUpperCase()) + "Valid"
-  );
+  return 'is' + prop.replace(prop.charAt(0), prop.charAt(0).toUpperCase()) + 'Valid';
 }
 
 function getPropName(getter: string): string {
-  const prop = getter.replace("is", "").replace("Valid", "");
+  const match = getter.match(/^is([a-z]+)Valid$/);
+  const prop = match ? match[1] : getter;
   return prop.replace(prop.charAt(0), prop.charAt(0).toLowerCase());
 }
 
-export const processFieldsValidation = {
+export const processFieldsValidators = {
+  minPhase(state: ProcessState) {
+    return (phase: Phase) => PhaseOrder.indexOf(phase) <= PhaseOrder.indexOf(state.phase);
+  },
   isLocalIdValid(state: ProcessState): boolean {
     return isValid(state.localId, isMinMax(1, 64));
   },
@@ -110,68 +112,45 @@ export const processFieldsValidation = {
     return isValid(state.solutionRequests, isMinMax(1, 2400));
   },
   isTimeSpendOccurancesPerEmployeeValid(state: ProcessState): boolean {
-    return state.phase === PhaseKeys.IDEA
-      ? true
-      : isValid(state.timeSpendOccurancesPerEmployee, isNonempty);
+    return state.phase === PhaseKeys.IDEA ? true : isValid(state.timeSpendOccurancesPerEmployee, isNonempty);
   },
   isTimeSpendPerOccurranceValid(state: ProcessState) {
-    return state.phase === PhaseKeys.IDEA
-      ? true
-      : isValid(state.timeSpendPerOccurance, isNonempty);
+    return state.phase === PhaseKeys.IDEA ? true : isValid(state.timeSpendPerOccurance, isNonempty);
   },
   isTimeSpendEmployeesDoingProcessValid(state: ProcessState): boolean {
-    return state.phase === PhaseKeys.IDEA
-      ? true
-      : isValid(state.timeSpendEmployeesDoingProcess, isNonempty);
+    return state.phase === PhaseKeys.IDEA ? true : isValid(state.timeSpendEmployeesDoingProcess, isNonempty);
   },
   isTimeSpendPercentageDigital(state: ProcessState): boolean {
-    return state.phase === PhaseKeys.IDEA
-      ? true
-      : isValid(Number(state.timeSpendPercentageDigital), isBetween(0, 100));
+    return state.phase === PhaseKeys.IDEA ? true : isValid(Number(state.timeSpendPercentageDigital), isBetween(0, 100));
   },
   isTimeSpendCommentValid(state: ProcessState): boolean {
     return isValid(state.timeSpendComment, isMinMax(0, 300));
   },
   isLevelOfProfessionalAssessmentValid(state: ProcessState): boolean {
-    return state.phase === PhaseKeys.IDEA
-      ? true
-      : !isEmpty(state.levelOfProfessionalAssessment);
+    return state.phase === PhaseKeys.IDEA ? true : !isEmpty(state.levelOfProfessionalAssessment);
   },
   isLevelOfChangeValid(state: ProcessState): boolean {
-    return state.phase === PhaseKeys.IDEA
-      ? true
-      : !isEmpty(state.levelOfChange);
+    return state.phase === PhaseKeys.IDEA ? true : !isEmpty(state.levelOfChange);
   },
   isLevelOfStructuredInformationValid(state: ProcessState): boolean {
-    return state.phase === PhaseKeys.IDEA
-      ? true
-      : !isEmpty(state.levelOfStructuredInformation);
+    return state.phase === PhaseKeys.IDEA ? true : !isEmpty(state.levelOfStructuredInformation);
   },
   isLevelOfUniformityValid(state: ProcessState): boolean {
-    return state.phase === PhaseKeys.IDEA
-      ? true
-      : !isEmpty(state.levelOfUniformity);
+    return state.phase === PhaseKeys.IDEA ? true : !isEmpty(state.levelOfUniformity);
   },
   isLevelOfDigitalInformationValid(state: ProcessState): boolean {
-    return state.phase === PhaseKeys.IDEA
-      ? true
-      : !isEmpty(state.levelOfDigitalInformation);
+    return state.phase === PhaseKeys.IDEA ? true : !isEmpty(state.levelOfDigitalInformation);
   },
   isLevelOfQualityValid({ phase, levelOfQuality }: ProcessState): boolean {
     return phase === PhaseKeys.IDEA ? true : !isEmpty(levelOfQuality);
   },
   isLevelOfRoutineWorkReductionValid(state: ProcessState): boolean {
-    return state.phase === PhaseKeys.IDEA
-      ? true
-      : !isEmpty(state.levelOfRoutineWorkReduction);
+    return state.phase === PhaseKeys.IDEA ? true : !isEmpty(state.levelOfRoutineWorkReduction);
   },
   isLevelOfSpeedValid({ phase, levelOfSpeed }: ProcessState): boolean {
     return phase === PhaseKeys.IDEA ? true : !isEmpty(levelOfSpeed);
   },
-  isEvaluatedLevelOfRoiValid({
-    phase,
-    evaluatedLevelOfRoi
-  }: ProcessState): boolean {
+  isEvaluatedLevelOfRoiValid({ phase, evaluatedLevelOfRoi }: ProcessState): boolean {
     return phase === PhaseKeys.IDEA ? true : !isEmpty(evaluatedLevelOfRoi);
   },
   isEsdhReferenceValid({ phase, esdhReference }: ProcessState): boolean {
@@ -180,28 +159,19 @@ export const processFieldsValidation = {
       : isValid(esdhReference, isMinMax(1, 300));
   },
   isOwnerValid({ phase, owner }: ProcessState): boolean {
-    return phase === PhaseKeys.IDEA || phase === PhaseKeys.PREANALYSIS
-      ? true
-      : !isEmpty(owner);
+    return phase === PhaseKeys.IDEA || phase === PhaseKeys.PREANALYSIS ? true : !isEmpty(owner);
   },
   isVendorValid({ phase, vendor }: ProcessState): boolean {
-    return phase === PhaseKeys.IDEA ||
-      phase === PhaseKeys.PREANALYSIS ||
-      phase === PhaseKeys.SPECIFICATION
+    return phase === PhaseKeys.IDEA || phase === PhaseKeys.PREANALYSIS || phase === PhaseKeys.SPECIFICATION
       ? true
       : !isEmpty(vendor);
   },
   isTechnologiesValid({ phase, technologies }: ProcessState): boolean {
-    return phase === PhaseKeys.IDEA ||
-      phase === PhaseKeys.PREANALYSIS ||
-      phase === PhaseKeys.SPECIFICATION
+    return phase === PhaseKeys.IDEA || phase === PhaseKeys.PREANALYSIS || phase === PhaseKeys.SPECIFICATION
       ? true
       : technologies.length > 0;
   },
-  isTechnicalImplementationNotesValid({
-    phase,
-    technicalImplementationNotes
-  }: ProcessState): boolean {
+  isTechnicalImplementationNotesValid({ phase, technicalImplementationNotes }: ProcessState): boolean {
     return phase === PhaseKeys.IDEA ||
       phase === PhaseKeys.PREANALYSIS ||
       phase === PhaseKeys.SPECIFICATION ||
@@ -209,10 +179,7 @@ export const processFieldsValidation = {
       ? true
       : isValid(technicalImplementationNotes, isMinMax(1, 3000));
   },
-  isOrganizationalImplementationNotesValid({
-    phase,
-    organizationalImplementationNotes
-  }: ProcessState): boolean {
+  isOrganizationalImplementationNotesValid({ phase, organizationalImplementationNotes }: ProcessState): boolean {
     return phase === PhaseKeys.IDEA ||
       phase === PhaseKeys.PREANALYSIS ||
       phase === PhaseKeys.SPECIFICATION ||
@@ -238,10 +205,7 @@ export const processFieldsValidation = {
       ? true
       : isValid(ratingComment, isMinMax(1, 1200));
   },
-  isLegalClauseLastVerifiedValid({
-    phase,
-    legalClauseLastVerified
-  }: ProcessState): boolean {
+  isLegalClauseLastVerifiedValid({ phase, legalClauseLastVerified }: ProcessState): boolean {
     if (legalClauseLastVerified) {
       const date = DateTime.fromISO(legalClauseLastVerified).isValid;
       return phase === PhaseKeys.IDEA ||
@@ -277,60 +241,41 @@ export const processFieldsValidation = {
   }
 };
 
-const detailsSectionValidation = {
+const sectionValidators = {
   isGeneralInformationValid(state: ProcessState) {
-    return state.canEdit
-      ? !isEmpty(
-          sectionValidation(state, Object.keys(generalInformationLabels))
-        )
-      : false;
+    return state.canEdit && !isEmpty(sectionValidation(state, Object.keys(generalInformationLabels)));
   },
   isChallengesValid(state: ProcessState) {
-    return state.canEdit
-      ? !isEmpty(sectionValidation(state, Object.keys(challengesLabels)))
-      : false;
+    return state.canEdit && !isEmpty(sectionValidation(state, Object.keys(challengesLabels)));
   },
   isTimeAndProcessValid(state: ProcessState) {
-    return state.canEdit
-      ? !isEmpty(sectionValidation(state, Object.keys(timeAndProcessLabels)))
-      : false;
+    return state.canEdit && !isEmpty(sectionValidation(state, Object.keys(timeAndProcessLabels)));
   },
   isAssesmentValid(state: ProcessState) {
-    return state.canEdit
-      ? !isEmpty(sectionValidation(state, Object.keys(assesmentLabels)))
-      : false;
+    return state.canEdit && !isEmpty(sectionValidation(state, Object.keys(assesmentLabels)));
   },
   isSpecificationValid(state: ProcessState) {
-    return state.canEdit
-      ? !isEmpty(sectionValidation(state, Object.keys(specificationLabels)))
-      : false;
+    return state.canEdit && !isEmpty(sectionValidation(state, Object.keys(specificationLabels)));
   },
   isImplementationValid(state: ProcessState) {
-    return state.canEdit
-      ? !isEmpty(sectionValidation(state, Object.keys(implementationLabels)))
-      : false;
+    return state.canEdit && !isEmpty(sectionValidation(state, Object.keys(implementationLabels)));
   },
   isOperationValid(state: ProcessState) {
-    return state.canEdit
-      ? !isEmpty(sectionValidation(state, Object.keys(operationLabels)))
-      : false;
+    return state.canEdit && !isEmpty(sectionValidation(state, Object.keys(operationLabels)));
   }
 };
 
 export const getters: GetterTree<ProcessState, RootState> = {
-  ...processFieldsValidation,
-  ...detailsSectionValidation
+  ...processFieldsValidators,
+  ...sectionValidators
 };
 
-export function sectionValidation(
-  state: ProcessState,
-  propertyKeys: string[]
-): string[] {
+export function sectionValidation(state: ProcessState, propertyKeys: string[]): string[] {
   const invalidProps: string[] = [];
 
   propertyKeys.forEach((key: string) => {
     let func = key;
-    if (typeof getters[func] !== "function") {
+    if (typeof getters[func] !== 'function') {
       func = constructFunctionName(func);
     }
     if (!getters[func](state, {}, {} as RootState, {})) {
