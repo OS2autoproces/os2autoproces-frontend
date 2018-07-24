@@ -1,9 +1,9 @@
-import {SearchState} from './state';
+import {SearchState} from '@/store/modules/search/state';
 import {RootState} from '@/store/store';
 import {Module} from 'vuex';
-import {actions} from './actions';
-import {getters} from './getters';
-import {mutations} from './mutations';
+import {actions} from '@/store/modules/search/actions';
+import {getters} from '@/store/modules/search/getters';
+import {mutations} from '@/store/modules/search/mutations';
 
 const namespaced = true;
 

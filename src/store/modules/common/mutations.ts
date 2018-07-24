@@ -1,6 +1,6 @@
 import { merge } from 'lodash';
 import { MutationTree } from 'vuex';
-import { CommonState } from './state';
+import { CommonState } from '@/store/modules/common/state';
 
 export const commonMutationTypes = {
   UPDATE: 'update',
