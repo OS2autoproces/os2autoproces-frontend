@@ -75,7 +75,7 @@ export const actions: ActionTree<ProcessState, RootState> = {
     commit(processMutationTypes.UPDATE, payload);
   },
   clear({ commit }) {
-    commit(processMutationTypes.UPDATE, initialProcessState());
+    commit(processMutationTypes.ASSIGN, initialProcessState());
   },
   async loadAttachments({ commit, state }) {
     if (!state.id) {
