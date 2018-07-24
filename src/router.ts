@@ -5,36 +5,36 @@ import Details from './views/Details.vue';
 import Home from './views/Home.vue';
 import ReportProcess from './views/ReportProcess.vue';
 import Search from './views/Search.vue';
+import { UserRole, User } from '@/store/modules/auth/state';
 
 Vue.use(Router);
 
-async function requireAuth(to: Route, from: Route, next: any) {
-  function proceed() {
-    if (store.state.auth.user) {
+function redirectToLogin() {
+  window.location.href = `${window.autoProcessConfiguration.apiUrl}/saml/login`;
+}
+
+function validateAuth(isValid: (user: User | null) => boolean) {
+  return async (to: Route, from: Route, next: any) => {
+    if (isValid(store.state.auth.user)) {
       next();
     } else {
-      window.location.href = `${window.autoProcessConfiguration.apiUrl}/saml/login`;
-    }
-  }
+      await store.dispatch('auth/loadUser');
 
-  if (!store.state.auth.user) {
-    await store.dispatch('auth/loadUser');
-
-    store.watch(
-      state => state.auth,
-      user => {
-        if (user) {
-          proceed();
-        } else {
-          // todo: handle network error
-          proceed();
-        }
+      if (isValid(store.state.auth.user)) {
+        next();
+      } else {
+        redirectToLogin();
       }
-    );
-    proceed();
-  } else {
-    proceed();
-  }
+    }
+  };
+}
+
+function isLoggedIn() {
+  return validateAuth(user => !!user);
+}
+
+function hasRole(role: UserRole) {
+  return validateAuth(user => !!user && user.roles.includes(role));
 }
 
 export const routes: RouteConfig[] = [
@@ -45,24 +45,24 @@ export const routes: RouteConfig[] = [
   {
     path: '/search',
     component: Search,
-    beforeEnter: requireAuth
+    beforeEnter: isLoggedIn()
   },
   {
     path: '/details/:id',
     component: Details,
     props: true,
-    beforeEnter: requireAuth
+    beforeEnter: isLoggedIn()
   },
   {
     path: '/details/new/:phase',
     component: Details,
     props: true,
-    beforeEnter: requireAuth
+    beforeEnter: isLoggedIn()
   },
   {
     path: '/report',
     component: ReportProcess,
-    beforeEnter: requireAuth
+    beforeEnter: isLoggedIn()
   },
   { path: '/logged-in', redirect: '/search' },
   { path: '/logged-out', redirect: '/' }
