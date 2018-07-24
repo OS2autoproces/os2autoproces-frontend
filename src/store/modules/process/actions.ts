@@ -13,10 +13,7 @@ import {
 } from '@/services/process-converter';
 import { User } from '@/store/modules/auth/state';
 import { errorActionTypes } from '@/store/modules/error/actions';
-import {
-  processFieldsValidators,
-  sectionValidation
-} from '@/store/modules/process/getters';
+import { sectionValidation } from '@/store/modules/process/getters';
 import { processMutationTypes } from '@/store/modules/process/mutations';
 import {
   Attachment,
@@ -232,10 +229,7 @@ export const actions: ActionTree<ProcessState, RootState> = {
     return process.id;
   },
   async save({ commit, state, dispatch }) {
-    const invalidFields = sectionValidation(
-      state,
-      Object.keys(processFieldsValidators)
-    );
+    const invalidFields = sectionValidation(state, Object.keys(state));
 
     if (invalidFields) {
       dispatch(
