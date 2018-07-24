@@ -1,5 +1,5 @@
 import { MutationTree } from 'vuex';
-import { SearchState, SearchFilters, SearchResult } from './state';
+import { SearchState, SearchFilters, SearchResult } from '@/store/modules/search/state';
 import { merge } from 'lodash';
 
 export const searchMutationTypes = {
