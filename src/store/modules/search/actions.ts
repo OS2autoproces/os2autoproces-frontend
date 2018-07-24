@@ -1,4 +1,4 @@
-import { SearchState, SearchFilters } from './state';
+import { SearchState, SearchFilters } from '@/store/modules/search/state';
 import { RootState } from '@/store/store';
 import { ActionTree, Commit } from 'vuex';
 import { searchMutationTypes } from '@/store/modules/search/mutations';

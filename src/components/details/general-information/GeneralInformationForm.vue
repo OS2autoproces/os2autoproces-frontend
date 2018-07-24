@@ -1,5 +1,5 @@
 <template>
-  <FormSection heading="Grundlæggende oplysninger" id="general-information" :disabled="state.disabled.generalInformationEdit" @edit="update({disabled: { generalInformationEdit: $event} })" always-open>
+  <FormSection :invalid="isGeneralInformationValid" heading="Grundlæggende oplysninger" id="general-information" :disabled="state.disabled.generalInformationEdit" @edit="update({disabled: { generalInformationEdit: $event} })" always-open>
     <div class="general-information-wrapper">
       <Well>
         <div>
@@ -116,20 +116,16 @@ export default class GeneralInformationForm extends Vue {
   @Action(processActionTypes.UPDATE) update: any;
   @Action(processActionTypes.ADD_DOMAIN) addDomain!: (domain: any) => Promise<void>;
   @Action(commonActionTypes.SEARCH_USERS) searchUsers!: ({ name, cvr }: UserSearchRequest) => Promise<void>;
+
+  @Getter(processGetterTypes.IS_GERNERAL_INFORMATION_VALID) isGeneralInformationValid!: any;
   @Getter(processGetterTypes.MIN_PHASE) minPhase!: (phase: Phase) => boolean;
 
   isPhaseChanged = false;
   StatusKeys = StatusKeys;
   PhaseKeys = PhaseKeys;
 
-
   get state() {
     return this.$store.state.process;
-  }
-
-  get vendorValue() {
-    const contact = this.$store.state.process.contact;
-    return { value: contact, text: contact.name };
   }
 
   get users() {

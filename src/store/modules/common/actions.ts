@@ -5,7 +5,7 @@ import { ITSystem } from '@/store/modules/process/state';
 import { RootState } from '@/store/store';
 import { debounce } from 'lodash';
 import { ActionTree, Commit } from 'vuex';
-import { CommonState } from './state';
+import { CommonState } from '@/store/modules/common/state';
 
 export const namespace = 'common';
 

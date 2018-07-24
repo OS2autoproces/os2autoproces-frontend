@@ -1,16 +1,18 @@
+import { DomainKeys } from '@/models/domain';
+import { LikertScaleKeys } from '@/models/likert-scale';
+import { PhaseKeys } from '@/models/phase';
+import { StatusKeys } from '@/models/status';
+import { TypeKeys } from '@/models/types';
+import { VisibilityKeys } from '@/models/visibility';
 import { HTTP } from '@/services/http-service';
 import { ProcessRequest, ProcessResponse, responseToState, stateToRequest } from '@/services/process-converter';
 import { User } from '@/store/modules/auth/state';
+import { errorActionTypes } from '@/store/modules/error/actions';
+import { processFieldsValidators, sectionValidation } from '@/store/modules/process/getters';
 import { processMutationTypes } from '@/store/modules/process/mutations';
-import { Attachment, Technology, Process, ITSystem, ProcessState } from '@/store/modules/process/state';
+import { Attachment, ITSystem, Process, ProcessState, Technology } from '@/store/modules/process/state';
 import { RootState } from '@/store/store';
 import { ActionTree } from 'vuex';
-import { PhaseKeys } from '@/models/phase';
-import { DomainKeys } from '@/models/domain';
-import { VisibilityKeys } from '@/models/visibility';
-import { StatusKeys } from '@/models/status';
-import { LikertScaleKeys } from '@/models/likert-scale';
-import { TypeKeys } from '@/models/types';
 
 export const namespace = 'process';
 
@@ -196,13 +198,19 @@ export const actions: ActionTree<ProcessState, RootState> = {
     commit(processMutationTypes.UPDATE, setBackendManagedFields(process));
     return process.id;
   },
-  async save({ commit, state }) {
-    const converted = await stateToRequest(state);
-    const response = (await HTTP.put<ProcessResponse>(`api/processes/${state.id}`, converted)).data;
+  async save({ commit, state, dispatch }) {
+    const invalidFields = sectionValidation(state, Object.keys(processFieldsValidators));
 
-    const process = responseToState(response);
-    // TODO: notify update
-    commit(processMutationTypes.UPDATE, setBackendManagedFields(process));
+    if (invalidFields) {
+      dispatch(errorActionTypes.UPDATE_PROCESS_ERRORS, { processErrors: invalidFields }, { root: true });
+    } else {
+      const converted = await stateToRequest(state);
+      const response = await HTTP.put<ProcessResponse>(`api/processes/${state.id}`, converted);
+
+      const process = responseToState(response.data);
+      // TODO: notify update
+      commit(processMutationTypes.UPDATE, setBackendManagedFields(process));
+    }
   },
   async removeProcess({ state }) {
     await HTTP.delete(`api/processes/${state.id}`);

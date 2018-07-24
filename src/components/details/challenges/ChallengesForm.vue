@@ -1,5 +1,5 @@
 <template>
-  <FormSection heading="Problemstillinger" id="challenges" :disabled="state.disabled.challengesEdit" @edit="update({ disabled: { challengesEdit: $event}})">
+  <FormSection :invalid="isChallengesValid" heading="Problemstillinger" id="challenges" :disabled="state.disabled.challengesEdit" @edit="update({ disabled: { challengesEdit: $event}})">
     <div v-if="minPhase(PhaseKeys.PREANALYSIS)">
       <h2>Løsningsbeskrivelse</h2>
       <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
@@ -66,6 +66,8 @@ import { Phase, PhaseKeys } from '@/models/phase';
 export default class ChallengesForm extends Vue {
   @Action(processActionTypes.UPDATE) update: any;
   @Action(processActionTypes.SAVE_IT_SYSTEM) saveItSystem!: (itSystem: ITSystem) => void;
+
+  @Getter(processGetterTypes.IS_CHALLENGES_VALID) isChallengesValid!: any;
   @Getter(processGetterTypes.MIN_PHASE) minPhase!: (phase: Phase) => boolean;
 
   twoColumnBreakpoint = 1600;

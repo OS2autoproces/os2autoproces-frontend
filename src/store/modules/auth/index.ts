@@ -1,9 +1,9 @@
 import { getters } from '@/store/modules/auth/getters';
 import { RootState } from '@/store/store';
 import { Module } from 'vuex';
-import { actions } from './actions';
-import { mutations } from './mutations';
-import { AuthState } from './state';
+import { actions } from '@/store/modules/auth/actions';
+import { mutations } from '@/store/modules/auth/mutations';
+import { AuthState } from '@/store/modules/auth/state';
 
 const namespaced = true;
 
