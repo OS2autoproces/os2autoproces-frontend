@@ -2,7 +2,7 @@ import { HTTP } from '@/services/http-service';
 import { authMutationTypes } from '@/store/modules/auth/mutations';
 import { RootState } from '@/store/store';
 import { ActionTree } from 'vuex';
-import {AuthState, User, UserRole} from './state';
+import {AuthState, User, UserRole} from '@/store/modules/auth/state';
 
 interface WhoAmIResponse {
   uuid: string | null;

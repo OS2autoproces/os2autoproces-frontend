@@ -1,7 +1,7 @@
-import { AuthState, UserRole } from './state';
+import { AuthState, UserRole } from '@/store/modules/auth/state';
 import { RootState } from '@/store/store';
 import { GetterTree } from 'vuex';
-import { namespace } from './actions';
+import { namespace } from '@/store/modules/auth/actions';
 
 export const authGetterTypes = {
   IS_BOOKMARKED: `${namespace}/isBookmarked`,
