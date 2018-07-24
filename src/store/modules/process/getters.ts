@@ -1,8 +1,13 @@
+import { Phase, PhaseOrder } from '@/models/phase';
+import { namespace } from '@/store/modules/process/actions';
 import { ProcessState } from '@/store/modules/process/state';
 import { RootState } from '@/store/store';
-import { GetterTree } from 'vuex';
 import * as validateJs from 'validate.js';
+import { GetterTree } from 'vuex';
 
+export const processGetterTypes = {
+  MIN_PHASE: `${namespace}/minPhase`
+};
 
 const isNonempty = {
   length: {
@@ -30,6 +35,9 @@ function isValid(value: any, constraints: any): boolean {
 }
 
 export const getters: GetterTree<ProcessState, RootState> = {
+  minPhase(state: ProcessState) {
+    return (phase: Phase) => PhaseOrder.indexOf(phase) <= PhaseOrder.indexOf(state.phase);
+  },
   isKleNumberValid(state: ProcessState): boolean {
     return isValid(state.kle, isNumeric);
   },
@@ -43,8 +51,7 @@ export const getters: GetterTree<ProcessState, RootState> = {
     return isValid(state.contact, isNonempty);
   },
   isEmailValid(state: ProcessState): boolean {
-    
-    return isValid(state.contact ? state.contact.email : '' , isEmail);
+    return isValid(state.contact ? state.contact.email : '', isEmail);
   },
   isProcesTimeValid(state: ProcessState): boolean {
     return isValid(state.timeSpendComputedTotal, isNumeric);
@@ -57,5 +64,5 @@ export const getters: GetterTree<ProcessState, RootState> = {
   },
   isResumeValid(state: ProcessState): boolean {
     return isValid(state.shortDescription, isMinMax(1, 140));
-  },
+  }
 };
