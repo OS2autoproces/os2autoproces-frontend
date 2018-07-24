@@ -1,5 +1,5 @@
 <template>
-  <div class="search-pagination">
+  <div class="search-pagination" v-if="pageTotal > 0">
     <div class="prev" v-if="page > 0">
       <button @click="prev">
         <ArrowLeftIcon /> Forrige
