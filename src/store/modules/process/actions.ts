@@ -203,15 +203,29 @@ export const actions: ActionTree<ProcessState, RootState> = {
 
     commit(processMutationTypes.ASSIGN, responseToState(process));
   },
-  async report({ commit, state }): Promise<string | null> {
-    const converted: ProcessRequest = await stateToRequest(state);
-    const response = (await HTTP.post<ProcessResponse>(
-      `api/processes`,
-      converted
-    )).data;
-    const process = responseToState(response);
-    await commit(processMutationTypes.UPDATE, setBackendManagedFields(process));
-    return process.id;
+  async report({ commit, state, dispatch }): Promise<string | null> {
+    const invalidFields = sectionValidation(state, Object.keys(state));
+
+    if (invalidFields) {
+      dispatch(
+        errorActionTypes.UPDATE_PROCESS_ERRORS,
+        { processErrors: invalidFields },
+        { root: true }
+      );
+      return null;
+    } else {
+      const converted: ProcessRequest = await stateToRequest(state);
+      const response = (await HTTP.post<ProcessResponse>(
+        `api/processes`,
+        converted
+      )).data;
+      const process = responseToState(response);
+      await commit(
+        processMutationTypes.UPDATE,
+        setBackendManagedFields(process)
+      );
+      return process.id;
+    }
   },
   async copyProcess({ commit, state }): Promise<string> {
     const response = await HTTP.post<ProcessResponse>(
@@ -268,9 +282,9 @@ export const actions: ActionTree<ProcessState, RootState> = {
   async setEmailNotification({ commit, state }, emailNotification: boolean) {
     const url = `api/notifications/${state.id}`;
     const method = emailNotification ? HTTP.put : HTTP.delete;
-    
+
     await method(url);
-    
+
     commit(processMutationTypes.UPDATE, {
       emailNotification
     });

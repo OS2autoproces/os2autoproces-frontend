@@ -149,6 +149,9 @@ export default class Details extends Vue {
 
   async report() {
     const processId = await this.$store.dispatch(processActionTypes.REPORT);
+    if (!processId) {
+      return;
+    }
     this.$router.push(`/details/${processId}`);
   }
 }
