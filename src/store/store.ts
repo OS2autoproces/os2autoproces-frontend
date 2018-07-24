@@ -19,7 +19,7 @@ export interface RootState {
   common: CommonState;
 }
 
-export default new Vuex.Store({
+export default new Vuex.Store<RootState>({
   modules: {
     auth,
     process,

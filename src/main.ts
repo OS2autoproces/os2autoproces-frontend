@@ -5,11 +5,8 @@ import 'vuetify/dist/vuetify.min.css';
 import App from './App.vue';
 import { router } from './routes';
 import store from './store/store';
-import { sync } from 'vuex-router-sync';
 
 Vue.config.productionTip = false;
-
-export const unsync = sync(store, router);
 
 Vue.use(Vuetify, {
   theme: {
