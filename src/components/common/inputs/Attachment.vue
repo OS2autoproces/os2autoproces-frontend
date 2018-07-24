@@ -39,8 +39,8 @@ import { Attachment } from '@/store/modules/process/state';
   }
 })
 export default class AttachmentComponent extends Vue {
-  @Prop() attachment!: Attachment;
-  @Prop() disabled!: boolean;
+  @Prop(Object) attachment!: Attachment;
+  @Prop(Boolean) disabled!: boolean;
 
   get type() {
     const word = ['.doc', '.dot', '.wbk', '.docx', '.docm', '.dotx', '.dotm', '.docb'];

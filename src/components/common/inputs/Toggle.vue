@@ -14,7 +14,7 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 
 @Component
 export default class Toggle extends Vue {
-  @Prop() value!: boolean;
+  @Prop(Boolean) value!: boolean;
 
   click() {
     this.$emit('change', !this.value);

@@ -22,8 +22,8 @@ import StarIcon from '../../icons/StarIcon.vue';
   }
 })
 export default class Rating extends Vue {
-  @Prop() disabled!: boolean;
-  @Prop() value!: number;
+  @Prop(Boolean) disabled!: boolean;
+  @Prop(Number) value!: number;
 
   setValue(value: number) {
     if (!this.disabled) {

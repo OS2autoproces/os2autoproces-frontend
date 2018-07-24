@@ -1,19 +1,19 @@
 <template>
-    <div class="search-pagination">
-        <div class="prev" v-if="page > 0">
-            <button @click="prev">
-                <ArrowLeftIcon /> Forrige
-            </button>
-        </div>
-        <div class="flex-grow"></div>
-        <div class="next">
-            <button @click="next" v-if="page < pageTotal - 1">
-                Næste
-                <ArrowRightIcon />
-            </button>
-            <div>Side {{page + 1}} af {{pageTotal}}</div>
-        </div>
+  <div class="search-pagination">
+    <div class="prev" v-if="page > 0">
+      <button @click="prev">
+        <ArrowLeftIcon /> Forrige
+      </button>
     </div>
+    <div class="flex-grow"></div>
+    <div class="next">
+      <button @click="next" v-if="page < pageTotal - 1">
+        Næste
+        <ArrowRightIcon />
+      </button>
+      <div>Side {{page + 1}} af {{pageTotal}}</div>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -28,8 +28,8 @@ import ArrowRightIcon from '../icons/ArrowRightIcon.vue';
   }
 })
 export default class SearchPagination extends Vue {
-  @Prop() page!: number;
-  @Prop() pageTotal!: number;
+  @Prop(Number) page!: number;
+  @Prop(Number) pageTotal!: number;
 
   prev() {
     if (this.page > 0) {

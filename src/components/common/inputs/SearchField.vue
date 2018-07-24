@@ -19,7 +19,7 @@ import SearchIcon from '../../icons/SearchIcon.vue';
   }
 })
 export default class SearchField extends Vue {
-  @Prop() value!: string;
+  @Prop(String) value!: string;
 
   valueChanged(value: string) {
     this.$emit('change', value);

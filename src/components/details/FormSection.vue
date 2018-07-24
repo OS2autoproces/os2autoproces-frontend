@@ -40,10 +40,10 @@ import WarningIcon from '@/components/icons/WarningIcon.vue';
   }
 })
 export default class FormSection extends Vue {
-  @Prop() heading!: string;
-  @Prop() alwaysOpen!: boolean;
-  @Prop() invalid!: boolean;
-  @Prop() disabled!: boolean;
+  @Prop(String) heading!: string;
+  @Prop(Boolean) alwaysOpen!: boolean;
+  @Prop(Boolean) invalid!: boolean;
+  @Prop(Boolean) disabled!: boolean;
 
   expand = false;
 
@@ -106,7 +106,7 @@ export default class FormSection extends Vue {
 }
 
 .section-content {
-  padding: $size-unit*2;
+  padding: $size-unit * 2;
   padding-top: 0;
 }
 </style>

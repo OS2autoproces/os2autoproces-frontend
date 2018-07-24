@@ -17,7 +17,7 @@ import Checkbox from '../common/inputs/Checkbox.vue';
   }
 })
 export default class SearchOption extends Vue {
-  @Prop() value!: boolean;
+  @Prop(Boolean) value!: boolean;
 }
 </script>
 

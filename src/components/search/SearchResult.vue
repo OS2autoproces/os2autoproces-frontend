@@ -59,8 +59,8 @@ import { DomainLabels } from '../../models/domain';
   }
 })
 export default class SearchResult extends Vue {
-  @Prop() process!: SearchResultProcess;
-  @Prop() bookmarked!: boolean;
+  @Prop(Object) process!: SearchResultProcess;
+  @Prop(Boolean) bookmarked!: boolean;
 
   StatusLabels = StatusLabels;
   DomainLabels = DomainLabels;

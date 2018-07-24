@@ -12,14 +12,14 @@ import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 export default class SelectionField<T extends any> extends Vue {
   searchQuery = '';
 
-  @Prop({ type: [Boolean, Object, String, Array] })
+  @Prop([Boolean, Object, String, Array])
   value!: T;
-  @Prop({ default: 'keyboard_arrow_down' })
+  @Prop({ default: 'keyboard_arrow_down', type: String })
   iconName!: string;
-  @Prop() items!: T[];
-  @Prop() itemText!: string;
-  @Prop() placeholder!: string;
-  @Prop() disabled!: boolean;
+  @Prop(Array) items!: T[];
+  @Prop(String) itemText!: string;
+  @Prop(String) placeholder!: string;
+  @Prop(Boolean) disabled!: boolean;
 
   private get _items(): T[] {
     let items: T[] = [];

@@ -26,8 +26,8 @@ import { Attachment } from '@/store/modules/process/state';
   }
 })
 export default class AttachmentUpload extends Vue {
-  @Prop() attachments!: Attachment[];
-  @Prop() disabled!: boolean;
+  @Prop(Array) attachments!: Attachment[];
+  @Prop(Boolean) disabled!: boolean;
 
   addFiles(files: FileList) {
     this.$emit('add', Array.from(files));

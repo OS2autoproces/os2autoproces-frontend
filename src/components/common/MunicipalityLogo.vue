@@ -17,7 +17,7 @@ import MunicipalityLogo from '@/components/icons/MunicipalityLogo.vue';
 export default class MunicipalityLogoComponent extends Vue {
   showDefault = false;
 
-  @Prop() src!: string;
+  @Prop(String) src!: string;
 
   @Watch('src')
   changed() {

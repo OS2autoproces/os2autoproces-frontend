@@ -16,12 +16,12 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 
 @Component
 export default class TextArea extends Vue {
-  @Prop() value!: string;
-  @Prop() maxLength!: number;
-  @Prop() disabled!: boolean;
-  @Prop() placeholder!: string;
-  @Prop() noResize!: boolean;
-  @Prop() twoColumnBreakpoint!: number;
+  @Prop(String) value!: string;
+  @Prop(Number) maxLength!: number;
+  @Prop(Boolean) disabled!: boolean;
+  @Prop(String) placeholder!: string;
+  @Prop(Boolean) noResize!: boolean;
+  @Prop(Number) twoColumnBreakpoint!: number;
 
   currentLength = 0;
 

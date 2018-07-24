@@ -15,9 +15,9 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 
 @Component
 export default class InputField extends Vue {
-  @Prop() value!: string;
-  @Prop() placeholder!: string;
-  @Prop() disabled!: boolean;
+  @Prop(String) value!: string;
+  @Prop(String) placeholder!: string;
+  @Prop(Boolean) disabled!: boolean;
 
   valueChanged(event: any) {
     this.$emit('change', event.target.value);

@@ -22,8 +22,8 @@ import Checkbox from '@/components/common/inputs/Checkbox.vue';
   }
 })
 export default class Button extends Vue {
-  @Prop() value!: string;
-  @Prop() disabled!: boolean;
+  @Prop(String) value!: string;
+  @Prop(Boolean) disabled!: boolean;
 
   intervals = ['1', '2-5', '6-10', '10 +'];
 
