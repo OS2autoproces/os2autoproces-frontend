@@ -28,7 +28,7 @@ import StarIcon from '@/components/icons/StarIcon.vue';
 import EditIcon from '@/components/icons/EditIcon.vue';
 import InputField from '@/components/common/inputs/InputField.vue';
 import Button from '@/components/common/inputs/Button.vue';
-import MunicipalityLogo from '@/components/common/inputs/MunicipalityLogo.vue';
+import MunicipalityLogo from '@/components/common/MunicipalityLogo.vue';
 import Toggle from '@/components/common/inputs/Toggle.vue';
 import { authGetterTypes } from '@/store/modules/auth/getters';
 import { authActionTypes } from '@/store/modules/auth/actions';
