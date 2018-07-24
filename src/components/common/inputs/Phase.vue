@@ -1,25 +1,25 @@
 <template>
-    <div class="phase" @click="clicked" :class="{ reverse, disabled, small, selected }">
-        <div class="text">{{ PhaseLabels[phase] }}</div>
-        <div class="angled-line-container">
-            <div class="angled-line"></div>
-        </div>
-        <div class="horizontal-line"></div>
-        <div class="circle"></div>
+  <div class="phase" @click="clicked" :class="{ reverse, disabled, small, selected }">
+    <div class="text">{{ PhaseLabels[phase] }}</div>
+    <div class="angled-line-container">
+      <div class="angled-line"></div>
     </div>
+    <div class="horizontal-line"></div>
+    <div class="circle"></div>
+  </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
-import {Phase, PhaseLabels} from "@/models/phase";
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Phase, PhaseLabels } from '@/models/phase';
 
 @Component
 export default class PhaseComponent extends Vue {
-  @Prop({type: String}) phase!: Phase;
-  @Prop({type: String}) value!: Phase;
-  @Prop() reverse!: boolean;
-  @Prop() disabled!: boolean;
-  @Prop() small!: boolean;
+  @Prop(String) phase!: Phase;
+  @Prop(String) value!: Phase;
+  @Prop(Boolean) reverse!: boolean;
+  @Prop(Boolean) disabled!: boolean;
+  @Prop(Boolean) small!: boolean;
 
   PhaseLabels = PhaseLabels;
 
@@ -29,14 +29,14 @@ export default class PhaseComponent extends Vue {
 
   clicked() {
     if (!this.disabled) {
-      this.$emit("select", this.phase);
+      this.$emit('select', this.phase);
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import "../../../styles/variables.scss";
+@import '../../../styles/variables.scss';
 
 .phase {
   position: relative;
@@ -51,8 +51,8 @@ export default class PhaseComponent extends Vue {
 
   &.small {
     .circle {
-        height: 23px;
-        width: 23px;
+      height: 23px;
+      width: 23px;
     }
   }
 }
