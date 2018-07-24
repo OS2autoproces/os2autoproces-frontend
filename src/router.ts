@@ -9,10 +9,6 @@ import { UserRole, User } from '@/store/modules/auth/state';
 
 Vue.use(Router);
 
-function redirectToLogin() {
-  window.location.href = `${window.autoProcessConfiguration.apiUrl}/saml/login`;
-}
-
 function validateAuth(isValid: (user: User | null) => boolean) {
   return async (to: Route, from: Route, next: any) => {
     if (isValid(store.state.auth.user)) {
@@ -23,7 +19,7 @@ function validateAuth(isValid: (user: User | null) => boolean) {
       if (isValid(store.state.auth.user)) {
         next();
       } else {
-        redirectToLogin();
+        window.location.href = `${window.autoProcessConfiguration.apiUrl}/saml/login`;
       }
     }
   };
