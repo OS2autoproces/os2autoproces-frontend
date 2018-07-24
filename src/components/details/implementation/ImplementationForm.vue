@@ -1,5 +1,5 @@
 <template>
-  <FormSection v-if="minPhase(PhaseKeys.DEVELOPMENT)" heading="Udvikling og implementering" id="implementation" :disabled="state.disabled.implementationEdit" @edit="update({disabled: {implementationEdit: $event}})">
+  <FormSection :invalid="isImplementationValid" v-if="minPhase(PhaseKeys.DEVELOPMENT)" heading="Udvikling og implementering" id="implementation" :disabled="state.disabled.implementationEdit" @edit="update({disabled: {implementationEdit: $event}})">
 
     <div v-if="minPhase(PhaseKeys.IMPLEMENTATION)">
       <h2>Teknisk implementering</h2>
@@ -44,6 +44,8 @@ export default class ImplementationForm extends Vue {
   @Action(processActionTypes.UPDATE) update: any;
   @Action(processActionTypes.ADD_TECHNOLOGY) addTechnology: any;
   @Action(processActionTypes.REMOVE_TECHNOLOGY) removeTechnology: any;
+
+  @Getter(processGetterTypes.IS_IMPLEMENTATION_VALID) isImplementationValid!: any;
   @Getter(processGetterTypes.MIN_PHASE) minPhase!: (phase: Phase) => boolean;
 
   PhaseKeys = PhaseKeys;

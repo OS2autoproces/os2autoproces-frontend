@@ -43,6 +43,14 @@
         </div>
       </div>
     </div>
+    <SnackBar :timeout="0" color="error" :value="snack" @clicked="updateProcessErrors({processErrors: []})">
+      <div>
+        <p>Kunne ikke gemme, følgende felter er invalide:</p>
+        <p v-for="field in errors" :key="field">
+          {{field}}
+        </p>
+      </div>
+    </SnackBar>
   </div>
 </template>
 
@@ -71,6 +79,11 @@ import AttachmentsForm from '@/components/details/attachments/AttachmentsForm.vu
 import OperationForm from '@/components/details/operation/OperationForm.vue';
 import ArrowLeftIcon from '@/components/icons/ArrowLeftIcon.vue';
 import EditIcon from '@/components/icons/EditIcon.vue';
+import { errorActionTypes } from '@/store/modules/error/actions';
+import { ErrorState } from '@/store/modules/error/state';
+import SnackBar from '@/components/common/SnackBar.vue';
+import { isEmpty } from 'lodash';
+import store from '@/store/store';
 
 @Component({
   components: {
@@ -91,6 +104,7 @@ import EditIcon from '@/components/icons/EditIcon.vue';
     Button,
     ArrowLeftIcon,
     EditIcon,
+    SnackBar,
     InternalNotes
   }
 })
@@ -105,9 +119,18 @@ export default class Details extends Vue {
   @Action(processActionTypes.LOAD_COMMENTS) loadComments!: () => Promise<void>;
   @Action(commonActionTypes.LOAD_IT_SYSTEMS) loadItSystems!: () => Promise<void>;
   @Action(commonActionTypes.LOAD_KLES) loadKles!: () => Promise<void>;
+  @Action(errorActionTypes.UPDATE_PROCESS_ERRORS) updateProcessErrors!: (processErrors: Partial<ErrorState>) => void;
 
   get state() {
-    return this.$store.state.process;
+    return store.state.process;
+  }
+
+  get errors() {
+    return store.state.error.processErrors;
+  }
+
+  get snack() {
+    return !isEmpty(this.$store.state.error.processErrors);
   }
 
   beforeCreate() {
