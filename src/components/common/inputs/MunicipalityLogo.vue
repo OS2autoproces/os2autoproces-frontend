@@ -1,21 +1,43 @@
 <template>
-    <img :src="src" @error="src = '/logos/placeholder.png'" alt="Kommune logo" class="image">
+    <div>
+        <img v-if="!showDefault" :src="src" @error="showDefault = true" alt="Kommune logo" class="image">
+        <MunicipalityLogo class="logo" v-if="showDefault" />
+    </div>
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator';
+import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
+import MunicipalityLogo from '@/components/icons/MunicipalityLogo.vue';
 
-@Component
+@Component({
+  components: {
+    MunicipalityLogo
+  }
+})
 export default class MunicipalityLogoComponent extends Vue {
-  @Prop()
-  src!: string;
+  @Prop() src!: string;
+  @Watch('src')
+  changed() {
+    this.showDefault = false;
+  }
+
+  showDefault = false;
+
+  mounted() {
+    this.showDefault = false;
+  }
 }
 </script>
 
 <style scoped lang="scss">
 @import '@/styles/variables.scss';
-    .image {
-        height: 85px;
-        margin: $size-unit/2;
-    }
+.image {
+  height: 85px;
+  margin: $size-unit/2;
+}
+
+.logo {
+  width: 200px;
+  height: 85px;
+}
 </style>
