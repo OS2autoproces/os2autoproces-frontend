@@ -10,7 +10,7 @@
       </div>
 
       <div class="flex-grow"></div>
-      <img src="https://www.syddjurs.dk/sites/all/themes/custom/site/dist/img/logo.png" alt="Kommune logo">
+      <MunicipalityLogo :src="logo"/>
     </div>
     <div class="row">
       <Button class="button" @click="remove">Slet proces</Button>
@@ -28,6 +28,7 @@ import StarIcon from '@/components/icons/StarIcon.vue';
 import EditIcon from '@/components/icons/EditIcon.vue';
 import InputField from '@/components/common/inputs/InputField.vue';
 import Button from '@/components/common/inputs/Button.vue';
+import MunicipalityLogo from '@/components/common/MunicipalityLogo.vue';
 import Toggle from '@/components/common/inputs/Toggle.vue';
 import { authGetterTypes } from '@/store/modules/auth/getters';
 import { authActionTypes } from '@/store/modules/auth/actions';
@@ -40,7 +41,8 @@ import { ProcessState } from '@/store/modules/process/state';
     EditIcon,
     InputField,
     Toggle,
-    Button
+    Button,
+    MunicipalityLogo
   }
 })
 export default class DetailsHeader extends Vue {
@@ -51,6 +53,10 @@ export default class DetailsHeader extends Vue {
 
   get state() {
     return this.$store.state.process;
+  }
+
+  get logo() {
+    return '/logos/' + this.$store.state.process.cvr + '.png';
   }
 
   toggleEdit() {
