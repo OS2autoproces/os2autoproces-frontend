@@ -5,12 +5,26 @@ import { StatusKeys } from '@/models/status';
 import { TypeKeys } from '@/models/types';
 import { VisibilityKeys } from '@/models/visibility';
 import { HTTP } from '@/services/http-service';
-import { ProcessRequest, ProcessResponse, responseToState, stateToRequest } from '@/services/process-converter';
+import {
+  ProcessRequest,
+  ProcessResponse,
+  responseToState,
+  stateToRequest
+} from '@/services/process-converter';
 import { User } from '@/store/modules/auth/state';
 import { errorActionTypes } from '@/store/modules/error/actions';
-import { processFieldsValidators, sectionValidation } from '@/store/modules/process/getters';
+import {
+  processFieldsValidators,
+  sectionValidation
+} from '@/store/modules/process/getters';
 import { processMutationTypes } from '@/store/modules/process/mutations';
-import { Attachment, ITSystem, Process, ProcessState, Technology } from '@/store/modules/process/state';
+import {
+  Attachment,
+  ITSystem,
+  Process,
+  ProcessState,
+  Technology
+} from '@/store/modules/process/state';
 import { RootState } from '@/store/store';
 import { ActionTree } from 'vuex';
 
@@ -84,7 +98,9 @@ export const actions: ActionTree<ProcessState, RootState> = {
       return;
     }
 
-    const attachments = (await HTTP.get<Attachment[]>(`/api/attachments/${state.id}`)).data;
+    const attachments = (await HTTP.get<Attachment[]>(
+      `/api/attachments/${state.id}`
+    )).data;
 
     commit(processMutationTypes.ASSIGN, { attachments });
   },
@@ -105,12 +121,18 @@ export const actions: ActionTree<ProcessState, RootState> = {
     }
 
     try {
-      const attachments = (await HTTP.post<Attachment[]>(`/api/attachments/${state.id}`, form)).data;
+      const attachments = (await HTTP.post<Attachment[]>(
+        `/api/attachments/${state.id}`,
+        form
+      )).data;
       if (!state.attachments) {
         return;
       }
       commit(processMutationTypes.ASSIGN, {
-        attachments: [...state.attachments.filter(a => !placeholders.includes(a)), ...attachments]
+        attachments: [
+          ...state.attachments.filter(a => !placeholders.includes(a)),
+          ...attachments
+        ]
       });
     } catch {
       if (!state.attachments) {
@@ -133,14 +155,18 @@ export const actions: ActionTree<ProcessState, RootState> = {
   },
 
   async saveComment({ commit, state }, message: string): Promise<void> {
-    const comment = (await HTTP.put<Comment>(`api/comments/${state.id}`, message)).data;
+    const comment = (await HTTP.put<Comment>(
+      `api/comments/${state.id}`,
+      message
+    )).data;
 
     commit(processMutationTypes.ASSIGN, {
       comments: [...state.comments, comment]
     });
   },
   async loadComments({ commit, state }) {
-    const comments = (await HTTP.get<Comment[]>(`api/comments/${state.id}`)).data;
+    const comments = (await HTTP.get<Comment[]>(`api/comments/${state.id}`))
+      .data;
     commit(processMutationTypes.ASSIGN, { comments });
   },
 
@@ -174,19 +200,26 @@ export const actions: ActionTree<ProcessState, RootState> = {
       return;
     }
 
-    const process = (await HTTP.get<ProcessResponse>(`api/processes/${id}?projection=extended`)).data;
+    const process = (await HTTP.get<ProcessResponse>(
+      `api/processes/${id}?projection=extended`
+    )).data;
 
     commit(processMutationTypes.ASSIGN, responseToState(process));
   },
   async report({ commit, state }): Promise<string | null> {
     const converted: ProcessRequest = await stateToRequest(state);
-    const response = (await HTTP.post<ProcessResponse>(`api/processes`, converted)).data;
+    const response = (await HTTP.post<ProcessResponse>(
+      `api/processes`,
+      converted
+    )).data;
     const process = responseToState(response);
     await commit(processMutationTypes.UPDATE, setBackendManagedFields(process));
     return process.id;
   },
   async copyProcess({ commit, state }): Promise<string> {
-    const response = await HTTP.post<ProcessResponse>(`api/processes/${state.id}/copy`);
+    const response = await HTTP.post<ProcessResponse>(
+      `api/processes/${state.id}/copy`
+    );
 
     // Process has already been copied
     if (response.status === 400) {
@@ -199,13 +232,23 @@ export const actions: ActionTree<ProcessState, RootState> = {
     return process.id;
   },
   async save({ commit, state, dispatch }) {
-    const invalidFields = sectionValidation(state, Object.keys(processFieldsValidators));
+    const invalidFields = sectionValidation(
+      state,
+      Object.keys(processFieldsValidators)
+    );
 
     if (invalidFields) {
-      dispatch(errorActionTypes.UPDATE_PROCESS_ERRORS, { processErrors: invalidFields }, { root: true });
+      dispatch(
+        errorActionTypes.UPDATE_PROCESS_ERRORS,
+        { processErrors: invalidFields },
+        { root: true }
+      );
     } else {
       const converted = await stateToRequest(state);
-      const response = await HTTP.put<ProcessResponse>(`api/processes/${state.id}`, converted);
+      const response = await HTTP.put<ProcessResponse>(
+        `api/processes/${state.id}`,
+        converted
+      );
 
       const process = responseToState(response.data);
       // TODO: notify update
@@ -219,18 +262,24 @@ export const actions: ActionTree<ProcessState, RootState> = {
     if (!state.itSystems || state.itSystems.some(s => itSystem === s)) {
       return;
     }
-    commit(processMutationTypes.ASSIGN, { itSystems: [...state.itSystems, itSystem] });
+    commit(processMutationTypes.ASSIGN, {
+      itSystems: [...state.itSystems, itSystem]
+    });
   },
   addDomain({ commit, state }, domain: string) {
-    commit(processMutationTypes.ASSIGN, { domains: [...state.domains, domain] });
+    commit(processMutationTypes.ASSIGN, {
+      domains: [...state.domains, domain]
+    });
   },
-  async setEmailNotification({ commit, state }, emailNotification: boolean) {
+  async setEmailNotification({ commit, state }) {
     const url = `api/notifications/${state.id}`;
-    const method = emailNotification ? HTTP.delete : HTTP.put;
+    const method = state.emailNotification ? HTTP.delete : HTTP.put;
 
     await method(url);
 
-    commit(processMutationTypes.UPDATE, { emailNotification });
+    commit(processMutationTypes.UPDATE, {
+      emailNotification: !state.emailNotification
+    });
   }
 };
 
