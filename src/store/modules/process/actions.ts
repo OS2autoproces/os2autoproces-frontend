@@ -8,7 +8,7 @@ import { HTTP } from '@/services/http-service';
 import { ProcessRequest, ProcessResponse, responseToState, stateToRequest } from '@/services/process-converter';
 import { User } from '@/store/modules/auth/state';
 import { errorActionTypes } from '@/store/modules/error/actions';
-import { processFieldsValidators, sectionValidation } from '@/store/modules/process/getters';
+import { sectionValidation } from '@/store/modules/process/getters';
 import { processMutationTypes } from '@/store/modules/process/mutations';
 import { Attachment, ITSystem, Process, ProcessState, Technology } from '@/store/modules/process/state';
 import { RootState } from '@/store/store';
@@ -199,7 +199,7 @@ export const actions: ActionTree<ProcessState, RootState> = {
     return process.id;
   },
   async save({ commit, state, dispatch }) {
-    const invalidFields = sectionValidation(state, Object.keys(processFieldsValidators));
+    const invalidFields = sectionValidation(state, Object.keys(state));
 
     if (invalidFields) {
       dispatch(errorActionTypes.UPDATE_PROCESS_ERRORS, { processErrors: invalidFields }, { root: true });

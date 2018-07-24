@@ -9,12 +9,10 @@ import {
   timeAndProcessLabels
 } from '@/store/modules/error/actions';
 import { namespace } from '@/store/modules/process/actions';
-import { ProcessState } from '@/store/modules/process/state';
-import { RootState } from '@/store/store';
+import { Process, ProcessState } from '@/store/modules/process/state';
 import { isEmpty } from 'lodash';
 import { DateTime } from 'luxon';
 import * as validateJs from 'validate.js';
-import { GetterTree } from 'vuex';
 
 export const processGetterTypes = {
   IS_GERNERAL_INFORMATION_VALID: `${namespace}/isGeneralInformationValid`,
@@ -52,192 +50,173 @@ function isValid(value: any, constraints: any): boolean {
   return !validateJs({ value }, { value: constraints });
 }
 
-function constructFunctionName(prop: string) {
-  return 'is' + prop.replace(prop.charAt(0), prop.charAt(0).toUpperCase()) + 'Valid';
-}
-
-function getPropName(getter: string): string {
-  const match = getter.match(/^is([a-z]+)Valid$/);
-  const prop = match ? match[1] : getter;
-  return prop.replace(prop.charAt(0), prop.charAt(0).toLowerCase());
-}
-
-export const processFieldsValidators = {
-  minPhase(state: ProcessState) {
-    return (phase: Phase) => PhaseOrder.indexOf(phase) <= PhaseOrder.indexOf(state.phase);
-  },
-  isLocalIdValid(state: ProcessState): boolean {
+export const processFieldsValidators: { [P in keyof Process]?: (state: ProcessState) => boolean } = {
+  localId(state: ProcessState) {
     return isValid(state.localId, isMinMax(1, 64));
   },
-  isKlIdValid(state: ProcessState): boolean {
+  klId(state: ProcessState) {
     return isValid(state.klId, isMinMax(1, 64));
   },
-  isPhaseValid(state: ProcessState): boolean {
+  phase(state: ProcessState) {
     return state.phase !== null;
   },
-  isStatusValid(state: ProcessState): boolean {
+  status(state: ProcessState) {
     return state.status !== null;
   },
-  isStatusTextValid(state: ProcessState): boolean {
+  statusText(state: ProcessState) {
     return isValid(state.statusText, isMinMax(0, 1200));
   },
-  isTitleValid(state: ProcessState): boolean {
-    return isValid(state.title ? state.title : false, isMinMax(1, 50));
+  title(state: ProcessState) {
+    return isValid(state.title, isMinMax(1, 50));
   },
-  isShortDescriptionValid(state: ProcessState): boolean {
+  shortDescription(state: ProcessState) {
     return isValid(state.shortDescription, isMinMax(1, 140));
   },
-  isLongDescriptionValid(state: ProcessState): boolean {
+  longDescription(state: ProcessState) {
     return isValid(state.longDescription, isMinMax(0, 1200));
   },
-  isVisibilityValid(state: ProcessState): boolean {
+  visibility(state: ProcessState) {
     return !isEmpty(state.visibility);
   },
-  isContactValid(state: ProcessState): boolean {
+  contact(state: ProcessState) {
     return !isEmpty(state.contact);
   },
-  isLegalClauseValid(state: ProcessState): boolean {
+  legalClause(state: ProcessState) {
     return isValid(state.legalClause, isMinMax(0, 140));
   },
-  isKleValid(state: ProcessState): boolean {
+  kle(state: ProcessState) {
     return !isEmpty(state.kle);
   },
-  isKlaValid(state: ProcessState): boolean {
+  kla(state: ProcessState) {
     return isValid(state.kla, isMinMax(1, 16));
   },
-  isProcessChallengesValid(state: ProcessState): boolean {
+  processChallenges(state: ProcessState) {
     return isValid(state.processChallenges, isMinMax(1, 1200));
   },
-  isSolutionRequestsValid(state: ProcessState): boolean {
+  solutionRequests(state: ProcessState) {
     return isValid(state.solutionRequests, isMinMax(1, 2400));
   },
-  isTimeSpendOccurancesPerEmployeeValid(state: ProcessState): boolean {
-    return state.phase === PhaseKeys.IDEA ? true : isValid(state.timeSpendOccurancesPerEmployee, isNonempty);
+  timeSpendOccurancesPerEmployee(state: ProcessState) {
+    return state.phase === PhaseKeys.IDEA || isValid(state.timeSpendOccurancesPerEmployee, isNonempty);
   },
-  isTimeSpendPerOccurranceValid(state: ProcessState) {
-    return state.phase === PhaseKeys.IDEA ? true : isValid(state.timeSpendPerOccurance, isNonempty);
+  timeSpendPerOccurance(state: ProcessState) {
+    return state.phase === PhaseKeys.IDEA || isValid(state.timeSpendPerOccurance, isNonempty);
   },
-  isTimeSpendEmployeesDoingProcessValid(state: ProcessState): boolean {
-    return state.phase === PhaseKeys.IDEA ? true : isValid(state.timeSpendEmployeesDoingProcess, isNonempty);
+  timeSpendEmployeesDoingProcess(state: ProcessState) {
+    return state.phase === PhaseKeys.IDEA || isValid(state.timeSpendEmployeesDoingProcess, isNonempty);
   },
-  isTimeSpendPercentageDigital(state: ProcessState): boolean {
-    return state.phase === PhaseKeys.IDEA ? true : isValid(Number(state.timeSpendPercentageDigital), isBetween(0, 100));
+  timeSpendPercentageDigital(state: ProcessState) {
+    return state.phase === PhaseKeys.IDEA || isValid(Number(state.timeSpendPercentageDigital), isBetween(0, 100));
   },
-  isTimeSpendCommentValid(state: ProcessState): boolean {
+  timeSpendComment(state: ProcessState) {
     return isValid(state.timeSpendComment, isMinMax(0, 300));
   },
-  isLevelOfProfessionalAssessmentValid(state: ProcessState): boolean {
-    return state.phase === PhaseKeys.IDEA ? true : !isEmpty(state.levelOfProfessionalAssessment);
+  levelOfProfessionalAssessment(state: ProcessState) {
+    return state.phase === PhaseKeys.IDEA || !isEmpty(state.levelOfProfessionalAssessment);
   },
-  isLevelOfChangeValid(state: ProcessState): boolean {
-    return state.phase === PhaseKeys.IDEA ? true : !isEmpty(state.levelOfChange);
+  levelOfChange(state: ProcessState) {
+    return state.phase === PhaseKeys.IDEA || !isEmpty(state.levelOfChange);
   },
-  isLevelOfStructuredInformationValid(state: ProcessState): boolean {
-    return state.phase === PhaseKeys.IDEA ? true : !isEmpty(state.levelOfStructuredInformation);
+  levelOfStructuredInformation(state: ProcessState) {
+    return state.phase === PhaseKeys.IDEA || !isEmpty(state.levelOfStructuredInformation);
   },
-  isLevelOfUniformityValid(state: ProcessState): boolean {
-    return state.phase === PhaseKeys.IDEA ? true : !isEmpty(state.levelOfUniformity);
+  levelOfUniformity(state: ProcessState) {
+    return state.phase === PhaseKeys.IDEA || !isEmpty(state.levelOfUniformity);
   },
-  isLevelOfDigitalInformationValid(state: ProcessState): boolean {
-    return state.phase === PhaseKeys.IDEA ? true : !isEmpty(state.levelOfDigitalInformation);
+  levelOfDigitalInformation(state: ProcessState) {
+    return state.phase === PhaseKeys.IDEA || !isEmpty(state.levelOfDigitalInformation);
   },
-  isLevelOfQualityValid({ phase, levelOfQuality }: ProcessState): boolean {
-    return phase === PhaseKeys.IDEA ? true : !isEmpty(levelOfQuality);
+  levelOfQuality({ phase, levelOfQuality }: ProcessState) {
+    return phase === PhaseKeys.IDEA || !isEmpty(levelOfQuality);
   },
-  isLevelOfRoutineWorkReductionValid(state: ProcessState): boolean {
-    return state.phase === PhaseKeys.IDEA ? true : !isEmpty(state.levelOfRoutineWorkReduction);
+  levelOfRoutineWorkReduction(state: ProcessState) {
+    return state.phase === PhaseKeys.IDEA || !isEmpty(state.levelOfRoutineWorkReduction);
   },
-  isLevelOfSpeedValid({ phase, levelOfSpeed }: ProcessState): boolean {
-    return phase === PhaseKeys.IDEA ? true : !isEmpty(levelOfSpeed);
+  levelOfSpeed({ phase, levelOfSpeed }: ProcessState) {
+    return phase === PhaseKeys.IDEA || !isEmpty(levelOfSpeed);
   },
-  isEvaluatedLevelOfRoiValid({ phase, evaluatedLevelOfRoi }: ProcessState): boolean {
-    return phase === PhaseKeys.IDEA ? true : !isEmpty(evaluatedLevelOfRoi);
+  evaluatedLevelOfRoi({ phase, evaluatedLevelOfRoi }: ProcessState) {
+    return phase === PhaseKeys.IDEA || !isEmpty(evaluatedLevelOfRoi);
   },
-  isEsdhReferenceValid({ phase, esdhReference }: ProcessState): boolean {
-    return phase === PhaseKeys.IDEA || phase === PhaseKeys.PREANALYSIS
-      ? true
-      : isValid(esdhReference, isMinMax(1, 300));
+  esdhReference({ phase, esdhReference }: ProcessState) {
+    return phase === PhaseKeys.IDEA || phase === PhaseKeys.PREANALYSIS || isValid(esdhReference, isMinMax(1, 300));
   },
-  isOwnerValid({ phase, owner }: ProcessState): boolean {
-    return phase === PhaseKeys.IDEA || phase === PhaseKeys.PREANALYSIS ? true : !isEmpty(owner);
+  owner({ phase, owner }: ProcessState) {
+    return phase === PhaseKeys.IDEA || phase === PhaseKeys.PREANALYSIS || !isEmpty(owner);
   },
-  isVendorValid({ phase, vendor }: ProcessState): boolean {
-    return phase === PhaseKeys.IDEA || phase === PhaseKeys.PREANALYSIS || phase === PhaseKeys.SPECIFICATION
-      ? true
-      : !isEmpty(vendor);
-  },
-  isTechnologiesValid({ phase, technologies }: ProcessState): boolean {
-    return phase === PhaseKeys.IDEA || phase === PhaseKeys.PREANALYSIS || phase === PhaseKeys.SPECIFICATION
-      ? true
-      : technologies.length > 0;
-  },
-  isTechnicalImplementationNotesValid({ phase, technicalImplementationNotes }: ProcessState): boolean {
-    return phase === PhaseKeys.IDEA ||
+  vendor({ phase, vendor }: ProcessState) {
+    return (
+      phase === PhaseKeys.IDEA ||
       phase === PhaseKeys.PREANALYSIS ||
       phase === PhaseKeys.SPECIFICATION ||
-      phase === PhaseKeys.DEVELOPMENT
-      ? true
-      : isValid(technicalImplementationNotes, isMinMax(1, 3000));
+      !isEmpty(vendor)
+    );
   },
-  isOrganizationalImplementationNotesValid({ phase, organizationalImplementationNotes }: ProcessState): boolean {
-    return phase === PhaseKeys.IDEA ||
+  technologies({ phase, technologies }: ProcessState) {
+    return (
+      phase === PhaseKeys.IDEA ||
       phase === PhaseKeys.PREANALYSIS ||
       phase === PhaseKeys.SPECIFICATION ||
-      phase === PhaseKeys.DEVELOPMENT
-      ? true
-      : isValid(organizationalImplementationNotes, isMinMax(1, 3000));
+      technologies.length > 0
+    );
   },
-  isRatingValid({ phase, rating }: ProcessState): boolean {
-    return phase === PhaseKeys.IDEA ||
+  technicalImplementationNotes({ phase, technicalImplementationNotes }: ProcessState) {
+    return (
+      phase === PhaseKeys.IDEA ||
       phase === PhaseKeys.PREANALYSIS ||
       phase === PhaseKeys.SPECIFICATION ||
       phase === PhaseKeys.DEVELOPMENT ||
-      phase === PhaseKeys.IMPLEMENTATION
-      ? true
-      : isValid(rating, isBetween(1, 3));
+      isValid(technicalImplementationNotes, isMinMax(1, 3000))
+    );
   },
-  isRatingCommentValid({ phase, ratingComment }: ProcessState): boolean {
-    return phase === PhaseKeys.IDEA ||
+  organizationalImplementationNotes({ phase, organizationalImplementationNotes }: ProcessState) {
+    return (
+      phase === PhaseKeys.IDEA ||
       phase === PhaseKeys.PREANALYSIS ||
       phase === PhaseKeys.SPECIFICATION ||
       phase === PhaseKeys.DEVELOPMENT ||
-      phase === PhaseKeys.IMPLEMENTATION
-      ? true
-      : isValid(ratingComment, isMinMax(1, 1200));
+      isValid(organizationalImplementationNotes, isMinMax(1, 3000))
+    );
   },
-  isLegalClauseLastVerifiedValid({ phase, legalClauseLastVerified }: ProcessState): boolean {
-    if (legalClauseLastVerified) {
-      const date = DateTime.fromISO(legalClauseLastVerified).isValid;
-      return phase === PhaseKeys.IDEA ||
-        phase === PhaseKeys.PREANALYSIS ||
-        phase === PhaseKeys.SPECIFICATION ||
-        phase === PhaseKeys.DEVELOPMENT ||
-        phase === PhaseKeys.IMPLEMENTATION
-        ? true
-        : date;
+  rating({ phase, rating }: ProcessState) {
+    return (
+      phase === PhaseKeys.IDEA ||
+      phase === PhaseKeys.PREANALYSIS ||
+      phase === PhaseKeys.SPECIFICATION ||
+      phase === PhaseKeys.DEVELOPMENT ||
+      phase === PhaseKeys.IMPLEMENTATION ||
+      isValid(rating, isBetween(1, 3))
+    );
+  },
+  ratingComment({ phase, ratingComment }: ProcessState) {
+    return (
+      phase === PhaseKeys.IDEA ||
+      phase === PhaseKeys.PREANALYSIS ||
+      phase === PhaseKeys.SPECIFICATION ||
+      phase === PhaseKeys.DEVELOPMENT ||
+      phase === PhaseKeys.IMPLEMENTATION ||
+      isValid(ratingComment, isMinMax(1, 1200))
+    );
+  },
+  legalClauseLastVerified({ phase, legalClauseLastVerified }: ProcessState) {
+    if (!legalClauseLastVerified) {
+      return true;
     }
-    return true;
+
+    return (
+      phase === PhaseKeys.IDEA ||
+      phase === PhaseKeys.PREANALYSIS ||
+      phase === PhaseKeys.SPECIFICATION ||
+      phase === PhaseKeys.DEVELOPMENT ||
+      phase === PhaseKeys.IMPLEMENTATION ||
+      DateTime.fromISO(legalClauseLastVerified).isValid
+    );
   },
-  isInternalNotesValid({ internalNotes }: ProcessState): boolean {
+  internalNotes({ internalNotes }: ProcessState) {
     return !!internalNotes;
   },
-  isDomainsValid(state: ProcessState): boolean {
-    return true;
-  },
-  isItSystemsValid(state: ProcessState): boolean {
-    return true;
-  },
-  isTimeSpendPerOccuranceValid(state: ProcessState) {
-    return !isEmpty(state.timeSpendOccurancesPerEmployee);
-  },
-  isTimeSpendPercentageDigitalValid(state: ProcessState) {
-    return !isEmpty(state.timeSpendPercentageDigital);
-  },
-  isTimeSpendComputedTotalValid(state: ProcessState) {
+  timeSpendComputedTotal(state: ProcessState) {
     return !isEmpty(state.timeSpendComputedTotal);
-  },
-  isDecommissionedValid(state: ProcessState) {
-    return true; // never required
   }
 };
 
@@ -265,22 +244,17 @@ const sectionValidators = {
   }
 };
 
-export const getters: GetterTree<ProcessState, RootState> = {
+export const getters: { [key: string]: ((state: ProcessState) => any) | undefined } = {
+  minPhase(state: ProcessState) {
+    return (phase: Phase) => PhaseOrder.indexOf(phase) <= PhaseOrder.indexOf(state.phase);
+  },
   ...processFieldsValidators,
   ...sectionValidators
 };
 
-export function sectionValidation(state: ProcessState, propertyKeys: string[]): string[] {
-  const invalidProps: string[] = [];
-
-  propertyKeys.forEach((key: string) => {
-    let func = key;
-    if (typeof getters[func] !== 'function') {
-      func = constructFunctionName(func);
-    }
-    if (!getters[func](state, {}, {} as RootState, {})) {
-      invalidProps.push(getPropName(func));
-    }
+export function sectionValidation(state: ProcessState, properties: string[]): string[] {
+  return properties.filter(property => {
+    const validator = getters[property];
+    return validator && !validator(state);
   });
-  return invalidProps;
 }
