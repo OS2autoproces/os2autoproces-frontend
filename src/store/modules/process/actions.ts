@@ -265,14 +265,14 @@ export const actions: ActionTree<ProcessState, RootState> = {
       domains: [...state.domains, domain]
     });
   },
-  async setEmailNotification({ commit, state }) {
+  async setEmailNotification({ commit, state }, emailNotification: boolean) {
     const url = `api/notifications/${state.id}`;
-    const method = state.emailNotification ? HTTP.delete : HTTP.put;
-
+    const method = emailNotification ? HTTP.put : HTTP.delete;
+    
     await method(url);
-
+    
     commit(processMutationTypes.UPDATE, {
-      emailNotification: !state.emailNotification
+      emailNotification
     });
   }
 };

@@ -16,7 +16,7 @@
       <Button class="button" @click="remove">Slet proces</Button>
       <Button class="button" @click="copy">Kopier proces</Button>
       <div class="flex-grow"></div>
-      <Toggle :value="state.emailNotification" @change="setEmailNotification">Mail notifikation</Toggle>
+      <Toggle :value="state.emailNotification" @change="setEmailNotification($event)">Mail notifikation</Toggle>
     </div>
   </div>
 </template>
