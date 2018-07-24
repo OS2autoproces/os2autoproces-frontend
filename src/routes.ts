@@ -10,21 +10,17 @@ Vue.use(Router);
 
 async function requireAuth(to: Route, from: Route, next: any) {
   function proceed() {
-    // @ts-ignore
     if (store.state.auth.user) {
       next();
     } else {
-      window.location.href = `${
-        window.autoProcessConfiguration.apiUrl
-      }/saml/login`;
+      window.location.href = `${window.autoProcessConfiguration.apiUrl}/saml/login`;
     }
   }
-  // @ts-ignore
+
   if (!store.state.auth.user) {
     await store.dispatch('auth/loadUser');
 
     store.watch(
-      // @ts-ignore
       state => state.auth,
       user => {
         if (user) {
@@ -57,14 +53,14 @@ export const routes: RouteConfig[] = [
     props: true,
     beforeEnter: requireAuth
   },
-  { 
-    path: '/details/new/:phase', 
-    component: Details, 
+  {
+    path: '/details/new/:phase',
+    component: Details,
     props: true,
     beforeEnter: requireAuth
   },
-  { 
-    path: '/report', 
+  {
+    path: '/report',
     component: ReportProcess,
     beforeEnter: requireAuth
   },
