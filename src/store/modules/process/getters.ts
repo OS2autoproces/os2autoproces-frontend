@@ -8,11 +8,12 @@ import {
   specificationLabels,
   timeAndProcessLabels
 } from '@/store/modules/error/actions';
-import { namespace } from '@/store/modules/process/actions';
 import { Process, ProcessState } from '@/store/modules/process/state';
 import { isEmpty } from 'lodash';
 import { DateTime } from 'luxon';
 import * as validateJs from 'validate.js';
+
+const namespace = 'process';
 
 export const processGetterTypes = {
   IS_GERNERAL_INFORMATION_VALID: `${namespace}/isGeneralInformationValid`,
