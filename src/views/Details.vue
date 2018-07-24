@@ -59,7 +59,10 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 import { Action } from 'vuex-class';
 import NavBar from '../components/common/NavBar.vue';
 import InternalNotes from '@/components/common/inputs/InternalNotes.vue';
-import { processActionTypes, NewComment } from '@/store/modules/process/actions';
+import {
+  processActionTypes,
+  NewComment
+} from '@/store/modules/process/actions';
 import { Phase } from '@/models/phase';
 import { commonActionTypes } from '@/store/modules/common/actions';
 
@@ -114,11 +117,14 @@ export default class Details extends Vue {
 
   @Action(processActionTypes.SAVE) save: any;
   @Action(processActionTypes.UPDATE) update: any;
-  @Action(processActionTypes.SAVE_COMMENT) saveComment!: (message: string) => Promise<void>;
+  @Action(processActionTypes.SAVE_COMMENT)
+  saveComment!: (message: string) => Promise<void>;
   @Action(processActionTypes.LOAD_COMMENTS) loadComments!: () => Promise<void>;
-  @Action(commonActionTypes.LOAD_IT_SYSTEMS) loadItSystems!: () => Promise<void>;
+  @Action(commonActionTypes.LOAD_IT_SYSTEMS)
+  loadItSystems!: () => Promise<void>;
   @Action(commonActionTypes.LOAD_KLES) loadKles!: () => Promise<void>;
-  @Action(errorActionTypes.UPDATE_PROCESS_ERRORS) updateProcessErrors!: (processErrors: Partial<ErrorState>) => void;
+  @Action(errorActionTypes.UPDATE_PROCESS_ERRORS)
+  updateProcessErrors!: (processErrors: Partial<ErrorState>) => void;
 
   get state() {
     return store.state.process;
@@ -137,12 +143,18 @@ export default class Details extends Vue {
   }
 
   mounted() {
-    this.$store.dispatch(processActionTypes.LOAD_PROCESS_DETAILS, Number(this.id));
     this.loadItSystems();
     this.loadKles();
 
+    if (this.id) {
+      this.$store.dispatch(
+        processActionTypes.LOAD_PROCESS_DETAILS,
+        Number(this.id)
+      );
+    }
+
     if (this.phase) {
-      this.update({ phase: this.phase });
+      this.update({ phase: this.phase, canEdit: true });
     }
   }
 

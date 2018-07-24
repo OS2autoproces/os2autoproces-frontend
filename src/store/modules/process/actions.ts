@@ -369,7 +369,7 @@ export function initialProcessState() {
     comments: [],
     cvr: '',
     hasBookmarked: false,
-    canEdit: true,
+    canEdit: false,
 
     disabled: {
       titleEdit: true,
