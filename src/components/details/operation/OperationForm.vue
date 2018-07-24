@@ -1,16 +1,11 @@
 <template>
-    <FormSection heading="Drift" id="operation" :disabled="state.disabled.operationEdit" @edit="update({disabled: {operationEdit: $event}})">
+    <FormSection v-if="minPhase(PhaseKeys.IMPLEMENTATION)" heading="Drift" id="operation" :disabled="state.disabled.operationEdit" @edit="update({disabled: {operationEdit: $event}})">
         <div class="rating-wrapper" :class="{disabled: state.disabled.operationEdit}">
             <div>I hvor høj grad realiserer processen sit potentiale?</div>
             <Rating class="rating" @change="update({rating: $event})" :disabled="state.disabled.operationEdit" :value="state.rating" />
         </div>
 
         <Well>
-            <div>
-                <WellItem labelWidth="55%" label="Sidst opdateret">
-                    <DatePicker :value="state.lastChanged" disabled />
-                </WellItem>
-            </div>
             <div>
                 <WellItem labelWidth="55%" label="Sidst kontrolleret i forhold til §">
                     <DatePicker @change="update({legalClauseLastVerified: $event})" :disabled="state.disabled.operationEdit" :value="state.legalClauseLastVerified" />
@@ -33,13 +28,15 @@
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import TextArea from '@/components/common/inputs/TextArea.vue';
 import Rating from '@/components/common/inputs/Rating.vue';
-import { Action } from 'vuex-class';
+import { Action, Getter } from 'vuex-class';
 import DatePicker from '@/components/common/inputs/DatePicker.vue';
 import FormSection from '@/components/details/FormSection.vue';
 import InfoTooltip from '@/components/common/InfoTooltip.vue';
 import Well from '@/components/common/Well.vue';
 import WellItem from '@/components/common/WellItem.vue';
 import { processActionTypes } from '@/store/modules/process/actions';
+import { processGetterTypes } from '@/store/modules/process/getters';
+import { Phase, PhaseKeys } from '@/models/phase';
 
 @Component({
   components: {
@@ -54,6 +51,9 @@ import { processActionTypes } from '@/store/modules/process/actions';
 })
 export default class OperationForm extends Vue {
   @Action(processActionTypes.UPDATE) update: any;
+  @Getter(processGetterTypes.MIN_PHASE) minPhase!: (phase: Phase) => boolean;
+
+  PhaseKeys = PhaseKeys;
 
   get state() {
     return this.$store.state.process;
