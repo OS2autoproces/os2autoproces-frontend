@@ -99,21 +99,11 @@ function defaultZero(prop: any) {
   return prop ? Number(prop) : 0;
 }
 
-
-function getKla({ kla }: ProcessState) {
-  if (kla) {
-    return kla.endsWith('.')
-      ? kla.replace(kla.charAt(kla.length - 1), '')
-      : kla;
-  }
-  return null;
-}
-
 export function stateToRequest(state: ProcessState): ProcessRequest {
   return {
     localId: defaultNull(state.localId),
     klId: defaultNull(state.klId),
-    kla: getKla(state),
+    kla: state.kla || null,
     esdhReference: defaultNull(state.esdhReference),
     phase: state.phase || PhaseKeys.IDEA,
     status: state.status || StatusKeys.PENDING,

@@ -16,7 +16,7 @@
             <InputField :disabled="state.disabled.generalInformationEdit" :value="state.klId" @change="update({klId: $event})" />
           </WellItem>
           <WellItem labelWidth="120px" label="KLA:">
-            <MaskableInput :disabled="state.disabled.generalInformationEdit" returnMasked mask="##.##.##.##.##" :value="state.kla" @change="update({kla: $event})"/>
+            <MaskableInput :disabled="state.disabled.generalInformationEdit" mask="##.##.##.##.##" :value="state.kla" @change="update({kla: $event})"/>
           </WellItem>
         </div>
 
@@ -143,6 +143,11 @@ export default class GeneralInformationForm extends Vue {
 
   get kles() {
     return this.$store.state.common.kles;
+  }
+
+  setKla(kla: string) {
+    // Inserts periodes for every 2 characters, to match format: ##.##.##.##.##
+    this.update({kla: kla.replace(/(\d{2})(?=.)/g, '$1.')});
   }
 
   phaseChanged(phase: any) {
