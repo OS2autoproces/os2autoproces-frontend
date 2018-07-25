@@ -34,10 +34,10 @@
 
         <div>
           <WellItem labelWidth="120px" label="Fagområder:">
-            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.domains" :text="domainsText" @change="addDomain($event)" :items="domainLevels" />
+            <DomainsField :disabled="state.disabled.generalInformationEdit" :value="state.domains" @change="assign({domains: $event})" />
           </WellItem>
           <WellItem labelWidth="120px" label="Synlighed:">
-            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.visibility" itemText="text" @change="update({visibility: $event})" :items="visibilityLevels" />
+            <VisibilityField :disabled="state.disabled.generalInformationEdit" :value="state.visibility" @change="update({visibility: $event})" />
           </WellItem>
           <WellItem v-if="minPhase(PhaseKeys.PREANALYSIS)" labelWidth="120px" label="Lov of paragraf:">
             <InputField :disabled="state.disabled.generalInformationEdit" :value="state.legalClause" @change="update({legalClause: $event})" />
@@ -80,6 +80,8 @@ import { Action, Getter } from 'vuex-class';
 
 import InputField from '@/components/common/inputs/InputField.vue';
 import SelectionField from '@/components/common/inputs/SelectionField.vue';
+import VisibilityField from '@/components/common/inputs/VisibilityField.vue';
+import DomainsField from '@/components/common/inputs/DomainsField.vue';
 import TextArea from '@/components/common/inputs/TextArea.vue';
 import Phases from '@/components/common/inputs/Phases.vue';
 import AssociatedPersonsInput from '@/components/details/general-information/AssociatedPersonsInput.vue';
@@ -93,7 +95,6 @@ import { commonActionTypes, UserSearchRequest } from '@/store/modules/common/act
 import { User } from '@/store/modules/auth/state';
 import { StatusKeys, StatusLabels } from '@/models/status';
 import { OrgUnit } from '@/store/modules/process/state';
-import { VisibilityLabels, VisibilityKeys } from '@/models/visibility';
 import { DomainKeys, DomainLabels } from '@/models/domain';
 import { Kle } from '@/store/modules/common/actions';
 import { Domain } from '@/models/domain';
@@ -102,7 +103,9 @@ import { Phase, PhaseKeys } from '@/models/phase';
 @Component({
   components: {
     InputField,
+    DomainsField,
     SelectionField,
+    VisibilityField,
     TextArea,
     Phases,
     AssociatedPersonsInput,
@@ -114,7 +117,7 @@ import { Phase, PhaseKeys } from '@/models/phase';
 })
 export default class GeneralInformationForm extends Vue {
   @Action(processActionTypes.UPDATE) update: any;
-  @Action(processActionTypes.ADD_DOMAIN) addDomain!: (domain: any) => Promise<void>;
+  @Action(processActionTypes.ASSIGN) assign: any;
   @Action(commonActionTypes.SEARCH_USERS) searchUsers!: ({ name, cvr }: UserSearchRequest) => Promise<void>;
 
   @Getter(processGetterTypes.IS_GERNERAL_INFORMATION_VALID) isGeneralInformationValid!: any;
@@ -136,10 +139,6 @@ export default class GeneralInformationForm extends Vue {
     return this.$store.state.common.kles;
   }
 
-  get domainsText() {
-    return this.$store.state.process.domains.map((d: Domain) => DomainLabels[d]).join(', ');
-  }
-
   phaseChanged(phase: any) {
     this.isPhaseChanged = true;
     this.update({ phase });
@@ -148,21 +147,6 @@ export default class GeneralInformationForm extends Vue {
   search(name: string) {
     this.searchUsers({ name, cvr: this.$store.state.auth.user.cvr });
   }
-
-  visibilityLevels = [
-    { value: VisibilityKeys.PERSONAL, text: VisibilityLabels.PERSONAL },
-    { value: VisibilityKeys.MUNICIPALITY, text: VisibilityLabels.MUNICIPALITY },
-    { value: VisibilityKeys.PUBLIC, text: VisibilityLabels.PUBLIC }
-  ];
-
-  domainLevels = [
-    { value: DomainKeys.WORK, text: DomainLabels.WORK },
-    { value: DomainKeys.HEALTH, text: DomainLabels.HEALTH },
-    { value: DomainKeys.CHILDREN, text: DomainLabels.CHILDREN },
-    { value: DomainKeys.ENVIRONMENT, text: DomainLabels.ENVIRONMENT },
-    { value: DomainKeys.DEMOCRACY, text: DomainLabels.DEMOCRACY },
-    { value: DomainKeys.ADMINISTRATION, text: DomainLabels.ADMINISTRATION }
-  ];
 
   statusLevels = [
     { value: StatusKeys.REJECTED, text: StatusLabels.REJECTED },

@@ -1,7 +1,7 @@
 <template>
   <div>
-    <v-autocomplete v-if="!disabled" :label="placeholder" :items="_items" single-line no-data-text="Ingen resultater" :item-text="itemText" :append-icon="iconName" :search-input.sync="searchQuery" @change="valueChanged" :value="value" cache-items return-object />
-    <div class="selection-text" v-if="disabled && value">{{ value[itemText] || value }}</div>
+    <v-autocomplete v-if="!disabled" :label="placeholder" :items="_items" single-line no-data-text="Ingen resultater" :item-text="itemText" :append-icon="iconName" :search-input.sync="searchQuery" @change="valueChanged" :value="value" cache-items return-object :multiple="multiple" />
+    <div class="selection-text" v-if="disabled && value">{{ label }}</div>
   </div>
 </template>
 
@@ -17,22 +17,29 @@ export default class SelectionField<T extends any> extends Vue {
   @Prop({ default: 'keyboard_arrow_down', type: String })
   iconName!: string;
   @Prop(Array) items!: T[];
-  @Prop(String) itemText!: string;
+  @Prop({type: String, default: 'text'}) itemText!: string;
   @Prop(String) placeholder!: string;
   @Prop(Boolean) disabled!: boolean;
+  @Prop(Boolean) multiple!: boolean;
 
-  private get _items(): T[] {
+  get _items(): T[] {
     let items: T[] = [];
 
     if (this.items && this.items.length > 0) {
       items = this.items.slice();
-    }
-
-    if (this.value) {
+    } else if (this.value) {
       items.push(this.value);
     }
 
     return items;
+  }
+
+  get label() {
+    if (Array.isArray(this.value)) {
+      return this.value.map((item: any) => item[this.itemText] || item).join(', ');
+    }
+
+    return this.value[this.itemText] || this.value;
   }
 
   @Watch('searchQuery')
