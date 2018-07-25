@@ -22,8 +22,8 @@
     </div>
     <div class="result-column domain">
       <div>
-        <div class="field">Fagområde:</div>
-        <div class="value">{{DomainLabels[process.domain]}}</div>
+        <div class="field">Fagområder:</div>
+        <div class="value">{{domains}}</div>
       </div>
       <div>
         <div class="field">KLE-nr:</div>
@@ -63,7 +63,10 @@ export default class SearchResult extends Vue {
   @Prop(Boolean) bookmarked!: boolean;
 
   StatusLabels = StatusLabels;
-  DomainLabels = DomainLabels;
+
+  get domains() {
+    return this.process.domains.map(domain => DomainLabels[domain]).join(', ');
+  }
 }
 </script>
 

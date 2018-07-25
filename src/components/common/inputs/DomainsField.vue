@@ -23,6 +23,15 @@ export default class DomainsField extends Vue {
 
   item: Item[] = [];
 
+  items = [
+    { value: DomainKeys.WORK, text: DomainLabels.WORK },
+    { value: DomainKeys.HEALTH, text: DomainLabels.HEALTH },
+    { value: DomainKeys.CHILDREN, text: DomainLabels.CHILDREN },
+    { value: DomainKeys.ENVIRONMENT, text: DomainLabels.ENVIRONMENT },
+    { value: DomainKeys.DEMOCRACY, text: DomainLabels.DEMOCRACY },
+    { value: DomainKeys.ADMINISTRATION, text: DomainLabels.ADMINISTRATION }
+  ];
+
   @Watch('value')
   valueWatch(newValue: Domain[]) {
     // Check if value actually changed
@@ -32,15 +41,6 @@ export default class DomainsField extends Vue {
 
     this.item = (this.value || []).map(domain => this.items.find(item => item.value === domain)) as Item[];
   }
-
-  items = [
-    { value: DomainKeys.WORK, text: DomainLabels.WORK },
-    { value: DomainKeys.HEALTH, text: DomainLabels.HEALTH },
-    { value: DomainKeys.CHILDREN, text: DomainLabels.CHILDREN },
-    { value: DomainKeys.ENVIRONMENT, text: DomainLabels.ENVIRONMENT },
-    { value: DomainKeys.DEMOCRACY, text: DomainLabels.DEMOCRACY },
-    { value: DomainKeys.ADMINISTRATION, text: DomainLabels.ADMINISTRATION }
-  ];
 
   valueChanged(values: Item[]) {
     this.$emit('change', values.map(value => value.value));

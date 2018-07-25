@@ -6,6 +6,11 @@
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import SelectionField from './SelectionField.vue';
 
+interface Item<T> {
+  value: T;
+  text: string;
+}
+
 @Component({
   components: {
     SelectionField
@@ -15,10 +20,10 @@ export default class MappedSelectionField<T> extends Vue {
   @Prop([Boolean, String, Number, Array, Object])
   value!: T;
   @Prop(Boolean) disabled!: boolean;
-  @Prop(Array) items!: { value: T; text: string }[];
+  @Prop(Array) items!: Array<Item<T>>;
 
   get item() {
-    const item = this.items.find(item => item.value === this.value);
+    const item = this.items.find(i => i.value === this.value);
 
     return {
       value: this.value,
@@ -26,7 +31,7 @@ export default class MappedSelectionField<T> extends Vue {
     };
   }
 
-  valueChanged({ value }: { value: T; text: string }) {
+  valueChanged({ value }: Item<T>) {
     this.$emit('change', value);
   }
 }
