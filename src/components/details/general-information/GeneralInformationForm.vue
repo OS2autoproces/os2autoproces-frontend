@@ -22,10 +22,10 @@
             <InputField :disabled="state.disabled.generalInformationEdit" :value="state.vendor" @change="update({vendor: $event})" />
           </WellItem>
           <WellItem labelWidth="120px" label="Ejer:">
-            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.owner" itemText="name" @search="search($event)" @change="update({owner: $event})" :items="users" />
+            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.owner" itemText="name" @search="search($event)" isItemsPartial @change="update({owner: $event})" :items="users" />
           </WellItem>
           <WellItem labelWidth="120px" label="Kontaktperson:">
-            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.contact" itemText="name" @search="search($event)" @change="update({contact: $event})" :items="users" />
+            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.contact" itemText="name" @search="search($event)" isItemsPartial @change="update({contact: $event})" :items="users" />
           </WellItem>
           <WellItem v-if="state.contact" labelWidth="120px" label="Mail:">
             {{state.contact.email}}
