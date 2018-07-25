@@ -167,7 +167,7 @@ export function stateToRequest(state: ProcessState): ProcessRequest {
     technologies: defaultNull(state.technologies),
     itSystems: defaultNull(state.itSystems),
     children: defaultNull(state.children),
-    type: state.type || TypeKeys.CHILD,
+    type: state.type || TypeKeys.CHILD
   };
 }
 
@@ -212,6 +212,6 @@ export function responseToState(process: ProcessResponse): Process {
     children: process.children || [],
     type: process.type || TypeKeys.CHILD,
     owner: process.owner,
-    emailNotification: process.emailNotification || false,
+    emailNotification: process.emailNotification || false
   };
 }

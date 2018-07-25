@@ -15,6 +15,9 @@
           <WellItem labelWidth="120px" label="KL ID:">
             <InputField :disabled="state.disabled.generalInformationEdit" :value="state.klId" @change="update({klId: $event})" />
           </WellItem>
+          <WellItem labelWidth="120px" label="KLA:">
+            <MaskableInput :disabled="state.disabled.generalInformationEdit" mask="##.##.##.##.##" :value="state.kla" @change="setKla"/>
+          </WellItem>
         </div>
 
         <div>
@@ -79,6 +82,7 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 import { Action, Getter } from 'vuex-class';
 
 import InputField from '@/components/common/inputs/InputField.vue';
+import MaskableInput from '@/components/common/inputs/MaskableInput.vue';
 import SelectionField from '@/components/common/inputs/SelectionField.vue';
 import MappedSelectionField from '@/components/common/inputs/MappedSelectionField.vue';
 import DomainsField from '@/components/common/inputs/DomainsField.vue';
@@ -112,6 +116,7 @@ import { Phase, PhaseKeys } from '@/models/phase';
     AssociatedPersonsInput,
     Well,
     FormSection,
+    MaskableInput,
     WellItem,
     WarningIcon
   }
@@ -138,6 +143,11 @@ export default class GeneralInformationForm extends Vue {
 
   get kles() {
     return this.$store.state.common.kles;
+  }
+
+  setKla(kla: string) {
+    // Inserts periodes for every 2 characters, to match format: ##.##.##.##.##
+    this.update({kla: kla.replace(/(\d{2})(?=\d)/g, '$1.')});
   }
 
   phaseChanged(phase: any) {
