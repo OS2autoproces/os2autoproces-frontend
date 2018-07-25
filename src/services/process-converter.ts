@@ -99,6 +99,16 @@ function defaultZero(prop: any) {
   return prop ? Number(prop) : 0;
 }
 
+
+function getKla({ kla }: ProcessState) {
+  if (kla) {
+    return kla.endsWith('.')
+      ? kla.replace(kla.charAt(kla.length - 1), '')
+      : kla;
+  }
+  return null;
+}
+
 export function stateToRequest(state: ProcessState): ProcessRequest {
   return {
     localId: defaultNull(state.localId),
@@ -167,7 +177,7 @@ export function stateToRequest(state: ProcessState): ProcessRequest {
     technologies: defaultNull(state.technologies),
     itSystems: defaultNull(state.itSystems),
     children: defaultNull(state.children),
-    type: state.type || TypeKeys.CHILD,
+    type: state.type || TypeKeys.CHILD
   };
 }
 
@@ -197,7 +207,7 @@ export function responseToState(process: ProcessResponse): Process {
     klId: process.klId || '',
     legalClause: process.legalClause || '',
     kle: process.kle || '',
-    kla: process.kla || '',
+    kla: getKla(process),
     links: process.links || [],
     internalNotes: process.internalNotes || '',
     processChallenges: process.processChallenges || '',
@@ -212,6 +222,6 @@ export function responseToState(process: ProcessResponse): Process {
     children: process.children || [],
     type: process.type || TypeKeys.CHILD,
     owner: process.owner,
-    emailNotification: process.emailNotification || false,
+    emailNotification: process.emailNotification || false
   };
 }
