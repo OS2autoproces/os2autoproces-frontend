@@ -96,7 +96,10 @@ export const actions: ActionTree<CommonState, RootState> = {
   },
   async loadKles({ commit }) {
     const response = await HTTP.get<KleResponse>(`api/kles?size=100000`);
-    const kles = response.data._embedded.kles.map(kle => kle.code);
+    const kles = response.data._embedded.kles.map(kle => ({
+      value: kle.code,
+      text: kle.code
+    }));
 
     commit(commonMutationTypes.ASSIGN, { kles });
   },

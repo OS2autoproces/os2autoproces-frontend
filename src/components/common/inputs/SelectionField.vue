@@ -40,10 +40,10 @@ export default class SelectionField<T extends any> extends Vue {
 
   get label() {
     if (Array.isArray(this.value)) {
-      return this.value.map((item: any) => item[this.itemText] || item).join(', ');
+      return this.value.map((item: any) => item[this.itemText]).join(', ');
     }
 
-    return this.value[this.itemText] || this.value;
+    return this.value[this.itemText];
   }
 
   @Watch('searchQuery')

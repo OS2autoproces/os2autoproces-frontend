@@ -7,7 +7,7 @@
             <InputField disabled :value="state.id" />
           </WellItem>
           <WellItem labelWidth="120px" label="KLE-nr:">
-            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.kle" @change="update({kle: $event})" :items="kles" />
+            <MappedSelectionField :disabled="state.disabled.generalInformationEdit" :value="state.kle" @change="update({kle: $event})" :items="kles" />
           </WellItem>
           <WellItem labelWidth="120px" label="Lokalt ID:">
             <InputField :disabled="state.disabled.generalInformationEdit" :value="state.localId" @change="update({localId: $event})" />
@@ -37,7 +37,7 @@
             <DomainsField :disabled="state.disabled.generalInformationEdit" :value="state.domains" @change="assign({domains: $event})" />
           </WellItem>
           <WellItem labelWidth="120px" label="Synlighed:">
-            <VisibilityField :disabled="state.disabled.generalInformationEdit" :value="state.visibility" @change="update({visibility: $event})" />
+            <MappedSelectionField :disabled="state.disabled.generalInformationEdit" :value="state.visibility" @change="update({visibility: $event})" :items="visibilityLevels" />
           </WellItem>
           <WellItem v-if="minPhase(PhaseKeys.PREANALYSIS)" labelWidth="120px" label="Lov of paragraf:">
             <InputField :disabled="state.disabled.generalInformationEdit" :value="state.legalClause" @change="update({legalClause: $event})" />
@@ -55,7 +55,7 @@
       </div>
       <div class="general-phases">
         <Phases :disabled="state.disabled.generalInformationEdit" :value="state.phase" @change="phaseChanged($event)" />
-        <SelectionField :disabled="state.disabled.generalInformationEdit" class="status-selection" :value="state.status" @change="update({status: $event})" :items="statusLevels" />
+        <MappedSelectionField :disabled="state.disabled.generalInformationEdit" class="status-selection" :value="state.status" @change="update({status: $event})" :items="statusLevels" />
 
         <div v-if="isPhaseChanged" class="phase-changed">
           <WarningIcon class="general-information-warning-icon" />
@@ -80,7 +80,7 @@ import { Action, Getter } from 'vuex-class';
 
 import InputField from '@/components/common/inputs/InputField.vue';
 import SelectionField from '@/components/common/inputs/SelectionField.vue';
-import VisibilityField from '@/components/common/inputs/VisibilityField.vue';
+import MappedSelectionField from '@/components/common/inputs/MappedSelectionField.vue';
 import DomainsField from '@/components/common/inputs/DomainsField.vue';
 import TextArea from '@/components/common/inputs/TextArea.vue';
 import Phases from '@/components/common/inputs/Phases.vue';
@@ -94,6 +94,7 @@ import { processGetterTypes } from '@/store/modules/process/getters';
 import { commonActionTypes, UserSearchRequest } from '@/store/modules/common/actions';
 import { User } from '@/store/modules/auth/state';
 import { StatusKeys, StatusLabels } from '@/models/status';
+import { VisibilityKeys, VisibilityLabels } from '@/models/visibility';
 import { OrgUnit } from '@/store/modules/process/state';
 import { DomainKeys, DomainLabels } from '@/models/domain';
 import { Kle } from '@/store/modules/common/actions';
@@ -105,7 +106,7 @@ import { Phase, PhaseKeys } from '@/models/phase';
     InputField,
     DomainsField,
     SelectionField,
-    VisibilityField,
+    MappedSelectionField,
     TextArea,
     Phases,
     AssociatedPersonsInput,
@@ -147,6 +148,12 @@ export default class GeneralInformationForm extends Vue {
   search(name: string) {
     this.searchUsers({ name, cvr: this.$store.state.auth.user.cvr });
   }
+
+  visibilityLevels = [
+    { value: VisibilityKeys.PERSONAL, text: VisibilityLabels.PERSONAL },
+    { value: VisibilityKeys.MUNICIPALITY, text: VisibilityLabels.MUNICIPALITY },
+    { value: VisibilityKeys.PUBLIC, text: VisibilityLabels.PUBLIC }
+  ];
 
   statusLevels = [
     { value: StatusKeys.REJECTED, text: StatusLabels.REJECTED },
