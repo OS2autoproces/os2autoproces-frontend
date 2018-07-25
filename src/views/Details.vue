@@ -59,7 +59,10 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 import { Action } from 'vuex-class';
 import NavBar from '../components/common/NavBar.vue';
 import InternalNotes from '@/components/common/inputs/InternalNotes.vue';
-import { processActionTypes, NewComment } from '@/store/modules/process/actions';
+import {
+  processActionTypes,
+  NewComment
+} from '@/store/modules/process/actions';
 import { Phase } from '@/models/phase';
 import { commonActionTypes } from '@/store/modules/common/actions';
 
@@ -83,7 +86,6 @@ import { errorActionTypes } from '@/store/modules/error/actions';
 import { ErrorState } from '@/store/modules/error/state';
 import SnackBar from '@/components/common/SnackBar.vue';
 import { isEmpty } from 'lodash';
-import store from '@/store/store';
 
 @Component({
   components: {
@@ -114,18 +116,21 @@ export default class Details extends Vue {
 
   @Action(processActionTypes.SAVE) save: any;
   @Action(processActionTypes.UPDATE) update: any;
-  @Action(processActionTypes.SAVE_COMMENT) saveComment!: (message: string) => Promise<void>;
+  @Action(processActionTypes.SAVE_COMMENT)
+  saveComment!: (message: string) => Promise<void>;
   @Action(processActionTypes.LOAD_COMMENTS) loadComments!: () => Promise<void>;
-  @Action(commonActionTypes.LOAD_IT_SYSTEMS) loadItSystems!: () => Promise<void>;
+  @Action(commonActionTypes.LOAD_IT_SYSTEMS)
+  loadItSystems!: () => Promise<void>;
   @Action(commonActionTypes.LOAD_KLES) loadKles!: () => Promise<void>;
-  @Action(errorActionTypes.UPDATE_PROCESS_ERRORS) updateProcessErrors!: (processErrors: Partial<ErrorState>) => void;
+  @Action(errorActionTypes.UPDATE_PROCESS_ERRORS)
+  updateProcessErrors!: (processErrors: Partial<ErrorState>) => void;
 
   get state() {
-    return store.state.process;
+    return this.$store.state.process;
   }
 
   get errors() {
-    return store.state.error.processErrors;
+    return this.$store.state.error.processErrors;
   }
 
   get snack() {
@@ -137,17 +142,28 @@ export default class Details extends Vue {
   }
 
   mounted() {
-    this.$store.dispatch(processActionTypes.LOAD_PROCESS_DETAILS, Number(this.id));
     this.loadItSystems();
     this.loadKles();
 
+    // Id is only set on the details page
+    if (this.id) {
+      this.$store.dispatch(
+        processActionTypes.LOAD_PROCESS_DETAILS,
+        Number(this.id)
+      );
+    }
+
+    // Phase is only set on the report page
     if (this.phase) {
-      this.update({ phase: this.phase });
+      this.update({ phase: this.phase, canEdit: true, cvr: this.$store.state.auth.user.cvr });
     }
   }
 
   async report() {
     const processId = await this.$store.dispatch(processActionTypes.REPORT);
+    if (!processId) {
+      return;
+    }
     this.$router.push(`/details/${processId}`);
   }
 }

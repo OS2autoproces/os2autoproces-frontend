@@ -42,10 +42,13 @@ export default class InputField extends Vue {
   }
 
   .icon {
-    margin-right: 3px;
+    margin: 5px;
+    height: 20px;
+    width: 20px;
+
     /deep/ svg {
-      height: 17px;
-      width: 17px;
+      height: 20px;
+      width: 20px;
     }
   }
 

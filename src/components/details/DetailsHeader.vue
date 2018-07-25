@@ -56,7 +56,7 @@ export default class DetailsHeader extends Vue {
   }
 
   get logo() {
-    return '/logos/' + this.$store.state.process.cvr + '.png';
+    return `/logos/${this.$store.state.process.cvr}.png`
   }
 
   toggleEdit() {
