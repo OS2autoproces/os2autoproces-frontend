@@ -2,7 +2,7 @@
   <div class="details-header">
     <div class="row">
       <InputField class="name" :value="state.title" :disabled="state.disabled.titleEdit" :class="{ disabled: state.disabled.titleEdit }" @change="update({ title: $event })" />
-      <div class="edit-button" role="button" @click="toggleEdit" :class="{ editing: state.disabled.titleEdit }">
+      <div v-if="state.canEdit" class="edit-button" role="button" @click="toggleEdit" :class="{ editing: !state.disabled.titleEdit }">
         <EditIcon />
       </div>
       <div class="bookmark-button" role="button" @click="toggleBookmark">
@@ -10,13 +10,13 @@
       </div>
 
       <div class="flex-grow"></div>
-      <img src="https://www.syddjurs.dk/sites/all/themes/custom/site/dist/img/logo.png" alt="Kommune logo">
+      <MunicipalityLogo :src="logo"/>
     </div>
     <div class="row">
-      <Button class="button" @click="deleteProces">Slet proces</Button>
-      <Button class="button" @click="copyProcess">Kopier proces</Button>
+      <Button class="button" @click="remove">Slet proces</Button>
+      <Button class="button" @click="copy">Kopier proces</Button>
       <div class="flex-grow"></div>
-      <Toggle :value="notification" @change="notification = $event">Mail notifikation</Toggle>
+      <Toggle :value="state.emailNotification" @change="setEmailNotification($event)">Mail notifikation</Toggle>
     </div>
   </div>
 </template>
@@ -28,6 +28,7 @@ import StarIcon from '@/components/icons/StarIcon.vue';
 import EditIcon from '@/components/icons/EditIcon.vue';
 import InputField from '@/components/common/inputs/InputField.vue';
 import Button from '@/components/common/inputs/Button.vue';
+import MunicipalityLogo from '@/components/common/MunicipalityLogo.vue';
 import Toggle from '@/components/common/inputs/Toggle.vue';
 import { authGetterTypes } from '@/store/modules/auth/getters';
 import { authActionTypes } from '@/store/modules/auth/actions';
@@ -40,17 +41,22 @@ import { ProcessState } from '@/store/modules/process/state';
     EditIcon,
     InputField,
     Toggle,
-    Button
+    Button,
+    MunicipalityLogo
   }
 })
 export default class DetailsHeader extends Vue {
   @Action(processActionTypes.UPDATE) update!: any;
-
-  // TODO: Bind these to the store
-  notification = true;
+  @Action(processActionTypes.SET_EMAIL_NOTIFICATION) setEmailNotification!: (emailNotification: boolean) => Promise<void>;
+  @Action(processActionTypes.REMOVE_PROCESS) removeProcess!: () => Promise<void>;
+  @Action(processActionTypes.COPY_PROCESS) copyProcess!: () => Promise<string>;
 
   get state() {
     return this.$store.state.process;
+  }
+
+  get logo() {
+    return `/logos/${this.$store.state.process.cvr}.png`
   }
 
   toggleEdit() {
@@ -65,13 +71,14 @@ export default class DetailsHeader extends Vue {
     this.update({ hasBookmarked: !this.state.hasBookmarked });
   }
 
-  deleteProces() {
-    // TODO: Show confirmation
+  async copy() {
+    const id = await this.copyProcess();
+    this.$router.push(`/details/${id}`);
   }
 
-  async copyProcess() {
-    const id = await this.$store.dispatch(processActionTypes.COPY_PROCESS); 
-    this.$router.push(`/details/${id}`);    
+  async remove() {
+    await this.removeProcess();
+    this.$router.push(`/search`);
   }
 }
 </script>

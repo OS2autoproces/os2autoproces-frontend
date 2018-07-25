@@ -2,7 +2,7 @@
     <div class="form-section">
         <div class="section-header" :class="{ disabled }">
             <div>{{heading}}</div>
-            <div class="edit-button" role="button" @click="toggleEdit">
+            <div v-if="state.process.canEdit" class="edit-button" role="button" @click="toggleEdit">
                 <EditIcon />
             </div>
             <div class="flex-grow"></div>
@@ -40,15 +40,19 @@ import WarningIcon from '@/components/icons/WarningIcon.vue';
   }
 })
 export default class FormSection extends Vue {
-  @Prop() heading!: string;
-  @Prop() alwaysOpen!: boolean;
-  @Prop() invalid!: boolean;
-  @Prop() disabled!: boolean;
+  @Prop(String) heading!: string;
+  @Prop(Boolean) alwaysOpen!: boolean;
+  @Prop(Boolean) invalid!: boolean;
+  @Prop(Boolean) disabled!: boolean;
 
   expand = false;
 
   toggleEdit() {
     this.$emit('edit', !this.disabled);
+  }
+
+  get state() {
+    return this.$store.state;
   }
 
   get isExpandable() {
@@ -102,7 +106,7 @@ export default class FormSection extends Vue {
 }
 
 .section-content {
-  padding: $size-unit*2;
+  padding: $size-unit * 2;
   padding-top: 0;
 }
 </style>

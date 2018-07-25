@@ -10,7 +10,7 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 
 @Component
 export default class SortIcon extends Vue {
-  @Prop() descending!: boolean;
+  @Prop(Boolean) descending!: boolean;
 }
 </script>
 

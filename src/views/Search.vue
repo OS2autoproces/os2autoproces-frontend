@@ -31,6 +31,7 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
+import { Action } from 'vuex-class';
 import NavBar from '../components/common/NavBar.vue';
 import SearchFiltersComponent from '../components/search/SearchFilters.vue';
 import SearchPagination from '../components/search/SearchPagination.vue';
@@ -38,6 +39,7 @@ import SearchResult from '../components/search/SearchResult.vue';
 import SearchSorting from '../components/search/SearchSorting.vue';
 import PlusIcon from '../components/icons/PlusIcon.vue';
 import { searchActionTypes } from '../store/modules/search/actions';
+import { processActionTypes } from '../store/modules/process/actions';
 import {SearchFilters, SearchResultProcess} from "../store/modules/search/state";
 
 @Component({

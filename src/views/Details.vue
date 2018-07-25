@@ -30,13 +30,27 @@
             <AttachmentsForm />
           </div>
 
+          <div>
+            <h2 class="internal-notes-heading">Interne noter</h2>
+            <InternalNotes title="Interne noter" :internalNotes="state.internalNotes" />
+          </div>
+
           <div class="comments">
-            <div class="comments-heading">Kommentarer</div>
+            <h2 class="comments-heading">Kommentarer</h2>
             <Comments :comments="state.comments" @submit="saveComment({ message: $event })" />
           </div>
+
         </div>
       </div>
     </div>
+    <SnackBar :timeout="0" color="error" :value="snack" @clicked="updateProcessErrors({processErrors: []})">
+      <div>
+        <p>Kunne ikke gemme, følgende felter er invalide:</p>
+        <p v-for="field in errors" :key="field">
+          {{field}}
+        </p>
+      </div>
+    </SnackBar>
   </div>
 </template>
 
@@ -44,6 +58,14 @@
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import { Action } from 'vuex-class';
 import NavBar from '../components/common/NavBar.vue';
+import InternalNotes from '@/components/common/inputs/InternalNotes.vue';
+import {
+  processActionTypes,
+  NewComment
+} from '@/store/modules/process/actions';
+import { Phase } from '@/models/phase';
+import { commonActionTypes } from '@/store/modules/common/actions';
+
 import Comments from '../components/details/Comments.vue';
 import IntervalSelector from '../components/common/inputs/IntervalSelector.vue';
 import FormSection from '@/components/details/FormSection.vue';
@@ -60,8 +82,10 @@ import AttachmentsForm from '@/components/details/attachments/AttachmentsForm.vu
 import OperationForm from '@/components/details/operation/OperationForm.vue';
 import ArrowLeftIcon from '@/components/icons/ArrowLeftIcon.vue';
 import EditIcon from '@/components/icons/EditIcon.vue';
-import { processActionTypes, NewComment } from "@/store/modules/process/actions";
-import { Phase } from '@/models/phase';
+import { errorActionTypes } from '@/store/modules/error/actions';
+import { ErrorState } from '@/store/modules/error/state';
+import SnackBar from '@/components/common/SnackBar.vue';
+import { isEmpty } from 'lodash';
 
 @Component({
   components: {
@@ -81,36 +105,66 @@ import { Phase } from '@/models/phase';
     OperationForm,
     Button,
     ArrowLeftIcon,
-    EditIcon
+    EditIcon,
+    SnackBar,
+    InternalNotes
   }
 })
 export default class Details extends Vue {
-  @Prop({type: String}) phase!: Phase;
-  @Prop() id!: string;
+  @Prop(String) phase!: Phase;
+  @Prop(String) id!: string;
 
   @Action(processActionTypes.SAVE) save: any;
-  @Action(processActionTypes.UPDATE)
-  update: any;
+  @Action(processActionTypes.UPDATE) update: any;
   @Action(processActionTypes.SAVE_COMMENT)
   saveComment!: (message: string) => Promise<void>;
-  @Action(processActionTypes.LOAD_COMMENTS)
-  loadComments!: () => Promise<void>;
+  @Action(processActionTypes.LOAD_COMMENTS) loadComments!: () => Promise<void>;
+  @Action(commonActionTypes.LOAD_IT_SYSTEMS)
+  loadItSystems!: () => Promise<void>;
+  @Action(commonActionTypes.LOAD_KLES) loadKles!: () => Promise<void>;
+  @Action(errorActionTypes.UPDATE_PROCESS_ERRORS)
+  updateProcessErrors!: (processErrors: Partial<ErrorState>) => void;
 
   get state() {
     return this.$store.state.process;
   }
 
-  async report() {
-    const processId = await this.$store.dispatch(processActionTypes.REPORT);
-    this.$router.push(`/details/${processId}`);
+  get errors() {
+    return this.$store.state.error.processErrors;
+  }
+
+  get snack() {
+    return !isEmpty(this.$store.state.error.processErrors);
+  }
+
+  beforeCreate() {
+    this.$store.dispatch(processActionTypes.CLEAR_PROCESS);
   }
 
   mounted() {
-    this.$store.dispatch(processActionTypes.LOAD_PROCESS_DETAILS, Number(this.id));
-    
-    if (this.phase) {
-      this.update({ phase: this.phase });
+    this.loadItSystems();
+    this.loadKles();
+
+    // Id is only set on the details page
+    if (this.id) {
+      this.$store.dispatch(
+        processActionTypes.LOAD_PROCESS_DETAILS,
+        Number(this.id)
+      );
     }
+
+    // Phase is only set on the report page
+    if (this.phase) {
+      this.update({ phase: this.phase, canEdit: true, cvr: this.$store.state.auth.user.cvr });
+    }
+  }
+
+  async report() {
+    const processId = await this.$store.dispatch(processActionTypes.REPORT);
+    if (!processId) {
+      return;
+    }
+    this.$router.push(`/details/${processId}`);
   }
 }
 </script>
@@ -156,37 +210,8 @@ export default class Details extends Vue {
   }
 }
 
-.usage,
 .comments {
   margin: 5 * $size-unit 0;
-}
-
-.usage {
-  text-align: center;
-
-  .usage-heading {
-    font-style: italic;
-    margin: $size-unit / 2 0;
-
-    .usage-edit-icon {
-      display: inline-block;
-      margin-left: $size-unit;
-      height: $size-unit;
-      width: $size-unit;
-      fill: $color-secondary;
-    }
-
-    &:not(.disabled) {
-      .usage-edit-icon svg /deep/ path {
-        fill: $color-primary;
-      }
-    }
-  }
-
-  .comments-heading {
-    font-style: italic;
-    margin: $size-unit / 2 0;
-  }
 }
 
 .save-button,
@@ -206,5 +231,13 @@ export default class Details extends Vue {
     width: $size-unit;
     margin-right: $size-unit / 2;
   }
+}
+
+.comments-heading,
+.internal-notes-heading {
+  @include heading;
+  color: $color-secondary;
+  margin-top: 2 * $size-unit;
+  padding: $size-unit 2 * $size-unit;
 }
 </style>

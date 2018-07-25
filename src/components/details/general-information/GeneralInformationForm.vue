@@ -1,56 +1,50 @@
 <template>
-  <FormSection heading="Grundlæggende oplysninger" id="general-information" :disabled="state.disabled.generalInformationEdit" @edit="update({disabled: { generalInformationEdit: $event} })" always-open>
+  <FormSection :invalid="isGeneralInformationValid" heading="Grundlæggende oplysninger" id="general-information" :disabled="state.disabled.generalInformationEdit" @edit="update({disabled: { generalInformationEdit: $event} })" always-open>
     <div class="general-information-wrapper">
       <Well>
         <div>
-          <WellItem labelWidth="100px" label="ID:">
+          <WellItem labelWidth="120px" label="ID:">
             <InputField disabled :value="state.id" />
           </WellItem>
-          <WellItem labelWidth="100px" label="KLE-nr:">
-            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.kle" @change="update({kle: $event})" :items="kleNumbers" />
+          <WellItem labelWidth="120px" label="KLE-nr:">
+            <MappedSelectionField :disabled="state.disabled.generalInformationEdit" :value="state.kle" @change="update({kle: $event})" :items="kles" />
           </WellItem>
-          <WellItem labelWidth="100px" label="Lokalt ID:">
-            <InputField :disabled="state.disabled.generalInformationEdit" :value="state.localId" />
+          <WellItem labelWidth="120px" label="Lokalt ID:">
+            <InputField :disabled="state.disabled.generalInformationEdit" :value="state.localId" @change="update({localId: $event})" />
           </WellItem>
-          <WellItem labelWidth="100px" label="KL ID:">
-            <InputField :disabled="state.disabled.generalInformationEdit" :value="state.klId" />
-          </WellItem>
-        </div>
-
-        <div>
-          <WellItem labelWidth="100px" label="Leverandør:">
-            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.vendor" @change="update({vendor: $event})" :items="suppliers" />
-          </WellItem>
-          <WellItem labelWidth="100px" label="Projektleder:">
-            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.projectManager" @change="update({projectManager: $event})" :items="projectManagers" />
-          </WellItem>
-          <WellItem labelWidth="100px" label="Kontaktperson:">
-            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.contact" @change="update({contact: $event})" :items="contactPersons" />
-          </WellItem>
-          <WellItem labelWidth="100px" label="Mail:">
-            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.contact" @change="update({email: $event})" :items="emails" />
+          <WellItem labelWidth="120px" label="KL ID:">
+            <InputField :disabled="state.disabled.generalInformationEdit" :value="state.klId" @change="update({klId: $event})" />
           </WellItem>
         </div>
 
         <div>
-          <WellItem labelWidth="100px" label="Afdeling:">
-            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="displayDepartments" @change="update({orgUnits: getOrgUnit($event)})" :items="departments" />
+          <WellItem v-if="minPhase(PhaseKeys.DEVELOPMENT)" labelWidth="120px" label="Leverandør:">
+            <InputField :disabled="state.disabled.generalInformationEdit" :value="state.vendor" @change="update({vendor: $event})" />
           </WellItem>
-          <WellItem labelWidth="100px" label="Fagområde:">
-            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.domain" @change="update({domain: $event})" :items="domainLevels" />
+          <WellItem labelWidth="120px" label="Ejer:">
+            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.owner" itemText="name" @search="search($event)" isItemsPartial @change="update({owner: $event})" :items="users" />
           </WellItem>
-          <WellItem labelWidth="100px" label="Synlighed:">
-            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.visibility" @change="update({visibility: $event})" :items="visibilityLevels" />
+          <WellItem labelWidth="120px" label="Kontaktperson:">
+            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.contact" itemText="name" @search="search($event)" isItemsPartial @change="update({contact: $event})" :items="users" />
+          </WellItem>
+          <WellItem v-if="state.contact" labelWidth="120px" label="Mail:">
+            {{state.contact.email}}
           </WellItem>
         </div>
 
         <div>
-          <WellItem labelWidth="100px" label="Lov of paragraf:">
+          <WellItem labelWidth="120px" label="Fagområder:">
+            <DomainsField :disabled="state.disabled.generalInformationEdit" :value="state.domains" @change="assign({domains: $event})" />
+          </WellItem>
+          <WellItem labelWidth="120px" label="Synlighed:">
+            <MappedSelectionField :disabled="state.disabled.generalInformationEdit" :value="state.visibility" @change="update({visibility: $event})" :items="visibilityLevels" />
+          </WellItem>
+          <WellItem v-if="minPhase(PhaseKeys.PREANALYSIS)" labelWidth="120px" label="Lov of paragraf:">
             <InputField :disabled="state.disabled.generalInformationEdit" :value="state.legalClause" @change="update({legalClause: $event})" />
           </WellItem>
         </div>
 
-        <AssociatedPersonsInput slot="well-footer" :disabled="state.disabled.generalInformationEdit" />
+        <AssociatedPersonsInput v-if="minPhase(PhaseKeys.PREANALYSIS)" slot="well-footer" :disabled="state.disabled.generalInformationEdit" />
       </Well>
     </div>
 
@@ -61,7 +55,7 @@
       </div>
       <div class="general-phases">
         <Phases :disabled="state.disabled.generalInformationEdit" :value="state.phase" @change="phaseChanged($event)" />
-        <SelectionField :disabled="state.disabled.generalInformationEdit" class="status-selection" :value="state.status" @change="update({status: $event})" :items="statusLevels" />
+        <MappedSelectionField :disabled="state.disabled.generalInformationEdit" class="status-selection" :value="state.status" @change="update({status: $event})" :items="statusLevels" />
 
         <div v-if="isPhaseChanged" class="phase-changed">
           <WarningIcon class="general-information-warning-icon" />
@@ -70,7 +64,7 @@
       </div>
     </div>
 
-    <div> 
+    <div>
       <div v-if="state.status !== StatusKeys.INPROGRESS">
         <h2 class="comments-heading">Kommentar til status</h2>
         <TextArea :disabled="state.disabled.generalInformationEdit" @change="update({statusText: $event})" :value="state.statusText" />
@@ -82,10 +76,12 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
-import { Action } from 'vuex-class';
+import { Action, Getter } from 'vuex-class';
 
 import InputField from '@/components/common/inputs/InputField.vue';
 import SelectionField from '@/components/common/inputs/SelectionField.vue';
+import MappedSelectionField from '@/components/common/inputs/MappedSelectionField.vue';
+import DomainsField from '@/components/common/inputs/DomainsField.vue';
 import TextArea from '@/components/common/inputs/TextArea.vue';
 import Phases from '@/components/common/inputs/Phases.vue';
 import AssociatedPersonsInput from '@/components/details/general-information/AssociatedPersonsInput.vue';
@@ -94,15 +90,23 @@ import WellItem from '@/components/common/WellItem.vue';
 import FormSection from '@/components/details/FormSection.vue';
 import WarningIcon from '@/components/icons/WarningIcon.vue';
 import { processActionTypes } from '@/store/modules/process/actions';
+import { processGetterTypes } from '@/store/modules/process/getters';
+import { commonActionTypes, UserSearchRequest } from '@/store/modules/common/actions';
+import { User } from '@/store/modules/auth/state';
 import { StatusKeys, StatusLabels } from '@/models/status';
+import { VisibilityKeys, VisibilityLabels } from '@/models/visibility';
 import { OrgUnit } from '@/store/modules/process/state';
-import { VisibilityLabels, VisibilityKeys } from '@/models/visibility';
 import { DomainKeys, DomainLabels } from '@/models/domain';
+import { Kle } from '@/store/modules/common/actions';
+import { Domain } from '@/models/domain';
+import { Phase, PhaseKeys } from '@/models/phase';
 
 @Component({
   components: {
     InputField,
+    DomainsField,
     SelectionField,
+    MappedSelectionField,
     TextArea,
     Phases,
     AssociatedPersonsInput,
@@ -114,36 +118,26 @@ import { DomainKeys, DomainLabels } from '@/models/domain';
 })
 export default class GeneralInformationForm extends Vue {
   @Action(processActionTypes.UPDATE) update: any;
+  @Action(processActionTypes.ASSIGN) assign: any;
+  @Action(commonActionTypes.SEARCH_USERS) searchUsers!: ({ name, cvr }: UserSearchRequest) => Promise<void>;
+
+  @Getter(processGetterTypes.IS_GERNERAL_INFORMATION_VALID) isGeneralInformationValid!: any;
+  @Getter(processGetterTypes.MIN_PHASE) minPhase!: (phase: Phase) => boolean;
 
   isPhaseChanged = false;
   StatusKeys = StatusKeys;
+  PhaseKeys = PhaseKeys;
 
   get state() {
     return this.$store.state.process;
   }
 
-  get displayDepartments(): string {
-    const orgs: OrgUnit[] = this.$store.state.process.orgUnits;
-    if (!orgs) {
-      return '';
-    }
-    return orgs.map(d => d.name).join(', ');
+  get users() {
+    return this.$store.state.common.users;
   }
 
-  get departments(): string[] {
-    const orgs: OrgUnit[] = this.$store.state.process.orgUnits;
-    if (!orgs) {
-      return [''];
-    }
-    return orgs.map(d => d.name);
-  }
-
-  getOrgUnit(deparmentName: string) {
-    const orgs: OrgUnit[] = this.$store.state.process.orgUnits;
-    if (!orgs) {
-      return '';
-    }
-    return orgs.find((o: OrgUnit) => o.name === deparmentName);
+  get kles() {
+    return this.$store.state.common.kles;
   }
 
   phaseChanged(phase: any) {
@@ -151,37 +145,22 @@ export default class GeneralInformationForm extends Vue {
     this.update({ phase });
   }
 
+  search(name: string) {
+    this.searchUsers({ name, cvr: this.$store.state.auth.user.cvr });
+  }
+
   visibilityLevels = [
     { value: VisibilityKeys.PERSONAL, text: VisibilityLabels.PERSONAL },
     { value: VisibilityKeys.MUNICIPALITY, text: VisibilityLabels.MUNICIPALITY },
-    { value: VisibilityKeys.PUBLIC, text: VisibilityLabels.PUBLIC },
-  ];
-
-  domainLevels = [
-    { value: DomainKeys.WORK, text: DomainLabels.WORK },
-    { value: DomainKeys.HEALTH, text: DomainLabels.HEALTH },
-    { value: DomainKeys.CHILDREN, text: DomainLabels.CHILDREN },
-    { value: DomainKeys.ENVIRONMENT, text: DomainLabels.ENVIRONMENT },
-    { value: DomainKeys.DEMOCRACY, text: DomainLabels.DEMOCRACY },
-    { value: DomainKeys.ADMINISTRATION, text: DomainLabels.ADMINISTRATION },
+    { value: VisibilityKeys.PUBLIC, text: VisibilityLabels.PUBLIC }
   ];
 
   statusLevels = [
-    {value: StatusKeys.REJECTED, text: StatusLabels.REJECTED},
-    {value: StatusKeys.FAILED, text: StatusLabels.FAILED},
-    {value: StatusKeys.PENDING, text: StatusLabels.PENDING},
-    {value: StatusKeys.INPROGRESS, text: StatusLabels.INPROGRESS},
-  ]
-
-  kleNumbers = ['1234', '134324', '54353'];
-
-  contactPersons = ['Christian', 'Lars', 'Henrik'];
-
-  suppliers = ['Christian', 'Lars', 'Henrik'];
-
-  emails = ['mail1@1', 'mail2@2', 'mail3@3'];
-
-  projectManagers = ['Christian', 'Lars', 'Henrik'];
+    { value: StatusKeys.REJECTED, text: StatusLabels.REJECTED },
+    { value: StatusKeys.FAILED, text: StatusLabels.FAILED },
+    { value: StatusKeys.PENDING, text: StatusLabels.PENDING },
+    { value: StatusKeys.INPROGRESS, text: StatusLabels.INPROGRESS }
+  ];
 }
 </script>
 

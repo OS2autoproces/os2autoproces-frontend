@@ -11,7 +11,7 @@
 import { Vue, Component } from 'vue-property-decorator';
 
 @Component({})
-export default class StarIcon extends Vue {}
+export default class MunicipalityLogo extends Vue {}
 </script>
 
 <style lang="scss" scoped>

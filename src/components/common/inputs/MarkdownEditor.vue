@@ -17,9 +17,9 @@ import marked from 'marked';
   }
 })
 export default class InputField extends Vue {
-  @Prop() value!: string;
-  @Prop() editing!: boolean;
-  @Prop() placeholder!: string;
+  @Prop(String) value!: string;
+  @Prop(Boolean) editing!: boolean;
+  @Prop(String) placeholder!: string;
 
   valueChanged(event: any) {
     this.$emit('change', event.target.value);

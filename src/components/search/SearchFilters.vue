@@ -101,7 +101,7 @@
     DomainLabels = DomainLabels;
     VisibilityLabels = VisibilityLabels;
 
-    @Prop() filters!: SearchFilters;
+    @Prop(Object) filters!: SearchFilters;
 
     get user() {
       return this.$store.state.auth.user;

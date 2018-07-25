@@ -1,5 +1,5 @@
 <template>
-  <FormSection heading="Tid og proces" id="time-and-process" :disabled="state.disabled.timeAndProcessEdit" @edit="update({disabled: {timeAndProcessEdit: $event}})">
+  <FormSection :invalid="isTimeAndProcessValid" heading="Tid og proces" id="time-and-process" :disabled="state.disabled.timeAndProcessEdit" @edit="update({disabled: {timeAndProcessEdit: $event}})">
 
     <Well>
       <div>
@@ -25,10 +25,10 @@
 
       <div>
         <WellItem labelWidth="70%" label="Er borgere påvirket?">
-          <SelectionField :disabled="state.disabled.timeAndProcessEdit" :value="state.targestsCitizens" @change="update({targestsCitizens: $event})" :items="affectedItems" />
+          <MappedSelectionField :disabled="state.disabled.timeAndProcessEdit" :value="state.targetsCitizens" @change="update({targetsCitizens: $event})" :items="yesNoItems" />
         </WellItem>
         <WellItem labelWidth="70%" label="Er virksomheder påvirket?">
-          <SelectionField :disabled="state.disabled.timeAndProcessEdit" :value="state.targetsCompanies" @change="update({targetsCompanies: $event})" :items="affectedItems" />
+          <MappedSelectionField :disabled="state.disabled.timeAndProcessEdit" :value="state.targetsCompanies" @change="update({targetsCompanies: $event})" :items="yesNoItems" />
         </WellItem>
       </div>
     </Well>
@@ -49,11 +49,12 @@ import Well from '@/components/common/Well.vue';
 import WellItem from '@/components/common/WellItem.vue';
 import InfoTooltip from '@/components/common/InfoTooltip.vue';
 import TextArea from '@/components/common/inputs/TextArea.vue';
-import SelectionField from '@/components/common/inputs/SelectionField.vue';
+import MappedSelectionField from '@/components/common/inputs/MappedSelectionField.vue';
 import InputField from '@/components/common/inputs/InputField.vue';
 import FormSection from '@/components/details/FormSection.vue';
-import { Action } from 'vuex-class';
+import { Action, Getter } from 'vuex-class';
 import { processActionTypes } from '@/store/modules/process/actions';
+import { processGetterTypes } from '@/store/modules/process/getters';
 
 @Component({
   components: {
@@ -61,15 +62,16 @@ import { processActionTypes } from '@/store/modules/process/actions';
     InfoTooltip,
     TextArea,
     FormSection,
-    SelectionField,
+    MappedSelectionField,
     InputField,
     WellItem
   }
 })
 export default class TimeAndProcessForm extends Vue {
   @Action(processActionTypes.UPDATE) update: any;
+  @Getter(processGetterTypes.IS_TIME_AND_PROCESS_VALID) isTimeAndProcessValid!: any;
 
-  affectedItems = [{ value: true, text: 'Ja' }, { value: false, text: 'Nej' }];
+  yesNoItems = [{ value: true, text: 'Ja' }, { value: false, text: 'Nej' }];
 
   get state() {
     return this.$store.state.process;

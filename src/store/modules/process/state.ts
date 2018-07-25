@@ -1,9 +1,10 @@
+import { Domain } from '@/models/domain';
+import { LikertScale } from '@/models/likert-scale';
 import { Phase } from '@/models/phase';
 import { Status } from '@/models/status';
+import { Type } from '@/models/types';
 import { Visibility } from '@/models/visibility';
-import { LikertScale } from '@/models/likert-scale';
 import { User } from '@/store/modules/auth/state';
-import { Domain } from '@/models/domain';
 
 export interface ProcessState extends Process {
   disabled: Disabled;
@@ -12,32 +13,35 @@ export interface ProcessState extends Process {
 }
 
 export interface Process {
-  id: string | null;
-  localId: string | null;
-  klId: string | null;
-  esdhReference: string | null;
+  id: string;
+  localId: string;
+  klId: string;
+  children: string[];
+
+  esdhReference: string;
   phase: Phase;
   status: Status;
-  statusText: string | null;
-  created: Date | null;
-  lastChanged: Date | null;
-  decommissioned: Date | null;
+  statusText: string;
+  created: string;
+  lastChanged: string;
+  decommissioned: string;
   title: string;
+  type: Type;
   shortDescription: string;
-  longDescription: string | null;
-  domain: Domain;
+  longDescription: string;
+  domains: Domain[];
   visibility: Visibility;
-  legalClause: string | null;
+  legalClause: string;
   legalClauseLastVerified: string | null;
-  kle: string | null;
+  kle: string;
   kla: string | null;
   klaProcess: boolean;
-  links: Link[] | null;
+  links: Link[];
   vendor: string | null;
   cvr: string;
-  internalNotes: string | null;
-  processChallenges: string | null;
-  solutionRequests: string | null;
+  internalNotes: string;
+  processChallenges: string;
+  solutionRequests: string;
   timeSpendOccurancesPerEmployee: string;
   timeSpendPerOccurance: string;
   timeSpendEmployeesDoingProcess: string;
@@ -45,7 +49,7 @@ export interface Process {
   timeSpendComputedTotal: string;
   timeSpendComment: string;
   targetsCompanies: boolean;
-  targestsCitizens: boolean;
+  targetsCitizens: boolean;
   municipalityName: string;
   levelOfProfessionalAssessment: LikertScale;
   levelOfChange: LikertScale;
@@ -58,21 +62,22 @@ export interface Process {
   levelOfRoutineWorkReduction: LikertScale;
 
   evaluatedLevelOfRoi: LikertScale;
-  technicalImplementationNotes: string | null;
-  organizationalImplementationNotes: string | null;
-  rating: number | null;
-  ratingComment: string | null;
-  searchWords: string | null;
+  technicalImplementationNotes: string;
+  organizationalImplementationNotes: string;
+  rating: number;
+  ratingComment: string;
+  searchWords: string;
 
-  users: User[] | null;
+  users: User[];
   owner: User | null;
   contact: User | null;
 
-  itSystems: ITSystem[] | null;
-  orgUnits: OrgUnit[] | null;
-  technologies: Technology[] | null;
+  itSystems: ITSystem[];
+  orgUnits: OrgUnit[];
+  technologies: Technology[];
   hasBookmarked: boolean;
   canEdit: boolean;
+  emailNotification: boolean;
 }
 
 export interface Link {
@@ -107,9 +112,9 @@ export interface Attachment {
 }
 
 export interface Comment {
-    name: string;
-    message: string;
-    created: string;  
+  name: string;
+  message: string;
+  created: string;
 }
 
 export interface Disabled {
