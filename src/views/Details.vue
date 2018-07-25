@@ -86,7 +86,6 @@ import { errorActionTypes } from '@/store/modules/error/actions';
 import { ErrorState } from '@/store/modules/error/state';
 import SnackBar from '@/components/common/SnackBar.vue';
 import { isEmpty } from 'lodash';
-import store from '@/store/store';
 
 @Component({
   components: {
@@ -127,11 +126,11 @@ export default class Details extends Vue {
   updateProcessErrors!: (processErrors: Partial<ErrorState>) => void;
 
   get state() {
-    return store.state.process;
+    return this.$store.state.process;
   }
 
   get errors() {
-    return store.state.error.processErrors;
+    return this.$store.state.error.processErrors;
   }
 
   get snack() {
@@ -146,6 +145,7 @@ export default class Details extends Vue {
     this.loadItSystems();
     this.loadKles();
 
+    // Id is only set on the details page
     if (this.id) {
       this.$store.dispatch(
         processActionTypes.LOAD_PROCESS_DETAILS,
@@ -153,8 +153,9 @@ export default class Details extends Vue {
       );
     }
 
+    // Phase is only set on the report page
     if (this.phase) {
-      this.update({ phase: this.phase, canEdit: true });
+      this.update({ phase: this.phase, canEdit: true, cvr: this.$store.state.auth.user.cvr });
     }
   }
 
