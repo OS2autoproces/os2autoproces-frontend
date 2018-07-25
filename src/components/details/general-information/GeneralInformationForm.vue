@@ -15,6 +15,9 @@
           <WellItem labelWidth="120px" label="KL ID:">
             <InputField :disabled="state.disabled.generalInformationEdit" :value="state.klId" @change="update({klId: $event})" />
           </WellItem>
+          <WellItem labelWidth="120px" label="KLA:">
+            <MaskableInput :disabled="state.disabled.generalInformationEdit" returnMasked mask="##.##.##.##.##" :value="state.kla" @change="update({kla: $event})"/>
+          </WellItem>
         </div>
 
         <div>
@@ -79,6 +82,7 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 import { Action, Getter } from 'vuex-class';
 
 import InputField from '@/components/common/inputs/InputField.vue';
+import MaskableInput from '@/components/common/inputs/MaskableInput.vue';
 import SelectionField from '@/components/common/inputs/SelectionField.vue';
 import MappedSelectionField from '@/components/common/inputs/MappedSelectionField.vue';
 import DomainsField from '@/components/common/inputs/DomainsField.vue';
@@ -112,6 +116,7 @@ import { Phase, PhaseKeys } from '@/models/phase';
     AssociatedPersonsInput,
     Well,
     FormSection,
+    MaskableInput,
     WellItem,
     WarningIcon
   }
