@@ -27,7 +27,7 @@
 
       <div slot="well-footer" class="well-item-footer" v-if="minPhase(PhaseKeys.PREANALYSIS)">
         <WellItem label="Nuværende system:">
-          <SelectionField :items="itSystems" :value="state.itSystems[0]" itemText="name" :disabled="state.disabled.challengesEdit" @change="saveItSystem($event)" />
+          <SelectionField :items="itSystems" :value="state.itSystems" itemText="name" :disabled="state.disabled.challengesEdit" @change="assign({itSystems: $event})" multiple />
         </WellItem>
       </div>
     </Well>
@@ -65,6 +65,7 @@ import { Phase, PhaseKeys } from '@/models/phase';
 })
 export default class ChallengesForm extends Vue {
   @Action(processActionTypes.UPDATE) update: any;
+  @Action(processActionTypes.ASSIGN) assign: any;
   @Action(processActionTypes.SAVE_IT_SYSTEM) saveItSystem!: (itSystem: ITSystem) => void;
 
   @Getter(processGetterTypes.IS_CHALLENGES_VALID) isChallengesValid!: any;
