@@ -89,7 +89,7 @@ export const processFieldsValidators: { [P in keyof Process]?: (state: ProcessSt
     return !isEmpty(state.kle);
   },
   kla(state: ProcessState) {
-    return isValid(state.kla, isMinMax(1, 16));
+    return isValid(state.kla, isMinMax(0, 16));
   },
   processChallenges(state: ProcessState) {
     return isValid(state.processChallenges, isMinMax(1, 1200));

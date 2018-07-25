@@ -113,6 +113,7 @@ export function stateToRequest(state: ProcessState): ProcessRequest {
   return {
     localId: defaultNull(state.localId),
     klId: defaultNull(state.klId),
+    kla: getKla(state),
     esdhReference: defaultNull(state.esdhReference),
     phase: state.phase || PhaseKeys.IDEA,
     status: state.status || StatusKeys.PENDING,
@@ -207,7 +208,7 @@ export function responseToState(process: ProcessResponse): Process {
     klId: process.klId || '',
     legalClause: process.legalClause || '',
     kle: process.kle || '',
-    kla: getKla(process),
+    kla: process.kla || '',
     links: process.links || [],
     internalNotes: process.internalNotes || '',
     processChallenges: process.processChallenges || '',
