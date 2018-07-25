@@ -13,7 +13,7 @@
     </div>
     <div class="add-person" v-if="!disabled">
       <div class="associated-label">Tilknyt person</div>
-      <SelectionField class="search-field" placeholder="Skriv navn for at søge" @search="search($event)" @change="addUser($event)" itemText="name" :items="users" iconName="search" />
+      <SelectionField class="search-field" placeholder="Skriv navn for at søge" :value="item" @search="search($event)" @change="addUser($event)" itemText="name" :items="users" iconName="search" />
     </div>
   </div>
 </template>
@@ -39,10 +39,9 @@ import { User } from '@/store/modules/auth/state';
 export default class AssociatedPersonsInput extends Vue {
   @Prop(Boolean) disabled!: boolean;
 
-  @Action(processActionTypes.ADD_USER) addUser!: (user: User) => void;
-  @Action(processActionTypes.REMOVE_USER) removeUser!: (user: User) => void;
-  @Action(commonActionTypes.SEARCH_USERS)
-  searchUsers!: (request: UserSearchRequest) => Promise<void>;
+  @Action(commonActionTypes.SEARCH_USERS) searchUsers!: (request: UserSearchRequest) => Promise<void>;
+
+  item: User | null = null;
 
   get state() {
     return this.$store.state;
@@ -54,6 +53,20 @@ export default class AssociatedPersonsInput extends Vue {
 
   search(name: string) {
     this.searchUsers({ name, cvr: this.$store.state.auth.user.cvr });
+  }
+
+  addUser(user: User) {
+    if (!user) {
+      return;
+    }
+
+    this.item = user;
+    this.$store.dispatch(processActionTypes.ADD_USER, user);
+  }
+
+  removeUser(user: User) {
+    this.item = null;
+    this.$store.dispatch(processActionTypes.REMOVE_USER, user);
   }
 }
 </script>

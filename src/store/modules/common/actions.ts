@@ -1,7 +1,7 @@
 import { HTTP } from '@/services/http-service';
 import { User } from '@/store/modules/auth/state';
 import { commonMutationTypes } from '@/store/modules/common/mutations';
-import { ITSystem } from '@/store/modules/process/state';
+import { ITSystem, Technology } from '@/store/modules/process/state';
 import { RootState } from '@/store/store';
 import { debounce } from 'lodash';
 import { ActionTree, Commit } from 'vuex';
@@ -17,6 +17,21 @@ export interface Cms {
 export interface Kle {
   code: string;
   name: string;
+}
+
+interface TechnologiesResponse {
+  _embedded: {
+    technologies: Technology[];
+  };
+  _links: {
+    next: {
+      href: string;
+    };
+  };
+  page: {
+    size: number;
+    totalPages: number;
+  };
 }
 
 interface ItSystemsResponse {
@@ -66,6 +81,7 @@ export const commonActionTypes = {
   SAVE_CMS_CONTENT: `${namespace}/saveCmsContent`,
   LOAD_IT_SYSTEMS: `${namespace}/loadItSystems`,
   LOAD_KLES: `${namespace}/loadKles`,
+  LOAD_TECHNOLOGIES: `${namespace}/loadTechnologies`,
 
   SEARCH_USERS: `${namespace}/searchUsers`
 };
@@ -87,6 +103,10 @@ export const actions: ActionTree<CommonState, RootState> = {
         'content-type': 'application/json'
       }
     });
+  },
+  async loadTechnologies() {
+    const response = await HTTP.get<TechnologiesResponse>(`api/technologies?size=100000`);
+    return response.data._embedded.technologies;
   },
   async loadItSystems({ commit }) {
     const response = await HTTP.get<ItSystemsResponse>(`api/itSystems?size=100000`);

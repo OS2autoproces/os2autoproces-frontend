@@ -1,44 +1,48 @@
 <template>
-    <div>
-        <div class="tag-list">
-            <div v-for="(tag, index) in value" :key="index" class="tag-item">
-                {{tag}}
-                <span role="button" @click="removeTag(index)" class="delete-icon" v-if="!disabled">
-                    <DeleteIcon />
-                </span>
-            </div>
-        </div>
-        <InputField v-if="!disabled" class="tag-input" :placeholder="placeholder" :value="tagInput" @change="tagInput = $event" @submit="addTag" />
+  <div>
+    <div class="tag-list">
+      <div v-for="(tag, index) in value" :key="index" class="tag-item">
+        {{tag.name}}
+        <span role="button" @click="removeTag(index)" class="delete-icon" v-if="!disabled">
+          <DeleteIcon />
+        </span>
+      </div>
     </div>
+    <SelectionField v-if="!disabled" class="tag-input" :value="item" placeholder="Tilføj flere teknologier her" @change="addTag" itemText="name" :items="items" iconName="search" />
+  </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import DeleteIcon from '@/components/icons/DeleteIcon.vue';
-import InputField from '@/components/common/inputs/InputField.vue';
+import SelectionField from '@/components/common/inputs/SelectionField.vue';
+import { Technology } from '@/store/modules/process/state';
 
 @Component({
   components: {
     DeleteIcon,
-    InputField
+    SelectionField
   }
 })
 export default class TagSelector extends Vue {
   @Prop(Boolean) disabled!: boolean;
   @Prop(String) placeholder!: string;
-  @Prop(Array) value!: string[];
+  @Prop(Array) value!: Technology[];
+  @Prop(Array) items!: Technology[];
 
-  tagInput = '';
+  item: Technology | null = null;
 
-  addTag(tag: string) {
-    this.tagInput = '';
-
-    if (tag) {
-      this.$emit('add', tag);
+  addTag(item: Technology) {
+    if (!item) {
+      return;
     }
+
+    this.item = item;
+    this.$emit('add', item);
   }
 
   removeTag(index: number) {
+    this.item = null;
     this.$emit('remove', index);
   }
 }
@@ -73,5 +77,11 @@ export default class TagSelector extends Vue {
 
 .tag-input {
   width: 33%;
+
+  /deep/ .v-autocomplete {
+    .v-icon {
+      transform: none !important;
+    }
+  }
 }
 </style>

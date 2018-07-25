@@ -16,7 +16,7 @@
     <div>
       <h2>Anvendt teknologi</h2>
       <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
-      <TagSelector @add="addTechnology($event)" @remove="removeTechnology($event)" :disabled="state.disabled.implementationEdit" :value="state.technologies" />
+      <TagSelector @add="addTechnology($event)" @remove="removeTechnology($event)" :disabled="state.disabled.implementationEdit" :value="state.technologies" :items="technologies" />
     </div>
   </FormSection>
 </template>
@@ -30,6 +30,8 @@ import InfoTooltip from '@/components/common/InfoTooltip.vue';
 import TagSelector from '@/components/common/inputs/TagSelector.vue';
 import { processActionTypes } from '@/store/modules/process/actions';
 import { processGetterTypes } from '@/store/modules/process/getters';
+import { Technology } from '@/store/modules/process/state';
+import { commonActionTypes } from '@/store/modules/common/actions';
 import { PhaseKeys, Phase } from '@/models/phase';
 
 @Component({
@@ -52,8 +54,14 @@ export default class ImplementationForm extends Vue {
 
   twoColumnBreakpoint = 1600;
 
+  technologies: Technology[] = [];
+
   get state() {
     return this.$store.state.process;
+  }
+
+  async mounted() {
+    this.technologies = await this.$store.dispatch(commonActionTypes.LOAD_TECHNOLOGIES);
   }
 }
 </script>
