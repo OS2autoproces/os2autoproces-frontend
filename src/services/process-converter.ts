@@ -103,7 +103,6 @@ export function stateToRequest(state: ProcessState): ProcessRequest {
   return {
     localId: defaultNull(state.localId),
     klId: defaultNull(state.klId),
-    kla: state.kla || null,
     esdhReference: defaultNull(state.esdhReference),
     phase: state.phase || PhaseKeys.IDEA,
     status: state.status || StatusKeys.PENDING,
