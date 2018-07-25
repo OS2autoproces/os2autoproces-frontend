@@ -52,7 +52,7 @@ export interface ProcessRequest {
   timeSpendComputedTotal: number;
   timeSpendComment: string;
   targetsCompanies: boolean;
-  targestsCitizens: boolean;
+  targetsCitizens: boolean;
 
   levelOfProfessionalAssessment: LikertScale;
   levelOfChange: LikertScale;
@@ -135,7 +135,7 @@ export function stateToRequest(state: ProcessState): ProcessRequest {
     timeSpendPerOccurance: defaultZero(state.timeSpendPerOccurance),
     timeSpendComment: state.timeSpendComment,
     targetsCompanies: state.targetsCompanies,
-    targestsCitizens: state.targestsCitizens,
+    targetsCitizens: state.targetsCitizens,
     levelOfProfessionalAssessment:
       state.levelOfProfessionalAssessment || LikertScaleKeys.UNKNOWN,
     levelOfChange: state.levelOfChange || LikertScaleKeys.UNKNOWN,

@@ -12,7 +12,8 @@ import SelectionField from './SelectionField.vue';
   }
 })
 export default class MappedSelectionField<T> extends Vue {
-  @Prop(String) value!: T;
+  @Prop([Boolean, String, Number, Array, Object])
+  value!: T;
   @Prop(Boolean) disabled!: boolean;
   @Prop(Array) items!: { value: T; text: string }[];
 

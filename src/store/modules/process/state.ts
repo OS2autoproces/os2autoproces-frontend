@@ -49,7 +49,7 @@ export interface Process {
   timeSpendComputedTotal: string;
   timeSpendComment: string;
   targetsCompanies: boolean;
-  targestsCitizens: boolean;
+  targetsCitizens: boolean;
   municipalityName: string;
   levelOfProfessionalAssessment: LikertScale;
   levelOfChange: LikertScale;

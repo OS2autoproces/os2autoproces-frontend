@@ -290,7 +290,7 @@ export function initialProcessState() {
     timeSpendComputedTotal: '0',
     timeSpendEmployeesDoingProcess: '0',
     timeSpendPercentageDigital: '0',
-    targestsCitizens: false,
+    targetsCitizens: false,
     targetsCompanies: false,
     timeSpendComment: '',
 
