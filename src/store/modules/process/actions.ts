@@ -252,7 +252,7 @@ export function initialProcessState() {
     kla: null,
     legalClause: '',
     orgUnits: [],
-    domains: [DomainKeys.WORK],
+    domains: [],
     visibility: VisibilityKeys.PERSONAL,
     vendor: null,
     owner: null,
