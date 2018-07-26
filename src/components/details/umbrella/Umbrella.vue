@@ -26,7 +26,7 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 import { Action } from 'vuex-class';
 import InternalNotes from '@/components/common/inputs/InternalNotes.vue';
 import { processActionTypes, NewComment } from '@/store/modules/process/actions';
-import { Phase } from '@/models/phase';
+import { Type } from '@/models/types';
 import { commonActionTypes } from '@/store/modules/common/actions';
 
 import Comments from '@/components/details/Comments.vue';
