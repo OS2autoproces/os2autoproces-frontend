@@ -3,20 +3,32 @@
     <div class="umbrella-wrapper">
       <Well>
         <div>
-          <WellItem labelWidth="120px" label="ID:">
+          <WellItem labelWidth="80px" label="ID:">
             <InputField disabled :value="state.id" />
           </WellItem>
-          <WellItem labelWidth="120px" label="KLE-nr:">
+          <WellItem labelWidth="80px" label="KLE-nr:">
             <MappedSelectionField :disabled="state.disabled.generalInformationEdit" :value="state.kle" @change="update({kle: $event})" :items="kles" />
           </WellItem>
-          <WellItem labelWidth="120px" label="Lokalt ID:">
+          <WellItem labelWidth="80px" label="Lokalt ID:">
             <InputField :disabled="state.disabled.generalInformationEdit" :value="state.localId" @change="update({localId: $event})" />
           </WellItem>
-          <WellItem labelWidth="120px" label="KL ID:">
+          <WellItem labelWidth="80px" label="KL ID:">
             <InputField :disabled="state.disabled.generalInformationEdit" :value="state.klId" @change="update({klId: $event})" />
           </WellItem>
-          <WellItem labelWidth="120px" label="KLA:">
+          <WellItem labelWidth="80px" label="KLA:">
             <MaskableInput :disabled="state.disabled.generalInformationEdit" mask="##.##.##.##.##" :value="state.kla" @change="setKla"/>
+          </WellItem>
+        </div>
+
+        <div>
+          <WellItem labelWidth="120px" label="Fagområder:">
+            <DomainsField :disabled="state.disabled.generalInformationEdit" :value="state.domains" @change="assign({domains: $event})" />
+          </WellItem>
+          <WellItem labelWidth="120px" label="Kontaktperson:">
+            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.contact" itemText="name" @search="search($event)" isItemsPartial @change="update({contact: $event})" :items="users" />
+          </WellItem>
+          <WellItem labelWidth="120px" v-if="state.contact" label="Mail:">
+            {{state.contact.email}}
           </WellItem>
         </div>
 
@@ -24,15 +36,12 @@
           <WellItem labelWidth="120px" label="Synlighed:">
             {{TypeLabels[state.type]}}
           </WellItem>
-          <WellItem labelWidth="120px" label="Fagområder:">
-            <DomainsField :disabled="state.disabled.generalInformationEdit" :value="state.domains" @change="assign({domains: $event})" />
-          </WellItem>
-          <WellItem labelWidth="120px" label="Kontaktperson:">
-            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.contact" itemText="name" @search="search($event)" isItemsPartial @change="update({contact: $event})" :items="users" />
-          </WellItem>
-          <WellItem v-if="state.contact" labelWidth="120px" label="Mail:">
-            {{state.contact.email}}
-          </WellItem>
+        <WellItem labelWidth="120px" label="Oprettet:">
+          <DatePicker :value="state.created" disabled/>
+        </WellItem>
+        <WellItem labelWidth="120px" label="Sidst opdateret:">
+          <DatePicker :value="state.lastChanged" disabled />
+        </WellItem>
         </div>
       </Well>
     </div>
@@ -50,6 +59,7 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 import { Action, Getter } from 'vuex-class';
 
 import InputField from '@/components/common/inputs/InputField.vue';
+import DatePicker from '@/components/common/inputs/DatePicker.vue';
 import MaskableInput from '@/components/common/inputs/MaskableInput.vue';
 import SelectionField from '@/components/common/inputs/SelectionField.vue';
 import MappedSelectionField from '@/components/common/inputs/MappedSelectionField.vue';
@@ -78,6 +88,7 @@ import { Phase, PhaseKeys } from '@/models/phase';
     DomainsField,
     SelectionField,
     MappedSelectionField,
+    DatePicker,
     TextArea,
     Phases,
     Well,
