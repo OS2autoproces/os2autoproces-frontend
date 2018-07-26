@@ -23,6 +23,7 @@ export const processGetterTypes = {
   IS_SPECIFICATION_VALID: `${namespace}/isSpecificationValid`,
   IS_IMPLEMENTATION_VALID: `${namespace}/isImplementationValid`,
   IS_OPERATION_VALID: `${namespace}/isOperationValid`,
+  IS_UMBRELLA_VALID: `${namespace}/isUmbrellaValid`,
   MIN_PHASE: `${namespace}/minPhase`
 };
 
@@ -248,6 +249,10 @@ const sectionValidators = {
 export const getters: { [key: string]: ((state: ProcessState) => any) | undefined } = {
   minPhase(state: ProcessState) {
     return (phase: Phase) => PhaseOrder.indexOf(phase) <= PhaseOrder.indexOf(state.phase);
+  },
+  isUmbrellaValid(state: ProcessState) {
+    // TODO: Add validation
+    return true;
   },
   ...processFieldsValidators,
   ...sectionValidators

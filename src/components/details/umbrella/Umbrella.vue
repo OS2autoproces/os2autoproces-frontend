@@ -13,7 +13,11 @@
 
     <div class="details-wrapper">
       <div class="details-content">
+        <ProcessHeader />
 
+        <div class="form-sections">
+          <UmbrellaForm />
+        </div>
       </div>
     </div>
   </div>
@@ -30,7 +34,8 @@ import { commonActionTypes } from '@/store/modules/common/actions';
 import Comments from '@/components/details/Comments.vue';
 import IntervalSelector from '@/components/common/inputs/IntervalSelector.vue';
 import FormSection from '@/components/details/FormSection.vue';
-import UmbrellaHeader from '@/components/details/umbrella/UmbrellaHeader.vue';
+import ProcessHeader from '@/components/details/process/ProcessHeader.vue';
+import UmbrellaForm from '@/components/details/umbrella/UmbrellaForm.vue';
 import GeneralInformationForm from '@/components/details/general-information/GeneralInformationForm.vue';
 import Button from '@/components/common/inputs/Button.vue';
 import ChallengesForm from '@/components/details/challenges/ChallengesForm.vue';
@@ -50,7 +55,8 @@ import { isEmpty } from 'lodash';
 @Component({
   components: {
     FormSection,
-    UmbrellaHeader,
+    ProcessHeader,
+    UmbrellaForm,
     GeneralInformationForm,
     Comments,
     IntervalSelector,
@@ -73,12 +79,31 @@ export default class Umbrella extends Vue {
   @Prop(Number) id!: number;
   @Prop(String) type!: Type;
 
-  report() {
-    // TODO
+  @Action(processActionTypes.SAVE) save: any;
+  @Action(processActionTypes.UPDATE) update: any;
+  @Action(processActionTypes.SAVE_COMMENT) saveComment!: (message: string) => Promise<void>;
+  @Action(processActionTypes.LOAD_COMMENTS) loadComments!: () => Promise<void>;
+  @Action(commonActionTypes.LOAD_IT_SYSTEMS) loadItSystems!: () => Promise<void>;
+  @Action(commonActionTypes.LOAD_KLES) loadKles!: () => Promise<void>;
+  @Action(errorActionTypes.UPDATE_PROCESS_ERRORS) updateProcessErrors!: (processErrors: Partial<ErrorState>) => void;
+
+
+  mounted() {
+    this.$store.dispatch(commonActionTypes.LOAD_KLES);
+
+    if (this.isReporting) {
+      this.update({ type: this.type, canEdit: true, cvr: this.$store.state.auth.user.cvr });
+    } else {
+      this.$store.dispatch(processActionTypes.LOAD_PROCESS_DETAILS, this.id);
+    }
   }
 
-  save() {
-    // TODO
+  async report() {
+    const processId = await this.$store.dispatch(processActionTypes.REPORT);
+    if (!processId) {
+      return;
+    }
+    this.$router.push(`/details/${processId}`);
   }
 }
 </script>
@@ -98,6 +123,24 @@ export default class Umbrella extends Vue {
     width: $size-unit;
     margin-right: $size-unit / 2;
   }
+}
+
+.details-wrapper {
+  flex-grow: 1;
+  margin-bottom: 5 * $size-unit;
+}
+
+.details-content {
+  margin-top: $size-unit;
+  margin: 0 auto;
+  max-width: 1200px;
+}
+
+.form-sections {
+  border: 1px solid $color-secondary;
+  border-radius: $size-unit;
+  margin-top: 2 * $size-unit;
+  border-bottom: 1px solid $color-secondary;
 }
 
 .side-bar {
