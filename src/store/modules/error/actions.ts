@@ -9,6 +9,17 @@ export const errorActionTypes = {
   UPDATE_PROCESS_ERRORS: `${namespace}/updateProcessErrors`
 };
 
+export const umbrellaLabels: { [key: string]: string } = {
+  localId: 'Lokalt ID',
+  contact: 'Kontaktperson',
+  title: 'Title/Name',
+  shortDescription: 'Resumé',
+  domains: 'Domæner',
+  kle: 'KLE NR.',
+  kla: 'KLA NR',
+  klId: 'KL ID'
+};
+
 export const generalInformationLabels: { [key: string]: string } = {
   localId: 'Lokalt ID',
   phase: 'Fase',

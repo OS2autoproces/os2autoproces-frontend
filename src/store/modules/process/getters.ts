@@ -6,7 +6,8 @@ import {
   implementationLabels,
   operationLabels,
   specificationLabels,
-  timeAndProcessLabels
+  timeAndProcessLabels,
+  umbrellaLabels
 } from '@/store/modules/error/actions';
 import { Process, ProcessState } from '@/store/modules/process/state';
 import { isEmpty } from 'lodash';
@@ -251,8 +252,7 @@ export const getters: { [key: string]: ((state: ProcessState) => any) | undefine
     return (phase: Phase) => PhaseOrder.indexOf(phase) <= PhaseOrder.indexOf(state.phase);
   },
   isUmbrellaValid(state: ProcessState) {
-    // TODO: Add validation
-    return true;
+    return state.canEdit && !isEmpty(sectionValidation(state, Object.keys(umbrellaLabels)));
   },
   ...processFieldsValidators,
   ...sectionValidators
