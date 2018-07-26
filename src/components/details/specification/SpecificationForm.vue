@@ -1,5 +1,5 @@
 <template>
-  <FormSection :invalid="isSpecificationValid" v-if="minPhase(PhaseKeys.SPECIFICATION)" heading="Specifikation" id="specification" :disabled="state.disabled.specificationEdit" @edit="update({disabled: { specificationEdit: $event}})">
+  <FormSection :invalid="!isSpecificationValid" v-if="minPhase(PhaseKeys.SPECIFICATION)" heading="Specifikation" id="specification" :disabled="state.disabled.specificationEdit" @edit="update({disabled: { specificationEdit: $event}})">
 
     <h2>Sagsreference i ESDH</h2>
     <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>

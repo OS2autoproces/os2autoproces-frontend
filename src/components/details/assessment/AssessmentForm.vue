@@ -1,5 +1,5 @@
 <template>
-  <FormSection :invalid="isAssessmentValid" v-if="minPhase(PhaseKeys.PREANALYSIS)" heading="Faglig vurdering" id="assessment" :disabled="state.disabled.assessmentEdit" @edit="update({ disabled: { assessmentEdit: $event} })">
+  <FormSection :invalid="!isAssessmentValid" v-if="minPhase(PhaseKeys.PREANALYSIS)" heading="Faglig vurdering" id="assessment" :disabled="state.disabled.assessmentEdit" @edit="update({ disabled: { assessmentEdit: $event} })">
     <div class="assessment" :class="{ disabled: state.disabled.assessmentEdit }">
       <div class="question">
         <div class="label">I hvor høj grad er der faglig vurdering?
