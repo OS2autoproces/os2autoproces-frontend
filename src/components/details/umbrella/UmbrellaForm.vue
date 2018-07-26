@@ -46,9 +46,9 @@
       </Well>
     </div>
 
-    <div class="resume">
-      <h2>Resume</h2>
-      <TextArea :disabled="state.disabled.generalInformationEdit" @change="update({shortDescription: $event})" :value="state.shortDescription" />
+    <div class="description">
+      <h2>Beskrivelse</h2>
+      <TextArea :disabled="state.disabled.generalInformationEdit" @change="update({longDescription: $event})" :value="state.longDescription" :maxLength="1200" />
     </div>
 
   </FormSection>
@@ -131,7 +131,7 @@ export default class UmbrellaForm extends Vue {
 
 <style lang="scss" scoped>
 @import '@/styles/variables.scss';
-.resume {
+.description {
   margin-top: $size-unit * 2;
 
   h2 {

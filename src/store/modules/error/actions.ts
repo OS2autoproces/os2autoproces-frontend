@@ -13,7 +13,7 @@ export const umbrellaLabels: { [key: string]: string } = {
   localId: 'Lokalt ID',
   contact: 'Kontaktperson',
   title: 'Title/Name',
-  shortDescription: 'Resumé',
+  longDescription: 'Beskrivelse',
   domains: 'Domæner',
   kle: 'KLE NR.',
   kla: 'KLA NR',
