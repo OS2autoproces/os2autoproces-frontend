@@ -100,7 +100,7 @@ export interface OrgUnit {
 }
 
 export interface Technology {
-  id: string;
+  id: number;
   name: string;
 }
 

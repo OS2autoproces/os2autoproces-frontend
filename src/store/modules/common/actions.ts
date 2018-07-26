@@ -82,6 +82,9 @@ export const commonActionTypes = {
   LOAD_IT_SYSTEMS: `${namespace}/loadItSystems`,
   LOAD_KLES: `${namespace}/loadKles`,
   LOAD_TECHNOLOGIES: `${namespace}/loadTechnologies`,
+  ADD_TECHNOLOGY: `${namespace}/addTechnology`,
+  REMOVE_TECHNOLOGY: `${namespace}/removeTechnology`,
+  EDIT_TECHNOLOGY: `${namespace}/editTechnology`,
 
   SEARCH_USERS: `${namespace}/searchUsers`
 };
@@ -97,7 +100,7 @@ export const actions: ActionTree<CommonState, RootState> = {
 
     commit(commonMutationTypes.UPDATE, { [label]: content });
   },
-  async saveCmsContent({ commit }, cms: Cms): Promise<void> {
+  async saveCmsContent({}, cms: Cms): Promise<void> {
     await HTTP.post(`api/cms/${cms.label}`, JSON.stringify(cms.content), {
       headers: {
         'content-type': 'application/json'
@@ -107,6 +110,15 @@ export const actions: ActionTree<CommonState, RootState> = {
   async loadTechnologies() {
     const response = await HTTP.get<TechnologiesResponse>(`api/technologies?size=100000`);
     return response.data._embedded.technologies;
+  },
+  async addTechnology({}, name: string) {
+    return HTTP.post(`api/technologies`, { name });
+  },
+  async editTechnology({}, { id, name }) {
+    return HTTP.put(`api/technologies/${id}`, { name });
+  },
+  async removeTechnology({}, id: number) {
+    return HTTP.delete(`api/technologies/${id}`);
   },
   async loadItSystems({ commit }) {
     const response = await HTTP.get<ItSystemsResponse>(`api/itSystems?size=100000`);

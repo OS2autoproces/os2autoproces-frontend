@@ -1,6 +1,8 @@
 <template>
   <div class="navbar">
     <div class="logo">AutoProces</div>
+    <router-link class="link" v-if="isAdministrator" to="/search">Søgning</router-link>
+    <router-link class="link" v-if="isAdministrator" to="/manage-technologies">Teknologier</router-link>
     <div class="flex-grow"></div>
     <div class="user-info" v-if="user">
       <div class="user">
@@ -16,7 +18,7 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import ProfileIcon from '../icons/ProfileIcon.vue';
-import { AuthState, UserRoleName } from '@/store/modules/auth/state';
+import { AuthState, UserRoleName, UserRole } from '@/store/modules/auth/state';
 
 @Component({
   components: {
@@ -28,6 +30,10 @@ export default class NavBar extends Vue {
 
   get user() {
     return this.$store.state.auth.user;
+  }
+
+  get isAdministrator() {
+    return this.$store.state.auth.user && this.$store.state.auth.user.roles.includes(UserRole.administrator);
   }
 
   get roles() {
@@ -57,6 +63,10 @@ export default class NavBar extends Vue {
   color: $color-background;
   @include heading;
   font-size: 1.75rem;
+}
+
+.link {
+  margin-left: $size-unit * 2;
 }
 
 .user {

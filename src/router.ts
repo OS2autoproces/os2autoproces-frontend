@@ -4,6 +4,7 @@ import Router, { Route, RouteConfig } from 'vue-router';
 import Details from './views/Details.vue';
 import Home from './views/Home.vue';
 import ReportProcess from './views/ReportProcess.vue';
+import ManageTechnologies from './views/ManageTechnologies.vue';
 import Search from './views/Search.vue';
 import { UserRole, User } from '@/store/modules/auth/state';
 
@@ -37,6 +38,11 @@ export const routes: RouteConfig[] = [
   {
     path: '/',
     component: Home
+  },
+  {
+    path: '/manage-technologies',
+    component: ManageTechnologies,
+    beforeEnter: hasRole(UserRole.administrator)
   },
   {
     path: '/search',
