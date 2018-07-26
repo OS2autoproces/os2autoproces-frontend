@@ -14,6 +14,7 @@ import { Action, Getter } from 'vuex-class';
 import NavBar from '@/components/common/NavBar.vue';
 import Process from '@/components/details/process/Process.vue';
 import Umbrella from '@/components/details/umbrella/Umbrella.vue';
+import { processActionTypes } from '@/store/modules/process/actions';
 
 @Component({
   components: {
@@ -28,6 +29,10 @@ export default class Details extends Vue {
   @Prop(Number) id!: number;
   @Prop(String) type!: string;
   @Prop(String) phase!: string;
+
+  beforeCreate() {
+    this.$store.dispatch(processActionTypes.CLEAR_PROCESS);
+  }
 }
 </script>
 

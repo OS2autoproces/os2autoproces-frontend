@@ -128,10 +128,6 @@ export default class Process extends Vue {
     return !isEmpty(this.$store.state.error.processErrors);
   }
 
-  beforeCreate() {
-    this.$store.dispatch(processActionTypes.CLEAR_PROCESS);
-  }
-
   mounted() {
     this.loadItSystems();
     this.loadKles();
