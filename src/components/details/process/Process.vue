@@ -8,8 +8,8 @@
 
         <ProcessMenu />
 
-        <Button v-if="phase" class="report-button" @click="report">Indberet</Button>
-        <Button v-else class="save-button" @click="save">Gem</Button>
+        <Button v-if="isReporting" class="report-button" @click="report">Indberet</Button>
+        <Button v-if="!isReporting" class="save-button" @click="save">Gem</Button>
       </div>
     </div>
 
@@ -167,10 +167,6 @@ export default class Process extends Vue {
   .side-bar-content {
     position: fixed;
     top: 80px + 2 * $size-unit;
-  }
-
-  .save-button {
-    margin: 2 * $size-unit;
   }
 }
 

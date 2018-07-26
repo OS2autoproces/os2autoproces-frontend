@@ -6,8 +6,6 @@
           <ArrowLeftIcon /> Tilbage til søgning
         </router-link>
 
-        <UmbrellaMenu />
-
         <Button v-if="isReporting" class="report-button" @click="report">Indberet</Button>
         <Button v-if="!isReporting" class="save-button" @click="save">Gem</Button>
       </div>
@@ -32,7 +30,6 @@ import { commonActionTypes } from '@/store/modules/common/actions';
 import Comments from '@/components/details/Comments.vue';
 import IntervalSelector from '@/components/common/inputs/IntervalSelector.vue';
 import FormSection from '@/components/details/FormSection.vue';
-import UmbrellaMenu from '@/components/details/umbrella/UmbrellaMenu.vue';
 import UmbrellaHeader from '@/components/details/umbrella/UmbrellaHeader.vue';
 import GeneralInformationForm from '@/components/details/general-information/GeneralInformationForm.vue';
 import Button from '@/components/common/inputs/Button.vue';
@@ -53,7 +50,6 @@ import { isEmpty } from 'lodash';
 @Component({
   components: {
     FormSection,
-    UmbrellaMenu,
     UmbrellaHeader,
     GeneralInformationForm,
     Comments,
@@ -93,7 +89,7 @@ export default class Umbrella extends Vue {
 .search-page-link {
   @include heading;
   font-size: 1.2rem;
-  display: inline-flex;
+  display: flex;
   align-items: center;
   text-decoration: none;
 
@@ -101,6 +97,21 @@ export default class Umbrella extends Vue {
     height: $size-unit;
     width: $size-unit;
     margin-right: $size-unit / 2;
+  }
+}
+
+.side-bar {
+  flex: 0 0 200px;
+  margin-left: $size-unit;
+
+  .side-bar-content {
+    position: fixed;
+    top: 80px + 2 * $size-unit;
+  }
+
+  .save-button,
+  .report-button {
+    margin-top: 2 * $size-unit;
   }
 }
 </style>
