@@ -17,7 +17,7 @@
 
       <div class="technology">
         <InputField class="name" :value="newTechnology" @change="newTechnology = $event" />
-        <Button class="button" @click="add">Opret</Button>
+        <Button class="button" @click="add">Opret ny</Button>
       </div>
     </div>
   </div>
@@ -56,6 +56,10 @@ export default class ManageTechnologies extends Vue {
   }
 
   edit(technology: Technology) {
+    if (!technology.name) {
+      return;
+    }
+
     this.$store.dispatch(commonActionTypes.EDIT_TECHNOLOGY, technology);
     this.editing = null;
   }
@@ -68,6 +72,10 @@ export default class ManageTechnologies extends Vue {
   }
 
   async add() {
+    if (!this.newTechnology) {
+      return;
+    }
+
     const technology: Technology = {
       name: this.newTechnology,
       id: (await this.$store.dispatch(commonActionTypes.ADD_TECHNOLOGY, this.newTechnology)).id
