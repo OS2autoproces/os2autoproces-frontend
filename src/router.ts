@@ -7,6 +7,7 @@ import ReportProcess from './views/ReportProcess.vue';
 import ManageTechnologies from './views/ManageTechnologies.vue';
 import Search from './views/Search.vue';
 import { UserRole, User } from '@/store/modules/auth/state';
+import { TypeKeys } from '@/models/types';
 
 Vue.use(Router);
 
@@ -52,13 +53,21 @@ export const routes: RouteConfig[] = [
   {
     path: '/details/:id',
     component: Details,
-    props: true,
+    props: route => ({ id: Number(route.params.id), isReporting: false }),
     beforeEnter: isLoggedIn()
   },
   {
-    path: '/details/new/:phase',
+    path: '/details/new/:value',
     component: Details,
-    props: true,
+    props: route => {
+      const isUmbrella = route.params.value === TypeKeys.PARENT || route.params.value === TypeKeys.GLOBAL_PARENT;
+
+      return {
+        isUmbrella,
+        isReporting: true,
+        [isUmbrella ? 'type' : 'phase']: route.params.value
+      };
+    },
     beforeEnter: isLoggedIn()
   },
   {

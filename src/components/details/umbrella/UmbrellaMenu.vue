@@ -15,7 +15,7 @@ export interface MenuItem {
 }
 
 @Component
-export default class DetailsMenu extends Vue {
+export default class UmbrellaMenu extends Vue {
   items: MenuItem[] = [
     { heading: 'Grundlæggende oplysninger', id: 'general-information' },
     { heading: 'Problemstillinger', id: 'challenges' },
