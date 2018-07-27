@@ -51,6 +51,21 @@
       <TextArea :disabled="state.disabled.generalInformationEdit" @change="update({longDescription: $event})" :value="state.longDescription" :maxLength="1200" />
     </div>
 
+    <div class="processes">
+      <h2>Tilknyttede processer</h2>
+      <div v-for="process in processes" :key="process.id" class="process">
+        <SmallSearchResult :process="process" />
+
+        <div v-if="!state.disabled.generalInformationEdit" class="delete-icon" @click="removeProcess(process.id)" role="button">
+          <DeleteIcon />
+        </div>
+      </div>
+    </div>
+
+    <div class="processes" v-if="!state.disabled.generalInformationEdit">
+      <h2>Tilføj processer</h2>
+      <AssociatedProcesses @add="addProcess" />
+    </div>
   </FormSection>
 </template>
 
@@ -62,7 +77,9 @@ import InputField from '@/components/common/inputs/InputField.vue';
 import DatePicker from '@/components/common/inputs/DatePicker.vue';
 import MaskableInput from '@/components/common/inputs/MaskableInput.vue';
 import SelectionField from '@/components/common/inputs/SelectionField.vue';
+import AssociatedProcesses from '@/components/common/inputs/AssociatedProcesses.vue';
 import MappedSelectionField from '@/components/common/inputs/MappedSelectionField.vue';
+import SmallSearchResult from '@/components/search/SmallSearchResult.vue';
 import DomainsField from '@/components/common/inputs/DomainsField.vue';
 import TextArea from '@/components/common/inputs/TextArea.vue';
 import Phases from '@/components/common/inputs/Phases.vue';
@@ -70,6 +87,7 @@ import Well from '@/components/common/Well.vue';
 import WellItem from '@/components/common/WellItem.vue';
 import FormSection from '@/components/details/FormSection.vue';
 import WarningIcon from '@/components/icons/WarningIcon.vue';
+import DeleteIcon from '@/components/icons/DeleteIcon.vue';
 import { processActionTypes } from '@/store/modules/process/actions';
 import { processGetterTypes } from '@/store/modules/process/getters';
 import { commonActionTypes, UserSearchRequest } from '@/store/modules/common/actions';
@@ -87,6 +105,8 @@ import { Phase, PhaseKeys } from '@/models/phase';
     InputField,
     DomainsField,
     SelectionField,
+    SmallSearchResult,
+    AssociatedProcesses,
     MappedSelectionField,
     DatePicker,
     TextArea,
@@ -95,7 +115,8 @@ import { Phase, PhaseKeys } from '@/models/phase';
     FormSection,
     MaskableInput,
     WellItem,
-    WarningIcon
+    WarningIcon,
+    DeleteIcon
   }
 })
 export default class UmbrellaForm extends Vue {
@@ -126,17 +147,35 @@ export default class UmbrellaForm extends Vue {
     // Inserts periodes for every 2 characters, to match format: ##.##.##.##.##
     this.update({ kla: kla.replace(/(\d{2})(?=\d)/g, '$1.') });
   }
+
+  processes = [];
+  addProcess(process: any) {
+    this.processes.push(process);
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 @import '@/styles/variables.scss';
-.description {
+.description,
+.processes {
   margin-top: $size-unit * 2;
 
   h2 {
     @include textarea-heading;
     margin-bottom: $size-unit/2;
+  }
+}
+
+.process {
+  position: relative;
+
+  .delete-icon {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    height: 30px;
+    width: 30px;
   }
 }
 </style>

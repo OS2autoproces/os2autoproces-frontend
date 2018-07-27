@@ -131,10 +131,6 @@
 <style lang="scss" scoped>
   @import '../../styles/variables';
 
-  .wrapper {
-    padding: 4 * $size-unit 3 * $size-unit;
-  }
-
   .types {
     margin-bottom: 4 * $size-unit;
 

@@ -8,69 +8,69 @@ import { User } from '@/store/modules/auth/state';
 import { ITSystem, Link, OrgUnit, Process, ProcessState, Technology } from '@/store/modules/process/state';
 
 export interface ProcessRequest {
-  localId?: string | null;
-  klId?: string | null;
-  esdhReference?: string | null;
-  phase?: Phase;
-  status?: Status;
-  statusText?: string | null;
-  type?: Type;
+  localId: string | null;
+  klId: string | null;
+  esdhReference: string | null;
+  phase: Phase;
+  status: Status;
+  statusText: string | null;
+  type: Type;
 
-  created?: string | null;
-  lastChanged?: string | null;
-  decommissioned?: string | null;
+  created: string | null;
+  lastChanged: string | null;
+  decommissioned: string | null;
 
-  title?: string;
-  shortDescription?: string;
-  longDescription?: string | null;
-  domains?: Domain[];
-  visibility?: Visibility;
+  title: string;
+  shortDescription: string;
+  longDescription: string | null;
+  domains: Domain[];
+  visibility: Visibility;
 
-  legalClause?: string | null;
-  legalClauseLastVerified?: string | null;
-  kle?: string | null;
-  kla?: string | null;
-  links?: Link[] | null;
+  legalClause: string | null;
+  legalClauseLastVerified: string | null;
+  kle: string | null;
+  kla: string | null;
+  links: Link[] | null;
 
-  vendor?: string | null;
-  internalNotes?: string | null;
+  vendor: string | null;
+  internalNotes: string | null;
 
-  processChallenges?: string | null;
-  solutionRequests?: string | null;
+  processChallenges: string | null;
+  solutionRequests: string | null;
 
-  timeSpendOccurancesPerEmployee?: number;
-  timeSpendPerOccurance?: number;
-  timeSpendEmployeesDoingProcess?: number;
-  timeSpendPercentageDigital?: number;
-  timeSpendComputedTotal?: number;
-  timeSpendComment?: string;
-  targetsCompanies?: boolean;
-  targetsCitizens?: boolean;
+  timeSpendOccurancesPerEmployee: number;
+  timeSpendPerOccurance: number;
+  timeSpendEmployeesDoingProcess: number;
+  timeSpendPercentageDigital: number;
+  timeSpendComputedTotal: number;
+  timeSpendComment: string;
+  targetsCompanies: boolean;
+  targetsCitizens: boolean;
 
-  levelOfProfessionalAssessment?: LikertScale;
-  levelOfChange?: LikertScale;
-  levelOfStructuredInformation?: LikertScale;
-  levelOfUniformity?: LikertScale;
-  levelOfDigitalInformation?: LikertScale;
-  evaluatedLevelOfRoi?: LikertScale;
-  levelOfQuality?: LikertScale;
-  levelOfRoutineWorkReduction?: LikertScale;
-  levelOfSpeed?: LikertScale;
+  levelOfProfessionalAssessment: LikertScale;
+  levelOfChange: LikertScale;
+  levelOfStructuredInformation: LikertScale;
+  levelOfUniformity: LikertScale;
+  levelOfDigitalInformation: LikertScale;
+  evaluatedLevelOfRoi: LikertScale;
+  levelOfQuality: LikertScale;
+  levelOfRoutineWorkReduction: LikertScale;
+  levelOfSpeed: LikertScale;
 
-  technicalImplementationNotes?: string | null;
-  organizationalImplementationNotes?: string | null;
+  technicalImplementationNotes: string | null;
+  organizationalImplementationNotes: string | null;
 
-  rating?: number | null;
-  ratingComment?: string | null;
-  searchWords?: string | null;
+  rating: number | null;
+  ratingComment: string | null;
+  searchWords: string | null;
 
-  users?: User[] | null;
-  owner?: User;
-  contact?: User;
-  itSystems?: ITSystem[] | null;
-  orgUnits?: OrgUnit[] | null;
-  technologies?: Technology[] | null;
-  children?: string[];
+  users: User[] | null;
+  owner: User;
+  contact: User;
+  itSystems: ITSystem[] | null;
+  orgUnits: OrgUnit[] | null;
+  technologies: Technology[] | null;
+  children: string[];
 }
 
 export interface ProcessResponse extends ProcessRequest {
@@ -151,14 +151,14 @@ function stateToRequestFields(state: ProcessState): ProcessRequest {
   };
 }
 
-function pickFields(request: ProcessRequest, fields: Array<keyof ProcessRequest>): ProcessRequest {
-  return fields.reduce((fields: ProcessRequest, field) => {
-    fields[field] = request[field];
+function pickFields(request: ProcessRequest, fields: Array<keyof ProcessRequest>): Partial<ProcessRequest> {
+  return fields.reduce((partialRequest: Partial<ProcessRequest>, field) => {
+    partialRequest[field] = request[field];
     return fields;
   }, {});
 }
 
-function buildUmbrellaRequest(request: ProcessRequest): ProcessRequest {
+function buildUmbrellaRequest(request: ProcessRequest): Partial<ProcessRequest> {
   return pickFields(request, [
     'kle',
     'localId',
@@ -172,7 +172,7 @@ function buildUmbrellaRequest(request: ProcessRequest): ProcessRequest {
   ]);
 }
 
-export function stateToRequest(state: ProcessState): ProcessRequest {
+export function stateToRequest(state: ProcessState): Partial<ProcessRequest> {
   const request = stateToRequestFields(state);
 
   if (state.type === TypeKeys.GLOBAL_PARENT || state.type === TypeKeys.PARENT) {

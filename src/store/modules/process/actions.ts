@@ -200,7 +200,7 @@ export const actions: ActionTree<ProcessState, RootState> = {
       dispatch(errorActionTypes.UPDATE_PROCESS_ERRORS, { processErrors: invalidFields }, { root: true });
       return null;
     } else {
-      const converted: ProcessRequest = await stateToRequest(state);
+      const converted = await stateToRequest(state);
       const response = (await HTTP.post<ProcessResponse>(`api/processes`, converted)).data;
       const process = responseToState(response);
       await commit(processMutationTypes.UPDATE, setBackendManagedFields(process));
