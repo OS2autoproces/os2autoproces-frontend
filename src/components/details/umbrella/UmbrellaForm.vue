@@ -16,7 +16,7 @@
             <InputField :disabled="state.disabled.generalInformationEdit" :value="state.klId" @change="update({klId: $event})" />
           </WellItem>
           <WellItem labelWidth="80px" label="KLA:">
-            <MaskableInput :disabled="state.disabled.generalInformationEdit" mask="##.##.##.##.##" :value="state.kla" @change="setKla"/>
+            <MaskableInput :disabled="state.disabled.generalInformationEdit" mask="##.##.##.##.##" :value="state.kla" @change="setKla" />
           </WellItem>
         </div>
 
@@ -36,12 +36,12 @@
           <WellItem labelWidth="120px" label="Synlighed:">
             {{TypeLabels[state.type]}}
           </WellItem>
-        <WellItem labelWidth="120px" label="Oprettet:">
-          <DatePicker :value="state.created" disabled/>
-        </WellItem>
-        <WellItem labelWidth="120px" label="Sidst opdateret:">
-          <DatePicker :value="state.lastChanged" disabled />
-        </WellItem>
+          <WellItem labelWidth="120px" label="Oprettet:">
+            <DatePicker :value="state.created" disabled/>
+          </WellItem>
+          <WellItem labelWidth="120px" label="Sidst opdateret:">
+            <DatePicker :value="state.lastChanged" disabled />
+          </WellItem>
         </div>
       </Well>
     </div>
@@ -124,7 +124,7 @@ export default class UmbrellaForm extends Vue {
 
   setKla(kla: string) {
     // Inserts periodes for every 2 characters, to match format: ##.##.##.##.##
-    this.update({kla: kla.replace(/(\d{2})(?=\d)/g, '$1.')});
+    this.update({ kla: kla.replace(/(\d{2})(?=\d)/g, '$1.') });
   }
 }
 </script>

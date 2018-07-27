@@ -1,3 +1,5 @@
+import { Process } from '@/store/modules/process/state';
+
 export interface ErrorState {
-  processErrors: string[];
+  processErrors: Array<keyof Process>;
 }

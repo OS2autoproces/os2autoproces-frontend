@@ -2,6 +2,7 @@ import { errorMutationTypes } from '@/store/modules/error/mutations';
 import { ErrorState } from '@/store/modules/error/state';
 import { RootState } from '@/store/store';
 import { ActionTree } from 'vuex';
+import { Process } from '@/store/modules/process/state';
 
 export const namespace = 'error';
 
@@ -9,7 +10,9 @@ export const errorActionTypes = {
   UPDATE_PROCESS_ERRORS: `${namespace}/updateProcessErrors`
 };
 
-export const umbrellaLabels: { [key: string]: string } = {
+type ProcessLabels = { [X in keyof Process]?: string };
+
+export const umbrellaLabels: ProcessLabels = {
   localId: 'Lokalt ID',
   contact: 'Kontaktperson',
   title: 'Title/Name',
@@ -20,7 +23,7 @@ export const umbrellaLabels: { [key: string]: string } = {
   klId: 'KL ID'
 };
 
-export const generalInformationLabels: { [key: string]: string } = {
+export const generalInformationLabels: ProcessLabels = {
   localId: 'Lokalt ID',
   phase: 'Fase',
   owner: 'Ejer',
@@ -38,14 +41,14 @@ export const generalInformationLabels: { [key: string]: string } = {
   klId: 'KL ID'
 };
 
-export const challengesLabels: { [key: string]: string } = {
+export const challengesLabels: ProcessLabels = {
   longDescription: 'Beskrivelse',
   processChallenges: 'Process udfordringer',
   solutionRequests: 'Løsningsbeskrivelse',
   itSystems: 'Nuværende system'
 };
 
-export const timeAndProcessLabels: { [key: string]: string } = {
+export const timeAndProcessLabels: ProcessLabels = {
   timeSpendOccurancesPerEmployee: 'Antal gange processen gentages om året pr. medarbejder',
   timeSpendPerOccurance: 'Tidsforbrug pr. proces i minutter',
   timeSpendEmployeesDoingProcess: 'Antal medarbejdere der foretager processen',
@@ -54,7 +57,7 @@ export const timeAndProcessLabels: { [key: string]: string } = {
   timeSpendComment: 'Kommentar vedr. tidsforbrug'
 };
 
-export const assessmentLabels: { [key: string]: string } = {
+export const assessmentLabels: ProcessLabels = {
   levelOfProfessionalAssessment: 'I hvor høj grad er der faglig vurdering?',
   levelOfChange: 'I hvor høj grad er processen præget af hyppige ændringer?',
   levelOfStructuredInformation: 'I hvor høj grad er processen baseret på struktureret information?',
@@ -66,24 +69,24 @@ export const assessmentLabels: { [key: string]: string } = {
   evaluatedLevelOfRoi: 'I hvor høj grad vurderes det at processen kan automatiseres?'
 };
 
-export const specificationLabels: { [key: string]: string } = {
+export const specificationLabels: ProcessLabels = {
   esdhReference: 'ESDH Reference'
 };
 
-export const implementationLabels: { [key: string]: string } = {
+export const implementationLabels: ProcessLabels = {
   technologies: 'Anvendt teknologi',
   technicalImplementationNotes: 'Teknisk implementering',
   organizationalImplementationNotes: 'Organisatorisk implementering'
 };
 
-export const operationLabels: { [key: string]: string } = {
+export const operationLabels: ProcessLabels = {
   rating: 'I hvor højgrad realiserer processen sit potentiale',
   ratingComment: 'Kommentar til realiseret løsningspotentiale',
   decommissioned: 'Løsning taget ud af drift',
   legalClauseLastVerified: 'Sidst kontrolleret i forhold til §'
 };
 
-export const processLabels: { [key: string]: string } = {
+export const processLabels: ProcessLabels = {
   ...generalInformationLabels,
   ...challengesLabels,
   ...timeAndProcessLabels,

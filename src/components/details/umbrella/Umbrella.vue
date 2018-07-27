@@ -20,6 +20,15 @@
         </div>
       </div>
     </div>
+
+    <SnackBar :timeout="0" color="error" :value="snack" @clicked="updateProcessErrors({processErrors: []})">
+      <div>
+        Følgende felter er ugyldige:
+        <ul>
+          <li v-for="field in errors" :key="field">{{field}}</li>
+        </ul>
+      </div>
+    </SnackBar>
   </div>
 </template>
 
@@ -47,7 +56,7 @@ import AttachmentsForm from '@/components/details/attachments/AttachmentsForm.vu
 import OperationForm from '@/components/details/operation/OperationForm.vue';
 import ArrowLeftIcon from '@/components/icons/ArrowLeftIcon.vue';
 import EditIcon from '@/components/icons/EditIcon.vue';
-import { errorActionTypes } from '@/store/modules/error/actions';
+import { errorActionTypes, umbrellaLabels } from '@/store/modules/error/actions';
 import { ErrorState } from '@/store/modules/error/state';
 import SnackBar from '@/components/common/SnackBar.vue';
 import { isEmpty } from 'lodash';
@@ -79,14 +88,17 @@ export default class Umbrella extends Vue {
   @Prop(Number) id!: number;
   @Prop(String) type!: Type;
 
-  @Action(processActionTypes.SAVE) save: any;
   @Action(processActionTypes.UPDATE) update: any;
-  @Action(processActionTypes.SAVE_COMMENT) saveComment!: (message: string) => Promise<void>;
-  @Action(processActionTypes.LOAD_COMMENTS) loadComments!: () => Promise<void>;
-  @Action(commonActionTypes.LOAD_IT_SYSTEMS) loadItSystems!: () => Promise<void>;
   @Action(commonActionTypes.LOAD_KLES) loadKles!: () => Promise<void>;
   @Action(errorActionTypes.UPDATE_PROCESS_ERRORS) updateProcessErrors!: (processErrors: Partial<ErrorState>) => void;
 
+  get errors() {
+    return this.$store.state.error.processErrors;
+  }
+
+  get snack() {
+    return !isEmpty(this.$store.state.error.processErrors);
+  }
 
   mounted() {
     this.$store.dispatch(commonActionTypes.LOAD_KLES);
@@ -98,8 +110,12 @@ export default class Umbrella extends Vue {
     }
   }
 
+  save() {
+    this.$store.dispatch(processActionTypes.SAVE, Object.keys(umbrellaLabels));
+  }
+
   async report() {
-    const processId = await this.$store.dispatch(processActionTypes.REPORT);
+    const processId = await this.$store.dispatch(processActionTypes.REPORT, Object.keys(umbrellaLabels));
     if (!processId) {
       return;
     }
@@ -127,7 +143,6 @@ export default class Umbrella extends Vue {
 
 .details-wrapper {
   flex-grow: 1;
-  margin-bottom: 5 * $size-unit;
 }
 
 .details-content {

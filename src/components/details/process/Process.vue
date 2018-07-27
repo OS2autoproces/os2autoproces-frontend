@@ -43,10 +43,10 @@
 
     <SnackBar :timeout="0" color="error" :value="snack" @clicked="updateProcessErrors({processErrors: []})">
       <div>
-        <p>Kunne ikke gemme, følgende felter er invalide:</p>
-        <p v-for="field in errors" :key="field">
-          {{field}}
-        </p>
+        Følgende felter er ugyldige:
+        <ul>
+          <li v-for="field in errors" :key="field">{{field}}</li>
+        </ul>
       </div>
     </SnackBar>
   </div>
@@ -108,7 +108,6 @@ export default class Process extends Vue {
   @Prop(Number) id!: number;
   @Prop(String) phase!: Phase;
 
-  @Action(processActionTypes.SAVE) save: any;
   @Action(processActionTypes.UPDATE) update: any;
   @Action(processActionTypes.SAVE_COMMENT) saveComment!: (message: string) => Promise<void>;
   @Action(processActionTypes.LOAD_COMMENTS) loadComments!: () => Promise<void>;
@@ -137,6 +136,10 @@ export default class Process extends Vue {
     } else {
       this.$store.dispatch(processActionTypes.LOAD_PROCESS_DETAILS, this.id);
     }
+  }
+
+  save() {
+    this.$store.dispatch(processActionTypes.SAVE);
   }
 
   async report() {

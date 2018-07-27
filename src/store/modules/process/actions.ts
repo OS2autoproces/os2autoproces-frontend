@@ -8,11 +8,12 @@ import { HTTP } from '@/services/http-service';
 import { ProcessRequest, ProcessResponse, responseToState, stateToRequest } from '@/services/process-converter';
 import { User } from '@/store/modules/auth/state';
 import { errorActionTypes } from '@/store/modules/error/actions';
-import { sectionValidation } from '@/store/modules/process/getters';
 import { processMutationTypes } from '@/store/modules/process/mutations';
 import { Attachment, ITSystem, Process, ProcessState, Technology } from '@/store/modules/process/state';
 import { RootState } from '@/store/store';
 import { ActionTree } from 'vuex';
+import { getInvalidProperties } from '@/store/modules/process/validation';
+import { getProcessKeys } from '@/store/modules/process/getters';
 
 export const namespace = 'process';
 
@@ -27,6 +28,8 @@ export const processActionTypes = {
   LOAD_COMMENTS: `${namespace}/loadComments`,
   SAVE: `${namespace}/save`,
   REPORT: `${namespace}/report`,
+  SAVE_UMBRELLA: `${namespace}/saveUmbrella`,
+  REPORT_UMBRELLA: `${namespace}/reportUmbrella`,
 
   ADD_USER: `${namespace}/addUser`,
   REMOVE_USER: `${namespace}/removeUser`,
@@ -178,20 +181,6 @@ export const actions: ActionTree<ProcessState, RootState> = {
 
     commit(processMutationTypes.ASSIGN, responseToState(process));
   },
-  async report({ commit, state, dispatch }): Promise<string | null> {
-    const invalidFields = sectionValidation(state, Object.keys(state));
-
-    if (invalidFields) {
-      dispatch(errorActionTypes.UPDATE_PROCESS_ERRORS, { processErrors: invalidFields }, { root: true });
-      return null;
-    } else {
-      const converted: ProcessRequest = await stateToRequest(state);
-      const response = (await HTTP.post<ProcessResponse>(`api/processes`, converted)).data;
-      const process = responseToState(response);
-      await commit(processMutationTypes.UPDATE, setBackendManagedFields(process));
-      return process.id;
-    }
-  },
   async copyProcess({ commit, state }): Promise<string> {
     const response = await HTTP.post<ProcessResponse>(`api/processes/${state.id}/copy`);
 
@@ -205,8 +194,22 @@ export const actions: ActionTree<ProcessState, RootState> = {
     commit(processMutationTypes.UPDATE, setBackendManagedFields(process));
     return process.id;
   },
-  async save({ commit, state, dispatch }) {
-    const invalidFields = sectionValidation(state, Object.keys(state));
+  async report({ commit, state, dispatch }, validationKeys?: Array<keyof Process>): Promise<string | null> {
+    const invalidFields = getInvalidProperties(state, validationKeys || getProcessKeys(state));
+
+    if (invalidFields) {
+      dispatch(errorActionTypes.UPDATE_PROCESS_ERRORS, { processErrors: invalidFields }, { root: true });
+      return null;
+    } else {
+      const converted: ProcessRequest = await stateToRequest(state);
+      const response = (await HTTP.post<ProcessResponse>(`api/processes`, converted)).data;
+      const process = responseToState(response);
+      await commit(processMutationTypes.UPDATE, setBackendManagedFields(process));
+      return process.id;
+    }
+  },
+  async save({ commit, state, dispatch }, validationKeys?: Array<keyof Process>) {
+    const invalidFields = getInvalidProperties(state, validationKeys || getProcessKeys(state));
 
     if (invalidFields) {
       dispatch(errorActionTypes.UPDATE_PROCESS_ERRORS, { processErrors: invalidFields }, { root: true });
