@@ -196,8 +196,7 @@ export const actions: ActionTree<ProcessState, RootState> = {
   },
   async report({ commit, state, dispatch }, validationKeys?: Array<keyof Process>): Promise<string | null> {
     const invalidFields = getInvalidProperties(state, validationKeys || getProcessKeys(state));
-
-    if (invalidFields) {
+    if (invalidFields.length > 0) {
       dispatch(errorActionTypes.UPDATE_PROCESS_ERRORS, { processErrors: invalidFields }, { root: true });
       return null;
     } else {
@@ -211,7 +210,7 @@ export const actions: ActionTree<ProcessState, RootState> = {
   async save({ commit, state, dispatch }, validationKeys?: Array<keyof Process>) {
     const invalidFields = getInvalidProperties(state, validationKeys || getProcessKeys(state));
 
-    if (invalidFields) {
+    if (invalidFields.length > 0) {
       dispatch(errorActionTypes.UPDATE_PROCESS_ERRORS, { processErrors: invalidFields }, { root: true });
     } else {
       const converted = await stateToRequest(state);

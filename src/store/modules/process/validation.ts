@@ -4,7 +4,7 @@ import * as validateJs from 'validate.js';
 import { ProcessState, Process } from '@/store/modules/process/state';
 import { PhaseKeys } from '@/models/phase';
 
-export function getInvalidProperties(state: ProcessState, properties: Array<keyof Process>): string[] | true {
+export function getInvalidProperties(state: ProcessState, properties: Array<keyof Process>): string[] {
   return properties.filter(property => {
     const validator = processFieldsValidators[property];
     return validator && !validator(state);
