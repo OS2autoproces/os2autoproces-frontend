@@ -152,9 +152,9 @@ function stateToRequestFields(state: ProcessState): ProcessRequest {
 }
 
 function pickFields(request: ProcessRequest, fields: Array<keyof ProcessRequest>): Partial<ProcessRequest> {
-  return fields.reduce((partialRequest: Partial<ProcessRequest>, field) => {
+  return fields.reduce<Partial<ProcessRequest>>((partialRequest, field) => {
     partialRequest[field] = request[field];
-    return fields;
+    return partialRequest;
   }, {});
 }
 
@@ -168,7 +168,8 @@ function buildUmbrellaRequest(request: ProcessRequest): Partial<ProcessRequest> 
     'domains',
     'title',
     'type',
-    'longDescription'
+    'longDescription',
+    'shortDescription'
   ]);
 }
 

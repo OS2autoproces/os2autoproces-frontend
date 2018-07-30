@@ -47,6 +47,9 @@
     </div>
 
     <div class="description">
+      <h2>Resume</h2>
+      <TextArea :disabled="state.disabled.generalInformationEdit" @change="update({shortDescription: $event})" :value="state.shortDescription" :maxLength="140" />
+
       <h2>Beskrivelse</h2>
       <TextArea :disabled="state.disabled.generalInformationEdit" @change="update({longDescription: $event})" :value="state.longDescription" :maxLength="1200" />
     </div>

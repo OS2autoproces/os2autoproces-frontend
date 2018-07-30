@@ -64,9 +64,6 @@ export const processFieldsValidators: { [P in keyof Process]?: (state: ProcessSt
   visibility(state: ProcessState) {
     return !isEmpty(state.visibility);
   },
-  contact(state: ProcessState) {
-    return !isEmpty(state.contact);
-  },
   legalClause(state: ProcessState) {
     return isValid(state.legalClause, isMinMax(0, 140));
   },
