@@ -177,9 +177,12 @@ export const actions: ActionTree<ProcessState, RootState> = {
       return;
     }
 
-    const process = (await HTTP.get<ProcessResponse>(`api/processes/${id}?projection=extended`)).data;
+    const response = await HTTP.get<ProcessResponse>(`api/processes/${id}?projection=extended`);
+    const process = responseToState(response.data);
 
-    commit(processMutationTypes.ASSIGN, responseToState(process));
+    commit(processMutationTypes.ASSIGN, process);
+
+    return process;
   },
   async copyProcess({ commit, state }): Promise<string> {
     const response = await HTTP.post<ProcessResponse>(`api/processes/${state.id}/copy`);

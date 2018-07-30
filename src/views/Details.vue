@@ -2,8 +2,8 @@
   <div class="details">
     <NavBar />
     <div class="page">
-      <Process v-if="!isUmbrella" :isReporting="isReporting" :id="id" :phase="phase" />
-      <Umbrella v-if="isUmbrella" :isReporting="isReporting" :id="id" :type="type" />
+      <Process v-if="!this.loading && !this.isUmbrella" :isReporting="isReporting" :id="id" :phase="type" />
+      <Umbrella v-if="!this.loading && this.isUmbrella" :isReporting="isReporting" :id="id" :type="type" />
     </div>
   </div>
 </template>
@@ -15,6 +15,7 @@ import NavBar from '@/components/common/NavBar.vue';
 import Process from '@/components/details/process/Process.vue';
 import Umbrella from '@/components/details/umbrella/Umbrella.vue';
 import { processActionTypes } from '@/store/modules/process/actions';
+import { TypeKeys } from '@/models/types';
 
 @Component({
   components: {
@@ -25,13 +26,26 @@ import { processActionTypes } from '@/store/modules/process/actions';
 })
 export default class Details extends Vue {
   @Prop(Boolean) isReporting!: boolean;
-  @Prop(Boolean) isUmbrella!: boolean;
   @Prop(Number) id!: number;
   @Prop(String) type!: string;
-  @Prop(String) phase!: string;
+
+  isUmbrella = true;
+  loading = true;
 
   beforeCreate() {
     this.$store.dispatch(processActionTypes.CLEAR_PROCESS);
+  }
+
+  async mounted() {
+    if (this.isReporting) {
+      this.isUmbrella = this.type === TypeKeys.PARENT || this.type === TypeKeys.GLOBAL_PARENT;
+      this.loading = false;
+    } else {
+      const process = await this.$store.dispatch(processActionTypes.LOAD_PROCESS_DETAILS, this.id);
+
+      this.isUmbrella = process.type === TypeKeys.PARENT || process.type === TypeKeys.GLOBAL_PARENT;
+      this.loading = false;
+    }
   }
 }
 </script>

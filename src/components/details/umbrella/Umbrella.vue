@@ -105,8 +105,6 @@ export default class Umbrella extends Vue {
 
     if (this.isReporting) {
       this.update({ type: this.type, canEdit: true, cvr: this.$store.state.auth.user.cvr });
-    } else {
-      this.$store.dispatch(processActionTypes.LOAD_PROCESS_DETAILS, this.id);
     }
   }
 

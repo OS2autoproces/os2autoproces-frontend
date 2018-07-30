@@ -133,8 +133,6 @@ export default class Process extends Vue {
 
     if (this.isReporting) {
       this.update({ phase: this.phase, canEdit: true, cvr: this.$store.state.auth.user.cvr });
-    } else {
-      this.$store.dispatch(processActionTypes.LOAD_PROCESS_DETAILS, this.id);
     }
   }
 
