@@ -44,7 +44,8 @@ export const processActionTypes = {
   COPY_PROCESS: `${namespace}/copyProcess`,
   REMOVE_PROCESS: `${namespace}/removeProcess`,
 
-  SET_EMAIL_NOTIFICATION: `${namespace}/setEmailNotification`
+  SET_EMAIL_NOTIFICATION: `${namespace}/setEmailNotification`,
+  SET_BOOKMARK: `${namespace}/setBookmark`
 };
 
 export interface NewComment {
@@ -53,7 +54,7 @@ export interface NewComment {
 }
 
 interface BackendManagedFields {
-  id: string;
+  id: number;
   created: string | null;
   lastChanged: string | null;
   timeSpendComputedTotal: string;
@@ -64,7 +65,7 @@ interface BackendManagedFields {
 
 function setBackendManagedFields(process: Process): BackendManagedFields {
   return {
-    id: process.id,
+    id: Number(process.id),
     created: process.created,
     timeSpendComputedTotal: process.timeSpendComputedTotal,
     lastChanged: process.lastChanged,
@@ -172,7 +173,7 @@ export const actions: ActionTree<ProcessState, RootState> = {
       technologies: state.technologies.filter((_, i) => i !== index)
     });
   },
-  async loadProcessDetails({ commit }, id: string) {
+  async loadProcessDetails({ commit }, id: number) {
     if (!id) {
       return;
     }
@@ -220,7 +221,6 @@ export const actions: ActionTree<ProcessState, RootState> = {
       const response = await HTTP.put<ProcessResponse>(`api/processes/${state.id}`, converted);
 
       const process = responseToState(response.data);
-      // TODO: notify update
       commit(processMutationTypes.UPDATE, setBackendManagedFields(process));
     }
   },
@@ -244,10 +244,17 @@ export const actions: ActionTree<ProcessState, RootState> = {
     commit(processMutationTypes.UPDATE, {
       emailNotification
     });
+  },
+  async setBookmark({ commit, state }, hasBookmarked: boolean) {
+    const url = `api/bookmarks/${state.id}`;
+    const method = hasBookmarked ? HTTP.put : HTTP.delete;
+
+    commit(processMutationTypes.UPDATE, { hasBookmarked });
+    await method(url);
   }
 };
 
-export function initialProcessState() {
+export function initialProcessState(): ProcessState {
   return {
     id: '',
     localId: '',

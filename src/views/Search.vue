@@ -69,7 +69,7 @@ export default class Search extends Vue {
   }
 
   mounted() {
-    this.$store.dispatch(searchActionTypes.SEARCH);
+    this.$store.dispatch(searchActionTypes.UPDATE_FILTERS, { type: null });
   }
 }
 </script>

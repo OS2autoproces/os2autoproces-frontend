@@ -7,7 +7,7 @@ import { Module, GetterTree } from 'vuex';
 
 const namespaced = true;
 
-export const state: ProcessState = initialProcessState();
+export const state = initialProcessState();
 
 export const process: Module<ProcessState, RootState> = {
   actions,

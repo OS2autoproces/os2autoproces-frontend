@@ -37,7 +37,7 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 import { Action } from 'vuex-class';
 import InternalNotes from '@/components/common/inputs/InternalNotes.vue';
 import { processActionTypes, NewComment } from '@/store/modules/process/actions';
-import { Type } from '@/models/types';
+import { Type, TypeKeys } from '@/models/types';
 import { commonActionTypes } from '@/store/modules/common/actions';
 
 import Comments from '@/components/details/Comments.vue';
@@ -60,6 +60,8 @@ import { errorActionTypes, umbrellaLabels } from '@/store/modules/error/actions'
 import { ErrorState } from '@/store/modules/error/state';
 import SnackBar from '@/components/common/SnackBar.vue';
 import { isEmpty } from 'lodash';
+import { searchActionTypes } from '@/store/modules/search/actions';
+import { VisibilityKeys } from '@/models/visibility';
 
 @Component({
   components: {
@@ -106,6 +108,12 @@ export default class Umbrella extends Vue {
     if (this.isReporting) {
       this.update({ type: this.type, canEdit: true, cvr: this.$store.state.auth.user.cvr });
     }
+
+    this.$store.dispatch(searchActionTypes.UPDATE_FILTERS, {
+      type: TypeKeys.CHILD,
+      municipality: this.$store.state.process.type === TypeKeys.PARENT,
+      public: this.$store.state.process.type === TypeKeys.GLOBAL_PARENT
+    });
   }
 
   save() {

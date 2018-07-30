@@ -65,15 +65,15 @@ export interface ProcessRequest {
   searchWords: string | null;
 
   users: User[] | null;
-  owner: User;
-  contact: User;
+  owner: string | null;
+  contact: string | null;
   itSystems: ITSystem[] | null;
   orgUnits: OrgUnit[] | null;
   technologies: Technology[] | null;
   children: string[];
 }
 
-export interface ProcessResponse extends ProcessRequest {
+export interface ProcessResponse {
   id: number;
   klaProcess: boolean;
   cvr: string;
@@ -81,6 +81,74 @@ export interface ProcessResponse extends ProcessRequest {
   hasBookmarked: boolean;
   canEdit: boolean;
   emailNotification: boolean;
+
+  localId: string | null;
+  klId: string | null;
+  esdhReference: string | null;
+  phase: Phase;
+  status: Status;
+  statusText: string | null;
+  type: Type;
+
+  created: string | null;
+  lastChanged: string | null;
+  decommissioned: string | null;
+
+  title: string;
+  shortDescription: string;
+  longDescription: string | null;
+  domains: Domain[];
+  visibility: Visibility;
+
+  legalClause: string | null;
+  legalClauseLastVerified: string | null;
+  kle: string | null;
+  kla: string | null;
+  links: Link[] | null;
+
+  vendor: string | null;
+  internalNotes: string | null;
+
+  processChallenges: string | null;
+  solutionRequests: string | null;
+
+  timeSpendOccurancesPerEmployee: number;
+  timeSpendPerOccurance: number;
+  timeSpendEmployeesDoingProcess: number;
+  timeSpendPercentageDigital: number;
+  timeSpendComputedTotal: number;
+  timeSpendComment: string;
+  targetsCompanies: boolean;
+  targetsCitizens: boolean;
+
+  levelOfProfessionalAssessment: LikertScale;
+  levelOfChange: LikertScale;
+  levelOfStructuredInformation: LikertScale;
+  levelOfUniformity: LikertScale;
+  levelOfDigitalInformation: LikertScale;
+  evaluatedLevelOfRoi: LikertScale;
+  levelOfQuality: LikertScale;
+  levelOfRoutineWorkReduction: LikertScale;
+  levelOfSpeed: LikertScale;
+
+  technicalImplementationNotes: string | null;
+  organizationalImplementationNotes: string | null;
+
+  rating: number | null;
+  ratingComment: string | null;
+  searchWords: string | null;
+
+  users: User[] | null;
+  owner: User;
+  contact: User;
+  itSystems: ITSystem[] | null;
+  orgUnits: OrgUnit[] | null;
+  technologies: Technology[] | null;
+  children: Process[];
+}
+
+function relation(name: string, entity: { id: number | string }) {
+  return `${window.autoProcessConfiguration.apiUrl}/api/${name}/${entity.id}`;
 }
 
 function defaultNull(prop: any): any {
@@ -140,13 +208,13 @@ function stateToRequestFields(state: ProcessState): ProcessRequest {
     // TODO: fix when brian returns
     // searchWords: defaultNull(state.searchWords),
     searchWords: '',
-    contact: defaultNull(state.contact),
-    owner: defaultNull(state.owner),
+    contact: state.contact && relation('users', state.contact),
+    owner: state.owner && relation('users', state.owner),
     orgUnits: defaultNull(state.orgUnits),
     users: defaultNull(state.users),
     technologies: defaultNull(state.technologies),
     itSystems: defaultNull(state.itSystems),
-    children: defaultNull(state.children),
+    children: state.children.map(child => relation('processes', child)),
     type: state.type || TypeKeys.CHILD
   };
 }
@@ -165,6 +233,7 @@ function buildUmbrellaRequest(request: ProcessRequest): Partial<ProcessRequest> 
     'klId',
     'kla',
     'contact',
+    'children',
     'domains',
     'title',
     'type',

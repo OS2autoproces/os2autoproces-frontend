@@ -56,10 +56,10 @@
 
     <div class="processes">
       <h2>Tilknyttede processer</h2>
-      <div v-for="process in processes" :key="process.id" class="process">
+      <div v-for="process in state.children" :key="process.id" class="process">
         <SmallSearchResult :process="process" />
 
-        <div v-if="!state.disabled.generalInformationEdit" class="delete-icon" @click="removeProcess(process.id)" role="button">
+        <div v-if="!state.disabled.generalInformationEdit" class="delete-icon" @click="removeProcess(process)" role="button">
           <DeleteIcon />
         </div>
       </div>
@@ -97,11 +97,12 @@ import { commonActionTypes, UserSearchRequest } from '@/store/modules/common/act
 import { User } from '@/store/modules/auth/state';
 import { StatusKeys, StatusLabels } from '@/models/status';
 import { VisibilityKeys, VisibilityLabels } from '@/models/visibility';
-import { OrgUnit } from '@/store/modules/process/state';
-import { TypeLabels } from '@/models/types';
+import { OrgUnit, Process } from '@/store/modules/process/state';
+import { TypeLabels, TypeKeys } from '@/models/types';
 import { Kle } from '@/store/modules/common/actions';
 import { Domain } from '@/models/domain';
 import { Phase, PhaseKeys } from '@/models/phase';
+import { searchActionTypes } from '@/store/modules/search/actions';
 
 @Component({
   components: {
@@ -151,10 +152,16 @@ export default class UmbrellaForm extends Vue {
     this.update({ kla: kla.replace(/(\d{2})(?=\d)/g, '$1.') });
   }
 
-  // TODO: add to store
-  processes: any[] = [];
-  addProcess(process: any) {
-    this.processes.push(process);
+  addProcess(process: Process) {
+    if (this.state.children.find((child: Process) => child.id === process.id)) {
+      return;
+    }
+
+    this.assign({ children: [...this.state.children, process] });
+  }
+
+  removeProcess(process: Process) {
+    this.assign({ children: this.state.children.filter((child: Process) => child.id !== process.id) });
   }
 }
 </script>
@@ -163,9 +170,8 @@ export default class UmbrellaForm extends Vue {
 @import '@/styles/variables.scss';
 .description,
 .processes {
-  margin-top: $size-unit * 2;
-
   h2 {
+    margin-top: $size-unit * 2;
     @include textarea-heading;
     margin-bottom: $size-unit/2;
   }

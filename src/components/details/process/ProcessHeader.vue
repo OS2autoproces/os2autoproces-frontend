@@ -5,12 +5,12 @@
       <div v-if="state.canEdit" class="edit-button" role="button" @click="toggleEdit" :class="{ editing: !state.disabled.titleEdit }">
         <EditIcon />
       </div>
-      <div class="bookmark-button" role="button" @click="toggleBookmark">
+      <div class="bookmark-button" role="button" @click="setBookmark(!state.hasBookmarked)">
         <StarIcon :class="{ selected: state.hasBookmarked }" />
       </div>
 
       <div class="flex-grow"></div>
-      <MunicipalityLogo :src="logo"/>
+      <MunicipalityLogo :src="logo" />
     </div>
     <div class="row">
       <Button class="button" @click="remove">Slet proces</Button>
@@ -47,7 +47,9 @@ import { ProcessState } from '@/store/modules/process/state';
 })
 export default class ProcessHeader extends Vue {
   @Action(processActionTypes.UPDATE) update!: any;
-  @Action(processActionTypes.SET_EMAIL_NOTIFICATION) setEmailNotification!: (emailNotification: boolean) => Promise<void>;
+  @Action(processActionTypes.SET_EMAIL_NOTIFICATION)
+  setEmailNotification!: (emailNotification: boolean) => Promise<void>;
+  @Action(processActionTypes.SET_BOOKMARK) setBookmark!: (hasBookmark: boolean) => Promise<void>;
   @Action(processActionTypes.REMOVE_PROCESS) removeProcess!: () => Promise<void>;
   @Action(processActionTypes.COPY_PROCESS) copyProcess!: () => Promise<string>;
 
@@ -56,7 +58,7 @@ export default class ProcessHeader extends Vue {
   }
 
   get logo() {
-    return `/logos/${this.$store.state.process.cvr}.png`
+    return `/logos/${this.$store.state.process.cvr}.png`;
   }
 
   toggleEdit() {
@@ -65,10 +67,6 @@ export default class ProcessHeader extends Vue {
         titleEdit: !this.state.disabled.titleEdit
       }
     });
-  }
-
-  toggleBookmark() {
-    this.update({ hasBookmarked: !this.state.hasBookmarked });
   }
 
   async copy() {
