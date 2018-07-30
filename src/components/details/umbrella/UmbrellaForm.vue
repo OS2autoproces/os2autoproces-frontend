@@ -57,7 +57,9 @@
     <div class="processes">
       <h2>Tilknyttede processer</h2>
       <div v-for="process in state.children" :key="process.id" class="process">
-        <SmallSearchResult :process="process" />
+        <router-link :to="'/details/' + process.id" class="search-result-link">
+          <SmallSearchResult :process="process" />
+        </router-link>
 
         <div v-if="!state.disabled.generalInformationEdit" class="delete-icon" @click="removeProcess(process)" role="button">
           <DeleteIcon />
@@ -187,6 +189,11 @@ export default class UmbrellaForm extends Vue {
     right: 20px;
     height: 30px;
     width: 30px;
+  }
+
+  .search-result-link {
+    text-decoration: inherit;
+    color: inherit;
   }
 }
 </style>
