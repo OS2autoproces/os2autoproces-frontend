@@ -63,7 +63,7 @@
     </div>
 
     <div class="processes" v-if="!state.disabled.generalInformationEdit">
-      <h2>Tilføj processer</h2>
+      <h2>Find og tilknyt processer</h2>
       <AssociatedProcesses @add="addProcess" />
     </div>
   </FormSection>
@@ -148,7 +148,8 @@ export default class UmbrellaForm extends Vue {
     this.update({ kla: kla.replace(/(\d{2})(?=\d)/g, '$1.') });
   }
 
-  processes = [];
+  // TODO: add to store
+  processes: any[] = [];
   addProcess(process: any) {
     this.processes.push(process);
   }
@@ -169,6 +170,7 @@ export default class UmbrellaForm extends Vue {
 
 .process {
   position: relative;
+  margin-bottom: $size-unit;
 
   .delete-icon {
     position: absolute;
