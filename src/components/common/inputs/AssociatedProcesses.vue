@@ -1,7 +1,7 @@
 <template>
   <div class="associated">
     <div class="filters">
-      <SearchFilters :filters="filters" @change="updateFilters" />
+      <SearchFilters :filters="filters" @change="updateFilters" hideVisibility hideRelations />
     </div>
 
     <div class="results">
