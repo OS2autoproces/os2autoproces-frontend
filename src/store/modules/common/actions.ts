@@ -107,8 +107,7 @@ export const actions: ActionTree<CommonState, RootState> = {
     commit(commonMutationTypes.UPDATE, payload);
   },
   async loadCmsContent({ commit }, label: keyof CommonState) {
-    const jsonContent = (await HTTP.get<Cms>(`public/cms/${label}`)).data
-      .content;
+    const jsonContent = (await HTTP.get<Cms>(`public/cms/${label}`)).data.content;
 
     const content = jsonContent ? JSON.parse(jsonContent) : '';
 
@@ -122,9 +121,7 @@ export const actions: ActionTree<CommonState, RootState> = {
     });
   },
   async loadTechnologies() {
-    const response = await HTTP.get<TechnologiesResponse>(
-      `api/technologies?size=100000`
-    );
+    const response = await HTTP.get<TechnologiesResponse>(`api/technologies?size=100000`);
     return response.data._embedded.technologies;
   },
   async addTechnology({}, name: string) {
@@ -137,9 +134,7 @@ export const actions: ActionTree<CommonState, RootState> = {
     return HTTP.delete(`api/technologies/${id}`);
   },
   async loadItSystems({ commit }) {
-    const response = await HTTP.get<ItSystemsResponse>(
-      `api/itSystems?size=100000`
-    );
+    const response = await HTTP.get<ItSystemsResponse>(`api/itSystems?size=100000`);
     const itSystems = response.data._embedded.itSystems;
 
     commit(commonMutationTypes.ASSIGN, { itSystems });
@@ -168,12 +163,7 @@ export const actions: ActionTree<CommonState, RootState> = {
   }
 };
 
-const debouncedSearch = debounce(
-  async ({ name, cvr }: UserSearchRequest, commit: Commit) => {
-    const users = (await HTTP.get<UserResponse>(
-      `api/users?name=${name}&cvr=${cvr}`
-    )).data._embedded.users;
-    commit(commonMutationTypes.ASSIGN, { users });
-  },
-  250
-);
+const debouncedSearch = debounce(async ({ name, cvr }: UserSearchRequest, commit: Commit) => {
+  const users = (await HTTP.get<UserResponse>(`api/users?name=${name}&cvr=${cvr}`)).data._embedded.users;
+  commit(commonMutationTypes.ASSIGN, { users });
+}, 250);
