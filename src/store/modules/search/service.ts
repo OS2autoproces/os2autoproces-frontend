@@ -46,6 +46,7 @@ interface SearchParams {
   'reporter.uuid': string | null;
   'users.uuid': string | null;
   'bookmarkUsers.uuid': string | null;
+  klaProcess: boolean;
 }
 
 function mapSearchResponse(response: SearchResponse): SearchResult {
@@ -72,7 +73,8 @@ export async function search(filters: SearchFilters): Promise<SearchResult> {
     'reporter.uuid': filters.reporterId,
     'users.uuid': filters.usersId,
     'bookmarkUsers.uuid': filters.bookmarkedId,
-    freetext: filters.text
+    freetext: filters.text,
+    klaProcess: filters.klaProcess
   };
 
   if (filters.municipality) {

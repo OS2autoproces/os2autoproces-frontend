@@ -20,6 +20,9 @@
         <SearchOption :value="filters.public" @change="updateFilters({ public: $event })">
           {{VisibilityLabels.PUBLIC}}
         </SearchOption>
+        <SearchOption :value="filters.klaProcess" @change="updateFilters({ klaProcess: $event })">
+          Søg i KLA-processer
+        </SearchOption>
       </div>
 
       <ExpandPanel title="Fase">
