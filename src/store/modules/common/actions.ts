@@ -55,10 +55,6 @@ interface ItSystemsResponse {
 interface FormResponse {
   _embedded: {
     forms: Form[];
-    page: {
-      size: number;
-      totalElements: number;
-    };
   };
 }
 
@@ -159,7 +155,7 @@ export const actions: ActionTree<CommonState, RootState> = {
       code: form.code
     }));
 
-    commit(commonMutationTypes.ASSIGN, { forms: forms });
+    commit(commonMutationTypes.ASSIGN, { forms });
   }
 };
 
