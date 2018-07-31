@@ -145,6 +145,7 @@ export interface ProcessResponse {
   orgUnits: OrgUnit[] | null;
   technologies: Technology[] | null;
   children: Process[];
+  parents: Process[];
 }
 
 function relation(name: string, entity: { id: number | string }) {

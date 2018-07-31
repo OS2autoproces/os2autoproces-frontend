@@ -17,6 +17,7 @@ export interface Process {
   localId: string;
   klId: string;
   children: Process[];
+  parents: Process[];
 
   esdhReference: string;
   phase: Phase;

@@ -277,6 +277,7 @@ export function initialProcessState(): ProcessState {
     municipalityName: '',
     type: TypeKeys.CHILD,
     children: [],
+    parents: [],
 
     /* Assessment */
     levelOfProfessionalAssessment: LikertScaleKeys.UNKNOWN,
