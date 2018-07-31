@@ -5,6 +5,7 @@ import { Status, StatusLabels } from '@/models/status';
 import { Domain, DomainLabels } from '@/models/domain';
 import { Visibility, VisibilityKeys } from '@/models/visibility';
 import { User } from '@/store/modules/auth/state';
+import { Type } from '@/models/types';
 
 interface ProcessSearchResponse {
   id: number;
@@ -41,6 +42,7 @@ interface SearchParams {
   size: number;
   freetext: string;
   sort: string;
+  type: Type | null;
   'reporter.uuid': string | null;
   'users.uuid': string | null;
   'bookmarkUsers.uuid': string | null;
@@ -67,6 +69,7 @@ export async function search(filters: SearchFilters): Promise<SearchResult> {
     visibility: [],
     page: filters.page,
     size: filters.size,
+    type: filters.type,
     'reporter.uuid': filters.reporterId,
     'users.uuid': filters.usersId,
     'bookmarkUsers.uuid': filters.bookmarkedId,

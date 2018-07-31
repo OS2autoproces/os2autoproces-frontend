@@ -8,11 +8,12 @@ import { HTTP } from '@/services/http-service';
 import { ProcessRequest, ProcessResponse, responseToState, stateToRequest } from '@/services/process-converter';
 import { User } from '@/store/modules/auth/state';
 import { errorActionTypes } from '@/store/modules/error/actions';
-import { sectionValidation } from '@/store/modules/process/getters';
 import { processMutationTypes } from '@/store/modules/process/mutations';
 import { Attachment, ITSystem, Process, ProcessState, Technology } from '@/store/modules/process/state';
 import { RootState } from '@/store/store';
 import { ActionTree } from 'vuex';
+import { getInvalidProperties } from '@/store/modules/process/validation';
+import { getProcessKeys } from '@/store/modules/process/getters';
 
 export const namespace = 'process';
 
@@ -27,6 +28,8 @@ export const processActionTypes = {
   LOAD_COMMENTS: `${namespace}/loadComments`,
   SAVE: `${namespace}/save`,
   REPORT: `${namespace}/report`,
+  SAVE_UMBRELLA: `${namespace}/saveUmbrella`,
+  REPORT_UMBRELLA: `${namespace}/reportUmbrella`,
 
   ADD_USER: `${namespace}/addUser`,
   REMOVE_USER: `${namespace}/removeUser`,
@@ -41,7 +44,8 @@ export const processActionTypes = {
   COPY_PROCESS: `${namespace}/copyProcess`,
   REMOVE_PROCESS: `${namespace}/removeProcess`,
 
-  SET_EMAIL_NOTIFICATION: `${namespace}/setEmailNotification`
+  SET_EMAIL_NOTIFICATION: `${namespace}/setEmailNotification`,
+  SET_BOOKMARK: `${namespace}/setBookmark`
 };
 
 export interface NewComment {
@@ -169,28 +173,17 @@ export const actions: ActionTree<ProcessState, RootState> = {
       technologies: state.technologies.filter((_, i) => i !== index)
     });
   },
-  async loadProcessDetails({ commit }, id: string) {
+  async loadProcessDetails({ commit }, id: number) {
     if (!id) {
       return;
     }
 
-    const process = (await HTTP.get<ProcessResponse>(`api/processes/${id}?projection=extended`)).data;
+    const response = await HTTP.get<ProcessResponse>(`api/processes/${id}?projection=extended`);
+    const process = responseToState(response.data);
 
-    commit(processMutationTypes.ASSIGN, responseToState(process));
-  },
-  async report({ commit, state, dispatch }): Promise<string | null> {
-    const invalidFields = sectionValidation(state, Object.keys(state));
+    commit(processMutationTypes.ASSIGN, process);
 
-    if (invalidFields) {
-      dispatch(errorActionTypes.UPDATE_PROCESS_ERRORS, { processErrors: invalidFields }, { root: true });
-      return null;
-    } else {
-      const converted: ProcessRequest = await stateToRequest(state);
-      const response = (await HTTP.post<ProcessResponse>(`api/processes`, converted)).data;
-      const process = responseToState(response);
-      await commit(processMutationTypes.UPDATE, setBackendManagedFields(process));
-      return process.id;
-    }
+    return process;
   },
   async copyProcess({ commit, state }): Promise<string> {
     const response = await HTTP.post<ProcessResponse>(`api/processes/${state.id}/copy`);
@@ -205,17 +198,29 @@ export const actions: ActionTree<ProcessState, RootState> = {
     commit(processMutationTypes.UPDATE, setBackendManagedFields(process));
     return process.id;
   },
-  async save({ commit, state, dispatch }) {
-    const invalidFields = sectionValidation(state, Object.keys(state));
+  async report({ commit, state, dispatch }, validationKeys?: Array<keyof Process>): Promise<string | null> {
+    const invalidFields = getInvalidProperties(state, validationKeys || getProcessKeys(state));
+    if (invalidFields.length > 0) {
+      dispatch(errorActionTypes.UPDATE_PROCESS_ERRORS, { processErrors: invalidFields }, { root: true });
+      return null;
+    } else {
+      const converted = await stateToRequest(state);
+      const response = (await HTTP.post<ProcessResponse>(`api/processes`, converted)).data;
+      const process = responseToState(response);
+      await commit(processMutationTypes.UPDATE, setBackendManagedFields(process));
+      return process.id;
+    }
+  },
+  async save({ commit, state, dispatch }, validationKeys?: Array<keyof Process>) {
+    const invalidFields = getInvalidProperties(state, validationKeys || getProcessKeys(state));
 
-    if (invalidFields) {
+    if (invalidFields.length > 0) {
       dispatch(errorActionTypes.UPDATE_PROCESS_ERRORS, { processErrors: invalidFields }, { root: true });
     } else {
       const converted = await stateToRequest(state);
       const response = await HTTP.put<ProcessResponse>(`api/processes/${state.id}`, converted);
 
       const process = responseToState(response.data);
-      // TODO: notify update
       commit(processMutationTypes.UPDATE, setBackendManagedFields(process));
     }
   },
@@ -239,10 +244,18 @@ export const actions: ActionTree<ProcessState, RootState> = {
     commit(processMutationTypes.UPDATE, {
       emailNotification
     });
+  },
+  async setBookmark({ commit, state }, hasBookmarked: boolean) {
+    const url = `api/bookmarks/${state.id}`;
+    const method = hasBookmarked ? HTTP.put : HTTP.delete;
+
+    await method(url);
+
+    commit(processMutationTypes.UPDATE, { hasBookmarked });
   }
 };
 
-export function initialProcessState() {
+export function initialProcessState(): ProcessState {
   return {
     id: '',
     localId: '',
@@ -252,7 +265,7 @@ export function initialProcessState() {
     kla: null,
     legalClause: '',
     orgUnits: [],
-    domains: [DomainKeys.WORK],
+    domains: [],
     visibility: VisibilityKeys.PERSONAL,
     vendor: null,
     owner: null,
@@ -265,6 +278,7 @@ export function initialProcessState() {
     municipalityName: '',
     type: TypeKeys.CHILD,
     children: [],
+    parents: [],
 
     /* Assessment */
     levelOfProfessionalAssessment: LikertScaleKeys.UNKNOWN,

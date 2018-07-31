@@ -1,12 +1,12 @@
+import { User, UserRole } from '@/store/modules/auth/state';
 import store from '@/store/store';
 import Vue from 'vue';
 import Router, { Route, RouteConfig } from 'vue-router';
 import Details from './views/Details.vue';
 import Home from './views/Home.vue';
-import ReportProcess from './views/ReportProcess.vue';
 import ManageTechnologies from './views/ManageTechnologies.vue';
+import ReportProcess from './views/ReportProcess.vue';
 import Search from './views/Search.vue';
-import { UserRole, User } from '@/store/modules/auth/state';
 
 Vue.use(Router);
 
@@ -52,13 +52,13 @@ export const routes: RouteConfig[] = [
   {
     path: '/details/:id',
     component: Details,
-    props: true,
+    props: route => ({ isReporting: false, id: Number(route.params.id) }),
     beforeEnter: isLoggedIn()
   },
   {
-    path: '/details/new/:phase',
+    path: '/details/new/:type',
     component: Details,
-    props: true,
+    props: route => ({ isReporting: true, type: route.params.type }),
     beforeEnter: isLoggedIn()
   },
   {
