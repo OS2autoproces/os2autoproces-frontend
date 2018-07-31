@@ -1,7 +1,7 @@
 import { HTTP } from '@/services/http-service';
 import { User } from '@/store/modules/auth/state';
 import { commonMutationTypes } from '@/store/modules/common/mutations';
-import { ITSystem, Technology } from '@/store/modules/process/state';
+import { ITSystem, Technology, OrgUnit } from '@/store/modules/process/state';
 import { RootState } from '@/store/store';
 import { debounce } from 'lodash';
 import { ActionTree, Commit } from 'vuex';
@@ -64,6 +64,12 @@ interface KleResponse {
   };
 }
 
+interface OrgUnitsResponse {
+  _embedded: {
+    orgUnits: OrgUnit[];
+  };
+}
+
 interface UserResponse {
   _embedded: {
     users: User[];
@@ -81,6 +87,7 @@ export const commonActionTypes = {
   SAVE_CMS_CONTENT: `${namespace}/saveCmsContent`,
   LOAD_IT_SYSTEMS: `${namespace}/loadItSystems`,
   LOAD_KLES: `${namespace}/loadKles`,
+  LOAD_ORGUNITS: `${namespace}/loadOrgUnits`,
   LOAD_TECHNOLOGIES: `${namespace}/loadTechnologies`,
   ADD_TECHNOLOGY: `${namespace}/addTechnology`,
   REMOVE_TECHNOLOGY: `${namespace}/removeTechnology`,
@@ -134,6 +141,12 @@ export const actions: ActionTree<CommonState, RootState> = {
     }));
 
     commit(commonMutationTypes.ASSIGN, { kles });
+  },
+  async loadOrgUnits({ commit }, cvr: string) {
+    const response = await HTTP.get<OrgUnitsResponse>(`api/orgUnits?cvr=${cvr}&size=100000`);
+    const { orgUnits } = response.data._embedded;
+
+    commit(commonMutationTypes.ASSIGN, { orgUnits });
   },
   searchUsers({ commit }, { cvr, name }): void {
     if (!cvr) {

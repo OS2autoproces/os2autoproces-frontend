@@ -68,7 +68,7 @@ export interface ProcessRequest {
   owner: string | null;
   contact: string | null;
   itSystems: ITSystem[] | null;
-  orgUnits: OrgUnit[] | null;
+  orgUnits: string[];
   technologies: Technology[] | null;
   children: string[];
 }
@@ -148,8 +148,12 @@ export interface ProcessResponse {
   parents: Process[];
 }
 
-function relation(name: string, entity: { id: number | string }) {
+function relation(name: string, entity: { id: number | string }): string {
   return `${window.autoProcessConfiguration.apiUrl}/api/${name}/${entity.id}`;
+}
+
+function relationArray<T extends { id: number | string }>(name: string, array: T[]): string[] {
+  return array.map(entity => relation(name, entity));
 }
 
 function defaultNull(prop: any): any {
@@ -206,16 +210,14 @@ function stateToRequestFields(state: ProcessState): ProcessRequest {
     organizationalImplementationNotes: defaultNull(state.organizationalImplementationNotes),
     rating: defaultNull(state.rating),
     ratingComment: defaultNull(state.ratingComment),
-    // TODO: fix when brian returns
-    // searchWords: defaultNull(state.searchWords),
     searchWords: '',
     contact: state.contact && relation('users', state.contact),
     owner: state.owner && relation('users', state.owner),
-    orgUnits: defaultNull(state.orgUnits),
+    orgUnits: relationArray('orgUnits', state.orgUnits),
     users: defaultNull(state.users),
     technologies: defaultNull(state.technologies),
     itSystems: defaultNull(state.itSystems),
-    children: state.children.map(child => relation('processes', child)),
+    children: relationArray('processes', state.children),
     type: state.type || TypeKeys.CHILD
   };
 }
