@@ -34,6 +34,9 @@ export const processActionTypes = {
   ADD_USER: `${namespace}/addUser`,
   REMOVE_USER: `${namespace}/removeUser`,
 
+  ADD_ORGUNIT: `${namespace}/addOrgUnit`,
+  REMOVE_ORGUNIT: `${namespace}/removeOrgUnit`,
+
   ADD_TECHNOLOGY: `${namespace}/addTechnology`,
   REMOVE_TECHNOLOGY: `${namespace}/removeTechnology`,
 

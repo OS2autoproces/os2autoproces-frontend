@@ -42,6 +42,9 @@
           <WellItem labelWidth="120px" label="Fagområder:">
             <DomainsField :disabled="state.disabled.generalInformationEdit" :value="state.domains" @change="assign({domains: $event})" />
           </WellItem>
+          <WellItem labelWidth="120px" label="Afdelinger:" v-if="isWithinMunicipality">
+            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.orgUnits" @change="assign({orgUnits: $event})" :items="orgUnits" multiple itemText="name" />
+          </WellItem>
           <WellItem labelWidth="120px" label="Synlighed:">
             <MappedSelectionField :disabled="state.disabled.generalInformationEdit" :value="state.visibility" @change="update({visibility: $event})" :items="visibilityLevels" />
           </WellItem>
@@ -151,6 +154,10 @@ export default class GeneralInformationForm extends Vue {
 
   get kles() {
     return this.$store.state.common.kles;
+  }
+
+  get orgUnits() {
+    return this.$store.state.common.orgUnits;
   }
 
   setKla(kla: string) {

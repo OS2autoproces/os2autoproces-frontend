@@ -114,9 +114,6 @@ export default class Process extends Vue {
 
   @Action(processActionTypes.UPDATE) update: any;
   @Action(processActionTypes.SAVE_COMMENT) saveComment!: (message: string) => Promise<void>;
-  @Action(processActionTypes.LOAD_COMMENTS) loadComments!: () => Promise<void>;
-  @Action(commonActionTypes.LOAD_IT_SYSTEMS) loadItSystems!: () => Promise<void>;
-  @Action(commonActionTypes.LOAD_KLES) loadKles!: () => Promise<void>;
   @Action(errorActionTypes.UPDATE_PROCESS_ERRORS) updateProcessErrors!: (processErrors: Partial<ErrorState>) => void;
 
   get state() {
@@ -132,13 +129,14 @@ export default class Process extends Vue {
   }
 
   get isWithinMunicipality() {
-    const state = this.$store.state;
-    return state.auth.user.cvr === state.process.cvr;
+    const { auth, process } = this.$store.state;
+    return auth.user.cvr === process.cvr;
   }
 
   mounted() {
-    this.loadItSystems();
-    this.loadKles();
+    this.$store.dispatch(commonActionTypes.LOAD_KLES);
+    this.$store.dispatch(commonActionTypes.LOAD_IT_SYSTEMS);
+    this.$store.dispatch(commonActionTypes.LOAD_ORGUNITS, this.$store.state.auth.user.cvr);
 
     if (this.isReporting) {
       this.update({
@@ -146,6 +144,8 @@ export default class Process extends Vue {
         canEdit: true,
         cvr: this.$store.state.auth.user.cvr
       });
+    } else {
+      this.$store.dispatch(processActionTypes.LOAD_COMMENTS);
     }
   }
 
