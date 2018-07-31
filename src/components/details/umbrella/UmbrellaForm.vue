@@ -7,7 +7,10 @@
             <InputField disabled :value="state.id" />
           </WellItem>
           <WellItem labelWidth="80px" label="KLE-nr:">
-            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="{code: state.kle}" @change="update({kle: $event})" :items="kles" itemText="code"/>
+            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.kle" @change="setKle($event)" :items="kles" itemText="code" />
+          </WellItem>
+          <WellItem labelWidth="80px" label="FORM:" v-if="state.kle">
+            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.form" @change="update({form: $event})" :items="forms" itemText="code" />
           </WellItem>
           <WellItem labelWidth="80px" label="Lokalt ID:">
             <InputField :disabled="state.disabled.generalInformationEdit" :value="state.localId" @change="update({localId: $event})" />
@@ -95,10 +98,7 @@ import WarningIcon from '@/components/icons/WarningIcon.vue';
 import DeleteIcon from '@/components/icons/DeleteIcon.vue';
 import { processActionTypes } from '@/store/modules/process/actions';
 import { processGetterTypes } from '@/store/modules/process/getters';
-import {
-  commonActionTypes,
-  UserSearchRequest
-} from '@/store/modules/common/actions';
+import { commonActionTypes, UserSearchRequest } from '@/store/modules/common/actions';
 import { User } from '@/store/modules/auth/state';
 import { StatusKeys, StatusLabels } from '@/models/status';
 import { VisibilityKeys, VisibilityLabels } from '@/models/visibility';
@@ -131,6 +131,7 @@ import { searchActionTypes } from '@/store/modules/search/actions';
 export default class UmbrellaForm extends Vue {
   @Action(processActionTypes.UPDATE) update: any;
   @Action(processActionTypes.ASSIGN) assign: any;
+  @Action(commonActionTypes.LOAD_FORMS) loadForms: any;
 
   @Getter(processGetterTypes.IS_UMBRELLA_VALID) isUmbrellaValid!: any;
 
@@ -148,6 +149,10 @@ export default class UmbrellaForm extends Vue {
     return this.$store.state.common.kles;
   }
 
+  get forms() {
+    return this.$store.state.common.forms;
+  }
+
   search(name: string) {
     this.$store.dispatch(commonActionTypes.SEARCH_USERS, {
       name,
@@ -160,6 +165,11 @@ export default class UmbrellaForm extends Vue {
     this.update({ kla: kla.replace(/(\d{2})(?=\d)/g, '$1.') });
   }
 
+  setKle(kle: Kle) {
+    this.update({ kle: kle, form: [] });
+    this.loadForms(kle);
+  }
+
   addProcess(process: Process) {
     if (this.state.children.find((child: Process) => child.id === process.id)) {
       return;
@@ -170,9 +180,7 @@ export default class UmbrellaForm extends Vue {
 
   removeProcess(process: Process) {
     this.assign({
-      children: this.state.children.filter(
-        (child: Process) => child.id !== process.id
-      )
+      children: this.state.children.filter((child: Process) => child.id !== process.id)
     });
   }
 }
