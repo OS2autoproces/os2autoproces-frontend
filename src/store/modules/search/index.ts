@@ -18,6 +18,7 @@ export const state: SearchState = {
     text: '',
     municipality: false,
     public: false,
+    klaProcess: false,
     sorting: {
       property: 'title',
       descending: false

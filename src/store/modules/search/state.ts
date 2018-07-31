@@ -43,6 +43,7 @@ export interface SearchFilters {
   domain: { [x in Domain]: boolean };
   time?: string[]; // TODO: Use in search
   system?: string[]; // TODO: Use in search
+  klaProcess: boolean;
 }
 
 export interface SearchState {

@@ -20,6 +20,9 @@
         <SearchOption :value="filters.public" @change="updateFilters({ public: $event })">
           {{VisibilityLabels.PUBLIC}}
         </SearchOption>
+        <SearchOption :value="filters.klaProcess" @change="updateFilters({ klaProcess: $event })">
+          Søg i KLA-processer
+        </SearchOption>
       </div>
 
       <ExpandPanel title="Fase">
@@ -74,88 +77,88 @@
 </template>
 
 <script lang="ts">
-  import {Vue, Component, Prop} from 'vue-property-decorator';
-  import Checkbox from '../common/inputs/Checkbox.vue';
-  import SearchField from '../common/inputs/SearchField.vue';
-  import SearchOption from './SearchOption.vue';
-  import PillCheckbox from '../common/inputs/PillCheckbox.vue';
-  import ExpandPanel from '../common/ExpandPanel.vue';
-  import {Action} from 'vuex-class';
-  import {searchActionTypes} from '@/store/modules/search/actions';
-  import {PhaseLabels} from '@/models/phase';
-  import {DomainLabels} from '@/models/domain';
-  import {VisibilityLabels} from '@/models/visibility';
-  import {SearchFilters} from "../../store/modules/search/state";
+import { Vue, Component, Prop } from "vue-property-decorator";
+import Checkbox from "../common/inputs/Checkbox.vue";
+import SearchField from "../common/inputs/SearchField.vue";
+import SearchOption from "./SearchOption.vue";
+import PillCheckbox from "../common/inputs/PillCheckbox.vue";
+import ExpandPanel from "../common/ExpandPanel.vue";
+import { Action } from "vuex-class";
+import { searchActionTypes } from "@/store/modules/search/actions";
+import { PhaseLabels } from "@/models/phase";
+import { DomainLabels } from "@/models/domain";
+import { VisibilityLabels } from "@/models/visibility";
+import { SearchFilters } from "../../store/modules/search/state";
 
-  @Component({
-    components: {
-      SearchField,
-      SearchOption,
-      ExpandPanel,
-      Checkbox,
-      PillCheckbox
-    }
-  })
-  export default class SearchFiltersComponent extends Vue {
-    PhaseLabels = PhaseLabels;
-    DomainLabels = DomainLabels;
-    VisibilityLabels = VisibilityLabels;
-
-    @Prop(Object) filters!: SearchFilters;
-
-    get user() {
-      return this.$store.state.auth.user;
-    }
-
-    setReporterId(value: boolean) {
-      const reporterId = value && this.user ? this.user.uuid : null;
-      this.updateFilters({ reporterId });
-    }
-
-    setUsersId(value: boolean) {
-      const usersId = value && this.user ? this.user.uuid : null;
-      this.updateFilters({ usersId });
-    }
-
-    setBookmarkedId(value: boolean) {
-      const bookmarkedId = value && this.user ? this.user.uuid : null;
-      this.updateFilters({ bookmarkedId });
-    }
-
-    updateFilters(filters: Partial<SearchFilters>) {
-      this.$emit('change', filters);
-    }
+@Component({
+  components: {
+    SearchField,
+    SearchOption,
+    ExpandPanel,
+    Checkbox,
+    PillCheckbox
   }
+})
+export default class SearchFiltersComponent extends Vue {
+  PhaseLabels = PhaseLabels;
+  DomainLabels = DomainLabels;
+  VisibilityLabels = VisibilityLabels;
+
+  @Prop(Object) filters!: SearchFilters;
+
+  get user() {
+    return this.$store.state.auth.user;
+  }
+
+  setReporterId(value: boolean) {
+    const reporterId = value && this.user ? this.user.uuid : null;
+    this.updateFilters({ reporterId });
+  }
+
+  setUsersId(value: boolean) {
+    const usersId = value && this.user ? this.user.uuid : null;
+    this.updateFilters({ usersId });
+  }
+
+  setBookmarkedId(value: boolean) {
+    const bookmarkedId = value && this.user ? this.user.uuid : null;
+    this.updateFilters({ bookmarkedId });
+  }
+
+  updateFilters(filters: Partial<SearchFilters>) {
+    this.$emit("change", filters);
+  }
+}
 </script>
 
 <style lang="scss" scoped>
-  @import '../../styles/variables';
+@import "../../styles/variables";
 
-  .wrapper {
-    padding: 4 * $size-unit 3 * $size-unit;
+.wrapper {
+  padding: 4 * $size-unit 3 * $size-unit;
+}
+
+.types {
+  margin-bottom: 4 * $size-unit;
+
+  > div {
+    margin-bottom: $size-unit;
   }
+}
 
-  .types {
-    margin-bottom: 4 * $size-unit;
+h1 {
+  @include heading;
+  color: $color-secondary;
+  line-height: 1.2em;
+  font-size: 1.25rem;
+  margin: 3 * $size-unit 0;
+}
 
-    > div {
-      margin-bottom: $size-unit;
-    }
-  }
+.search-option {
+  margin-top: $size-unit;
+}
 
-  h1 {
-    @include heading;
-    color: $color-secondary;
-    line-height: 1.2em;
-    font-size: 1.25rem;
-    margin: 3 * $size-unit 0;
-  }
-
-  .search-option {
-    margin-top: $size-unit;
-  }
-
-  .expand-panel {
-    margin-top: 3 * $size-unit;
-  }
+.expand-panel {
+  margin-top: 3 * $size-unit;
+}
 </style>
