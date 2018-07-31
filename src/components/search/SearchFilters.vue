@@ -21,7 +21,7 @@
           {{VisibilityLabels.PUBLIC}}
         </SearchOption>
         <SearchOption :value="filters.klaProcess" @change="updateFilters({ klaProcess: $event })">
-          Vis kun KLA-processer
+          Søg i KLA-processer
         </SearchOption>
       </div>
 
