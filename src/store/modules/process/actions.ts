@@ -10,7 +10,7 @@ import { User } from '@/store/modules/auth/state';
 import { errorActionTypes } from '@/store/modules/error/actions';
 import { sectionValidation } from '@/store/modules/process/getters';
 import { processMutationTypes } from '@/store/modules/process/mutations';
-import { Attachment, ITSystem, Process, ProcessState, Technology } from '@/store/modules/process/state';
+import { Attachment, ITSystem, Process, ProcessState, Technology, AttachmentFile } from '@/store/modules/process/state';
 import { RootState } from '@/store/store';
 import { ActionTree } from 'vuex';
 
@@ -20,8 +20,10 @@ export const processActionTypes = {
   UPDATE: `${namespace}/update`,
   ASSIGN: `${namespace}/assign`,
   CLEAR_PROCESS: `${namespace}/clear`,
-  ADD_ATTACHMENTS: `${namespace}/addAttachments`,
+  UPLOAD_ATTACHMENTS: `${namespace}/uploadAttachments`,
+  CHOOSE_ATTACHMENTS: `${namespace}/chooseAttachments`,
   REMOVE_ATTACHMENTS: `${namespace}/removeAttachments`,
+  TOGGLE_PUBLIC: `${namespace}/toggleAttachmentPublic`,
   LOAD_ATTACHMENTS: `${namespace}/loadAttachments`,
   SAVE_COMMENT: `${namespace}/saveComment`,
   LOAD_COMMENTS: `${namespace}/loadComments`,
@@ -90,29 +92,56 @@ export const actions: ActionTree<ProcessState, RootState> = {
 
     commit(processMutationTypes.ASSIGN, { attachments });
   },
-  async addAttachments({ commit, state }, files: File[]) {
+  async chooseAttachments({ commit, state }, attachments: Attachment[]) {
+
+    commit(processMutationTypes.ASSIGN, {attachments: attachments});
+  },
+  async toggleAttachmentPublic({ commit, state }, attachmentId: string) {
+    if(state.attachments) {
+      commit(processMutationTypes.ASSIGN, {
+        attachments: [...state.attachments.map(a => {
+          if(a.id !== attachmentId) {
+            return a;
+          }
+          a.public = !a.public;
+          return a;
+        })]
+      })
+    }
+  },
+  async uploadAttachments({ commit, state }, files: AttachmentFile[]) {
     const form = new FormData();
-    files.forEach(file => form.append('files', file));
+    const formPublic = new FormData();
+    files.forEach(file => {
+      if(file.public) {
+        formPublic.append('files', file.file)
+      } else {
+        form.append('files', file.file)
+      }      
+    });
+
 
     // Placeholders are attachments which are shown while the real attachments are uploading.
     // When the attachments are done uploading, the placeholders are replaced with the real attachments.
-    const placeholders: Attachment[] = files.map(file => ({
-      fileName: file.name,
-      uploading: true
-    }));
-    if (state.attachments) {
-      commit(processMutationTypes.ASSIGN, {
-        attachments: [...state.attachments, ...placeholders]
-      });
-    }
+    // const placeholders: Attachment[] = files.map(file => ({
+    //   fileName: file.file.name,
+    //   uploading: true
+    // }));
+    // if (state.attachments) {
+    //   commit(processMutationTypes.ASSIGN, {
+    //     attachments: [...state.attachments, ...placeholders]
+    //   });
+    // }
 
     try {
-      const attachments = (await HTTP.post<Attachment[]>(`/api/attachments/${state.id}`, form)).data;
+      let attachments = (await HTTP.post<Attachment[]>(`/api/attachments/${state.id}`, form)).data;
+      const publicAttachments = (await HTTP.post<Attachment[]>(`/api/attachments/${state.id}/public`, formPublic)).data;
+      attachments.concat(publicAttachments);
       if (!state.attachments) {
         return;
       }
       commit(processMutationTypes.ASSIGN, {
-        attachments: [...state.attachments.filter(a => !placeholders.includes(a)), ...attachments]
+        attachments: [...state.attachments.filter(a => state.attachments && !state.attachments.includes(a)), ...attachments]
       });
     } catch {
       if (!state.attachments) {
@@ -120,7 +149,7 @@ export const actions: ActionTree<ProcessState, RootState> = {
       }
       // Upload failed - remove placeholders
       commit(processMutationTypes.ASSIGN, {
-        attachments: state.attachments.filter(a => !placeholders.includes(a))
+        attachments: state.attachments.filter(a => state.attachments && !state.attachments.includes(a))
       });
     }
   },

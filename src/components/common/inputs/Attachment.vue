@@ -15,6 +15,7 @@
     </div>
 
     <a class="name" :href="attachment.url" target="_blank">{{attachment.fileName}}</a>
+    <Checkbox :value="attachment.public" @change="$emit('togglePublic', attachment.id)"/>
   </div>
 </template>
 
@@ -26,6 +27,7 @@ import PdfIcon from '@/components/icons/PdfIcon.vue';
 import PowerPointIcon from '@/components/icons/PowerPointIcon.vue';
 import FileIcon from '@/components/icons/FileIcon.vue';
 import DeleteIcon from '@/components/icons/DeleteIcon.vue';
+import Checkbox from '@/components/common/inputs/Checkbox.vue';
 import { Attachment } from '@/store/modules/process/state';
 
 @Component({
@@ -35,7 +37,8 @@ import { Attachment } from '@/store/modules/process/state';
     PdfIcon,
     PowerPointIcon,
     FileIcon,
-    DeleteIcon
+    DeleteIcon,
+    Checkbox
   }
 })
 export default class AttachmentComponent extends Vue {

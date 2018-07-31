@@ -1,15 +1,24 @@
 <template>
   <div class="attachment-upload">
     <div class="attachment-list">
-      <AttachmentComponent v-for="attachment in attachments" :key="attachment.id" :attachment="attachment" :disabled="disabled" @remove="$emit('remove', attachment.id)" />
+      <AttachmentComponent v-for="attachment in attachments" :key="attachment.id" :attachment="attachment" :disabled="disabled" @remove="$emit('remove', attachment.id)" @togglePublic="$emit('togglePublic', attachment.id)"/>
     </div>
 
     <label class="upload-button-wrapper" v-if="!disabled">
-      <input type="file" multiple @change="addFiles($event.target.files)">
+      <input type="file" multiple @change="chooseFiles($event.target.files)">
       <Button class="upload-button">
-        Upload bilag
+        Vælg bilag
       </Button>
     </label>
+
+    <label class="upload-button-wrapper" v-if="!disabled">
+      <Button class="upload-button" v-if="attachments.length" v-on:click="addFiles(files)">
+        Bekræft valg
+      </Button>
+
+    </label>
+
+    
   </div>
 </template>
 
@@ -18,6 +27,8 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 import Button from '@/components/common/inputs/Button.vue';
 import AttachmentComponent from './Attachment.vue';
 import { Attachment } from '@/store/modules/process/state';
+import { AttachmentFile } from '@/store/modules/process/state';
+
 
 @Component({
   components: {
@@ -28,9 +39,29 @@ import { Attachment } from '@/store/modules/process/state';
 export default class AttachmentUpload extends Vue {
   @Prop(Array) attachments!: Attachment[];
   @Prop(Boolean) disabled!: boolean;
+  files: AttachmentFile[] = [];
 
-  addFiles(files: FileList) {
-    this.$emit('add', Array.from(files));
+  chooseFiles(files: FileList) {
+    const fileArr = Array.from(files);
+    let id = 0;
+    fileArr.forEach(file => {
+      this.files.push({file: file, public: false, id: id.toString()})
+      id++;
+    })
+    let placeholders: Attachment[] = [];
+    this.files.forEach(file => {
+      placeholders.push({
+        fileName: file.file.name,
+        id: file.id,
+        public: false,
+        uploading: false
+      })
+    })
+    this.$emit('chooseAttachments', placeholders);
+  }
+
+  addFiles(files: AttachmentFile[]) {
+    this.$emit('upload', files);
   }
 }
 </script>
