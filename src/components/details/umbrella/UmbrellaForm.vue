@@ -7,7 +7,7 @@
             <InputField disabled :value="state.id" />
           </WellItem>
           <WellItem labelWidth="80px" label="KLE-nr:">
-            <MappedSelectionField :disabled="state.disabled.generalInformationEdit" :value="state.kle" @change="update({kle: $event})" :items="kles" />
+            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="{code: state.kle}" @change="update({kle: $event})" :items="kles" itemText="code"/>
           </WellItem>
           <WellItem labelWidth="80px" label="Lokalt ID:">
             <InputField :disabled="state.disabled.generalInformationEdit" :value="state.localId" @change="update({localId: $event})" />
@@ -95,7 +95,10 @@ import WarningIcon from '@/components/icons/WarningIcon.vue';
 import DeleteIcon from '@/components/icons/DeleteIcon.vue';
 import { processActionTypes } from '@/store/modules/process/actions';
 import { processGetterTypes } from '@/store/modules/process/getters';
-import { commonActionTypes, UserSearchRequest } from '@/store/modules/common/actions';
+import {
+  commonActionTypes,
+  UserSearchRequest
+} from '@/store/modules/common/actions';
 import { User } from '@/store/modules/auth/state';
 import { StatusKeys, StatusLabels } from '@/models/status';
 import { VisibilityKeys, VisibilityLabels } from '@/models/visibility';
@@ -146,7 +149,10 @@ export default class UmbrellaForm extends Vue {
   }
 
   search(name: string) {
-    this.$store.dispatch(commonActionTypes.SEARCH_USERS, { name, cvr: this.$store.state.auth.user.cvr });
+    this.$store.dispatch(commonActionTypes.SEARCH_USERS, {
+      name,
+      cvr: this.$store.state.auth.user.cvr
+    });
   }
 
   setKla(kla: string) {
@@ -163,7 +169,11 @@ export default class UmbrellaForm extends Vue {
   }
 
   removeProcess(process: Process) {
-    this.assign({ children: this.state.children.filter((child: Process) => child.id !== process.id) });
+    this.assign({
+      children: this.state.children.filter(
+        (child: Process) => child.id !== process.id
+      )
+    });
   }
 }
 </script>
