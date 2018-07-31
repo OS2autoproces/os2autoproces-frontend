@@ -1,13 +1,13 @@
-import { HTTP } from '@/services/http-service';
-import { User } from '@/store/modules/auth/state';
-import { commonMutationTypes } from '@/store/modules/common/mutations';
-import { ITSystem, Technology } from '@/store/modules/process/state';
-import { RootState } from '@/store/store';
-import { debounce } from 'lodash';
-import { ActionTree, Commit } from 'vuex';
-import { CommonState } from '@/store/modules/common/state';
+import { HTTP } from "@/services/http-service";
+import { User } from "@/store/modules/auth/state";
+import { commonMutationTypes } from "@/store/modules/common/mutations";
+import { ITSystem, Technology } from "@/store/modules/process/state";
+import { RootState } from "@/store/store";
+import { debounce } from "lodash";
+import { ActionTree, Commit } from "vuex";
+import { CommonState } from "@/store/modules/common/state";
 
-export const namespace = 'common';
+export const namespace = "common";
 
 export interface Cms {
   label: keyof CommonState;
@@ -16,7 +16,10 @@ export interface Cms {
 
 export interface Kle {
   code: string;
-  name: string;
+}
+
+export interface Form {
+  code: string;
 }
 
 interface TechnologiesResponse {
@@ -46,6 +49,16 @@ interface ItSystemsResponse {
   page: {
     size: number;
     totalPages: number;
+  };
+}
+
+interface FormResponse {
+  _embedded: {
+    forms: Form[];
+    page: {
+      size: number;
+      totalElements: number;
+    };
   };
 }
 
@@ -85,7 +98,7 @@ export const commonActionTypes = {
   ADD_TECHNOLOGY: `${namespace}/addTechnology`,
   REMOVE_TECHNOLOGY: `${namespace}/removeTechnology`,
   EDIT_TECHNOLOGY: `${namespace}/editTechnology`,
-
+  LOAD_FORMS: `${namespace}/loadFormsByKle`,
   SEARCH_USERS: `${namespace}/searchUsers`
 };
 
@@ -94,21 +107,24 @@ export const actions: ActionTree<CommonState, RootState> = {
     commit(commonMutationTypes.UPDATE, payload);
   },
   async loadCmsContent({ commit }, label: keyof CommonState) {
-    const jsonContent = (await HTTP.get<Cms>(`public/cms/${label}`)).data.content;
+    const jsonContent = (await HTTP.get<Cms>(`public/cms/${label}`)).data
+      .content;
 
-    const content = jsonContent ? JSON.parse(jsonContent) : '';
+    const content = jsonContent ? JSON.parse(jsonContent) : "";
 
     commit(commonMutationTypes.UPDATE, { [label]: content });
   },
   async saveCmsContent({}, cms: Cms): Promise<void> {
     await HTTP.post(`api/cms/${cms.label}`, JSON.stringify(cms.content), {
       headers: {
-        'content-type': 'application/json'
+        "content-type": "application/json"
       }
     });
   },
   async loadTechnologies() {
-    const response = await HTTP.get<TechnologiesResponse>(`api/technologies?size=100000`);
+    const response = await HTTP.get<TechnologiesResponse>(
+      `api/technologies?size=100000`
+    );
     return response.data._embedded.technologies;
   },
   async addTechnology({}, name: string) {
@@ -121,7 +137,9 @@ export const actions: ActionTree<CommonState, RootState> = {
     return HTTP.delete(`api/technologies/${id}`);
   },
   async loadItSystems({ commit }) {
-    const response = await HTTP.get<ItSystemsResponse>(`api/itSystems?size=100000`);
+    const response = await HTTP.get<ItSystemsResponse>(
+      `api/itSystems?size=100000`
+    );
     const itSystems = response.data._embedded.itSystems;
 
     commit(commonMutationTypes.ASSIGN, { itSystems });
@@ -129,8 +147,7 @@ export const actions: ActionTree<CommonState, RootState> = {
   async loadKles({ commit }) {
     const response = await HTTP.get<KleResponse>(`api/kles?size=100000`);
     const kles = response.data._embedded.kles.map(kle => ({
-      value: kle.code,
-      text: kle.code
+      code: kle.code
     }));
 
     commit(commonMutationTypes.ASSIGN, { kles });
@@ -140,10 +157,23 @@ export const actions: ActionTree<CommonState, RootState> = {
       return;
     }
     debouncedSearch({ cvr, name }, commit);
+  },
+  async loadFormsByKle({ commit }, kle: Kle) {
+    const response = await HTTP.get<FormResponse>(`api/kles/${kle.code}/forms`);
+    const forms = response.data._embedded.forms.map((form: Form) => ({
+      code: form.code
+    }));
+
+    commit(commonMutationTypes.ASSIGN, { forms: forms });
   }
 };
 
-const debouncedSearch = debounce(async ({ name, cvr }: UserSearchRequest, commit: Commit) => {
-  const users = (await HTTP.get<UserResponse>(`api/users?name=${name}&cvr=${cvr}`)).data._embedded.users;
-  commit(commonMutationTypes.ASSIGN, { users });
-}, 250);
+const debouncedSearch = debounce(
+  async ({ name, cvr }: UserSearchRequest, commit: Commit) => {
+    const users = (await HTTP.get<UserResponse>(
+      `api/users?name=${name}&cvr=${cvr}`
+    )).data._embedded.users;
+    commit(commonMutationTypes.ASSIGN, { users });
+  },
+  250
+);

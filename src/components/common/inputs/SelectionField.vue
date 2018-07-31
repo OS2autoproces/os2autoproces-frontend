@@ -1,27 +1,27 @@
 <template>
   <div>
-    <v-autocomplete v-if="!disabled" :label="placeholder" :items="_items" single-line no-data-text="Ingen resultater" :item-text="itemText" :append-icon="iconName" :search-input.sync="searchQuery" @change="valueChanged" :value="value" cache-items return-object :multiple="multiple" />
+    <v-autocomplete v-if="!disabled" :label="placeholder" :items="_items" single-line no-data-text="Ingen resultater" :item-text="itemText" :append-icon="iconName" :search-input.sync="searchQuery" @change="valueChanged" :value="value" return-object :multiple="multiple" />
     <div class="selection-text" v-if="disabled && value">{{ label }}</div>
   </div>
 </template>
 
 <script lang='ts'>
-import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
+import { Vue, Component, Prop, Watch } from "vue-property-decorator";
 
 @Component
 export default class SelectionField<T extends any> extends Vue {
-  searchQuery = '';
+  searchQuery = "";
 
   @Prop([Boolean, Object, String, Array])
   value!: T;
-  @Prop({ default: 'keyboard_arrow_down', type: String })
+  @Prop({ default: "keyboard_arrow_down", type: String })
   iconName!: string;
   @Prop(Array) items!: T[];
   @Prop(Boolean) isItemsPartial!: boolean;
   @Prop(String) placeholder!: string;
   @Prop(Boolean) disabled!: boolean;
   @Prop(Boolean) multiple!: boolean;
-  @Prop({ type: String, default: 'text' })
+  @Prop({ type: String, default: "text" })
   itemText!: string;
 
   get _items(): T[] {
@@ -40,27 +40,27 @@ export default class SelectionField<T extends any> extends Vue {
 
   get label() {
     if (Array.isArray(this.value)) {
-      return this.value.map((item: any) => item[this.itemText]).join(', ');
+      return this.value.map((item: any) => item[this.itemText]).join(", ");
     }
 
     return this.value[this.itemText];
   }
 
-  @Watch('searchQuery')
+  @Watch("searchQuery")
   search(searchQuery: string) {
     if (searchQuery) {
-      this.$emit('search', searchQuery);
+      this.$emit("search", searchQuery);
     }
   }
 
   valueChanged(value: any) {
-    this.$emit('change', value);
+    this.$emit("change", value);
   }
 }
 </script>
 
 <style scoped lang="scss">
-@import '@/styles/variables.scss';
+@import "@/styles/variables.scss";
 
 .v-autocomplete /deep/ {
   padding-top: 0 !important;

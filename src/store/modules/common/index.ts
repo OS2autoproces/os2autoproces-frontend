@@ -7,10 +7,11 @@ import { CommonState } from "@/store/modules/common/state";
 const namespaced = true;
 
 export const state: CommonState = {
-  frontPage: '',
+  frontPage: "",
   itSystems: [],
   kles: [],
-  users: [],
+  forms: [],
+  users: []
 };
 
 export const common: Module<CommonState, RootState> = {

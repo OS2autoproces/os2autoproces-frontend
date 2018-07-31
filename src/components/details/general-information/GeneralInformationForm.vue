@@ -7,7 +7,10 @@
             <InputField disabled :value="state.id" />
           </WellItem>
           <WellItem labelWidth="120px" label="KLE-nr:">
-            <MappedSelectionField :disabled="state.disabled.generalInformationEdit" :value="state.kle" @change="update({kle: $event})" :items="kles" />
+            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.kle" @change="setKle($event)" :items="kles" itemText="code"/>
+          </WellItem>
+          <WellItem labelWidth="120px" label="FORM:" v-if="state.kle">
+            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.form" @change="update({form: $event})" :items="forms" itemText="code"/>
           </WellItem>
           <WellItem labelWidth="120px" label="Lokalt ID:">
             <InputField :disabled="state.disabled.generalInformationEdit" :value="state.localId" @change="update({localId: $event})" />
@@ -78,32 +81,35 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator';
-import { Action, Getter } from 'vuex-class';
+import { Vue, Component, Prop } from "vue-property-decorator";
+import { Action, Getter } from "vuex-class";
 
-import InputField from '@/components/common/inputs/InputField.vue';
-import MaskableInput from '@/components/common/inputs/MaskableInput.vue';
-import SelectionField from '@/components/common/inputs/SelectionField.vue';
-import MappedSelectionField from '@/components/common/inputs/MappedSelectionField.vue';
-import DomainsField from '@/components/common/inputs/DomainsField.vue';
-import TextArea from '@/components/common/inputs/TextArea.vue';
-import Phases from '@/components/common/inputs/Phases.vue';
-import AssociatedPersonsInput from '@/components/details/general-information/AssociatedPersonsInput.vue';
-import Well from '@/components/common/Well.vue';
-import WellItem from '@/components/common/WellItem.vue';
-import FormSection from '@/components/details/FormSection.vue';
-import WarningIcon from '@/components/icons/WarningIcon.vue';
-import { processActionTypes } from '@/store/modules/process/actions';
-import { processGetterTypes } from '@/store/modules/process/getters';
-import { commonActionTypes, UserSearchRequest } from '@/store/modules/common/actions';
-import { User } from '@/store/modules/auth/state';
-import { StatusKeys, StatusLabels } from '@/models/status';
-import { VisibilityKeys, VisibilityLabels } from '@/models/visibility';
-import { OrgUnit } from '@/store/modules/process/state';
-import { DomainKeys, DomainLabels } from '@/models/domain';
-import { Kle } from '@/store/modules/common/actions';
-import { Domain } from '@/models/domain';
-import { Phase, PhaseKeys } from '@/models/phase';
+import InputField from "@/components/common/inputs/InputField.vue";
+import MaskableInput from "@/components/common/inputs/MaskableInput.vue";
+import SelectionField from "@/components/common/inputs/SelectionField.vue";
+import MappedSelectionField from "@/components/common/inputs/MappedSelectionField.vue";
+import DomainsField from "@/components/common/inputs/DomainsField.vue";
+import TextArea from "@/components/common/inputs/TextArea.vue";
+import Phases from "@/components/common/inputs/Phases.vue";
+import AssociatedPersonsInput from "@/components/details/general-information/AssociatedPersonsInput.vue";
+import Well from "@/components/common/Well.vue";
+import WellItem from "@/components/common/WellItem.vue";
+import FormSection from "@/components/details/FormSection.vue";
+import WarningIcon from "@/components/icons/WarningIcon.vue";
+import { processActionTypes } from "@/store/modules/process/actions";
+import { processGetterTypes } from "@/store/modules/process/getters";
+import {
+  commonActionTypes,
+  UserSearchRequest
+} from "@/store/modules/common/actions";
+import { User } from "@/store/modules/auth/state";
+import { StatusKeys, StatusLabels } from "@/models/status";
+import { VisibilityKeys, VisibilityLabels } from "@/models/visibility";
+import { OrgUnit } from "@/store/modules/process/state";
+import { DomainKeys, DomainLabels } from "@/models/domain";
+import { Kle, Form } from "@/store/modules/common/actions";
+import { Domain } from "@/models/domain";
+import { Phase, PhaseKeys } from "@/models/phase";
 
 @Component({
   components: {
@@ -123,10 +129,13 @@ import { Phase, PhaseKeys } from '@/models/phase';
 })
 export default class GeneralInformationForm extends Vue {
   @Action(processActionTypes.UPDATE) update: any;
+  @Action(commonActionTypes.LOAD_FORMS) loadForms: any;
   @Action(processActionTypes.ASSIGN) assign: any;
-  @Action(commonActionTypes.SEARCH_USERS) searchUsers!: ({ name, cvr }: UserSearchRequest) => Promise<void>;
+  @Action(commonActionTypes.SEARCH_USERS)
+  searchUsers!: ({ name, cvr }: UserSearchRequest) => Promise<void>;
 
-  @Getter(processGetterTypes.IS_GERNERAL_INFORMATION_VALID) isGeneralInformationValid!: any;
+  @Getter(processGetterTypes.IS_GERNERAL_INFORMATION_VALID)
+  isGeneralInformationValid!: any;
   @Getter(processGetterTypes.MIN_PHASE) minPhase!: (phase: Phase) => boolean;
 
   isPhaseChanged = false;
@@ -145,9 +154,19 @@ export default class GeneralInformationForm extends Vue {
     return this.$store.state.common.kles;
   }
 
+  get forms() {
+    return this.$store.state.common.forms;
+  }
+
   setKla(kla: string) {
     // Inserts periodes for every 2 characters, to match format: ##.##.##.##.##
-    this.update({kla: kla.replace(/(\d{2})(?=\d)/g, '$1.')});
+    this.update({ kla: kla.replace(/(\d{2})(?=\d)/g, "$1.") });
+  }
+
+  setKle(kle: Kle) {
+    console.log(kle);
+    this.update({ kle: kle, forms: [] });
+    this.loadForms(kle);
   }
 
   phaseChanged(phase: any) {
@@ -175,7 +194,7 @@ export default class GeneralInformationForm extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/variables.scss';
+@import "@/styles/variables.scss";
 .general-information-wrapper {
   background-color: $color-edit-background;
   border-radius: 12px;
