@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator';
+import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import { Action, Getter } from 'vuex-class';
 import NavBar from '@/components/common/NavBar.vue';
 import Process from '@/components/details/process/Process.vue';
@@ -32,11 +32,20 @@ export default class Details extends Vue {
   isUmbrella = true;
   loading = true;
 
+  @Watch('id')
+  idChanged() {
+    this.loadContent();
+  }
+
   beforeCreate() {
     this.$store.dispatch(processActionTypes.CLEAR_PROCESS);
   }
 
-  async mounted() {
+  mounted() {
+    this.loadContent();
+  }
+
+  async loadContent() {
     if (this.isReporting) {
       this.isUmbrella = this.type === TypeKeys.PARENT || this.type === TypeKeys.GLOBAL_PARENT;
       this.loading = false;
