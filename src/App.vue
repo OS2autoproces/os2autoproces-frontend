@@ -93,7 +93,6 @@ body {
   }
 
   .app-footer {
-    margin-top: 5 * $size-unit;
     background-color: $color-background-grey;
     border-top: 10px solid $color-secondary;
     display: flex;

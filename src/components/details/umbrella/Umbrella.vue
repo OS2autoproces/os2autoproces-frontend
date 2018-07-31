@@ -149,6 +149,7 @@ export default class Umbrella extends Vue {
 
 .details-wrapper {
   flex-grow: 1;
+  margin-bottom: 5 * $size-unit;
 }
 
 .details-content {

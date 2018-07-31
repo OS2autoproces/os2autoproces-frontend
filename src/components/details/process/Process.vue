@@ -17,6 +17,8 @@
       <div class="details-content">
         <ProcessHeader />
 
+        <ProcessParents :parents="state.parents" />
+
         <div class="form-sections">
           <GeneralInformationForm />
           <ChallengesForm />
@@ -65,6 +67,7 @@ import IntervalSelector from '@/components/common/inputs/IntervalSelector.vue';
 import FormSection from '@/components/details/FormSection.vue';
 import ProcessMenu from '@/components/details/process/ProcessMenu.vue';
 import ProcessHeader from '@/components/details/process/ProcessHeader.vue';
+import ProcessParents from '@/components/details/process/ProcessParents.vue';
 import GeneralInformationForm from '@/components/details/general-information/GeneralInformationForm.vue';
 import Button from '@/components/common/inputs/Button.vue';
 import ChallengesForm from '@/components/details/challenges/ChallengesForm.vue';
@@ -86,6 +89,7 @@ import { isEmpty } from 'lodash';
     FormSection,
     ProcessMenu,
     ProcessHeader,
+    ProcessParents,
     GeneralInformationForm,
     Comments,
     IntervalSelector,
