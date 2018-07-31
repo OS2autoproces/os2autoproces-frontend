@@ -7,13 +7,27 @@
         <ArrowLeftIcon /> Tilbage til søgning
       </router-link>
 
-      <div class="phase-selector">
+      <div class="process-selector">
         <h1>Hvad ønsker du at indberette?</h1>
-        <ArrowDownIcon />
 
-        <div class="phases">
-          <router-link v-for="phase in phasesLevels" :key="phase.label" :to="`/details/new/${phase.route}`"> {{phase.label}} </router-link>
+        <div class="report-options">
+          <div class="process">
+            <h2>Proces</h2>
+
+            <div class="options">
+              <router-link v-for="phase in phasesLevels" :key="phase.route" :to="`/details/new/${phase.route}`"> {{phase.label}} </router-link>
+            </div>
+          </div>
+
+          <div class="umbrella">
+            <h2>Paraply proces</h2>
+
+            <div class="options">
+              <router-link v-for="type in typeLevels" :key="type.route" :to="`/details/new/${type.route}`"> {{type.label}} </router-link>
+            </div>
+          </div>
         </div>
+
       </div>
     </div>
   </div>
@@ -25,6 +39,7 @@ import ArrowDownIcon from '../components/icons/ArrowDownIcon.vue';
 import ArrowLeftIcon from '../components/icons/ArrowLeftIcon.vue';
 import NavBar from '../components/common/NavBar.vue';
 import { PhaseKeys, PhaseLabels } from '@/models/phase';
+import { TypeKeys, TypeLabels } from '@/models/types';
 
 @Component({
   components: {
@@ -41,6 +56,11 @@ export default class Home extends Vue {
     { route: PhaseKeys.DEVELOPMENT, label: PhaseLabels.DEVELOPMENT },
     { route: PhaseKeys.IMPLEMENTATION, label: PhaseLabels.IMPLEMENTATION },
     { route: PhaseKeys.OPERATION, label: PhaseLabels.OPERATION }
+  ];
+
+  typeLevels = [
+    { route: TypeKeys.PARENT, label: TypeLabels.PARENT },
+    { route: TypeKeys.GLOBAL_PARENT, label: TypeLabels.GLOBAL_PARENT }
   ];
 }
 </script>
@@ -63,10 +83,19 @@ export default class Home extends Vue {
   }
 }
 
-.phase-selector {
+.report-options {
+  display: flex;
+
+  > * {
+    flex: 1 1 1px;
+  }
+}
+
+.process-selector {
   text-align: center;
 
-  h1 {
+  h1,
+  h2 {
     color: $color-secondary;
   }
 
@@ -76,7 +105,7 @@ export default class Home extends Vue {
     margin: $size-unit 0;
   }
 
-  .phases {
+  .options {
     border: 1px solid $color-primary;
     border-radius: $size-unit;
     padding: $size-unit / 2 $size-unit;

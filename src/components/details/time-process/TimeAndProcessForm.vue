@@ -1,5 +1,5 @@
 <template>
-  <FormSection :invalid="isTimeAndProcessValid" heading="Tid og proces" id="time-and-process" :disabled="state.disabled.timeAndProcessEdit" @edit="update({disabled: {timeAndProcessEdit: $event}})">
+  <FormSection :invalid="!isTimeAndProcessValid" heading="Tid og proces" id="time-and-process" :disabled="state.disabled.timeAndProcessEdit" @edit="update({disabled: {timeAndProcessEdit: $event}})">
 
     <Well>
       <div>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="wrapper">
-      <div class="types">
+      <div class="types" v-if="!hideRelations">
         <PillCheckbox :value="!!filters.reporterId" @change="setReporterId">Indberettede
         </PillCheckbox>
         <PillCheckbox :value="!!filters.usersId" @change="setUsersId">Tilknyttede</PillCheckbox>
@@ -9,11 +9,11 @@
         </PillCheckbox>
       </div>
 
-      <SearchField class="search-text" :value="filters.text" @change="updateFilters({ text: $event })"/>
+      <SearchField class="search-text" :value="filters.text" @change="updateFilters({ text: $event })" />
 
-      <h1>AVANCERET SØGNING</h1>
+      <h1 v-if="!hideVisibility">AVANCERET SØGNING</h1>
 
-      <div class="municipality-level">
+      <div class="municipality-level" v-if="!hideVisibility">
         <SearchOption :value="filters.municipality" @change="updateFilters({ municipality: $event })">
           {{VisibilityLabels.MUNICIPALITY}}
         </SearchOption>
@@ -77,18 +77,18 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
-import Checkbox from "../common/inputs/Checkbox.vue";
-import SearchField from "../common/inputs/SearchField.vue";
-import SearchOption from "./SearchOption.vue";
-import PillCheckbox from "../common/inputs/PillCheckbox.vue";
-import ExpandPanel from "../common/ExpandPanel.vue";
-import { Action } from "vuex-class";
-import { searchActionTypes } from "@/store/modules/search/actions";
-import { PhaseLabels } from "@/models/phase";
-import { DomainLabels } from "@/models/domain";
-import { VisibilityLabels } from "@/models/visibility";
-import { SearchFilters } from "../../store/modules/search/state";
+import { Vue, Component, Prop } from 'vue-property-decorator';
+import Checkbox from '../common/inputs/Checkbox.vue';
+import SearchField from '../common/inputs/SearchField.vue';
+import SearchOption from './SearchOption.vue';
+import PillCheckbox from '../common/inputs/PillCheckbox.vue';
+import ExpandPanel from '../common/ExpandPanel.vue';
+import { Action } from 'vuex-class';
+import { searchActionTypes } from '@/store/modules/search/actions';
+import { PhaseLabels } from '@/models/phase';
+import { DomainLabels } from '@/models/domain';
+import { VisibilityLabels } from '@/models/visibility';
+import { SearchFilters } from '../../store/modules/search/state';
 
 @Component({
   components: {
@@ -105,6 +105,8 @@ export default class SearchFiltersComponent extends Vue {
   VisibilityLabels = VisibilityLabels;
 
   @Prop(Object) filters!: SearchFilters;
+  @Prop(Boolean) hideVisibility!: boolean;
+  @Prop(Boolean) hideRelations!: boolean;
 
   get user() {
     return this.$store.state.auth.user;
@@ -126,17 +128,13 @@ export default class SearchFiltersComponent extends Vue {
   }
 
   updateFilters(filters: Partial<SearchFilters>) {
-    this.$emit("change", filters);
+    this.$emit('change', filters);
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import "../../styles/variables";
-
-.wrapper {
-  padding: 4 * $size-unit 3 * $size-unit;
-}
+@import '../../styles/variables';
 
 .types {
   margin-bottom: 4 * $size-unit;

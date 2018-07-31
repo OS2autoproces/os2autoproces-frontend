@@ -1,18 +1,11 @@
-import { Domain, DomainKeys } from '@/models/domain';
+import { Domain } from '@/models/domain';
 import { LikertScale, LikertScaleKeys } from '@/models/likert-scale';
 import { Phase, PhaseKeys } from '@/models/phase';
 import { Status, StatusKeys } from '@/models/status';
+import { Type, TypeKeys } from '@/models/types';
 import { Visibility, VisibilityKeys } from '@/models/visibility';
 import { User } from '@/store/modules/auth/state';
-import {
-  ITSystem,
-  Link,
-  OrgUnit,
-  Process,
-  ProcessState,
-  Technology
-} from '@/store/modules/process/state';
-import { TypeKeys, Type } from '@/models/types';
+import { ITSystem, Link, OrgUnit, Process, ProcessState, Technology } from '@/store/modules/process/state';
 
 export interface ProcessRequest {
   localId: string | null;
@@ -71,17 +64,16 @@ export interface ProcessRequest {
   ratingComment: string | null;
   searchWords: string | null;
 
-  // cvr: string;
   users: User[] | null;
-  owner: User;
-  contact: User;
+  owner: string | null;
+  contact: string | null;
   itSystems: ITSystem[] | null;
   orgUnits: OrgUnit[] | null;
   technologies: Technology[] | null;
   children: string[];
 }
 
-export interface ProcessResponse extends ProcessRequest {
+export interface ProcessResponse {
   id: number;
   klaProcess: boolean;
   cvr: string;
@@ -89,6 +81,75 @@ export interface ProcessResponse extends ProcessRequest {
   hasBookmarked: boolean;
   canEdit: boolean;
   emailNotification: boolean;
+
+  localId: string | null;
+  klId: string | null;
+  esdhReference: string | null;
+  phase: Phase;
+  status: Status;
+  statusText: string | null;
+  type: Type;
+
+  created: string | null;
+  lastChanged: string | null;
+  decommissioned: string | null;
+
+  title: string;
+  shortDescription: string;
+  longDescription: string | null;
+  domains: Domain[];
+  visibility: Visibility;
+
+  legalClause: string | null;
+  legalClauseLastVerified: string | null;
+  kle: string | null;
+  kla: string | null;
+  links: Link[] | null;
+
+  vendor: string | null;
+  internalNotes: string | null;
+
+  processChallenges: string | null;
+  solutionRequests: string | null;
+
+  timeSpendOccurancesPerEmployee: number;
+  timeSpendPerOccurance: number;
+  timeSpendEmployeesDoingProcess: number;
+  timeSpendPercentageDigital: number;
+  timeSpendComputedTotal: number;
+  timeSpendComment: string;
+  targetsCompanies: boolean;
+  targetsCitizens: boolean;
+
+  levelOfProfessionalAssessment: LikertScale;
+  levelOfChange: LikertScale;
+  levelOfStructuredInformation: LikertScale;
+  levelOfUniformity: LikertScale;
+  levelOfDigitalInformation: LikertScale;
+  evaluatedLevelOfRoi: LikertScale;
+  levelOfQuality: LikertScale;
+  levelOfRoutineWorkReduction: LikertScale;
+  levelOfSpeed: LikertScale;
+
+  technicalImplementationNotes: string | null;
+  organizationalImplementationNotes: string | null;
+
+  rating: number | null;
+  ratingComment: string | null;
+  searchWords: string | null;
+
+  users: User[] | null;
+  owner: User;
+  contact: User;
+  itSystems: ITSystem[] | null;
+  orgUnits: OrgUnit[] | null;
+  technologies: Technology[] | null;
+  children: Process[];
+  parents: Process[];
+}
+
+function relation(name: string, entity: { id: number | string }) {
+  return `${window.autoProcessConfiguration.apiUrl}/api/${name}/${entity.id}`;
 }
 
 function defaultNull(prop: any): any {
@@ -99,7 +160,7 @@ function defaultZero(prop: any) {
   return prop ? Number(prop) : 0;
 }
 
-export function stateToRequest(state: ProcessState): ProcessRequest {
+function stateToRequestFields(state: ProcessState): ProcessRequest {
   return {
     localId: defaultNull(state.localId),
     klId: defaultNull(state.klId),
@@ -125,50 +186,71 @@ export function stateToRequest(state: ProcessState): ProcessRequest {
     processChallenges: defaultNull(state.processChallenges),
     solutionRequests: defaultNull(state.solutionRequests),
     timeSpendComputedTotal: defaultZero(state.timeSpendComputedTotal),
-    timeSpendEmployeesDoingProcess: defaultZero(
-      state.timeSpendEmployeesDoingProcess
-    ),
-    timeSpendOccurancesPerEmployee: defaultZero(
-      state.timeSpendOccurancesPerEmployee
-    ),
+    timeSpendEmployeesDoingProcess: defaultZero(state.timeSpendEmployeesDoingProcess),
+    timeSpendOccurancesPerEmployee: defaultZero(state.timeSpendOccurancesPerEmployee),
     timeSpendPercentageDigital: defaultZero(state.timeSpendPercentageDigital),
     timeSpendPerOccurance: defaultZero(state.timeSpendPerOccurance),
     timeSpendComment: state.timeSpendComment,
     targetsCompanies: state.targetsCompanies,
     targetsCitizens: state.targetsCitizens,
-    levelOfProfessionalAssessment:
-      state.levelOfProfessionalAssessment || LikertScaleKeys.UNKNOWN,
+    levelOfProfessionalAssessment: state.levelOfProfessionalAssessment || LikertScaleKeys.UNKNOWN,
     levelOfChange: state.levelOfChange || LikertScaleKeys.UNKNOWN,
-    levelOfDigitalInformation:
-      state.levelOfDigitalInformation || LikertScaleKeys.UNKNOWN,
-    levelOfStructuredInformation:
-      state.levelOfStructuredInformation || LikertScaleKeys.UNKNOWN,
+    levelOfDigitalInformation: state.levelOfDigitalInformation || LikertScaleKeys.UNKNOWN,
+    levelOfStructuredInformation: state.levelOfStructuredInformation || LikertScaleKeys.UNKNOWN,
     levelOfUniformity: state.levelOfUniformity || LikertScaleKeys.UNKNOWN,
     evaluatedLevelOfRoi: state.evaluatedLevelOfRoi || LikertScaleKeys.UNKNOWN,
     levelOfQuality: state.levelOfQuality || LikertScaleKeys.UNKNOWN,
     levelOfSpeed: state.levelOfSpeed || LikertScaleKeys.UNKNOWN,
-    levelOfRoutineWorkReduction:
-      state.levelOfRoutineWorkReduction || LikertScaleKeys.UNKNOWN,
-    technicalImplementationNotes: defaultNull(
-      state.technicalImplementationNotes
-    ),
-    organizationalImplementationNotes: defaultNull(
-      state.organizationalImplementationNotes
-    ),
+    levelOfRoutineWorkReduction: state.levelOfRoutineWorkReduction || LikertScaleKeys.UNKNOWN,
+    technicalImplementationNotes: defaultNull(state.technicalImplementationNotes),
+    organizationalImplementationNotes: defaultNull(state.organizationalImplementationNotes),
     rating: defaultNull(state.rating),
     ratingComment: defaultNull(state.ratingComment),
     // TODO: fix when brian returns
     // searchWords: defaultNull(state.searchWords),
     searchWords: '',
-    contact: defaultNull(state.contact),
-    owner: defaultNull(state.owner),
+    contact: state.contact && relation('users', state.contact),
+    owner: state.owner && relation('users', state.owner),
     orgUnits: defaultNull(state.orgUnits),
     users: defaultNull(state.users),
     technologies: defaultNull(state.technologies),
     itSystems: defaultNull(state.itSystems),
-    children: defaultNull(state.children),
+    children: state.children.map(child => relation('processes', child)),
     type: state.type || TypeKeys.CHILD
   };
+}
+
+function pickFields(request: ProcessRequest, fields: Array<keyof ProcessRequest>): Partial<ProcessRequest> {
+  return fields.reduce<Partial<ProcessRequest>>((partialRequest, field) => {
+    partialRequest[field] = request[field];
+    return partialRequest;
+  }, {});
+}
+
+function buildUmbrellaRequest(request: ProcessRequest): Partial<ProcessRequest> {
+  return pickFields(request, [
+    'kle',
+    'localId',
+    'klId',
+    'kla',
+    'contact',
+    'children',
+    'domains',
+    'title',
+    'type',
+    'longDescription',
+    'shortDescription'
+  ]);
+}
+
+export function stateToRequest(state: ProcessState): Partial<ProcessRequest> {
+  const request = stateToRequestFields(state);
+
+  if (state.type === TypeKeys.GLOBAL_PARENT || state.type === TypeKeys.PARENT) {
+    return buildUmbrellaRequest(request);
+  }
+
+  return stateToRequestFields(state);
 }
 
 export function responseToState(process: ProcessResponse): Process {
@@ -187,8 +269,7 @@ export function responseToState(process: ProcessResponse): Process {
     canEdit: process.canEdit,
     statusText: process.statusText || '',
     esdhReference: process.esdhReference || '',
-    organizationalImplementationNotes:
-      process.organizationalImplementationNotes || '',
+    organizationalImplementationNotes: process.organizationalImplementationNotes || '',
     ratingComment: process.ratingComment || '',
     timeSpendComment: process.timeSpendComment || '',
     technologies: process.technologies || [],

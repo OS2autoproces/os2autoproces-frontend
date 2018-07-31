@@ -1,5 +1,5 @@
 <template>
-  <FormSection :invalid="isGeneralInformationValid" heading="Grundlæggende oplysninger" id="general-information" :disabled="state.disabled.generalInformationEdit" @edit="update({disabled: { generalInformationEdit: $event} })" always-open>
+  <FormSection :invalid="!isGeneralInformationValid" heading="Grundlæggende oplysninger" id="general-information" :disabled="state.disabled.generalInformationEdit" @edit="update({disabled: { generalInformationEdit: $event} })" always-open>
     <div class="general-information-wrapper">
       <Well>
         <div>
@@ -16,7 +16,7 @@
             <InputField :disabled="state.disabled.generalInformationEdit" :value="state.klId" @change="update({klId: $event})" />
           </WellItem>
           <WellItem labelWidth="120px" label="KLA:">
-            <MaskableInput :disabled="state.disabled.generalInformationEdit" mask="##.##.##.##.##" :value="state.kla" @change="setKla"/>
+            <MaskableInput :disabled="state.disabled.generalInformationEdit" mask="##.##.##.##.##" :value="state.kla" @change="setKla" />
           </WellItem>
         </div>
 
@@ -147,7 +147,7 @@ export default class GeneralInformationForm extends Vue {
 
   setKla(kla: string) {
     // Inserts periodes for every 2 characters, to match format: ##.##.##.##.##
-    this.update({kla: kla.replace(/(\d{2})(?=\d)/g, '$1.')});
+    this.update({ kla: kla.replace(/(\d{2})(?=\d)/g, '$1.') });
   }
 
   phaseChanged(phase: any) {

@@ -1,5 +1,5 @@
 <template>
-  <FormSection :invalid="isChallengesValid" heading="Problemstillinger" id="challenges" :disabled="state.disabled.challengesEdit" @edit="update({ disabled: { challengesEdit: $event}})">
+  <FormSection :invalid="!isChallengesValid" heading="Problemstillinger" id="challenges" :disabled="state.disabled.challengesEdit" @edit="update({ disabled: { challengesEdit: $event}})">
     <div v-if="minPhase(PhaseKeys.PREANALYSIS)">
       <h2>Løsningsbeskrivelse</h2>
       <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>

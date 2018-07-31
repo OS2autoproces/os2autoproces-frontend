@@ -3,7 +3,7 @@
         <NavBar />
 
         <div class="page">
-            <div>
+            <div class="filters">
                 <SearchFiltersComponent :filters="filters" @change="updateFilters" />
             </div>
             <div>
@@ -69,7 +69,7 @@ export default class Search extends Vue {
   }
 
   mounted() {
-    this.$store.dispatch(searchActionTypes.SEARCH);
+    this.$store.dispatch(searchActionTypes.UPDATE_FILTERS, { type: null });
   }
 }
 </script>
@@ -80,6 +80,10 @@ export default class Search extends Vue {
 .search {
   display: flex;
   flex-direction: column;
+}
+
+.filters {
+  padding: 4 * $size-unit 3 * $size-unit;
 }
 
 .page {
