@@ -81,35 +81,35 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
-import { Action, Getter } from "vuex-class";
+import { Vue, Component, Prop } from 'vue-property-decorator';
+import { Action, Getter } from 'vuex-class';
 
-import InputField from "@/components/common/inputs/InputField.vue";
-import MaskableInput from "@/components/common/inputs/MaskableInput.vue";
-import SelectionField from "@/components/common/inputs/SelectionField.vue";
-import MappedSelectionField from "@/components/common/inputs/MappedSelectionField.vue";
-import DomainsField from "@/components/common/inputs/DomainsField.vue";
-import TextArea from "@/components/common/inputs/TextArea.vue";
-import Phases from "@/components/common/inputs/Phases.vue";
-import AssociatedPersonsInput from "@/components/details/general-information/AssociatedPersonsInput.vue";
-import Well from "@/components/common/Well.vue";
-import WellItem from "@/components/common/WellItem.vue";
-import FormSection from "@/components/details/FormSection.vue";
-import WarningIcon from "@/components/icons/WarningIcon.vue";
-import { processActionTypes } from "@/store/modules/process/actions";
-import { processGetterTypes } from "@/store/modules/process/getters";
+import InputField from '@/components/common/inputs/InputField.vue';
+import MaskableInput from '@/components/common/inputs/MaskableInput.vue';
+import SelectionField from '@/components/common/inputs/SelectionField.vue';
+import MappedSelectionField from '@/components/common/inputs/MappedSelectionField.vue';
+import DomainsField from '@/components/common/inputs/DomainsField.vue';
+import TextArea from '@/components/common/inputs/TextArea.vue';
+import Phases from '@/components/common/inputs/Phases.vue';
+import AssociatedPersonsInput from '@/components/details/general-information/AssociatedPersonsInput.vue';
+import Well from '@/components/common/Well.vue';
+import WellItem from '@/components/common/WellItem.vue';
+import FormSection from '@/components/details/FormSection.vue';
+import WarningIcon from '@/components/icons/WarningIcon.vue';
+import { processActionTypes } from '@/store/modules/process/actions';
+import { processGetterTypes } from '@/store/modules/process/getters';
 import {
   commonActionTypes,
   UserSearchRequest
-} from "@/store/modules/common/actions";
-import { User } from "@/store/modules/auth/state";
-import { StatusKeys, StatusLabels } from "@/models/status";
-import { VisibilityKeys, VisibilityLabels } from "@/models/visibility";
-import { OrgUnit } from "@/store/modules/process/state";
-import { DomainKeys, DomainLabels } from "@/models/domain";
-import { Kle, Form } from "@/store/modules/common/actions";
-import { Domain } from "@/models/domain";
-import { Phase, PhaseKeys } from "@/models/phase";
+} from '@/store/modules/common/actions';
+import { User } from '@/store/modules/auth/state';
+import { StatusKeys, StatusLabels } from '@/models/status';
+import { VisibilityKeys, VisibilityLabels } from '@/models/visibility';
+import { OrgUnit } from '@/store/modules/process/state';
+import { DomainKeys, DomainLabels } from '@/models/domain';
+import { Kle, Form } from '@/store/modules/common/actions';
+import { Domain } from '@/models/domain';
+import { Phase, PhaseKeys } from '@/models/phase';
 
 @Component({
   components: {
@@ -160,7 +160,7 @@ export default class GeneralInformationForm extends Vue {
 
   setKla(kla: string) {
     // Inserts periodes for every 2 characters, to match format: ##.##.##.##.##
-    this.update({ kla: kla.replace(/(\d{2})(?=\d)/g, "$1.") });
+    this.update({ kla: kla.replace(/(\d{2})(?=\d)/g, '$1.') });
   }
 
   setKle(kle: Kle) {
@@ -193,7 +193,7 @@ export default class GeneralInformationForm extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import "@/styles/variables.scss";
+@import '@/styles/variables.scss';
 .general-information-wrapper {
   background-color: $color-edit-background;
   border-radius: 12px;

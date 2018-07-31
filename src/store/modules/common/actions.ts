@@ -1,13 +1,13 @@
-import { HTTP } from "@/services/http-service";
-import { User } from "@/store/modules/auth/state";
-import { commonMutationTypes } from "@/store/modules/common/mutations";
-import { ITSystem, Technology } from "@/store/modules/process/state";
-import { RootState } from "@/store/store";
-import { debounce } from "lodash";
-import { ActionTree, Commit } from "vuex";
-import { CommonState } from "@/store/modules/common/state";
+import { HTTP } from '@/services/http-service';
+import { User } from '@/store/modules/auth/state';
+import { commonMutationTypes } from '@/store/modules/common/mutations';
+import { ITSystem, Technology } from '@/store/modules/process/state';
+import { RootState } from '@/store/store';
+import { debounce } from 'lodash';
+import { ActionTree, Commit } from 'vuex';
+import { CommonState } from '@/store/modules/common/state';
 
-export const namespace = "common";
+export const namespace = 'common';
 
 export interface Cms {
   label: keyof CommonState;
@@ -110,14 +110,14 @@ export const actions: ActionTree<CommonState, RootState> = {
     const jsonContent = (await HTTP.get<Cms>(`public/cms/${label}`)).data
       .content;
 
-    const content = jsonContent ? JSON.parse(jsonContent) : "";
+    const content = jsonContent ? JSON.parse(jsonContent) : '';
 
     commit(commonMutationTypes.UPDATE, { [label]: content });
   },
   async saveCmsContent({}, cms: Cms): Promise<void> {
     await HTTP.post(`api/cms/${cms.label}`, JSON.stringify(cms.content), {
       headers: {
-        "content-type": "application/json"
+        'content-type': 'application/json'
       }
     });
   },
