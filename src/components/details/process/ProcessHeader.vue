@@ -5,14 +5,14 @@
       <div v-if="state.canEdit" class="edit-button" role="button" @click="toggleEdit" :class="{ editing: !state.disabled.titleEdit }">
         <EditIcon />
       </div>
-      <div class="bookmark-button" role="button" @click="setBookmark(!state.hasBookmarked)">
+      <div v-if="!isReporting" class="bookmark-button" role="button" @click="setBookmark(!state.hasBookmarked)">
         <StarIcon :class="{ selected: state.hasBookmarked }" />
       </div>
 
       <div class="flex-grow"></div>
       <MunicipalityLogo :src="logo" />
     </div>
-    <div class="row">
+    <div v-if="!isReporting" class="row">
       <Button class="button" @click="remove">Slet proces</Button>
       <Button class="button" @click="copy">Kopier proces</Button>
       <div class="flex-grow"></div>
@@ -52,6 +52,8 @@ export default class ProcessHeader extends Vue {
   @Action(processActionTypes.SET_BOOKMARK) setBookmark!: (hasBookmark: boolean) => Promise<void>;
   @Action(processActionTypes.REMOVE_PROCESS) removeProcess!: () => Promise<void>;
   @Action(processActionTypes.COPY_PROCESS) copyProcess!: () => Promise<string>;
+
+  @Prop(Boolean) isReporting!: boolean;
 
   get state() {
     return this.$store.state.process;

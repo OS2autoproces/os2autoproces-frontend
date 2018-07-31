@@ -15,7 +15,7 @@
 
     <div class="details-wrapper">
       <div class="details-content">
-        <ProcessHeader />
+        <ProcessHeader :isReporting="isReporting" />
 
         <ProcessParents :parents="state.parents" />
 
