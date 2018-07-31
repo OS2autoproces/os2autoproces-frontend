@@ -140,8 +140,8 @@ export default class GeneralInformationForm extends Vue {
   PhaseKeys = PhaseKeys;
 
   get isWithinMunicipality() {
-    const state = this.$store.state;
-    return state.auth.user.cvr === state.process.cvr;
+    const {auth, process} = this.$store.state;
+    return auth.user.cvr === process.cvr;
   }
 
   get state() {
