@@ -27,7 +27,7 @@
           <SpecificationForm />
           <ImplementationForm />
           <OperationForm />
-          <AttachmentsForm />
+          <AttachmentsForm v-if="!isReporting" />
         </div>
 
         <div>
@@ -35,7 +35,7 @@
           <InternalNotes title="Interne noter" :internalNotes="state.internalNotes" />
         </div>
 
-        <div class="comments">
+        <div class="comments" v-if="!isReporting">
           <h2 class="comments-heading">Kommentarer</h2>
           <Comments :comments="state.comments" @submit="saveComment({ message: $event })" />
         </div>
@@ -173,6 +173,7 @@ export default class Process extends Vue {
 
 .details-wrapper {
   flex-grow: 1;
+  margin-bottom: 5 * $size-unit;
 }
 
 .details-content {
@@ -192,7 +193,7 @@ export default class Process extends Vue {
 }
 
 .comments {
-  margin: 5 * $size-unit 0;
+  margin-top: 5 * $size-unit;
 }
 
 .save-button,
