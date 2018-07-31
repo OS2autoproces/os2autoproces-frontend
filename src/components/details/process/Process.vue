@@ -24,13 +24,13 @@
           <ChallengesForm />
           <TimeAndProcessForm />
           <AssessmentForm />
-          <SpecificationForm />
+          <SpecificationForm v-if="isWithinMunicipality" />
           <ImplementationForm />
           <OperationForm />
           <AttachmentsForm v-if="!isReporting" />
         </div>
 
-        <div>
+        <div v-if="state.canEdit">
           <h2 class="internal-notes-heading">Interne noter</h2>
           <InternalNotes title="Interne noter" :internalNotes="state.internalNotes" />
         </div>
@@ -131,12 +131,21 @@ export default class Process extends Vue {
     return !isEmpty(this.$store.state.error.processErrors);
   }
 
+  get isWithinMunicipality() {
+    const state = this.$store.state;
+    return state.auth.user.cvr === state.process.cvr;
+  }
+
   mounted() {
     this.loadItSystems();
     this.loadKles();
 
     if (this.isReporting) {
-      this.update({ phase: this.phase, canEdit: true, cvr: this.$store.state.auth.user.cvr });
+      this.update({
+        phase: this.phase,
+        canEdit: true,
+        cvr: this.$store.state.auth.user.cvr
+      });
     }
   }
 

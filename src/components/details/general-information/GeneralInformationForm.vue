@@ -24,7 +24,10 @@
           <WellItem v-if="minPhase(PhaseKeys.DEVELOPMENT)" labelWidth="120px" label="Leverandør:">
             <InputField :disabled="state.disabled.generalInformationEdit" :value="state.vendor" @change="update({vendor: $event})" />
           </WellItem>
-          <WellItem labelWidth="120px" label="Ejer:">
+          <WellItem labelWidth="120px" label="Indberetter:" v-if="isWithinMunicipality">
+            <SelectionField disabled :value="state.reporter" itemText="name" />
+          </WellItem>
+          <WellItem labelWidth="120px" label="Ejer:" v-if="isWithinMunicipality">
             <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.owner" itemText="name" @search="search($event)" isItemsPartial @change="update({owner: $event})" :items="users" />
           </WellItem>
           <WellItem labelWidth="120px" label="Kontaktperson:">
@@ -47,7 +50,7 @@
           </WellItem>
         </div>
 
-        <AssociatedPersonsInput v-if="minPhase(PhaseKeys.PREANALYSIS)" slot="well-footer" :disabled="state.disabled.generalInformationEdit" />
+        <AssociatedPersonsInput v-if="minPhase(PhaseKeys.PREANALYSIS) && isWithinMunicipality" slot="well-footer" :disabled="state.disabled.generalInformationEdit" />
       </Well>
     </div>
 
@@ -132,6 +135,11 @@ export default class GeneralInformationForm extends Vue {
   isPhaseChanged = false;
   StatusKeys = StatusKeys;
   PhaseKeys = PhaseKeys;
+
+  get isWithinMunicipality() {
+    const state = this.$store.state;
+    return state.auth.user.cvr === state.process.cvr;
+  }
 
   get state() {
     return this.$store.state.process;
