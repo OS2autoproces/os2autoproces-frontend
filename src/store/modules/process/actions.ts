@@ -54,7 +54,7 @@ export interface NewComment {
 }
 
 interface BackendManagedFields {
-  id: number;
+  id: string;
   created: string | null;
   lastChanged: string | null;
   timeSpendComputedTotal: string;
@@ -65,7 +65,7 @@ interface BackendManagedFields {
 
 function setBackendManagedFields(process: Process): BackendManagedFields {
   return {
-    id: Number(process.id),
+    id: process.id,
     created: process.created,
     timeSpendComputedTotal: process.timeSpendComputedTotal,
     lastChanged: process.lastChanged,
@@ -249,8 +249,9 @@ export const actions: ActionTree<ProcessState, RootState> = {
     const url = `api/bookmarks/${state.id}`;
     const method = hasBookmarked ? HTTP.put : HTTP.delete;
 
-    commit(processMutationTypes.UPDATE, { hasBookmarked });
     await method(url);
+
+    commit(processMutationTypes.UPDATE, { hasBookmarked });
   }
 };
 

@@ -15,7 +15,7 @@ type ProcessLabels = { [X in keyof Process]?: string };
 export const umbrellaLabels: ProcessLabels = {
   localId: 'Lokalt ID',
   contact: 'Kontaktperson',
-  title: 'Title/Name',
+  title: 'Titel',
   longDescription: 'Beskrivelse',
   domains: 'Domæner',
   kle: 'KLE NR.',
@@ -30,7 +30,7 @@ export const generalInformationLabels: ProcessLabels = {
   contact: 'Kontaktperson',
   status: 'Status',
   statusText: 'Statustekst',
-  title: 'Title/Name',
+  title: 'Titel',
   shortDescription: 'Resumé',
   domains: 'Domæner',
   visibility: 'Synlighed',
