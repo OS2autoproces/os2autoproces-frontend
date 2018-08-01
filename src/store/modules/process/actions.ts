@@ -297,7 +297,6 @@ export function initialProcessState(): ProcessState {
 
     /* Challenges */
     solutionRequests: '',
-    processChallenges: '',
     longDescription: '',
     itSystems: [],
     created: '',

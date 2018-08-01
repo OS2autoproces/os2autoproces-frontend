@@ -35,7 +35,6 @@ export interface ProcessRequest {
   vendor: string | null;
   internalNotes: string | null;
 
-  processChallenges: string | null;
   solutionRequests: string | null;
 
   timeSpendOccurancesPerEmployee: number;
@@ -108,7 +107,6 @@ export interface ProcessResponse {
   vendor: string | null;
   internalNotes: string | null;
 
-  processChallenges: string | null;
   solutionRequests: string | null;
 
   timeSpendOccurancesPerEmployee: number;
@@ -186,7 +184,6 @@ function stateToRequestFields(state: ProcessState): ProcessRequest {
     links: defaultNull(state.links),
     vendor: defaultNull(state.vendor),
     internalNotes: defaultNull(state.internalNotes),
-    processChallenges: defaultNull(state.processChallenges),
     solutionRequests: defaultNull(state.solutionRequests),
     timeSpendEmployeesDoingProcess: defaultZero(state.timeSpendEmployeesDoingProcess),
     timeSpendOccurancesPerEmployee: defaultZero(state.timeSpendOccurancesPerEmployee),
@@ -282,7 +279,6 @@ export function responseToState(process: ProcessResponse): Process {
     kla: process.kla || '',
     links: process.links || [],
     internalNotes: process.internalNotes || '',
-    processChallenges: process.processChallenges || '',
     solutionRequests: process.solutionRequests || '',
     technicalImplementationNotes: process.technicalImplementationNotes || '',
     searchWords: process.searchWords || '',

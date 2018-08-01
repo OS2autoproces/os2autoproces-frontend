@@ -45,7 +45,6 @@ export const generalInformationLabels: ProcessLabels = {
 
 export const challengesLabels: ProcessLabels = {
   longDescription: 'Beskrivelse',
-  processChallenges: 'Process udfordringer',
   solutionRequests: 'Løsningsbeskrivelse',
   itSystems: 'Nuværende system'
 };
