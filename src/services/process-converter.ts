@@ -63,12 +63,12 @@ export interface ProcessRequest {
   ratingComment: string | null;
   searchWords: string | null;
 
-  users: User[] | null;
+  users: string[] | null;
   owner: string | null;
   contact: string | null;
-  itSystems: ITSystem[] | null;
+  itSystems: string[] | null;
   orgUnits: string[];
-  technologies: Technology[] | null;
+  technologies: string[] | null;
   children: string[];
 }
 
@@ -209,14 +209,15 @@ function stateToRequestFields(state: ProcessState): ProcessRequest {
     rating: defaultNull(state.rating),
     ratingComment: defaultNull(state.ratingComment),
     searchWords: '',
+    type: state.type || TypeKeys.CHILD,
+
     contact: state.contact && relation('users', state.contact),
     owner: state.owner && relation('users', state.owner),
     orgUnits: relationArray('orgUnits', state.orgUnits),
-    users: defaultNull(state.users),
-    technologies: defaultNull(state.technologies),
-    itSystems: defaultNull(state.itSystems),
-    children: relationArray('processes', state.children),
-    type: state.type || TypeKeys.CHILD
+    users: relationArray('users', state.users),
+    technologies: relationArray('technologies', state.technologies),
+    itSystems: relationArray('itSystems', state.itSystems),
+    children: relationArray('processes', state.children)
   };
 }
 

@@ -16,7 +16,7 @@ const isInteger = { numericality: { onlyInteger: true } };
 const isBetween = (from: number, to: number) => ({
   numericality: {
     onlyInteger: true,
-    greaterThan: from,
+    greaterThanOrEqualTo: from,
     lessThanOrEqualTo: to
   }
 });
