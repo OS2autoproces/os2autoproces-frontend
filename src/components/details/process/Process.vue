@@ -222,17 +222,7 @@ export default class Process extends Vue {
   }
 }
 
-.internal-notes-edit-button {
-  height: $size-unit;
-  width: $size-unit;
-
-  &.editing /deep/ path {
-    fill: $color-primary;
-  }
-}
-
-.comments-heading,
-.internal-notes-heading {
+.comments-heading {
   @include heading;
   color: $color-secondary;
   margin-top: 2 * $size-unit;
