@@ -1,9 +1,9 @@
-import {SearchState} from '@/store/modules/search/state';
-import {RootState} from '@/store/store';
-import {Module} from 'vuex';
-import {actions} from '@/store/modules/search/actions';
-import {getters} from '@/store/modules/search/getters';
-import {mutations} from '@/store/modules/search/mutations';
+import { SearchState } from '@/store/modules/search/state';
+import { RootState } from '@/store/store';
+import { Module } from 'vuex';
+import { actions } from '@/store/modules/search/actions';
+import { getters } from '@/store/modules/search/getters';
+import { mutations } from '@/store/modules/search/mutations';
 
 const namespaced = true;
 
@@ -12,12 +12,14 @@ export const state: SearchState = {
   filters: {
     page: 0,
     size: 5,
+    type: null,
     reporterId: null,
     usersId: null,
     bookmarkedId: null,
     text: '',
     municipality: false,
     public: false,
+    klaProcess: false,
     sorting: {
       property: 'title',
       descending: false

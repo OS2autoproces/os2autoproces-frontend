@@ -5,16 +5,16 @@
       <div v-if="state.canEdit" class="edit-button" role="button" @click="toggleEdit" :class="{ editing: !state.disabled.titleEdit }">
         <EditIcon />
       </div>
-      <div class="bookmark-button" role="button" @click="toggleBookmark">
+      <div v-if="!isReporting" class="bookmark-button" role="button" @click="setBookmark(!state.hasBookmarked)">
         <StarIcon :class="{ selected: state.hasBookmarked }" />
       </div>
 
       <div class="flex-grow"></div>
-      <MunicipalityLogo :src="logo"/>
+      <MunicipalityLogo :src="logo" />
     </div>
-    <div class="row">
+    <div v-if="!isReporting" class="row">
       <Button class="button" @click="remove">Slet proces</Button>
-      <Button class="button" @click="copy">Kopier proces</Button>
+      <Button class="button" @click="copy" v-if="!isUmbrella">Kopier proces</Button>
       <div class="flex-grow"></div>
       <Toggle :value="state.emailNotification" @change="setEmailNotification($event)">Mail notifikation</Toggle>
     </div>
@@ -45,18 +45,23 @@ import { ProcessState } from '@/store/modules/process/state';
     MunicipalityLogo
   }
 })
-export default class DetailsHeader extends Vue {
+export default class ProcessHeader extends Vue {
   @Action(processActionTypes.UPDATE) update!: any;
-  @Action(processActionTypes.SET_EMAIL_NOTIFICATION) setEmailNotification!: (emailNotification: boolean) => Promise<void>;
+  @Action(processActionTypes.SET_EMAIL_NOTIFICATION)
+  setEmailNotification!: (emailNotification: boolean) => Promise<void>;
+  @Action(processActionTypes.SET_BOOKMARK) setBookmark!: (hasBookmark: boolean) => Promise<void>;
   @Action(processActionTypes.REMOVE_PROCESS) removeProcess!: () => Promise<void>;
   @Action(processActionTypes.COPY_PROCESS) copyProcess!: () => Promise<string>;
+
+  @Prop(Boolean) isReporting!: boolean;
+  @Prop(Boolean) isUmbrella!: boolean;
 
   get state() {
     return this.$store.state.process;
   }
 
   get logo() {
-    return `/logos/${this.$store.state.process.cvr}.png`
+    return `/logos/${this.$store.state.process.cvr}.png`;
   }
 
   toggleEdit() {
@@ -65,10 +70,6 @@ export default class DetailsHeader extends Vue {
         titleEdit: !this.state.disabled.titleEdit
       }
     });
-  }
-
-  toggleBookmark() {
-    this.update({ hasBookmarked: !this.state.hasBookmarked });
   }
 
   async copy() {

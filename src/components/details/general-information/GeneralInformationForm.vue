@@ -1,5 +1,5 @@
 <template>
-  <FormSection :invalid="isGeneralInformationValid" heading="Grundlæggende oplysninger" id="general-information" :disabled="state.disabled.generalInformationEdit" @edit="update({disabled: { generalInformationEdit: $event} })" always-open>
+  <FormSection :invalid="!isGeneralInformationValid" heading="Grundlæggende oplysninger" id="general-information" :disabled="state.disabled.generalInformationEdit" @edit="update({disabled: { generalInformationEdit: $event} })" always-open>
     <div class="general-information-wrapper">
       <Well>
         <div>
@@ -16,7 +16,7 @@
             <InputField :disabled="state.disabled.generalInformationEdit" :value="state.klId" @change="update({klId: $event})" />
           </WellItem>
           <WellItem labelWidth="120px" label="KLA:">
-            <MaskableInput :disabled="state.disabled.generalInformationEdit" mask="##.##.##.##.##" :value="state.kla" @change="setKla"/>
+            <MaskableInput :disabled="state.disabled.generalInformationEdit" mask="##.##.##.##.##" :value="state.kla" @change="setKla" />
           </WellItem>
         </div>
 
@@ -24,7 +24,10 @@
           <WellItem v-if="minPhase(PhaseKeys.DEVELOPMENT)" labelWidth="120px" label="Leverandør:">
             <InputField :disabled="state.disabled.generalInformationEdit" :value="state.vendor" @change="update({vendor: $event})" />
           </WellItem>
-          <WellItem labelWidth="120px" label="Ejer:">
+          <WellItem labelWidth="120px" label="Indberetter:" v-if="isWithinMunicipality">
+            <SelectionField disabled :value="state.reporter" itemText="name" />
+          </WellItem>
+          <WellItem labelWidth="120px" label="Ejer:" v-if="isWithinMunicipality">
             <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.owner" itemText="name" @search="search($event)" isItemsPartial @change="update({owner: $event})" :items="users" />
           </WellItem>
           <WellItem labelWidth="120px" label="Kontaktperson:">
@@ -39,6 +42,9 @@
           <WellItem labelWidth="120px" label="Fagområder:">
             <DomainsField :disabled="state.disabled.generalInformationEdit" :value="state.domains" @change="assign({domains: $event})" />
           </WellItem>
+          <WellItem labelWidth="120px" label="Afdelinger:" v-if="isWithinMunicipality">
+            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.orgUnits" @change="assign({orgUnits: $event})" :items="orgUnits" multiple itemText="name" />
+          </WellItem>
           <WellItem labelWidth="120px" label="Synlighed:">
             <MappedSelectionField :disabled="state.disabled.generalInformationEdit" :value="state.visibility" @change="update({visibility: $event})" :items="visibilityLevels" />
           </WellItem>
@@ -47,7 +53,7 @@
           </WellItem>
         </div>
 
-        <AssociatedPersonsInput v-if="minPhase(PhaseKeys.PREANALYSIS)" slot="well-footer" :disabled="state.disabled.generalInformationEdit" />
+        <AssociatedPersonsInput v-if="minPhase(PhaseKeys.PREANALYSIS) && isWithinMunicipality" slot="well-footer" :disabled="state.disabled.generalInformationEdit" />
       </Well>
     </div>
 
@@ -133,6 +139,11 @@ export default class GeneralInformationForm extends Vue {
   StatusKeys = StatusKeys;
   PhaseKeys = PhaseKeys;
 
+  get isWithinMunicipality() {
+    const {auth, process} = this.$store.state;
+    return auth.user.cvr === process.cvr;
+  }
+
   get state() {
     return this.$store.state.process;
   }
@@ -145,9 +156,13 @@ export default class GeneralInformationForm extends Vue {
     return this.$store.state.common.kles;
   }
 
+  get orgUnits() {
+    return this.$store.state.common.orgUnits;
+  }
+
   setKla(kla: string) {
     // Inserts periodes for every 2 characters, to match format: ##.##.##.##.##
-    this.update({kla: kla.replace(/(\d{2})(?=\d)/g, '$1.')});
+    this.update({ kla: kla.replace(/(\d{2})(?=\d)/g, '$1.') });
   }
 
   phaseChanged(phase: any) {

@@ -2,9 +2,10 @@ import { HTTP } from '@/services/http-service';
 import { authMutationTypes } from '@/store/modules/auth/mutations';
 import { RootState } from '@/store/store';
 import { ActionTree } from 'vuex';
-import {AuthState, User, UserRole} from '@/store/modules/auth/state';
+import { AuthState, User, UserRole } from '@/store/modules/auth/state';
 
 interface WhoAmIResponse {
+  id: number | null;
   uuid: string | null;
   email: string | null;
   name: string | null;
@@ -31,6 +32,7 @@ export const actions: ActionTree<AuthState, RootState> = {
 
     if (data.uuid !== null) {
       const user: User = {
+        id: data.id || 0,
         uuid: data.uuid || '',
         email: data.email || '',
         name: data.name || '',
@@ -44,13 +46,11 @@ export const actions: ActionTree<AuthState, RootState> = {
       commit(authMutationTypes.SET_USER, undefined);
     }
 
-    dispatch(authActionTypes.LOAD_BOOKMARKS, {}, {root: true});
+    dispatch(authActionTypes.LOAD_BOOKMARKS, {}, { root: true });
   },
 
   async loadBookmarks({ commit }): Promise<void> {
-    const bookmarks = (await HTTP.get<BookmarkResponse[]>(
-      'api/bookmarks'
-    )).data.map(bookmark => bookmark.id);
+    const bookmarks = (await HTTP.get<BookmarkResponse[]>('api/bookmarks')).data.map(bookmark => bookmark.id);
 
     commit(authMutationTypes.UPDATE, { user: { bookmarks } });
   },

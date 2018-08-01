@@ -6,37 +6,31 @@
     </div>
     <div class="result-column potential">
       <div>
-        <div class="field">Vurderet potentiale:</div>
-        <div class="value">
-          <Rating class="rating" :value="process.rating" disabled/>
-        </div>
-      </div>
-      <div>
         <div class="field">Kommune:</div>
         <div class="value">{{process.municipalityName}}</div>
       </div>
       <div>
-        <div class="field">Unik ID:</div>
-        <div class="value">{{process.id}}</div>
+        <div class="field">Fagområder:</div>
+        <div class="value">{{domains}}</div>
       </div>
     </div>
     <div class="result-column domain">
       <div>
-        <div class="field">Fagområder:</div>
-        <div class="value">{{domains}}</div>
+        <div class="field">Fase:</div>
+        <div class="value">{{PhaseLabels[process.phase]}}</div>
+      </div>
+      <div>
+        <div class="field">Status:</div>
+        <div class="value">{{StatusLabels[process.status]}}</div>
       </div>
       <div>
         <div class="field">KLE-nr:</div>
         <div class="value">{{process.kle}}</div>
       </div>
       <div>
-        <div class="field">Lov og paragraf:</div>
-        <div class="value">{{process.legalClause}}</div>
+        <div class="field">Unik ID:</div>
+        <div class="value">{{process.id}}</div>
       </div>
-    </div>
-    <div class="result-column" v-if="!noPhase">
-      <Phases :value="process.phase" small disabled />
-      <div class="status">{{StatusLabels[process.status]}}</div>
     </div>
     <star-icon class="star-icon" :class="{ selected: process.hasBookmarked }" />
   </div>
@@ -49,6 +43,7 @@ import Rating from '../common/inputs/Rating.vue';
 import Phases from '../common/inputs/Phases.vue';
 import { SearchResultProcess } from '../../store/modules/search/state';
 import { StatusLabels } from '../../models/status';
+import { PhaseLabels } from '../../models/phase';
 import { DomainLabels } from '../../models/domain';
 
 @Component({
@@ -64,6 +59,7 @@ export default class SearchResult extends Vue {
   @Prop(Boolean) noPhase!: boolean;
 
   StatusLabels = StatusLabels;
+  PhaseLabels = PhaseLabels;
 
   get domains() {
     return this.process.domains.map(domain => DomainLabels[domain]).join(', ');
@@ -115,7 +111,20 @@ $resume-line-height: 1em * 1.5;
 }
 
 .result-column {
-  flex: 0 0 25%;
+  &:nth-child(1) {
+    flex: 1 1 30%;
+    max-width: 30%;
+  }
+
+  &:nth-child(2) {
+    flex: 1 1 45%;
+    max-width: 45%;
+  }
+
+  &:nth-child(3) {
+    flex: 1 1 25%;
+    max-width: 25%;
+  }
 
   &:not(:last-of-type) {
     padding-right: $size-unit;
@@ -134,7 +143,6 @@ $resume-line-height: 1em * 1.5;
     .field {
       flex-shrink: 0;
       flex-grow: 0;
-      padding-right: $size-unit;
     }
 
     .value {
@@ -145,18 +153,10 @@ $resume-line-height: 1em * 1.5;
 }
 
 .domain .field {
-  flex-basis: 120px;
+  flex-basis: 70px;
 }
 
 .potential .field {
-  flex-basis: 140px;
-}
-
-/*
-      IE11 fix
-      https://github.com/philipwalton/flexbugs/issues/3#issuecomment-69036362
-  */
-.result-column {
-  max-width: 25%;
+  flex-basis: 110px;
 }
 </style>

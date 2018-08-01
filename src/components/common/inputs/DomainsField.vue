@@ -1,5 +1,5 @@
 <template>
-  <SelectionField :disabled="disabled" :value="item" @change="valueChanged" :items="items" multiple />
+  <SelectionField :disabled="disabled" :value="item" @change="setValues" :items="items" multiple />
 </template>
 
 <script lang='ts'>
@@ -39,11 +39,19 @@ export default class DomainsField extends Vue {
       return;
     }
 
-    this.item = (this.value || []).map(domain => this.items.find(item => item.value === domain)) as Item[];
+    this.mapValue();
   }
 
-  valueChanged(values: Item[]) {
+  mounted() {
+    this.mapValue();
+  }
+
+  setValues(values: Item[]) {
     this.$emit('change', values.map(value => value.value));
+  }
+
+  mapValue() {
+    this.item = (this.value || []).map(domain => this.items.find(item => item.value === domain)) as Item[];
   }
 }
 </script>
