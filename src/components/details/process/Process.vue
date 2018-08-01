@@ -28,11 +28,9 @@
           <ImplementationForm />
           <OperationForm />
           <AttachmentsForm v-if="!isReporting" />
-        </div>
-
-        <div v-if="state.canEdit">
-          <h2 class="internal-notes-heading">Interne noter</h2>
-          <InternalNotes title="Interne noter" :internalNotes="state.internalNotes" />
+          <FormSection v-if="state.canEdit" heading="Interne noter" :disabled="state.disabled.internalNotesEdit" @edit="update({disabled: { internalNotesEdit: $event} })">
+            <InternalNotes :internalNotes="state.internalNotes" :disabled="state.disabled.internalNotesEdit" />
+          </FormSection>
         </div>
 
         <div class="comments" v-if="!isReporting">
@@ -221,6 +219,15 @@ export default class Process extends Vue {
     height: $size-unit;
     width: $size-unit;
     margin-right: $size-unit / 2;
+  }
+}
+
+.internal-notes-edit-button {
+  height: $size-unit;
+  width: $size-unit;
+
+  &.editing /deep/ path {
+    fill: $color-primary;
   }
 }
 

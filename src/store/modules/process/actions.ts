@@ -350,7 +350,7 @@ export function initialProcessState(): ProcessState {
       specificationEdit: true,
       implementationEdit: true,
       attachmentsEdit: true,
-      municipalityUsingEdit: true
+      internalNotesEdit: true
     },
 
     emailNotification: false
