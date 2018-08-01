@@ -51,7 +51,7 @@ export default class Details extends Vue {
       this.loading = false;
     } else {
       const process = await this.$store.dispatch(processActionTypes.LOAD_PROCESS_DETAILS, this.id);
-
+	  this.$store.dispatch(processActionTypes.LOAD_ATTACHMENTS, Number(this.id));
       this.isUmbrella = process.type === TypeKeys.PARENT || process.type === TypeKeys.GLOBAL_PARENT;
       this.loading = false;
     }

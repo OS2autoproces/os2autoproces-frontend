@@ -1,18 +1,20 @@
 <template>
   <div class="attachment-upload">
     <div class="attachment-list">
-      <AttachmentComponent v-for="attachment in attachments" :key="attachment.id" :attachment="attachment" :disabled="disabled" @remove="$emit('remove', attachment.id)" @togglePublic="$emit('togglePublic', attachment.id)"/>
+      <AttachmentComponent v-for="attachment in attachments" :key="attachment.id" :attachment="attachment" :disabled="disabled" @remove="remove(attachment.id)" @togglePublic="togglePublic(attachment.id)"/>
     </div>
 
     <label class="upload-button-wrapper" v-if="!disabled">
       <input type="file" multiple @change="chooseFiles($event.target.files)">
       <Button class="upload-button">
-        Vælg bilag
+        Tilføj bilag
       </Button>
     </label>
 
+    <span v-if="attachments.length && !disabled">Sæt kryds hvis et bilag skal være tilgængeligt tværkommunalt</span>
+
     <label class="upload-button-wrapper" v-if="!disabled">
-      <Button class="upload-button" v-if="attachments.length" v-on:click="addFiles(files)">
+      <Button class="upload-button" v-if="attachments.length" v-on:click="addFiles">
         Bekræft valg
       </Button>
 
@@ -23,12 +25,11 @@
 </template>
 
 <script lang='ts'>
-import { Vue, Component, Prop } from 'vue-property-decorator';
+import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import Button from '@/components/common/inputs/Button.vue';
 import AttachmentComponent from './Attachment.vue';
 import { Attachment } from '@/store/modules/process/state';
 import { AttachmentFile } from '@/store/modules/process/state';
-
 
 @Component({
   components: {
@@ -37,31 +38,82 @@ import { AttachmentFile } from '@/store/modules/process/state';
   }
 })
 export default class AttachmentUpload extends Vue {
-  @Prop(Array) attachments!: Attachment[];
+  placeholders: Attachment[] = [];
+  @Prop(Array) attachmentsFromStore!: Attachment[];
   @Prop(Boolean) disabled!: boolean;
+
   files: AttachmentFile[] = [];
 
   chooseFiles(files: FileList) {
     const fileArr = Array.from(files);
     let id = 0;
     fileArr.forEach(file => {
-      this.files.push({file: file, public: false, id: id.toString()})
+      this.files.push({ file: file, public: false, id: id.toString() });
       id++;
-    })
-    let placeholders: Attachment[] = [];
+    });
     this.files.forEach(file => {
-      placeholders.push({
+      this.placeholders.push({
         fileName: file.file.name,
         id: file.id,
         public: false,
         uploading: false
-      })
-    })
-    this.$emit('chooseAttachments', placeholders);
+      });
+    });
+    // this.$emit('chooseAttachments', placeholders);
   }
 
-  addFiles(files: AttachmentFile[]) {
-    this.$emit('upload', files);
+  @Watch('attachmentsFromStore', {deep: true, immediate: true})
+  attachmentsChanged(newAtts: Attachment[]) {
+    debugger;
+    if (newAtts) {
+      if (JSON.stringify(newAtts) !== JSON.stringify(this.placeholders)) {
+        this.placeholders = newAtts;
+      }
+    }
+  }
+
+  addFiles() {
+    this.files = this.files.map(file => {
+      const placeholder = this.placeholders.find(
+        att => att.id === file.id
+      ) as Attachment;
+      file.public = placeholder.public ? true : false;
+      return file;
+    });
+    this.$emit('upload', this.files);
+  }
+
+  remove(attId: string) {
+    if (!confirm('Er du sikker?')) {
+      return;
+    }
+
+    let attachmentIsPlaceholder;
+    this.attachmentsFromStore.forEach(att => {
+      if (att.id === attId) {
+        attachmentIsPlaceholder = true;
+      }
+    });
+
+    this.placeholders = this.placeholders.filter(a => a.id !== attId);
+
+    if (!attachmentIsPlaceholder) {
+      this.$emit('remove', attId);
+    }
+  }
+
+  togglePublic(attId: string) {
+    this.placeholders = this.placeholders.map(a => {
+      if (a.id !== attId) {
+        return a;
+      }
+      a.public = !a.public;
+      return a;
+    });
+  }
+
+  get attachments() {
+    return this.placeholders;
   }
 }
 </script>

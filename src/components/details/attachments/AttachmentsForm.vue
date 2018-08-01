@@ -1,6 +1,6 @@
 <template>
   <FormSection v-if="minPhase(PhaseKeys.PREANALYSIS)" heading="Bilag" id="attachments" :disabled="state.disabled.attachmentsEdit" @edit="update({ disabled: {attachmentsEdit: $event} })">
-    <AttachmentUpload :attachments="state.attachments" :disabled="state.disabled.attachmentsEdit" @upload="upload" @remove="remove" @togglePublic="toggleAttachmentPublic" @chooseAttachments="choose"/>
+    <AttachmentUpload :attachmentsFromStore="state.attachments" :disabled="state.disabled.attachmentsEdit" @upload="upload" @remove="remove" @togglePublic="toggleAttachmentPublic" @chooseAttachments="choose"/>
   </FormSection>
 </template>
 
@@ -31,10 +31,6 @@ export default class AttachmentsForm extends Vue {
 
   get state() {
     return this.$store.state.process;
-  }
-
-  mounted() {
-    this.$store.dispatch(processActionTypes.LOAD_ATTACHMENTS);
   }
 }
 </script>
