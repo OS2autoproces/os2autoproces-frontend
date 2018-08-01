@@ -16,6 +16,7 @@ export const umbrellaLabels: ProcessLabels = {
   localId: 'Lokalt ID',
   contact: 'Kontaktperson',
   title: 'Titel',
+  shortDescription: 'Resume',
   longDescription: 'Beskrivelse',
   domains: 'Domæner',
   kle: 'KLE NR.',
