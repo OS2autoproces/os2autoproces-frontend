@@ -150,6 +150,7 @@ export const actions: ActionTree<CommonState, RootState> = {
     debouncedSearch({ cvr, name }, commit);
   },
   async loadFormsByKle({ commit }, kle: Kle) {
+    commit(commonMutationTypes.ASSIGN, { forms: [] });
     const response = await HTTP.get<FormResponse>(`api/kles/${kle.code}/forms`);
     const forms = response.data._embedded.forms.map((form: Form) => ({
       code: form.code

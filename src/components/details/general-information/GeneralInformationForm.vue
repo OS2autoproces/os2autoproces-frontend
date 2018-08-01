@@ -159,7 +159,7 @@ export default class GeneralInformationForm extends Vue {
   }
 
   setKle(kle: Kle) {
-    this.update({ kle: kle, forms: [] });
+    this.update({ kle: kle });
     this.loadForms(kle);
   }
 

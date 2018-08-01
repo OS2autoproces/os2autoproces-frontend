@@ -236,6 +236,7 @@ function buildUmbrellaRequest(request: ProcessRequest): Partial<ProcessRequest> 
     'localId',
     'klId',
     'kla',
+    'form',
     'contact',
     'children',
     'domains',
