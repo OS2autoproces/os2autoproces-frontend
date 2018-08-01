@@ -124,7 +124,7 @@ export const processFieldsValidators: { [P in keyof Process]?: (state: ProcessSt
   vendor({ phase, vendor }: ProcessState) {
     const minLength =
       phase === PhaseKeys.IDEA || phase === PhaseKeys.PREANALYSIS || phase === PhaseKeys.SPECIFICATION ? 0 : 1;
-    return isValid(vendor, isMinMax(minLength, 255));
+    return isValid(vendor || '', isMinMax(minLength, 255));
   },
   technologies({ phase, technologies }: ProcessState) {
     return (
