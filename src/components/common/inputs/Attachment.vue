@@ -15,7 +15,7 @@
     </div>
 
     <a class="name" :href="attachment.url" target="_blank">{{attachment.fileName}}</a>
-    <Checkbox :value="attachment.public" @change="$emit('togglePublic', attachment.id)"/>
+    <Checkbox v-if="!disabled && canChangeVisibility" :value="attachment.visibleToOtherMunicipalities" @change="$emit('toggleVisibility', attachment.id)"/>
   </div>
 </template>
 
@@ -44,9 +44,20 @@ import { Attachment } from '@/store/modules/process/state';
 export default class AttachmentComponent extends Vue {
   @Prop(Object) attachment!: Attachment;
   @Prop(Boolean) disabled!: boolean;
+  @Prop({ default: true })
+  canChangeVisibility!: boolean;
 
   get type() {
-    const word = ['.doc', '.dot', '.wbk', '.docx', '.docm', '.dotx', '.dotm', '.docb'];
+    const word = [
+      '.doc',
+      '.dot',
+      '.wbk',
+      '.docx',
+      '.docm',
+      '.dotx',
+      '.dotm',
+      '.docb'
+    ];
     const excel = ['.xls', '.xlt', '.xlm', '.xlsx', '.xlsm', '.xltx', '.xltm'];
     const powerPoint = [
       '.ppt',
@@ -75,7 +86,9 @@ export default class AttachmentComponent extends Vue {
       return 'excel';
     }
 
-    if (powerPoint.some(extension => this.attachment.fileName.endsWith(extension))) {
+    if (
+      powerPoint.some(extension => this.attachment.fileName.endsWith(extension))
+    ) {
       return 'powerPoint';
     }
 

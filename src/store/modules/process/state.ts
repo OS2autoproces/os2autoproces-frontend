@@ -110,7 +110,7 @@ export interface Attachment {
   id?: string;
   url?: string;
   uploading?: boolean;
-  public?: boolean;
+  visibleToOtherMunicipalities?: boolean;
 }
 
 export interface Comment {
@@ -134,6 +134,6 @@ export interface Disabled {
 
 export interface AttachmentFile {
   file: File;
-  public?: boolean;
+  visibleToOtherMunicipalities?: boolean;
   id: string;
 }

@@ -5,23 +5,11 @@ import { StatusKeys } from '@/models/status';
 import { TypeKeys } from '@/models/types';
 import { VisibilityKeys } from '@/models/visibility';
 import { HTTP } from '@/services/http-service';
-import {
-  ProcessRequest,
-  ProcessResponse,
-  responseToState,
-  stateToRequest
-} from '@/services/process-converter';
+import { ProcessRequest, ProcessResponse, responseToState, stateToRequest } from '@/services/process-converter';
 import { User } from '@/store/modules/auth/state';
 import { errorActionTypes } from '@/store/modules/error/actions';
 import { processMutationTypes } from '@/store/modules/process/mutations';
-import {
-  Attachment,
-  ITSystem,
-  Process,
-  ProcessState,
-  Technology,
-  AttachmentFile
-} from '@/store/modules/process/state';
+import { Attachment, ITSystem, Process, ProcessState, Technology, AttachmentFile } from '@/store/modules/process/state';
 import { RootState } from '@/store/store';
 import { ActionTree } from 'vuex';
 import { getInvalidProperties } from '@/store/modules/process/validation';
@@ -34,9 +22,7 @@ export const processActionTypes = {
   ASSIGN: `${namespace}/assign`,
   CLEAR_PROCESS: `${namespace}/clear`,
   UPLOAD_ATTACHMENTS: `${namespace}/uploadAttachments`,
-  CHOOSE_ATTACHMENTS: `${namespace}/chooseAttachments`,
-  REMOVE_ATTACHMENTS: `${namespace}/removeAttachments`,
-  TOGGLE_PUBLIC: `${namespace}/toggleAttachmentPublic`,
+  REMOVE_ATTACHMENTS: `${namespace}/removeAttachment`,
   LOAD_ATTACHMENTS: `${namespace}/loadAttachments`,
   SAVE_COMMENT: `${namespace}/saveComment`,
   LOAD_COMMENTS: `${namespace}/loadComments`,
@@ -104,52 +90,31 @@ export const actions: ActionTree<ProcessState, RootState> = {
     if (!id) {
       return;
     }
-    const attachments = (await HTTP.get<Attachment[]>(`/api/attachments/${id}`))
-      .data;
+    const attachments = (await HTTP.get<Attachment[]>(`/api/attachments/${id}`)).data;
     commit(processMutationTypes.ASSIGN, { attachments });
   },
   async uploadAttachments({ commit, state }, files: AttachmentFile[]) {
     const form = new FormData();
     const formPublic = new FormData();
     files.forEach(file => {
-      if (file.public) {
+      if (file.visibleToOtherMunicipalities) {
         formPublic.append('files', file.file);
       } else {
         form.append('files', file.file);
       }
     });
-    // Placeholders are attachments which are shown while the real attachments are uploading.
-    // When the attachments are done uploading, the placeholders are replaced with the real attachments.
-    // const placeholders: Attachment[] = files.map(file => ({
-    //   fileName: file.file.name,
-    //   uploading: true
-    // }));
-    // if (state.attachments) {
-    //   commit(processMutationTypes.ASSIGN, {
-    //     attachments: [...state.attachments, ...placeholders]
-    //   });
-    // }
 
     try {
-      let attachments = (await HTTP.post<Attachment[]>(
-        `/api/attachments/${state.id}`,
-        form
-      )).data;
-      const publicAttachments = (await HTTP.post<Attachment[]>(
-        `/api/attachments/${state.id}/public`,
-        formPublic
-      )).data;
-      attachments.concat(publicAttachments);
+      let attachments = (await HTTP.post<Attachment[]>(`/api/attachments/${state.id}`, form)).data;
+      const publicAttachments = (await HTTP.post<Attachment[]>(`/api/attachments/${state.id}/public`, formPublic)).data;
+      attachments = attachments.concat(publicAttachments);
       if (!state.attachments) {
         return;
       }
+      const atts = [...state.attachments, ...attachments];
+      debugger;
       commit(processMutationTypes.ASSIGN, {
-        attachments: [
-          ...state.attachments.filter(
-            a => state.attachments && !state.attachments.includes(a)
-          ),
-          ...attachments
-        ]
+        attachments: [...state.attachments, ...attachments]
       });
     } catch {
       if (!state.attachments) {
@@ -157,9 +122,7 @@ export const actions: ActionTree<ProcessState, RootState> = {
       }
       // Upload failed - remove placeholders
       commit(processMutationTypes.ASSIGN, {
-        attachments: state.attachments.filter(
-          a => state.attachments && !state.attachments.includes(a)
-        )
+        attachments: state.attachments.filter(a => state.attachments && !state.attachments.includes(a))
       });
     }
   },
@@ -173,18 +136,14 @@ export const actions: ActionTree<ProcessState, RootState> = {
     });
   },
   async saveComment({ commit, state }, message: string): Promise<void> {
-    const comment = (await HTTP.put<Comment>(
-      `api/comments/${state.id}`,
-      message
-    )).data;
+    const comment = (await HTTP.put<Comment>(`api/comments/${state.id}`, message)).data;
 
     commit(processMutationTypes.ASSIGN, {
       comments: [...state.comments, comment]
     });
   },
   async loadComments({ commit, state }) {
-    const comments = (await HTTP.get<Comment[]>(`api/comments/${state.id}`))
-      .data;
+    const comments = (await HTTP.get<Comment[]>(`api/comments/${state.id}`)).data;
     commit(processMutationTypes.ASSIGN, { comments });
   },
 
