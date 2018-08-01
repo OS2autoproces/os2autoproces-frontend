@@ -10,7 +10,7 @@
           <InputField :disabled="state.disabled.timeAndProcessEdit" :value="state.timeSpendPerOccurance" @change="update({timeSpendPerOccurance: $event})" />
         </WellItem>
         <WellItem labelWidth="70%" label="Total tidsforbrug">
-          <InputField :disabled="state.disabled.timeAndProcessEdit" :value="state.timeSpendComputedTotal" @change="update({timeSpendComputedTotal: $event})" />
+          <InputField disabled :value="state.timeSpendComputedTotal" />
         </WellItem>
       </div>
 
