@@ -42,7 +42,6 @@ export interface ProcessRequest {
   timeSpendPerOccurance: number;
   timeSpendEmployeesDoingProcess: number;
   timeSpendPercentageDigital: number;
-  timeSpendComputedTotal: number;
   timeSpendComment: string;
   targetsCompanies: boolean;
   targetsCitizens: boolean;
@@ -189,7 +188,6 @@ function stateToRequestFields(state: ProcessState): ProcessRequest {
     internalNotes: defaultNull(state.internalNotes),
     processChallenges: defaultNull(state.processChallenges),
     solutionRequests: defaultNull(state.solutionRequests),
-    timeSpendComputedTotal: defaultZero(state.timeSpendComputedTotal),
     timeSpendEmployeesDoingProcess: defaultZero(state.timeSpendEmployeesDoingProcess),
     timeSpendOccurancesPerEmployee: defaultZero(state.timeSpendOccurancesPerEmployee),
     timeSpendPercentageDigital: defaultZero(state.timeSpendPercentageDigital),

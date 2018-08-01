@@ -81,9 +81,6 @@ export const processFieldsValidators: { [P in keyof Process]?: (state: ProcessSt
   timeSpendPercentageDigital({ phase, timeSpendPercentageDigital }: ProcessState) {
     return phase === PhaseKeys.IDEA || isValid(timeSpendPercentageDigital, isBetween(0, 100));
   },
-  timeSpendComputedTotal({ phase, timeSpendComputedTotal }: ProcessState) {
-    return phase === PhaseKeys.IDEA || isValid(timeSpendComputedTotal, isInteger);
-  },
   timeSpendComment({ timeSpendComment }: ProcessState) {
     return isValid(timeSpendComment, isMinMax(0, 300));
   },
