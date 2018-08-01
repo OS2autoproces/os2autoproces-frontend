@@ -103,8 +103,6 @@ export default class Umbrella extends Vue {
   }
 
   mounted() {
-    this.$store.dispatch(commonActionTypes.LOAD_KLES);
-
     if (this.isReporting) {
       this.update({ type: this.type, canEdit: true, cvr: this.$store.state.auth.user.cvr });
     }

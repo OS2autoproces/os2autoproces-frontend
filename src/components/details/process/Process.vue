@@ -116,7 +116,6 @@ export default class Process extends Vue {
   @Action(processActionTypes.SAVE_COMMENT) saveComment!: (message: string) => Promise<void>;
   @Action(processActionTypes.LOAD_COMMENTS) loadComments!: () => Promise<void>;
   @Action(commonActionTypes.LOAD_IT_SYSTEMS) loadItSystems!: () => Promise<void>;
-  @Action(commonActionTypes.LOAD_KLES) loadKles!: () => Promise<void>;
   @Action(errorActionTypes.UPDATE_PROCESS_ERRORS) updateProcessErrors!: (processErrors: Partial<ErrorState>) => void;
 
   get state() {
@@ -133,7 +132,6 @@ export default class Process extends Vue {
 
   mounted() {
     this.loadItSystems();
-    this.loadKles();
 
     if (this.isReporting) {
       this.update({ phase: this.phase, canEdit: true, cvr: this.$store.state.auth.user.cvr });

@@ -166,7 +166,11 @@ export default class UmbrellaForm extends Vue {
   }
 
   setKle(kle: Kle) {
-    this.update({ kle: kle });
+    if (!kle) {
+      this.update({ kle: kle, form: null });
+    } else {
+      this.update({ kle: kle });
+    }
     this.loadForms(kle);
   }
 

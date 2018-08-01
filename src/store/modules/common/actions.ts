@@ -151,6 +151,9 @@ export const actions: ActionTree<CommonState, RootState> = {
   },
   async loadFormsByKle({ commit }, kle: Kle) {
     commit(commonMutationTypes.ASSIGN, { forms: [] });
+    if (!kle) {
+      return;
+    }
     const response = await HTTP.get<FormResponse>(`api/kles/${kle.code}/forms`);
     const forms = response.data._embedded.forms.map((form: Form) => ({
       code: form.code
