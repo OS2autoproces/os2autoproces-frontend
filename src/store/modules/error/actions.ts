@@ -16,6 +16,7 @@ export const umbrellaLabels: ProcessLabels = {
   localId: 'Lokalt ID',
   contact: 'Kontaktperson',
   title: 'Titel',
+  shortDescription: 'Resume',
   longDescription: 'Beskrivelse',
   domains: 'Domæner',
   kle: 'KLE NR.',
@@ -35,10 +36,11 @@ export const generalInformationLabels: ProcessLabels = {
   domains: 'Domæner',
   visibility: 'Synlighed',
   legalClause: 'Lov og paragraf',
-  kle: 'KLE NR.',
-  kla: 'KLA NR',
+  kle: 'KLE-NR.',
+  kla: 'KLA',
   vendor: 'Leverandør',
-  klId: 'KL ID'
+  klId: 'KL ID',
+  orgUnits: 'Afdelinger'
 };
 
 export const challengesLabels: ProcessLabels = {

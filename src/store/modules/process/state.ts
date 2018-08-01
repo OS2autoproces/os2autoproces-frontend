@@ -129,7 +129,7 @@ export interface Disabled {
   specificationEdit: boolean;
   implementationEdit: boolean;
   attachmentsEdit: boolean;
-  municipalityUsingEdit: boolean;
+  internalNotesEdit: boolean;
 }
 
 export interface AttachmentFile {
