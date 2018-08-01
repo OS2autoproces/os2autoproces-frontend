@@ -14,7 +14,7 @@
     </div>
     <div v-if="!isReporting" class="row">
       <Button class="button" @click="remove">Slet proces</Button>
-      <Button class="button" @click="copy">Kopier proces</Button>
+      <Button class="button" @click="copy" v-if="!isUmbrella">Kopier proces</Button>
       <div class="flex-grow"></div>
       <Toggle :value="state.emailNotification" @change="setEmailNotification($event)">Mail notifikation</Toggle>
     </div>
@@ -54,6 +54,7 @@ export default class ProcessHeader extends Vue {
   @Action(processActionTypes.COPY_PROCESS) copyProcess!: () => Promise<string>;
 
   @Prop(Boolean) isReporting!: boolean;
+  @Prop(Boolean) isUmbrella!: boolean;
 
   get state() {
     return this.$store.state.process;

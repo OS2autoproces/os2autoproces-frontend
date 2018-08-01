@@ -13,7 +13,7 @@
 
     <div class="details-wrapper">
       <div class="details-content">
-        <ProcessHeader :isReporting="isReporting" />
+        <ProcessHeader :isReporting="isReporting" isUmbrella />
 
         <div class="form-sections">
           <UmbrellaForm />
