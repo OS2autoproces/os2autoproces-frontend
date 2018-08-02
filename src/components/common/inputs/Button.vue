@@ -1,7 +1,7 @@
 <template>
-    <button type="button" @click="click">
-        <slot />
-    </button>
+  <button type="button" @click="click">
+    <slot />
+  </button>
 </template>
 
 <script lang='ts'>
@@ -20,6 +20,7 @@ export default class Button extends Vue {
 
 button {
   @include heading;
+  background-color: $color-background;
   border: 1px solid $color-secondary;
   border-radius: $size-unit/2;
   padding: $size-unit/2 $size-unit;

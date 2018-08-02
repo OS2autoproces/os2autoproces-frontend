@@ -1,54 +1,39 @@
 <template>
   <div class="attachment-upload">
-    <div class="attachment-list-container">
-      <div class="attachments-container">
-
-        <p class="attachment-category">Gemte bilag</p> 
-        <div class="attachment-list">
-          
-          <AttachmentComponent v-for="attachment in attachmentsFromStore.filter(att => !att.visibleToOtherMunicipalities)" :key="attachment.id" :attachment="attachment" :canChangeVisibility="false" :disabled="disabled" @remove="remove(attachment.id)" @toggleVisibility="toggleVisibility(attachment.id)"/>     
-        </div>   
-      
-        <p class="attachment-category">Gemte bilag synlige for andre kommuner</p>
-        <div class="attachment-list">
-          
-          <AttachmentComponent v-for="attachment in attachmentsFromStore.filter(att => att.visibleToOtherMunicipalities)" :key="attachment.id" :attachment="attachment" :canChangeVisibility="false" :disabled="disabled" @remove="remove(attachment.id)" @toggleVisibility="toggleVisibility(attachment.id)"/>
-        </div>
-      </div>
-
-      <div class="attachments-container">
-        <p v-if="!disabled" class="attachment-category">Ikke-gemte bilag</p>
-        <p v-if="placeholders.length && !disabled">Sæt flueben hvis et bilag skal være tilgængeligt tværkommunalt</p>
-
-        <div class="attachment-list">       
-          <AttachmentComponent v-if="!disabled" v-for="attachment in placeholders" :uploading="attachmentsUploading" :key="attachment.id" :attachment="attachment" :disabled="disabled" @remove="remove(attachment.id)" @toggleVisibility="toggleVisibility(attachment.id)"/>
-        </div>
-      </div>
-          
-
+    <h2>Synlige for alle</h2>
+    <div class="attachment-list">
+      <AttachmentComponent v-for="attachment in visibleForAll" :key="attachment.id" :attachment="attachment" :disabled="disabled" @remove="remove(attachment.id)" />
     </div>
 
+    <h2>Synlige i kommunen</h2>
+    <div class="attachment-list">
+      <AttachmentComponent v-for="attachment in visibleForMunicipality" :key="attachment.id" :attachment="attachment" :disabled="disabled" @remove="remove(attachment.id)" />
+    </div>
 
-    <label class="upload-button-wrapper" v-if="!disabled">
-      <input type="file" multiple @change="chooseFiles($event.target.files)" ref="fileInput">
-      <Button class="upload-button">
-        Tilføj bilag
-      </Button>
-    </label>    
+    <Well v-if="!disabled">
+      <div>
+        <h2>Tilføj bilag</h2>
+        <div class="attachment-list">
+          <AttachmentComponent v-for="attachment in placeholders" :uploading="attachmentsUploading" :key="attachment.id" :attachment="attachment" :disabled="disabled" @remove="remove(attachment.id)" @toggleVisibility="toggleVisibility(attachment.id)" canChangeVisibility />
+        </div>
 
-    <label class="upload-button-wrapper" v-if="!disabled">
-      <Button class="upload-button" v-if="placeholders.length" v-on:click="addFiles">
-        Gem bilag
-      </Button>
-    </label>
+        <label class="upload-button-wrapper">
+          <input type="file" multiple @change="chooseFiles($event.target.files)" ref="fileInput">
+          <Button class="upload-button">
+            Vælg filer
+          </Button>
+        </label>
 
-    
+        <Button class="upload-button" v-if="placeholders.length" v-on:click="addFiles">Upload</Button>
+      </div>
+    </Well>
   </div>
 </template>
 
 <script lang='ts'>
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import Button from '@/components/common/inputs/Button.vue';
+import Well from '@/components/common/Well.vue';
 import AttachmentComponent from './Attachment.vue';
 import { Attachment } from '@/store/modules/process/state';
 import { AttachmentFile } from '@/store/modules/process/state';
@@ -56,7 +41,8 @@ import { AttachmentFile } from '@/store/modules/process/state';
 @Component({
   components: {
     AttachmentComponent,
-    Button
+    Button,
+    Well
   }
 })
 export default class AttachmentUpload extends Vue {
@@ -66,6 +52,14 @@ export default class AttachmentUpload extends Vue {
   @Prop(Array) attachmentsFromStore!: Attachment[];
   @Prop(Boolean) attachmentsUploading!: boolean;
   @Prop(Boolean) disabled!: boolean;
+
+  get visibleForAll() {
+    return this.attachmentsFromStore.filter(att => att.visibleToOtherMunicipalities);
+  }
+
+  get visibleForMunicipality() {
+    return this.attachmentsFromStore.filter(att => !att.visibleToOtherMunicipalities);
+  }
 
   @Watch('attachmentsUploading')
   uploadingChanged(val: boolean, oldVal: boolean) {
@@ -145,48 +139,17 @@ export default class AttachmentUpload extends Vue {
       return a;
     });
   }
-
-  // get placeholderAtts(): Attachment[] {
-  //   if (!this.placeholders) {
-  //     return [];
-  //   }
-  //   return this.placeholders.map(att => {
-  //     att.uploading = this.attachmentsUploading;
-  //     if (att.uploading) {
-  //       debugger;
-  //     }
-  //     return att;
-  //   });
-  // }
 }
 </script>
 
 <style lang="scss" scoped>
 @import '@/styles/variables.scss';
 
-.attachment-upload {
-  text-align: center;
-}
-
 .attachment-list {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   margin-bottom: $size-unit;
-}
-
-.attachments-container {
-  display: flex;
-  flex-direction: column;
-}
-
-.attachment-list-container {
-  display: flex;
-  justify-content: space-between;
-}
-
-.attachment-category {
-  font-weight: bold;
 }
 
 .upload-button-wrapper {
@@ -203,5 +166,10 @@ export default class AttachmentUpload extends Vue {
   input {
     display: none;
   }
+}
+
+h2 {
+  @include heading;
+  color: $color-secondary;
 }
 </style>

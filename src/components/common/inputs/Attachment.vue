@@ -8,14 +8,18 @@
         <PowerPointIcon class="attachment-icon" v-if="type === 'powerPoint'" />
         <FileIcon class="attachment-icon" v-if="type === 'other'" />
       </a>
-      <div v-if="!disabled && !attachment.uploading" class="delete-button" role="button" @click="$emit('remove')">
+      <div v-if="!disabled && !uploading" class="delete-button" role="button" @click="$emit('remove')">
         <DeleteIcon />
       </div>
       <v-icon v-if="uploading" class="upload-icon">cloud_upload</v-icon>
     </div>
 
     <a class="name" :href="attachment.url" target="_blank">{{attachment.fileName}}</a>
-    <Checkbox v-if="!disabled && canChangeVisibility" :value="attachment.visibleToOtherMunicipalities" @change="$emit('toggleVisibility', attachment.id)"/>
+    <label>
+      <Checkbox v-if="!disabled && canChangeVisibility" :value="attachment.visibleToOtherMunicipalities" @change="$emit('toggleVisibility', attachment.id)">
+        Synlig for alle
+      </Checkbox>
+    </label>
   </div>
 </template>
 
@@ -45,8 +49,7 @@ export default class AttachmentComponent extends Vue {
   @Prop(Object) attachment!: Attachment;
   @Prop(Boolean) disabled!: boolean;
   @Prop(Boolean) uploading!: boolean;
-  @Prop({ default: true })
-  canChangeVisibility!: boolean;
+  @Prop(Boolean) canChangeVisibility!: boolean;
 
   get type() {
     const word = ['.doc', '.dot', '.wbk', '.docx', '.docm', '.dotx', '.dotm', '.docb'];
@@ -93,6 +96,7 @@ export default class AttachmentComponent extends Vue {
 .attachment {
   margin: $size-unit;
   margin-bottom: 0;
+  text-align: center;
 }
 
 a {

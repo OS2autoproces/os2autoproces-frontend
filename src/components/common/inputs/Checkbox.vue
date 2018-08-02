@@ -1,6 +1,9 @@
 <template>
   <div class="checkbox" role="checkbox" :aria-checked="value.toString()" @click="click" :class="{ disabled }">
-    <CheckIcon v-if="value" />
+    <div class="checkbox-icon">
+      <CheckIcon v-if="value" />
+    </div>
+    <slot />
   </div>
 </template>
 
@@ -29,24 +32,32 @@ export default class Checkbox extends Vue {
 @import '@/styles/variables.scss';
 
 .checkbox {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  border: 1px solid $color-primary;
-  border-radius: 50%;
-  position: relative;
+  display: inline-flex;
+  white-space: nowrap;
+  align-items: center;
+
+  .checkbox-icon {
+    background-color: $color-background;
+    margin-right: $size-unit / 4;
+    position: relative;
+    border-radius: 50%;
+    border: 1px solid $color-primary;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+
+    /deep/ svg {
+      position: absolute;
+      bottom: 1px;
+      left: -1px;
+
+      height: 110%;
+      width: 110%;
+    }
+  }
 
   &:not(.disabled) {
     cursor: pointer;
-  }
-
-  svg {
-    position: absolute;
-    bottom: 1px;
-    left: -1px;
-
-    height: 110%;
-    width: 110%;
   }
 }
 </style>
