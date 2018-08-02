@@ -1,31 +1,29 @@
 <template>
   <div>
-    <div class="menu-item" v-for="item in this.items" :key="item.id" :class="{ 'in-view': itemInView === item }" @click="scrollTo(item)">
+    <div class="menu-item" v-for="item in items.filter(item => item.show)" :key="item.id" :class="{ 'in-view': itemInView === item }" @click="scrollTo(item)">
       {{item.heading}}
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Vue, Prop, Component } from 'vue-property-decorator';
+import { Vue, Prop, Component, Watch } from 'vue-property-decorator';
+import { Getter } from 'vuex-class';
+import { Phase, PhaseKeys } from '@/models/phase';
+import { processGetterTypes } from '@/store/modules/process/getters';
 
 export interface MenuItem {
   heading: string;
   id: string;
+  show: boolean;
 }
 
 @Component
 export default class ProcessMenu extends Vue {
-  items: MenuItem[] = [
-    { heading: 'Grundlæggende oplysninger', id: 'general-information' },
-    { heading: 'Problemstillinger', id: 'challenges' },
-    { heading: 'Tid og proces', id: 'time-and-process' },
-    { heading: 'Faglig vurdering', id: 'assessment' },
-    { heading: 'Specifikation', id: 'specification' },
-    { heading: 'Udvikling og implementering', id: 'implementation' },
-    { heading: 'Drift', id: 'operation' },
-    { heading: 'Bilag', id: 'attachments' },
-  ];
+  @Prop(String) phase!: Phase;
+  @Prop(Boolean) canEdit!: boolean;
+  @Prop(Boolean) isReporting!: boolean;
+  @Getter(processGetterTypes.MIN_PHASE) minPhase!: (phase: Phase) => boolean;
 
   private itemInView: MenuItem | null = null;
   private listener!: () => void;
@@ -42,6 +40,20 @@ export default class ProcessMenu extends Vue {
     window.removeEventListener('scroll', this.listener);
   }
 
+  get items() {
+    return [
+      { heading: 'Grundlæggende oplysninger', id: 'general-information', show: true },
+      { heading: 'Problemstillinger', id: 'challenges', show: true },
+      { heading: 'Tid og proces', id: 'time-and-process', show: true },
+      { heading: 'Faglig vurdering', id: 'assessment', show: this.minPhase(PhaseKeys.PREANALYSIS) },
+      { heading: 'Specifikation', id: 'specification', show: this.minPhase(PhaseKeys.SPECIFICATION) },
+      { heading: 'Udvikling og implementering', id: 'implementation', show: this.minPhase(PhaseKeys.DEVELOPMENT) },
+      { heading: 'Drift', id: 'operation', show: this.minPhase(PhaseKeys.OPERATION) },
+      { heading: 'Bilag', id: 'attachments', show: !this.isReporting && this.minPhase(PhaseKeys.PREANALYSIS) },
+      { heading: 'Interne noter', id: 'internal-notes', show: this.canEdit }
+    ];
+  }
+
   private scrollTo(item: MenuItem) {
     const element = document.getElementById(item.id);
 
@@ -54,7 +66,6 @@ export default class ProcessMenu extends Vue {
     if (!this.items) {
       return;
     }
-
     this.itemInView = this.getElementInView(this.items);
   }
 
