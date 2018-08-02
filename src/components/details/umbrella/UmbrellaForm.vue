@@ -7,7 +7,10 @@
             <InputField disabled :value="state.id" />
           </WellItem>
           <WellItem labelWidth="80px" label="KLE-nr:">
-            <MappedSelectionField :disabled="state.disabled.generalInformationEdit" :value="state.kle" @change="update({kle: $event})" :items="kles" />
+            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.kle" @change="setKle($event)" :items="kles" itemText="code" clearable />
+          </WellItem>
+          <WellItem labelWidth="80px" label="FORM:" v-if="state.kle">
+            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.form" @change="update({form: $event})" :items="forms" itemText="code" clearable />
           </WellItem>
           <WellItem labelWidth="80px" label="Lokalt ID:">
             <InputField :disabled="state.disabled.generalInformationEdit" :value="state.localId" @change="update({localId: $event})" />
@@ -25,7 +28,7 @@
             <DomainsField :disabled="state.disabled.generalInformationEdit" :value="state.domains" @change="assign({domains: $event})" />
           </WellItem>
           <WellItem labelWidth="120px" label="Kontaktperson:">
-            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.contact" itemText="name" @search="search($event)" isItemsPartial @change="update({contact: $event})" :items="users" />
+            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.contact" itemText="name" @search="search($event)" isItemsPartial @change="update({contact: $event})" :items="users" clearable />
           </WellItem>
           <WellItem labelWidth="120px" v-if="state.contact" label="Mail:">
             {{state.contact.email}}
@@ -128,6 +131,7 @@ import { searchActionTypes } from '@/store/modules/search/actions';
 export default class UmbrellaForm extends Vue {
   @Action(processActionTypes.UPDATE) update: any;
   @Action(processActionTypes.ASSIGN) assign: any;
+  @Action(commonActionTypes.LOAD_FORMS) loadForms: any;
 
   @Getter(processGetterTypes.IS_UMBRELLA_VALID) isUmbrellaValid!: any;
 
@@ -145,13 +149,29 @@ export default class UmbrellaForm extends Vue {
     return this.$store.state.common.kles;
   }
 
+  get forms() {
+    return this.$store.state.common.forms;
+  }
+
   search(name: string) {
-    this.$store.dispatch(commonActionTypes.SEARCH_USERS, { name, cvr: this.$store.state.auth.user.cvr });
+    this.$store.dispatch(commonActionTypes.SEARCH_USERS, {
+      name,
+      cvr: this.$store.state.auth.user.cvr
+    });
   }
 
   setKla(kla: string) {
     // Inserts periodes for every 2 characters, to match format: ##.##.##.##.##
     this.update({ kla: kla.replace(/(\d{2})(?=\d)/g, '$1.') });
+  }
+
+  setKle(kle: Kle) {
+    if (!kle) {
+      this.update({ kle: kle, form: null });
+    } else {
+      this.update({ kle: kle });
+    }
+    this.loadForms(kle);
   }
 
   addProcess(process: Process) {
@@ -163,7 +183,9 @@ export default class UmbrellaForm extends Vue {
   }
 
   removeProcess(process: Process) {
-    this.assign({ children: this.state.children.filter((child: Process) => child.id !== process.id) });
+    this.assign({
+      children: this.state.children.filter((child: Process) => child.id !== process.id)
+    });
   }
 }
 </script>

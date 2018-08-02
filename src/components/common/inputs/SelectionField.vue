@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-autocomplete v-if="!disabled" :label="placeholder" :items="_items" single-line no-data-text="Ingen resultater" :item-text="itemText" :append-icon="iconName" :search-input.sync="searchQuery" @change="valueChanged" :value="value" cache-items return-object :multiple="multiple" />
+    <v-autocomplete v-if="!disabled" :clearable="clearable" :label="placeholder" :items="_items" single-line no-data-text="Ingen resultater" :item-text="itemText" :append-icon="iconName" :search-input.sync="searchQuery" @change="valueChanged" :value="value" return-object :multiple="multiple" />
     <div class="selection-text" v-if="disabled && value">{{ label }}</div>
   </div>
 </template>
@@ -20,6 +20,7 @@ export default class SelectionField<T extends any> extends Vue {
   @Prop(Boolean) isItemsPartial!: boolean;
   @Prop(String) placeholder!: string;
   @Prop(Boolean) disabled!: boolean;
+  @Prop(Boolean) clearable!: boolean;
   @Prop(Boolean) multiple!: boolean;
   @Prop({ type: String, default: 'text' })
   itemText!: string;
@@ -54,6 +55,7 @@ export default class SelectionField<T extends any> extends Vue {
   }
 
   valueChanged(value: any) {
+    value = value ? value : null;
     this.$emit('change', value);
   }
 }

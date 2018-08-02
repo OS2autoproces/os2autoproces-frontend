@@ -16,7 +16,10 @@ export interface Cms {
 
 export interface Kle {
   code: string;
-  name: string;
+}
+
+export interface Form {
+  code: string;
 }
 
 interface TechnologiesResponse {
@@ -46,6 +49,12 @@ interface ItSystemsResponse {
   page: {
     size: number;
     totalPages: number;
+  };
+}
+
+interface FormResponse {
+  _embedded: {
+    forms: Form[];
   };
 }
 
@@ -92,7 +101,7 @@ export const commonActionTypes = {
   ADD_TECHNOLOGY: `${namespace}/addTechnology`,
   REMOVE_TECHNOLOGY: `${namespace}/removeTechnology`,
   EDIT_TECHNOLOGY: `${namespace}/editTechnology`,
-
+  LOAD_FORMS: `${namespace}/loadFormsByKle`,
   SEARCH_USERS: `${namespace}/searchUsers`
 };
 
@@ -136,8 +145,7 @@ export const actions: ActionTree<CommonState, RootState> = {
   async loadKles({ commit }) {
     const response = await HTTP.get<KleResponse>(`api/kles?size=100000`);
     const kles = response.data._embedded.kles.map(kle => ({
-      value: kle.code,
-      text: kle.code
+      code: kle.code
     }));
 
     commit(commonMutationTypes.ASSIGN, { kles });
@@ -153,6 +161,18 @@ export const actions: ActionTree<CommonState, RootState> = {
       return;
     }
     debouncedSearch({ cvr, name }, commit);
+  },
+  async loadFormsByKle({ commit }, kle: Kle) {
+    commit(commonMutationTypes.ASSIGN, { forms: [] });
+    if (!kle) {
+      return;
+    }
+    const response = await HTTP.get<FormResponse>(`api/kles/${kle.code}/forms`);
+    const forms = response.data._embedded.forms.map((form: Form) => ({
+      code: form.code
+    }));
+
+    commit(commonMutationTypes.ASSIGN, { forms });
   }
 };
 

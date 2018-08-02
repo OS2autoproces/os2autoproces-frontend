@@ -7,7 +7,10 @@
             <InputField disabled :value="state.id" />
           </WellItem>
           <WellItem labelWidth="120px" label="KLE-nr:">
-            <MappedSelectionField :disabled="state.disabled.generalInformationEdit" :value="state.kle" @change="update({kle: $event})" :items="kles" />
+            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.kle" @change="setKle($event)" :items="kles" itemText="code" clearable />
+          </WellItem>
+          <WellItem labelWidth="120px" label="FORM:" v-if="state.kle">
+            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.form" @change="update({form: $event})" :items="forms" itemText="code" clearable />
           </WellItem>
           <WellItem labelWidth="120px" label="Lokalt ID:">
             <InputField :disabled="state.disabled.generalInformationEdit" :value="state.localId" @change="update({localId: $event})" />
@@ -31,7 +34,7 @@
             <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.owner" itemText="name" @search="search($event)" isItemsPartial @change="update({owner: $event})" :items="users" />
           </WellItem>
           <WellItem labelWidth="120px" label="Kontaktperson:">
-            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.contact" itemText="name" @search="search($event)" isItemsPartial @change="update({contact: $event})" :items="users" />
+            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.contact" itemText="name" @search="search($event)" isItemsPartial @change="update({contact: $event})" :items="users" clearable />
           </WellItem>
           <WellItem v-if="state.contact" labelWidth="120px" label="Mail:">
             {{state.contact.email}}
@@ -107,7 +110,7 @@ import { StatusKeys, StatusLabels } from '@/models/status';
 import { VisibilityKeys, VisibilityLabels } from '@/models/visibility';
 import { OrgUnit } from '@/store/modules/process/state';
 import { DomainKeys, DomainLabels } from '@/models/domain';
-import { Kle } from '@/store/modules/common/actions';
+import { Kle, Form } from '@/store/modules/common/actions';
 import { Domain } from '@/models/domain';
 import { Phase, PhaseKeys } from '@/models/phase';
 
@@ -129,6 +132,7 @@ import { Phase, PhaseKeys } from '@/models/phase';
 })
 export default class GeneralInformationForm extends Vue {
   @Action(processActionTypes.UPDATE) update: any;
+  @Action(commonActionTypes.LOAD_FORMS) loadForms: any;
   @Action(processActionTypes.ASSIGN) assign: any;
   @Action(commonActionTypes.SEARCH_USERS) searchUsers!: ({ name, cvr }: UserSearchRequest) => Promise<void>;
 
@@ -156,6 +160,10 @@ export default class GeneralInformationForm extends Vue {
     return this.$store.state.common.kles;
   }
 
+  get forms() {
+    return this.$store.state.common.forms;
+  }
+
   get orgUnits() {
     return this.$store.state.common.orgUnits;
   }
@@ -163,6 +171,15 @@ export default class GeneralInformationForm extends Vue {
   setKla(kla: string) {
     // Inserts periodes for every 2 characters, to match format: ##.##.##.##.##
     this.update({ kla: kla.replace(/(\d{2})(?=\d)/g, '$1.') });
+  }
+
+  setKle(kle: Kle) {
+    if (!kle) {
+      this.update({ kle: kle, form: null });
+    } else {
+      this.update({ kle: kle });
+    }
+    this.loadForms(kle);
   }
 
   phaseChanged(phase: any) {
