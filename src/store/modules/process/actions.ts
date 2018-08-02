@@ -94,36 +94,31 @@ export const actions: ActionTree<ProcessState, RootState> = {
     commit(processMutationTypes.ASSIGN, { attachments });
   },
   async uploadAttachments({ commit, state }, files: AttachmentFile[]) {
-    const form = new FormData();
-    const formPublic = new FormData();
+    const privateAttachments = new FormData();
+    const publicAttachments = new FormData();
+
     files.forEach(file => {
-      if (file.visibleToOtherMunicipalities) {
-        formPublic.append('files', file.file);
-      } else {
-        form.append('files', file.file);
-      }
+      const form = file.visibleToOtherMunicipalities ? publicAttachments : privateAttachments;
+      form.append('files', file.file);
     });
 
     try {
-      commit(processActionTypes.ASSIGN, { attachmentsUploading: true }, { root: true });
-      let attachments = (await HTTP.post<Attachment[]>(`/api/attachments/${state.id}`, form)).data;
-      const publicAttachments = (await HTTP.post<Attachment[]>(`/api/attachments/${state.id}/public`, formPublic)).data;
-      attachments = attachments.concat(publicAttachments);
-      if (!state.attachments) {
-        return;
-      }
-      const atts = [...state.attachments, ...attachments];
-      commit(processMutationTypes.ASSIGN, {
-        attachments: [...state.attachments, ...attachments],
-        attachmentsUploading: false
-      });
+      const [privateResult, publicResult] = await Promise.all([
+        HTTP.post<Attachment[]>(`/api/attachments/${state.id}`, privateAttachments),
+        HTTP.post<Attachment[]>(`/api/attachments/${state.id}/public`, publicAttachments)
+      ]);
+
+      const existingAttachments = state.attachments || [];
+      const attachments: Attachment[] = [...existingAttachments, ...privateResult.data, ...publicResult.data];
+
+      commit(processMutationTypes.ASSIGN, { attachments });
     } catch {
       if (!state.attachments) {
         return;
       }
     }
   },
-  async removeAttachment({ commit, state }, id: string) {
+  async removeAttachment({ commit, state }, id: number) {
     await HTTP.delete(`/api/attachments/${state.id}/${id}`);
     if (!state.attachments) {
       return;
@@ -324,7 +319,6 @@ export function initialProcessState(): ProcessState {
     /* Attachments */
     links: [],
     attachments: [],
-    attachmentsUploading: false,
 
     /* Details */
     title: '',

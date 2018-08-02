@@ -2,19 +2,19 @@
   <div class="attachment-upload">
     <h2>Synlige for alle</h2>
     <div class="attachment-list">
-      <AttachmentComponent v-for="attachment in visibleForAll" :key="attachment.id" :attachment="attachment" :disabled="disabled" @remove="remove(attachment.id)" />
+      <AttachmentComponent v-for="attachment in visibleForAll" :key="attachment.id" :attachment="attachment" :disabled="disabled" @remove="removeAttachment(attachment.id)" />
     </div>
 
     <h2>Synlige i kommunen</h2>
     <div class="attachment-list">
-      <AttachmentComponent v-for="attachment in visibleForMunicipality" :key="attachment.id" :attachment="attachment" :disabled="disabled" @remove="remove(attachment.id)" />
+      <AttachmentComponent v-for="attachment in visibleForMunicipality" :key="attachment.id" :attachment="attachment" :disabled="disabled" @remove="removeAttachment(attachment.id)" />
     </div>
 
     <Well v-if="!disabled">
       <div>
         <h2>Tilføj bilag</h2>
         <div class="attachment-list">
-          <AttachmentComponent v-for="attachment in placeholders" :isUploading="isUploading" :key="attachment.id" :attachment="attachment" :disabled="disabled" @remove="remove(attachment.id)" @toggleVisibility="toggleVisibility(attachment.id)" canChangeVisibility />
+          <AttachmentComponent v-for="placeholder in placeholders" :isUploading="isUploading" :key="placeholder.id" :attachment="placeholder" :disabled="disabled" @remove="removePlaceholder(placeholder.id)" @toggleVisibility="placeholder.visibleToOtherMunicipalities = !placeholder.visibleToOtherMunicipalities" canChangeVisibility />
         </div>
 
         <label class="upload-button-wrapper">
@@ -24,7 +24,7 @@
           </Button>
         </label>
 
-        <Button class="upload-button" v-if="placeholders.length" v-on:click="addFiles">Upload</Button>
+        <Button class="upload-button" v-if="placeholders.length" v-on:click="uploadFiles">Upload</Button>
       </div>
     </Well>
   </div>
@@ -37,6 +37,7 @@ import Well from '@/components/common/Well.vue';
 import AttachmentComponent from './Attachment.vue';
 import { Attachment } from '@/store/modules/process/state';
 import { AttachmentFile } from '@/store/modules/process/state';
+import { processActionTypes } from '@/store/modules/process/actions';
 
 @Component({
   components: {
@@ -47,97 +48,61 @@ import { AttachmentFile } from '@/store/modules/process/state';
 })
 export default class AttachmentUpload extends Vue {
   idCounter = 0;
-  placeholders: Attachment[] = [];
-  files: AttachmentFile[] = [];
-  @Prop(Array) attachments!: Attachment[];
-  @Prop(Boolean) isUploading!: boolean;
+  placeholders: AttachmentFile[] = [];
+  isUploading = false;
+
   @Prop(Boolean) disabled!: boolean;
 
   get visibleForAll() {
-    return this.attachments.filter(att => att.visibleToOtherMunicipalities);
+    return this.$store.state.process.attachments.filter((att: Attachment) => att.visibleToOtherMunicipalities);
   }
 
   get visibleForMunicipality() {
-    return this.attachments.filter(att => !att.visibleToOtherMunicipalities);
-  }
-
-  @Watch('isUploading')
-  isUploadingChanged(val: boolean, oldVal: boolean) {
-    if (!val && oldVal) {
-      this.placeholders = [];
-    }
+    return this.$store.state.process.attachments.filter((att: Attachment) => !att.visibleToOtherMunicipalities);
   }
 
   chooseFiles(files: FileList) {
-    const fileArr = Array.from(files);
-
-    fileArr.forEach(file => {
-      this.files.push({
+    Array.from(files).forEach(file => {
+      this.placeholders.push({
+        fileName: file.name,
         file: file,
         visibleToOtherMunicipalities: false,
-        id: this.idCounter.toString()
-      });
-      this.idCounter++;
-    });
-    let newPlaceholders: Attachment[] = [];
-    this.files.forEach((file: AttachmentFile) => {
-      newPlaceholders.push({
-        fileName: file.file.name,
-        id: file.id,
-        visibleToOtherMunicipalities: false
+        id: this.idCounter++
       });
     });
 
-    this.placeholders = newPlaceholders;
+    this.clearFileInput();
+  }
 
-    // clears the content of the file input
-    const input = this.$refs.fileInput as any;
+  clearFileInput() {
+    const input = this.$refs.fileInput as HTMLInputElement;
     input.type = 'text';
     input.type = 'file';
   }
 
-  addFiles() {
-    this.files = this.files.map(file => {
-      const placeholder = this.placeholders.find(att => att.id === file.id) as Attachment;
-      file.visibleToOtherMunicipalities = placeholder.visibleToOtherMunicipalities ? true : false;
-      return file;
-    });
+  async uploadFiles() {
+    this.isUploading = true;
 
-    this.$emit('upload', this.files);
-    this.files = [];
+    await this.$store.dispatch(processActionTypes.UPLOAD_ATTACHMENTS, this.placeholders);
+
+    this.isUploading = false;
+    this.placeholders = [];
   }
 
-  remove(attId: string) {
+  removeAttachment(id: number) {
     if (!confirm('Er du sikker?')) {
       return;
     }
-    let attachmentIsPlaceholder = true;
-    this.attachments.forEach(att => {
-      if (att.id === attId) {
-        attachmentIsPlaceholder = false;
-      }
-    });
 
-    if (attachmentIsPlaceholder) {
-      this.placeholders = this.placeholders.filter(a => {
-        return a.id !== attId;
-      });
-      this.files = this.files.filter(a => {
-        return a.id !== attId;
-      });
-    } else {
-      this.$emit('remove', attId);
-    }
+    this.$store.dispatch(processActionTypes.REMOVE_ATTACHMENTS, id);
   }
 
-  toggleVisibility(attId: string) {
-    this.placeholders = this.placeholders.map(a => {
-      if (a.id !== attId) {
-        return a;
-      }
-      a.visibleToOtherMunicipalities = !a.visibleToOtherMunicipalities;
-      return a;
-    });
+  removePlaceholder(id: number) {
+    if (!confirm('Er du sikker?')) {
+      return;
+    }
+
+    this.placeholders = this.placeholders.filter(placeholder => placeholder.id !== id);
   }
 }
 </script>
