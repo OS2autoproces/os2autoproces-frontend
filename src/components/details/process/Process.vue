@@ -27,7 +27,7 @@
           <SpecificationForm v-if="isWithinMunicipality" />
           <ImplementationForm />
           <OperationForm />
-          <AttachmentsForm />
+          <AttachmentsForm v-if="!isReporting" />
           <FormSection v-if="state.canEdit" heading="Interne noter" :disabled="state.disabled.internalNotesEdit" @edit="update({disabled: { internalNotesEdit: $event} })">
             <InternalNotes :internalNotes="state.internalNotes" :disabled="state.disabled.internalNotesEdit" />
           </FormSection>

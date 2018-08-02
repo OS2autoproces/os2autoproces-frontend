@@ -55,7 +55,7 @@ export default class Details extends Vue {
       this.loading = false;
     } else {
       const process = (await this.$store.dispatch(processActionTypes.LOAD_PROCESS_DETAILS, this.id)) as ProcessState;
-	  this.$store.dispatch(processActionTypes.LOAD_ATTACHMENTS, Number(this.id));
+      this.$store.dispatch(processActionTypes.LOAD_ATTACHMENTS, Number(this.id));
       this.loadKles();
       if (process.kle) {
         this.loadForms(process.kle);
