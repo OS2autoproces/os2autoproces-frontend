@@ -112,7 +112,6 @@ export const actions: ActionTree<ProcessState, RootState> = {
         return;
       }
       const atts = [...state.attachments, ...attachments];
-      debugger;
       commit(processMutationTypes.ASSIGN, {
         attachments: [...state.attachments, ...attachments]
       });

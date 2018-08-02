@@ -1,24 +1,33 @@
 <template>
   <div class="attachment-upload">
-    <div class="attachment-list">
-      <p v-if="!disabled">Gemte bilag</p> 
-      <AttachmentComponent v-for="attachment in attachmentsFromStore.filter(att => !att.visibleToOtherMunicipalities)" :key="attachment.id" :attachment="attachment" :canChangeVisibility="false" :disabled="disabled" @remove="remove(attachment.id)" @toggleVisibility="toggleVisibility(attachment.id)"/>     
+    <div class="attachment-list-container">
+      <div class="attachments-container">
+
+        <p class="attachment-category">Gemte bilag</p> 
+        <div class="attachment-list">
+          
+          <AttachmentComponent v-for="attachment in attachmentsFromStore.filter(att => !att.visibleToOtherMunicipalities)" :key="attachment.id" :attachment="attachment" :canChangeVisibility="false" :disabled="disabled" @remove="remove(attachment.id)" @toggleVisibility="toggleVisibility(attachment.id)"/>     
+        </div>   
+      
+        <p class="attachment-category">Gemte bilag synlige for andre kommuner</p>
+        <div class="attachment-list">
+          
+          <AttachmentComponent v-for="attachment in attachmentsFromStore.filter(att => att.visibleToOtherMunicipalities)" :key="attachment.id" :attachment="attachment" :canChangeVisibility="false" :disabled="disabled" @remove="remove(attachment.id)" @toggleVisibility="toggleVisibility(attachment.id)"/>
+        </div>
+      </div>
+
+      <div class="attachments-container">
+        <p v-if="!disabled" class="attachment-category">Ikke-gemte bilag</p>
+        <p v-if="placeholders.length && !disabled">Sæt flueben hvis et bilag skal være tilgængeligt tværkommunalt</p>
+
+        <div class="attachment-list">       
+          <AttachmentComponent v-if="!disabled" v-for="attachment in placeholders" :key="attachment.id" :attachment="attachment" :disabled="disabled" @remove="remove(attachment.id)" @toggleVisibility="toggleVisibility(attachment.id)"/>
+        </div>
+      </div>
+          
 
     </div>
 
-    <div class="attachment-list">
-      <p v-if="!disabled">Gemte bilag synlige for andre kommuner</p>
-      <AttachmentComponent v-for="attachment in attachmentsFromStore.filter(att => att.visibleToOtherMunicipalities)" :key="attachment.id" :attachment="attachment" :canChangeVisibility="false" :disabled="disabled" @remove="remove(attachment.id)" @toggleVisibility="toggleVisibility(attachment.id)"/>     
-
-    </div>
-
-
-    <div class="attachment-list">
-      <p v-if="!disabled">Ikke-gemte bilag</p>     
-      <AttachmentComponent v-if="!disabled" v-for="attachment in placeholders" :key="attachment.id" :attachment="attachment" :disabled="disabled" @remove="remove(attachment.id)" @toggleVisibility="toggleVisibility(attachment.id)"/>
-    </div>
-
-    <p v-if="placeholders.length && !disabled">Sæt kryds hvis et bilag skal være tilgængeligt tværkommunalt</p>
 
     <label class="upload-button-wrapper" v-if="!disabled">
       <input type="file" multiple @change="chooseFiles($event.target.files)">
@@ -51,6 +60,7 @@ import { AttachmentFile } from '@/store/modules/process/state';
   }
 })
 export default class AttachmentUpload extends Vue {
+  idCounter = 0;
   placeholders: Attachment[] = [];
   @Prop(Array) attachmentsFromStore!: Attachment[];
   @Prop(Boolean) disabled!: boolean;
@@ -59,22 +69,24 @@ export default class AttachmentUpload extends Vue {
 
   chooseFiles(files: FileList) {
     const fileArr = Array.from(files);
-    let id = 0;
+
     fileArr.forEach(file => {
       this.files.push({
         file: file,
         visibleToOtherMunicipalities: false,
-        id: id.toString()
+        id: this.idCounter.toString()
       });
-      id++;
+      this.idCounter++;
     });
+    let newPlaceholders: Attachment[] = [];
     this.files.forEach((file: AttachmentFile) => {
-      this.placeholders.push({
+      newPlaceholders.push({
         fileName: file.file.name,
         id: file.id,
         visibleToOtherMunicipalities: false
       });
     });
+    this.placeholders = newPlaceholders;
   }
 
   addFiles() {
@@ -85,6 +97,7 @@ export default class AttachmentUpload extends Vue {
     });
     this.$emit('upload', this.files);
     this.placeholders = [];
+    this.files = [];
   }
 
   remove(attId: string) {
@@ -99,7 +112,12 @@ export default class AttachmentUpload extends Vue {
     });
 
     if (attachmentIsPlaceholder) {
-      this.placeholders = this.placeholders.filter(a => a.id !== attId);
+      this.placeholders = this.placeholders.filter(a => {
+        return a.id !== attId;
+      });
+      this.files = this.files.filter(a => {
+        return a.id !== attId;
+      });
     } else {
       this.$emit('remove', attId);
     }
@@ -114,10 +132,6 @@ export default class AttachmentUpload extends Vue {
       return a;
     });
   }
-
-  // get attachments() {
-  //   return this.placeholders;
-  // }
 }
 </script>
 
@@ -132,10 +146,27 @@ export default class AttachmentUpload extends Vue {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  margin-bottom: $size-unit;
+}
+
+.attachments-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.attachment-list-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.attachment-category {
+  font-weight: bold;
 }
 
 .upload-button-wrapper {
   margin-top: $size-unit;
+  margin-right: $size-unit;
+  margin-left: $size-unit;
   display: inline-block;
   cursor: pointer;
 
