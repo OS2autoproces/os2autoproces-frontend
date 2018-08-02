@@ -20,9 +20,20 @@
         <SearchOption :value="filters.public" @change="updateFilters({ public: $event })">
           {{VisibilityLabels.PUBLIC}}
         </SearchOption>
-        <SearchOption :value="filters.klaProcess" @change="updateFilters({ klaProcess: $event })">
-          Søg i KLA-processer
-        </SearchOption>
+      </div>
+
+      <SearchOption :value="filters.klaProcess" @change="updateFilters({ klaProcess: $event })">
+        Søg i KLA-processer
+      </SearchOption>
+
+      <div class="datepicker">
+        Oprettet:
+        <DatePicker :value="filters.created" @change="updateFilters({created: $event})" />
+      </div>
+
+      <div class="datepicker">
+        Senest ændret:
+      <DatePicker :value="filters.lastChanged" @change="updateFilters({lastChanged: $event})" />
       </div>
 
       <ExpandPanel title="Fase">
@@ -68,9 +79,12 @@
       </ExpandPanel>
 
       <ExpandPanel title="Timeforbrug">
+        Antal timer:
+        <InputField :value="filters.timeSpendComputedTotal" @change="updateFilters({ timeSpendComputedTotal: $event })" />
       </ExpandPanel>
 
       <ExpandPanel title="System">
+        <SelectionField :items="itSystems" :value="filters.itSystems" itemText="name" @change="assignFilters({itSystems: $event})" multiple />
       </ExpandPanel>
     </div>
   </div>
@@ -80,8 +94,11 @@
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import Checkbox from '../common/inputs/Checkbox.vue';
 import SearchField from '../common/inputs/SearchField.vue';
+import InputField from '../common/inputs/InputField.vue';
+import DatePicker from '../common/inputs/DatePicker.vue';
 import SearchOption from './SearchOption.vue';
 import PillCheckbox from '../common/inputs/PillCheckbox.vue';
+import SelectionField from '../common/inputs/SelectionField.vue';
 import ExpandPanel from '../common/ExpandPanel.vue';
 import { Action } from 'vuex-class';
 import { searchActionTypes } from '@/store/modules/search/actions';
@@ -89,13 +106,17 @@ import { PhaseLabels } from '@/models/phase';
 import { DomainLabels } from '@/models/domain';
 import { VisibilityLabels } from '@/models/visibility';
 import { SearchFilters } from '../../store/modules/search/state';
+import { commonActionTypes } from '@/store/modules/common/actions';
 
 @Component({
   components: {
     SearchField,
+    InputField,
     SearchOption,
     ExpandPanel,
+    DatePicker,
     Checkbox,
+    SelectionField,
     PillCheckbox
   }
 })
@@ -110,6 +131,14 @@ export default class SearchFiltersComponent extends Vue {
 
   get user() {
     return this.$store.state.auth.user;
+  }
+
+  get itSystems() {
+    return this.$store.state.common.itSystems;
+  }
+
+  mounted() {
+    this.$store.dispatch(commonActionTypes.LOAD_IT_SYSTEMS);
   }
 
   setReporterId(value: boolean) {
@@ -129,6 +158,10 @@ export default class SearchFiltersComponent extends Vue {
 
   updateFilters(filters: Partial<SearchFilters>) {
     this.$emit('change', filters);
+  }
+
+  assignFilters(filters: Partial<SearchFilters>) {
+    this.$emit('assign', filters);
   }
 }
 </script>
@@ -158,5 +191,9 @@ h1 {
 
 .expand-panel {
   margin-top: 3 * $size-unit;
+}
+
+.datepicker {
+  margin-top: $size-unit;
 }
 </style>

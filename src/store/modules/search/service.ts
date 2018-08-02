@@ -38,9 +38,13 @@ interface SearchParams {
   phase: Phase[];
   domain: Domain[];
   visibility: Visibility[];
+  itSystems: number[];
   page: number;
   size: number;
   freetext: string;
+  lastChanged: string;
+  created: string;
+  timeSpendComputedTotal: string;
   sort: string;
   type: Type | null;
   'reporter.uuid': string | null;
@@ -56,6 +60,10 @@ function mapSearchResponse(response: SearchResponse): SearchResult {
   };
 }
 
+function dateFromISODateTime(datetime: string): string {
+  return datetime.split('T')[0];
+}
+
 export async function search(filters: SearchFilters): Promise<SearchResult> {
   const params: SearchParams = {
     projection: 'grid',
@@ -66,10 +74,14 @@ export async function search(filters: SearchFilters): Promise<SearchResult> {
       .filter(([phase, isSelected]) => isSelected)
       .map(([domain]) => domain) as Domain[],
     sort: `${filters.sorting.property},${filters.sorting.descending ? 'desc' : 'asc'}`,
+    itSystems: filters.itSystems.map(system => system.id),
     visibility: [],
     page: filters.page,
     size: filters.size,
     type: filters.type,
+    timeSpendComputedTotal: filters.timeSpendComputedTotal,
+    created: dateFromISODateTime(filters.created),
+    lastChanged: dateFromISODateTime(filters.lastChanged),
     'reporter.uuid': filters.reporterId,
     'users.uuid': filters.usersId,
     'bookmarkUsers.uuid': filters.bookmarkedId,

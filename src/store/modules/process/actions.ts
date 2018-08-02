@@ -279,15 +279,15 @@ export function initialProcessState(): ProcessState {
     parents: [],
 
     /* Assessment */
-    levelOfProfessionalAssessment: LikertScaleKeys.UNKNOWN,
-    levelOfChange: LikertScaleKeys.UNKNOWN,
-    levelOfStructuredInformation: LikertScaleKeys.UNKNOWN,
-    levelOfUniformity: LikertScaleKeys.UNKNOWN,
-    levelOfDigitalInformation: LikertScaleKeys.UNKNOWN,
-    evaluatedLevelOfRoi: LikertScaleKeys.UNKNOWN,
-    levelOfQuality: LikertScaleKeys.UNKNOWN,
-    levelOfRoutineWorkReduction: LikertScaleKeys.UNKNOWN,
-    levelOfSpeed: LikertScaleKeys.UNKNOWN,
+    levelOfProfessionalAssessment: LikertScaleKeys.NOT_SET,
+    levelOfChange: LikertScaleKeys.NOT_SET,
+    levelOfStructuredInformation: LikertScaleKeys.NOT_SET,
+    levelOfUniformity: LikertScaleKeys.NOT_SET,
+    levelOfDigitalInformation: LikertScaleKeys.NOT_SET,
+    evaluatedLevelOfRoi: LikertScaleKeys.NOT_SET,
+    levelOfQuality: LikertScaleKeys.NOT_SET,
+    levelOfRoutineWorkReduction: LikertScaleKeys.NOT_SET,
+    levelOfSpeed: LikertScaleKeys.NOT_SET,
 
     /* Challenges */
     solutionRequests: '',

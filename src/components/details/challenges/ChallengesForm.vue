@@ -3,13 +3,13 @@
     <div v-if="minPhase(PhaseKeys.PREANALYSIS)">
       <h2>Løsningsbeskrivelse</h2>
       <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
-      <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({solutionRequests: $event})" :disabled="state.disabled.challengesEdit" :value="state.solutionRequests" />
+      <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({solutionRequests: $event})" :disabled="state.disabled.challengesEdit" :value="state.solutionRequests" :maxLength="2400" />
     </div>
 
     <div v-if="minPhase(PhaseKeys.PREANALYSIS)">
-      <h2>Proces udfordringer</h2>
+      <h2>Udfordringer i den nuværende proces</h2>
       <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
-      <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({processChallenges: $event})" :disabled="state.disabled.challengesEdit" :value="state.processChallenges" />
+      <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({processChallenges: $event})" :disabled="state.disabled.challengesEdit" :value="state.processChallenges" :maxLength="1200" />
     </div>
 
     <Well class="challenges-well">
