@@ -8,10 +8,10 @@
         <PowerPointIcon class="attachment-icon" v-if="type === 'powerPoint'" />
         <FileIcon class="attachment-icon" v-if="type === 'other'" />
       </a>
-      <div v-if="!disabled && !uploading" class="delete-button" role="button" @click="$emit('remove')">
+      <div v-if="!disabled && !isUploading" class="delete-button" role="button" @click="$emit('remove')">
         <DeleteIcon />
       </div>
-      <v-icon v-if="uploading" class="upload-icon">cloud_upload</v-icon>
+      <v-icon v-if="isUploading" class="upload-icon">cloud_upload</v-icon>
     </div>
 
     <a class="name" :href="attachment.url" target="_blank">{{attachment.fileName}}</a>
@@ -46,7 +46,7 @@ import { Attachment } from '@/store/modules/process/state';
 export default class AttachmentComponent extends Vue {
   @Prop(Object) attachment!: Attachment;
   @Prop(Boolean) disabled!: boolean;
-  @Prop(Boolean) uploading!: boolean;
+  @Prop(Boolean) isUploading!: boolean;
   @Prop(Boolean) canChangeVisibility!: boolean;
 
   get type() {

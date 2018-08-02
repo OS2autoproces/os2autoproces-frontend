@@ -14,7 +14,7 @@
       <div>
         <h2>Tilføj bilag</h2>
         <div class="attachment-list">
-          <AttachmentComponent v-for="attachment in placeholders" :uploading="attachmentsUploading" :key="attachment.id" :attachment="attachment" :disabled="disabled" @remove="remove(attachment.id)" @toggleVisibility="toggleVisibility(attachment.id)" canChangeVisibility />
+          <AttachmentComponent v-for="attachment in placeholders" :isUploading="isUploading" :key="attachment.id" :attachment="attachment" :disabled="disabled" @remove="remove(attachment.id)" @toggleVisibility="toggleVisibility(attachment.id)" canChangeVisibility />
         </div>
 
         <label class="upload-button-wrapper">
@@ -49,20 +49,20 @@ export default class AttachmentUpload extends Vue {
   idCounter = 0;
   placeholders: Attachment[] = [];
   files: AttachmentFile[] = [];
-  @Prop(Array) attachmentsFromStore!: Attachment[];
-  @Prop(Boolean) attachmentsUploading!: boolean;
+  @Prop(Array) attachments!: Attachment[];
+  @Prop(Boolean) isUploading!: boolean;
   @Prop(Boolean) disabled!: boolean;
 
   get visibleForAll() {
-    return this.attachmentsFromStore.filter(att => att.visibleToOtherMunicipalities);
+    return this.attachments.filter(att => att.visibleToOtherMunicipalities);
   }
 
   get visibleForMunicipality() {
-    return this.attachmentsFromStore.filter(att => !att.visibleToOtherMunicipalities);
+    return this.attachments.filter(att => !att.visibleToOtherMunicipalities);
   }
 
-  @Watch('attachmentsUploading')
-  uploadingChanged(val: boolean, oldVal: boolean) {
+  @Watch('isUploading')
+  isUploadingChanged(val: boolean, oldVal: boolean) {
     if (!val && oldVal) {
       this.placeholders = [];
     }
@@ -112,7 +112,7 @@ export default class AttachmentUpload extends Vue {
       return;
     }
     let attachmentIsPlaceholder = true;
-    this.attachmentsFromStore.forEach(att => {
+    this.attachments.forEach(att => {
       if (att.id === attId) {
         attachmentIsPlaceholder = false;
       }

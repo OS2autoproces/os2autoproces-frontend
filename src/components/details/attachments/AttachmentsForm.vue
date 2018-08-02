@@ -1,6 +1,6 @@
 <template>
   <FormSection v-if="minPhase(PhaseKeys.PREANALYSIS)" heading="Bilag" id="attachments" :disabled="state.disabled.attachmentsEdit" @edit="update({ disabled: {attachmentsEdit: $event} })">
-    <AttachmentUpload :attachmentsFromStore="state.attachments" :attachmentsUploading="state.attachmentsUploading" :disabled="state.disabled.attachmentsEdit" @upload="upload" @remove="remove" />
+    <AttachmentUpload :attachments="state.attachments" :isUploading="state.attachmentsUploading" :disabled="state.disabled.attachmentsEdit" @upload="upload" @remove="remove" />
   </FormSection>
 </template>
 
