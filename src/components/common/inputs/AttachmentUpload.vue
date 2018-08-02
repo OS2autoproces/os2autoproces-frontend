@@ -35,8 +35,7 @@ import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import Button from '@/components/common/inputs/Button.vue';
 import Well from '@/components/common/Well.vue';
 import AttachmentComponent from './Attachment.vue';
-import { Attachment } from '@/store/modules/process/state';
-import { AttachmentFile } from '@/store/modules/process/state';
+import { Attachment, AttachmentFile } from '@/store/modules/process/state';
 import { processActionTypes } from '@/store/modules/process/actions';
 
 @Component({
@@ -65,7 +64,7 @@ export default class AttachmentUpload extends Vue {
     Array.from(files).forEach(file => {
       this.placeholders.push({
         fileName: file.name,
-        file: file,
+        file,
         visibleToOtherMunicipalities: false,
         id: this.idCounter++
       });

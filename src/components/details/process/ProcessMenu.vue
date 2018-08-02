@@ -22,12 +22,12 @@ export interface MenuItem {
 export default class ProcessMenu extends Vue {
   items: MenuItem[] = [];
 
-  private itemInView: MenuItem | null = null;
-  private listener!: () => void;
-
   @Prop(String) phase!: Phase;
   @Prop(Boolean) canEdit!: boolean;
   @Getter(processGetterTypes.MIN_PHASE) minPhase!: (phase: Phase) => boolean;
+
+  private itemInView: MenuItem | null = null;
+  private listener!: () => void;
 
   mounted() {
     this.listener = this.update.bind(this);
