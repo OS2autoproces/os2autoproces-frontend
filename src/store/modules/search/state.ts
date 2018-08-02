@@ -2,6 +2,7 @@ import { Phase } from '@/models/phase';
 import { Domain } from '@/models/domain';
 import { Status } from '@/models/status';
 import { Type } from '@/models/types';
+import { ITSystem } from '@/store/modules/process/state';
 
 export interface SearchResult {
   page: {
@@ -48,6 +49,7 @@ export interface SearchFilters {
   time?: string[]; // TODO: Use in search
   system?: string[]; // TODO: Use in search
   klaProcess: boolean;
+  itSystems: ITSystem[];
 }
 
 export interface SearchState {

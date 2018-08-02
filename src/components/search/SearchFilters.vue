@@ -82,6 +82,7 @@
       </ExpandPanel>
 
       <ExpandPanel title="System">
+        <SelectionField :items="itSystems" :value="filters.itSystems" itemText="name" @change="assignFilters({itSystems: $event})" multiple />
       </ExpandPanel>
     </div>
   </div>
@@ -94,6 +95,7 @@ import SearchField from '../common/inputs/SearchField.vue';
 import DatePicker from '../common/inputs/DatePicker.vue';
 import SearchOption from './SearchOption.vue';
 import PillCheckbox from '../common/inputs/PillCheckbox.vue';
+import SelectionField from '../common/inputs/SelectionField.vue';
 import ExpandPanel from '../common/ExpandPanel.vue';
 import { Action } from 'vuex-class';
 import { searchActionTypes } from '@/store/modules/search/actions';
@@ -101,6 +103,7 @@ import { PhaseLabels } from '@/models/phase';
 import { DomainLabels } from '@/models/domain';
 import { VisibilityLabels } from '@/models/visibility';
 import { SearchFilters } from '../../store/modules/search/state';
+import { commonActionTypes } from '@/store/modules/common/actions';
 
 @Component({
   components: {
@@ -109,6 +112,7 @@ import { SearchFilters } from '../../store/modules/search/state';
     ExpandPanel,
     DatePicker,
     Checkbox,
+    SelectionField,
     PillCheckbox
   }
 })
@@ -123,6 +127,14 @@ export default class SearchFiltersComponent extends Vue {
 
   get user() {
     return this.$store.state.auth.user;
+  }
+
+  get itSystems() {
+    return this.$store.state.common.itSystems;
+  }
+
+  mounted() {
+    this.$store.dispatch(commonActionTypes.LOAD_IT_SYSTEMS);
   }
 
   setReporterId(value: boolean) {
@@ -142,6 +154,10 @@ export default class SearchFiltersComponent extends Vue {
 
   updateFilters(filters: Partial<SearchFilters>) {
     this.$emit('change', filters);
+  }
+
+  assignFilters(filters: Partial<SearchFilters>) {
+    this.$emit('assign', filters);
   }
 }
 </script>

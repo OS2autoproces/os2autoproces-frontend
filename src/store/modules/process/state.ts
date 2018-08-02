@@ -87,7 +87,7 @@ export interface Link {
 }
 
 export interface ITSystem {
-  id: string;
+  id: number;
   name: string;
   vendor: string | null;
 }

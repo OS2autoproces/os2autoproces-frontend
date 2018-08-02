@@ -4,7 +4,7 @@
 
         <div class="page">
             <div class="filters">
-                <SearchFiltersComponent :filters="filters" @change="updateFilters" />
+                <SearchFiltersComponent :filters="filters" @change="updateFilters" @assign="assignFilters" />
             </div>
             <div>
                 <div class="results-wrapper">
@@ -40,7 +40,7 @@ import SearchSorting from '../components/search/SearchSorting.vue';
 import PlusIcon from '../components/icons/PlusIcon.vue';
 import { searchActionTypes } from '../store/modules/search/actions';
 import { processActionTypes } from '../store/modules/process/actions';
-import {SearchFilters, SearchResultProcess} from "../store/modules/search/state";
+import { SearchFilters, SearchResultProcess } from '../store/modules/search/state';
 
 @Component({
   components: {
@@ -65,7 +65,14 @@ export default class Search extends Vue {
     this.$store.dispatch(searchActionTypes.UPDATE_FILTERS, {
       page: 0,
       ...filters
-    })
+    });
+  }
+
+  assignFilters(filters: Partial<SearchFilters>) {
+    this.$store.dispatch(searchActionTypes.ASSIGN_FILTERS, {
+      page: 0,
+      ...filters
+    });
   }
 
   mounted() {
