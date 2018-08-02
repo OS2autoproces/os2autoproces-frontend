@@ -41,6 +41,8 @@ interface SearchParams {
   page: number;
   size: number;
   freetext: string;
+  lastChanged: string;
+  created: string;
   sort: string;
   type: Type | null;
   'reporter.uuid': string | null;
@@ -70,6 +72,8 @@ export async function search(filters: SearchFilters): Promise<SearchResult> {
     page: filters.page,
     size: filters.size,
     type: filters.type,
+    created: filters.created,
+    lastChanged: filters.lastChanged,
     'reporter.uuid': filters.reporterId,
     'users.uuid': filters.usersId,
     'bookmarkUsers.uuid': filters.bookmarkedId,

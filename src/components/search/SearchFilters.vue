@@ -20,9 +20,20 @@
         <SearchOption :value="filters.public" @change="updateFilters({ public: $event })">
           {{VisibilityLabels.PUBLIC}}
         </SearchOption>
-        <SearchOption :value="filters.klaProcess" @change="updateFilters({ klaProcess: $event })">
-          Søg i KLA-processer
-        </SearchOption>
+      </div>
+
+      <SearchOption :value="filters.klaProcess" @change="updateFilters({ klaProcess: $event })">
+        Søg i KLA-processer
+      </SearchOption>
+
+      <div class="datepicker">
+        Oprettet:
+        <DatePicker :value="filters.created" @change="updateFilters({created: $event})" />
+      </div>
+
+      <div class="datepicker">
+        Senest ændret:
+      <DatePicker :value="filters.lastChanged" @change="updateFilters({lastChanged: $event})" />
       </div>
 
       <ExpandPanel title="Fase">
@@ -80,6 +91,7 @@
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import Checkbox from '../common/inputs/Checkbox.vue';
 import SearchField from '../common/inputs/SearchField.vue';
+import DatePicker from '../common/inputs/DatePicker.vue';
 import SearchOption from './SearchOption.vue';
 import PillCheckbox from '../common/inputs/PillCheckbox.vue';
 import ExpandPanel from '../common/ExpandPanel.vue';
@@ -95,6 +107,7 @@ import { SearchFilters } from '../../store/modules/search/state';
     SearchField,
     SearchOption,
     ExpandPanel,
+    DatePicker,
     Checkbox,
     PillCheckbox
   }
@@ -158,5 +171,9 @@ h1 {
 
 .expand-panel {
   margin-top: 3 * $size-unit;
+}
+
+.datepicker {
+  margin-top: $size-unit;
 }
 </style>

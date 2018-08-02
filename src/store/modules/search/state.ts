@@ -35,6 +35,8 @@ export interface SearchFilters {
   usersId: string | null;
   bookmarkedId: string | null;
   text: string;
+  created: string;
+  lastChanged: string;
   municipality: boolean;
   public: boolean;
   page: number;
