@@ -1,5 +1,5 @@
 <template>
-  <FormSection :invalid="!isOperationValid" v-if="minPhase(PhaseKeys.IMPLEMENTATION)" heading="Drift" id="operation" :disabled="state.disabled.operationEdit" @edit="update({disabled: {operationEdit: $event}})">
+  <FormSection :invalid="!isOperationValid" v-if="minPhase(PhaseKeys.OPERATION)" heading="Drift" id="operation" :disabled="state.disabled.operationEdit" @edit="update({disabled: {operationEdit: $event}})">
     <div class="rating-wrapper" :class="{disabled: state.disabled.operationEdit}">
       <div>I hvor høj grad realiserer processen sit potentiale?</div>
       <Rating class="rating" @change="update({rating: $event})" :disabled="state.disabled.operationEdit" :value="state.rating" />
