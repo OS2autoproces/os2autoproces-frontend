@@ -6,7 +6,7 @@
           <ArrowLeftIcon /> Tilbage til søgning
         </router-link>
 
-        <ProcessMenu />
+        <ProcessMenu :phase="phase" :canEdit="state.canEdit" />
 
         <Button v-if="isReporting" class="report-button" @click="report">Indberet</Button>
         <Button v-if="!isReporting" class="save-button" @click="save">Gem</Button>
@@ -28,7 +28,7 @@
           <ImplementationForm />
           <OperationForm />
           <AttachmentsForm v-if="!isReporting" />
-          <FormSection v-if="state.canEdit" heading="Interne noter" :disabled="state.disabled.internalNotesEdit" @edit="update({disabled: { internalNotesEdit: $event} })">
+          <FormSection v-if="state.canEdit" id="internal-notes" heading="Interne noter" :disabled="state.disabled.internalNotesEdit" @edit="update({disabled: { internalNotesEdit: $event} })">
             <InternalNotes :internalNotes="state.internalNotes" :disabled="state.disabled.internalNotesEdit" />
           </FormSection>
         </div>
