@@ -33,6 +33,11 @@ export default class SpecificationForm extends Vue {
 
   PhaseKeys = PhaseKeys;
 
+  get isWithinMunicipality() {
+    const state = this.$store.state;
+    return state.auth.user.cvr === state.process.cvr;
+  }
+
   get state() {
     return this.$store.state.process;
   }

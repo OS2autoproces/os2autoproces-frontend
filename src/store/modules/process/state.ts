@@ -89,7 +89,7 @@ export interface Link {
 }
 
 export interface ITSystem {
-  id: string;
+  id: number;
   name: string;
   vendor: string | null;
 }
@@ -130,5 +130,5 @@ export interface Disabled {
   specificationEdit: boolean;
   implementationEdit: boolean;
   attachmentsEdit: boolean;
-  municipalityUsingEdit: boolean;
+  internalNotesEdit: boolean;
 }

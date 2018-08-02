@@ -11,6 +11,7 @@ export const state: CommonState = {
   itSystems: [],
   kles: [],
   forms: [],
+  orgUnits: [],
   users: []
 };
 

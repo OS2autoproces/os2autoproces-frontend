@@ -34,6 +34,9 @@ export const processActionTypes = {
   ADD_USER: `${namespace}/addUser`,
   REMOVE_USER: `${namespace}/removeUser`,
 
+  ADD_ORGUNIT: `${namespace}/addOrgUnit`,
+  REMOVE_ORGUNIT: `${namespace}/removeOrgUnit`,
+
   ADD_TECHNOLOGY: `${namespace}/addTechnology`,
   REMOVE_TECHNOLOGY: `${namespace}/removeTechnology`,
 
@@ -201,6 +204,7 @@ export const actions: ActionTree<ProcessState, RootState> = {
   },
   async report({ commit, state, dispatch }, validationKeys?: Array<keyof Process>): Promise<string | null> {
     const invalidFields = getInvalidProperties(state, validationKeys || getProcessKeys(state));
+
     if (invalidFields.length > 0) {
       dispatch(errorActionTypes.UPDATE_PROCESS_ERRORS, { processErrors: invalidFields }, { root: true });
       return null;
@@ -219,7 +223,7 @@ export const actions: ActionTree<ProcessState, RootState> = {
       dispatch(errorActionTypes.UPDATE_PROCESS_ERRORS, { processErrors: invalidFields }, { root: true });
     } else {
       const converted = await stateToRequest(state);
-      const response = await HTTP.put<ProcessResponse>(`api/processes/${state.id}`, converted);
+      const response = await HTTP.patch<ProcessResponse>(`api/processes/${state.id}`, converted);
 
       const process = responseToState(response.data);
       commit(processMutationTypes.UPDATE, setBackendManagedFields(process));
@@ -283,15 +287,15 @@ export function initialProcessState(): ProcessState {
     parents: [],
 
     /* Assessment */
-    levelOfProfessionalAssessment: LikertScaleKeys.UNKNOWN,
-    levelOfChange: LikertScaleKeys.UNKNOWN,
-    levelOfStructuredInformation: LikertScaleKeys.UNKNOWN,
-    levelOfUniformity: LikertScaleKeys.UNKNOWN,
-    levelOfDigitalInformation: LikertScaleKeys.UNKNOWN,
-    evaluatedLevelOfRoi: LikertScaleKeys.UNKNOWN,
-    levelOfQuality: LikertScaleKeys.UNKNOWN,
-    levelOfRoutineWorkReduction: LikertScaleKeys.UNKNOWN,
-    levelOfSpeed: LikertScaleKeys.UNKNOWN,
+    levelOfProfessionalAssessment: LikertScaleKeys.NOT_SET,
+    levelOfChange: LikertScaleKeys.NOT_SET,
+    levelOfStructuredInformation: LikertScaleKeys.NOT_SET,
+    levelOfUniformity: LikertScaleKeys.NOT_SET,
+    levelOfDigitalInformation: LikertScaleKeys.NOT_SET,
+    evaluatedLevelOfRoi: LikertScaleKeys.NOT_SET,
+    levelOfQuality: LikertScaleKeys.NOT_SET,
+    levelOfRoutineWorkReduction: LikertScaleKeys.NOT_SET,
+    levelOfSpeed: LikertScaleKeys.NOT_SET,
 
     /* Challenges */
     solutionRequests: '',
@@ -348,7 +352,7 @@ export function initialProcessState(): ProcessState {
       specificationEdit: true,
       implementationEdit: true,
       attachmentsEdit: true,
-      municipalityUsingEdit: true
+      internalNotesEdit: true
     },
 
     emailNotification: false

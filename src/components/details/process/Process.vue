@@ -24,15 +24,13 @@
           <ChallengesForm />
           <TimeAndProcessForm />
           <AssessmentForm />
-          <SpecificationForm />
+          <SpecificationForm v-if="isWithinMunicipality" />
           <ImplementationForm />
           <OperationForm />
           <AttachmentsForm v-if="!isReporting" />
-        </div>
-
-        <div>
-          <h2 class="internal-notes-heading">Interne noter</h2>
-          <InternalNotes title="Interne noter" :internalNotes="state.internalNotes" />
+          <FormSection v-if="state.canEdit" heading="Interne noter" :disabled="state.disabled.internalNotesEdit" @edit="update({disabled: { internalNotesEdit: $event} })">
+            <InternalNotes :internalNotes="state.internalNotes" :disabled="state.disabled.internalNotesEdit" />
+          </FormSection>
         </div>
 
         <div class="comments" v-if="!isReporting">
@@ -114,8 +112,6 @@ export default class Process extends Vue {
 
   @Action(processActionTypes.UPDATE) update: any;
   @Action(processActionTypes.SAVE_COMMENT) saveComment!: (message: string) => Promise<void>;
-  @Action(processActionTypes.LOAD_COMMENTS) loadComments!: () => Promise<void>;
-  @Action(commonActionTypes.LOAD_IT_SYSTEMS) loadItSystems!: () => Promise<void>;
   @Action(errorActionTypes.UPDATE_PROCESS_ERRORS) updateProcessErrors!: (processErrors: Partial<ErrorState>) => void;
 
   get state() {
@@ -130,11 +126,24 @@ export default class Process extends Vue {
     return !isEmpty(this.$store.state.error.processErrors);
   }
 
+  get isWithinMunicipality() {
+    const { auth, process } = this.$store.state;
+    return auth.user.cvr === process.cvr;
+  }
+
   mounted() {
-    this.loadItSystems();
+    this.$store.dispatch(commonActionTypes.LOAD_KLES);
+    this.$store.dispatch(commonActionTypes.LOAD_IT_SYSTEMS);
+    this.$store.dispatch(commonActionTypes.LOAD_ORGUNITS, this.$store.state.auth.user.cvr);
 
     if (this.isReporting) {
-      this.update({ phase: this.phase, canEdit: true, cvr: this.$store.state.auth.user.cvr });
+      this.update({
+        phase: this.phase,
+        canEdit: true,
+        cvr: this.$store.state.auth.user.cvr
+      });
+    } else {
+      this.$store.dispatch(processActionTypes.LOAD_COMMENTS);
     }
   }
 
@@ -213,8 +222,7 @@ export default class Process extends Vue {
   }
 }
 
-.comments-heading,
-.internal-notes-heading {
+.comments-heading {
   @include heading;
   color: $color-secondary;
   margin-top: 2 * $size-unit;

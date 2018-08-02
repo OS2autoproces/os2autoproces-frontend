@@ -30,7 +30,9 @@ export default class DatePicker extends Vue {
   }
 
   onInputChange(date: string): void {
-    if (date && date.match(/^\d{2}\/\d{2}\/\d{4}$/)) {
+    if (!date) {
+      this.$emit('change', '');
+    } else if (date.match(/^\d{2}\/\d{2}\/\d{4}$/)) {
       this.valueChanged(DateTime.fromFormat(date, this.format));
     }
   }

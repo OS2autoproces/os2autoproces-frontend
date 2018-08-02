@@ -43,7 +43,6 @@ export interface ProcessRequest {
   timeSpendPerOccurance: number;
   timeSpendEmployeesDoingProcess: number;
   timeSpendPercentageDigital: number;
-  timeSpendComputedTotal: number;
   timeSpendComment: string;
   targetsCompanies: boolean;
   targetsCitizens: boolean;
@@ -65,12 +64,12 @@ export interface ProcessRequest {
   ratingComment: string | null;
   searchWords: string | null;
 
-  users: User[] | null;
+  users: string[] | null;
   owner: string | null;
   contact: string | null;
-  itSystems: ITSystem[] | null;
-  orgUnits: OrgUnit[] | null;
-  technologies: Technology[] | null;
+  itSystems: string[] | null;
+  orgUnits: string[];
+  technologies: string[] | null;
   children: string[];
 }
 
@@ -150,8 +149,12 @@ export interface ProcessResponse {
   parents: Process[];
 }
 
-function relation(name: string, entity: { id: number | string }) {
+function relation(name: string, entity: { id: number | string }): string {
   return `${window.autoProcessConfiguration.apiUrl}/api/${name}/${entity.id}`;
+}
+
+function relationArray<T extends { id: number | string }>(name: string, array: T[]): string[] {
+  return array.map(entity => relation(name, entity));
 }
 
 function defaultNull(prop: any): any {
@@ -188,7 +191,6 @@ function stateToRequestFields(state: ProcessState): ProcessRequest {
     internalNotes: defaultNull(state.internalNotes),
     processChallenges: defaultNull(state.processChallenges),
     solutionRequests: defaultNull(state.solutionRequests),
-    timeSpendComputedTotal: defaultZero(state.timeSpendComputedTotal),
     timeSpendEmployeesDoingProcess: defaultZero(state.timeSpendEmployeesDoingProcess),
     timeSpendOccurancesPerEmployee: defaultZero(state.timeSpendOccurancesPerEmployee),
     timeSpendPercentageDigital: defaultZero(state.timeSpendPercentageDigital),
@@ -209,17 +211,16 @@ function stateToRequestFields(state: ProcessState): ProcessRequest {
     organizationalImplementationNotes: defaultNull(state.organizationalImplementationNotes),
     rating: defaultNull(state.rating),
     ratingComment: defaultNull(state.ratingComment),
-    // TODO: fix when brian returns
-    // searchWords: defaultNull(state.searchWords),
     searchWords: '',
+    type: state.type || TypeKeys.CHILD,
+
     contact: state.contact && relation('users', state.contact),
     owner: state.owner && relation('users', state.owner),
-    orgUnits: defaultNull(state.orgUnits),
-    users: defaultNull(state.users),
-    technologies: defaultNull(state.technologies),
-    itSystems: defaultNull(state.itSystems),
-    children: state.children.map(child => relation('processes', child)),
-    type: state.type || TypeKeys.CHILD
+    orgUnits: relationArray('orgUnits', state.orgUnits),
+    users: relationArray('users', state.users),
+    technologies: relationArray('technologies', state.technologies),
+    itSystems: relationArray('itSystems', state.itSystems),
+    children: relationArray('processes', state.children)
   };
 }
 

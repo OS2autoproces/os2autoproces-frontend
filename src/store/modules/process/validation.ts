@@ -11,16 +11,12 @@ export function getInvalidProperties(state: ProcessState, properties: Array<keyo
   });
 }
 
-const isNonempty = {
-  length: {
-    minimum: 1
-  }
-};
+const isInteger = { numericality: { onlyInteger: true } };
 
 const isBetween = (from: number, to: number) => ({
   numericality: {
     onlyInteger: true,
-    greaterThan: from,
+    greaterThanOrEqualTo: from,
     lessThanOrEqualTo: to
   }
 });
@@ -37,103 +33,98 @@ function isValid(value: any, constraints: any): boolean {
 }
 
 export const processFieldsValidators: { [P in keyof Process]?: (state: ProcessState) => boolean } = {
-  localId(state: ProcessState) {
-    return isValid(state.localId, isMinMax(1, 64));
+  localId({ localId }: ProcessState) {
+    return isValid(localId, isMinMax(0, 64));
   },
-  klId(state: ProcessState) {
-    return isValid(state.klId, isMinMax(1, 64));
+  klId({ klId }: ProcessState) {
+    return isValid(klId, isMinMax(0, 64));
   },
-  phase(state: ProcessState) {
-    return state.phase !== null;
+  phase({ phase }: ProcessState) {
+    return !!phase;
   },
-  status(state: ProcessState) {
-    return state.status !== null;
+  status({ status }: ProcessState) {
+    return !!status;
   },
-  statusText(state: ProcessState) {
-    return isValid(state.statusText, isMinMax(0, 1200));
+  statusText({ statusText }: ProcessState) {
+    return isValid(statusText, isMinMax(0, 1200));
   },
-  title(state: ProcessState) {
-    return isValid(state.title, isMinMax(1, 50));
+  title({ title }: ProcessState) {
+    return isValid(title, isMinMax(1, 50));
   },
-  shortDescription(state: ProcessState) {
-    return isValid(state.shortDescription, isMinMax(1, 140));
+  shortDescription({ shortDescription }: ProcessState) {
+    return isValid(shortDescription, isMinMax(1, 140));
   },
-  longDescription(state: ProcessState) {
-    return isValid(state.longDescription, isMinMax(0, 1200));
+  longDescription({ longDescription }: ProcessState) {
+    return isValid(longDescription, isMinMax(0, 1200));
   },
-  visibility(state: ProcessState) {
-    return !isEmpty(state.visibility);
+  visibility({ visibility }: ProcessState) {
+    return !!visibility;
   },
-  legalClause(state: ProcessState) {
-    return isValid(state.legalClause, isMinMax(0, 140));
+  legalClause({ legalClause }: ProcessState) {
+    return isValid(legalClause, isMinMax(0, 140));
   },
-  kle(state: ProcessState) {
-    return !isEmpty(state.kle);
+  kla({ kla }: ProcessState) {
+    return !kla || kla.length === 8 || kla.length === 11 || kla.length === 14;
   },
-  kla(state: ProcessState) {
-    return !state.kla || state.kla.length === 8 || state.kla.length === 11 || state.kla.length === 14;
+  solutionRequests({ solutionRequests }: ProcessState) {
+    return isValid(solutionRequests, isMinMax(0, 2400));
   },
-  processChallenges(state: ProcessState) {
-    return isValid(state.processChallenges, isMinMax(1, 1200));
+  timeSpendOccurancesPerEmployee({ phase, timeSpendOccurancesPerEmployee }: ProcessState) {
+    return phase === PhaseKeys.IDEA || isValid(timeSpendOccurancesPerEmployee, isInteger);
   },
-  solutionRequests(state: ProcessState) {
-    return isValid(state.solutionRequests, isMinMax(1, 2400));
+  timeSpendPerOccurance({ phase, timeSpendPerOccurance }: ProcessState) {
+    return phase === PhaseKeys.IDEA || isValid(timeSpendPerOccurance, isInteger);
   },
-  timeSpendOccurancesPerEmployee(state: ProcessState) {
-    return state.phase === PhaseKeys.IDEA || isValid(state.timeSpendOccurancesPerEmployee, isNonempty);
+  timeSpendEmployeesDoingProcess({ phase, timeSpendEmployeesDoingProcess }: ProcessState) {
+    return phase === PhaseKeys.IDEA || isValid(timeSpendEmployeesDoingProcess, isInteger);
   },
-  timeSpendPerOccurance(state: ProcessState) {
-    return state.phase === PhaseKeys.IDEA || isValid(state.timeSpendPerOccurance, isNonempty);
+  timeSpendPercentageDigital({ phase, timeSpendPercentageDigital }: ProcessState) {
+    return phase === PhaseKeys.IDEA || isValid(timeSpendPercentageDigital, isBetween(0, 100));
   },
-  timeSpendEmployeesDoingProcess(state: ProcessState) {
-    return state.phase === PhaseKeys.IDEA || isValid(state.timeSpendEmployeesDoingProcess, isNonempty);
+  timeSpendComment({ timeSpendComment }: ProcessState) {
+    return isValid(timeSpendComment, isMinMax(0, 300));
   },
-  timeSpendPercentageDigital(state: ProcessState) {
-    return state.phase === PhaseKeys.IDEA || isValid(Number(state.timeSpendPercentageDigital), isBetween(0, 100));
+  levelOfProfessionalAssessment({ levelOfProfessionalAssessment }: ProcessState) {
+    return levelOfProfessionalAssessment !== 'NOT_SET';
   },
-  timeSpendComment(state: ProcessState) {
-    return isValid(state.timeSpendComment, isMinMax(0, 300));
+  levelOfChange({ levelOfChange }: ProcessState) {
+    return levelOfChange !== 'NOT_SET';
   },
-  levelOfProfessionalAssessment(state: ProcessState) {
-    return state.phase === PhaseKeys.IDEA || !isEmpty(state.levelOfProfessionalAssessment);
+  levelOfStructuredInformation({ levelOfStructuredInformation }: ProcessState) {
+    return levelOfStructuredInformation !== 'NOT_SET';
   },
-  levelOfChange(state: ProcessState) {
-    return state.phase === PhaseKeys.IDEA || !isEmpty(state.levelOfChange);
+  levelOfUniformity({ levelOfUniformity }: ProcessState) {
+    return levelOfUniformity !== 'NOT_SET';
   },
-  levelOfStructuredInformation(state: ProcessState) {
-    return state.phase === PhaseKeys.IDEA || !isEmpty(state.levelOfStructuredInformation);
+  levelOfDigitalInformation({ levelOfDigitalInformation }: ProcessState) {
+    return levelOfDigitalInformation !== 'NOT_SET';
   },
-  levelOfUniformity(state: ProcessState) {
-    return state.phase === PhaseKeys.IDEA || !isEmpty(state.levelOfUniformity);
+  levelOfQuality({ levelOfQuality }: ProcessState) {
+    return levelOfQuality !== 'NOT_SET';
   },
-  levelOfDigitalInformation(state: ProcessState) {
-    return state.phase === PhaseKeys.IDEA || !isEmpty(state.levelOfDigitalInformation);
+  levelOfRoutineWorkReduction({ levelOfRoutineWorkReduction }: ProcessState) {
+    return levelOfRoutineWorkReduction !== 'NOT_SET';
   },
-  levelOfQuality({ phase, levelOfQuality }: ProcessState) {
-    return phase === PhaseKeys.IDEA || !isEmpty(levelOfQuality);
+  levelOfSpeed({ levelOfSpeed }: ProcessState) {
+    return levelOfSpeed !== 'NOT_SET';
   },
-  levelOfRoutineWorkReduction(state: ProcessState) {
-    return state.phase === PhaseKeys.IDEA || !isEmpty(state.levelOfRoutineWorkReduction);
-  },
-  levelOfSpeed({ phase, levelOfSpeed }: ProcessState) {
-    return phase === PhaseKeys.IDEA || !isEmpty(levelOfSpeed);
-  },
-  evaluatedLevelOfRoi({ phase, evaluatedLevelOfRoi }: ProcessState) {
-    return phase === PhaseKeys.IDEA || !isEmpty(evaluatedLevelOfRoi);
+  evaluatedLevelOfRoi({ evaluatedLevelOfRoi }: ProcessState) {
+    return evaluatedLevelOfRoi !== 'NOT_SET';
   },
   esdhReference({ phase, esdhReference }: ProcessState) {
-    return phase === PhaseKeys.IDEA || phase === PhaseKeys.PREANALYSIS || isValid(esdhReference, isMinMax(1, 300));
+    const minLength = phase === PhaseKeys.IDEA || phase === PhaseKeys.PREANALYSIS ? 0 : 1;
+    return isValid(esdhReference, isMinMax(minLength, 300));
   },
   owner({ phase, owner }: ProcessState) {
-    return phase === PhaseKeys.IDEA || phase === PhaseKeys.PREANALYSIS || !isEmpty(owner);
+    return phase === PhaseKeys.IDEA || phase === PhaseKeys.PREANALYSIS || !!owner;
+  },
+  orgUnits({ orgUnits }: ProcessState) {
+    return !isEmpty(orgUnits);
   },
   vendor({ phase, vendor }: ProcessState) {
-    return (
-      phase === PhaseKeys.IDEA ||
-      phase === PhaseKeys.PREANALYSIS ||
-      phase === PhaseKeys.SPECIFICATION ||
-      !isEmpty(vendor)
-    );
+    const minLength =
+      phase === PhaseKeys.IDEA || phase === PhaseKeys.PREANALYSIS || phase === PhaseKeys.SPECIFICATION ? 0 : 1;
+    return isValid(vendor || '', isMinMax(minLength, 255));
   },
   technologies({ phase, technologies }: ProcessState) {
     return (
@@ -143,23 +134,15 @@ export const processFieldsValidators: { [P in keyof Process]?: (state: ProcessSt
       technologies.length > 0
     );
   },
-  technicalImplementationNotes({ phase, technicalImplementationNotes }: ProcessState) {
-    return (
-      phase === PhaseKeys.IDEA ||
-      phase === PhaseKeys.PREANALYSIS ||
-      phase === PhaseKeys.SPECIFICATION ||
-      phase === PhaseKeys.DEVELOPMENT ||
-      isValid(technicalImplementationNotes, isMinMax(1, 3000))
-    );
+  technicalImplementationNotes({ technicalImplementationNotes }: ProcessState) {
+    return isValid(technicalImplementationNotes, isMinMax(0, 3000));
   },
-  organizationalImplementationNotes({ phase, organizationalImplementationNotes }: ProcessState) {
-    return (
-      phase === PhaseKeys.IDEA ||
-      phase === PhaseKeys.PREANALYSIS ||
-      phase === PhaseKeys.SPECIFICATION ||
-      phase === PhaseKeys.DEVELOPMENT ||
-      isValid(organizationalImplementationNotes, isMinMax(1, 3000))
-    );
+  organizationalImplementationNotes({ organizationalImplementationNotes }: ProcessState) {
+    return isValid(organizationalImplementationNotes, isMinMax(0, 3000));
+  },
+  processChallenges({ phase, processChallenges }: ProcessState) {
+    const minLength = phase === PhaseKeys.IDEA ? 0 : 1;
+    return isValid(processChallenges, isMinMax(minLength, 1200));
   },
   rating({ phase, rating }: ProcessState) {
     return (
@@ -171,34 +154,13 @@ export const processFieldsValidators: { [P in keyof Process]?: (state: ProcessSt
       isValid(rating, isBetween(1, 3))
     );
   },
-  ratingComment({ phase, ratingComment }: ProcessState) {
-    return (
-      phase === PhaseKeys.IDEA ||
-      phase === PhaseKeys.PREANALYSIS ||
-      phase === PhaseKeys.SPECIFICATION ||
-      phase === PhaseKeys.DEVELOPMENT ||
-      phase === PhaseKeys.IMPLEMENTATION ||
-      isValid(ratingComment, isMinMax(1, 1200))
-    );
+  ratingComment({ ratingComment }: ProcessState) {
+    return isValid(ratingComment, isMinMax(0, 1200));
   },
-  legalClauseLastVerified({ phase, legalClauseLastVerified }: ProcessState) {
-    if (!legalClauseLastVerified) {
-      return true;
-    }
-
-    return (
-      phase === PhaseKeys.IDEA ||
-      phase === PhaseKeys.PREANALYSIS ||
-      phase === PhaseKeys.SPECIFICATION ||
-      phase === PhaseKeys.DEVELOPMENT ||
-      phase === PhaseKeys.IMPLEMENTATION ||
-      DateTime.fromISO(legalClauseLastVerified).isValid
-    );
+  legalClauseLastVerified({ legalClauseLastVerified }: ProcessState) {
+    return !legalClauseLastVerified || DateTime.fromISO(legalClauseLastVerified).isValid;
   },
   internalNotes({ internalNotes }: ProcessState) {
-    return !!internalNotes;
-  },
-  timeSpendComputedTotal(state: ProcessState) {
-    return !isEmpty(state.timeSpendComputedTotal);
+    return isValid(internalNotes, isMinMax(0, 2400));
   }
 };
