@@ -15,11 +15,9 @@
     </div>
 
     <a class="name" :href="attachment.url" target="_blank">{{attachment.fileName}}</a>
-    <label>
-      <Checkbox v-if="!disabled && canChangeVisibility" :value="attachment.visibleToOtherMunicipalities" @change="$emit('toggleVisibility', attachment.id)">
-        Synlig for alle
-      </Checkbox>
-    </label>
+    <Checkbox v-if="!disabled && canChangeVisibility" :value="attachment.visibleToOtherMunicipalities" @change="$emit('toggleVisibility', attachment.id)">
+      Synlig for alle
+    </Checkbox>
   </div>
 </template>
 
