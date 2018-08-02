@@ -38,13 +38,13 @@
         <LikertScale :disabled="state.disabled.assessmentEdit" :value="state.levelOfQuality" @change="update({ levelOfQuality: $event })" />
       </div>
       <div class="question">
-        <div class="label">Bidrager løsningen til en hurtigere og mere fyldestgørende service?
+        <div class="label">Bidrager løsningen til en hurtigere og mere fyldestgørende service? *
           <InfoTooltip class="tooltip" />
         </div>
         <LikertScale :disabled="state.disabled.assessmentEdit" :value="state.levelOfSpeed" @change="update({ levelOfSpeed: $event })" />
       </div>
       <div class="question">
-        <div class="label">Frigiver løsningen tid og nedbringer rutineopgaver, som skaber en bedre trivsel blandt medarbejderne?
+        <div class="label">Frigiver løsningen tid og nedbringer rutineopgaver, som skaber en bedre trivsel blandt medarbejderne? *
           <InfoTooltip class="tooltip" />
         </div>
         <LikertScale :disabled="state.disabled.assessmentEdit" :value="state.levelOfRoutineWorkReduction" @change="update({ levelOfRoutineWorkReduction: $event })" />
