@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="menu-item" v-for="item in menuItems.filter(item => item.show)" :key="item.id" :class="{ 'in-view': itemInView === item }" @click="scrollTo(item)">
+    <div class="menu-item" v-for="item in items.filter(item => item.show)" :key="item.id" :class="{ 'in-view': itemInView === item }" @click="scrollTo(item)">
       {{item.heading}}
     </div>
   </div>
@@ -20,8 +20,6 @@ export interface MenuItem {
 
 @Component
 export default class ProcessMenu extends Vue {
-  items: MenuItem[] = [];
-
   @Prop(String) phase!: Phase;
   @Prop(Boolean) canEdit!: boolean;
   @Prop(Boolean) isReporting!: boolean;
@@ -42,7 +40,7 @@ export default class ProcessMenu extends Vue {
     window.removeEventListener('scroll', this.listener);
   }
 
-  get menuItems() {
+  get items() {
     return [
       { heading: 'Grundlæggende oplysninger', id: 'general-information', show: true },
       { heading: 'Problemstillinger', id: 'challenges', show: true },
