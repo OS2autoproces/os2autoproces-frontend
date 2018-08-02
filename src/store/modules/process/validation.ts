@@ -85,31 +85,31 @@ export const processFieldsValidators: { [P in keyof Process]?: (state: ProcessSt
     return isValid(timeSpendComment, isMinMax(0, 300));
   },
   levelOfProfessionalAssessment({ levelOfProfessionalAssessment }: ProcessState) {
-    return !!levelOfProfessionalAssessment;
+    return levelOfProfessionalAssessment !== 'NOT_SET';
   },
   levelOfChange({ levelOfChange }: ProcessState) {
-    return !!levelOfChange;
+    return levelOfChange !== 'NOT_SET';
   },
   levelOfStructuredInformation({ levelOfStructuredInformation }: ProcessState) {
-    return !!levelOfStructuredInformation;
+    return levelOfStructuredInformation !== 'NOT_SET';
   },
   levelOfUniformity({ levelOfUniformity }: ProcessState) {
-    return !!levelOfUniformity;
+    return levelOfUniformity !== 'NOT_SET';
   },
   levelOfDigitalInformation({ levelOfDigitalInformation }: ProcessState) {
-    return !!levelOfDigitalInformation;
+    return levelOfDigitalInformation !== 'NOT_SET';
   },
   levelOfQuality({ levelOfQuality }: ProcessState) {
-    return !!levelOfQuality;
+    return levelOfQuality !== 'NOT_SET';
   },
   levelOfRoutineWorkReduction({ levelOfRoutineWorkReduction }: ProcessState) {
-    return !!levelOfRoutineWorkReduction;
+    return levelOfRoutineWorkReduction !== 'NOT_SET';
   },
   levelOfSpeed({ levelOfSpeed }: ProcessState) {
-    return !!levelOfSpeed;
+    return levelOfSpeed !== 'NOT_SET';
   },
   evaluatedLevelOfRoi({ evaluatedLevelOfRoi }: ProcessState) {
-    return !!evaluatedLevelOfRoi;
+    return evaluatedLevelOfRoi !== 'NOT_SET';
   },
   esdhReference({ phase, esdhReference }: ProcessState) {
     const minLength = phase === PhaseKeys.IDEA || phase === PhaseKeys.PREANALYSIS ? 0 : 1;
@@ -142,7 +142,7 @@ export const processFieldsValidators: { [P in keyof Process]?: (state: ProcessSt
   },
   processChallenges({ phase, processChallenges }: ProcessState) {
     const minLength = phase === PhaseKeys.IDEA ? 0 : 1;
-    return isValid(processChallenges, isMinMax(minLength, 1200)); 
+    return isValid(processChallenges, isMinMax(minLength, 1200));
   },
   rating({ phase, rating }: ProcessState) {
     return (
