@@ -105,6 +105,7 @@ export const actions: ActionTree<ProcessState, RootState> = {
     });
 
     try {
+      commit(processActionTypes.ASSIGN, { attachmentsUploading: true }, { root: true });
       let attachments = (await HTTP.post<Attachment[]>(`/api/attachments/${state.id}`, form)).data;
       const publicAttachments = (await HTTP.post<Attachment[]>(`/api/attachments/${state.id}/public`, formPublic)).data;
       attachments = attachments.concat(publicAttachments);
@@ -113,16 +114,13 @@ export const actions: ActionTree<ProcessState, RootState> = {
       }
       const atts = [...state.attachments, ...attachments];
       commit(processMutationTypes.ASSIGN, {
-        attachments: [...state.attachments, ...attachments]
+        attachments: [...state.attachments, ...attachments],
+        attachmentsUploading: false
       });
     } catch {
       if (!state.attachments) {
         return;
       }
-      // Upload failed - remove placeholders
-      commit(processMutationTypes.ASSIGN, {
-        attachments: state.attachments.filter(a => state.attachments && !state.attachments.includes(a))
-      });
     }
   },
   async removeAttachment({ commit, state }, id: string) {
@@ -324,6 +322,7 @@ export function initialProcessState(): ProcessState {
     /* Attachments */
     links: [],
     attachments: [],
+    attachmentsUploading: false,
 
     /* Details */
     title: '',

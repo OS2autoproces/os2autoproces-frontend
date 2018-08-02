@@ -11,7 +11,7 @@
       <div v-if="!disabled && !attachment.uploading" class="delete-button" role="button" @click="$emit('remove')">
         <DeleteIcon />
       </div>
-      <v-icon v-if="attachment.uploading" class="upload-icon">cloud_upload</v-icon>
+      <v-icon v-if="uploading" class="upload-icon">cloud_upload</v-icon>
     </div>
 
     <a class="name" :href="attachment.url" target="_blank">{{attachment.fileName}}</a>
@@ -20,7 +20,7 @@
 </template>
 
 <script lang='ts'>
-import { Vue, Component, Prop } from 'vue-property-decorator';
+import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import WordIcon from '@/components/icons/WordIcon.vue';
 import ExcelIcon from '@/components/icons/ExcelIcon.vue';
 import PdfIcon from '@/components/icons/PdfIcon.vue';
@@ -44,20 +44,12 @@ import { Attachment } from '@/store/modules/process/state';
 export default class AttachmentComponent extends Vue {
   @Prop(Object) attachment!: Attachment;
   @Prop(Boolean) disabled!: boolean;
+  @Prop(Boolean) uploading!: boolean;
   @Prop({ default: true })
   canChangeVisibility!: boolean;
 
   get type() {
-    const word = [
-      '.doc',
-      '.dot',
-      '.wbk',
-      '.docx',
-      '.docm',
-      '.dotx',
-      '.dotm',
-      '.docb'
-    ];
+    const word = ['.doc', '.dot', '.wbk', '.docx', '.docm', '.dotx', '.dotm', '.docb'];
     const excel = ['.xls', '.xlt', '.xlm', '.xlsx', '.xlsm', '.xltx', '.xltm'];
     const powerPoint = [
       '.ppt',
@@ -86,9 +78,7 @@ export default class AttachmentComponent extends Vue {
       return 'excel';
     }
 
-    if (
-      powerPoint.some(extension => this.attachment.fileName.endsWith(extension))
-    ) {
+    if (powerPoint.some(extension => this.attachment.fileName.endsWith(extension))) {
       return 'powerPoint';
     }
 

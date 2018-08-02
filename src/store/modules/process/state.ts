@@ -10,6 +10,7 @@ export interface ProcessState extends Process {
   disabled: Disabled;
   attachments: Attachment[] | null;
   comments: Comment[];
+  attachmentsUploading: boolean;
 }
 
 export interface Process {
@@ -109,7 +110,6 @@ export interface Attachment {
   fileName: string;
   id?: string;
   url?: string;
-  uploading?: boolean;
   visibleToOtherMunicipalities?: boolean;
 }
 
