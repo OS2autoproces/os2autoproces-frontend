@@ -24,6 +24,7 @@ export default class ProcessMenu extends Vue {
 
   @Prop(String) phase!: Phase;
   @Prop(Boolean) canEdit!: boolean;
+  @Prop(Boolean) isReporting!: boolean;
   @Getter(processGetterTypes.MIN_PHASE) minPhase!: (phase: Phase) => boolean;
 
   private itemInView: MenuItem | null = null;
@@ -50,7 +51,7 @@ export default class ProcessMenu extends Vue {
       { heading: 'Specifikation', id: 'specification', show: this.minPhase(PhaseKeys.SPECIFICATION) },
       { heading: 'Udvikling og implementering', id: 'implementation', show: this.minPhase(PhaseKeys.DEVELOPMENT) },
       { heading: 'Drift', id: 'operation', show: this.minPhase(PhaseKeys.OPERATION) },
-      { heading: 'Bilag', id: 'attachments', show: this.minPhase(PhaseKeys.PREANALYSIS) },
+      { heading: 'Bilag', id: 'attachments', show: !this.isReporting && this.minPhase(PhaseKeys.PREANALYSIS) },
       { heading: 'Interne noter', id: 'internal-notes', show: this.canEdit }
     ];
   }
