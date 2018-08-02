@@ -6,6 +6,12 @@
       <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({solutionRequests: $event})" :disabled="state.disabled.challengesEdit" :value="state.solutionRequests" />
     </div>
 
+    <div v-if="minPhase(PhaseKeys.PREANALYSIS)">
+      <h2>Proces udfordringer</h2>
+      <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
+      <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({processChallenges: $event})" :disabled="state.disabled.challengesEdit" :value="state.processChallenges" />
+    </div>
+
     <Well class="challenges-well">
       <div>
         <WellItem label="Oprettet:">

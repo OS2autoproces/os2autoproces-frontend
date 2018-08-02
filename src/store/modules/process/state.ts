@@ -41,6 +41,7 @@ export interface Process {
   vendor: string | null;
   cvr: string;
   internalNotes: string;
+  processChallenges: string;
   solutionRequests: string;
   timeSpendOccurancesPerEmployee: string;
   timeSpendPerOccurance: string;
