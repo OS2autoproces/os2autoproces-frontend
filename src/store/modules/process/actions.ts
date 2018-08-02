@@ -174,6 +174,7 @@ export const actions: ActionTree<ProcessState, RootState> = {
     }
 
     const response = await HTTP.get<ProcessResponse>(`api/processes/${id}?projection=extended`);
+
     const process = responseToState(response.data);
 
     commit(processMutationTypes.ASSIGN, process);
@@ -255,7 +256,8 @@ export function initialProcessState(): ProcessState {
   return {
     id: '',
     localId: '',
-    kle: '',
+    kle: null,
+    form: null,
     contact: null,
     klId: '',
     kla: null,

@@ -10,6 +10,7 @@ export const state: CommonState = {
   frontPage: '',
   itSystems: [],
   kles: [],
+  forms: [],
   orgUnits: [],
   users: []
 };

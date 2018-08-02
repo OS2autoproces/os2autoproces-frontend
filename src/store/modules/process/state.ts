@@ -5,6 +5,7 @@ import { Status } from '@/models/status';
 import { Type } from '@/models/types';
 import { Visibility } from '@/models/visibility';
 import { User } from '@/store/modules/auth/state';
+import { Form, Kle } from '@/store/modules/common/actions';
 
 export interface ProcessState extends Process {
   disabled: Disabled;
@@ -35,7 +36,7 @@ export interface Process {
   visibility: Visibility;
   legalClause: string;
   legalClauseLastVerified: string | null;
-  kle: string;
+  kle: Kle | null;
   kla: string | null;
   klaProcess: boolean;
   links: Link[];
@@ -58,6 +59,7 @@ export interface Process {
   levelOfStructuredInformation: LikertScale;
   levelOfUniformity: LikertScale;
   levelOfDigitalInformation: LikertScale;
+  form: Form | null;
 
   levelOfQuality: LikertScale;
   levelOfSpeed: LikertScale;

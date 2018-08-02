@@ -31,6 +31,7 @@ export interface ProcessRequest {
   kle: string | null;
   kla: string | null;
   links: Link[] | null;
+  form: string | null;
 
   vendor: string | null;
   internalNotes: string | null;
@@ -80,6 +81,7 @@ export interface ProcessResponse {
   hasBookmarked: boolean;
   canEdit: boolean;
   emailNotification: boolean;
+  form: string | null;
 
   localId: string | null;
   klId: string | null;
@@ -181,7 +183,8 @@ function stateToRequestFields(state: ProcessState): ProcessRequest {
     visibility: state.visibility || VisibilityKeys.PERSONAL,
     legalClause: defaultNull(state.legalClause),
     legalClauseLastVerified: defaultNull(state.legalClauseLastVerified),
-    kle: defaultNull(state.kle),
+    kle: state.kle ? state.kle.code : null,
+    form: state.form ? state.form.code : null,
     kla: defaultNull(state.kla),
     links: defaultNull(state.links),
     vendor: defaultNull(state.vendor),
@@ -234,6 +237,7 @@ function buildUmbrellaRequest(request: ProcessRequest): Partial<ProcessRequest> 
     'localId',
     'klId',
     'kla',
+    'form',
     'contact',
     'children',
     'domains',
@@ -277,8 +281,9 @@ export function responseToState(process: ProcessResponse): Process {
     users: process.users || [],
     localId: process.localId || '',
     klId: process.klId || '',
+    form: process.form ? { code: process.form } : null,
     legalClause: process.legalClause || '',
-    kle: process.kle || '',
+    kle: process.kle ? { code: process.kle } : null,
     kla: process.kla || '',
     links: process.links || [],
     internalNotes: process.internalNotes || '',
