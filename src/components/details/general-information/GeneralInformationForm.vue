@@ -60,7 +60,7 @@
     <div class="resume-phases">
       <div class="resume">
         <h2>Resume</h2>
-        <TextArea :disabled="state.disabled.generalInformationEdit" @change="update({shortDescription: $event})" :value="state.shortDescription" />
+        <TextArea :disabled="state.disabled.generalInformationEdit" @change="update({shortDescription: $event})" :value="state.shortDescription" :maxLength="140" />
       </div>
       <div class="general-phases">
         <Phases :disabled="state.disabled.generalInformationEdit" :value="state.phase" @change="phaseChanged($event)" />
@@ -140,7 +140,7 @@ export default class GeneralInformationForm extends Vue {
   PhaseKeys = PhaseKeys;
 
   get isWithinMunicipality() {
-    const {auth, process} = this.$store.state;
+    const { auth, process } = this.$store.state;
     return auth.user.cvr === process.cvr;
   }
 

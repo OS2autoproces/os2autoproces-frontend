@@ -64,10 +64,10 @@ export const assessmentLabels: ProcessLabels = {
   levelOfChange: 'I hvor høj grad er processen præget af hyppige ændringer?',
   levelOfStructuredInformation: 'I hvor høj grad er processen baseret på struktureret information?',
   levelOfUniformity: 'I hvor høj grad er processen uniform?',
-  levelOfDigitalInformation: 'sadasd',
+  levelOfDigitalInformation: 'Er data og informationer, der skal bruges i processen tilgængelige?',
   levelOfQuality: 'Bidrager løsningen til en højere kvalitet, som er mere ensrettet og med færre fejl?',
-  levelOfSpeed: 'Bidrager løsningen til en hurtigere og mere fyldesgørende service',
-  levelOfRoutineWorkReduction: 'Frigiver løsningen tid og nedbringer rutineopgaver',
+  levelOfSpeed: 'Bidrager løsningen til en hurtigere og mere fyldestgørende service?',
+  levelOfRoutineWorkReduction: 'Frigiver løsningen tid og nedbringer rutineopgaver?',
   evaluatedLevelOfRoi: 'I hvor høj grad vurderes det at processen kan automatiseres?'
 };
 

@@ -9,6 +9,7 @@ const namespace = 'search';
 
 export const searchActionTypes = {
   UPDATE_FILTERS: `${namespace}/updateFilters`,
+  ASSIGN_FILTERS: `${namespace}/assignFilters`,
   SEARCH: `${namespace}/search`
 };
 
@@ -20,6 +21,10 @@ const debouncedSearch = debounce(async (filters: SearchFilters, commit: Commit) 
 export const actions: ActionTree<SearchState, RootState> = {
   updateFilters({ commit, dispatch }, filters: Partial<SearchFilters>) {
     commit(searchMutationTypes.UPDATE_FILTERS, filters);
+    dispatch(searchActionTypes.SEARCH, {}, { root: true });
+  },
+  assignFilters({ commit, dispatch }, filters: Partial<SearchFilters>) {
+    commit(searchMutationTypes.ASSIGN_FILTERS, filters);
     dispatch(searchActionTypes.SEARCH, {}, { root: true });
   },
   search({ commit, state }) {

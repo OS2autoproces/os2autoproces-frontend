@@ -17,9 +17,12 @@ export const state: SearchState = {
     usersId: null,
     bookmarkedId: null,
     text: '',
+    created: '',
+    lastChanged: '',
     municipality: false,
     public: false,
     klaProcess: false,
+    itSystems: [],
     sorting: {
       property: 'title',
       descending: false
