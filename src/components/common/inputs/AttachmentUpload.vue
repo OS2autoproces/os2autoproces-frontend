@@ -1,11 +1,11 @@
 <template>
   <div class="attachment-upload">
-    <h2>Synlige for alle</h2>
+    <h2 v-if="visibleForAll.length">Synlige for alle</h2>
     <div class="attachment-list">
       <AttachmentComponent v-for="attachment in visibleForAll" :key="attachment.id" :attachment="attachment" :disabled="disabled" @remove="removeAttachment(attachment.id)" />
     </div>
 
-    <h2>Synlige i kommunen</h2>
+    <h2 v-if="visibleForMunicipality.length">Synlige i kommunen</h2>
     <div class="attachment-list">
       <AttachmentComponent v-for="attachment in visibleForMunicipality" :key="attachment.id" :attachment="attachment" :disabled="disabled" @remove="removeAttachment(attachment.id)" />
     </div>
