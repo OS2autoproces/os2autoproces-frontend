@@ -79,6 +79,8 @@
       </ExpandPanel>
 
       <ExpandPanel title="Timeforbrug">
+        Antal timer:
+        <InputField :value="filters.timeSpendComputedTotal" @change="updateFilters({ timeSpendComputedTotal: $event })" />
       </ExpandPanel>
 
       <ExpandPanel title="System">
@@ -92,6 +94,7 @@
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import Checkbox from '../common/inputs/Checkbox.vue';
 import SearchField from '../common/inputs/SearchField.vue';
+import InputField from '../common/inputs/InputField.vue';
 import DatePicker from '../common/inputs/DatePicker.vue';
 import SearchOption from './SearchOption.vue';
 import PillCheckbox from '../common/inputs/PillCheckbox.vue';
@@ -108,6 +111,7 @@ import { commonActionTypes } from '@/store/modules/common/actions';
 @Component({
   components: {
     SearchField,
+    InputField,
     SearchOption,
     ExpandPanel,
     DatePicker,

@@ -44,6 +44,7 @@ interface SearchParams {
   freetext: string;
   lastChanged: string;
   created: string;
+  timeSpendComputedTotal: string;
   sort: string;
   type: Type | null;
   'reporter.uuid': string | null;
@@ -78,6 +79,7 @@ export async function search(filters: SearchFilters): Promise<SearchResult> {
     page: filters.page,
     size: filters.size,
     type: filters.type,
+    timeSpendComputedTotal: filters.timeSpendComputedTotal,
     created: dateFromISODateTime(filters.created),
     lastChanged: dateFromISODateTime(filters.lastChanged),
     'reporter.uuid': filters.reporterId,

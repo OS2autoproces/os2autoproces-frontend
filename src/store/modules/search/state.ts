@@ -38,6 +38,7 @@ export interface SearchFilters {
   text: string;
   created: string;
   lastChanged: string;
+  timeSpendComputedTotal: string;
   municipality: boolean;
   public: boolean;
   page: number;

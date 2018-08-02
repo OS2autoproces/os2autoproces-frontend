@@ -23,6 +23,7 @@ export const state: SearchState = {
     public: false,
     klaProcess: false,
     itSystems: [],
+    timeSpendComputedTotal: '',
     sorting: {
       property: 'title',
       descending: false
