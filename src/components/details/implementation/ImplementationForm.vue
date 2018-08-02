@@ -14,7 +14,7 @@
     </div>
 
     <div>
-      <h2>Anvendt teknologi</h2>
+      <h2>Anvendt teknologi *</h2>
       <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
       <TagSelector @add="addTechnology($event)" @remove="removeTechnology($event)" :disabled="state.disabled.implementationEdit" :value="state.technologies" :items="technologies" />
     </div>

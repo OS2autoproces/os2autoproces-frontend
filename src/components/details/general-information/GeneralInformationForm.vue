@@ -3,7 +3,7 @@
     <div class="general-information-wrapper">
       <Well>
         <div>
-          <WellItem labelWidth="120px" label="ID:">
+          <WellItem labelWidth="120px" label="ID:" :required="true">
             <InputField disabled :value="state.id" />
           </WellItem>
           <WellItem labelWidth="120px" label="KLE-nr:">
@@ -24,19 +24,19 @@
         </div>
 
         <div>
-          <WellItem v-if="minPhase(PhaseKeys.DEVELOPMENT)" labelWidth="120px" label="Leverandør:">
+          <WellItem v-if="minPhase(PhaseKeys.DEVELOPMENT)" labelWidth="120px" label="Leverandør:" :required="minPhase(PhaseKeys.DEVELOPMENT)">
             <InputField :disabled="state.disabled.generalInformationEdit" :value="state.vendor" @change="update({vendor: $event})" />
           </WellItem>
-          <WellItem labelWidth="120px" label="Indberetter:" v-if="isWithinMunicipality">
+          <WellItem labelWidth="120px" label="Indberetter:" v-if="isWithinMunicipality" :required="true">
             <SelectionField disabled :value="state.reporter" itemText="name" />
           </WellItem>
-          <WellItem labelWidth="120px" label="Ejer:" v-if="isWithinMunicipality">
+          <WellItem labelWidth="120px" label="Ejer:" v-if="isWithinMunicipality" :required="minPhase(PhaseKeys.SPECIFICATION)">
             <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.owner" itemText="name" @search="search($event)" isItemsPartial @change="update({owner: $event})" :items="users" />
           </WellItem>
-          <WellItem labelWidth="120px" label="Kontaktperson:">
+          <WellItem labelWidth="120px" label="Kontaktperson:" :required="true">
             <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.contact" itemText="name" @search="search($event)" isItemsPartial @change="update({contact: $event})" :items="users" clearable />
           </WellItem>
-          <WellItem v-if="state.contact" labelWidth="120px" label="Mail:">
+          <WellItem v-if="state.contact" labelWidth="120px" label="Mail:" :required="true">
             {{state.contact.email}}
           </WellItem>
         </div>
@@ -45,10 +45,10 @@
           <WellItem labelWidth="120px" label="Fagområder:">
             <DomainsField :disabled="state.disabled.generalInformationEdit" :value="state.domains" @change="assign({domains: $event})" />
           </WellItem>
-          <WellItem labelWidth="120px" label="Afdelinger:" v-if="isWithinMunicipality">
+          <WellItem labelWidth="120px" label="Afdelinger:" v-if="isWithinMunicipality" :required="true">
             <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.orgUnits" @change="assign({orgUnits: $event})" :items="orgUnits" multiple itemText="name" />
           </WellItem>
-          <WellItem labelWidth="120px" label="Synlighed:">
+          <WellItem labelWidth="120px" label="Synlighed:" :required="minPhase(PhaseKeys.IDEA)">
             <MappedSelectionField :disabled="state.disabled.generalInformationEdit" :value="state.visibility" @change="update({visibility: $event})" :items="visibilityLevels" />
           </WellItem>
           <WellItem v-if="minPhase(PhaseKeys.PREANALYSIS)" labelWidth="120px" label="Lov of paragraf:">

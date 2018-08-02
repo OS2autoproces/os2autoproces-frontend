@@ -7,7 +7,7 @@
     </div>
 
     <div v-if="minPhase(PhaseKeys.PREANALYSIS)">
-      <h2>Udfordringer i den nuværende proces</h2>
+      <h2>Udfordringer i den nuværende proces *</h2>
       <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
       <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({processChallenges: $event})" :disabled="state.disabled.challengesEdit" :value="state.processChallenges" :maxLength="1200" />
     </div>

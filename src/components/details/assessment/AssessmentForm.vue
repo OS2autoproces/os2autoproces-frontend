@@ -2,37 +2,37 @@
   <FormSection :invalid="!isAssessmentValid" v-if="minPhase(PhaseKeys.PREANALYSIS)" heading="Faglig vurdering" id="assessment" :disabled="state.disabled.assessmentEdit" @edit="update({ disabled: { assessmentEdit: $event} })">
     <div class="assessment" :class="{ disabled: state.disabled.assessmentEdit }">
       <div class="question">
-        <div class="label">I hvor høj grad er der faglig vurdering?
+        <div class="label">I hvor høj grad er der faglig vurdering? *
           <InfoTooltip class="tooltip" />
         </div>
         <LikertScale :disabled="state.disabled.assessmentEdit" :value="state.levelOfProfessionalAssessment" @change="update({ levelOfProfessionalAssessment: $event })" />
       </div>
       <div class="question">
-        <div class="label">I hvor høj grad er processen præget af hyppige ændringer?
+        <div class="label">I hvor høj grad er processen præget af hyppige ændringer? *
           <InfoTooltip class="tooltip" />
         </div>
         <LikertScale :disabled="state.disabled.assessmentEdit" :value="state.levelOfChange" @change="update({ levelOfChange: $event })" />
       </div>
       <div class="question">
-        <div class="label">I hvor høj grad er processen baseret på struktureret information?
+        <div class="label">I hvor høj grad er processen baseret på struktureret information? *
           <InfoTooltip class="tooltip" />
         </div>
         <LikertScale :disabled="state.disabled.assessmentEdit" :value="state.levelOfStructuredInformation" @change="update({ levelOfStructuredInformation: $event })" />
       </div>
       <div class="question">
-        <div class="label">Er der variation i hvordan processen løses?
+        <div class="label">Er der variation i hvordan processen løses? *
           <InfoTooltip class="tooltip" />
         </div>
         <LikertScale :disabled="state.disabled.assessmentEdit" :value="state.levelOfUniformity" @change="update({ levelOfUniformity: $event })" />
       </div>
       <div class="question">
-        <div class="label">Er data og informationer, der skal bruges i processen tilgængelige?
+        <div class="label">Er data og informationer, der skal bruges i processen tilgængelige? *
           <InfoTooltip class="tooltip" />
         </div>
         <LikertScale :disabled="state.disabled.assessmentEdit" :value="state.levelOfDigitalInformation" @change="update({ levelOfDigitalInformation: $event })" />
       </div>
       <div class="question">
-        <div class="label">Bidrager løsningen til en højere kvalitet, som er mere ensrettet og med færre fejl?
+        <div class="label">Bidrager løsningen til en højere kvalitet, som er mere ensrettet og med færre fejl? *
           <InfoTooltip class="tooltip" />
         </div>
         <LikertScale :disabled="state.disabled.assessmentEdit" :value="state.levelOfQuality" @change="update({ levelOfQuality: $event })" />
@@ -50,7 +50,7 @@
         <LikertScale :disabled="state.disabled.assessmentEdit" :value="state.levelOfRoutineWorkReduction" @change="update({ levelOfRoutineWorkReduction: $event })" />
       </div>
       <div class="question">
-        <div class="label">I hvor høj grad vurderes det at processen kan automatiseres?
+        <div class="label">I hvor høj grad vurderes det at processen kan automatiseres? *
           <InfoTooltip class="tooltip" />
         </div>
         <LikertScale :disabled="state.disabled.assessmentEdit" :value="state.evaluatedLevelOfRoi" @change="update({ evaluatedLevelOfRoi: $event })" />

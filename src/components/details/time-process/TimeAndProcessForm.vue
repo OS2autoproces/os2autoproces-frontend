@@ -3,19 +3,19 @@
 
     <Well>
       <div>
-        <WellItem labelWidth="70%" label="Antal gange processen gentages om året pr. medarbejder">
+        <WellItem labelWidth="70%" label="Antal gange processen gentages om året pr. medarbejder" :required="minPhase(PhaseKeys.PREANALYSIS)">
           <InputField :value="state.timeSpendOccurancesPerEmployee" :disabled="state.disabled.timeAndProcessEdit" @change="update({timeSpendOccurancesPerEmployee: $event})" />
         </WellItem>
-        <WellItem labelWidth="70%" label="Tidsforbrug pr. proces i minutter">
+        <WellItem labelWidth="70%" label="Tidsforbrug pr. proces i minutter" :required="minPhase(PhaseKeys.PREANALYSIS)">
           <InputField :disabled="state.disabled.timeAndProcessEdit" :value="state.timeSpendPerOccurance" @change="update({timeSpendPerOccurance: $event})" />
         </WellItem>
-        <WellItem labelWidth="70%" label="Total tidsforbrug">
+        <WellItem labelWidth="70%" label="Total tidsforbrug" :required="minPhase(PhaseKeys.PREANALYSIS)">
           <InputField disabled :value="state.timeSpendComputedTotal" />
         </WellItem>
       </div>
 
       <div>
-        <WellItem labelWidth="70%" label="Antal medarbejdere der foretager processen">
+        <WellItem labelWidth="70%" label="Antal medarbejdere der foretager processen" :required="minPhase(PhaseKeys.PREANALYSIS)">
           <InputField :disabled="state.disabled.timeAndProcessEdit" :value="state.timeSpendEmployeesDoingProcess" @change="update({timeSpendEmployeesDoingProcess: $event})" />
         </WellItem>
         <WellItem labelWidth="70%" label="Digital procent besparelse">
@@ -55,6 +55,7 @@ import FormSection from '@/components/details/FormSection.vue';
 import { Action, Getter } from 'vuex-class';
 import { processActionTypes } from '@/store/modules/process/actions';
 import { processGetterTypes } from '@/store/modules/process/getters';
+import { Phase, PhaseKeys } from '@/models/phase';
 
 @Component({
   components: {
@@ -70,6 +71,8 @@ import { processGetterTypes } from '@/store/modules/process/getters';
 export default class TimeAndProcessForm extends Vue {
   @Action(processActionTypes.UPDATE) update: any;
   @Getter(processGetterTypes.IS_TIME_AND_PROCESS_VALID) isTimeAndProcessValid!: any;
+  @Getter(processGetterTypes.MIN_PHASE) minPhase!: (phase: Phase) => boolean;
+  PhaseKeys = PhaseKeys;
 
   yesNoItems = [{ value: true, text: 'Ja' }, { value: false, text: 'Nej' }];
 

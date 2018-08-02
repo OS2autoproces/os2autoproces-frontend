@@ -1,7 +1,7 @@
 <template>
   <FormSection :invalid="!isSpecificationValid" v-if="minPhase(PhaseKeys.SPECIFICATION)" heading="Specifikation" id="specification" :disabled="state.disabled.specificationEdit" @edit="update({disabled: { specificationEdit: $event}})">
 
-    <h2>Sagsreference i ESDH</h2>
+    <h2>Sagsreference i ESDH *</h2>
     <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
     <TextArea :max-length="300" @change="update({esdhReference: $event})" :disabled="state.disabled.specificationEdit" :value="state.esdhReference" />
 
