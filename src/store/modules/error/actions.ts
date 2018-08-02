@@ -32,7 +32,7 @@ export const generalInformationLabels: ProcessLabels = {
   status: 'Status',
   statusText: 'Statustekst',
   title: 'Titel',
-  shortDescription: 'Resumé',
+  shortDescription: 'Resume',
   domains: 'Domæner',
   visibility: 'Synlighed',
   legalClause: 'Lov og paragraf',
