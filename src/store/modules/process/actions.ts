@@ -9,7 +9,7 @@ import { ProcessRequest, ProcessResponse, responseToState, stateToRequest } from
 import { User } from '@/store/modules/auth/state';
 import { errorActionTypes } from '@/store/modules/error/actions';
 import { processMutationTypes } from '@/store/modules/process/mutations';
-import { Attachment, ITSystem, Process, ProcessState, Technology } from '@/store/modules/process/state';
+import { Attachment, ITSystem, Process, ProcessState, Technology, AttachmentFile } from '@/store/modules/process/state';
 import { RootState } from '@/store/store';
 import { ActionTree } from 'vuex';
 import { getInvalidProperties } from '@/store/modules/process/validation';
@@ -21,15 +21,13 @@ export const processActionTypes = {
   UPDATE: `${namespace}/update`,
   ASSIGN: `${namespace}/assign`,
   CLEAR_PROCESS: `${namespace}/clear`,
-  ADD_ATTACHMENTS: `${namespace}/addAttachments`,
-  REMOVE_ATTACHMENTS: `${namespace}/removeAttachments`,
+  UPLOAD_ATTACHMENTS: `${namespace}/uploadAttachments`,
+  REMOVE_ATTACHMENTS: `${namespace}/removeAttachment`,
   LOAD_ATTACHMENTS: `${namespace}/loadAttachments`,
   SAVE_COMMENT: `${namespace}/saveComment`,
   LOAD_COMMENTS: `${namespace}/loadComments`,
   SAVE: `${namespace}/save`,
   REPORT: `${namespace}/report`,
-  SAVE_UMBRELLA: `${namespace}/saveUmbrella`,
-  REPORT_UMBRELLA: `${namespace}/reportUmbrella`,
 
   ADD_USER: `${namespace}/addUser`,
   REMOVE_USER: `${namespace}/removeUser`,
@@ -88,50 +86,39 @@ export const actions: ActionTree<ProcessState, RootState> = {
   clear({ commit }) {
     commit(processMutationTypes.ASSIGN, initialProcessState());
   },
-  async loadAttachments({ commit, state }) {
-    if (!state.id) {
+  async loadAttachments({ commit, state }, id: string) {
+    if (!id) {
       return;
     }
-
-    const attachments = (await HTTP.get<Attachment[]>(`/api/attachments/${state.id}`)).data;
-
+    const attachments = (await HTTP.get<Attachment[]>(`/api/attachments/${id}`)).data;
     commit(processMutationTypes.ASSIGN, { attachments });
   },
-  async addAttachments({ commit, state }, files: File[]) {
-    const form = new FormData();
-    files.forEach(file => form.append('files', file));
+  async uploadAttachments({ commit, state }, files: AttachmentFile[]) {
+    const privateAttachments = new FormData();
+    const publicAttachments = new FormData();
 
-    // Placeholders are attachments which are shown while the real attachments are uploading.
-    // When the attachments are done uploading, the placeholders are replaced with the real attachments.
-    const placeholders: Attachment[] = files.map(file => ({
-      fileName: file.name,
-      uploading: true
-    }));
-    if (state.attachments) {
-      commit(processMutationTypes.ASSIGN, {
-        attachments: [...state.attachments, ...placeholders]
-      });
-    }
+    files.forEach(file => {
+      const form = file.visibleToOtherMunicipalities ? publicAttachments : privateAttachments;
+      form.append('files', file.file);
+    });
 
     try {
-      const attachments = (await HTTP.post<Attachment[]>(`/api/attachments/${state.id}`, form)).data;
-      if (!state.attachments) {
-        return;
-      }
-      commit(processMutationTypes.ASSIGN, {
-        attachments: [...state.attachments.filter(a => !placeholders.includes(a)), ...attachments]
-      });
+      const [privateResult, publicResult] = await Promise.all([
+        HTTP.post<Attachment[]>(`/api/attachments/${state.id}`, privateAttachments),
+        HTTP.post<Attachment[]>(`/api/attachments/${state.id}/public`, publicAttachments)
+      ]);
+
+      const existingAttachments = state.attachments || [];
+      const attachments: Attachment[] = [...existingAttachments, ...privateResult.data, ...publicResult.data];
+
+      commit(processMutationTypes.ASSIGN, { attachments });
     } catch {
       if (!state.attachments) {
         return;
       }
-      // Upload failed - remove placeholders
-      commit(processMutationTypes.ASSIGN, {
-        attachments: state.attachments.filter(a => !placeholders.includes(a))
-      });
     }
   },
-  async removeAttachment({ commit, state }, id: string) {
+  async removeAttachment({ commit, state }, id: number) {
     await HTTP.delete(`/api/attachments/${state.id}/${id}`);
     if (!state.attachments) {
       return;

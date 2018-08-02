@@ -8,24 +8,28 @@
         <PowerPointIcon class="attachment-icon" v-if="type === 'powerPoint'" />
         <FileIcon class="attachment-icon" v-if="type === 'other'" />
       </a>
-      <div v-if="!disabled && !attachment.uploading" class="delete-button" role="button" @click="$emit('remove')">
+      <div v-if="!disabled && !isUploading" class="delete-button" role="button" @click="$emit('remove')">
         <DeleteIcon />
       </div>
-      <v-icon v-if="attachment.uploading" class="upload-icon">cloud_upload</v-icon>
+      <v-icon v-if="isUploading" class="upload-icon">cloud_upload</v-icon>
     </div>
 
     <a class="name" :href="attachment.url" target="_blank">{{attachment.fileName}}</a>
+    <Checkbox v-if="!disabled && canChangeVisibility" :value="attachment.visibleToOtherMunicipalities" @change="$emit('toggleVisibility', attachment.id)">
+      Synlig for alle
+    </Checkbox>
   </div>
 </template>
 
 <script lang='ts'>
-import { Vue, Component, Prop } from 'vue-property-decorator';
+import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import WordIcon from '@/components/icons/WordIcon.vue';
 import ExcelIcon from '@/components/icons/ExcelIcon.vue';
 import PdfIcon from '@/components/icons/PdfIcon.vue';
 import PowerPointIcon from '@/components/icons/PowerPointIcon.vue';
 import FileIcon from '@/components/icons/FileIcon.vue';
 import DeleteIcon from '@/components/icons/DeleteIcon.vue';
+import Checkbox from '@/components/common/inputs/Checkbox.vue';
 import { Attachment } from '@/store/modules/process/state';
 
 @Component({
@@ -35,12 +39,15 @@ import { Attachment } from '@/store/modules/process/state';
     PdfIcon,
     PowerPointIcon,
     FileIcon,
-    DeleteIcon
+    DeleteIcon,
+    Checkbox
   }
 })
 export default class AttachmentComponent extends Vue {
   @Prop(Object) attachment!: Attachment;
   @Prop(Boolean) disabled!: boolean;
+  @Prop(Boolean) isUploading!: boolean;
+  @Prop(Boolean) canChangeVisibility!: boolean;
 
   get type() {
     const word = ['.doc', '.dot', '.wbk', '.docx', '.docm', '.dotx', '.dotm', '.docb'];
@@ -87,6 +94,7 @@ export default class AttachmentComponent extends Vue {
 .attachment {
   margin: $size-unit;
   margin-bottom: 0;
+  text-align: center;
 }
 
 a {
