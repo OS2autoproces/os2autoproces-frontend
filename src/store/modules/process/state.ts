@@ -9,7 +9,7 @@ import { Form, Kle } from '@/store/modules/common/actions';
 
 export interface ProcessState extends Process {
   disabled: Disabled;
-  attachments: Attachment[] | null;
+  attachments: Attachment[];
   comments: Comment[];
 }
 
@@ -108,10 +108,17 @@ export interface Technology {
 }
 
 export interface Attachment {
+  id: number;
   fileName: string;
-  id?: string;
-  url?: string;
-  uploading?: boolean;
+  visibleToOtherMunicipalities: boolean;
+  url: string;
+}
+
+export interface AttachmentFile {
+  id: number;
+  fileName: string;
+  visibleToOtherMunicipalities: boolean;
+  file: File;
 }
 
 export interface Comment {

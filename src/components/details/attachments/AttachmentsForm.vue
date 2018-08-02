@@ -1,6 +1,6 @@
 <template>
   <FormSection v-if="minPhase(PhaseKeys.PREANALYSIS)" heading="Bilag" id="attachments" :disabled="state.disabled.attachmentsEdit" @edit="update({ disabled: {attachmentsEdit: $event} })">
-    <AttachmentUpload :attachments="state.attachments" :disabled="state.disabled.attachmentsEdit" @add="add" @remove="remove" />
+    <AttachmentUpload :disabled="state.disabled.attachmentsEdit" />
   </FormSection>
 </template>
 
@@ -21,18 +21,12 @@ import { Phase, PhaseKeys } from '@/models/phase';
 })
 export default class AttachmentsForm extends Vue {
   @Action(processActionTypes.UPDATE) update: any;
-  @Action(processActionTypes.ADD_ATTACHMENTS) add: any;
-  @Action(processActionTypes.REMOVE_ATTACHMENTS) remove: any;
   @Getter(processGetterTypes.MIN_PHASE) minPhase!: (phase: Phase) => boolean;
 
   PhaseKeys = PhaseKeys;
 
   get state() {
     return this.$store.state.process;
-  }
-
-  mounted() {
-    this.$store.dispatch(processActionTypes.LOAD_ATTACHMENTS);
   }
 }
 </script>
