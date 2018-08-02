@@ -1,7 +1,7 @@
 <template>
   <FormSection :invalid="!isOperationValid" v-if="minPhase(PhaseKeys.IMPLEMENTATION)" heading="Drift" id="operation" :disabled="state.disabled.operationEdit" @edit="update({disabled: {operationEdit: $event}})">
     <div class="rating-wrapper" :class="{disabled: state.disabled.operationEdit}">
-      <div>I hvor høj grad realiserer processen sit potentiale?</div>
+      <div>{{`I hvor høj grad realiserer processen sit potentiale? ${minPhase(PhaseKeys.OPERATION) ? " *" : ""}`}}</div>
       <Rating class="rating" @change="update({rating: $event})" :disabled="state.disabled.operationEdit" :value="state.rating" />
     </div>
 

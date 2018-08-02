@@ -118,9 +118,6 @@ export const processFieldsValidators: { [P in keyof Process]?: (state: ProcessSt
   owner({ phase, owner }: ProcessState) {
     return phase === PhaseKeys.IDEA || phase === PhaseKeys.PREANALYSIS || !!owner;
   },
-  orgUnits({ orgUnits }: ProcessState) {
-    return !isEmpty(orgUnits);
-  },
   vendor({ phase, vendor }: ProcessState) {
     const minLength =
       phase === PhaseKeys.IDEA || phase === PhaseKeys.PREANALYSIS || phase === PhaseKeys.SPECIFICATION ? 0 : 1;
