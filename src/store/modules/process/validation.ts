@@ -137,8 +137,12 @@ export const processFieldsValidators: { [P in keyof Process]?: (state: ProcessSt
   technicalImplementationNotes({ technicalImplementationNotes }: ProcessState) {
     return isValid(technicalImplementationNotes, isMinMax(0, 3000));
   },
-  organizationalImplementationNotes({ phase, organizationalImplementationNotes }: ProcessState) {
+  organizationalImplementationNotes({ organizationalImplementationNotes }: ProcessState) {
     return isValid(organizationalImplementationNotes, isMinMax(0, 3000));
+  },
+  processChallenges({ phase, processChallenges }: ProcessState) {
+    const minLength = phase === PhaseKeys.IDEA ? 0 : 1;
+    return isValid(processChallenges, isMinMax(minLength, 1200)); 
   },
   rating({ phase, rating }: ProcessState) {
     return (

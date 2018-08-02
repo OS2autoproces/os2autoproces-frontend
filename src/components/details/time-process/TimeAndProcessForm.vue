@@ -38,7 +38,7 @@
       <InfoTooltip class="time-proces-tooltip">
         Lorem, ipsum dolor sit amet consectetur adipisicing elit. Esse unde neque eos, non et vel, aspernatur quod dolore perspiciatis dolorem minus rerum amet animi architecto mollitia alias! Debitis, eveniet sint!
       </InfoTooltip>
-      <TextArea :value="state.timeSpendComment" :disabled="state.disabled.timeAndProcessEdit" @change="update({timeSpendComment: $event})" />
+      <TextArea :value="state.timeSpendComment" :disabled="state.disabled.timeAndProcessEdit" @change="update({timeSpendComment: $event})" :maxLength="300" />
     </div>
   </FormSection>
 </template>
