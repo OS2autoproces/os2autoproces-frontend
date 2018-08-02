@@ -2,6 +2,7 @@
   <div class="details-header">
     <div class="row">
       <InputField class="name" :value="state.title" :disabled="state.disabled.titleEdit" :class="{ disabled: state.disabled.titleEdit }" @change="update({ title: $event })" />
+      <em class="name-placeholder" v-if="state.disabled.titleEdit && !state.title">Angiv titel...</em>
       <div v-if="state.canEdit" class="edit-button" role="button" @click="toggleEdit" :class="{ editing: !state.disabled.titleEdit }">
         <EditIcon />
       </div>
@@ -96,9 +97,13 @@ export default class ProcessHeader extends Vue {
   margin-right: $size-unit;
 }
 
-.name.disabled {
+.name.disabled,
+.name-placeholder {
   @include heading;
   font-size: 2rem;
+}
+
+.name.disabled {
   color: $color-secondary;
 }
 

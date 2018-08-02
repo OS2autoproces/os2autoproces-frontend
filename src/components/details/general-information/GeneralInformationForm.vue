@@ -24,13 +24,13 @@
         </div>
 
         <div>
-          <WellItem v-if="minPhase(PhaseKeys.DEVELOPMENT)" labelWidth="120px" label="Leverandør:">
+          <WellItem v-if="minPhase(PhaseKeys.DEVELOPMENT)" labelWidth="120px" label="Leverandør:" :required="minPhase(PhaseKeys.DEVELOPMENT)">
             <InputField :disabled="state.disabled.generalInformationEdit" :value="state.vendor" @change="update({vendor: $event})" />
           </WellItem>
           <WellItem labelWidth="120px" label="Indberetter:" v-if="isWithinMunicipality">
             <SelectionField disabled :value="state.reporter" itemText="name" />
           </WellItem>
-          <WellItem labelWidth="120px" label="Ejer:" v-if="isWithinMunicipality">
+          <WellItem labelWidth="120px" label="Ejer:" v-if="isWithinMunicipality" :required="minPhase(PhaseKeys.SPECIFICATION)">
             <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.owner" itemText="name" @search="search($event)" isItemsPartial @change="update({owner: $event})" :items="users" />
           </WellItem>
           <WellItem labelWidth="120px" label="Kontaktperson:">
@@ -62,7 +62,7 @@
 
     <div class="resume-phases">
       <div class="resume">
-        <h2>Resume</h2>
+        <h2>Resume *</h2>
         <TextArea :disabled="state.disabled.generalInformationEdit" @change="update({shortDescription: $event})" :value="state.shortDescription" :maxLength="140" />
       </div>
       <div class="general-phases">

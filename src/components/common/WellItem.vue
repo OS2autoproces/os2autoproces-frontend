@@ -1,6 +1,6 @@
 <template>
   <div class="well-item-wrap">
-    <div class="well-item-label" :style="{flexBasis: labelWidth}">{{label}}</div>
+    <div class="well-item-label" :style="{flexBasis: labelWidth}">{{required ? `${label} *`: `${label}`}}</div>
     <div class="well-input">
       <slot/>
     </div>
@@ -15,6 +15,7 @@ export default class WellItem extends Vue {
   @Prop(String) label!: string;
   @Prop({ default: '50%', type: String })
   labelWidth!: string;
+  @Prop(Boolean) required!: boolean;
 }
 </script>
 
