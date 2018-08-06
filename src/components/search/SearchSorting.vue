@@ -1,26 +1,26 @@
 <template>
-    <div class="search-sorting">
-        <div class="sort-option-column">
-            <div @click="clickSortOption('title')" role="button">Proces
-                <SortIcon v-if="sorting.property === 'title'" :descending="sorting.descending" />
-            </div>
-        </div>
-        <div class="sort-option-column">
-            <div @click="clickSortOption('rating')" role="button">Vurderet potentiale
-                <SortIcon v-if="sorting.property === 'rating'" :descending="sorting.descending" />
-            </div>
-        </div>
-        <div class="sort-option-column">
-            <div @click="clickSortOption('domain')" role="button">Fagområde
-                <SortIcon v-if="sorting.property === 'domain'" :descending="sorting.descending" />
-            </div>
-        </div>
-        <div class="sort-option-column">
-            <div @click="clickSortOption('status')" role="button">Status
-                <SortIcon v-if="sorting.property === 'status'" :descending="sorting.descending" />
-            </div>
-        </div>
+  <div class="search-sorting">
+    <div class="sort-option-column">
+      <div @click="clickSortOption('title')" role="button">Proces
+        <SortIcon v-if="sorting.property === 'title'" :descending="sorting.descending" />
+      </div>
     </div>
+    <div class="sort-option-column">
+      <div @click="clickSortOption('rating')" role="button">Vurderet potentiale
+        <SortIcon v-if="sorting.property === 'rating'" :descending="sorting.descending" />
+      </div>
+    </div>
+    <div class="sort-option-column">
+      <div @click="clickSortOption('domains')" role="button">Fagområde
+        <SortIcon v-if="sorting.property === 'domains'" :descending="sorting.descending" />
+      </div>
+    </div>
+    <div class="sort-option-column">
+      <div @click="clickSortOption('status')" role="button">Status
+        <SortIcon v-if="sorting.property === 'status'" :descending="sorting.descending" />
+      </div>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
