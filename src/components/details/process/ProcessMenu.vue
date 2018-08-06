@@ -32,12 +32,15 @@ export default class ProcessMenu extends Vue {
     this.listener = this.update.bind(this);
     window.addEventListener('scroll', this.listener);
     window.addEventListener('resize', this.listener);
-    this.update();
   }
 
   destroyed(): void {
     window.removeEventListener('resize', this.listener);
     window.removeEventListener('scroll', this.listener);
+  }
+
+  updated() {
+    this.update();
   }
 
   get items() {
