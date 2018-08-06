@@ -84,32 +84,32 @@ export const processFieldsValidators: { [P in keyof Process]?: (state: ProcessSt
   timeSpendComment({ timeSpendComment }: ProcessState) {
     return isValid(timeSpendComment, isMinMax(0, 300));
   },
-  levelOfProfessionalAssessment({ levelOfProfessionalAssessment }: ProcessState) {
-    return levelOfProfessionalAssessment !== 'NOT_SET';
+  levelOfProfessionalAssessment({ phase, levelOfProfessionalAssessment }: ProcessState) {
+    return phase === PhaseKeys.IDEA || levelOfProfessionalAssessment !== 'NOT_SET';
   },
-  levelOfChange({ levelOfChange }: ProcessState) {
-    return levelOfChange !== 'NOT_SET';
+  levelOfChange({ phase, levelOfChange }: ProcessState) {
+    return phase === PhaseKeys.IDEA || levelOfChange !== 'NOT_SET';
   },
-  levelOfStructuredInformation({ levelOfStructuredInformation }: ProcessState) {
-    return levelOfStructuredInformation !== 'NOT_SET';
+  levelOfStructuredInformation({ phase, levelOfStructuredInformation }: ProcessState) {
+    return phase === PhaseKeys.IDEA || levelOfStructuredInformation !== 'NOT_SET';
   },
-  levelOfUniformity({ levelOfUniformity }: ProcessState) {
-    return levelOfUniformity !== 'NOT_SET';
+  levelOfUniformity({ phase, levelOfUniformity }: ProcessState) {
+    return phase === PhaseKeys.IDEA || levelOfUniformity !== 'NOT_SET';
   },
-  levelOfDigitalInformation({ levelOfDigitalInformation }: ProcessState) {
-    return levelOfDigitalInformation !== 'NOT_SET';
+  levelOfDigitalInformation({ phase, levelOfDigitalInformation }: ProcessState) {
+    return phase === PhaseKeys.IDEA || levelOfDigitalInformation !== 'NOT_SET';
   },
-  levelOfQuality({ levelOfQuality }: ProcessState) {
-    return levelOfQuality !== 'NOT_SET';
+  levelOfQuality({ phase, levelOfQuality }: ProcessState) {
+    return phase === PhaseKeys.IDEA || levelOfQuality !== 'NOT_SET';
   },
-  levelOfRoutineWorkReduction({ levelOfRoutineWorkReduction }: ProcessState) {
-    return levelOfRoutineWorkReduction !== 'NOT_SET';
+  levelOfRoutineWorkReduction({ phase, levelOfRoutineWorkReduction }: ProcessState) {
+    return phase === PhaseKeys.IDEA || levelOfRoutineWorkReduction !== 'NOT_SET';
   },
-  levelOfSpeed({ levelOfSpeed }: ProcessState) {
-    return levelOfSpeed !== 'NOT_SET';
+  levelOfSpeed({ phase, levelOfSpeed }: ProcessState) {
+    return phase === PhaseKeys.IDEA || levelOfSpeed !== 'NOT_SET';
   },
-  evaluatedLevelOfRoi({ evaluatedLevelOfRoi }: ProcessState) {
-    return evaluatedLevelOfRoi !== 'NOT_SET';
+  evaluatedLevelOfRoi({ phase, evaluatedLevelOfRoi }: ProcessState) {
+    return phase === PhaseKeys.IDEA || evaluatedLevelOfRoi !== 'NOT_SET';
   },
   esdhReference({ phase, esdhReference }: ProcessState) {
     const minLength = phase === PhaseKeys.IDEA || phase === PhaseKeys.PREANALYSIS ? 0 : 1;
