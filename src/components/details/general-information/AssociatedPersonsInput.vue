@@ -13,7 +13,7 @@
     </div>
     <div class="add-person" v-if="!disabled">
       <div class="associated-label">Tilknyt person</div>
-      <SelectionField class="search-field" placeholder="Skriv navn for at søge" :value="item" @search="search($event)" @change="addUser($event)" itemText="name" :items="users" iconName="search" />
+      <SelectionField ref="userSelectionField" class="search-field" placeholder="Skriv navn for at søge" @search="search($event)" @change="addUser($event)" itemText="name" :items="users" iconName="search" />
     </div>
   </div>
 </template>
@@ -24,10 +24,7 @@ import { Action } from 'vuex-class';
 import SelectionField from '@/components/common/inputs/SelectionField.vue';
 import DeleteIcon from '@/components/icons/DeleteIcon.vue';
 import { processActionTypes } from '@/store/modules/process/actions';
-import {
-  commonActionTypes,
-  UserSearchRequest
-} from '@/store/modules/common/actions';
+import { commonActionTypes, UserSearchRequest } from '@/store/modules/common/actions';
 import { User } from '@/store/modules/auth/state';
 
 @Component({
@@ -40,8 +37,6 @@ export default class AssociatedPersonsInput extends Vue {
   @Prop(Boolean) disabled!: boolean;
 
   @Action(commonActionTypes.SEARCH_USERS) searchUsers!: (request: UserSearchRequest) => Promise<void>;
-
-  item: User | null = null;
 
   get state() {
     return this.$store.state;
@@ -60,12 +55,11 @@ export default class AssociatedPersonsInput extends Vue {
       return;
     }
 
-    this.item = user;
+    setTimeout(() => (this.$refs.userSelectionField as SelectionField<User>).clear());
     this.$store.dispatch(processActionTypes.ADD_USER, user);
   }
 
   removeUser(user: User) {
-    this.item = null;
     this.$store.dispatch(processActionTypes.REMOVE_USER, user);
   }
 }

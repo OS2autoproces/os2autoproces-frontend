@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-autocomplete v-if="!disabled" :clearable="clearable" :label="placeholder" :items="_items" single-line no-data-text="Ingen resultater" :item-text="itemText" :append-icon="iconName" :search-input.sync="searchQuery" @change="valueChanged" :value="value" return-object :multiple="multiple" />
+    <v-autocomplete ref="autocomplete" v-if="!disabled" :clearable="clearable" :label="placeholder" :items="_items" single-line no-data-text="Ingen resultater" :item-text="itemText" :append-icon="iconName" :search-input.sync="searchQuery" @change="valueChanged" :value="value" return-object :multiple="multiple" />
     <div class="selection-text" v-if="disabled && value">{{ label }}</div>
   </div>
 </template>
@@ -57,6 +57,10 @@ export default class SelectionField<T extends any> extends Vue {
   valueChanged(value: any) {
     value = value ? value : null;
     this.$emit('change', value);
+  }
+
+  clear() {
+    (this.$refs.autocomplete as any).clearableCallback();
   }
 }
 </script>
