@@ -56,7 +56,7 @@ export default class AssociatedPersonsInput extends Vue {
   }
 
   addUser(user: User) {
-    if (!user) {
+    if (!user || this.state.process.users.find((u: User) => user.id === u.id)) {
       return;
     }
 
