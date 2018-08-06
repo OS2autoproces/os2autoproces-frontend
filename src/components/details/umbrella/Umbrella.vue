@@ -107,6 +107,8 @@ export default class Umbrella extends Vue {
       this.update({ type: this.type, canEdit: true, cvr: this.$store.state.auth.user.cvr });
     }
 
+    this.$store.dispatch(searchActionTypes.RESET_FILTERS);
+
     this.$store.dispatch(searchActionTypes.UPDATE_FILTERS, {
       type: TypeKeys.CHILD,
       municipality: this.$store.state.process.type === TypeKeys.PARENT,

@@ -7,45 +7,49 @@ import { mutations } from '@/store/modules/search/mutations';
 
 const namespaced = true;
 
-export const state: SearchState = {
-  result: undefined,
-  filters: {
-    page: 0,
-    size: 5,
-    type: null,
-    reporterId: null,
-    usersId: null,
-    bookmarkedId: null,
-    text: '',
-    created: '',
-    lastChanged: '',
-    municipality: false,
-    public: false,
-    klaProcess: false,
-    itSystems: [],
-    timeSpendComputedTotal: '',
-    sorting: {
-      property: 'title',
-      descending: false
-    },
-    phase: {
-      IDEA: false,
-      PREANALYSIS: false,
-      SPECIFICATION: false,
-      DEVELOPMENT: false,
-      IMPLEMENTATION: false,
-      OPERATION: false
-    },
-    domain: {
-      WORK: false,
-      ADMINISTRATION: false,
-      CHILDREN: false,
-      DEMOCRACY: false,
-      ENVIRONMENT: false,
-      HEALTH: false
+export function getInitialState(): SearchState {
+  return {
+    result: undefined,
+    filters: {
+      page: 0,
+      size: 5,
+      type: null,
+      reporterId: null,
+      usersId: null,
+      bookmarkedId: null,
+      text: '',
+      created: '',
+      lastChanged: '',
+      municipality: false,
+      public: false,
+      klaProcess: false,
+      itSystems: [],
+      timeSpendComputedTotal: '',
+      sorting: {
+        property: 'title',
+        descending: false
+      },
+      phase: {
+        IDEA: false,
+        PREANALYSIS: false,
+        SPECIFICATION: false,
+        DEVELOPMENT: false,
+        IMPLEMENTATION: false,
+        OPERATION: false
+      },
+      domain: {
+        WORK: false,
+        ADMINISTRATION: false,
+        CHILDREN: false,
+        DEMOCRACY: false,
+        ENVIRONMENT: false,
+        HEALTH: false
+      }
     }
-  }
-};
+  };
+}
+
+export const state = getInitialState();
 
 export const search: Module<SearchState, RootState> = {
   namespaced,
