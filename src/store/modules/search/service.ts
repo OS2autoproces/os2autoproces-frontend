@@ -36,7 +36,7 @@ interface SearchResponse {
 interface SearchParams {
   projection: 'grid' | 'extended';
   phase: Phase[];
-  domain: Domain[];
+  domains: Domain[];
   visibility: Visibility[];
   itSystems: number[];
   page: number;
@@ -70,7 +70,7 @@ export async function search(filters: SearchFilters): Promise<SearchResult> {
     phase: Object.entries(filters.phase)
       .filter(([phase, isSelected]) => isSelected)
       .map(([phase]) => phase) as Phase[],
-    domain: Object.entries(filters.domain)
+    domains: Object.entries(filters.domain)
       .filter(([phase, isSelected]) => isSelected)
       .map(([domain]) => domain) as Domain[],
     sort: `${filters.sorting.property},${filters.sorting.descending ? 'desc' : 'asc'}`,
