@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="page">
     <div class="side-bar">
       <div class="side-bar-content">
         <router-link to="/search" class="search-page-link">

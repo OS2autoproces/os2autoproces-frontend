@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="page">
     <div class="side-bar">
       <div class="side-bar-content">
         <router-link to="/search" class="search-page-link">
@@ -132,6 +132,10 @@ export default class Umbrella extends Vue {
 
 <style lang="scss" scoped>
 @import '@/styles/variables.scss';
+
+.page {
+  display: flex;
+}
 
 .search-page-link {
   @include heading;
