@@ -1,6 +1,9 @@
 <template>
   <div class="well-item-wrap">
-    <div class="well-item-label" :style="{flexBasis: labelWidth}">{{required ? `${label} *`: `${label}`}}</div>
+    <div class="well-item-label" :style="{flexBasis: labelWidth}">
+      {{required ? `${label} *`: `${label}`}}
+      <InfoTooltip v-if="tooltip">{{tooltip}}</InfoTooltip>
+    </div>
     <div class="well-input">
       <slot/>
     </div>
@@ -9,10 +12,16 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
+import InfoTooltip from '@/components/common/InfoTooltip.vue';
 
-@Component
+@Component({
+  components: {
+    InfoTooltip
+  }
+})
 export default class WellItem extends Vue {
   @Prop(String) label!: string;
+  @Prop(String) tooltip!: string;
   @Prop({ default: '50%', type: String })
   labelWidth!: string;
   @Prop(Boolean) required!: boolean;

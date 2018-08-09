@@ -3,7 +3,7 @@
     <div class="header">
       <a class="login-button" :href="loginUrl">Log ind</a>
 
-      <h1>AutoProces</h1>
+      <h1>OS2autoproces</h1>
       <h2>Tværkommunal procesdeling</h2>
     </div>
 

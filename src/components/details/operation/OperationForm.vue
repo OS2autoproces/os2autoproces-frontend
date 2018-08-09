@@ -19,7 +19,7 @@
     </Well>
 
     <h2>Kommentar til realiseret løsningspotentiale</h2>
-    <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
+    <InfoTooltip>Udover at angive processens potentiale, har du her mulighed for at uddybe, hvilket potentialet der er blevet realiseret igennem løsningen.</InfoTooltip>
     <TextArea :max-length="1200" @change="update({ratingComment: $event})" :disabled="state.disabled.operationEdit" :value="state.ratingComment" />
   </FormSection>
 </template>

@@ -4,12 +4,6 @@
       <div class="router-view">
         <router-view/>
       </div>
-      <div class="app-footer">
-        <div>Her skal der stå noget <br> Her skal der være et link <br> Her kan der stå noget mere</div>
-        <div>Her skal der stå noget <br> Her skal der være et link <br> Her kan der stå noget mere</div>
-        <div>Her skal der stå noget <br> Her skal der være et link <br> Her kan der stå noget mere</div>
-        <div>Her skal der stå noget <br> Her skal der være et link <br> Her kan der stå noget mere</div>
-      </div>
     </v-app>
   </div>
 </template>
@@ -90,14 +84,6 @@ body {
   textarea,
   button {
     outline: none;
-  }
-
-  .app-footer {
-    background-color: $color-background-grey;
-    border-top: 10px solid $color-secondary;
-    display: flex;
-    padding: 40px;
-    justify-content: space-between;
   }
 }
 </style>

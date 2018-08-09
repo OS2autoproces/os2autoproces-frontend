@@ -1,14 +1,19 @@
 <template>
   <FormSection :invalid="!isChallengesValid" heading="Problemstillinger" id="challenges" :disabled="state.disabled.challengesEdit" @edit="update({ disabled: { challengesEdit: $event}})">
+    <div>
+      <h2>Beskrivelse</h2>
+      <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({longDescription: $event})" :disabled="state.disabled.challengesEdit" :value="state.longDescription" :maxLength="1200" />
+    </div>
+
     <div v-if="minPhase(PhaseKeys.PREANALYSIS)">
-      <h2>Løsningsbeskrivelse</h2>
-      <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
+      <h2>Idéer til løsning</h2>
+      <InfoTooltip>Her kan tilføjes de ønsker, du har til en fremtidig løsning. Du kan også beskrive dine ideer til en løsning.</InfoTooltip>
       <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({solutionRequests: $event})" :disabled="state.disabled.challengesEdit" :value="state.solutionRequests" :maxLength="2400" />
     </div>
 
     <div v-if="minPhase(PhaseKeys.PREANALYSIS)">
       <h2>Udfordringer i den nuværende proces *</h2>
-      <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
+      <InfoTooltip>Her kan du beskrive de trivielle handlinger, udfordringer eller vaskeligheder der opleves i udførelsen af den nuværende proces.</InfoTooltip>
       <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({processChallenges: $event})" :disabled="state.disabled.challengesEdit" :value="state.processChallenges" :maxLength="1200" />
     </div>
 
