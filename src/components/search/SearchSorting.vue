@@ -11,9 +11,6 @@
       </div>
     </div>
     <div class="sort-option-column">
-      <div @click="clickSortOption('domains')" role="button">Fagområde
-        <SortIcon v-if="sorting.property === 'domains'" :descending="sorting.descending" />
-      </div>
     </div>
     <div class="sort-option-column">
       <div @click="clickSortOption('status')" role="button">Status
