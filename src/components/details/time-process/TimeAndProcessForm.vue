@@ -35,9 +35,7 @@
 
     <div class="comments-wrap">
       <span>Kommentar vedr. tidsforbrug</span>
-      <InfoTooltip class="time-proces-tooltip">
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Esse unde neque eos, non et vel, aspernatur quod dolore perspiciatis dolorem minus rerum amet animi architecto mollitia alias! Debitis, eveniet sint!
-      </InfoTooltip>
+      <InfoTooltip class="time-proces-tooltip">Her kan du uddybe eller kommentere på de indtastede værdier ovenfor og på tidsforbruget generelt. F.eks. hvordan det er målt.</InfoTooltip>
       <TextArea :value="state.timeSpendComment" :disabled="state.disabled.timeAndProcessEdit" @change="update({timeSpendComment: $event})" :maxLength="300" />
     </div>
   </FormSection>

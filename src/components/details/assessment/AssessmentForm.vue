@@ -2,56 +2,54 @@
   <FormSection :invalid="!isAssessmentValid" v-if="minPhase(PhaseKeys.PREANALYSIS)" heading="Faglig vurdering" id="assessment" :disabled="state.disabled.assessmentEdit" @edit="update({ disabled: { assessmentEdit: $event} })">
     <div class="assessment" :class="{ disabled: state.disabled.assessmentEdit }">
       <div class="question">
-        <div class="label">I hvor høj grad er der faglig vurdering? *
-          <InfoTooltip class="tooltip" />
+        <div class="label">I hvor grad indgår der faglig vurdering i processen? *
+          <InfoTooltip class="tooltip">En faglig vurdering kan f.eks. være, at en sagsbehandler foretager et skøn eller tager en beslutning der har betydning for processens forløb.</InfoTooltip>
         </div>
         <LikertScale :disabled="state.disabled.assessmentEdit" :value="state.levelOfProfessionalAssessment" @change="update({ levelOfProfessionalAssessment: $event })" />
       </div>
       <div class="question">
         <div class="label">I hvor høj grad er processen præget af hyppige ændringer? *
-          <InfoTooltip class="tooltip" />
+          <InfoTooltip class="tooltip">Du skal her vurdere, om processen ofte bliver ændret. Det kan f.eks. skyldes ændringer i lovgivningen.</InfoTooltip>
         </div>
         <LikertScale :disabled="state.disabled.assessmentEdit" :value="state.levelOfChange" @change="update({ levelOfChange: $event })" />
       </div>
       <div class="question">
         <div class="label">I hvor høj grad er processen baseret på struktureret information? *
-          <InfoTooltip class="tooltip" />
+          <InfoTooltip class="tooltip">Det kan f.eks. være ved brug af en formular.</InfoTooltip>
         </div>
         <LikertScale :disabled="state.disabled.assessmentEdit" :value="state.levelOfStructuredInformation" @change="update({ levelOfStructuredInformation: $event })" />
       </div>
       <div class="question">
-        <div class="label">Er der variation i hvordan processen løses? *
-          <InfoTooltip class="tooltip" />
+        <div class="label">Er der variation i den måde processen løses? *
+          <InfoTooltip class="tooltip">Kan processen f.eks. starte eller slutte forskelligt fra gang til gang processen udføres, eller er der forskellige udfaldsrum i løbet af processen.</InfoTooltip>
         </div>
         <LikertScale :disabled="state.disabled.assessmentEdit" :value="state.levelOfUniformity" @change="update({ levelOfUniformity: $event })" />
       </div>
       <div class="question">
-        <div class="label">Er data og informationer, der skal bruges i processen tilgængelige? *
-          <InfoTooltip class="tooltip" />
-        </div>
+        <div class="label">Er de data og informationer, der skal bruges i processen, tilgængelige digitalt i IT-systemer? *</div>
         <LikertScale :disabled="state.disabled.assessmentEdit" :value="state.levelOfDigitalInformation" @change="update({ levelOfDigitalInformation: $event })" />
       </div>
       <div class="question">
-        <div class="label">Bidrager løsningen til en højere kvalitet, som er mere ensrettet og med færre fejl? *
-          <InfoTooltip class="tooltip" />
+        <div class="label">Vil en automatiseret løsning bidrage til en højere kvalitet, som er mere ensrettet og med færre fejl? *
+          <InfoTooltip class="tooltip">Her skal du vurdere, hvad en digital assistent kan betyde for kvaliteten af processen.</InfoTooltip>
         </div>
         <LikertScale :disabled="state.disabled.assessmentEdit" :value="state.levelOfQuality" @change="update({ levelOfQuality: $event })" />
       </div>
       <div class="question">
-        <div class="label">Bidrager løsningen til en hurtigere og mere fyldestgørende service? *
-          <InfoTooltip class="tooltip" />
+        <div class="label">Vil en automatiseret løsning bidrage til en hurtigere og mere fyldestgørende service? *
+          <InfoTooltip class="tooltip">Her skal du vurdere, hvad en digital assistent kan betyde for serviceniveauet. Det kunne f.eks. være at borgerne vil få svar hurtigere.</InfoTooltip>
         </div>
         <LikertScale :disabled="state.disabled.assessmentEdit" :value="state.levelOfSpeed" @change="update({ levelOfSpeed: $event })" />
       </div>
       <div class="question">
-        <div class="label">Frigiver løsningen tid og nedbringer rutineopgaver, som skaber en bedre trivsel blandt medarbejderne? *
-          <InfoTooltip class="tooltip" />
+        <div class="label">Vil en automatiseret løsning frigive tid og nedbringe rutineopgaver, som skaber en bedre trivsel blandt medarbejderne? *
+          <InfoTooltip class="tooltip">Her skal du vurdere, hvad en digital assistent vil betyde for din egne trivsel som medarbejder. F.eks. ved at lette nogle af de trivielle og tidskrævende arbejdsopgaver.</InfoTooltip>
         </div>
         <LikertScale :disabled="state.disabled.assessmentEdit" :value="state.levelOfRoutineWorkReduction" @change="update({ levelOfRoutineWorkReduction: $event })" />
       </div>
       <div class="question">
         <div class="label">I hvor høj grad vurderes det at processen kan automatiseres? *
-          <InfoTooltip class="tooltip" />
+          <InfoTooltip class="tooltip">Der henvises til, om det er hele processen eller nogle mindre dele af processen der kan automatiseres.</InfoTooltip>
         </div>
         <LikertScale :disabled="state.disabled.assessmentEdit" :value="state.evaluatedLevelOfRoi" @change="update({ evaluatedLevelOfRoi: $event })" />
       </div>

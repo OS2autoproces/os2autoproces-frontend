@@ -3,19 +3,19 @@
 
     <div v-if="minPhase(PhaseKeys.IMPLEMENTATION)">
       <h2>Teknisk implementering</h2>
-      <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
+      <InfoTooltip>Her kan du notere, hvordan den tekniske implementering er forløbet og eventuelle ting, som andre bør være opmærksomme på.</InfoTooltip>
       <TextArea :max-length="3000" :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({technicalImplementationNotes: $event})" :disabled="state.disabled.implementationEdit" :value="state.technicalImplementationNotes" />
     </div>
 
     <div v-if="minPhase(PhaseKeys.IMPLEMENTATION)">
       <h2>Organisatorisk implementering</h2>
-      <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
+      <InfoTooltip>Her kan du notere, hvordan den organisatoriske implementering er forløbet og eventuelle opmærksomhedspunkter omkring det.</InfoTooltip>
       <TextArea :max-length="3000" :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({organizationalImplementationNotes: $event})" :disabled="state.disabled.implementationEdit" :value="state.organizationalImplementationNotes" />
     </div>
 
     <div>
       <h2>Anvendt teknologi *</h2>
-      <InfoTooltip> Lorem ipsum dolor sit ... </InfoTooltip>
+      <InfoTooltip>Vælg den anvendte teknologi på listen eller opret en ny, hvis den ikke allerede fremgår af listen. Det er muligt at tilføje flere.</InfoTooltip>
       <TagSelector @add="addTechnology($event)" @remove="removeTechnology($event)" :disabled="state.disabled.implementationEdit" :value="state.technologies" :items="technologies" />
     </div>
   </FormSection>

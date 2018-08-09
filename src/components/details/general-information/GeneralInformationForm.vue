@@ -18,25 +18,25 @@
           <WellItem labelWidth="120px" label="KL ID:">
             <InputField :disabled="state.disabled.generalInformationEdit" :value="state.klId" @change="update({klId: $event})" />
           </WellItem>
-          <WellItem labelWidth="120px" label="KLA:">
+          <WellItem labelWidth="120px" label="KLA:" tooltip="KLA nummeret henviser til en proces fra KL’s Arbejdsgangsbank.">
             <MaskableInput :disabled="state.disabled.generalInformationEdit" mask="##.##.##.##.##" :value="state.kla" @change="setKla" />
           </WellItem>
         </div>
 
         <div>
-          <WellItem v-if="minPhase(PhaseKeys.DEVELOPMENT)" labelWidth="120px" label="Leverandør:" :required="minPhase(PhaseKeys.DEVELOPMENT)">
+          <WellItem v-if="minPhase(PhaseKeys.DEVELOPMENT)" labelWidth="140px" label="Leverandør:" :required="minPhase(PhaseKeys.DEVELOPMENT)">
             <InputField :disabled="state.disabled.generalInformationEdit" :value="state.vendor" @change="update({vendor: $event})" />
           </WellItem>
-          <WellItem labelWidth="120px" label="Indberetter:" v-if="isWithinMunicipality">
+          <WellItem labelWidth="140px" label="Indberetter:" v-if="isWithinMunicipality">
             <SelectionField disabled :value="state.reporter" itemText="name" />
           </WellItem>
-          <WellItem labelWidth="120px" label="Ejer:" v-if="isWithinMunicipality" :required="minPhase(PhaseKeys.SPECIFICATION)">
+          <WellItem labelWidth="140px" label="Ejer:" tooltip="Er den person der er ansvarlig for processen. Betegnes som procesejer." v-if="isWithinMunicipality" :required="minPhase(PhaseKeys.SPECIFICATION)">
             <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.owner" itemText="name" @search="search($event)" isItemsPartial @change="update({owner: $event})" :items="users" />
           </WellItem>
-          <WellItem labelWidth="120px" label="Kontaktperson:">
+          <WellItem labelWidth="140px" label="Kontaktperson:" tooltip="Er en person der varetager processen til daglig og derfor har stort kendskab til den.">
             <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.contact" itemText="name" @search="search($event)" isItemsPartial @change="update({contact: $event})" :items="users" clearable />
           </WellItem>
-          <WellItem v-if="state.contact" labelWidth="120px" label="Mail:">
+          <WellItem v-if="state.contact" labelWidth="140px" label="Mail:">
             {{state.contact.email}}
           </WellItem>
         </div>
