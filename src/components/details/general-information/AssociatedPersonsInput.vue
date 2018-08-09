@@ -1,7 +1,10 @@
 <template>
   <div class="associated">
     <div class="associated-list">
-      <div class="associated-label">Tilknyttede personer</div>
+      <div class="associated-label">
+        Tilknyttede personer
+        <InfoTooltip>Her kan du tilføje personer der arbejder med automatisering af processen og derfor skal kunne redigere i beskrivelserne. Det kan f.eks. være projektmedarbejdere og udviklere.</InfoTooltip>
+      </div>
       <div class="associated-persons-list" :class="{ disabled }">
         <div v-for="(user, index) in state.process.users" :key="index">
           <div class="name">{{user.name}}</div>
@@ -21,6 +24,7 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import { Action } from 'vuex-class';
+import InfoTooltip from '@/components/common/InfoTooltip.vue';
 import SelectionField from '@/components/common/inputs/SelectionField.vue';
 import DeleteIcon from '@/components/icons/DeleteIcon.vue';
 import { processActionTypes } from '@/store/modules/process/actions';
@@ -30,6 +34,7 @@ import { User } from '@/store/modules/auth/state';
 @Component({
   components: {
     SelectionField,
+    InfoTooltip,
     DeleteIcon
   }
 })

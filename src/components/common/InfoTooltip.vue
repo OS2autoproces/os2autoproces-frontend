@@ -1,10 +1,10 @@
 <template>
-    <div class="info-tooltip-wrapper">
-        <InfoIcon class="info-icon" />
-        <div class="info-tooltip">
-            <slot />
-        </div>
+  <div class="info-tooltip-wrapper">
+    <InfoIcon class="info-icon" />
+    <div class="info-tooltip">
+      <slot />
     </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -35,6 +35,10 @@ export default class ExpandPanel extends Vue {}
   position: relative;
   height: $size-unit;
   cursor: help;
+
+  &:hover {
+    z-index: 10;
+  }
 
   &:not(:hover) .info-tooltip {
     display: none;

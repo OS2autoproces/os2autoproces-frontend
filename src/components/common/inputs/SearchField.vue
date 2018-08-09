@@ -1,9 +1,9 @@
 <template>
-    <div class="search-field">
-        <InputField placeholder="Søg f.eks. på KLE-numre" :value="value" @change="valueChanged">
-          <SearchIcon />
-        </InputField>
-    </div>
+  <div class="search-field">
+    <InputField placeholder="Søg f.eks. på KLE" :value="value" @change="valueChanged">
+      <SearchIcon />
+    </InputField>
+  </div>
 </template>
 
 <script lang='ts'>
