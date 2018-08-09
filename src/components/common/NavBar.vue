@@ -1,6 +1,6 @@
 <template>
   <div class="navbar">
-    <div class="logo">AutoProces</div>
+    <div class="logo">OS2autoproces</div>
     <router-link class="link" v-if="isAdministrator" to="/search">Søgning</router-link>
     <router-link class="link" v-if="isAdministrator" to="/manage-technologies">Teknologier</router-link>
     <div class="flex-grow"></div>
