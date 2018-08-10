@@ -32,7 +32,6 @@
         <div class="value">{{process.id}}</div>
       </div>
     </div>
-    <star-icon class="star-icon" :class="{ selected: process.hasBookmarked }" />
   </div>
 </template>
 

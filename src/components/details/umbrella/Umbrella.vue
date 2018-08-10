@@ -108,12 +108,7 @@ export default class Umbrella extends Vue {
     }
 
     this.$store.dispatch(searchActionTypes.RESET_FILTERS);
-
-    this.$store.dispatch(searchActionTypes.UPDATE_FILTERS, {
-      type: TypeKeys.CHILD,
-      municipality: this.$store.state.process.type === TypeKeys.PARENT,
-      public: this.$store.state.process.type === TypeKeys.GLOBAL_PARENT
-    });
+    this.$store.dispatch(searchActionTypes.UPDATE_FILTERS, { type: TypeKeys.CHILD });
   }
 
   save() {
