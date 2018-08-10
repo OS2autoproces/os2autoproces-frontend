@@ -104,7 +104,12 @@ export default class Umbrella extends Vue {
 
   mounted() {
     if (this.isReporting) {
-      this.update({ type: this.type, canEdit: true, cvr: this.$store.state.auth.user.cvr });
+      this.update({
+        type: this.type,
+        canEdit: true,
+        cvr: this.$store.state.auth.user.cvr,
+        visibility: this.type === TypeKeys.PARENT ? VisibilityKeys.MUNICIPALITY : VisibilityKeys.PUBLIC
+      });
     }
 
     this.$store.dispatch(searchActionTypes.RESET_FILTERS);
