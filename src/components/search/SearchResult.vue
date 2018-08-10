@@ -1,6 +1,6 @@
 <template>
   <div class="result">
-    <div class="result-column-name">
+    <div class="result-column">
       <div class="name">{{process.title}}</div>
       <div class="resume">{{process.shortDescription}}</div>
     </div>
@@ -34,7 +34,7 @@
         <div class="value">{{process.legalClause}}</div>
       </div>
     </div>
-    <div class="result-column-phases" v-if="!noPhase">
+    <div class="result-column" v-if="!noPhase">
       <Phases :value="process.phase" small disabled />
       <div class="status">{{StatusLabels[process.status]}}</div>
     </div>
@@ -114,14 +114,13 @@ $resume-line-height: 1em * 1.5;
   font-weight: bold;
 }
 
-.result-column,
-.result-column-name,
-.result-column-phases {
+.result-column {
+  flex: 0 0 25%;
+
   /*
       IE11 fix
       https://github.com/philipwalton/flexbugs/issues/3#issuecomment-69036362
   */
-  flex: 0 0 25%;
   max-width: 25%;
 
   &:not(:last-of-type) {
