@@ -38,7 +38,7 @@ export default class Checkbox extends Vue {
 
   .checkbox-icon {
     background-color: $color-background;
-    margin-right: $size-unit / 4;
+    margin-right: 0.25rem;
     position: relative;
     border-radius: 50%;
     border: 1px solid $color-primary;

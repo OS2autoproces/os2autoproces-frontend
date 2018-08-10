@@ -72,12 +72,12 @@ export default class ImplementationForm extends Vue {
 h2 {
   @include heading;
   color: $color-secondary;
-  margin-bottom: $size-unit / 2;
+  margin-bottom: .5rem;
   display: inline-block;
-  margin-right: $size-unit;
+  margin-right: 1rem;
 
   &:not(:first-of-type) {
-    margin-top: 2 * $size-unit;
+    margin-top: 2rem;
   }
 }
 </style>

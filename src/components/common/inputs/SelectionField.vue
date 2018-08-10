@@ -81,7 +81,7 @@ export default class SelectionField<T extends any> extends Vue {
     border-radius: 20px;
     padding-left: 13px;
     flex: 1 1 100%;
-    min-height: 2 * $size-unit;
+    min-height: 2rem;
     margin: 0;
 
     &::before,

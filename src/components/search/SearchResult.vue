@@ -84,8 +84,8 @@ $resume-line-height: 1em * 1.5;
 
 .result {
   border: 2px solid $color-secondary;
-  border-radius: $size-unit;
-  padding: $size-unit;
+  border-radius: 1rem;
+  padding: 1rem;
   display: flex;
   position: relative;
 }
@@ -98,10 +98,10 @@ $resume-line-height: 1em * 1.5;
 
 .star-icon {
   position: absolute;
-  top: -$size-unit;
-  right: -$size-unit;
-  height: $size-unit * 2.5;
-  width: $size-unit * 2.5;
+  top: -1rem;
+  right: -1rem;
+  height: 2.5rem;
+  width: 2.5rem;
 }
 
 .rating /deep/ svg {
@@ -125,7 +125,7 @@ $resume-line-height: 1em * 1.5;
   max-width: 25%;
 
   &:not(:last-of-type) {
-    padding-right: $size-unit;
+    padding-right: 1rem;
   }
 }
 
@@ -135,18 +135,18 @@ $resume-line-height: 1em * 1.5;
     display: flex;
 
     &:not(:last-of-type) {
-      padding-bottom: $size-unit;
+      padding-bottom: 1rem;
     }
 
     .field {
       flex-shrink: 0;
       flex-grow: 0;
-      padding-right: $size-unit;
+      padding-right: 1rem;
     }
 
     .value {
       font-weight: bold;
-      padding-right: $size-unit;
+      padding-right: 1rem;
     }
   }
 }

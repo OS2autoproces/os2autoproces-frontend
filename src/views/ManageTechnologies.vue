@@ -97,12 +97,12 @@ export default class ManageTechnologies extends Vue {
 
 h1 {
   color: $color-secondary;
-  margin-top: $size-unit * 2;
+  margin-top: 2rem;
 }
 
 .technology {
   display: flex;
-  padding: $size-unit;
+  padding: 1rem;
   align-items: center;
 
   &:not(:last-of-type) {
@@ -114,13 +114,13 @@ h1 {
   }
 
   .icon {
-    height: $size-unit;
-    width: $size-unit;
+    height: 1rem;
+    width: 1rem;
   }
 
   .button,
   .icon {
-    margin-left: $size-unit;
+    margin-left: 1rem;
   }
 }
 </style>

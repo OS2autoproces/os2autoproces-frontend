@@ -8,8 +8,6 @@ $color-edit-background: #e7eaed;
 $color-disabled: #dedfe0;
 $color-star: #ffec3c;
 
-$size-unit: 16px;
-
 @mixin heading() {
   font-family: 'Lato', Arial, 'Helvetica Neue', Helvetica, sans-serif;
   font-weight: 900;
@@ -29,7 +27,7 @@ $size-unit: 16px;
 
 @mixin textarea-heading() {
   color: $color-secondary;
-  font-size: $size-unit * 1.3;
+  font-size: 1.3rem;
 }
 
 @mixin field-input-text() {

@@ -92,29 +92,29 @@ export default class AssessmentForm extends Vue {
 @import '@/styles/variables.scss';
 
 .assessment {
-  margin: 4 * $size-unit;
-  margin-top: $size-unit;
-  padding: 2 * $size-unit;
+  margin: 4rem;
+  margin-top: 1rem;
+  padding: 2rem;
   border: 1px solid transparent;
 
   &:not(.disabled) {
     border-color: $color-primary;
-    border-radius: $size-unit;
+    border-radius: 1rem;
   }
 }
 
 .question:not(:last-of-type) {
-  margin-bottom: 3 * $size-unit;
+  margin-bottom: 3rem;
 }
 
 .label {
   @include heading;
   color: $color-secondary;
-  margin-bottom: $size-unit;
+  margin-bottom: 1rem;
 }
 
 .tooltip {
-  margin-left: $size-unit;
+  margin-left: 1rem;
   vertical-align: middle;
 }
 </style>

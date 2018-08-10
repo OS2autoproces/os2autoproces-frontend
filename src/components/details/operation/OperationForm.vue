@@ -67,23 +67,23 @@ export default class OperationForm extends Vue {
 @import '@/styles/variables.scss';
 
 .rating-wrapper {
-  padding: $size-unit;
+  padding: 1rem;
   display: inline-block;
   text-align: center;
-  margin-bottom: $size-unit;
+  margin-bottom: 1rem;
   border: 1px solid transparent;
 
   &:not(.disabled) {
     border-color: $color-primary;
-    border-radius: $size-unit;
+    border-radius: 1rem;
   }
   .rating {
-    margin-top: $size-unit/2;
+    margin-top: .5rem;
     width: 160px;
 
     /deep/ svg {
-      height: 2 * $size-unit;
-      width: 2 * $size-unit;
+      height: 2rem;
+      width: 2rem;
     }
   }
 }
@@ -91,9 +91,9 @@ export default class OperationForm extends Vue {
 h2 {
   @include heading;
   color: $color-secondary;
-  margin-bottom: $size-unit / 2;
+  margin-bottom: .5rem;
   display: inline-block;
-  margin-right: $size-unit;
-  margin-top: 2 * $size-unit;
+  margin-right: 1rem;
+  margin-top: 2rem;
 }
 </style>

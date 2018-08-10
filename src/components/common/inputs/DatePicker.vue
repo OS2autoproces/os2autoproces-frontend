@@ -66,7 +66,7 @@ export default class DatePicker extends Vue {
 .menu {
   cursor: pointer;
   height: 24px;
-  margin-left: $size-unit/2;
+  margin-left: .5rem;
 }
 </style>
 

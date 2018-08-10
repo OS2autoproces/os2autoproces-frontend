@@ -21,15 +21,15 @@ export default class ProcessParents extends Vue {
 @import '@/styles/variables.scss';
 
 .parents {
-  margin-top: $size-unit * 2;
+  margin-top: 2rem;
 }
 
 .parent {
   display: block;
   border: 2px solid $color-secondary;
-  border-radius: $size-unit;
-  padding: $size-unit;
-  margin-bottom: $size-unit;
+  border-radius: 1rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
   text-decoration: none;
   color: inherit;
 }

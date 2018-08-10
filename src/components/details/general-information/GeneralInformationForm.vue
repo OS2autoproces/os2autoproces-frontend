@@ -215,7 +215,7 @@ export default class GeneralInformationForm extends Vue {
   .general-information {
     display: flex;
     flex-direction: row;
-    padding: $size-unit;
+    padding: 1rem;
   }
 }
 
@@ -223,20 +223,20 @@ export default class GeneralInformationForm extends Vue {
   background-color: white;
   border-radius: 0;
   display: flex;
-  margin-top: $size-unit * 2;
+  margin-top: 2rem;
 
   .resume {
     flex-grow: 1;
 
     h2 {
       @include textarea-heading;
-      margin-bottom: $size-unit/2;
+      margin-bottom: .5rem;
     }
   }
 
   .general-phases {
     flex: 0 0 400px;
-    margin-left: 2 * $size-unit;
+    margin-left: 2rem;
     text-align: center;
 
     .status-selection {
@@ -250,14 +250,14 @@ export default class GeneralInformationForm extends Vue {
 .comments-heading {
   @include textarea-heading;
   vertical-align: middle;
-  padding: $size-unit 0;
+  padding: 1rem 0;
 }
 
 .phase-changed {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: $size-unit;
+  padding: 1rem;
   text-align: left;
 
   svg {
@@ -266,7 +266,7 @@ export default class GeneralInformationForm extends Vue {
 
   > div {
     color: $color-secondary;
-    padding-left: $size-unit;
+    padding-left: 1rem;
     width: 250px;
   }
 }

@@ -195,15 +195,15 @@ export default class UmbrellaForm extends Vue {
 .description,
 .processes {
   h2 {
-    margin-top: $size-unit * 2;
+    margin-top: 2rem;
     @include textarea-heading;
-    margin-bottom: $size-unit/2;
+    margin-bottom: .5rem;
   }
 }
 
 .process {
   position: relative;
-  margin-bottom: $size-unit;
+  margin-bottom: 1rem;
 
   .delete-icon {
     position: absolute;

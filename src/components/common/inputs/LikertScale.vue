@@ -60,8 +60,8 @@ export default class LikertScale extends Vue {
 }
 
 .checkbox /deep/ .checkbox-icon {
-  height: 2 * $size-unit;
-  width: 2 * $size-unit;
+  height: 2rem;
+  width: 2rem;
 }
 
 .label {

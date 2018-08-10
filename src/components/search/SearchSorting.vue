@@ -50,7 +50,7 @@ export default class SearchSorting extends Vue {
 
 .search-sorting {
   display: flex;
-  padding: $size-unit;
+  padding: 1rem;
 }
 
 .sort-option-column {
@@ -65,9 +65,9 @@ export default class SearchSorting extends Vue {
   }
 
   svg {
-    margin-left: $size-unit;
-    height: $size-unit;
-    width: $size-unit;
+    margin-left: 1rem;
+    height: 1rem;
+    width: 1rem;
   }
 }
 </style>

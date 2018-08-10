@@ -170,10 +170,10 @@ export default class SearchFiltersComponent extends Vue {
 @import '../../styles/variables';
 
 .types {
-  margin-bottom: 4 * $size-unit;
+  margin-bottom: 4rem;
 
   > div {
-    margin-bottom: $size-unit;
+    margin-bottom: 1rem;
   }
 }
 
@@ -182,18 +182,18 @@ h1 {
   color: $color-secondary;
   line-height: 1.2em;
   font-size: 1.25rem;
-  margin: 3 * $size-unit 0;
+  margin: 3rem 0;
 }
 
 .search-option {
-  margin-top: $size-unit;
+  margin-top: 1rem;
 }
 
 .expand-panel {
-  margin-top: 3 * $size-unit;
+  margin-top: 3rem;
 }
 
 .datepicker {
-  margin-top: $size-unit;
+  margin-top: 1rem;
 }
 </style>

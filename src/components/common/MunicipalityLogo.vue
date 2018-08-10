@@ -34,7 +34,7 @@ export default class MunicipalityLogoComponent extends Vue {
 @import '@/styles/variables.scss';
 .image {
   height: 85px;
-  margin: $size-unit/2;
+  margin: .5rem;
 }
 
 .logo {

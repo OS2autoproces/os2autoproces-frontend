@@ -22,8 +22,8 @@ button {
   @include heading;
   background-color: $color-background;
   border: 1px solid $color-secondary;
-  border-radius: $size-unit/2;
-  padding: $size-unit/2 $size-unit;
+  border-radius: .5rem;
+  padding: .5rem 1rem;
   min-width: 100px;
   color: $color-primary;
 }

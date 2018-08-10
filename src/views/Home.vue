@@ -91,8 +91,8 @@ export default class Home extends Vue {
 
   .login-button {
     border: 1px solid $color-primary;
-    border-radius: $size-unit/2;
-    padding: $size-unit/2 $size-unit;
+    border-radius: .5rem;
+    padding: .5rem 1rem;
     min-width: 40px;
     color: $color-primary;
     @include heading;
@@ -100,8 +100,8 @@ export default class Home extends Vue {
     display: block;
     text-decoration: none;
     position: absolute;
-    top: $size-unit;
-    right: $size-unit;
+    top: 1rem;
+    right: 1rem;
   }
 
   h1 {
@@ -124,7 +124,7 @@ export default class Home extends Vue {
   color: $color-background;
   width: 650px;
   margin: 100px auto;
-  padding: 0 $size-unit;
+  padding: 0 1rem;
 
   &:not(.editing) {
     column-count: 2;

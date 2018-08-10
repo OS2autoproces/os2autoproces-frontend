@@ -145,42 +145,42 @@ export default class Umbrella extends Vue {
   text-decoration: none;
 
   svg {
-    height: $size-unit;
-    width: $size-unit;
-    margin-right: $size-unit / 2;
+    height: 1rem;
+    width: 1rem;
+    margin-right: 0.5rem;
   }
 }
 
 .details-wrapper {
   flex-grow: 1;
-  margin-bottom: 5 * $size-unit;
+  margin-bottom: 5rem;
 }
 
 .details-content {
-  margin-top: $size-unit;
+  margin-top: 1rem;
   margin: 0 auto;
   max-width: 1200px;
 }
 
 .form-sections {
   border: 1px solid $color-secondary;
-  border-radius: $size-unit;
-  margin-top: 2 * $size-unit;
+  border-radius: 1rem;
+  margin-top: 2rem;
   border-bottom: 1px solid $color-secondary;
 }
 
 .side-bar {
   flex: 0 0 200px;
-  margin-left: $size-unit;
+  margin-left: 1rem;
 
   .side-bar-content {
     position: fixed;
-    top: 80px + 2 * $size-unit;
+    top: calc(80px + 2rem);
   }
 
   .save-button,
   .report-button {
-    margin-top: 2 * $size-unit;
+    margin-top: 2rem;
   }
 }
 </style>

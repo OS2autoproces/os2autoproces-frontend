@@ -85,12 +85,12 @@ export default class TimeAndProcessForm extends Vue {
 
 .comments-wrap {
   width: 50%;
-  padding-top: $size-unit;
+  padding-top: 1rem;
   vertical-align: baseline;
 
   span {
     color: $color-secondary;
-    margin-right: $size-unit;
+    margin-right: 1rem;
   }
   .time-proces-tooltip {
     vertical-align: middle;

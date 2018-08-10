@@ -1,32 +1,32 @@
 <template>
-    <div class="search">
-        <NavBar />
+  <div class="search">
+    <NavBar />
 
-        <div class="page">
-            <div class="filters">
-                <SearchFiltersComponent :filters="filters" @change="updateFilters" @assign="assignFilters" />
-            </div>
-            <div>
-                <div class="results-wrapper">
-                    <div class="report">
-                        <router-link to="/report">
-                            <PlusIcon/> Indberet
-                        </router-link>
-                    </div>
+    <div class="page">
+      <div class="filters">
+        <SearchFiltersComponent :filters="filters" @change="updateFilters" @assign="assignFilters" />
+      </div>
+      <div>
+        <div class="results-wrapper">
+          <div class="report">
+            <router-link to="/report">
+              <PlusIcon/> Indberet
+            </router-link>
+          </div>
 
-                    <SearchSorting :sorting="filters.sorting" @change="updateFilters({ sorting: $event })" />
+          <SearchSorting :sorting="filters.sorting" @change="updateFilters({ sorting: $event })" />
 
-                    <div class="results" v-if="result">
-                        <router-link :to="'/details/' + process.id" class="search-result-link" v-for="process in result.processes" :key="process.id">
-                            <SearchResult :process="process" />
-                        </router-link>
-                    </div>
+          <div class="results" v-if="result">
+            <router-link :to="'/details/' + process.id" class="search-result-link" v-for="process in result.processes" :key="process.id">
+              <SearchResult :process="process" />
+            </router-link>
+          </div>
 
-                    <SearchPagination v-if="result" :page="result.page.number" :pageTotal="result.page.totalPages" @change="updateFilters({ page: $event })" />
-                </div>
-            </div>
+          <SearchPagination v-if="result" :page="result.page.number" :pageTotal="result.page.totalPages" @change="updateFilters({ page: $event })" />
         </div>
+      </div>
     </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -90,7 +90,7 @@ export default class Search extends Vue {
 }
 
 .filters {
-  padding: 4 * $size-unit 3 * $size-unit;
+  padding: 4rem 2rem;
 }
 
 .page {
@@ -98,7 +98,7 @@ export default class Search extends Vue {
   display: flex;
 
   > div:first-of-type {
-    flex: 0 0 300px;
+    flex: 0 1 300px;
     border-right: 1px solid #e6e6e8;
   }
 
@@ -113,8 +113,8 @@ export default class Search extends Vue {
 }
 
 .report {
-  padding-top: 3 * $size-unit;
-  padding-bottom: $size-unit;
+  padding-top: 3rem;
+  padding-bottom: 1rem;
   text-align: right;
 
   a {
@@ -127,9 +127,9 @@ export default class Search extends Vue {
   }
 
   svg {
-    margin-right: $size-unit/2;
-    height: $size-unit * 1.5;
-    width: $size-unit * 1.5;
+    margin-right: 0.5rem;
+    height: 1.5rem;
+    width: 1.5rem;
   }
 }
 
@@ -139,7 +139,7 @@ export default class Search extends Vue {
   color: inherit;
 
   &:not(:last-of-type) {
-    margin-bottom: $size-unit;
+    margin-bottom: 1rem;
   }
 }
 </style>

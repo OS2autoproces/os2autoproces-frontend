@@ -59,14 +59,14 @@ export default class Comments extends Vue {
 
 .comments-form {
   display: flex;
-  border-radius: $size-unit;
+  border-radius: 1rem;
   background-color: rgba($color-secondary, 0.3);
-  padding: 2 * $size-unit;
+  padding: 2rem;
 }
 
 .comment-input-wrapper {
   flex: 1 1 45%;
-  margin-right: 2 * $size-unit;
+  margin-right: 2rem;
 }
 
 .comment-input {
@@ -88,12 +88,12 @@ export default class Comments extends Vue {
   flex: 1 1 70%;
   border: 1px solid $color-secondary;
   border-radius: 10px;
-  padding-right: $size-unit;
+  padding-right: 1rem;
   background: $color-background;
 }
 
 .comment-list {
-  padding: $size-unit;
+  padding: 1rem;
   overflow: auto;
   height: 300px;
 }
@@ -102,7 +102,7 @@ export default class Comments extends Vue {
   white-space: pre-wrap;
 
   &:not(:last-child) {
-    margin-bottom: $size-unit;
+    margin-bottom: 1rem;
   }
 }
 

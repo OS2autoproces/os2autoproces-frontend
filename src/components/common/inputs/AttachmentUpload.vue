@@ -113,13 +113,13 @@ export default class AttachmentUpload extends Vue {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  margin-bottom: $size-unit;
+  margin-bottom: 1rem;
 }
 
 .upload-button-wrapper {
-  margin-top: $size-unit;
-  margin-right: $size-unit;
-  margin-left: $size-unit;
+  margin-top: 1rem;
+  margin-right: 1rem;
+  margin-left: 1rem;
   display: inline-block;
   cursor: pointer;
 
