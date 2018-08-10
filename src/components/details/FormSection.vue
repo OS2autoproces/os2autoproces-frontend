@@ -70,17 +70,17 @@ export default class FormSection extends Vue {
 
 .section-header {
   display: flex;
-  padding: 2 * $size-unit;
+  padding: 2rem;
   @include heading;
   color: $color-primary;
-  font-size: 1.5 * $size-unit;
+  font-size: 1.5rem;
 
   .edit-button {
-    margin-left: $size-unit;
+    margin-left: 1rem;
 
     svg {
-      width: $size-unit;
-      height: $size-unit;
+      width: 1rem;
+      height: 1rem;
     }
   }
 
@@ -106,7 +106,7 @@ export default class FormSection extends Vue {
 }
 
 .section-content {
-  padding: $size-unit * 2;
+  padding: 2rem;
   padding-top: 0;
 }
 </style>

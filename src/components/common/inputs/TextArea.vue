@@ -50,8 +50,8 @@ export default class TextArea extends Vue {
   .text-area-overlay {
     display: inline-block;
     position: absolute;
-    right: $size-unit / 2;
-    bottom: $size-unit / 2;
+    right: .5rem;
+    bottom: .5rem;
     text-align: right;
   }
 }

@@ -21,8 +21,8 @@ export default class Well extends Vue {}
   display: flex;
   flex-direction: column;
   background-color: $color-background-grey;
-  padding: $size-unit * 1.5;
-  border-radius: $size-unit;
+  padding: 1.5rem;
+  border-radius: 1rem;
 
   .section-wrap {
     display: flex;
@@ -30,10 +30,10 @@ export default class Well extends Vue {}
 
     > * {
       flex: 1 1 1px;
-      padding: 0 $size-unit/2;
+      padding: 0 .5rem;
 
       > *:not(:last-child) {
-        margin-bottom: $size-unit;
+        margin-bottom: 1rem;
       }
 
       &:not(:last-of-type) {

@@ -74,11 +74,11 @@ export default class AssociatedProcesses extends Vue {
 
   .filters {
     flex: 0 0 auto;
-    margin-right: 2 * $size-unit;
+    margin-right: 2rem;
   }
 }
 
 .result {
-  margin-bottom: $size-unit;
+  margin-bottom: 1rem;
 }
 </style>

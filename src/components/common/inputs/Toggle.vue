@@ -27,8 +27,8 @@ export default class Toggle extends Vue {
 
 .toggle {
   border: 1px solid $color-primary;
-  border-radius: $size-unit/2;
-  padding: 0 $size-unit;
+  border-radius: .5rem;
+  padding: 0 1rem;
   width: 250px;
   height: 40px;
   align-items: center;
@@ -46,10 +46,10 @@ export default class Toggle extends Vue {
   position: absolute;
   height: 40px;
   line-height: 40px;
-  padding: 0 $size-unit;
+  padding: 0 1rem;
   color: $color-background;
   background-color: $color-secondary;
-  border-radius: $size-unit/2;
+  border-radius: .5rem;
   top: -1px;
 
   &.on {

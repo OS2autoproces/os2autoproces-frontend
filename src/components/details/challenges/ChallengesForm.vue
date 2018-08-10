@@ -97,18 +97,18 @@ h2 {
   color: $color-secondary;
 
   &:not(:first-of-type) {
-    margin-top: $size-unit * 2;
+    margin-top: 2rem;
   }
-  margin-bottom: $size-unit / 2;
+  margin-bottom: .5rem;
   display: inline-block;
-  margin-right: $size-unit;
+  margin-right: 1rem;
 }
 
 .challenges-well {
-  margin-top: $size-unit * 1.5;
+  margin-top: 1.5rem;
 }
 
 .well-item-footer {
-  padding-top: $size-unit;
+  padding-top: 1rem;
 }
 </style>

@@ -58,19 +58,19 @@ export default class TagSelector extends Vue {
     position: relative;
     color: $color-background;
     background-color: $color-secondary;
-    border-radius: $size-unit;
-    padding: 0 $size-unit/2;
+    border-radius: 1rem;
+    padding: 0 .5rem;
     line-height: 1.8em;
-    margin: $size-unit/2 0;
-    margin-right: $size-unit;
-    min-width: $size-unit * 7;
+    margin: .5rem 0;
+    margin-right: 1rem;
+    min-width: 7rem;
 
     .delete-icon {
       position: absolute;
-      right: $size-unit / -2;
-      top: $size-unit / -2;
-      width: $size-unit;
-      height: $size-unit;
+      right: -.5rem;
+      top: -.5rem;
+      width: 1rem;
+      height: 1rem;
     }
   }
 }

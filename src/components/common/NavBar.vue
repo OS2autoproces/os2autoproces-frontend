@@ -55,8 +55,8 @@ export default class NavBar extends Vue {
   display: flex;
   align-items: center;
   background-color: $color-secondary;
-  height: 5 * $size-unit;
-  padding: $size-unit;
+  height: 5rem;
+  padding: 1rem;
 }
 
 .logo {
@@ -66,7 +66,7 @@ export default class NavBar extends Vue {
 }
 
 .link {
-  margin-left: $size-unit * 2;
+  margin-left: 2rem;
 }
 
 .user {
@@ -76,9 +76,9 @@ export default class NavBar extends Vue {
 }
 
 .profile-icon {
-  height: 3 * $size-unit;
-  width: 3 * $size-unit;
-  margin-left: $size-unit;
+  height: 3rem;
+  width: 3rem;
+  margin-left: 1rem;
 }
 
 .user-info {

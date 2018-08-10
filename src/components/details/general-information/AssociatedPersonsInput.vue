@@ -75,8 +75,8 @@ export default class AssociatedPersonsInput extends Vue {
 
 .associated {
   display: flex;
-  padding-top: $size-unit;
-  padding-bottom: $size-unit * 2;
+  padding-top: 1rem;
+  padding-bottom: 2rem;
 
   .associated-list {
     width: 60%;
@@ -88,8 +88,8 @@ export default class AssociatedPersonsInput extends Vue {
       align-content: flex-start;
       height: 150px;
       border: 1px solid $color-primary;
-      border-radius: $size-unit;
-      padding: $size-unit/2;
+      border-radius: 1rem;
+      padding: .5rem;
 
       &.disabled {
         border: none;
@@ -98,7 +98,7 @@ export default class AssociatedPersonsInput extends Vue {
       > div {
         display: flex;
         align-items: center;
-        margin-right: $size-unit;
+        margin-right: 1rem;
 
         .name {
           @include field-input-text;
@@ -106,16 +106,16 @@ export default class AssociatedPersonsInput extends Vue {
         }
 
         .delete-icon {
-          width: $size-unit;
-          height: $size-unit;
-          margin-left: $size-unit/2;
+          width: 1rem;
+          height: 1rem;
+          margin-left: .5rem;
         }
       }
     }
   }
 
   .add-person {
-    margin-left: $size-unit;
+    margin-left: 1rem;
 
     .input-group {
       padding: 0;
@@ -135,6 +135,6 @@ export default class AssociatedPersonsInput extends Vue {
 
 .associated-label {
   @include field-label;
-  padding-bottom: $size-unit/4;
+  padding-bottom: .25rem;
 }
 </style>

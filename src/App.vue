@@ -45,6 +45,10 @@ html {
   font-size: 16px;
   font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
   color: $color-text;
+
+  @media (max-width: 1400px) {
+    font-size: 12px;
+  }
 }
 
 body {

@@ -50,7 +50,7 @@ export default class SearchPagination extends Vue {
 
 .search-pagination {
   display: flex;
-  padding: 2 * $size-unit 0;
+  padding: 2rem 0;
 }
 
 .next {
@@ -63,7 +63,7 @@ button {
   display: inline-flex;
   align-items: center;
   margin: 0;
-  margin-bottom: $size-unit;
+  margin-bottom: 1rem;
 
   svg {
     height: 1.5rem;

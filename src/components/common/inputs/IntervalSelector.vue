@@ -64,18 +64,18 @@ export default class Button extends Vue {
 }
 
 .checkbox {
-  margin-right: $size-unit/2;
+  margin-right: .5rem;
 }
 
 .intervals {
-  margin-left: $size-unit;
+  margin-left: 1rem;
 
   .interval {
     display: flex;
     align-items: center;
 
     &:not(:last-of-type) {
-      margin-bottom: $size-unit/2;
+      margin-bottom: .5rem;
     }
   }
 }

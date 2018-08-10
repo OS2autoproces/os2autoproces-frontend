@@ -92,7 +92,7 @@ export default class AttachmentComponent extends Vue {
 @import '@/styles/variables.scss';
 
 .attachment {
-  margin: $size-unit;
+  margin: 1rem;
   margin-bottom: 0;
   text-align: center;
 }
@@ -115,8 +115,8 @@ a {
 .upload-icon,
 .delete-button {
   position: absolute;
-  height: $size-unit;
-  width: $size-unit;
+  height: 1rem;
+  width: 1rem;
   top: 0;
   right: 0;
 }

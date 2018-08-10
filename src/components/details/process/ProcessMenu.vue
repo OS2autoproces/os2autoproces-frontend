@@ -92,7 +92,7 @@ export default class ProcessMenu extends Vue {
 
 .menu-item {
   @include light-heading;
-  margin-top: $size-unit;
+  margin-top: 1rem;
   cursor: pointer;
 }
 

@@ -94,7 +94,7 @@ export default class ProcessHeader extends Vue {
 }
 
 .button {
-  margin-right: $size-unit;
+  margin-right: 1rem;
 }
 
 .name.disabled,
@@ -108,9 +108,9 @@ export default class ProcessHeader extends Vue {
 }
 
 .edit-button {
-  height: $size-unit;
-  width: $size-unit;
-  margin-left: $size-unit / 2;
+  height: 1rem;
+  width: 1rem;
+  margin-left: .5rem;
 
   &.editing /deep/ path {
     fill: $color-primary;
@@ -118,8 +118,8 @@ export default class ProcessHeader extends Vue {
 }
 
 .bookmark-button {
-  height: 2 * $size-unit;
-  width: 2 * $size-unit;
+  height: 2rem;
+  width: 2rem;
   margin-left: 50px;
 }
 </style>

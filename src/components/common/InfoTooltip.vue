@@ -26,14 +26,14 @@ export default class ExpandPanel extends Vue {}
   z-index: 2;
   position: relative;
 
-  height: $size-unit;
-  width: $size-unit;
+  height: 1rem;
+  width: 1rem;
 }
 
 .info-tooltip-wrapper {
   display: inline-block;
   position: relative;
-  height: $size-unit;
+  height: 1rem;
   cursor: help;
 
   &:hover {
@@ -47,15 +47,15 @@ export default class ExpandPanel extends Vue {}
 
 .info-tooltip {
   position: absolute;
-  top: -$size-unit/2;
-  left: -$size-unit/2;
+  top: -.5rem;
+  left: -.5rem;
   width: 275px;
   z-index: 1;
 
-  padding: $size-unit / 2;
-  padding-top: 2 * $size-unit;
+  padding: .5rem;
+  padding-top: 2rem;
   border: 1px solid $color-primary;
-  border-radius: $size-unit;
+  border-radius: 1rem;
 
   background-color: $color-background;
 }

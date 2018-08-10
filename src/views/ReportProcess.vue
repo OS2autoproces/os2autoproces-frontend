@@ -74,12 +74,12 @@ export default class Home extends Vue {
   display: inline-flex;
   align-items: center;
   text-decoration: none;
-  margin: $size-unit 0;
+  margin: 1rem 0;
 
   svg {
-    height: $size-unit;
-    width: $size-unit;
-    margin-right: $size-unit / 2;
+    height: 1rem;
+    width: 1rem;
+    margin-right: .5rem;
   }
 }
 
@@ -100,22 +100,22 @@ export default class Home extends Vue {
   }
 
   svg {
-    height: 2 * $size-unit;
-    width: 2 * $size-unit;
-    margin: $size-unit 0;
+    height: 2rem;
+    width: 2rem;
+    margin: 1rem 0;
   }
 
   .options {
     border: 1px solid $color-primary;
-    border-radius: $size-unit;
-    padding: $size-unit / 2 $size-unit;
+    border-radius: 1rem;
+    padding: .5rem 1rem;
     margin: 0 auto;
     width: 150px;
     text-align: left;
 
     > * {
       display: block;
-      padding: $size-unit / 2 0;
+      padding: .5rem 0;
       text-decoration: inherit;
       color: inherit;
 
