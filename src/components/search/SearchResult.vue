@@ -88,9 +88,6 @@ $resume-line-height: 1em * 1.5;
   padding: $size-unit;
   display: flex;
   position: relative;
-  @media screen and (max-width: 1500px) {
-    font-size: 14px;
-  }
 }
 
 .name {
@@ -129,23 +126,6 @@ $resume-line-height: 1em * 1.5;
 
   &:not(:last-of-type) {
     padding-right: $size-unit;
-  }
-}
-
-@media screen and (max-width: 1500px) {
-  .result-column-phases {
-    flex: 0 0 300px;
-    max-width: 300px;
-  }
-
-  .result-column-name {
-    flex: 0 1 15%;
-    max-width: 15%;
-  }
-
-  .result-column {
-    flex: 1 0 25%;
-    max-width: 27%;
   }
 }
 
