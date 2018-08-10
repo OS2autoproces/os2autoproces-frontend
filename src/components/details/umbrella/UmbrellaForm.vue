@@ -62,6 +62,9 @@
       <div v-for="process in state.children" :key="process.id" class="process">
         <router-link :to="'/details/' + process.id" class="search-result-link">
           <SmallSearchResult :process="process" />
+          <div class="visibility-warning" v-if="isLessVisible(process.visibility)">
+            <WarningIcon class="visibility-icon" /> Synligheden ændres fra {{VisibilityLabels[process.visibility]}} til {{VisibilityLabels[state.visibility]}}
+          </div>
         </router-link>
 
         <div v-if="!state.disabled.generalInformationEdit" class="delete-icon" @click="removeProcess(process)" role="button">
@@ -101,7 +104,7 @@ import { processGetterTypes } from '@/store/modules/process/getters';
 import { commonActionTypes, UserSearchRequest } from '@/store/modules/common/actions';
 import { User } from '@/store/modules/auth/state';
 import { StatusKeys, StatusLabels } from '@/models/status';
-import { VisibilityKeys, VisibilityLabels } from '@/models/visibility';
+import { VisibilityKeys, VisibilityLabels, VisibilityOrder, Visibility } from '@/models/visibility';
 import { OrgUnit, Process } from '@/store/modules/process/state';
 import { TypeLabels, TypeKeys } from '@/models/types';
 import { Kle } from '@/store/modules/common/actions';
@@ -136,6 +139,8 @@ export default class UmbrellaForm extends Vue {
   @Getter(processGetterTypes.IS_UMBRELLA_VALID) isUmbrellaValid!: any;
 
   TypeLabels = TypeLabels;
+  VisibilityLabels = VisibilityLabels;
+  VisibilityKeys = VisibilityKeys;
 
   get users() {
     return this.$store.state.common.users;
@@ -158,6 +163,10 @@ export default class UmbrellaForm extends Vue {
       name,
       cvr: this.$store.state.auth.user.cvr
     });
+  }
+
+  isLessVisible(visiblity: Visibility) {
+    return VisibilityOrder.indexOf(visiblity) < VisibilityOrder.indexOf(this.state.visibility);
   }
 
   setKla(kla: string) {
@@ -201,14 +210,25 @@ export default class UmbrellaForm extends Vue {
   }
 }
 
+.visibility-warning {
+  display: flex;
+  align-items: center;
+  color: $color-primary;
+}
+
+.visibility-icon {
+  height: 2rem;
+  width: 2rem;
+}
+
 .process {
   position: relative;
   margin-bottom: 1rem;
 
   .delete-icon {
     position: absolute;
-    top: 20px;
-    right: 20px;
+    top: 12px;
+    right: 12px;
     height: 30px;
     width: 30px;
   }
