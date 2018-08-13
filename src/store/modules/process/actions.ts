@@ -102,21 +102,15 @@ export const actions: ActionTree<ProcessState, RootState> = {
       form.append('files', file.file);
     });
 
-    try {
-      const [privateResult, publicResult] = await Promise.all([
-        HTTP.post<Attachment[]>(`/api/attachments/${state.id}`, privateAttachments),
-        HTTP.post<Attachment[]>(`/api/attachments/${state.id}/public`, publicAttachments)
-      ]);
+    const [privateResult, publicResult] = await Promise.all([
+      HTTP.post<Attachment[]>(`/api/attachments/${state.id}`, privateAttachments),
+      HTTP.post<Attachment[]>(`/api/attachments/${state.id}/public`, publicAttachments)
+    ]);
 
-      const existingAttachments = state.attachments || [];
-      const attachments: Attachment[] = [...existingAttachments, ...privateResult.data, ...publicResult.data];
+    const existingAttachments = state.attachments || [];
+    const attachments: Attachment[] = [...existingAttachments, ...privateResult.data, ...publicResult.data];
 
-      commit(processMutationTypes.ASSIGN, { attachments });
-    } catch {
-      if (!state.attachments) {
-        return;
-      }
-    }
+    commit(processMutationTypes.ASSIGN, { attachments });
   },
   async removeAttachment({ commit, state }, id: number) {
     await HTTP.delete(`/api/attachments/${state.id}/${id}`);
