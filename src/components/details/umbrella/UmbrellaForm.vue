@@ -98,13 +98,12 @@ import WarningIcon from '@/components/icons/WarningIcon.vue';
 import DeleteIcon from '@/components/icons/DeleteIcon.vue';
 import { processActionTypes } from '@/store/modules/process/actions';
 import { processGetterTypes } from '@/store/modules/process/getters';
-import { commonActionTypes, UserSearchRequest } from '@/store/modules/common/actions';
+import { Kle, commonActionTypes, UserSearchRequest } from '@/store/modules/common/actions';
 import { User } from '@/store/modules/auth/state';
 import { StatusKeys, StatusLabels } from '@/models/status';
 import { VisibilityKeys, VisibilityLabels } from '@/models/visibility';
 import { OrgUnit, Process } from '@/store/modules/process/state';
 import { TypeLabels, TypeKeys } from '@/models/types';
-import { Kle } from '@/store/modules/common/actions';
 import { Domain } from '@/models/domain';
 import { Phase, PhaseKeys } from '@/models/phase';
 import { searchActionTypes } from '@/store/modules/search/actions';
@@ -167,9 +166,9 @@ export default class UmbrellaForm extends Vue {
 
   setKle(kle: Kle) {
     if (!kle) {
-      this.update({ kle: kle, form: null });
+      this.update({ kle, form: null });
     } else {
-      this.update({ kle: kle });
+      this.update({ kle });
     }
     this.loadForms(kle);
   }

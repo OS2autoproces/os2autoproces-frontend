@@ -104,14 +104,12 @@ import FormSection from '@/components/details/FormSection.vue';
 import WarningIcon from '@/components/icons/WarningIcon.vue';
 import { processActionTypes } from '@/store/modules/process/actions';
 import { processGetterTypes } from '@/store/modules/process/getters';
-import { commonActionTypes, UserSearchRequest } from '@/store/modules/common/actions';
 import { User } from '@/store/modules/auth/state';
 import { StatusKeys, StatusLabels } from '@/models/status';
 import { VisibilityKeys, VisibilityLabels } from '@/models/visibility';
 import { OrgUnit } from '@/store/modules/process/state';
-import { DomainKeys, DomainLabels } from '@/models/domain';
-import { Kle, Form } from '@/store/modules/common/actions';
-import { Domain } from '@/models/domain';
+import { Domain, DomainKeys, DomainLabels } from '@/models/domain';
+import { Kle, Form, commonActionTypes, UserSearchRequest } from '@/store/modules/common/actions';
 import { Phase, PhaseKeys } from '@/models/phase';
 
 @Component({
@@ -142,6 +140,19 @@ export default class GeneralInformationForm extends Vue {
   isPhaseChanged = false;
   StatusKeys = StatusKeys;
   PhaseKeys = PhaseKeys;
+
+  visibilityLevels = [
+    { value: VisibilityKeys.PERSONAL, text: VisibilityLabels.PERSONAL },
+    { value: VisibilityKeys.MUNICIPALITY, text: VisibilityLabels.MUNICIPALITY },
+    { value: VisibilityKeys.PUBLIC, text: VisibilityLabels.PUBLIC }
+  ];
+
+  statusLevels = [
+    { value: StatusKeys.REJECTED, text: StatusLabels.REJECTED },
+    { value: StatusKeys.FAILED, text: StatusLabels.FAILED },
+    { value: StatusKeys.PENDING, text: StatusLabels.PENDING },
+    { value: StatusKeys.INPROGRESS, text: StatusLabels.INPROGRESS }
+  ];
 
   get isWithinMunicipality() {
     const { auth, process } = this.$store.state;
@@ -175,9 +186,9 @@ export default class GeneralInformationForm extends Vue {
 
   setKle(kle: Kle) {
     if (!kle) {
-      this.update({ kle: kle, form: null });
+      this.update({ kle, form: null });
     } else {
-      this.update({ kle: kle });
+      this.update({ kle });
     }
     this.loadForms(kle);
   }
@@ -190,19 +201,6 @@ export default class GeneralInformationForm extends Vue {
   search(name: string) {
     this.searchUsers({ name, cvr: this.$store.state.auth.user.cvr });
   }
-
-  visibilityLevels = [
-    { value: VisibilityKeys.PERSONAL, text: VisibilityLabels.PERSONAL },
-    { value: VisibilityKeys.MUNICIPALITY, text: VisibilityLabels.MUNICIPALITY },
-    { value: VisibilityKeys.PUBLIC, text: VisibilityLabels.PUBLIC }
-  ];
-
-  statusLevels = [
-    { value: StatusKeys.REJECTED, text: StatusLabels.REJECTED },
-    { value: StatusKeys.FAILED, text: StatusLabels.FAILED },
-    { value: StatusKeys.PENDING, text: StatusLabels.PENDING },
-    { value: StatusKeys.INPROGRESS, text: StatusLabels.INPROGRESS }
-  ];
 }
 </script>
 
@@ -230,7 +228,7 @@ export default class GeneralInformationForm extends Vue {
 
     h2 {
       @include textarea-heading;
-      margin-bottom: .5rem;
+      margin-bottom: 0.5rem;
     }
   }
 
