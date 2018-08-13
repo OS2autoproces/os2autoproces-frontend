@@ -50,6 +50,8 @@ export default class Details extends Vue {
   }
 
   async loadContent() {
+    this.$store.dispatch(processActionTypes.CLEAR_PROCESS);
+
     if (this.isReporting) {
       this.isUmbrella = this.type === TypeKeys.PARENT || this.type === TypeKeys.GLOBAL_PARENT;
       this.loading = false;
