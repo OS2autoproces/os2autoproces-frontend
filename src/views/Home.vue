@@ -66,7 +66,7 @@ export default class Home extends Vue {
   save() {
     this.saveCmsContent({
       label: 'frontPage',
-      content: this.state.frontPage
+      content: this.state.common.frontPage
     });
     this.editing = false;
   }
