@@ -256,6 +256,7 @@ export function initialProcessState(): ProcessState {
     visibility: VisibilityKeys.PERSONAL,
     vendor: null,
     owner: null,
+    reporter: null,
     users: [],
     shortDescription: '',
     phase: PhaseKeys.IDEA,

@@ -74,6 +74,7 @@ export interface Process {
   users: User[];
   owner: User | null;
   contact: User | null;
+  reporter: User | null;
 
   itSystems: ITSystem[];
   orgUnits: OrgUnit[];
