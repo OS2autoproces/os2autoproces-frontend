@@ -22,20 +22,23 @@
         <WellItem label="Oprettet:">
           <DatePicker :value="state.created" disabled/>
         </WellItem>
-      </div>
 
-      <div>
-        <WellItem labelWidth="55%" label="Sidst opdateret:">
-          <DatePicker :value="state.lastChanged" disabled />
-        </WellItem>
-      </div>
-
-      <div slot="well-footer" class="well-item-footer" v-if="minPhase(PhaseKeys.PREANALYSIS)">
-        <WellItem label="Nuværende system:">
+        <WellItem label="Nuværende systemer:" v-if="minPhase(PhaseKeys.PREANALYSIS)">
           <SelectionField :items="itSystems" :value="state.itSystems" itemText="name" :disabled="state.disabled.challengesEdit" @change="assign({itSystems: $event})" multiple />
         </WellItem>
       </div>
+
+      <div>
+        <WellItem labelWidth="30%" label="Sidst opdateret:">
+          <DatePicker :value="state.lastChanged" disabled />
+        </WellItem>
+
+        <WellItem labelWidth="30%" label="Andre nuværende systemer:" v-if="minPhase(PhaseKeys.PREANALYSIS)">
+          <TextArea @change="update({itSystemsDescription: $event})" fullWidth :disabled="state.disabled.challengesEdit" :value="state.itSystemsDescription" :maxLength="300" />
+        </WellItem>
+      </div>
     </Well>
+
   </FormSection>
 </template>
 
@@ -99,13 +102,13 @@ h2 {
   &:not(:first-of-type) {
     margin-top: 2rem;
   }
-  margin-bottom: .5rem;
+  margin-bottom: 0.5rem;
   display: inline-block;
   margin-right: 1rem;
 }
 
 .challenges-well {
-  margin-top: 1.5rem;
+  margin: 1.5rem 0;
 }
 
 .well-item-footer {

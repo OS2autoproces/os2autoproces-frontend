@@ -32,6 +32,7 @@ export interface ProcessRequest {
   kla: string | null;
   links: Link[] | null;
   form: string | null;
+  itSystemsDescription: string | null;
 
   vendor: string | null;
   internalNotes: string | null;
@@ -82,6 +83,7 @@ export interface ProcessResponse {
   canEdit: boolean;
   emailNotification: boolean;
   form: string | null;
+  itSystemsDescription: string | null;
 
   localId: string | null;
   klId: string | null;
@@ -214,6 +216,7 @@ function stateToRequestFields(state: ProcessState): ProcessRequest {
     ratingComment: defaultNull(state.ratingComment),
     searchWords: '',
     type: state.type || TypeKeys.CHILD,
+    itSystemsDescription: defaultNull(state.itSystemsDescription),
 
     contact: state.contact && relation('users', state.contact),
     owner: state.owner && relation('users', state.owner),
@@ -269,6 +272,7 @@ export function responseToState(process: ProcessResponse): Process {
     timeSpendPercentageDigital: process.timeSpendPercentageDigital.toString(),
     timeSpendPerOccurance: process.timeSpendPerOccurance.toString(),
     rating: process.rating || 0,
+    itSystemsDescription: process.itSystemsDescription || '',
     hasBookmarked: process.hasBookmarked,
     shortDescription: process.shortDescription || '',
     longDescription: process.longDescription || '',
