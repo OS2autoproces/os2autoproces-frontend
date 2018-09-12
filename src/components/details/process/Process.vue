@@ -49,6 +49,19 @@
         </ul>
       </div>
     </SnackBar>
+
+    <SnackBar :timeout="0" color="success" :value="snackSucces === 200 || snackSucces === 201" @clicked="updateSaveResponseStatus({saveStatus: null})">
+      <div>
+        Processen er gemt!
+      </div>
+    </SnackBar>
+
+    <SnackBar :value="snackSucces > 300" :timeout="0" color="error" @clicked="updateSaveResponseStatus({saveStatus: null})">
+      <div>
+        Processen er IKKE gemt! prøv igen!
+      </div>
+    </SnackBar>
+
   </div>
 </template>
 
@@ -113,6 +126,7 @@ export default class Process extends Vue {
   @Action(processActionTypes.UPDATE) update: any;
   @Action(processActionTypes.SAVE_COMMENT) saveComment!: (message: string) => Promise<void>;
   @Action(errorActionTypes.UPDATE_PROCESS_ERRORS) updateProcessErrors!: (processErrors: Partial<ErrorState>) => void;
+  @Action(errorActionTypes.UPDATE_SAVE_REPONSE_STATUS) updateSaveResponseStatus!: (status: number) => void;
 
   get state() {
     return this.$store.state.process;
@@ -126,9 +140,18 @@ export default class Process extends Vue {
     return !isEmpty(this.$store.state.error.processErrors);
   }
 
+  get snackSucces() {
+    return this.$store.state.error.saveStatus;
+  }
+
   get isWithinMunicipality() {
     const { auth, process } = this.$store.state;
     return auth.user.cvr === process.cvr;
+  }
+
+  beforeCreate() {
+    this.$store.dispatch(errorActionTypes.UPDATE_PROCESS_ERRORS, { processErrors: [] });
+    this.$store.dispatch(errorActionTypes.UPDATE_SAVE_REPONSE_STATUS, null);
   }
 
   mounted() {
@@ -218,7 +241,7 @@ export default class Process extends Vue {
   svg {
     height: 1rem;
     width: 1rem;
-    margin-right: .5rem;
+    margin-right: 0.5rem;
   }
 }
 
