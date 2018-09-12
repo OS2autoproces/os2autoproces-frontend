@@ -60,14 +60,17 @@ export const timeAndProcessLabels: ProcessLabels = {
 };
 
 export const assessmentLabels: ProcessLabels = {
-  levelOfProfessionalAssessment: 'I hvor høj grad er der faglig vurdering?',
+  levelOfProfessionalAssessment: 'I hvor høj grad indgår der faglig vurdering i processen?',
   levelOfChange: 'I hvor høj grad er processen præget af hyppige ændringer?',
   levelOfStructuredInformation: 'I hvor høj grad er processen baseret på struktureret information?',
-  levelOfUniformity: 'I hvor høj grad er processen uniform?',
-  levelOfDigitalInformation: 'Er data og informationer, der skal bruges i processen tilgængelige?',
-  levelOfQuality: 'Bidrager løsningen til en højere kvalitet, som er mere ensrettet og med færre fejl?',
-  levelOfSpeed: 'Bidrager løsningen til en hurtigere og mere fyldestgørende service?',
-  levelOfRoutineWorkReduction: 'Frigiver løsningen tid og nedbringer rutineopgaver?',
+  levelOfUniformity: 'Er der variation i den måde processen løses?',
+  levelOfDigitalInformation:
+    'Er de data og informationer, der skal bruges i processen, tilgængelige digitalt i IT-systemer?',
+  levelOfQuality:
+    'Vil en automatiseret løsning bidrage til en højere kvalitet, som er mere ensrettet og med færre fejl?',
+  levelOfSpeed: 'Vil en automatiseret løsning bidrage til en hurtigere og mere fyldestgørende service?',
+  levelOfRoutineWorkReduction:
+    'Vil en automatiseret løsning frigive tid og nedbringe rutineopgaver, som skaber en bedre trivsel blandt medarbejderne?',
   evaluatedLevelOfRoi: 'I hvor høj grad vurderes det at processen kan automatiseres?'
 };
 
