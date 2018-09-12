@@ -22,25 +22,22 @@
         <WellItem label="Oprettet:">
           <DatePicker :value="state.created" disabled/>
         </WellItem>
+
+        <WellItem label="Nuværende systemer:">
+          <SelectionField :items="itSystems" :value="state.itSystems" itemText="name" :disabled="state.disabled.challengesEdit" @change="assign({itSystems: $event})" multiple />
+        </WellItem>
       </div>
 
       <div>
         <WellItem labelWidth="55%" label="Sidst opdateret:">
           <DatePicker :value="state.lastChanged" disabled />
         </WellItem>
-      </div>
 
-      <div slot="well-footer" class="well-item-footer" v-if="minPhase(PhaseKeys.PREANALYSIS)">
-        <WellItem label="Nuværende system:">
-          <SelectionField :items="itSystems" :value="state.itSystems" itemText="name" :disabled="state.disabled.challengesEdit" @change="assign({itSystems: $event})" multiple />
+        <WellItem labelWidth="30%" label="Andre nuværende systemer:">
+          <TextArea @change="update({itSystemsDescription: $event})" fullWidth :disabled="state.disabled.challengesEdit" :value="state.itSystemsDescription" :maxLength="300" />
         </WellItem>
       </div>
     </Well>
-
-    <div v-if="minPhase(PhaseKeys.PREANALYSIS)">
-      <h2>Tilføjelser og noter til nuværende systemer</h2>
-      <TextArea @change="update({itSystemsDescription: $event})" :disabled="state.disabled.challengesEdit" :value="state.itSystemsDescription" :maxLength="300" />
-    </div>
 
   </FormSection>
 </template>
