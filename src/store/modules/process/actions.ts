@@ -253,7 +253,7 @@ export function initialProcessState(): ProcessState {
     legalClause: '',
     orgUnits: [],
     domains: [],
-    visibility: VisibilityKeys.PERSONAL,
+    visibility: VisibilityKeys.MUNICIPALITY,
     vendor: null,
     owner: null,
     reporter: null,

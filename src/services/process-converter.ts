@@ -181,7 +181,7 @@ function stateToRequestFields(state: ProcessState): ProcessRequest {
     shortDescription: state.shortDescription,
     longDescription: defaultNull(state.longDescription),
     domains: state.domains || [],
-    visibility: state.visibility || VisibilityKeys.PERSONAL,
+    visibility: state.visibility || VisibilityKeys.MUNICIPALITY,
     legalClause: defaultNull(state.legalClause),
     legalClauseLastVerified: defaultNull(state.legalClauseLastVerified),
     kle: state.kle ? state.kle.code : null,
