@@ -14,7 +14,7 @@
       <MunicipalityLogo :src="logo" />
     </div>
     <div v-if="!isReporting" class="row">
-      <Button class="button" @click="remove">Slet proces</Button>
+      <Button class="button" @click="remove" v-if="state.canEdit">Slet proces</Button>
       <Button class="button" @click="copy" v-if="!isUmbrella">Kopier proces</Button>
       <div class="flex-grow"></div>
       <Toggle :value="state.emailNotification" @change="setEmailNotification($event)">Mail notifikation</Toggle>
@@ -79,8 +79,10 @@ export default class ProcessHeader extends Vue {
   }
 
   async remove() {
-    await this.removeProcess();
-    this.$router.push(`/search`);
+    if (confirm('Vil du slette denne proces permanent?')) {
+      await this.removeProcess();
+      this.$router.push(`/search`);
+    }
   }
 }
 </script>
@@ -110,7 +112,7 @@ export default class ProcessHeader extends Vue {
 .edit-button {
   height: 1rem;
   width: 1rem;
-  margin-left: .5rem;
+  margin-left: 0.5rem;
 
   &.editing /deep/ path {
     fill: $color-primary;
