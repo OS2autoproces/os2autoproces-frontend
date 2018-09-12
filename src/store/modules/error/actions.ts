@@ -7,7 +7,8 @@ import { Process } from '@/store/modules/process/state';
 export const namespace = 'error';
 
 export const errorActionTypes = {
-  UPDATE_PROCESS_ERRORS: `${namespace}/updateProcessErrors`
+  UPDATE_PROCESS_ERRORS: `${namespace}/updateProcessErrors`,
+  UPDATE_SAVE_REPONSE_STATUS: `${namespace}/updateSaveResponseStatus`
 };
 
 type ProcessLabels = { [X in keyof Process]?: string };
@@ -106,5 +107,8 @@ export const actions: ActionTree<ErrorState, RootState> = {
       const processErrors = errors.processErrors.map(error => processLabels[error]);
       commit(errorMutationTypes.ASSIGN, { processErrors });
     }
+  },
+  updateSaveResponseStatus({ commit }, saveStatus: number) {
+    commit(errorMutationTypes.ASSIGN, { saveStatus });
   }
 };
