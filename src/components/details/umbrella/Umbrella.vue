@@ -21,7 +21,7 @@
       </div>
     </div>
 
-    <SnackBar :timeout="0" color="error" :value="snack" @clicked="updateProcessErrors({processErrors: []})">
+    <SnackBar showButton :timeout="0" color="error" :value="snack" @clicked="updateProcessErrors({processErrors: []})">
       <div>
         Følgende felter er ugyldige:
         <ul>
@@ -30,16 +30,12 @@
       </div>
     </SnackBar>
 
-    <SnackBar :timeout="0" color="success" :value="snackSucces === 200 || snackSucces === 201" @clicked="updateSaveResponseStatus({saveStatus: null})">
-      <div>
-        Processen er gemt!
-      </div>
+    <SnackBar :timeout="6000" color="success" @onSnackClose="showSaveSuccess = false" :value="showSaveSuccess">
+      Processen er gemt!
     </SnackBar>
 
-    <SnackBar :value="snackSucces > 300" :timeout="0" color="error" @clicked="updateSaveResponseStatus({saveStatus: null})">
-      <div>
-        Processen er IKKE gemt - prøv igen!
-      </div>
+    <SnackBar :value="showSaveError" @onSnackClose="showSaveError = false" :timeout="6000" color="error">
+      Processen er IKKE gemt - prøv igen!
     </SnackBar>
   </div>
 </template>
@@ -105,7 +101,9 @@ export default class Umbrella extends Vue {
   @Action(processActionTypes.UPDATE) update: any;
   @Action(commonActionTypes.LOAD_KLES) loadKles!: () => Promise<void>;
   @Action(errorActionTypes.UPDATE_PROCESS_ERRORS) updateProcessErrors!: (processErrors: Partial<ErrorState>) => void;
-  @Action(errorActionTypes.UPDATE_SAVE_REPONSE_STATUS) updateSaveResponseStatus!: (status: number) => void;
+
+  showSaveSuccess = false;
+  showSaveError = false;
 
   get errors() {
     return this.$store.state.error.processErrors;
@@ -137,15 +135,30 @@ export default class Umbrella extends Vue {
   }
 
   save() {
-    this.$store.dispatch(processActionTypes.SAVE, Object.keys(umbrellaLabels));
+    try {
+      this.$store.dispatch(processActionTypes.SAVE, Object.keys(umbrellaLabels));
+      if (this.errors.length === 0) {
+        this.showSaveSuccess = true;
+      }
+    } catch {
+      if (this.errors.length === 0) {
+        this.showSaveError = true;
+      }
+    }
   }
 
   async report() {
-    const processId = await this.$store.dispatch(processActionTypes.REPORT, Object.keys(umbrellaLabels));
-    if (!processId) {
-      return;
+    try {
+      const processId = await this.$store.dispatch(processActionTypes.REPORT, Object.keys(umbrellaLabels));
+      if (!processId) {
+        this.showSaveError = true;
+        return;
+      }
+      this.showSaveSuccess = true;
+      this.$router.push(`/details/${processId}`);
+    } catch {
+      this.showSaveError = true;
     }
-    this.$router.push(`/details/${processId}`);
   }
 }
 </script>

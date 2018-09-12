@@ -7,8 +7,7 @@ import { mutations } from '@/store/modules/error/mutations';
 const namespaced = true;
 
 export const state: ErrorState = {
-  processErrors: [],
-  saveStatus: null
+  processErrors: []
 };
 
 export const error: Module<ErrorState, RootState> = {

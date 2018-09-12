@@ -41,7 +41,7 @@
       </div>
     </div>
 
-    <SnackBar :timeout="0" color="error" :value="snack" @clicked="updateProcessErrors({processErrors: []})">
+    <SnackBar showButton :timeout="0" color="error" :value="snack" @clicked="updateProcessErrors({processErrors: []})">
       <div>
         Følgende felter er ugyldige:
         <ul>
@@ -50,16 +50,12 @@
       </div>
     </SnackBar>
 
-    <SnackBar :timeout="0" color="success" :value="snackSucces === 200 || snackSucces === 201" @clicked="updateSaveResponseStatus({saveStatus: null})">
-      <div>
-        Processen er gemt!
-      </div>
+    <SnackBar :showButton="false" :timeout="5000" color="success" @onSnackClose="showSaveSuccess = false" :value="showSaveSuccess">
+      Processen er gemt!
     </SnackBar>
 
-    <SnackBar :value="snackSucces > 300" :timeout="0" color="error" @clicked="updateSaveResponseStatus({saveStatus: null})">
-      <div>
-        Processen er IKKE gemt - prøv igen!
-      </div>
+    <SnackBar :showButton="false" :value="showSaveError" @onSnackClose="showSaveError = false" :timeout="5000" color="error">
+      Processen er IKKE gemt - prøv igen!
     </SnackBar>
 
   </div>
@@ -126,7 +122,9 @@ export default class Process extends Vue {
   @Action(processActionTypes.UPDATE) update: any;
   @Action(processActionTypes.SAVE_COMMENT) saveComment!: (message: string) => Promise<void>;
   @Action(errorActionTypes.UPDATE_PROCESS_ERRORS) updateProcessErrors!: (processErrors: Partial<ErrorState>) => void;
-  @Action(errorActionTypes.UPDATE_SAVE_REPONSE_STATUS) updateSaveResponseStatus!: (status: number) => void;
+
+  showSaveSuccess = false;
+  showSaveError = false;
 
   get state() {
     return this.$store.state.process;
@@ -140,10 +138,6 @@ export default class Process extends Vue {
     return !isEmpty(this.$store.state.error.processErrors);
   }
 
-  get snackSucces() {
-    return this.$store.state.error.saveStatus;
-  }
-
   get isWithinMunicipality() {
     const { auth, process } = this.$store.state;
     return auth.user.cvr === process.cvr;
@@ -151,7 +145,6 @@ export default class Process extends Vue {
 
   beforeCreate() {
     this.$store.dispatch(errorActionTypes.UPDATE_PROCESS_ERRORS, { processErrors: [] });
-    this.$store.dispatch(errorActionTypes.UPDATE_SAVE_REPONSE_STATUS, null);
   }
 
   mounted() {
@@ -171,15 +164,30 @@ export default class Process extends Vue {
   }
 
   save() {
-    this.$store.dispatch(processActionTypes.SAVE);
+    try {
+      this.$store.dispatch(processActionTypes.SAVE);
+      if (this.errors.length === 0) {
+        this.showSaveSuccess = true;
+      }
+    } catch {
+      if (this.errors.length === 0) {
+        this.showSaveError = true;
+      }
+    }
   }
 
   async report() {
-    const processId = await this.$store.dispatch(processActionTypes.REPORT);
-    if (!processId) {
-      return;
+    try {
+      const processId = await this.$store.dispatch(processActionTypes.REPORT);
+      if (!processId) {
+        this.showSaveError = true;
+        return;
+      }
+      this.showSaveSuccess = true;
+      this.$router.push(`/details/${processId}`);
+    } catch {
+      this.showSaveError = true;
     }
-    this.$router.push(`/details/${processId}`);
   }
 }
 </script>
