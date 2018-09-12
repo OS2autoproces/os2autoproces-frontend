@@ -191,8 +191,10 @@ export const actions: ActionTree<ProcessState, RootState> = {
       return null;
     } else {
       const converted = await stateToRequest(state);
-      const response = (await HTTP.post<ProcessResponse>(`api/processes`, converted)).data;
-      const process = responseToState(response);
+      const response = await HTTP.post<ProcessResponse>(`api/processes`, converted);
+      await dispatch(errorActionTypes.UPDATE_SAVE_REPONSE_STATUS, response.status, { root: true });
+
+      const process = responseToState(response.data);
       await commit(processMutationTypes.UPDATE, setBackendManagedFields(process));
       return process.id;
     }
@@ -205,6 +207,7 @@ export const actions: ActionTree<ProcessState, RootState> = {
     } else {
       const converted = await stateToRequest(state);
       const response = await HTTP.patch<ProcessResponse>(`api/processes/${state.id}`, converted);
+      await dispatch(errorActionTypes.UPDATE_SAVE_REPONSE_STATUS, response.status, { root: true });
 
       const process = responseToState(response.data);
       commit(processMutationTypes.UPDATE, setBackendManagedFields(process));
