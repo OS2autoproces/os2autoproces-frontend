@@ -8,13 +8,13 @@
     </div>
 
     <div v-if="minPhase(PhaseKeys.IMPLEMENTATION)">
-      <h2>Organisatorisk implementering</h2>
+      <h2 class="with-margin">Organisatorisk implementering</h2>
       <InfoTooltip>Her kan du notere, hvordan den organisatoriske implementering er forløbet og eventuelle opmærksomhedspunkter omkring det.</InfoTooltip>
       <TextArea :max-length="3000" :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({organizationalImplementationNotes: $event})" :disabled="state.disabled.implementationEdit" :value="state.organizationalImplementationNotes" />
     </div>
 
     <div>
-      <h2>Anvendt teknologi *</h2>
+      <h2 class="with-margin">Anvendt teknologi *</h2>
       <InfoTooltip>Vælg den anvendte teknologi på listen eller opret en ny, hvis den ikke allerede fremgår af listen. Det er muligt at tilføje flere.</InfoTooltip>
       <TagSelector @add="addTechnology($event)" @remove="removeTechnology($event)" :disabled="state.disabled.implementationEdit" :value="state.technologies" :items="technologies" />
     </div>
@@ -72,11 +72,11 @@ export default class ImplementationForm extends Vue {
 h2 {
   @include heading;
   color: $color-secondary;
-  margin-bottom: .5rem;
+  margin-bottom: 0.5rem;
   display: inline-block;
   margin-right: 1rem;
 
-  &:not(:first-of-type) {
+  &.with-margin {
     margin-top: 2rem;
   }
 }
