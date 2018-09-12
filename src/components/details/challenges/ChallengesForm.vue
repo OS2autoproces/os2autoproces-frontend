@@ -23,7 +23,7 @@
           <DatePicker :value="state.created" disabled/>
         </WellItem>
 
-        <WellItem label="Nuværende systemer:">
+        <WellItem label="Nuværende systemer:" v-if="minPhase(PhaseKeys.PREANALYSIS)">
           <SelectionField :items="itSystems" :value="state.itSystems" itemText="name" :disabled="state.disabled.challengesEdit" @change="assign({itSystems: $event})" multiple />
         </WellItem>
       </div>
@@ -33,7 +33,7 @@
           <DatePicker :value="state.lastChanged" disabled />
         </WellItem>
 
-        <WellItem labelWidth="30%" label="Andre nuværende systemer:">
+        <WellItem labelWidth="30%" label="Andre nuværende systemer:" v-if="minPhase(PhaseKeys.PREANALYSIS)">
           <TextArea @change="update({itSystemsDescription: $event})" fullWidth :disabled="state.disabled.challengesEdit" :value="state.itSystemsDescription" :maxLength="300" />
         </WellItem>
       </div>
