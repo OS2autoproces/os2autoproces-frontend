@@ -76,7 +76,6 @@ export default class AssociatedPersonsInput extends Vue {
 .associated {
   display: flex;
   padding-top: 1rem;
-  padding-bottom: 2rem;
 
   .associated-list {
     width: 60%;
@@ -86,10 +85,9 @@ export default class AssociatedPersonsInput extends Vue {
       flex-direction: column;
       flex-wrap: wrap;
       align-content: flex-start;
-      height: 150px;
       border: 1px solid $color-primary;
       border-radius: 1rem;
-      padding: .5rem;
+      padding: 0.5rem;
 
       &.disabled {
         border: none;
@@ -108,7 +106,7 @@ export default class AssociatedPersonsInput extends Vue {
         .delete-icon {
           width: 1rem;
           height: 1rem;
-          margin-left: .5rem;
+          margin-left: 0.5rem;
         }
       }
     }
@@ -135,6 +133,6 @@ export default class AssociatedPersonsInput extends Vue {
 
 .associated-label {
   @include field-label;
-  padding-bottom: .25rem;
+  padding-bottom: 0.25rem;
 }
 </style>
