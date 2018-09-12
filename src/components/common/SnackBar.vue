@@ -1,5 +1,5 @@
 <template>
-  <v-snackbar top :value="value" :color="color" :timeout="timeout">
+  <v-snackbar auto-height top :value="value" :color="color" :timeout="timeout">
     <slot />
     <v-btn dark flat @click="clicked">
       OK
@@ -24,9 +24,4 @@ export default class SnackBarComponent extends Vue {
 </script>
 
 <style scoped lang="scss">
-.v-snack /deep/ {
-  .v-snack__content {
-    height: auto;
-  }
-}
 </style>
