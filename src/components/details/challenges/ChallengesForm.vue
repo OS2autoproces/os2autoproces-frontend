@@ -29,7 +29,7 @@
       </div>
 
       <div>
-        <WellItem labelWidth="55%" label="Sidst opdateret:">
+        <WellItem labelWidth="30%" label="Sidst opdateret:">
           <DatePicker :value="state.lastChanged" disabled />
         </WellItem>
 
