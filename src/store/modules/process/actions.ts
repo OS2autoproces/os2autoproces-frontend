@@ -285,6 +285,7 @@ export function initialProcessState(): ProcessState {
     longDescription: '',
     itSystems: [],
     created: '',
+    itSystemsDescription: '',
 
     /* Time and process */
     timeSpendOccurancesPerEmployee: '0',
