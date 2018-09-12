@@ -142,6 +142,7 @@ export interface ProcessResponse {
   users: User[] | null;
   owner: User;
   contact: User;
+  reporter: User;
   itSystems: ITSystem[] | null;
   orgUnits: OrgUnit[] | null;
   technologies: Technology[] | null;
