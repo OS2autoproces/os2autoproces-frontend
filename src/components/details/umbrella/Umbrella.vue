@@ -29,6 +29,18 @@
         </ul>
       </div>
     </SnackBar>
+
+    <SnackBar :timeout="0" color="success" :value="snackSucces === 200 || snackSucces === 201" @clicked="updateSaveResponseStatus({saveStatus: null})">
+      <div>
+        Processen er gemt!
+      </div>
+    </SnackBar>
+
+    <SnackBar :value="snackSucces > 300" :timeout="0" color="error" @clicked="updateSaveResponseStatus({saveStatus: null})">
+      <div>
+        Processen er IKKE gemt - prøv igen!
+      </div>
+    </SnackBar>
   </div>
 </template>
 
@@ -93,6 +105,7 @@ export default class Umbrella extends Vue {
   @Action(processActionTypes.UPDATE) update: any;
   @Action(commonActionTypes.LOAD_KLES) loadKles!: () => Promise<void>;
   @Action(errorActionTypes.UPDATE_PROCESS_ERRORS) updateProcessErrors!: (processErrors: Partial<ErrorState>) => void;
+  @Action(errorActionTypes.UPDATE_SAVE_REPONSE_STATUS) updateSaveResponseStatus!: (status: number) => void;
 
   get errors() {
     return this.$store.state.error.processErrors;
@@ -100,6 +113,10 @@ export default class Umbrella extends Vue {
 
   get snack() {
     return !isEmpty(this.$store.state.error.processErrors);
+  }
+
+  get snackSucces() {
+    return this.$store.state.error.saveStatus;
   }
 
   mounted() {
@@ -113,7 +130,10 @@ export default class Umbrella extends Vue {
     }
 
     this.$store.dispatch(searchActionTypes.RESET_FILTERS);
-    this.$store.dispatch(searchActionTypes.UPDATE_FILTERS, { type: TypeKeys.CHILD, municipality: this.type === TypeKeys.PARENT });
+    this.$store.dispatch(searchActionTypes.UPDATE_FILTERS, {
+      type: TypeKeys.CHILD,
+      municipality: this.type === TypeKeys.PARENT
+    });
   }
 
   save() {
