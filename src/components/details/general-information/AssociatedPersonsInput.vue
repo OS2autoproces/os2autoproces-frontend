@@ -5,7 +5,7 @@
         Tilknyttede personer
         <InfoTooltip>Her kan du tilføje personer der arbejder med automatisering af processen og derfor skal kunne redigere i beskrivelserne. Det kan f.eks. være projektmedarbejdere og udviklere.</InfoTooltip>
       </div>
-      <div class="associated-persons-list" :class="{ disabled }">
+      <div class="associated-persons-list" :class="{ disabled, empty: !state.process.users.length }">
         <div v-for="(user, index) in state.process.users" :key="index">
           <div class="name">{{user.name}}</div>
           <div v-if="!disabled" @click="removeUser(user)" class="delete-icon">
@@ -89,6 +89,7 @@ export default class AssociatedPersonsInput extends Vue {
       border-radius: 1rem;
       padding: 0.5rem;
 
+      &.empty,
       &.disabled {
         border: none;
       }
