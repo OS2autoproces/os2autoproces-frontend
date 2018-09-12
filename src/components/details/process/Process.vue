@@ -58,7 +58,7 @@
 
     <SnackBar :value="snackSucces > 300" :timeout="0" color="error" @clicked="updateSaveResponseStatus({saveStatus: null})">
       <div>
-        Processen er IKKE gemt! prøv igen!
+        Processen er IKKE gemt - prøv igen!
       </div>
     </SnackBar>
 
