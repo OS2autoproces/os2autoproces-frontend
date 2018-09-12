@@ -36,6 +36,12 @@
         </WellItem>
       </div>
     </Well>
+
+    <div v-if="minPhase(PhaseKeys.PREANALYSIS)">
+      <h2>Tilføjelser og noter til nuværende systemer</h2>
+      <TextArea @change="update({itSystemsDescription: $event})" :disabled="state.disabled.challengesEdit" :value="state.itSystemsDescription" :maxLength="300" />
+    </div>
+
   </FormSection>
 </template>
 
@@ -99,13 +105,13 @@ h2 {
   &:not(:first-of-type) {
     margin-top: 2rem;
   }
-  margin-bottom: .5rem;
+  margin-bottom: 0.5rem;
   display: inline-block;
   margin-right: 1rem;
 }
 
 .challenges-well {
-  margin-top: 1.5rem;
+  margin: 1.5rem 0;
 }
 
 .well-item-footer {
