@@ -6,13 +6,13 @@
     </div>
 
     <div v-if="minPhase(PhaseKeys.PREANALYSIS)">
-      <h2>Idéer til løsning</h2>
+      <h2 class="with-margin">Idéer til løsning</h2>
       <InfoTooltip>Her kan tilføjes de ønsker, du har til en fremtidig løsning. Du kan også beskrive dine ideer til en løsning.</InfoTooltip>
       <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({solutionRequests: $event})" :disabled="state.disabled.challengesEdit" :value="state.solutionRequests" :maxLength="2400" />
     </div>
 
     <div v-if="minPhase(PhaseKeys.PREANALYSIS)">
-      <h2>Udfordringer i den nuværende proces *</h2>
+      <h2 class="with-margin">Udfordringer i den nuværende proces *</h2>
       <InfoTooltip>Her kan du beskrive de trivielle handlinger, udfordringer eller vaskeligheder der opleves i udførelsen af den nuværende proces.</InfoTooltip>
       <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({processChallenges: $event})" :disabled="state.disabled.challengesEdit" :value="state.processChallenges" :maxLength="1200" />
     </div>
@@ -99,9 +99,10 @@ h2 {
   @include heading;
   color: $color-secondary;
 
-  &:not(:first-of-type) {
+  &.with-margin {
     margin-top: 2rem;
   }
+
   margin-bottom: 0.5rem;
   display: inline-block;
   margin-right: 1rem;
