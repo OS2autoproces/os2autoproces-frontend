@@ -36,7 +36,8 @@ export default class WellItem extends Vue {
 
   .well-item-label {
     @include field-label;
-    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
   }
 
   .well-input {

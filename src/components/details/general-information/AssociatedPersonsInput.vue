@@ -134,6 +134,8 @@ export default class AssociatedPersonsInput extends Vue {
 
 .associated-label {
   @include field-label;
+  display: inline-flex;
+  align-items: center;
   padding-bottom: 0.25rem;
 }
 </style>
