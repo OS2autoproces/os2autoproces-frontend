@@ -7,7 +7,7 @@
         <slot />
       </div>
     </div>
-    <div class="text-area-readonly" :class="{'double-column': twoColumns }" v-if="disabled">{{value}}</div>
+    <div class="text-area-readonly" :class="{'double-column': twoColumns, 'full-width': fullWidth }" v-if="disabled">{{value}}</div>
   </div>
 </template>
 
@@ -22,6 +22,7 @@ export default class TextArea extends Vue {
   @Prop(String) placeholder!: string;
   @Prop(Boolean) noResize!: boolean;
   @Prop(Number) twoColumnBreakpoint!: number;
+  @Prop(Boolean) fullWidth!: boolean;
 
   currentLength = 0;
 
@@ -50,8 +51,8 @@ export default class TextArea extends Vue {
   .text-area-overlay {
     display: inline-block;
     position: absolute;
-    right: .5rem;
-    bottom: .5rem;
+    right: 0.5rem;
+    bottom: 0.5rem;
     text-align: right;
   }
 }
@@ -59,6 +60,10 @@ export default class TextArea extends Vue {
 .text-area-readonly {
   white-space: pre-wrap;
   width: 50%;
+}
+
+.full-width {
+  width: 100%;
 }
 
 textarea {

@@ -159,5 +159,8 @@ export const processFieldsValidators: { [P in keyof Process]?: (state: ProcessSt
   },
   internalNotes({ internalNotes }: ProcessState) {
     return isValid(internalNotes, isMinMax(0, 2400));
+  },
+  itSystemsDescription({ itSystemsDescription }: ProcessState) {
+    return isValid(itSystemsDescription, isMinMax(0, 300));
   }
 };
