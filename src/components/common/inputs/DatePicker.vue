@@ -1,11 +1,11 @@
 <template>
-    <div class="date-picker-wrap">
-        <InputField :disabled="disabled" :value="inputValue" placeholder="DD/MM/YYYY" @change="onInputChange($event)" />
-        <v-menu v-if="!disabled" :close-on-content-click="false" transition="scale-transition">
-            <v-date-picker :value="value" no-title @input="onDatePickerChange($event)" />
-            <i slot="activator" class="material-icons md-36 calender-icon">today</i>
-        </v-menu>
-    </div>
+  <div class="date-picker-wrap">
+    <InputField class="date-picker" :disabled="disabled" :value="inputValue" placeholder="DD/MM/YYYY" @change="onInputChange($event)" />
+    <v-menu v-if="!disabled" :close-on-content-click="false" transition="scale-transition">
+      <v-date-picker :value="value" no-title @input="onDatePickerChange($event)" />
+      <i slot="activator" class="material-icons md-36 calender-icon">today</i>
+    </v-menu>
+  </div>
 </template>
 
 <script lang='ts'>
@@ -59,6 +59,10 @@ export default class DatePicker extends Vue {
   align-items: center;
 }
 
+.date-picker {
+  flex-grow: 1;
+}
+
 .calender-icon {
   color: $color-primary;
 }
@@ -66,7 +70,6 @@ export default class DatePicker extends Vue {
 .menu {
   cursor: pointer;
   height: 24px;
-  margin-left: .5rem;
+  margin-left: 0.5rem;
 }
 </style>
-
