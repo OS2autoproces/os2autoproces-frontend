@@ -6,7 +6,7 @@
           <ArrowLeftIcon /> Tilbage til søgning
         </router-link>
 
-        <Button v-if="isReporting" class="report-button" @click="report">Indberet</Button>
+        <Button v-if="isReporting" class="report-button" @click="report">Gem</Button>
         <Button v-if="!isReporting" class="save-button" @click="save">Gem</Button>
       </div>
     </div>
@@ -113,7 +113,10 @@ export default class Umbrella extends Vue {
     }
 
     this.$store.dispatch(searchActionTypes.RESET_FILTERS);
-    this.$store.dispatch(searchActionTypes.UPDATE_FILTERS, { type: TypeKeys.CHILD, municipality: this.type === TypeKeys.PARENT });
+    this.$store.dispatch(searchActionTypes.UPDATE_FILTERS, {
+      type: TypeKeys.CHILD,
+      municipality: this.type === TypeKeys.PARENT
+    });
   }
 
   save() {

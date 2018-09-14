@@ -8,7 +8,7 @@
 
         <ProcessMenu :phase="phase" :canEdit="state.canEdit" :isReporting="isReporting" />
 
-        <Button v-if="isReporting" class="report-button" @click="report">Indberet</Button>
+        <Button v-if="isReporting" class="report-button" @click="report">Gem</Button>
         <Button v-if="!isReporting" class="save-button" @click="save">Gem</Button>
       </div>
     </div>
@@ -218,7 +218,7 @@ export default class Process extends Vue {
   svg {
     height: 1rem;
     width: 1rem;
-    margin-right: .5rem;
+    margin-right: 0.5rem;
   }
 }
 
