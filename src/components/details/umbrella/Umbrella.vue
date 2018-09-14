@@ -113,8 +113,8 @@ export default class Umbrella extends Vue {
     return !isEmpty(this.$store.state.error.processErrors);
   }
 
-  get snackSucces() {
-    return this.$store.state.error.saveStatus;
+  beforeCreate() {
+    this.$store.dispatch(errorActionTypes.UPDATE_PROCESS_ERRORS, { processErrors: [] });
   }
 
   mounted() {
