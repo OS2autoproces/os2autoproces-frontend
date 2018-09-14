@@ -30,11 +30,11 @@
       </div>
     </SnackBar>
 
-    <SnackBar :timeout="6000" color="success" @onSnackClose="showSaveSuccess = false" :value="showSaveSuccess">
+    <SnackBar :timeout="3000" color="success" @onSnackClose="showSaveSuccess = false" :value="showSaveSuccess">
       Processen er gemt!
     </SnackBar>
 
-    <SnackBar :value="showSaveError" @onSnackClose="showSaveError = false" :timeout="6000" color="error">
+    <SnackBar :value="showSaveError" @onSnackClose="showSaveError = false" :timeout="5000" color="error">
       Processen er IKKE gemt - prøv igen!
     </SnackBar>
   </div>
@@ -134,13 +134,11 @@ export default class Umbrella extends Vue {
     });
   }
 
-  save() {
+  async save() {
     try {
-      this.$store.dispatch(processActionTypes.SAVE, Object.keys(umbrellaLabels));
-      if (this.errors.length === 0) {
-        this.showSaveSuccess = true;
-      }
-    } catch {
+      await this.$store.dispatch(processActionTypes.SAVE, Object.keys(umbrellaLabels));
+      this.showSaveSuccess = true;
+    } catch (e) {
       if (this.errors.length === 0) {
         this.showSaveError = true;
       }
@@ -150,14 +148,12 @@ export default class Umbrella extends Vue {
   async report() {
     try {
       const processId = await this.$store.dispatch(processActionTypes.REPORT, Object.keys(umbrellaLabels));
-      if (!processId) {
-        this.showSaveError = true;
-        return;
-      }
       this.showSaveSuccess = true;
       this.$router.push(`/details/${processId}`);
-    } catch {
-      this.showSaveError = true;
+    } catch (e) {
+      if (this.errors.length === 0) {
+        this.showSaveError = true;
+      }
     }
   }
 }

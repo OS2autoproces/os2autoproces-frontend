@@ -50,11 +50,11 @@
       </div>
     </SnackBar>
 
-    <SnackBar :showButton="false" :timeout="5000" color="success" @onSnackClose="showSaveSuccess = false" :value="showSaveSuccess">
+    <SnackBar :showButton="false" :value="showSaveSuccess" :timeout="3000" color="success" @onSnackClose="showSaveSuccess = false">
       Processen er gemt!
     </SnackBar>
 
-    <SnackBar :showButton="false" :value="showSaveError" @onSnackClose="showSaveError = false" :timeout="5000" color="error">
+    <SnackBar :showButton="false" :value="showSaveError" :timeout="5000" color="error" @onSnackClose="showSaveError = false">
       Processen er IKKE gemt - prøv igen!
     </SnackBar>
 
@@ -163,13 +163,11 @@ export default class Process extends Vue {
     }
   }
 
-  save() {
+  async save() {
     try {
-      this.$store.dispatch(processActionTypes.SAVE);
-      if (this.errors.length === 0) {
-        this.showSaveSuccess = true;
-      }
-    } catch {
+      await this.$store.dispatch(processActionTypes.SAVE);
+      this.showSaveSuccess = true;
+    } catch (e) {
       if (this.errors.length === 0) {
         this.showSaveError = true;
       }
@@ -179,14 +177,12 @@ export default class Process extends Vue {
   async report() {
     try {
       const processId = await this.$store.dispatch(processActionTypes.REPORT);
-      if (!processId) {
-        this.showSaveError = true;
-        return;
-      }
       this.showSaveSuccess = true;
       this.$router.push(`/details/${processId}`);
-    } catch {
-      this.showSaveError = true;
+    } catch (e) {
+      if (this.errors.length === 0) {
+        this.showSaveError = true;
+      }
     }
   }
 }

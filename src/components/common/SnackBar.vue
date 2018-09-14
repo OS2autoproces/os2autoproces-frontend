@@ -9,7 +9,6 @@
 
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
-import { setTimeout } from 'timers';
 
 @Component
 export default class SnackBarComponent extends Vue {
@@ -18,10 +17,14 @@ export default class SnackBarComponent extends Vue {
   @Prop(Boolean) value!: boolean;
   @Prop(Boolean) showButton!: boolean;
 
+  closeTimeout: any;
+
   @Watch('value')
   changed() {
     if (this.value) {
-      setTimeout(() => {
+      clearTimeout(this.closeTimeout);
+
+      this.closeTimeout = setTimeout(() => {
         this.$emit('onSnackClose');
       }, this.timeout);
     }
