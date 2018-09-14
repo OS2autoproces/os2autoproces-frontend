@@ -2,7 +2,7 @@
   <FormSection :invalid="!isAssessmentValid" v-if="minPhase(PhaseKeys.PREANALYSIS)" heading="Faglig vurdering" id="assessment" :disabled="state.disabled.assessmentEdit" @edit="update({ disabled: { assessmentEdit: $event} })">
     <div class="assessment" :class="{ disabled: state.disabled.assessmentEdit }">
       <div class="question">
-        <div class="label">I hvor grad indgår der faglig vurdering i processen? *
+        <div class="label">I hvor høj grad indgår der faglig vurdering i processen? *
           <InfoTooltip class="tooltip">En faglig vurdering kan f.eks. være, at en sagsbehandler foretager et skøn eller tager en beslutning der har betydning for processens forløb.</InfoTooltip>
         </div>
         <LikertScale :disabled="state.disabled.assessmentEdit" :value="state.levelOfProfessionalAssessment" @change="update({ levelOfProfessionalAssessment: $event })" />

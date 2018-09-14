@@ -188,11 +188,16 @@ export const actions: ActionTree<ProcessState, RootState> = {
 
     if (invalidFields.length > 0) {
       dispatch(errorActionTypes.UPDATE_PROCESS_ERRORS, { processErrors: invalidFields }, { root: true });
-      return null;
+      throw new Error();
     } else {
       const converted = await stateToRequest(state);
-      const response = (await HTTP.post<ProcessResponse>(`api/processes`, converted)).data;
-      const process = responseToState(response);
+      const response = await HTTP.post<ProcessResponse>(`api/processes`, converted);
+
+      if (response.status !== 201) {
+        throw new Error();
+      }
+
+      const process = responseToState(response.data);
       await commit(processMutationTypes.UPDATE, setBackendManagedFields(process));
       return process.id;
     }
@@ -202,9 +207,14 @@ export const actions: ActionTree<ProcessState, RootState> = {
 
     if (invalidFields.length > 0) {
       dispatch(errorActionTypes.UPDATE_PROCESS_ERRORS, { processErrors: invalidFields }, { root: true });
+      throw new Error();
     } else {
       const converted = await stateToRequest(state);
       const response = await HTTP.patch<ProcessResponse>(`api/processes/${state.id}`, converted);
+
+      if (response.status !== 200) {
+        throw new Error();
+      }
 
       const process = responseToState(response.data);
       commit(processMutationTypes.UPDATE, setBackendManagedFields(process));
@@ -253,7 +263,7 @@ export function initialProcessState(): ProcessState {
     legalClause: '',
     orgUnits: [],
     domains: [],
-    visibility: VisibilityKeys.PERSONAL,
+    visibility: VisibilityKeys.MUNICIPALITY,
     vendor: null,
     owner: null,
     reporter: null,
@@ -285,6 +295,7 @@ export function initialProcessState(): ProcessState {
     longDescription: '',
     itSystems: [],
     created: '',
+    itSystemsDescription: '',
 
     /* Time and process */
     timeSpendOccurancesPerEmployee: '0',

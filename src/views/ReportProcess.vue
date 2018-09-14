@@ -79,15 +79,21 @@ export default class Home extends Vue {
   svg {
     height: 1rem;
     width: 1rem;
-    margin-right: .5rem;
+    margin-right: 0.5rem;
   }
 }
 
 .report-options {
   display: flex;
+  margin-top: 2rem;
+  justify-content: center;
+
+  h2 {
+    margin-bottom: 1rem;
+  }
 
   > * {
-    flex: 1 1 1px;
+    width: 300px;
   }
 }
 
@@ -108,14 +114,14 @@ export default class Home extends Vue {
   .options {
     border: 1px solid $color-primary;
     border-radius: 1rem;
-    padding: .5rem 1rem;
+    padding: 0.5rem 1rem;
     margin: 0 auto;
     width: 150px;
     text-align: left;
 
     > * {
       display: block;
-      padding: .5rem 0;
+      padding: 0.5rem 0;
       text-decoration: inherit;
       color: inherit;
 

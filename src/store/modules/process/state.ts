@@ -43,6 +43,7 @@ export interface Process {
   cvr: string;
   internalNotes: string;
   processChallenges: string;
+  itSystemsDescription: string;
   solutionRequests: string;
   timeSpendOccurancesPerEmployee: string;
   timeSpendPerOccurance: string;

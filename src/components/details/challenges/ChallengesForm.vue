@@ -6,13 +6,13 @@
     </div>
 
     <div v-if="minPhase(PhaseKeys.PREANALYSIS)">
-      <h2>Idéer til løsning</h2>
+      <h2 class="with-margin">Idéer til løsning</h2>
       <InfoTooltip>Her kan tilføjes de ønsker, du har til en fremtidig løsning. Du kan også beskrive dine ideer til en løsning.</InfoTooltip>
       <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({solutionRequests: $event})" :disabled="state.disabled.challengesEdit" :value="state.solutionRequests" :maxLength="2400" />
     </div>
 
     <div v-if="minPhase(PhaseKeys.PREANALYSIS)">
-      <h2>Udfordringer i den nuværende proces *</h2>
+      <h2 class="with-margin">Udfordringer i den nuværende proces *</h2>
       <InfoTooltip>Her kan du beskrive de trivielle handlinger, udfordringer eller vaskeligheder der opleves i udførelsen af den nuværende proces.</InfoTooltip>
       <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({processChallenges: $event})" :disabled="state.disabled.challengesEdit" :value="state.processChallenges" :maxLength="1200" />
     </div>
@@ -22,20 +22,23 @@
         <WellItem label="Oprettet:">
           <DatePicker :value="state.created" disabled/>
         </WellItem>
-      </div>
 
-      <div>
-        <WellItem labelWidth="55%" label="Sidst opdateret:">
-          <DatePicker :value="state.lastChanged" disabled />
-        </WellItem>
-      </div>
-
-      <div slot="well-footer" class="well-item-footer" v-if="minPhase(PhaseKeys.PREANALYSIS)">
-        <WellItem label="Nuværende system:">
+        <WellItem label="Nuværende systemer:" v-if="minPhase(PhaseKeys.PREANALYSIS)">
           <SelectionField :items="itSystems" :value="state.itSystems" itemText="name" :disabled="state.disabled.challengesEdit" @change="assign({itSystems: $event})" multiple />
         </WellItem>
       </div>
+
+      <div>
+        <WellItem labelWidth="30%" label="Sidst opdateret:">
+          <DatePicker :value="state.lastChanged" disabled />
+        </WellItem>
+
+        <WellItem labelWidth="30%" label="Andre nuværende systemer:" v-if="minPhase(PhaseKeys.PREANALYSIS)">
+          <TextArea @change="update({itSystemsDescription: $event})" fullWidth :disabled="state.disabled.challengesEdit" :value="state.itSystemsDescription" :maxLength="300" />
+        </WellItem>
+      </div>
     </Well>
+
   </FormSection>
 </template>
 
@@ -96,16 +99,17 @@ h2 {
   @include heading;
   color: $color-secondary;
 
-  &:not(:first-of-type) {
+  &.with-margin {
     margin-top: 2rem;
   }
-  margin-bottom: .5rem;
+
+  margin-bottom: 0.5rem;
   display: inline-block;
   margin-right: 1rem;
 }
 
 .challenges-well {
-  margin-top: 1.5rem;
+  margin: 1.5rem 0;
 }
 
 .well-item-footer {

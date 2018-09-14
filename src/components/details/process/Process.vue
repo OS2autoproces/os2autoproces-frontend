@@ -41,7 +41,7 @@
       </div>
     </div>
 
-    <SnackBar :timeout="0" color="error" :value="snack" @clicked="updateProcessErrors({processErrors: []})">
+    <SnackBar showButton :timeout="0" color="error" :value="snack" @clicked="updateProcessErrors({processErrors: []})">
       <div>
         Følgende felter er ugyldige:
         <ul>
@@ -49,6 +49,15 @@
         </ul>
       </div>
     </SnackBar>
+
+    <SnackBar :showButton="false" :value="showSaveSuccess" :timeout="3000" color="success" @onSnackClose="showSaveSuccess = false">
+      Processen er gemt!
+    </SnackBar>
+
+    <SnackBar :showButton="false" :value="showSaveError" :timeout="5000" color="error" @onSnackClose="showSaveError = false">
+      Processen er IKKE gemt - prøv igen!
+    </SnackBar>
+
   </div>
 </template>
 
@@ -114,6 +123,9 @@ export default class Process extends Vue {
   @Action(processActionTypes.SAVE_COMMENT) saveComment!: (message: string) => Promise<void>;
   @Action(errorActionTypes.UPDATE_PROCESS_ERRORS) updateProcessErrors!: (processErrors: Partial<ErrorState>) => void;
 
+  showSaveSuccess = false;
+  showSaveError = false;
+
   get state() {
     return this.$store.state.process;
   }
@@ -129,6 +141,10 @@ export default class Process extends Vue {
   get isWithinMunicipality() {
     const { auth, process } = this.$store.state;
     return auth.user.cvr === process.cvr;
+  }
+
+  beforeCreate() {
+    this.$store.dispatch(errorActionTypes.UPDATE_PROCESS_ERRORS, { processErrors: [] });
   }
 
   mounted() {
@@ -147,16 +163,27 @@ export default class Process extends Vue {
     }
   }
 
-  save() {
-    this.$store.dispatch(processActionTypes.SAVE);
+  async save() {
+    try {
+      await this.$store.dispatch(processActionTypes.SAVE);
+      this.showSaveSuccess = true;
+    } catch (e) {
+      if (this.errors.length === 0) {
+        this.showSaveError = true;
+      }
+    }
   }
 
   async report() {
-    const processId = await this.$store.dispatch(processActionTypes.REPORT);
-    if (!processId) {
-      return;
+    try {
+      const processId = await this.$store.dispatch(processActionTypes.REPORT);
+      this.showSaveSuccess = true;
+      this.$router.push(`/details/${processId}`);
+    } catch (e) {
+      if (this.errors.length === 0) {
+        this.showSaveError = true;
+      }
     }
-    this.$router.push(`/details/${processId}`);
   }
 }
 </script>
@@ -218,7 +245,7 @@ export default class Process extends Vue {
   svg {
     height: 1rem;
     width: 1rem;
-    margin-right: .5rem;
+    margin-right: 0.5rem;
   }
 }
 
