@@ -18,7 +18,7 @@
           <WellItem labelWidth="120px" label="KL ID:">
             <InputField :disabled="state.disabled.generalInformationEdit" :value="state.klId" @change="update({klId: $event})" />
           </WellItem>
-          <WellItem labelWidth="120px" label="KLA:" tooltip="KLA nummeret henviser til en proces fra KL’s Arbejdsgangsbank.">
+          <WellItem labelWidth="200px" label="KL's Arbejdsbank:" tooltip="KL's Arbejdsbank nummeret henviser til en proces fra KL’s Arbejdsgangsbank.">
             <MaskableInput :disabled="state.disabled.generalInformationEdit" mask="##.##.##.##.##" :value="state.kla" @change="setKla" />
           </WellItem>
         </div>

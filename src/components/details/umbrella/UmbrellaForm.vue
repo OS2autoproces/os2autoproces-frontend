@@ -1,5 +1,5 @@
 <template>
-  <FormSection :invalid="!isUmbrellaValid" heading="Paraply proces" :disabled="state.disabled.generalInformationEdit" @edit="update({disabled: { generalInformationEdit: $event} })" always-open>
+  <FormSection :invalid="!isUmbrellaValid" heading="Paraplyproces" :disabled="state.disabled.generalInformationEdit" @edit="update({disabled: { generalInformationEdit: $event} })" always-open>
     <div class="umbrella-wrapper">
       <Well>
         <div>
@@ -18,7 +18,7 @@
           <WellItem labelWidth="80px" label="KL ID:">
             <InputField :disabled="state.disabled.generalInformationEdit" :value="state.klId" @change="update({klId: $event})" />
           </WellItem>
-          <WellItem labelWidth="80px" label="KLA:">
+          <WellItem labelWidth="200px" label="KL's Arbejdsbank:">
             <MaskableInput :disabled="state.disabled.generalInformationEdit" mask="##.##.##.##.##" :value="state.kla" @change="setKla" />
           </WellItem>
         </div>
@@ -205,7 +205,7 @@ export default class UmbrellaForm extends Vue {
   h2 {
     margin-top: 2rem;
     @include textarea-heading;
-    margin-bottom: .5rem;
+    margin-bottom: 0.5rem;
   }
 }
 
