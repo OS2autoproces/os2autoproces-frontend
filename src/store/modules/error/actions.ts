@@ -51,7 +51,7 @@ export const challengesLabels: ProcessLabels = {
 };
 
 export const timeAndProcessLabels: ProcessLabels = {
-  timeSpendOccurancesPerEmployee: 'Antal gange processen gentages om året pr. medarbejder',
+  timeSpendOccurancesPerEmployee: 'Antal gange processen foretages årligt',
   timeSpendPerOccurance: 'Tidsforbrug pr. proces i minutter',
   timeSpendEmployeesDoingProcess: 'Antal medarbejdere der foretager processen',
   timeSpendPercentageDigital: 'Tidsbesparelse i %',

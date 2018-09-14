@@ -3,7 +3,7 @@
 
     <Well>
       <div>
-        <WellItem labelWidth="70%" label="Antal gange processen gentages om året pr. medarbejder" :required="minPhase(PhaseKeys.PREANALYSIS)">
+        <WellItem labelWidth="70%" label="Antal gange processen foretages årligt" :required="minPhase(PhaseKeys.PREANALYSIS)">
           <InputField :value="state.timeSpendOccurancesPerEmployee" :disabled="state.disabled.timeAndProcessEdit" @change="update({timeSpendOccurancesPerEmployee: $event})" />
         </WellItem>
         <WellItem labelWidth="70%" label="Tidsforbrug pr. proces i minutter" :required="minPhase(PhaseKeys.PREANALYSIS)">
