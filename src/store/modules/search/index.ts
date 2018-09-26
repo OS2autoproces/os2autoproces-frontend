@@ -13,7 +13,6 @@ export function getInitialState(): SearchState {
     filters: {
       page: 0,
       size: 5,
-      type: null,
       reporterId: null,
       usersId: null,
       bookmarkedId: null,
@@ -23,8 +22,8 @@ export function getInitialState(): SearchState {
       municipality: false,
       public: false,
       klaProcess: false,
+      umbrella: false,
       itSystems: [],
-      timeSpendComputedTotal: '',
       sorting: {
         property: 'title',
         descending: false

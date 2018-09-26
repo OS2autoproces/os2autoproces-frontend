@@ -1,7 +1,6 @@
 import { Phase } from '@/models/phase';
 import { Domain } from '@/models/domain';
 import { Status } from '@/models/status';
-import { Type } from '@/models/types';
 import { ITSystem } from '@/store/modules/process/state';
 
 export interface SearchResult {
@@ -43,10 +42,10 @@ export interface SearchFilters {
   page: number;
   size: number;
   sorting: SortingOption;
-  type: Type | null;
   phase: { [x in Phase]: boolean };
   domain: { [x in Domain]: boolean };
   klaProcess: boolean;
+  umbrella: boolean;
   itSystems: ITSystem[];
 }
 

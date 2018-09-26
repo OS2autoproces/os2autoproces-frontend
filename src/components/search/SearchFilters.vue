@@ -26,6 +26,10 @@
         Søg i KL’s Arbejdsgangsbank
       </SearchOption>
 
+      <SearchOption :value="filters.umbrella" @change="updateFilters({ umbrella: $event })">
+        Søg i paraplyprocesser
+      </SearchOption>
+
       <div class="datepicker">
         Oprettet:
         <DatePicker :value="filters.created" @change="updateFilters({created: $event})" />

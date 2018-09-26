@@ -5,7 +5,8 @@ import { Status, StatusLabels } from '@/models/status';
 import { Domain, DomainLabels } from '@/models/domain';
 import { Visibility, VisibilityKeys } from '@/models/visibility';
 import { User } from '@/store/modules/auth/state';
-import { Type } from '@/models/types';
+import { Type, TypeKeys } from '@/models/types';
+import { umbrellaLabels } from '@/store/modules/error/actions';
 
 interface ProcessSearchResponse {
   id: number;
@@ -45,7 +46,7 @@ interface SearchParams {
   lastChanged: string;
   created: string;
   sort: string;
-  type: Type | null;
+  type: Type[];
   'reporter.uuid': string | null;
   'users.uuid': string | null;
   'bookmarkUsers.uuid': string | null;
@@ -77,14 +78,14 @@ export async function search(filters: SearchFilters): Promise<SearchResult> {
     visibility: [],
     page: filters.page,
     size: filters.size,
-    type: filters.type,
     created: dateFromISODateTime(filters.created),
     lastChanged: dateFromISODateTime(filters.lastChanged),
     'reporter.uuid': filters.reporterId,
     'users.uuid': filters.usersId,
     'bookmarkUsers.uuid': filters.bookmarkedId,
     freetext: filters.text,
-    klaProcess: filters.klaProcess
+    klaProcess: filters.klaProcess,
+    type: filters.umbrella ? [TypeKeys.GLOBAL_PARENT, TypeKeys.PARENT] : [TypeKeys.CHILD]
   };
 
   if (filters.municipality) {
