@@ -38,7 +38,6 @@ export interface SearchFilters {
   text: string;
   created: string;
   lastChanged: string;
-  timeSpendComputedTotal: string;
   municipality: boolean;
   public: boolean;
   page: number;
@@ -47,8 +46,6 @@ export interface SearchFilters {
   type: Type | null;
   phase: { [x in Phase]: boolean };
   domain: { [x in Domain]: boolean };
-  time?: string[]; // TODO: Use in search
-  system?: string[]; // TODO: Use in search
   klaProcess: boolean;
   itSystems: ITSystem[];
 }

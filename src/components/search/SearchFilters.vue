@@ -33,7 +33,7 @@
 
       <div class="datepicker">
         Senest ændret:
-      <DatePicker :value="filters.lastChanged" @change="updateFilters({lastChanged: $event})" />
+        <DatePicker :value="filters.lastChanged" @change="updateFilters({lastChanged: $event})" />
       </div>
 
       <ExpandPanel title="Fase">
@@ -76,11 +76,6 @@
         <SearchOption :value="filters.domain.WORK" @change="updateFilters({ domain: { WORK: $event } })">
           {{DomainLabels.WORK}}
         </SearchOption>
-      </ExpandPanel>
-
-      <ExpandPanel title="Timeforbrug">
-        Antal timer:
-        <InputField :value="filters.timeSpendComputedTotal" @change="updateFilters({ timeSpendComputedTotal: $event })" />
       </ExpandPanel>
 
       <ExpandPanel title="System">
