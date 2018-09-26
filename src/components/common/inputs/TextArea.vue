@@ -1,9 +1,9 @@
 <template>
   <div>
-    <div class="text-area" v-if="!disabled">
+    <div class="text-area" :class="{ 'out-of-bounds': (currentLength > maxLength) }" v-if="!disabled">
       <textarea :value="value" @input="valueChanged" :placeholder="placeholder" :class="{ 'no-resize': noResize }" />
       <div class="text-area-overlay">
-        <div v-if="maxLength">({{currentLength}} ud af {{maxLength}} tegn)</div>
+        <div class="text-area-char-count" v-if="maxLength">({{currentLength}} ud af {{maxLength}} tegn)</div>
         <slot />
       </div>
     </div>
@@ -47,6 +47,15 @@ export default class TextArea extends Vue {
   padding: 10px;
   padding-bottom: 25px;
   background: $color-background;
+
+  &.out-of-bounds {
+    border-color: red;
+    box-shadow: inset 0 0 8px rgb(235, 98, 98);
+
+    .text-area-overlay > .text-area-char-count {
+      color: red;
+    }
+  }
 
   .text-area-overlay {
     display: inline-block;

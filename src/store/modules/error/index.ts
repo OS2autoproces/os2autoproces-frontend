@@ -1,8 +1,8 @@
-import { ErrorState } from "@/store/modules/error/state";
-import { RootState } from "@/store/store";
-import { Module } from "vuex";
-import { actions } from "@/store/modules/error/actions";
-import { mutations } from "@/store/modules/error/mutations";
+import { ErrorState } from '@/store/modules/error/state';
+import { RootState } from '@/store/store';
+import { Module } from 'vuex';
+import { actions } from '@/store/modules/error/actions';
+import { mutations } from '@/store/modules/error/mutations';
 
 const namespaced = true;
 

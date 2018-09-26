@@ -21,13 +21,21 @@
       </div>
     </div>
 
-    <SnackBar :timeout="0" color="error" :value="snack" @clicked="updateProcessErrors({processErrors: []})">
+    <SnackBar showButton :timeout="0" color="error" :value="snack" @clicked="updateProcessErrors({processErrors: []})">
       <div>
         Følgende felter er ugyldige:
         <ul>
           <li v-for="field in errors" :key="field">{{field}}</li>
         </ul>
       </div>
+    </SnackBar>
+
+    <SnackBar :timeout="3000" color="success" @onSnackClose="showSaveSuccess = false" :value="showSaveSuccess">
+      Processen er gemt!
+    </SnackBar>
+
+    <SnackBar :value="showSaveError" @onSnackClose="showSaveError = false" :timeout="5000" color="error">
+      Processen er IKKE gemt - prøv igen!
     </SnackBar>
   </div>
 </template>
@@ -94,12 +102,19 @@ export default class Umbrella extends Vue {
   @Action(commonActionTypes.LOAD_KLES) loadKles!: () => Promise<void>;
   @Action(errorActionTypes.UPDATE_PROCESS_ERRORS) updateProcessErrors!: (processErrors: Partial<ErrorState>) => void;
 
+  showSaveSuccess = false;
+  showSaveError = false;
+
   get errors() {
     return this.$store.state.error.processErrors;
   }
 
   get snack() {
     return !isEmpty(this.$store.state.error.processErrors);
+  }
+
+  beforeCreate() {
+    this.$store.dispatch(errorActionTypes.UPDATE_PROCESS_ERRORS, { processErrors: [] });
   }
 
   mounted() {
@@ -113,19 +128,33 @@ export default class Umbrella extends Vue {
     }
 
     this.$store.dispatch(searchActionTypes.RESET_FILTERS);
-    this.$store.dispatch(searchActionTypes.UPDATE_FILTERS, { type: TypeKeys.CHILD, municipality: this.type === TypeKeys.PARENT });
+    this.$store.dispatch(searchActionTypes.UPDATE_FILTERS, {
+      type: TypeKeys.CHILD,
+      municipality: this.type === TypeKeys.PARENT
+    });
   }
 
-  save() {
-    this.$store.dispatch(processActionTypes.SAVE, Object.keys(umbrellaLabels));
+  async save() {
+    try {
+      await this.$store.dispatch(processActionTypes.SAVE, Object.keys(umbrellaLabels));
+      this.showSaveSuccess = true;
+    } catch (e) {
+      if (this.errors.length === 0) {
+        this.showSaveError = true;
+      }
+    }
   }
 
   async report() {
-    const processId = await this.$store.dispatch(processActionTypes.REPORT, Object.keys(umbrellaLabels));
-    if (!processId) {
-      return;
+    try {
+      const processId = await this.$store.dispatch(processActionTypes.REPORT, Object.keys(umbrellaLabels));
+      this.showSaveSuccess = true;
+      this.$router.push(`/details/${processId}`);
+    } catch (e) {
+      if (this.errors.length === 0) {
+        this.showSaveError = true;
+      }
     }
-    this.$router.push(`/details/${processId}`);
   }
 }
 </script>
