@@ -130,14 +130,16 @@ export const actions: ActionTree<CommonState, RootState> = {
     commit(commonMutationTypes.ASSIGN, { technologies });
     return response.data._embedded.technologies;
   },
-  async addTechnology({}, name: string) {
-    return HTTP.post(`api/technologies`, { name });
+  async addTechnology({ commit, state }, name: string) {
+    const response = await HTTP.post(`api/technologies`, { name });
+    commit(commonMutationTypes.ASSIGN, { technologies: [...state.technologies, response.data] });
   },
   async editTechnology({}, { id, name }) {
     return HTTP.put(`api/technologies/${id}`, { name });
   },
-  async removeTechnology({}, id: number) {
-    return HTTP.delete(`api/technologies/${id}`);
+  async removeTechnology({ commit, state }, id: number) {
+    await HTTP.delete(`api/technologies/${id}`);
+    commit(commonMutationTypes.ASSIGN, { technologies: state.technologies.filter(t => t.id !== id) });
   },
   async loadItSystems({ commit }) {
     const response = await HTTP.get<ItSystemsResponse>(`api/itSystems?size=100000`);
