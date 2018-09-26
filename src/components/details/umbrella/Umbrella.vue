@@ -94,13 +94,19 @@ import { VisibilityKeys } from '@/models/visibility';
   }
 })
 export default class Umbrella extends Vue {
-  @Prop(Boolean) isReporting!: boolean;
-  @Prop(Number) id!: number;
-  @Prop(String) type!: Type;
+  @Prop(Boolean)
+  isReporting!: boolean;
+  @Prop(Number)
+  id!: number;
+  @Prop(String)
+  type!: Type;
 
-  @Action(processActionTypes.UPDATE) update: any;
-  @Action(commonActionTypes.LOAD_KLES) loadKles!: () => Promise<void>;
-  @Action(errorActionTypes.UPDATE_PROCESS_ERRORS) updateProcessErrors!: (processErrors: Partial<ErrorState>) => void;
+  @Action(processActionTypes.UPDATE)
+  update: any;
+  @Action(commonActionTypes.LOAD_KLES)
+  loadKles!: () => Promise<void>;
+  @Action(errorActionTypes.UPDATE_PROCESS_ERRORS)
+  updateProcessErrors!: (processErrors: Partial<ErrorState>) => void;
 
   showSaveSuccess = false;
   showSaveError = false;
@@ -123,7 +129,19 @@ export default class Umbrella extends Vue {
         type: this.type,
         canEdit: true,
         cvr: this.$store.state.auth.user.cvr,
-        visibility: this.type === TypeKeys.PARENT ? VisibilityKeys.MUNICIPALITY : VisibilityKeys.PUBLIC
+        visibility: this.type === TypeKeys.PARENT ? VisibilityKeys.MUNICIPALITY : VisibilityKeys.PUBLIC,
+        disabled: {
+          titleEdit: false,
+          generalInformationEdit: false,
+          challengesEdit: false,
+          timeAndProcessEdit: false,
+          assessmentEdit: false,
+          operationEdit: false,
+          specificationEdit: false,
+          implementationEdit: false,
+          attachmentsEdit: false,
+          internalNotesEdit: false
+        }
       });
     }
 
