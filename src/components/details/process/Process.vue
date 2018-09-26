@@ -115,13 +115,19 @@ import { isEmpty } from 'lodash';
   }
 })
 export default class Process extends Vue {
-  @Prop(Boolean) isReporting!: boolean;
-  @Prop(Number) id!: number;
-  @Prop(String) phase!: Phase;
+  @Prop(Boolean)
+  isReporting!: boolean;
+  @Prop(Number)
+  id!: number;
+  @Prop(String)
+  phase!: Phase;
 
-  @Action(processActionTypes.UPDATE) update: any;
-  @Action(processActionTypes.SAVE_COMMENT) saveComment!: (message: string) => Promise<void>;
-  @Action(errorActionTypes.UPDATE_PROCESS_ERRORS) updateProcessErrors!: (processErrors: Partial<ErrorState>) => void;
+  @Action(processActionTypes.UPDATE)
+  update: any;
+  @Action(processActionTypes.SAVE_COMMENT)
+  saveComment!: (message: string) => Promise<void>;
+  @Action(errorActionTypes.UPDATE_PROCESS_ERRORS)
+  updateProcessErrors!: (processErrors: Partial<ErrorState>) => void;
 
   showSaveSuccess = false;
   showSaveError = false;
@@ -156,7 +162,19 @@ export default class Process extends Vue {
       this.update({
         phase: this.phase,
         canEdit: true,
-        cvr: this.$store.state.auth.user.cvr
+        cvr: this.$store.state.auth.user.cvr,
+        disabled: {
+          titleEdit: false,
+          generalInformationEdit: false,
+          challengesEdit: false,
+          timeAndProcessEdit: false,
+          assessmentEdit: false,
+          operationEdit: false,
+          specificationEdit: false,
+          implementationEdit: false,
+          attachmentsEdit: false,
+          internalNotesEdit: false
+        }
       });
     } else {
       this.$store.dispatch(processActionTypes.LOAD_COMMENTS);
