@@ -20,7 +20,7 @@
           </div>
 
           <div class="umbrella">
-            <h2>Paraply proces</h2>
+            <h2>Paraplyproces</h2>
 
             <div class="options">
               <router-link v-for="type in typeLevels" :key="type.route" :to="`/details/new/${type.route}`"> {{type.label}} </router-link>

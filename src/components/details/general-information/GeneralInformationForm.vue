@@ -3,22 +3,22 @@
     <div class="general-information-wrapper">
       <Well>
         <div>
-          <WellItem labelWidth="120px" label="ID:">
+          <WellItem labelWidth="200px" label="ID:">
             <InputField disabled :value="state.id" />
           </WellItem>
-          <WellItem labelWidth="120px" label="KLE-nr:">
+          <WellItem labelWidth="200px" label="KLE-nr:">
             <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.kle" @change="setKle($event)" :items="kles" itemText="code" clearable />
           </WellItem>
-          <WellItem labelWidth="120px" label="FORM:" v-if="state.kle">
+          <WellItem labelWidth="200px" label="FORM:" v-if="state.kle">
             <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.form" @change="update({form: $event})" :items="forms" itemText="code" clearable />
           </WellItem>
-          <WellItem labelWidth="120px" label="Lokalt ID:">
+          <WellItem labelWidth="200px" label="Lokalt ID:">
             <InputField :disabled="state.disabled.generalInformationEdit" :value="state.localId" @change="update({localId: $event})" />
           </WellItem>
-          <WellItem labelWidth="120px" label="KL ID:">
+          <WellItem labelWidth="200px" label="KL ID:">
             <InputField :disabled="state.disabled.generalInformationEdit" :value="state.klId" @change="update({klId: $event})" />
           </WellItem>
-          <WellItem labelWidth="120px" label="KLA:" tooltip="KLA nummeret henviser til en proces fra KL’s Arbejdsgangsbank.">
+          <WellItem labelWidth="200px" label="KL’s Arbejdsgangsbank:" tooltip="KL’s Arbejdsgangsbank nummeret henviser til en proces fra KL’s Arbejdsgangsbank.">
             <MaskableInput :disabled="state.disabled.generalInformationEdit" mask="##.##.##.##.##" :value="state.kla" @change="setKla" />
           </WellItem>
         </div>
@@ -78,7 +78,9 @@
 
     <div>
       <div v-if="state.status !== StatusKeys.INPROGRESS">
-        <h2 class="comments-heading">Kommentar til status</h2>
+        <h2 class="comments-heading" v-if="state.status === StatusKeys.FAILED">Hvorfor er processen mislykket?</h2>
+        <h2 class="comments-heading" v-if="state.status === StatusKeys.PENDING">Hvorfor afventer processen?</h2>
+        <h2 class="comments-heading" v-if="state.status === StatusKeys.REJECTED">Hvorfor er processen afvist?</h2>
         <TextArea :disabled="state.disabled.generalInformationEdit" @change="update({statusText: $event})" :value="state.statusText" />
       </div>
     </div>

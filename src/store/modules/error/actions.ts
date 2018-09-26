@@ -20,7 +20,7 @@ export const umbrellaLabels: ProcessLabels = {
   longDescription: 'Beskrivelse',
   domains: 'Domæner',
   kle: 'KLE NR.',
-  kla: 'KLA NR',
+  kla: 'KL’s Arbejdsgangsbank',
   klId: 'KL ID'
 };
 
@@ -37,7 +37,7 @@ export const generalInformationLabels: ProcessLabels = {
   visibility: 'Synlighed',
   legalClause: 'Lov og paragraf',
   kle: 'KLE-NR.',
-  kla: 'KLA',
+  kla: 'KL’s Arbejdsgangsbank',
   vendor: 'Leverandør',
   klId: 'KL ID',
   orgUnits: 'Afdelinger'
@@ -51,7 +51,7 @@ export const challengesLabels: ProcessLabels = {
 };
 
 export const timeAndProcessLabels: ProcessLabels = {
-  timeSpendOccurancesPerEmployee: 'Antal gange processen gentages om året pr. medarbejder',
+  timeSpendOccurancesPerEmployee: 'Antal gange processen foretages årligt',
   timeSpendPerOccurance: 'Tidsforbrug pr. proces i minutter',
   timeSpendEmployeesDoingProcess: 'Antal medarbejdere der foretager processen',
   timeSpendPercentageDigital: 'Tidsbesparelse i %',
@@ -70,7 +70,7 @@ export const assessmentLabels: ProcessLabels = {
     'Vil en automatiseret løsning bidrage til en højere kvalitet, som er mere ensrettet og med færre fejl?',
   levelOfSpeed: 'Vil en automatiseret løsning bidrage til en hurtigere og mere fyldestgørende service?',
   levelOfRoutineWorkReduction:
-    'Vil en automatiseret løsning frigive tid og nedbringe rutineopgaver, som skaber en bedre trivsel blandt medarbejderne?',
+    'Vil automatisering frigive tid og nedbringe rutineopgaver, som skaber en bedre trivsel blandt medarbejderne?',
   evaluatedLevelOfRoi: 'I hvor høj grad vurderes det at processen kan automatiseres?'
 };
 

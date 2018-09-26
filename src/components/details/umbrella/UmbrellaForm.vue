@@ -1,24 +1,24 @@
 <template>
-  <FormSection :invalid="!isUmbrellaValid" heading="Paraply proces" :disabled="state.disabled.generalInformationEdit" @edit="update({disabled: { generalInformationEdit: $event} })" always-open>
+  <FormSection :invalid="!isUmbrellaValid" heading="Paraplyproces" :disabled="state.disabled.generalInformationEdit" @edit="update({disabled: { generalInformationEdit: $event} })" always-open>
     <div class="umbrella-wrapper">
       <Well>
         <div>
-          <WellItem labelWidth="80px" label="ID:">
+          <WellItem labelWidth="200px" label="ID:">
             <InputField disabled :value="state.id" />
           </WellItem>
-          <WellItem labelWidth="80px" label="KLE-nr:">
+          <WellItem labelWidth="200px" label="KLE-nr:">
             <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.kle" @change="setKle($event)" :items="kles" itemText="code" clearable />
           </WellItem>
-          <WellItem labelWidth="80px" label="FORM:" v-if="state.kle">
+          <WellItem labelWidth="200px" label="FORM:" v-if="state.kle">
             <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.form" @change="update({form: $event})" :items="forms" itemText="code" clearable />
           </WellItem>
-          <WellItem labelWidth="80px" label="Lokalt ID:">
+          <WellItem labelWidth="200px" label="Lokalt ID:">
             <InputField :disabled="state.disabled.generalInformationEdit" :value="state.localId" @change="update({localId: $event})" />
           </WellItem>
-          <WellItem labelWidth="80px" label="KL ID:">
+          <WellItem labelWidth="200px" label="KL ID:">
             <InputField :disabled="state.disabled.generalInformationEdit" :value="state.klId" @change="update({klId: $event})" />
           </WellItem>
-          <WellItem labelWidth="80px" label="KLA:">
+          <WellItem labelWidth="200px" label="KL’s Arbejdsgangsbank:" tooltip="KL’s Arbejdsgangsbank nummeret henviser til en proces fra KL’s Arbejdsgangsbank.">
             <MaskableInput :disabled="state.disabled.generalInformationEdit" mask="##.##.##.##.##" :value="state.kla" @change="setKla" />
           </WellItem>
         </div>
@@ -40,7 +40,7 @@
             {{TypeLabels[state.type]}}
           </WellItem>
           <WellItem labelWidth="120px" label="Oprettet:">
-            <DatePicker :value="state.created" disabled/>
+            <DatePicker :value="state.created" disabled />
           </WellItem>
           <WellItem labelWidth="120px" label="Sidst opdateret:">
             <DatePicker :value="state.lastChanged" disabled />
@@ -205,7 +205,7 @@ export default class UmbrellaForm extends Vue {
   h2 {
     margin-top: 2rem;
     @include textarea-heading;
-    margin-bottom: .5rem;
+    margin-bottom: 0.5rem;
   }
 }
 
