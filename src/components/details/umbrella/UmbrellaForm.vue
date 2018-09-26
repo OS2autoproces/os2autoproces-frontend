@@ -3,22 +3,22 @@
     <div class="umbrella-wrapper">
       <Well>
         <div>
-          <WellItem labelWidth="160px" label="ID:">
+          <WellItem labelWidth="200px" label="ID:">
             <InputField disabled :value="state.id" />
           </WellItem>
-          <WellItem labelWidth="160px" label="KLE-nr:">
+          <WellItem labelWidth="200px" label="KLE-nr:">
             <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.kle" @change="setKle($event)" :items="kles" itemText="code" clearable />
           </WellItem>
-          <WellItem labelWidth="160px" label="FORM:" v-if="state.kle">
+          <WellItem labelWidth="200px" label="FORM:" v-if="state.kle">
             <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.form" @change="update({form: $event})" :items="forms" itemText="code" clearable />
           </WellItem>
-          <WellItem labelWidth="160px" label="Lokalt ID:">
+          <WellItem labelWidth="200px" label="Lokalt ID:">
             <InputField :disabled="state.disabled.generalInformationEdit" :value="state.localId" @change="update({localId: $event})" />
           </WellItem>
-          <WellItem labelWidth="160px" label="KL ID:">
+          <WellItem labelWidth="200px" label="KL ID:">
             <InputField :disabled="state.disabled.generalInformationEdit" :value="state.klId" @change="update({klId: $event})" />
           </WellItem>
-          <WellItem labelWidth="160px" label="KL's Arbejdsbank:" tooltip="KL's Arbejdsbank nummeret henviser til en proces fra KL’s Arbejdsgangsbank.">
+          <WellItem labelWidth="200px" label="KL’s Arbejdsgangsbank:" tooltip="KL’s Arbejdsgangsbank nummeret henviser til en proces fra KL’s Arbejdsgangsbank.">
             <MaskableInput :disabled="state.disabled.generalInformationEdit" mask="##.##.##.##.##" :value="state.kla" @change="setKla" />
           </WellItem>
         </div>

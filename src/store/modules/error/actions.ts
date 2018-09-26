@@ -20,7 +20,7 @@ export const umbrellaLabels: ProcessLabels = {
   longDescription: 'Beskrivelse',
   domains: 'Domæner',
   kle: 'KLE NR.',
-  kla: "KL's Arbejdsbank",
+  kla: 'KL’s Arbejdsgangsbank',
   klId: 'KL ID'
 };
 
@@ -37,7 +37,7 @@ export const generalInformationLabels: ProcessLabels = {
   visibility: 'Synlighed',
   legalClause: 'Lov og paragraf',
   kle: 'KLE-NR.',
-  kla: "KL's Arbejdsbank",
+  kla: 'KL’s Arbejdsgangsbank',
   vendor: 'Leverandør',
   klId: 'KL ID',
   orgUnits: 'Afdelinger'
