@@ -78,7 +78,9 @@
 
     <div>
       <div v-if="state.status !== StatusKeys.INPROGRESS">
-        <h2 class="comments-heading">Kommentar til status</h2>
+        <h2 class="comments-heading" v-if="state.status === StatusKeys.FAILED">Hvorfor er processen mislykket?</h2>
+        <h2 class="comments-heading" v-if="state.status === StatusKeys.PENDING">Hvorfor afventer processen?</h2>
+        <h2 class="comments-heading" v-if="state.status === StatusKeys.REJECTED">Hvorfor er processen afvist?</h2>
         <TextArea :disabled="state.disabled.generalInformationEdit" @change="update({statusText: $event})" :value="state.statusText" />
       </div>
     </div>
