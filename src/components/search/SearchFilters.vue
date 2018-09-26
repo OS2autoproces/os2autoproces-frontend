@@ -40,10 +40,10 @@
         <DatePicker :value="filters.lastChanged" @change="updateFilters({lastChanged: $event})" />
       </div>
 
-      <ExpandPanel title="Kommune">
-        <!-- TODO -->
+      <!-- TODO: Search for municipalities, not orgUnits which are "afdelinger" -->
+      <!-- <ExpandPanel title="Kommune">
         <SelectionField :items="orgUnits" :value="filters.orgUnit" itemText="name" @change="assignFilters({orgUnit: $event})" />
-      </ExpandPanel>
+      </ExpandPanel> -->
 
       <ExpandPanel title="Teknologier">
         <SelectionField :items="technologies" :value="filters.technologies" itemText="name" @change="assignFilters({technologies: $event})" multiple />
