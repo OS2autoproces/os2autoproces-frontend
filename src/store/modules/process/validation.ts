@@ -111,9 +111,8 @@ export const processFieldsValidators: { [P in keyof Process]?: (state: ProcessSt
   evaluatedLevelOfRoi({ phase, evaluatedLevelOfRoi }: ProcessState) {
     return phase === PhaseKeys.IDEA || evaluatedLevelOfRoi !== 'NOT_SET';
   },
-  esdhReference({ phase, esdhReference }: ProcessState) {
-    const minLength = phase === PhaseKeys.IDEA || phase === PhaseKeys.PREANALYSIS ? 0 : 1;
-    return isValid(esdhReference, isMinMax(minLength, 300));
+  esdhReference({ esdhReference }: ProcessState) {
+    return isValid(esdhReference, isMinMax(0, 300));
   },
   owner({ phase, owner }: ProcessState) {
     return phase === PhaseKeys.IDEA || phase === PhaseKeys.PREANALYSIS || !!owner;
