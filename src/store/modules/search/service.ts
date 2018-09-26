@@ -41,6 +41,7 @@ interface SearchParams {
   visibility: Visibility[];
   itSystems: number[];
   technologies: number[];
+  orgUnits: number | null;
   page: number;
   size: number;
   freetext: string;
@@ -87,6 +88,7 @@ export async function search(filters: SearchFilters): Promise<SearchResult> {
     'bookmarkUsers.uuid': filters.bookmarkedId,
     freetext: filters.text,
     klaProcess: filters.klaProcess,
+    orgUnits: filters.orgUnit ? filters.orgUnit.id : null,
     type: filters.umbrella ? [TypeKeys.GLOBAL_PARENT, TypeKeys.PARENT] : [TypeKeys.CHILD]
   };
 

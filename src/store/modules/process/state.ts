@@ -97,7 +97,7 @@ export interface ITSystem {
 }
 
 export interface OrgUnit {
-  id: string;
+  id: number;
   uuid: string;
   name: string;
   active: boolean;
