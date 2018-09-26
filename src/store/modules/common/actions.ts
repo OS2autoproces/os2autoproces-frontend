@@ -153,8 +153,14 @@ export const actions: ActionTree<CommonState, RootState> = {
 
     commit(commonMutationTypes.ASSIGN, { kles });
   },
-  async loadOrgUnits({ commit }, cvr: string) {
-    const response = await HTTP.get<OrgUnitsResponse>(`api/orgUnits?cvr=${cvr}&size=100000`);
+  async loadOrgUnits({ commit }, cvr?: string) {
+    const params = ['size=100000'];
+
+    if (cvr) {
+      params.push(`cvr=${cvr}`);
+    }
+
+    const response = await HTTP.get<OrgUnitsResponse>(`api/orgUnits?${params.join('&')}`);
     const { orgUnits } = response.data._embedded;
 
     commit(commonMutationTypes.ASSIGN, { orgUnits });

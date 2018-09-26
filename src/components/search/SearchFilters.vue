@@ -42,11 +42,10 @@
 
       <ExpandPanel title="Kommune">
         <!-- TODO -->
-        <SelectionField :items="itSystems" :value="filters.itSystems" itemText="name" @change="assignFilters({itSystems: $event})" />
+        <SelectionField :items="orgUnits" :value="filters.orgUnit" itemText="name" @change="assignFilters({orgUnit: $event})" />
       </ExpandPanel>
 
       <ExpandPanel title="Teknologier">
-        <!-- TODO -->
         <SelectionField :items="technologies" :value="filters.technologies" itemText="name" @change="assignFilters({technologies: $event})" multiple />
       </ExpandPanel>
 
@@ -149,7 +148,11 @@ export default class SearchFiltersComponent extends Vue {
     return this.$store.state.common.itSystems;
   }
 
-    get technologies() {
+  get orgUnits() {
+    return this.$store.state.common.orgUnits;
+  }
+
+  get technologies() {
     return this.$store.state.common.technologies;
   }
 
