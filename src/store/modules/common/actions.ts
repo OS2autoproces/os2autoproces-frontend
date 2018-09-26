@@ -1,7 +1,7 @@
 import { HTTP } from '@/services/http-service';
 import { User } from '@/store/modules/auth/state';
 import { commonMutationTypes } from '@/store/modules/common/mutations';
-import { ITSystem, Technology, OrgUnit } from '@/store/modules/process/state';
+import { ITSystem, Technology, OrgUnit, Municipality } from '@/store/modules/process/state';
 import { RootState } from '@/store/store';
 import { debounce } from 'lodash';
 import { ActionTree, Commit } from 'vuex';
@@ -52,6 +52,10 @@ interface ItSystemsResponse {
   };
 }
 
+interface MunicipalitiesResponse {
+  data: Municipality[];
+}
+
 interface FormResponse {
   _embedded: {
     forms: Form[];
@@ -97,6 +101,7 @@ export const commonActionTypes = {
   LOAD_IT_SYSTEMS: `${namespace}/loadItSystems`,
   LOAD_KLES: `${namespace}/loadKles`,
   LOAD_ORGUNITS: `${namespace}/loadOrgUnits`,
+  LOAD_MUNICIPALITIES: `${namespace}/loadMunicipalities`,
   LOAD_TECHNOLOGIES: `${namespace}/loadTechnologies`,
   ADD_TECHNOLOGY: `${namespace}/addTechnology`,
   REMOVE_TECHNOLOGY: `${namespace}/removeTechnology`,
@@ -145,6 +150,11 @@ export const actions: ActionTree<CommonState, RootState> = {
     const itSystems = response.data._embedded.itSystems;
 
     commit(commonMutationTypes.ASSIGN, { itSystems });
+  },
+  async loadMunicipalities({ commit }) {
+    const response = await HTTP.get<MunicipalitiesResponse>(`public/municipalities`);
+
+    commit(commonMutationTypes.ASSIGN, { municipalities: response.data });
   },
   async loadKles({ commit }) {
     const response = await HTTP.get<KleResponse>(`api/kles?size=100000`);

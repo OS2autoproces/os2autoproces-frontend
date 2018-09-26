@@ -14,10 +14,10 @@
       <h1 v-if="!hideVisibility">AVANCERET SØGNING</h1>
 
       <div class="municipality-level" v-if="!hideVisibility">
-        <SearchOption :value="filters.municipality" @change="updateFilters({ municipality: $event })">
+        <SearchOption :value="filters.visibility.municipality" @change="updateFilters({ visibility: { municipality: $event } })">
           {{VisibilityLabels.MUNICIPALITY}}
         </SearchOption>
-        <SearchOption :value="filters.public" @change="updateFilters({ public: $event })">
+        <SearchOption :value="filters.visibility.public" @change="updateFilters({ visibility: { public: $event } })">
           {{VisibilityLabels.PUBLIC}}
         </SearchOption>
       </div>
@@ -40,10 +40,9 @@
         <DatePicker :value="filters.lastChanged" @change="updateFilters({lastChanged: $event})" />
       </div>
 
-      <!-- TODO: Search for municipalities, not orgUnits which are "afdelinger" -->
-      <!-- <ExpandPanel title="Kommune">
-        <SelectionField :items="orgUnits" :value="filters.orgUnit" itemText="name" @change="assignFilters({orgUnit: $event})" />
-      </ExpandPanel> -->
+      <ExpandPanel title="Kommune">
+        <SelectionField :items="municipalities" :value="filters.municipality" itemText="name" @change="assignFilters({municipality: $event})" clearable />
+      </ExpandPanel>
 
       <ExpandPanel title="Teknologier">
         <SelectionField :items="technologies" :value="filters.technologies" itemText="name" @change="assignFilters({technologies: $event})" multiple />
@@ -148,8 +147,8 @@ export default class SearchFiltersComponent extends Vue {
     return this.$store.state.common.itSystems;
   }
 
-  get orgUnits() {
-    return this.$store.state.common.orgUnits;
+  get municipalities() {
+    return this.$store.state.common.municipalities;
   }
 
   get technologies() {
@@ -158,7 +157,7 @@ export default class SearchFiltersComponent extends Vue {
 
   mounted() {
     this.$store.dispatch(commonActionTypes.LOAD_IT_SYSTEMS);
-    this.$store.dispatch(commonActionTypes.LOAD_ORGUNITS);
+    this.$store.dispatch(commonActionTypes.LOAD_MUNICIPALITIES);
     this.$store.dispatch(commonActionTypes.LOAD_TECHNOLOGIES);
   }
 

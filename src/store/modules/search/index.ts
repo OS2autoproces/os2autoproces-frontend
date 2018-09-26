@@ -19,9 +19,11 @@ export function getInitialState(): SearchState {
       text: '',
       created: '',
       lastChanged: '',
-      orgUnit: null,
-      municipality: false,
-      public: false,
+      municipality: null,
+      visibility: {
+        municipality: false,
+        public: false
+      },
       klaProcess: false,
       umbrella: false,
       itSystems: [],
