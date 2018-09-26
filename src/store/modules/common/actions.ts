@@ -128,7 +128,6 @@ export const actions: ActionTree<CommonState, RootState> = {
     const technologies = response.data._embedded.technologies;
 
     commit(commonMutationTypes.ASSIGN, { technologies });
-    return response.data._embedded.technologies;
   },
   async addTechnology({ commit, state }, name: string) {
     const response = await HTTP.post(`api/technologies`, { name });
