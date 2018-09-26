@@ -1,7 +1,7 @@
-import { Phase } from '@/models/phase';
 import { Domain } from '@/models/domain';
+import { Phase } from '@/models/phase';
 import { Status } from '@/models/status';
-import { ITSystem, Technology, OrgUnit } from '@/store/modules/process/state';
+import { ITSystem, Municipality, Technology } from '@/store/modules/process/state';
 
 export interface SearchResult {
   page: {
@@ -37,8 +37,11 @@ export interface SearchFilters {
   text: string;
   created: string;
   lastChanged: string;
-  municipality: boolean;
-  public: boolean;
+  municipality: Municipality | null;
+  visibility: {
+    municipality: boolean;
+    public: boolean;
+  };
   page: number;
   size: number;
   sorting: SortingOption;
@@ -46,7 +49,6 @@ export interface SearchFilters {
   domain: { [x in Domain]: boolean };
   klaProcess: boolean;
   umbrella: boolean;
-  orgUnit: OrgUnit | null;
   itSystems: ITSystem[];
   technologies: Technology[];
 }

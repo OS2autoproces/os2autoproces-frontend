@@ -41,7 +41,7 @@ interface SearchParams {
   visibility: Visibility[];
   itSystems: number[];
   technologies: number[];
-  orgUnits: number | null;
+  cvr: string | null;
   page: number;
   size: number;
   freetext: string;
@@ -88,15 +88,15 @@ export async function search(filters: SearchFilters): Promise<SearchResult> {
     'bookmarkUsers.uuid': filters.bookmarkedId,
     freetext: filters.text,
     klaProcess: filters.klaProcess,
-    orgUnits: filters.orgUnit ? filters.orgUnit.id : null,
+    cvr: filters.municipality ? filters.municipality.cvr : null,
     type: filters.umbrella ? [TypeKeys.GLOBAL_PARENT, TypeKeys.PARENT] : [TypeKeys.CHILD]
   };
 
-  if (filters.municipality) {
+  if (filters.visibility.municipality) {
     params.visibility.push(VisibilityKeys.MUNICIPALITY);
   }
 
-  if (filters.public) {
+  if (filters.visibility.public) {
     params.visibility.push(VisibilityKeys.PUBLIC);
   }
 

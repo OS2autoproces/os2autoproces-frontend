@@ -104,6 +104,11 @@ export interface OrgUnit {
   cvr: string;
 }
 
+export interface Municipality {
+  name: string;
+  cvr: string;
+}
+
 export interface Technology {
   id: number;
   name: string;

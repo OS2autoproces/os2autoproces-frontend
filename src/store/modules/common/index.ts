@@ -13,6 +13,7 @@ export const state: CommonState = {
   kles: [],
   forms: [],
   orgUnits: [],
+  municipalities: [],
   users: []
 };
 
