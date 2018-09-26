@@ -70,7 +70,7 @@ export const assessmentLabels: ProcessLabels = {
     'Vil en automatiseret løsning bidrage til en højere kvalitet, som er mere ensrettet og med færre fejl?',
   levelOfSpeed: 'Vil en automatiseret løsning bidrage til en hurtigere og mere fyldestgørende service?',
   levelOfRoutineWorkReduction:
-    'Vil en automatiseret løsning frigive tid og nedbringe rutineopgaver, som skaber en bedre trivsel blandt medarbejderne?',
+    'Vil automatisering frigive tid og nedbringe rutineopgaver, som skaber en bedre trivsel blandt medarbejderne?',
   evaluatedLevelOfRoi: 'I hvor høj grad vurderes det at processen kan automatiseres?'
 };
 

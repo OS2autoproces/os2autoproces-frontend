@@ -42,7 +42,7 @@
         <LikertScale :disabled="state.disabled.assessmentEdit" :value="state.levelOfSpeed" @change="update({ levelOfSpeed: $event })" />
       </div>
       <div class="question">
-        <div class="label">Vil en automatiseret løsning frigive tid og nedbringe rutineopgaver, som skaber en bedre trivsel blandt medarbejderne? *
+        <div class="label">Vil automatisering frigive tid og nedbringe rutineopgaver, som skaber en bedre trivsel blandt medarbejderne? *
           <InfoTooltip class="tooltip">Her skal du vurdere, hvad en digital assistent vil betyde for din egne trivsel som medarbejder. F.eks. ved at lette nogle af de trivielle og tidskrævende arbejdsopgaver.</InfoTooltip>
         </div>
         <LikertScale :disabled="state.disabled.assessmentEdit" :value="state.levelOfRoutineWorkReduction" @change="update({ levelOfRoutineWorkReduction: $event })" />

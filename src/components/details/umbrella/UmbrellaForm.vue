@@ -131,15 +131,11 @@ import { searchActionTypes } from '@/store/modules/search/actions';
   }
 })
 export default class UmbrellaForm extends Vue {
-  @Action(processActionTypes.UPDATE)
-  update: any;
-  @Action(processActionTypes.ASSIGN)
-  assign: any;
-  @Action(commonActionTypes.LOAD_FORMS)
-  loadForms: any;
+  @Action(processActionTypes.UPDATE) update: any;
+  @Action(processActionTypes.ASSIGN) assign: any;
+  @Action(commonActionTypes.LOAD_FORMS) loadForms: any;
 
-  @Getter(processGetterTypes.IS_UMBRELLA_VALID)
-  isUmbrellaValid!: any;
+  @Getter(processGetterTypes.IS_UMBRELLA_VALID) isUmbrellaValid!: any;
 
   TypeLabels = TypeLabels;
   VisibilityLabels = VisibilityLabels;

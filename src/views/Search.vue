@@ -10,7 +10,7 @@
         <div class="results-wrapper">
           <div class="report">
             <router-link to="/report">
-              <PlusIcon/> Indberet
+              <PlusIcon /> Indberet proces
             </router-link>
           </div>
 
