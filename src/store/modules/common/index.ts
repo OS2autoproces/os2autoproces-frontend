@@ -9,6 +9,7 @@ const namespaced = true;
 export const state: CommonState = {
   frontPage: '',
   itSystems: [],
+  technologies: [],
   kles: [],
   forms: [],
   orgUnits: [],

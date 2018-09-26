@@ -26,6 +26,10 @@
         Søg i KL’s Arbejdsgangsbank
       </SearchOption>
 
+      <SearchOption :value="filters.umbrella" @change="updateFilters({ umbrella: $event })">
+        Søg i paraplyprocesser
+      </SearchOption>
+
       <div class="datepicker">
         Oprettet:
         <DatePicker :value="filters.created" @change="updateFilters({created: $event})" />
@@ -33,8 +37,17 @@
 
       <div class="datepicker">
         Senest ændret:
-      <DatePicker :value="filters.lastChanged" @change="updateFilters({lastChanged: $event})" />
+        <DatePicker :value="filters.lastChanged" @change="updateFilters({lastChanged: $event})" />
       </div>
+
+      <!-- TODO: Search for municipalities, not orgUnits which are "afdelinger" -->
+      <!-- <ExpandPanel title="Kommune">
+        <SelectionField :items="orgUnits" :value="filters.orgUnit" itemText="name" @change="assignFilters({orgUnit: $event})" />
+      </ExpandPanel> -->
+
+      <ExpandPanel title="Teknologier">
+        <SelectionField :items="technologies" :value="filters.technologies" itemText="name" @change="assignFilters({technologies: $event})" multiple />
+      </ExpandPanel>
 
       <ExpandPanel title="Fase">
         <SearchOption :value="filters.phase.IDEA" @change="updateFilters({ phase: { IDEA: $event } })">
@@ -76,11 +89,6 @@
         <SearchOption :value="filters.domain.WORK" @change="updateFilters({ domain: { WORK: $event } })">
           {{DomainLabels.WORK}}
         </SearchOption>
-      </ExpandPanel>
-
-      <ExpandPanel title="Timeforbrug">
-        Antal timer:
-        <InputField :value="filters.timeSpendComputedTotal" @change="updateFilters({ timeSpendComputedTotal: $event })" />
       </ExpandPanel>
 
       <ExpandPanel title="System">
@@ -125,9 +133,12 @@ export default class SearchFiltersComponent extends Vue {
   DomainLabels = DomainLabels;
   VisibilityLabels = VisibilityLabels;
 
-  @Prop(Object) filters!: SearchFilters;
-  @Prop(Boolean) hideVisibility!: boolean;
-  @Prop(Boolean) hideRelations!: boolean;
+  @Prop(Object)
+  filters!: SearchFilters;
+  @Prop(Boolean)
+  hideVisibility!: boolean;
+  @Prop(Boolean)
+  hideRelations!: boolean;
 
   get user() {
     return this.$store.state.auth.user;
@@ -137,8 +148,18 @@ export default class SearchFiltersComponent extends Vue {
     return this.$store.state.common.itSystems;
   }
 
+  get orgUnits() {
+    return this.$store.state.common.orgUnits;
+  }
+
+  get technologies() {
+    return this.$store.state.common.technologies;
+  }
+
   mounted() {
     this.$store.dispatch(commonActionTypes.LOAD_IT_SYSTEMS);
+    this.$store.dispatch(commonActionTypes.LOAD_ORGUNITS);
+    this.$store.dispatch(commonActionTypes.LOAD_TECHNOLOGIES);
   }
 
   setReporterId(value: boolean) {

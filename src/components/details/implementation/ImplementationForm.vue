@@ -54,14 +54,16 @@ export default class ImplementationForm extends Vue {
 
   twoColumnBreakpoint = 1600;
 
-  technologies: Technology[] = [];
+  get technologies() {
+    return this.$store.state.common.technologies;
+  }
 
   get state() {
     return this.$store.state.process;
   }
 
   async mounted() {
-    this.technologies = await this.$store.dispatch(commonActionTypes.LOAD_TECHNOLOGIES);
+    this.$store.dispatch(commonActionTypes.LOAD_TECHNOLOGIES);
   }
 }
 </script>

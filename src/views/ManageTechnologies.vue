@@ -43,16 +43,19 @@ import DeleteIcon from '../components/icons/DeleteIcon.vue';
   }
 })
 export default class ManageTechnologies extends Vue {
-  technologies: Technology[] = [];
   newTechnology = '';
   editing: number | null = null;
+
+  get technologies() {
+    return this.$store.state.common.technologies;
+  }
 
   mounted() {
     this.load();
   }
 
   async load() {
-    this.technologies = await this.$store.dispatch(commonActionTypes.LOAD_TECHNOLOGIES);
+    this.$store.dispatch(commonActionTypes.LOAD_TECHNOLOGIES);
   }
 
   edit(technology: Technology) {
@@ -67,7 +70,6 @@ export default class ManageTechnologies extends Vue {
   remove(id: number) {
     if (confirm('Er du sikker?')) {
       this.$store.dispatch(commonActionTypes.REMOVE_TECHNOLOGY, id);
-      this.technologies = this.technologies.filter(t => t.id !== id);
     }
   }
 
@@ -76,13 +78,11 @@ export default class ManageTechnologies extends Vue {
       return;
     }
 
-    const technology: Technology = {
-      name: this.newTechnology,
-      id: (await this.$store.dispatch(commonActionTypes.ADD_TECHNOLOGY, this.newTechnology)).id
-    };
+    const name = this.newTechnology;
 
     this.newTechnology = '';
-    this.technologies.push(technology);
+
+    await this.$store.dispatch(commonActionTypes.ADD_TECHNOLOGY, name);
   }
 }
 </script>

@@ -13,18 +13,19 @@ export function getInitialState(): SearchState {
     filters: {
       page: 0,
       size: 5,
-      type: null,
       reporterId: null,
       usersId: null,
       bookmarkedId: null,
       text: '',
       created: '',
       lastChanged: '',
+      orgUnit: null,
       municipality: false,
       public: false,
       klaProcess: false,
+      umbrella: false,
       itSystems: [],
-      timeSpendComputedTotal: '',
+      technologies: [],
       sorting: {
         property: 'title',
         descending: false
