@@ -40,6 +40,16 @@
         <DatePicker :value="filters.lastChanged" @change="updateFilters({lastChanged: $event})" />
       </div>
 
+      <ExpandPanel title="Kommune">
+        <!-- TODO -->
+        <SelectionField :items="itSystems" :value="filters.itSystems" itemText="name" @change="assignFilters({itSystems: $event})" />
+      </ExpandPanel>
+
+      <ExpandPanel title="Teknologier">
+        <!-- TODO -->
+        <SelectionField :items="technologies" :value="filters.technologies" itemText="name" @change="assignFilters({technologies: $event})" multiple />
+      </ExpandPanel>
+
       <ExpandPanel title="Fase">
         <SearchOption :value="filters.phase.IDEA" @change="updateFilters({ phase: { IDEA: $event } })">
           {{PhaseLabels.IDEA}}
@@ -124,9 +134,12 @@ export default class SearchFiltersComponent extends Vue {
   DomainLabels = DomainLabels;
   VisibilityLabels = VisibilityLabels;
 
-  @Prop(Object) filters!: SearchFilters;
-  @Prop(Boolean) hideVisibility!: boolean;
-  @Prop(Boolean) hideRelations!: boolean;
+  @Prop(Object)
+  filters!: SearchFilters;
+  @Prop(Boolean)
+  hideVisibility!: boolean;
+  @Prop(Boolean)
+  hideRelations!: boolean;
 
   get user() {
     return this.$store.state.auth.user;
@@ -136,8 +149,14 @@ export default class SearchFiltersComponent extends Vue {
     return this.$store.state.common.itSystems;
   }
 
+    get technologies() {
+    return this.$store.state.common.technologies;
+  }
+
   mounted() {
     this.$store.dispatch(commonActionTypes.LOAD_IT_SYSTEMS);
+    this.$store.dispatch(commonActionTypes.LOAD_ORGUNITS);
+    this.$store.dispatch(commonActionTypes.LOAD_TECHNOLOGIES);
   }
 
   setReporterId(value: boolean) {

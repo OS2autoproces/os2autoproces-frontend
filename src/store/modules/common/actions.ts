@@ -123,8 +123,11 @@ export const actions: ActionTree<CommonState, RootState> = {
       }
     });
   },
-  async loadTechnologies() {
+  async loadTechnologies({ commit }) {
     const response = await HTTP.get<TechnologiesResponse>(`api/technologies?size=100000`);
+    const technologies = response.data._embedded.technologies;
+
+    commit(commonMutationTypes.ASSIGN, { technologies });
     return response.data._embedded.technologies;
   },
   async addTechnology({}, name: string) {

@@ -1,7 +1,7 @@
 import { Phase } from '@/models/phase';
 import { Domain } from '@/models/domain';
 import { Status } from '@/models/status';
-import { ITSystem } from '@/store/modules/process/state';
+import { ITSystem, Technology } from '@/store/modules/process/state';
 
 export interface SearchResult {
   page: {
@@ -47,6 +47,7 @@ export interface SearchFilters {
   klaProcess: boolean;
   umbrella: boolean;
   itSystems: ITSystem[];
+  technologies: Technology[];
 }
 
 export interface SearchState {

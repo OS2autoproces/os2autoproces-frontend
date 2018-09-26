@@ -24,6 +24,7 @@ export function getInitialState(): SearchState {
       klaProcess: false,
       umbrella: false,
       itSystems: [],
+      technologies: [],
       sorting: {
         property: 'title',
         descending: false

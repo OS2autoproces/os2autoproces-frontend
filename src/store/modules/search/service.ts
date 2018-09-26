@@ -40,6 +40,7 @@ interface SearchParams {
   domains: Domain[];
   visibility: Visibility[];
   itSystems: number[];
+  technologies: number[];
   page: number;
   size: number;
   freetext: string;
@@ -75,6 +76,7 @@ export async function search(filters: SearchFilters): Promise<SearchResult> {
       .map(([domain]) => domain) as Domain[],
     sort: `${filters.sorting.property},${filters.sorting.descending ? 'desc' : 'asc'}`,
     itSystems: filters.itSystems.map(system => system.id),
+    technologies: filters.technologies.map(technology => technology.id),
     visibility: [],
     page: filters.page,
     size: filters.size,
