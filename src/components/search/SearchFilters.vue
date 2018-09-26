@@ -23,7 +23,7 @@
       </div>
 
       <SearchOption :value="filters.klaProcess" @change="updateFilters({ klaProcess: $event })">
-        Søg i KLA-processer
+        Søg i KL's Arbejdsbank
       </SearchOption>
 
       <div class="datepicker">

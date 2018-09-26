@@ -3,22 +3,22 @@
     <div class="umbrella-wrapper">
       <Well>
         <div>
-          <WellItem labelWidth="80px" label="ID:">
+          <WellItem labelWidth="160px" label="ID:">
             <InputField disabled :value="state.id" />
           </WellItem>
-          <WellItem labelWidth="80px" label="KLE-nr:">
+          <WellItem labelWidth="160px" label="KLE-nr:">
             <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.kle" @change="setKle($event)" :items="kles" itemText="code" clearable />
           </WellItem>
-          <WellItem labelWidth="80px" label="FORM:" v-if="state.kle">
+          <WellItem labelWidth="160px" label="FORM:" v-if="state.kle">
             <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.form" @change="update({form: $event})" :items="forms" itemText="code" clearable />
           </WellItem>
-          <WellItem labelWidth="80px" label="Lokalt ID:">
+          <WellItem labelWidth="160px" label="Lokalt ID:">
             <InputField :disabled="state.disabled.generalInformationEdit" :value="state.localId" @change="update({localId: $event})" />
           </WellItem>
-          <WellItem labelWidth="80px" label="KL ID:">
+          <WellItem labelWidth="160px" label="KL ID:">
             <InputField :disabled="state.disabled.generalInformationEdit" :value="state.klId" @change="update({klId: $event})" />
           </WellItem>
-          <WellItem labelWidth="200px" label="KL's Arbejdsbank:">
+          <WellItem labelWidth="160px" label="KL's Arbejdsbank:" tooltip="KL's Arbejdsbank nummeret henviser til en proces fra KL’s Arbejdsgangsbank.">
             <MaskableInput :disabled="state.disabled.generalInformationEdit" mask="##.##.##.##.##" :value="state.kla" @change="setKla" />
           </WellItem>
         </div>
@@ -40,7 +40,7 @@
             {{TypeLabels[state.type]}}
           </WellItem>
           <WellItem labelWidth="120px" label="Oprettet:">
-            <DatePicker :value="state.created" disabled/>
+            <DatePicker :value="state.created" disabled />
           </WellItem>
           <WellItem labelWidth="120px" label="Sidst opdateret:">
             <DatePicker :value="state.lastChanged" disabled />
@@ -131,11 +131,15 @@ import { searchActionTypes } from '@/store/modules/search/actions';
   }
 })
 export default class UmbrellaForm extends Vue {
-  @Action(processActionTypes.UPDATE) update: any;
-  @Action(processActionTypes.ASSIGN) assign: any;
-  @Action(commonActionTypes.LOAD_FORMS) loadForms: any;
+  @Action(processActionTypes.UPDATE)
+  update: any;
+  @Action(processActionTypes.ASSIGN)
+  assign: any;
+  @Action(commonActionTypes.LOAD_FORMS)
+  loadForms: any;
 
-  @Getter(processGetterTypes.IS_UMBRELLA_VALID) isUmbrellaValid!: any;
+  @Getter(processGetterTypes.IS_UMBRELLA_VALID)
+  isUmbrellaValid!: any;
 
   TypeLabels = TypeLabels;
   VisibilityLabels = VisibilityLabels;
