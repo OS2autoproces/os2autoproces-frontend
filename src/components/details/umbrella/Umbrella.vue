@@ -6,8 +6,8 @@
           <ArrowLeftIcon /> Tilbage til søgning
         </router-link>
 
-        <Button v-if="isReporting" class="report-button" @click="report">Gem</Button>
-        <Button v-if="!isReporting" class="save-button" @click="save">Gem</Button>
+        <Button primary v-if="isReporting" class="report-button" @click="report">Gem</Button>
+        <Button primary v-if="!isReporting" class="save-button" @click="save">Gem</Button>
       </div>
     </div>
 

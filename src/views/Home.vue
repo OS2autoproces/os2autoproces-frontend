@@ -44,12 +44,14 @@ import { authGetterTypes } from '@/store/modules/auth/getters';
   }
 })
 export default class Home extends Vue {
-  @Action(commonActionTypes.UPDATE) update: any;
+  @Action(commonActionTypes.UPDATE)
+  update: any;
   @Action(commonActionTypes.LOAD_CMS_CONTENT)
   loadCmsContent!: (label: keyof CommonState) => Promise<void>;
   @Action(commonActionTypes.SAVE_CMS_CONTENT)
   saveCmsContent!: (cms: Cms) => Promise<void>;
-  @Getter(authGetterTypes.IS_FRONTPAGE_EDITOR) isEditor!: () => boolean;
+  @Getter(authGetterTypes.IS_FRONTPAGE_EDITOR)
+  isEditor!: () => boolean;
 
   get state() {
     return this.$store.state;
@@ -90,11 +92,11 @@ export default class Home extends Vue {
   align-items: center;
 
   .login-button {
-    border: 1px solid $color-primary;
-    border-radius: .5rem;
-    padding: .5rem 1rem;
-    min-width: 40px;
-    color: $color-primary;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 0.5rem;
+    padding: 1rem 2rem;
+    color: white;
+    background-color: $color-primary;
     @include heading;
     font-size: 1.5rem;
     display: block;
