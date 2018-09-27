@@ -8,7 +8,7 @@
       <div>
         <div class="field">Vurderet potentiale:</div>
         <div class="value">
-          <Rating class="rating" :value="process.rating" disabled/>
+          <Rating class="rating" :value="process.rating" disabled />
         </div>
       </div>
       <div>
@@ -34,9 +34,17 @@
         <div class="value">{{process.legalClause}}</div>
       </div>
     </div>
-    <div class="result-column" v-if="!noPhase">
-      <Phases :value="process.phase" small disabled />
-      <div class="status">{{StatusLabels[process.status]}}</div>
+    <div class="result-column phase" v-if="!noPhase">
+      <div>
+        <div class="field">Fase:</div>
+        <div class="value">
+          <Phases :value="process.phase" disabled />
+        </div>
+      </div>
+      <div>
+        <div class="field">Status:</div>
+        <div class="value">{{StatusLabels[process.status]}}</div>
+      </div>
     </div>
     <star-icon class="star-icon" :class="{ selected: process.hasBookmarked }" />
   </div>
@@ -109,11 +117,6 @@ $resume-line-height: 1em * 1.5;
   width: 16px;
 }
 
-.status {
-  text-align: center;
-  font-weight: bold;
-}
-
 .result-column {
   flex: 0 0 25%;
 
@@ -129,6 +132,7 @@ $resume-line-height: 1em * 1.5;
 }
 
 .domain,
+.phase,
 .potential {
   > div {
     display: flex;
@@ -156,5 +160,9 @@ $resume-line-height: 1em * 1.5;
 
 .potential .field {
   flex-basis: 140px;
+}
+
+.phase .field {
+  flex-basis: 100px;
 }
 </style>

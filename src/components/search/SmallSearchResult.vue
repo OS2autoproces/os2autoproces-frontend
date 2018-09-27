@@ -39,7 +39,6 @@
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import StarIcon from '../icons/StarIcon.vue';
 import Rating from '../common/inputs/Rating.vue';
-import Phases from '../common/inputs/Phases.vue';
 import { SearchResultProcess } from '../../store/modules/search/state';
 import { StatusLabels } from '../../models/status';
 import { PhaseLabels } from '../../models/phase';
@@ -49,7 +48,6 @@ import { DomainLabels } from '../../models/domain';
   components: {
     StarIcon,
     Rating,
-    Phases
   }
 })
 export default class SearchResult extends Vue {
