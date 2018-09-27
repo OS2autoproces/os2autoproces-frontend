@@ -93,7 +93,6 @@ import MappedSelectionField from '@/components/common/inputs/MappedSelectionFiel
 import SmallSearchResult from '@/components/search/SmallSearchResult.vue';
 import DomainsField from '@/components/common/inputs/DomainsField.vue';
 import TextArea from '@/components/common/inputs/TextArea.vue';
-import Phases from '@/components/common/inputs/Phases.vue';
 import Well from '@/components/common/Well.vue';
 import WellItem from '@/components/common/WellItem.vue';
 import FormSection from '@/components/details/FormSection.vue';
@@ -121,7 +120,6 @@ import { searchActionTypes } from '@/store/modules/search/actions';
     MappedSelectionField,
     DatePicker,
     TextArea,
-    Phases,
     Well,
     FormSection,
     MaskableInput,

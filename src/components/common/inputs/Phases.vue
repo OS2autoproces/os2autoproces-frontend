@@ -1,72 +1,36 @@
 <template>
-    <div class="phases" :class="{ small }">
-        <div class="row">
-            <PhaseComponent :phase="PhaseKeys.PREANALYSIS" :value="value" @select="select" :small="small" :disabled="disabled" />
-            <PhaseComponent :phase="PhaseKeys.SPECIFICATION" :value="value" @select="select" :small="small" :disabled="disabled" reverse />
-        </div>
-
-        <div class="row">
-            <PhaseComponent :phase="PhaseKeys.IDEA" :value="value" @select="select" :small="small" :disabled="disabled" />
-            <PhaseComponent :phase="PhaseKeys.DEVELOPMENT" :value="value" @select="select" :small="small" :disabled="disabled" reverse />
-        </div>
-
-        <div class="row">
-            <PhaseComponent :phase="PhaseKeys.OPERATION" :value="value" @select="select" :small="small" :disabled="disabled" />
-            <PhaseComponent :phase="PhaseKeys.IMPLEMENTATION" :value="value" @select="select" :small="small" :disabled="disabled" reverse />
-        </div>
-    </div>
+  <div class="phases">
+    <MappedSelectionField :disabled="disabled" :value="value" @change="$emit('change', $event)" :items="phases" />
+  </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
-import PhaseComponent from "./Phase.vue";
-import { Phase, PhaseKeys } from '@/models/phase';
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import MappedSelectionField from './MappedSelectionField.vue';
+import { Phase, PhaseKeys, PhaseLabels } from '@/models/phase';
 
 @Component({
   components: {
-    PhaseComponent
+    MappedSelectionField
   }
 })
 export default class Phases extends Vue {
-  @Prop(String) private value!: string;
-  @Prop(Boolean) private disabled!: boolean;
-  @Prop(Boolean) private small!: boolean;
+  @Prop(String)
+  private value!: string;
 
-  private PhaseKeys = PhaseKeys;
+  @Prop(Boolean)
+  private disabled!: boolean;
 
-  private select(phase: Phase) {
-    if (phase !== this.value) {
-      this.$emit("change", phase);
-    }
-  }
+  private phases = [
+    { value: PhaseKeys.IDEA, text: PhaseLabels.IDEA },
+    { value: PhaseKeys.PREANALYSIS, text: PhaseLabels.PREANALYSIS },
+    { value: PhaseKeys.SPECIFICATION, text: PhaseLabels.SPECIFICATION },
+    { value: PhaseKeys.DEVELOPMENT, text: PhaseLabels.DEVELOPMENT },
+    { value: PhaseKeys.IMPLEMENTATION, text: PhaseLabels.IMPLEMENTATION },
+    { value: PhaseKeys.OPERATION, text: PhaseLabels.OPERATION }
+  ];
 }
 </script>
 
 <style lang="scss" scoped>
-.row {
-  display: flex;
-  margin-bottom: 14px;
-}
-
-.row:not(:nth-child(2)) .phase:first-child {
-  margin-right: 21px;
-}
-
-.row:nth-child(2) .phase:first-child {
-  margin-right: 75px;
-}
-
-.phases.small {
-  .row {
-    margin-bottom: 7px;
-  }
-
-  .row:not(:nth-child(2)) .phase:first-child {
-    margin-right: 10px;
-  }
-
-  .row:nth-child(2) .phase:first-child {
-    margin-right: 37px;
-  }
-}
 </style>

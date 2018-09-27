@@ -64,10 +64,16 @@
       <div class="resume">
         <h2>Resume *</h2>
         <TextArea :disabled="state.disabled.generalInformationEdit" @change="update({shortDescription: $event})" :value="state.shortDescription" :maxLength="140" />
-      </div>
+        </div>
       <div class="general-phases">
-        <Phases :disabled="state.disabled.generalInformationEdit" :value="state.phase" @change="phaseChanged($event)" />
-        <MappedSelectionField :disabled="state.disabled.generalInformationEdit" class="status-selection" :value="state.status" @change="update({status: $event})" :items="statusLevels" />
+        <div>
+          <div class="field-label">Fase:</div>
+          <Phases class="phase-field" :disabled="state.disabled.generalInformationEdit" :value="state.phase" @change="phaseChanged($event)" />
+        </div>
+        <div>
+          <div class="field-label">Status:</div>
+          <MappedSelectionField class="status-field" :disabled="state.disabled.generalInformationEdit" :value="state.status" @change="update({status: $event})" :items="statusLevels" />
+        </div>
 
         <div v-if="isPhaseChanged" class="phase-changed">
           <WarningIcon class="general-information-warning-icon" />
@@ -131,13 +137,19 @@ import { Phase, PhaseKeys } from '@/models/phase';
   }
 })
 export default class GeneralInformationForm extends Vue {
-  @Action(processActionTypes.UPDATE) update: any;
-  @Action(commonActionTypes.LOAD_FORMS) loadForms: any;
-  @Action(processActionTypes.ASSIGN) assign: any;
-  @Action(commonActionTypes.SEARCH_USERS) searchUsers!: ({ name, cvr }: UserSearchRequest) => Promise<void>;
+  @Action(processActionTypes.UPDATE)
+  update: any;
+  @Action(commonActionTypes.LOAD_FORMS)
+  loadForms: any;
+  @Action(processActionTypes.ASSIGN)
+  assign: any;
+  @Action(commonActionTypes.SEARCH_USERS)
+  searchUsers!: ({ name, cvr }: UserSearchRequest) => Promise<void>;
 
-  @Getter(processGetterTypes.IS_GERNERAL_INFORMATION_VALID) isGeneralInformationValid!: any;
-  @Getter(processGetterTypes.MIN_PHASE) minPhase!: (phase: Phase) => boolean;
+  @Getter(processGetterTypes.IS_GERNERAL_INFORMATION_VALID)
+  isGeneralInformationValid!: any;
+  @Getter(processGetterTypes.MIN_PHASE)
+  minPhase!: (phase: Phase) => boolean;
 
   isPhaseChanged = false;
   StatusKeys = StatusKeys;
@@ -237,12 +249,17 @@ export default class GeneralInformationForm extends Vue {
   .general-phases {
     flex: 0 0 400px;
     margin-left: 2rem;
-    text-align: center;
 
-    .status-selection {
+    .field-label {
+      display: inline-block;
+      width: 100px;
+      margin-bottom: 1rem;
+    }
+
+    .status-field,
+    .phase-field {
+      display: inline-block;
       width: 200px;
-      text-align: center;
-      margin: 0 auto;
     }
   }
 }
