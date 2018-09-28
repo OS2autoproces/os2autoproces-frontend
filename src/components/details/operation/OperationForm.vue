@@ -2,7 +2,7 @@
   <FormSection :invalid="!isOperationValid" v-if="minPhase(PhaseKeys.OPERATION)" heading="Drift" id="operation" :disabled="state.disabled.operationEdit" @edit="update({disabled: {operationEdit: $event}})">
     <div class="rating-wrapper" :class="{disabled: state.disabled.operationEdit}">
       <div>
-        I hvor grad indfriede løsningen de forventede gevinster? *
+        I hvor høj grad indfriede løsningen de forventede gevinster? *
         <InfoTooltip>Skalaen lav, mellem, høj angiver graden af gevinstrealisering.</InfoTooltip>
       </div>
       <Rating class="rating" @change="update({rating: $event})" :disabled="state.disabled.operationEdit" :value="state.rating" />

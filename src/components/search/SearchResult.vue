@@ -30,7 +30,7 @@
         <div class="value">{{process.kle}}</div>
       </div>
       <div>
-        <div class="field">Lov og paragraf:</div>
+        <div class="field">Lovparagraf:</div>
         <div class="value">{{process.legalClause}}</div>
       </div>
     </div>
