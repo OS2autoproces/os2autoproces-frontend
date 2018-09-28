@@ -24,16 +24,16 @@
         </div>
 
         <div>
-          <WellItem v-if="minPhase(PhaseKeys.DEVELOPMENT)" labelWidth="140px" label="Leverandør:" :required="minPhase(PhaseKeys.DEVELOPMENT)">
+          <WellItem v-if="minPhase(PhaseKeys.DEVELOPMENT)" labelWidth="140px" label="Leverandør:" tooltip="Her skrives enten kommunens navn eller en ekstern leverandør der har lavet løsningen." :required="minPhase(PhaseKeys.DEVELOPMENT)">
             <InputField :disabled="state.disabled.generalInformationEdit" :value="state.vendor" @change="update({vendor: $event})" />
           </WellItem>
           <WellItem labelWidth="140px" label="Indberetter:" v-if="isWithinMunicipality">
             <SelectionField disabled :value="state.reporter" itemText="name" />
           </WellItem>
-          <WellItem labelWidth="140px" label="Ejer:" tooltip="Er den person der er ansvarlig for processen. Betegnes som procesejer." v-if="isWithinMunicipality" :required="minPhase(PhaseKeys.SPECIFICATION)">
+          <WellItem labelWidth="140px" label="Fagligkontaktperson:" tooltip="Er en person der varetager processen til daglig og derfor har stort kendskab til den." v-if="isWithinMunicipality" :required="minPhase(PhaseKeys.SPECIFICATION)">
             <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.owner" itemText="name" @search="search($event)" isItemsPartial @change="update({owner: $event})" :items="users" />
           </WellItem>
-          <WellItem labelWidth="140px" label="Kontaktperson:" tooltip="Er en person der varetager processen til daglig og derfor har stort kendskab til den.">
+          <WellItem labelWidth="140px" label="Kontaktperson:" tooltip="En person der har teknisk viden omkring løsningen.">
             <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.contact" itemText="name" @search="search($event)" isItemsPartial @change="update({contact: $event})" :items="users" clearable />
           </WellItem>
           <WellItem v-if="state.contact" labelWidth="140px" label="Mail:">
@@ -48,10 +48,12 @@
           <WellItem labelWidth="120px" label="Afdelinger:" v-if="isWithinMunicipality">
             <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.orgUnits" @change="assign({orgUnits: $event})" :items="orgUnits" multiple itemText="name" />
           </WellItem>
-          <WellItem labelWidth="120px" label="Synlighed:">
+          <WellItem labelWidth="120px" label="Synlighed:" tooltip="Kommunalt betyder at alle brugere i din organisation kan se processen.
+Tværkommunalt betyder at brugere i andre kommuner kan se processen.
+Privat betyder at det kun er dig og din superbruger der kan se processen.">
             <MappedSelectionField :disabled="!!state.parents.length || state.disabled.generalInformationEdit" :value="state.visibility" @change="update({visibility: $event})" :items="visibilityLevels" />
           </WellItem>
-          <WellItem v-if="minPhase(PhaseKeys.PREANALYSIS)" labelWidth="120px" label="Lov og paragraf:">
+          <WellItem v-if="minPhase(PhaseKeys.PREANALYSIS)" labelWidth="120px" label="Lovparagraf:">
             <InputField :disabled="state.disabled.generalInformationEdit" :value="state.legalClause" @change="update({legalClause: $event})" />
           </WellItem>
         </div>
@@ -62,7 +64,9 @@
 
     <div class="resume-phases">
       <div class="resume">
-        <h2>Resume *</h2>
+        <h2>
+          Resume * <InfoTooltip>Resume er en helt kort opsummering der vises på søgeoversigten.</InfoTooltip>
+        </h2>
         <TextArea :disabled="state.disabled.generalInformationEdit" @change="update({shortDescription: $event})" :value="state.shortDescription" :maxLength="140" />
         </div>
       <div class="general-phases">
@@ -119,12 +123,14 @@ import { OrgUnit } from '@/store/modules/process/state';
 import { Domain, DomainKeys, DomainLabels } from '@/models/domain';
 import { Kle, Form, commonActionTypes, UserSearchRequest } from '@/store/modules/common/actions';
 import { Phase, PhaseKeys } from '@/models/phase';
+import InfoTooltip from '@/components/common/InfoTooltip.vue';
 
 @Component({
   components: {
     InputField,
     DomainsField,
     SelectionField,
+    InfoTooltip,
     MappedSelectionField,
     TextArea,
     Phases,

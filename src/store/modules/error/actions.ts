@@ -27,7 +27,7 @@ export const umbrellaLabels: ProcessLabels = {
 export const generalInformationLabels: ProcessLabels = {
   localId: 'Lokalt ID',
   phase: 'Fase',
-  owner: 'Ejer',
+  owner: 'Fagligkontaktperson',
   contact: 'Kontaktperson',
   status: 'Status',
   statusText: 'Statustekst',
@@ -35,7 +35,7 @@ export const generalInformationLabels: ProcessLabels = {
   shortDescription: 'Resume',
   domains: 'Domæner',
   visibility: 'Synlighed',
-  legalClause: 'Lov og paragraf',
+  legalClause: 'Lovparagraf',
   kle: 'KLE-NR.',
   kla: 'KL’s Arbejdsgangsbank',
   vendor: 'Leverandør',
@@ -85,8 +85,8 @@ export const implementationLabels: ProcessLabels = {
 };
 
 export const operationLabels: ProcessLabels = {
-  rating: 'I hvor højgrad realiserer processen sit potentiale',
-  ratingComment: 'Kommentar til realiseret løsningspotentiale',
+  rating: 'I hvor høj grad indfriede løsningen de forventede gevinster?',
+  ratingComment: 'Kommentar til realiseret gevinster',
   decommissioned: 'Løsning taget ud af drift',
   legalClauseLastVerified: 'Sidst kontrolleret i forhold til §'
 };
