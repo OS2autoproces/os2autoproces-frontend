@@ -17,6 +17,7 @@
       <Button class="button" @click="remove" v-if="state.canEdit">Slet proces</Button>
       <Button class="button" @click="copy" v-if="!isUmbrella">Kopier proces</Button>
       <div class="flex-grow"></div>
+      <InfoTooltip class="mail-tooltip">Ved at slå mail notifikationer til, vil du modtage en mail, når der sker ændringer på denne proces.</InfoTooltip>
       <Toggle :value="state.emailNotification" @change="setEmailNotification($event)">Mail notifikation</Toggle>
     </div>
   </div>
@@ -27,6 +28,7 @@ import { Vue, Prop, Component } from 'vue-property-decorator';
 import { Action, Getter } from 'vuex-class';
 import StarIcon from '@/components/icons/StarIcon.vue';
 import EditIcon from '@/components/icons/EditIcon.vue';
+import InfoTooltip from '@/components/common/InfoTooltip.vue';
 import InputField from '@/components/common/inputs/InputField.vue';
 import Button from '@/components/common/inputs/Button.vue';
 import MunicipalityLogo from '@/components/common/MunicipalityLogo.vue';
@@ -42,6 +44,7 @@ import { ProcessState } from '@/store/modules/process/state';
     EditIcon,
     InputField,
     Toggle,
+    InfoTooltip,
     Button,
     MunicipalityLogo
   }
@@ -123,5 +126,9 @@ export default class ProcessHeader extends Vue {
   height: 2rem;
   width: 2rem;
   margin-left: 50px;
+}
+
+.mail-tooltip {
+  margin: 0 1rem;
 }
 </style>
