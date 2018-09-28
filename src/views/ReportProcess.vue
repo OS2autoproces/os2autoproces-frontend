@@ -20,7 +20,11 @@
           </div>
 
           <div class="umbrella">
-            <h2>Paraplyproces</h2>
+            <h2>Paraplyproces <InfoTooltip>En paraplyproces er en overordnet proces, hvor det er muligt at samle lignede processer under.
+
+                Et eksempel er: Paraplyen Lægeerklæringer. Hvortil processerne Lægeerklæring Randers, Lægeerklæring Skanderborg og Lægeerklæringer Syddjurs er tilknyttet.
+              </InfoTooltip>
+            </h2>
 
             <div class="options">
               <router-link v-for="type in typeLevels" :key="type.route" :to="`/details/new/${type.route}`"> {{type.label}} </router-link>
@@ -36,6 +40,7 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import ArrowDownIcon from '../components/icons/ArrowDownIcon.vue';
+import InfoTooltip from '@/components/common/InfoTooltip.vue';
 import ArrowLeftIcon from '../components/icons/ArrowLeftIcon.vue';
 import NavBar from '../components/common/NavBar.vue';
 import { PhaseKeys, PhaseLabels } from '@/models/phase';
@@ -45,6 +50,7 @@ import { TypeKeys, TypeLabels } from '@/models/types';
   components: {
     ArrowDownIcon,
     ArrowLeftIcon,
+    InfoTooltip,
     NavBar
   }
 })
