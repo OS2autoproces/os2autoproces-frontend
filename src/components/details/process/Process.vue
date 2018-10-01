@@ -44,11 +44,11 @@
     <SnackBar showButton :timeout="0" color="error" :value="snack" @clicked="clearErrors">
       <div>
         <h3>Følgende felter er ugyldige:</h3>
-        <div style="display: flex; margin-top: 1rem;">
+        <div class="snack-bar-list-container">
           <ul v-for="section in errors" v-if="section.errors.length > 0" :key="section.section">
-            <span style="font-weight: bold;">{{section.section}}</span>
+            <span class="bold">{{section.section}}</span>
             <li v-for="field in section.errors" :key="field">
-              <div style="text-overflow: ellipsis; white-space: nowrap; width: 15rem; overflow: hidden;">
+              <div class="snack-bar-list-item">
                 {{field}}
               </div>
             </li>
@@ -281,5 +281,21 @@ export default class Process extends Vue {
   color: $color-secondary;
   margin-top: 2rem;
   padding: 1rem 2rem;
+}
+
+.snack-bar-list-container {
+  display: flex;
+  margin-top: 1rem;
+
+  .bold {
+    font-weight: bold;
+  }
+
+  .snack-bar-list-item {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 15rem;
+    overflow: hidden;
+  }
 }
 </style>
