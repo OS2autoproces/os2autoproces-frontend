@@ -45,8 +45,8 @@
       <div>
         <h3>Følgende felter er ugyldige:</h3>
         <div class="snack-bar-list-container">
-          <ul class="spacing" v-for="section in errors" v-if="section.errors.length > 0" :key="section.section">
-            <span class="bold">{{section.section}}</span>
+          <ul class="section-errors" v-for="section in errors" v-if="section.errors.length > 0" :key="section.section">
+            <span class="section-errors-title">{{section.section}}</span>
             <li v-for="field in section.errors" :key="field">
               <div class="snack-bar-list-item">
                 {{field}}
@@ -292,11 +292,11 @@ export default class Process extends Vue {
   display: flex;
   flex-wrap: wrap;
 
-  .bold {
+  .section-errors-title {
     font-weight: bold;
   }
 
-  .spacing {
+  .section-errors {
     margin-top: 1rem;
   }
 
