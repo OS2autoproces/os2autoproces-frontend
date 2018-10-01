@@ -69,7 +69,6 @@ export default class Details extends Vue {
     }
   }
 
-  // TODO: Verify this works
   shouldContinueWithoutSaving(): boolean {
     if (!this.$store.state.process.hasChanged) {
       return true;
