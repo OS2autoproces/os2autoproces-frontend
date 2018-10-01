@@ -1,7 +1,10 @@
 <template>
   <FormSection :invalid="!isOperationValid" v-if="minPhase(PhaseKeys.OPERATION)" heading="Drift" id="operation" :disabled="state.disabled.operationEdit" @edit="update({disabled: {operationEdit: $event}})">
     <div class="rating-wrapper" :class="{disabled: state.disabled.operationEdit}">
-      <div>I hvor høj grad realiserer processen sit potentiale? *</div>
+      <div>
+        I hvor høj grad indfriede løsningen de forventede gevinster? *
+        <InfoTooltip>Skalaen lav, mellem, høj angiver graden af gevinstrealisering.</InfoTooltip>
+      </div>
       <Rating class="rating" @change="update({rating: $event})" :disabled="state.disabled.operationEdit" :value="state.rating" />
     </div>
 
@@ -18,8 +21,7 @@
       </div>
     </Well>
 
-    <h2>Kommentar til realiseret løsningspotentiale</h2>
-    <InfoTooltip>Udover at angive processens potentiale, har du her mulighed for at uddybe, hvilket potentialet der er blevet realiseret igennem løsningen.</InfoTooltip>
+    <h2>Kommentar til realiseret gevinster</h2>
     <TextArea :max-length="1200" @change="update({ratingComment: $event})" :disabled="state.disabled.operationEdit" :value="state.ratingComment" />
   </FormSection>
 </template>
@@ -78,7 +80,7 @@ export default class OperationForm extends Vue {
     border-radius: 1rem;
   }
   .rating {
-    margin-top: .5rem;
+    margin-top: 0.5rem;
     width: 160px;
 
     /deep/ svg {
@@ -91,7 +93,7 @@ export default class OperationForm extends Vue {
 h2 {
   @include heading;
   color: $color-secondary;
-  margin-bottom: .5rem;
+  margin-bottom: 0.5rem;
   display: inline-block;
   margin-right: 1rem;
   margin-top: 2rem;

@@ -8,14 +8,18 @@ $color-edit-background: #e7eaed;
 $color-disabled: #dedfe0;
 $color-star: #ffec3c;
 
-@mixin heading() {
+@mixin fontFamily() {
   font-family: 'Lato', Arial, 'Helvetica Neue', Helvetica, sans-serif;
+}
+
+@mixin heading() {
+  @include fontFamily();
   font-weight: 900;
   letter-spacing: 0.04em;
 }
 
 @mixin light-heading() {
-  font-family: 'Lato', Arial, 'Helvetica Neue', Helvetica, sans-serif;
+  @include fontFamily();
   font-weight: 300;
   letter-spacing: 0.04em;
 }

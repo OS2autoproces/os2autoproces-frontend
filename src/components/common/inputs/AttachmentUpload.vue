@@ -1,12 +1,12 @@
 <template>
   <div class="attachment-upload">
     <h2 v-if="visibleForAll.length">Synlige for alle</h2>
-    <div class="attachment-list">
+    <div class="attachment-list" v-if="visibleForAll.length > 0">
       <AttachmentComponent v-for="attachment in visibleForAll" :key="attachment.id" :attachment="attachment" :disabled="disabled" @remove="removeAttachment(attachment.id)" />
     </div>
 
     <h2 v-if="visibleForMunicipality.length">Synlige i kommunen</h2>
-    <div class="attachment-list">
+    <div class="attachment-list" v-if="visibleForMunicipality.length > 0">
       <AttachmentComponent v-for="attachment in visibleForMunicipality" :key="attachment.id" :attachment="attachment" :disabled="disabled" @remove="removeAttachment(attachment.id)" />
     </div>
 
@@ -17,14 +17,18 @@
           <AttachmentComponent v-for="placeholder in placeholders" :isUploading="isUploading" :key="placeholder.id" :attachment="placeholder" :disabled="disabled" @remove="removePlaceholder(placeholder.id)" @toggleVisibility="placeholder.visibleToOtherMunicipalities = !placeholder.visibleToOtherMunicipalities" canChangeVisibility />
         </div>
 
-        <label class="upload-button-wrapper">
-          <input type="file" multiple @change="chooseFiles($event.target.files)" ref="fileInput">
-          <Button class="upload-button">
-            Vælg filer
-          </Button>
-        </label>
+        <div>
+          <label class="upload-button-wrapper">
+            <input type="file" multiple @change="chooseFiles($event.target.files)" ref="fileInput">
+            <Button class="upload-button">
+              Vælg filer
+            </Button>
+          </label>
 
-        <Button class="upload-button" v-if="placeholders.length" v-on:click="uploadFiles">Upload</Button>
+          <Button class="upload-button" v-if="placeholders.length" v-on:click="uploadFiles">Upload</Button>
+
+          <span class="personal-info-warning">De dokumenter der uploades må ikke indeholde personfølsomme oplysninger.</span>
+        </div>
       </div>
     </Well>
   </div>
@@ -50,7 +54,8 @@ export default class AttachmentUpload extends Vue {
   placeholders: AttachmentFile[] = [];
   isUploading = false;
 
-  @Prop(Boolean) disabled!: boolean;
+  @Prop(Boolean)
+  disabled!: boolean;
 
   get visibleForAll() {
     return this.$store.state.process.attachments.filter((att: Attachment) => att.visibleToOtherMunicipalities);
@@ -116,10 +121,15 @@ export default class AttachmentUpload extends Vue {
   margin-bottom: 1rem;
 }
 
-.upload-button-wrapper {
-  margin-top: 1rem;
+.personal-info-warning {
+  color: $color-secondary;
+}
+
+.upload-button {
   margin-right: 1rem;
-  margin-left: 1rem;
+}
+
+.upload-button-wrapper {
   display: inline-block;
   cursor: pointer;
 

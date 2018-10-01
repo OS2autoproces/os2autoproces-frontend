@@ -59,6 +59,9 @@ export default class ProcessMenu extends Vue {
 
     if (element) {
       element.scrollIntoView(true);
+
+      // Delay setting itemInView to after the scroll event fired
+      requestAnimationFrame(() => (this.itemInView = item));
     }
   }
 

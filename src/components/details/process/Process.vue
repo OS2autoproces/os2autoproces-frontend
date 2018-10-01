@@ -8,8 +8,8 @@
 
         <ProcessMenu :phase="phase" :canEdit="state.canEdit" :isReporting="isReporting" />
 
-        <Button v-if="isReporting" class="report-button" @click="report">Gem</Button>
-        <Button v-if="!isReporting" class="save-button" @click="save">Gem</Button>
+        <Button primary v-if="isReporting" class="report-button" @click="report">Gem</Button>
+        <Button primary v-if="!isReporting" class="save-button" @click="save">Gem</Button>
       </div>
     </div>
 
@@ -20,7 +20,7 @@
         <ProcessParents :parents="state.parents" />
 
         <div class="form-sections">
-          <GeneralInformationForm />
+          <GeneralInformationForm :isReporting="isReporting" />
           <ChallengesForm />
           <TimeAndProcessForm />
           <AssessmentForm />
@@ -28,7 +28,7 @@
           <ImplementationForm />
           <OperationForm />
           <AttachmentsForm v-if="!isReporting" />
-          <FormSection v-if="state.canEdit" id="internal-notes" heading="Interne noter" :disabled="state.disabled.internalNotesEdit" @edit="update({disabled: { internalNotesEdit: $event} })">
+          <FormSection v-if="state.canEdit" id="internal-notes" heading="Interne noter" :disabled="state.disabled.internalNotesEdit" @edit="update({disabled: { internalNotesEdit: $event} })" tooltip="Her kan du tilføje noter til og om processen, der kun vil være synlige for tilknyttede personer. Noterne bliver heller ikke delt, hvis processen deles tværkommunalt.">
             <InternalNotes :internalNotes="state.internalNotes" :disabled="state.disabled.internalNotesEdit" />
           </FormSection>
         </div>
@@ -178,7 +178,6 @@ export default class Process extends Vue {
         canEdit: true,
         cvr: this.$store.state.auth.user.cvr,
         disabled: {
-          titleEdit: false,
           generalInformationEdit: false,
           challengesEdit: false,
           timeAndProcessEdit: false,

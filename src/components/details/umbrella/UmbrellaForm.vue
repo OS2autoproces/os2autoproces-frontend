@@ -1,6 +1,15 @@
 <template>
   <FormSection :invalid="!isUmbrellaValid" heading="Paraplyproces" :disabled="state.disabled.generalInformationEdit" @edit="update({disabled: { generalInformationEdit: $event} })" always-open>
     <div class="umbrella-wrapper">
+      <div class="title-row">
+        <div class="title-label">Titel: *</div>
+        <InputField class="title-field flex-grow" :value="state.title" :disabled="state.disabled.generalInformationEdit" :class="{ disabled: state.disabled.generalInformationEdit }" @change="update({ title: $event })" />
+        <div v-if="!isReporting" class="bookmark-button" role="button" @click="setBookmark(!state.hasBookmarked)">
+          <StarIcon :class="{ selected: state.hasBookmarked }" />
+        </div>
+        <MunicipalityLogo :src="logo" />
+      </div>
+
       <Well>
         <div>
           <WellItem labelWidth="200px" label="ID:">
@@ -93,7 +102,6 @@ import MappedSelectionField from '@/components/common/inputs/MappedSelectionFiel
 import SmallSearchResult from '@/components/search/SmallSearchResult.vue';
 import DomainsField from '@/components/common/inputs/DomainsField.vue';
 import TextArea from '@/components/common/inputs/TextArea.vue';
-import Phases from '@/components/common/inputs/Phases.vue';
 import Well from '@/components/common/Well.vue';
 import WellItem from '@/components/common/WellItem.vue';
 import FormSection from '@/components/details/FormSection.vue';
@@ -110,9 +118,13 @@ import { TypeLabels, TypeKeys } from '@/models/types';
 import { Domain } from '@/models/domain';
 import { Phase, PhaseKeys } from '@/models/phase';
 import { searchActionTypes } from '@/store/modules/search/actions';
+import MunicipalityLogo from '@/components/common/MunicipalityLogo.vue';
+import StarIcon from '@/components/icons/StarIcon.vue';
 
 @Component({
   components: {
+    StarIcon,
+    MunicipalityLogo,
     InputField,
     DomainsField,
     SelectionField,
@@ -121,7 +133,6 @@ import { searchActionTypes } from '@/store/modules/search/actions';
     MappedSelectionField,
     DatePicker,
     TextArea,
-    Phases,
     Well,
     FormSection,
     MaskableInput,
@@ -131,15 +142,28 @@ import { searchActionTypes } from '@/store/modules/search/actions';
   }
 })
 export default class UmbrellaForm extends Vue {
-  @Action(processActionTypes.UPDATE) update: any;
-  @Action(processActionTypes.ASSIGN) assign: any;
-  @Action(commonActionTypes.LOAD_FORMS) loadForms: any;
+  @Prop(Boolean)
+  isReporting!: boolean;
 
-  @Getter(processGetterTypes.IS_UMBRELLA_VALID) isUmbrellaValid!: any;
+  @Action(processActionTypes.SET_BOOKMARK)
+  setBookmark!: (hasBookmark: boolean) => Promise<void>;
+  @Action(processActionTypes.UPDATE)
+  update: any;
+  @Action(processActionTypes.ASSIGN)
+  assign: any;
+  @Action(commonActionTypes.LOAD_FORMS)
+  loadForms: any;
+
+  @Getter(processGetterTypes.IS_UMBRELLA_VALID)
+  isUmbrellaValid!: any;
 
   TypeLabels = TypeLabels;
   VisibilityLabels = VisibilityLabels;
   VisibilityKeys = VisibilityKeys;
+
+  get logo() {
+    return `/logos/${this.$store.state.process.cvr}.png`;
+  }
 
   get users() {
     return this.$store.state.common.users;
@@ -220,6 +244,22 @@ export default class UmbrellaForm extends Vue {
   width: 2rem;
 }
 
+.title-row {
+  display: flex;
+  align-items: center;
+
+  .title-label {
+    margin-right: 1rem;
+    color: $color-secondary;
+  }
+
+  .title-label,
+  .title-field {
+    @include heading;
+    font-size: 2rem;
+  }
+}
+
 .process {
   position: relative;
   margin-bottom: 1rem;
@@ -236,5 +276,11 @@ export default class UmbrellaForm extends Vue {
     text-decoration: inherit;
     color: inherit;
   }
+}
+
+.bookmark-button {
+  height: 2rem;
+  width: 2rem;
+  margin-left: 50px;
 }
 </style>

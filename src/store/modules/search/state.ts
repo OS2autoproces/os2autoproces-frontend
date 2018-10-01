@@ -1,8 +1,7 @@
-import { Phase } from '@/models/phase';
 import { Domain } from '@/models/domain';
+import { Phase } from '@/models/phase';
 import { Status } from '@/models/status';
-import { Type } from '@/models/types';
-import { ITSystem } from '@/store/modules/process/state';
+import { ITSystem, Municipality, Technology } from '@/store/modules/process/state';
 
 export interface SearchResult {
   page: {
@@ -38,19 +37,20 @@ export interface SearchFilters {
   text: string;
   created: string;
   lastChanged: string;
-  timeSpendComputedTotal: string;
-  municipality: boolean;
-  public: boolean;
+  municipality: Municipality | null;
+  visibility: {
+    municipality: boolean;
+    public: boolean;
+  };
   page: number;
   size: number;
   sorting: SortingOption;
-  type: Type | null;
   phase: { [x in Phase]: boolean };
   domain: { [x in Domain]: boolean };
-  time?: string[]; // TODO: Use in search
-  system?: string[]; // TODO: Use in search
   klaProcess: boolean;
+  umbrella: boolean;
   itSystems: ITSystem[];
+  technologies: Technology[];
 }
 
 export interface SearchState {

@@ -97,10 +97,15 @@ export interface ITSystem {
 }
 
 export interface OrgUnit {
-  id: string;
+  id: number;
   uuid: string;
   name: string;
   active: boolean;
+  cvr: string;
+}
+
+export interface Municipality {
+  name: string;
   cvr: string;
 }
 
@@ -130,7 +135,6 @@ export interface Comment {
 }
 
 export interface Disabled {
-  titleEdit: boolean;
   generalInformationEdit: boolean;
   challengesEdit: boolean;
   timeAndProcessEdit: boolean;
