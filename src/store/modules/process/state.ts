@@ -135,7 +135,6 @@ export interface Comment {
 }
 
 export interface Disabled {
-  titleEdit: boolean;
   generalInformationEdit: boolean;
   challengesEdit: boolean;
   timeAndProcessEdit: boolean;

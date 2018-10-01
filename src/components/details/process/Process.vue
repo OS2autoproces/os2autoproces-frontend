@@ -20,7 +20,7 @@
         <ProcessParents :parents="state.parents" />
 
         <div class="form-sections">
-          <GeneralInformationForm />
+          <GeneralInformationForm :isReporting="isReporting" />
           <ChallengesForm />
           <TimeAndProcessForm />
           <AssessmentForm />
@@ -164,7 +164,6 @@ export default class Process extends Vue {
         canEdit: true,
         cvr: this.$store.state.auth.user.cvr,
         disabled: {
-          titleEdit: false,
           generalInformationEdit: false,
           challengesEdit: false,
           timeAndProcessEdit: false,

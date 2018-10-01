@@ -16,7 +16,7 @@
         <ProcessHeader :isReporting="isReporting" isUmbrella />
 
         <div class="form-sections">
-          <UmbrellaForm />
+          <UmbrellaForm :isReporting="isReporting" />
         </div>
       </div>
     </div>
@@ -131,7 +131,6 @@ export default class Umbrella extends Vue {
         cvr: this.$store.state.auth.user.cvr,
         visibility: this.type === TypeKeys.PARENT ? VisibilityKeys.MUNICIPALITY : VisibilityKeys.PUBLIC,
         disabled: {
-          titleEdit: false,
           generalInformationEdit: false,
           challengesEdit: false,
           timeAndProcessEdit: false,
