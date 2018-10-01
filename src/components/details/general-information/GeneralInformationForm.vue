@@ -32,19 +32,19 @@
       </div>
 
       <div>
-        <WellItem v-if="minPhase(PhaseKeys.DEVELOPMENT)" labelWidth="140px" label="Leverandør:" tooltip="Her skrives enten kommunens navn eller en ekstern leverandør der har lavet løsningen.">
+        <WellItem v-if="minPhase(PhaseKeys.DEVELOPMENT)" labelWidth="180px" label="Leverandør:" tooltip="Her skrives enten kommunens navn eller en ekstern leverandør der har lavet løsningen.">
           <InputField :disabled="state.disabled.generalInformationEdit" :value="state.vendor" @change="update({vendor: $event})" />
         </WellItem>
-        <WellItem labelWidth="140px" label="Indberetter:" v-if="isWithinMunicipality">
+        <WellItem labelWidth="180px" label="Indberetter:" v-if="isWithinMunicipality">
           <SelectionField userDropdown disabled :value="state.reporter" itemText="name" />
         </WellItem>
-        <WellItem labelWidth="140px" label="Fagligkontaktperson:" tooltip="Er en person der varetager processen til daglig og derfor har stort kendskab til den." v-if="isWithinMunicipality" :required="minPhase(PhaseKeys.SPECIFICATION)">
+        <WellItem labelWidth="180px" label="Fagligkontaktperson:" tooltip="Er en person der varetager processen til daglig og derfor har stort kendskab til den." v-if="isWithinMunicipality" :required="minPhase(PhaseKeys.SPECIFICATION)">
           <SelectionField userDropdown :disabled="state.disabled.generalInformationEdit" :value="state.owner" itemText="name" @search="search($event)" isItemsPartial @change="update({owner: $event})" :items="users" />
         </WellItem>
-        <WellItem labelWidth="140px" label="Kontaktperson:" tooltip="En person der har teknisk viden omkring løsningen.">
+        <WellItem labelWidth="180px" label="Kontaktperson:" tooltip="En person der har teknisk viden omkring løsningen.">
           <SelectionField userDropdown :disabled="state.disabled.generalInformationEdit" :value="state.contact" itemText="name" @search="search($event)" isItemsPartial @change="update({contact: $event})" :items="users" clearable />
         </WellItem>
-        <WellItem v-if="state.contact" labelWidth="140px" label="Mail:">
+        <WellItem v-if="state.contact" labelWidth="180px" label="Mail:">
           {{state.contact.email}}
         </WellItem>
       </div>
