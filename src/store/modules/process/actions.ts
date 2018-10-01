@@ -187,7 +187,7 @@ export const actions: ActionTree<ProcessState, RootState> = {
     const invalidFields = getInvalidProperties(state, validationKeys || getProcessKeys(state));
 
     if (invalidFields.length > 0) {
-      dispatch(errorActionTypes.UPDATE_PROCESS_ERRORS, { processErrors: invalidFields }, { root: true });
+      dispatch(errorActionTypes.UPDATE_PROCESS_ERRORS, state, { root: true });
       throw new Error();
     } else {
       const converted = await stateToRequest(state);
