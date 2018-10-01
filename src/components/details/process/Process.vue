@@ -41,12 +41,19 @@
       </div>
     </div>
 
-    <SnackBar showButton :timeout="0" color="error" :value="snack" @clicked="updateProcessErrors({processErrors: []})">
+    <SnackBar showButton :timeout="0" color="error" :value="snack" @clicked="clearErrors">
       <div>
-        Følgende felter er ugyldige:
-        <ul>
-          <li v-for="field in errors" :key="field">{{field}}</li>
-        </ul>
+        <h3>Følgende felter er ugyldige:</h3>
+        <div class="snack-bar-list-container">
+          <ul class="section-errors" v-for="section in errors" v-if="section.errors.length > 0" :key="section.section">
+            <span class="section-errors-title">{{section.section}}</span>
+            <li v-for="field in section.errors" :key="field">
+              <div class="snack-bar-list-item">
+                {{field}}
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
     </SnackBar>
 
@@ -128,6 +135,8 @@ export default class Process extends Vue {
   saveComment!: (message: string) => Promise<void>;
   @Action(errorActionTypes.UPDATE_PROCESS_ERRORS)
   updateProcessErrors!: (processErrors: Partial<ErrorState>) => void;
+  @Action(errorActionTypes.CLEAR_ERRORS)
+  clearErrors!: () => void;
 
   showSaveSuccess = false;
   showSaveError = false;
@@ -137,11 +146,12 @@ export default class Process extends Vue {
   }
 
   get errors() {
-    return this.$store.state.error.processErrors;
+    return this.$store.state.error;
   }
 
   get snack() {
-    return !isEmpty(this.$store.state.error.processErrors);
+    const errorState = this.$store.state.error;
+    return !!Object.keys(errorState).find(section => !isEmpty(errorState[section].errors));
   }
 
   get isWithinMunicipality() {
@@ -150,7 +160,7 @@ export default class Process extends Vue {
   }
 
   beforeCreate() {
-    this.$store.dispatch(errorActionTypes.UPDATE_PROCESS_ERRORS, { processErrors: [] });
+    this.$store.dispatch(errorActionTypes.CLEAR_ERRORS);
   }
 
   mounted() {
@@ -272,5 +282,25 @@ export default class Process extends Vue {
   color: $color-secondary;
   margin-top: 2rem;
   padding: 1rem 2rem;
+}
+
+.snack-bar-list-container {
+  display: flex;
+  flex-wrap: wrap;
+
+  .section-errors-title {
+    font-weight: bold;
+  }
+
+  .section-errors {
+    margin-top: 1rem;
+  }
+
+  .snack-bar-list-item {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 15rem;
+    overflow: hidden;
+  }
 }
 </style>

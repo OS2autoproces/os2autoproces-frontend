@@ -1,13 +1,15 @@
 import { errorMutationTypes } from '@/store/modules/error/mutations';
 import { ErrorState } from '@/store/modules/error/state';
+import { Process, ProcessState } from '@/store/modules/process/state';
+import { getInvalidProperties } from '@/store/modules/process/validation';
 import { RootState } from '@/store/store';
 import { ActionTree } from 'vuex';
-import { Process } from '@/store/modules/process/state';
 
 export const namespace = 'error';
 
 export const errorActionTypes = {
-  UPDATE_PROCESS_ERRORS: `${namespace}/updateProcessErrors`
+  UPDATE_PROCESS_ERRORS: `${namespace}/updateProcessErrors`,
+  CLEAR_ERRORS: `${namespace}/clearErrors`
 };
 
 type ProcessLabels = { [X in keyof Process]?: string };
@@ -103,11 +105,41 @@ export const processLabels: ProcessLabels = {
   internalNotes: 'Interne Noter'
 };
 
+interface ErrorLabels {
+  generalInformation: Array<keyof Process>;
+  challenges: Array<keyof Process>;
+  assessment: Array<keyof Process>;
+  timeAndProcess: Array<keyof Process>;
+  specification: Array<keyof Process>;
+  implementation: Array<keyof Process>;
+  operation: Array<keyof Process>;
+}
+
+const errorLabels: ErrorLabels = {
+  generalInformation: Object.keys(generalInformationLabels) as Array<keyof Process>,
+  challenges: Object.keys(challengesLabels) as Array<keyof Process>,
+  assessment: Object.keys(assessmentLabels) as Array<keyof Process>,
+  timeAndProcess: Object.keys(timeAndProcessLabels) as Array<keyof Process>,
+  specification: Object.keys(specificationLabels) as Array<keyof Process>,
+  implementation: Object.keys(implementationLabels) as Array<keyof Process>,
+  operation: Object.keys(operationLabels) as Array<keyof Process>
+};
+
 export const actions: ActionTree<ErrorState, RootState> = {
-  updateProcessErrors({ commit }, errors: Partial<ErrorState>) {
-    if (errors.processErrors) {
-      const processErrors = errors.processErrors.map(error => processLabels[error]);
-      commit(errorMutationTypes.ASSIGN, { processErrors });
-    }
+  updateProcessErrors({ commit, state }, processState: ProcessState) {
+    const sections = Object.keys(errorLabels) as Array<keyof ErrorLabels>;
+
+    sections.forEach(section => {
+      const sectionErrors = getInvalidProperties(processState, errorLabels[section]);
+      const errors = sectionErrors.map(error => processLabels[error]);
+      commit(errorMutationTypes.ASSIGN, { [section]: { errors, section: state[section].section } });
+    });
+  },
+  clearErrors({ commit, state }) {
+    const sections = Object.keys(errorLabels) as Array<keyof ErrorLabels>;
+
+    sections.forEach(section => {
+      commit(errorMutationTypes.ASSIGN, { [section]: { errors: [], section: state[section].section } });
+    });
   }
 };
