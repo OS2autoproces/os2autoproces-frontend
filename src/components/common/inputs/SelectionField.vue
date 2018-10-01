@@ -1,7 +1,11 @@
 <template>
   <div>
     <v-autocomplete ref="autocomplete" v-if="!disabled" :clearable="clearable" :label="placeholder" :items="_items" single-line no-data-text="Ingen resultater" :item-text="itemText" :append-icon="iconName" :search-input.sync="searchQuery" @change="valueChanged" :value="value" return-object :multiple="multiple">
-      <template>
+      <template v-if="userDropdown" slot="item" slot-scope="items">
+        <v-list-tile-content>
+          <span style="font-weight: bold; margin-right: 1rem;">{{items.item.name}}</span>
+          {{ items.item.email}}
+        </v-list-tile-content>
       </template>
     </v-autocomplete>
     <div class="selection-text" v-if="disabled && value">{{ label }}</div>
@@ -33,6 +37,8 @@ export default class SelectionField<T extends any> extends Vue {
   multiple!: boolean;
   @Prop({ type: String, default: 'text' })
   itemText!: string;
+  @Prop({ type: Boolean, default: false })
+  userDropdown!: boolean;
 
   get _items(): T[] {
     let items: T[] = [];

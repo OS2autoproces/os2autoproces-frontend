@@ -36,13 +36,13 @@
           <InputField :disabled="state.disabled.generalInformationEdit" :value="state.vendor" @change="update({vendor: $event})" />
         </WellItem>
         <WellItem labelWidth="140px" label="Indberetter:" v-if="isWithinMunicipality">
-          <SelectionField disabled :value="state.reporter" itemText="name" />
+          <SelectionField userDropdown disabled :value="state.reporter" itemText="name" />
         </WellItem>
         <WellItem labelWidth="140px" label="Fagligkontaktperson:" tooltip="Er en person der varetager processen til daglig og derfor har stort kendskab til den." v-if="isWithinMunicipality" :required="minPhase(PhaseKeys.SPECIFICATION)">
-          <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.owner" itemText="name" @search="search($event)" isItemsPartial @change="update({owner: $event})" :items="users" />
+          <SelectionField userDropdown :disabled="state.disabled.generalInformationEdit" :value="state.owner" itemText="name" @search="search($event)" isItemsPartial @change="update({owner: $event})" :items="users" />
         </WellItem>
         <WellItem labelWidth="140px" label="Kontaktperson:" tooltip="En person der har teknisk viden omkring løsningen.">
-          <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.contact" itemText="name" @search="search($event)" isItemsPartial @change="update({contact: $event})" :items="users" clearable />
+          <SelectionField userDropdown :disabled="state.disabled.generalInformationEdit" :value="state.contact" itemText="name" @search="search($event)" isItemsPartial @change="update({contact: $event})" :items="users" clearable />
         </WellItem>
         <WellItem v-if="state.contact" labelWidth="140px" label="Mail:">
           {{state.contact.email}}
