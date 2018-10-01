@@ -43,7 +43,7 @@ export default class SnackBarComponent extends Vue {
 <style scoped lang="scss">
 .v-snack /deep/ {
   .v-snack__wrapper {
-    max-width: 90% !important;
+    max-width: 60%;
   }
 }
 </style>

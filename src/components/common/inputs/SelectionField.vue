@@ -1,6 +1,9 @@
 <template>
   <div>
-    <v-autocomplete ref="autocomplete" v-if="!disabled" :clearable="clearable" :label="placeholder" :items="_items" single-line no-data-text="Ingen resultater" :item-text="itemText" :append-icon="iconName" :search-input.sync="searchQuery" @change="valueChanged" :value="value" return-object :multiple="multiple" />
+    <v-autocomplete ref="autocomplete" v-if="!disabled" :clearable="clearable" :label="placeholder" :items="_items" single-line no-data-text="Ingen resultater" :item-text="itemText" :append-icon="iconName" :search-input.sync="searchQuery" @change="valueChanged" :value="value" return-object :multiple="multiple">
+      <template>
+      </template>
+    </v-autocomplete>
     <div class="selection-text" v-if="disabled && value">{{ label }}</div>
   </div>
 </template>
@@ -16,12 +19,18 @@ export default class SelectionField<T extends any> extends Vue {
   value!: T;
   @Prop({ default: 'keyboard_arrow_down', type: String })
   iconName!: string;
-  @Prop(Array) items!: T[];
-  @Prop(Boolean) isItemsPartial!: boolean;
-  @Prop(String) placeholder!: string;
-  @Prop(Boolean) disabled!: boolean;
-  @Prop(Boolean) clearable!: boolean;
-  @Prop(Boolean) multiple!: boolean;
+  @Prop(Array)
+  items!: T[];
+  @Prop(Boolean)
+  isItemsPartial!: boolean;
+  @Prop(String)
+  placeholder!: string;
+  @Prop(Boolean)
+  disabled!: boolean;
+  @Prop(Boolean)
+  clearable!: boolean;
+  @Prop(Boolean)
+  multiple!: boolean;
   @Prop({ type: String, default: 'text' })
   itemText!: string;
 
