@@ -151,11 +151,7 @@ export default class Process extends Vue {
 
   get snack() {
     const errorState = this.$store.state.error;
-    let empty = false;
-    Object.keys(errorState).forEach(section => {
-      empty = empty || !isEmpty(errorState[section].errors);
-    });
-    return empty;
+    return !!Object.keys(errorState).find(section => !isEmpty(errorState[section].errors));
   }
 
   get isWithinMunicipality() {
