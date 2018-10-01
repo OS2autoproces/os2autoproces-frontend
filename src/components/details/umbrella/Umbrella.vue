@@ -125,7 +125,7 @@ export default class Umbrella extends Vue {
   }
 
   beforeCreate() {
-    this.clearErrors();
+    this.$store.dispatch(errorActionTypes.CLEAR_ERRORS);
   }
 
   mounted() {
