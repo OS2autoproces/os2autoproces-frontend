@@ -18,6 +18,9 @@ import { processActionTypes } from '@/store/modules/process/actions';
 import { commonActionTypes, Kle } from '@/store/modules/common/actions';
 import { TypeKeys } from '@/models/types';
 import { ProcessState } from '@/store/modules/process/state';
+import ComponentClass from 'vue-class-component';
+
+ComponentClass.registerHooks(['beforeRouteLeave', 'beforeRouteUpdate']);
 
 @Component({
   components: {
@@ -36,6 +39,11 @@ export default class Details extends Vue {
   isUmbrella = true;
   loading = true;
 
+  constructor() {
+    super();
+    this.shouldLeaveWithoutSaving = this.shouldLeaveWithoutSaving.bind(this);
+  }
+
   @Watch('id')
   idChanged() {
     this.loadContent();
@@ -45,8 +53,38 @@ export default class Details extends Vue {
     this.$store.dispatch(processActionTypes.CLEAR_PROCESS);
   }
 
+  beforeRouteUpdate(to: any, from: any, next: any) {
+    next(this.shouldContinueWithoutSaving());
+  }
+
+  beforeRouteLeave(to: any, from: any, next: any) {
+    next(this.shouldContinueWithoutSaving());
+  }
+
+  shouldLeaveWithoutSaving(event: BeforeUnloadEvent) {
+    if (this.$store.state.process.hasChanged) {
+      const message = 'Vil du fortsætte uden at gemme?';
+      event.returnValue = message;
+      return message;
+    }
+  }
+
+  // TODO: Verify this works
+  shouldContinueWithoutSaving(): boolean {
+    if (!this.$store.state.process.hasChanged) {
+      return true;
+    }
+
+    return confirm('Vil du fortsætte uden at gemme?');
+  }
+
   mounted() {
     this.loadContent();
+    window.addEventListener('beforeunload', this.shouldLeaveWithoutSaving);
+  }
+
+  destroyed() {
+    window.removeEventListener('beforeunload', this.shouldLeaveWithoutSaving);
   }
 
   async loadContent() {
