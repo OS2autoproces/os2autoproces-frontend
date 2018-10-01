@@ -336,7 +336,6 @@ export function initialProcessState(): ProcessState {
     canEdit: false,
 
     disabled: {
-      titleEdit: true,
       generalInformationEdit: true,
       challengesEdit: true,
       timeAndProcessEdit: true,
