@@ -162,6 +162,7 @@ export default class Process extends Vue {
       this.update({
         phase: this.phase,
         canEdit: true,
+        hasChanged: false,
         cvr: this.$store.state.auth.user.cvr,
         disabled: {
           generalInformationEdit: false,
