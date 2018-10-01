@@ -32,7 +32,7 @@
       </div>
 
       <div>
-        <WellItem v-if="minPhase(PhaseKeys.DEVELOPMENT)" labelWidth="140px" label="Leverandør:" tooltip="Her skrives enten kommunens navn eller en ekstern leverandør der har lavet løsningen." :required="minPhase(PhaseKeys.DEVELOPMENT)">
+        <WellItem v-if="minPhase(PhaseKeys.DEVELOPMENT)" labelWidth="140px" label="Leverandør:" tooltip="Her skrives enten kommunens navn eller en ekstern leverandør der har lavet løsningen.">
           <InputField :disabled="state.disabled.generalInformationEdit" :value="state.vendor" @change="update({vendor: $event})" />
         </WellItem>
         <WellItem labelWidth="140px" label="Indberetter:" v-if="isWithinMunicipality">
