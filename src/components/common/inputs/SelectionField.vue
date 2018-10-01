@@ -1,11 +1,16 @@
 <template>
   <div>
     <v-autocomplete ref="autocomplete" v-if="!disabled" :clearable="clearable" :label="placeholder" :items="_items" single-line no-data-text="Ingen resultater" :item-text="itemText" :append-icon="iconName" :search-input.sync="searchQuery" @change="valueChanged" :value="value" return-object :multiple="multiple">
-      <template v-if="userDropdown" slot="item" slot-scope="items">
-        <v-list-tile-content>
-          <span style="font-weight: bold; margin-right: 1rem;">{{items.item.name}}</span>
-          {{ items.item.email}}
-        </v-list-tile-content>
+      <template slot="item" slot-scope="items">
+        <template v-if="itemSubText">
+          <v-list-tile-content>
+            <v-list-tile-title>{{items.item[itemText]}}</v-list-tile-title>
+            <v-list-tile-sub-title>{{items.item[itemSubText]}}</v-list-tile-sub-title>
+          </v-list-tile-content>
+        </template>
+        <template v-else>
+          {{items.item[itemText]}}
+        </template>
       </template>
     </v-autocomplete>
     <div class="selection-text" v-if="disabled && value">{{ label }}</div>
@@ -37,8 +42,8 @@ export default class SelectionField<T extends any> extends Vue {
   multiple!: boolean;
   @Prop({ type: String, default: 'text' })
   itemText!: string;
-  @Prop({ type: Boolean, default: false })
-  userDropdown!: boolean;
+  @Prop({ type: String })
+  itemSubText!: string;
 
   get _items(): T[] {
     let items: T[] = [];
