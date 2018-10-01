@@ -4,7 +4,7 @@ import * as validateJs from 'validate.js';
 import { ProcessState, Process } from '@/store/modules/process/state';
 import { PhaseKeys } from '@/models/phase';
 
-export function getInvalidProperties(state: ProcessState, properties: Array<keyof Process>): string[] {
+export function getInvalidProperties(state: ProcessState, properties: Array<keyof Process>): Array<keyof Process> {
   return properties.filter(property => {
     const validator = processFieldsValidators[property];
     return validator && !validator(state);
@@ -111,24 +111,21 @@ export const processFieldsValidators: { [P in keyof Process]?: (state: ProcessSt
   evaluatedLevelOfRoi({ phase, evaluatedLevelOfRoi }: ProcessState) {
     return phase === PhaseKeys.IDEA || evaluatedLevelOfRoi !== 'NOT_SET';
   },
-  esdhReference({ phase, esdhReference }: ProcessState) {
-    const minLength = phase === PhaseKeys.IDEA || phase === PhaseKeys.PREANALYSIS ? 0 : 1;
-    return isValid(esdhReference, isMinMax(minLength, 300));
+  esdhReference({ esdhReference }: ProcessState) {
+    return isValid(esdhReference, isMinMax(0, 300));
   },
   owner({ phase, owner }: ProcessState) {
     return phase === PhaseKeys.IDEA || phase === PhaseKeys.PREANALYSIS || !!owner;
   },
-  vendor({ phase, vendor }: ProcessState) {
-    const minLength =
-      phase === PhaseKeys.IDEA || phase === PhaseKeys.PREANALYSIS || phase === PhaseKeys.SPECIFICATION ? 0 : 1;
-    return isValid(vendor || '', isMinMax(minLength, 255));
+  vendor({ vendor }: ProcessState) {
+    return isValid(vendor || '', isMinMax(0, 255));
   },
   technologies({ phase, technologies }: ProcessState) {
     return (
       phase === PhaseKeys.IDEA ||
       phase === PhaseKeys.PREANALYSIS ||
       phase === PhaseKeys.SPECIFICATION ||
-      technologies.length > 0
+      (technologies || []).length > 0
     );
   },
   technicalImplementationNotes({ technicalImplementationNotes }: ProcessState) {

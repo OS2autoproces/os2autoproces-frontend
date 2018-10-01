@@ -1,7 +1,7 @@
 import { HTTP } from '@/services/http-service';
 import { User } from '@/store/modules/auth/state';
 import { commonMutationTypes } from '@/store/modules/common/mutations';
-import { ITSystem, Technology, OrgUnit } from '@/store/modules/process/state';
+import { ITSystem, Technology, OrgUnit, Municipality } from '@/store/modules/process/state';
 import { RootState } from '@/store/store';
 import { debounce } from 'lodash';
 import { ActionTree, Commit } from 'vuex';
@@ -52,6 +52,10 @@ interface ItSystemsResponse {
   };
 }
 
+interface MunicipalitiesResponse {
+  data: Municipality[];
+}
+
 interface FormResponse {
   _embedded: {
     forms: Form[];
@@ -97,6 +101,7 @@ export const commonActionTypes = {
   LOAD_IT_SYSTEMS: `${namespace}/loadItSystems`,
   LOAD_KLES: `${namespace}/loadKles`,
   LOAD_ORGUNITS: `${namespace}/loadOrgUnits`,
+  LOAD_MUNICIPALITIES: `${namespace}/loadMunicipalities`,
   LOAD_TECHNOLOGIES: `${namespace}/loadTechnologies`,
   ADD_TECHNOLOGY: `${namespace}/addTechnology`,
   REMOVE_TECHNOLOGY: `${namespace}/removeTechnology`,
@@ -123,24 +128,33 @@ export const actions: ActionTree<CommonState, RootState> = {
       }
     });
   },
-  async loadTechnologies() {
+  async loadTechnologies({ commit }) {
     const response = await HTTP.get<TechnologiesResponse>(`api/technologies?size=100000`);
-    return response.data._embedded.technologies;
+    const technologies = response.data._embedded.technologies;
+
+    commit(commonMutationTypes.ASSIGN, { technologies });
   },
-  async addTechnology({}, name: string) {
-    return HTTP.post(`api/technologies`, { name });
+  async addTechnology({ commit, state }, name: string) {
+    const response = await HTTP.post(`api/technologies`, { name });
+    commit(commonMutationTypes.ASSIGN, { technologies: [...state.technologies, response.data] });
   },
   async editTechnology({}, { id, name }) {
     return HTTP.put(`api/technologies/${id}`, { name });
   },
-  async removeTechnology({}, id: number) {
-    return HTTP.delete(`api/technologies/${id}`);
+  async removeTechnology({ commit, state }, id: number) {
+    await HTTP.delete(`api/technologies/${id}`);
+    commit(commonMutationTypes.ASSIGN, { technologies: state.technologies.filter(t => t.id !== id) });
   },
   async loadItSystems({ commit }) {
     const response = await HTTP.get<ItSystemsResponse>(`api/itSystems?size=100000`);
     const itSystems = response.data._embedded.itSystems;
 
     commit(commonMutationTypes.ASSIGN, { itSystems });
+  },
+  async loadMunicipalities({ commit }) {
+    const response = await HTTP.get<MunicipalitiesResponse>(`public/municipalities`);
+
+    commit(commonMutationTypes.ASSIGN, { municipalities: response.data });
   },
   async loadKles({ commit }) {
     const response = await HTTP.get<KleResponse>(`api/kles?size=100000`);
@@ -150,8 +164,14 @@ export const actions: ActionTree<CommonState, RootState> = {
 
     commit(commonMutationTypes.ASSIGN, { kles });
   },
-  async loadOrgUnits({ commit }, cvr: string) {
-    const response = await HTTP.get<OrgUnitsResponse>(`api/orgUnits?cvr=${cvr}&size=100000`);
+  async loadOrgUnits({ commit }, cvr?: string) {
+    const params = ['size=100000'];
+
+    if (cvr) {
+      params.push(`cvr=${cvr}`);
+    }
+
+    const response = await HTTP.get<OrgUnitsResponse>(`api/orgUnits?${params.join('&')}`);
     const { orgUnits } = response.data._embedded;
 
     commit(commonMutationTypes.ASSIGN, { orgUnits });

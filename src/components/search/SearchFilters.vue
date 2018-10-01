@@ -14,16 +14,20 @@
       <h1 v-if="!hideVisibility">AVANCERET SØGNING</h1>
 
       <div class="municipality-level" v-if="!hideVisibility">
-        <SearchOption :value="filters.municipality" @change="updateFilters({ municipality: $event })">
+        <SearchOption :value="filters.visibility.municipality" @change="updateFilters({ visibility: { municipality: $event } })">
           {{VisibilityLabels.MUNICIPALITY}}
         </SearchOption>
-        <SearchOption :value="filters.public" @change="updateFilters({ public: $event })">
+        <SearchOption :value="filters.visibility.public" @change="updateFilters({ visibility: { public: $event } })">
           {{VisibilityLabels.PUBLIC}}
         </SearchOption>
       </div>
 
       <SearchOption :value="filters.klaProcess" @change="updateFilters({ klaProcess: $event })">
-        Søg i KLA-processer
+        Søg i KL’s Arbejdsgangsbank
+      </SearchOption>
+
+      <SearchOption :value="filters.umbrella" @change="updateFilters({ umbrella: $event })">
+        Søg i paraplyprocesser
       </SearchOption>
 
       <div class="datepicker">
@@ -33,8 +37,16 @@
 
       <div class="datepicker">
         Senest ændret:
-      <DatePicker :value="filters.lastChanged" @change="updateFilters({lastChanged: $event})" />
+        <DatePicker :value="filters.lastChanged" @change="updateFilters({lastChanged: $event})" />
       </div>
+
+      <ExpandPanel title="Kommune">
+        <SelectionField :items="municipalities" :value="filters.municipality" itemText="name" @change="assignFilters({municipality: $event})" clearable />
+      </ExpandPanel>
+
+      <ExpandPanel title="Teknologier">
+        <SelectionField :items="technologies" :value="filters.technologies" itemText="name" @change="assignFilters({technologies: $event})" multiple />
+      </ExpandPanel>
 
       <ExpandPanel title="Fase">
         <SearchOption :value="filters.phase.IDEA" @change="updateFilters({ phase: { IDEA: $event } })">
@@ -76,11 +88,6 @@
         <SearchOption :value="filters.domain.WORK" @change="updateFilters({ domain: { WORK: $event } })">
           {{DomainLabels.WORK}}
         </SearchOption>
-      </ExpandPanel>
-
-      <ExpandPanel title="Timeforbrug">
-        Antal timer:
-        <InputField :value="filters.timeSpendComputedTotal" @change="updateFilters({ timeSpendComputedTotal: $event })" />
       </ExpandPanel>
 
       <ExpandPanel title="System">
@@ -125,9 +132,12 @@ export default class SearchFiltersComponent extends Vue {
   DomainLabels = DomainLabels;
   VisibilityLabels = VisibilityLabels;
 
-  @Prop(Object) filters!: SearchFilters;
-  @Prop(Boolean) hideVisibility!: boolean;
-  @Prop(Boolean) hideRelations!: boolean;
+  @Prop(Object)
+  filters!: SearchFilters;
+  @Prop(Boolean)
+  hideVisibility!: boolean;
+  @Prop(Boolean)
+  hideRelations!: boolean;
 
   get user() {
     return this.$store.state.auth.user;
@@ -137,8 +147,18 @@ export default class SearchFiltersComponent extends Vue {
     return this.$store.state.common.itSystems;
   }
 
+  get municipalities() {
+    return this.$store.state.common.municipalities;
+  }
+
+  get technologies() {
+    return this.$store.state.common.technologies;
+  }
+
   mounted() {
     this.$store.dispatch(commonActionTypes.LOAD_IT_SYSTEMS);
+    this.$store.dispatch(commonActionTypes.LOAD_MUNICIPALITIES);
+    this.$store.dispatch(commonActionTypes.LOAD_TECHNOLOGIES);
   }
 
   setReporterId(value: boolean) {

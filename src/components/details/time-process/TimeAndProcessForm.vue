@@ -3,7 +3,7 @@
 
     <Well>
       <div>
-        <WellItem labelWidth="70%" label="Antal gange processen gentages om året pr. medarbejder" :required="minPhase(PhaseKeys.PREANALYSIS)">
+        <WellItem labelWidth="70%" label="Antal gange processen foretages årligt" :required="minPhase(PhaseKeys.PREANALYSIS)">
           <InputField :value="state.timeSpendOccurancesPerEmployee" :disabled="state.disabled.timeAndProcessEdit" @change="update({timeSpendOccurancesPerEmployee: $event})" />
         </WellItem>
         <WellItem labelWidth="70%" label="Tidsforbrug pr. proces i minutter" :required="minPhase(PhaseKeys.PREANALYSIS)">
@@ -18,7 +18,7 @@
         <WellItem labelWidth="70%" label="Antal medarbejdere der foretager processen" :required="minPhase(PhaseKeys.PREANALYSIS)">
           <InputField :disabled="state.disabled.timeAndProcessEdit" :value="state.timeSpendEmployeesDoingProcess" @change="update({timeSpendEmployeesDoingProcess: $event})" />
         </WellItem>
-        <WellItem labelWidth="70%" label="Digital procent besparelse" :required="minPhase(PhaseKeys.PREANALYSIS)">
+        <WellItem labelWidth="70%" label="Digital procent besparelse" tooltip="Hvor meget af processen vurderer du kan automatiseres på en skala fra 0-100.">
           <InputField :disabled="state.disabled.timeAndProcessEdit" :value="state.timeSpendPercentageDigital" @change="update({timeSpendPercentageDigital: $event})" />
         </WellItem>
       </div>

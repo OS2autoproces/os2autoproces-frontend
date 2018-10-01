@@ -1,6 +1,6 @@
 <template>
   <div class="search-field">
-    <InputField placeholder="Søg f.eks. på KLE" :value="value" @change="valueChanged">
+    <InputField placeholder="søg" :value="value" @change="valueChanged">
       <SearchIcon />
     </InputField>
   </div>
@@ -31,6 +31,6 @@ export default class SearchField extends Vue {
 @import '@/styles/variables.scss';
 
 div.search-field {
-    position: relative;
+  position: relative;
 }
 </style>

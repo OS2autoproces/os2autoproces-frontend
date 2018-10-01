@@ -15,7 +15,7 @@
 
     <div>
       <h2 class="with-margin">Anvendt teknologi *</h2>
-      <InfoTooltip>Vælg den anvendte teknologi på listen eller opret en ny, hvis den ikke allerede fremgår af listen. Det er muligt at tilføje flere.</InfoTooltip>
+      <InfoTooltip>Her kan angive teknologier anvendt i løsningen fra listen. Hvis du mangler en teknologi, så kontakt din administrator, så vil de oprette den for dig.</InfoTooltip>
       <TagSelector @add="addTechnology($event)" @remove="removeTechnology($event)" :disabled="state.disabled.implementationEdit" :value="state.technologies" :items="technologies" />
     </div>
   </FormSection>
@@ -54,14 +54,16 @@ export default class ImplementationForm extends Vue {
 
   twoColumnBreakpoint = 1600;
 
-  technologies: Technology[] = [];
+  get technologies() {
+    return this.$store.state.common.technologies;
+  }
 
   get state() {
     return this.$store.state.process;
   }
 
   async mounted() {
-    this.technologies = await this.$store.dispatch(commonActionTypes.LOAD_TECHNOLOGIES);
+    this.$store.dispatch(commonActionTypes.LOAD_TECHNOLOGIES);
   }
 }
 </script>

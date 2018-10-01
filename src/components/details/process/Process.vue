@@ -8,8 +8,8 @@
 
         <ProcessMenu :phase="phase" :canEdit="state.canEdit" :isReporting="isReporting" />
 
-        <Button v-if="isReporting" class="report-button" @click="report">Indberet</Button>
-        <Button v-if="!isReporting" class="save-button" @click="save">Gem</Button>
+        <Button primary v-if="isReporting" class="report-button" @click="report">Gem</Button>
+        <Button primary v-if="!isReporting" class="save-button" @click="save">Gem</Button>
       </div>
     </div>
 
@@ -20,7 +20,7 @@
         <ProcessParents :parents="state.parents" />
 
         <div class="form-sections">
-          <GeneralInformationForm />
+          <GeneralInformationForm :isReporting="isReporting" />
           <ChallengesForm />
           <TimeAndProcessForm />
           <AssessmentForm />
@@ -28,7 +28,7 @@
           <ImplementationForm />
           <OperationForm />
           <AttachmentsForm v-if="!isReporting" />
-          <FormSection v-if="state.canEdit" id="internal-notes" heading="Interne noter" :disabled="state.disabled.internalNotesEdit" @edit="update({disabled: { internalNotesEdit: $event} })">
+          <FormSection v-if="state.canEdit" id="internal-notes" heading="Interne noter" :disabled="state.disabled.internalNotesEdit" @edit="update({disabled: { internalNotesEdit: $event} })" tooltip="Her kan du tilføje noter til og om processen, der kun vil være synlige for tilknyttede personer. Noterne bliver heller ikke delt, hvis processen deles tværkommunalt.">
             <InternalNotes :internalNotes="state.internalNotes" :disabled="state.disabled.internalNotesEdit" />
           </FormSection>
         </div>
@@ -41,12 +41,19 @@
       </div>
     </div>
 
-    <SnackBar showButton :timeout="0" color="error" :value="snack" @clicked="updateProcessErrors({processErrors: []})">
+    <SnackBar showButton :timeout="0" color="error" :value="snack" @clicked="clearErrors">
       <div>
-        Følgende felter er ugyldige:
-        <ul>
-          <li v-for="field in errors" :key="field">{{field}}</li>
-        </ul>
+        <h3>Følgende felter er ugyldige:</h3>
+        <div class="snack-bar-list-container">
+          <ul class="section-errors" v-for="section in errors" v-if="section.errors.length > 0" :key="section.section">
+            <span class="section-errors-title">{{section.section}}</span>
+            <li v-for="field in section.errors" :key="field">
+              <div class="snack-bar-list-item">
+                {{field}}
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
     </SnackBar>
 
@@ -115,13 +122,21 @@ import { isEmpty } from 'lodash';
   }
 })
 export default class Process extends Vue {
-  @Prop(Boolean) isReporting!: boolean;
-  @Prop(Number) id!: number;
-  @Prop(String) phase!: Phase;
+  @Prop(Boolean)
+  isReporting!: boolean;
+  @Prop(Number)
+  id!: number;
+  @Prop(String)
+  phase!: Phase;
 
-  @Action(processActionTypes.UPDATE) update: any;
-  @Action(processActionTypes.SAVE_COMMENT) saveComment!: (message: string) => Promise<void>;
-  @Action(errorActionTypes.UPDATE_PROCESS_ERRORS) updateProcessErrors!: (processErrors: Partial<ErrorState>) => void;
+  @Action(processActionTypes.UPDATE)
+  update: any;
+  @Action(processActionTypes.SAVE_COMMENT)
+  saveComment!: (message: string) => Promise<void>;
+  @Action(errorActionTypes.UPDATE_PROCESS_ERRORS)
+  updateProcessErrors!: (processErrors: Partial<ErrorState>) => void;
+  @Action(errorActionTypes.CLEAR_ERRORS)
+  clearErrors!: () => void;
 
   showSaveSuccess = false;
   showSaveError = false;
@@ -131,11 +146,12 @@ export default class Process extends Vue {
   }
 
   get errors() {
-    return this.$store.state.error.processErrors;
+    return this.$store.state.error;
   }
 
   get snack() {
-    return !isEmpty(this.$store.state.error.processErrors);
+    const errorState = this.$store.state.error;
+    return !!Object.keys(errorState).find(section => !isEmpty(errorState[section].errors));
   }
 
   get isWithinMunicipality() {
@@ -144,7 +160,7 @@ export default class Process extends Vue {
   }
 
   beforeCreate() {
-    this.$store.dispatch(errorActionTypes.UPDATE_PROCESS_ERRORS, { processErrors: [] });
+    this.$store.dispatch(errorActionTypes.CLEAR_ERRORS);
   }
 
   mounted() {
@@ -156,7 +172,19 @@ export default class Process extends Vue {
       this.update({
         phase: this.phase,
         canEdit: true,
-        cvr: this.$store.state.auth.user.cvr
+        hasChanged: false,
+        cvr: this.$store.state.auth.user.cvr,
+        disabled: {
+          generalInformationEdit: false,
+          challengesEdit: false,
+          timeAndProcessEdit: false,
+          assessmentEdit: false,
+          operationEdit: false,
+          specificationEdit: false,
+          implementationEdit: false,
+          attachmentsEdit: false,
+          internalNotesEdit: false
+        }
       });
     } else {
       this.$store.dispatch(processActionTypes.LOAD_COMMENTS);
@@ -254,5 +282,25 @@ export default class Process extends Vue {
   color: $color-secondary;
   margin-top: 2rem;
   padding: 1rem 2rem;
+}
+
+.snack-bar-list-container {
+  display: flex;
+  flex-wrap: wrap;
+
+  .section-errors-title {
+    font-weight: bold;
+  }
+
+  .section-errors {
+    margin-top: 1rem;
+  }
+
+  .snack-bar-list-item {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 15rem;
+    overflow: hidden;
+  }
 }
 </style>

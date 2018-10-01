@@ -6,8 +6,8 @@
           <ArrowLeftIcon /> Tilbage til søgning
         </router-link>
 
-        <Button v-if="isReporting" class="report-button" @click="report">Indberet</Button>
-        <Button v-if="!isReporting" class="save-button" @click="save">Gem</Button>
+        <Button primary v-if="isReporting" class="report-button" @click="report">Gem</Button>
+        <Button primary v-if="!isReporting" class="save-button" @click="save">Gem</Button>
       </div>
     </div>
 
@@ -16,16 +16,18 @@
         <ProcessHeader :isReporting="isReporting" isUmbrella />
 
         <div class="form-sections">
-          <UmbrellaForm />
+          <UmbrellaForm :isReporting="isReporting" />
         </div>
       </div>
     </div>
 
-    <SnackBar showButton :timeout="0" color="error" :value="snack" @clicked="updateProcessErrors({processErrors: []})">
+    <SnackBar showButton :timeout="0" color="error" :value="snack" @clicked="clearErrors">
       <div>
-        Følgende felter er ugyldige:
-        <ul>
-          <li v-for="field in errors" :key="field">{{field}}</li>
+        <h3>Følgende felter er ugyldige:</h3>
+        <ul class="section-errors">
+          <li v-for="field in errors['generalInformation'].errors" :key="field">
+            {{field}}
+          </li>
         </ul>
       </div>
     </SnackBar>
@@ -94,27 +96,36 @@ import { VisibilityKeys } from '@/models/visibility';
   }
 })
 export default class Umbrella extends Vue {
-  @Prop(Boolean) isReporting!: boolean;
-  @Prop(Number) id!: number;
-  @Prop(String) type!: Type;
+  @Prop(Boolean)
+  isReporting!: boolean;
+  @Prop(Number)
+  id!: number;
+  @Prop(String)
+  type!: Type;
 
-  @Action(processActionTypes.UPDATE) update: any;
-  @Action(commonActionTypes.LOAD_KLES) loadKles!: () => Promise<void>;
-  @Action(errorActionTypes.UPDATE_PROCESS_ERRORS) updateProcessErrors!: (processErrors: Partial<ErrorState>) => void;
+  @Action(processActionTypes.UPDATE)
+  update: any;
+  @Action(commonActionTypes.LOAD_KLES)
+  loadKles!: () => Promise<void>;
+  @Action(errorActionTypes.UPDATE_PROCESS_ERRORS)
+  updateProcessErrors!: (processErrors: Partial<ErrorState>) => void;
+  @Action(errorActionTypes.CLEAR_ERRORS)
+  clearErrors!: () => void;
 
   showSaveSuccess = false;
   showSaveError = false;
 
   get errors() {
-    return this.$store.state.error.processErrors;
+    return this.$store.state.error;
   }
 
   get snack() {
-    return !isEmpty(this.$store.state.error.processErrors);
+    const errorState = this.$store.state.error;
+    return !!Object.keys(errorState).find(section => !isEmpty(errorState[section].errors));
   }
 
   beforeCreate() {
-    this.$store.dispatch(errorActionTypes.UPDATE_PROCESS_ERRORS, { processErrors: [] });
+    this.$store.dispatch(errorActionTypes.CLEAR_ERRORS);
   }
 
   mounted() {
@@ -122,8 +133,20 @@ export default class Umbrella extends Vue {
       this.update({
         type: this.type,
         canEdit: true,
+        hasChanged: false,
         cvr: this.$store.state.auth.user.cvr,
-        visibility: this.type === TypeKeys.PARENT ? VisibilityKeys.MUNICIPALITY : VisibilityKeys.PUBLIC
+        visibility: this.type === TypeKeys.PARENT ? VisibilityKeys.MUNICIPALITY : VisibilityKeys.PUBLIC,
+        disabled: {
+          generalInformationEdit: false,
+          challengesEdit: false,
+          timeAndProcessEdit: false,
+          assessmentEdit: false,
+          operationEdit: false,
+          specificationEdit: false,
+          implementationEdit: false,
+          attachmentsEdit: false,
+          internalNotesEdit: false
+        }
       });
     }
 

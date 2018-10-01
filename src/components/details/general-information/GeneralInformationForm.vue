@@ -1,73 +1,90 @@
 <template>
   <FormSection :invalid="!isGeneralInformationValid" heading="Grundlæggende oplysninger" id="general-information" :disabled="state.disabled.generalInformationEdit" @edit="update({disabled: { generalInformationEdit: $event} })" always-open>
-    <div class="general-information-wrapper">
-      <Well>
-        <div>
-          <WellItem labelWidth="120px" label="ID:">
-            <InputField disabled :value="state.id" />
-          </WellItem>
-          <WellItem labelWidth="120px" label="KLE-nr:">
-            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.kle" @change="setKle($event)" :items="kles" itemText="code" clearable />
-          </WellItem>
-          <WellItem labelWidth="120px" label="FORM:" v-if="state.kle">
-            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.form" @change="update({form: $event})" :items="forms" itemText="code" clearable />
-          </WellItem>
-          <WellItem labelWidth="120px" label="Lokalt ID:">
-            <InputField :disabled="state.disabled.generalInformationEdit" :value="state.localId" @change="update({localId: $event})" />
-          </WellItem>
-          <WellItem labelWidth="120px" label="KL ID:">
-            <InputField :disabled="state.disabled.generalInformationEdit" :value="state.klId" @change="update({klId: $event})" />
-          </WellItem>
-          <WellItem labelWidth="120px" label="KLA:" tooltip="KLA nummeret henviser til en proces fra KL’s Arbejdsgangsbank.">
-            <MaskableInput :disabled="state.disabled.generalInformationEdit" mask="##.##.##.##.##" :value="state.kla" @change="setKla" />
-          </WellItem>
-        </div>
-
-        <div>
-          <WellItem v-if="minPhase(PhaseKeys.DEVELOPMENT)" labelWidth="140px" label="Leverandør:" :required="minPhase(PhaseKeys.DEVELOPMENT)">
-            <InputField :disabled="state.disabled.generalInformationEdit" :value="state.vendor" @change="update({vendor: $event})" />
-          </WellItem>
-          <WellItem labelWidth="140px" label="Indberetter:" v-if="isWithinMunicipality">
-            <SelectionField disabled :value="state.reporter" itemText="name" />
-          </WellItem>
-          <WellItem labelWidth="140px" label="Ejer:" tooltip="Er den person der er ansvarlig for processen. Betegnes som procesejer." v-if="isWithinMunicipality" :required="minPhase(PhaseKeys.SPECIFICATION)">
-            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.owner" itemText="name" @search="search($event)" isItemsPartial @change="update({owner: $event})" :items="users" />
-          </WellItem>
-          <WellItem labelWidth="140px" label="Kontaktperson:" tooltip="Er en person der varetager processen til daglig og derfor har stort kendskab til den.">
-            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.contact" itemText="name" @search="search($event)" isItemsPartial @change="update({contact: $event})" :items="users" clearable />
-          </WellItem>
-          <WellItem v-if="state.contact" labelWidth="140px" label="Mail:">
-            {{state.contact.email}}
-          </WellItem>
-        </div>
-
-        <div>
-          <WellItem labelWidth="120px" label="Fagområder:">
-            <DomainsField :disabled="state.disabled.generalInformationEdit" :value="state.domains" @change="assign({domains: $event})" />
-          </WellItem>
-          <WellItem labelWidth="120px" label="Afdelinger:" v-if="isWithinMunicipality">
-            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.orgUnits" @change="assign({orgUnits: $event})" :items="orgUnits" multiple itemText="name" />
-          </WellItem>
-          <WellItem labelWidth="120px" label="Synlighed:">
-            <MappedSelectionField :disabled="!!state.parents.length || state.disabled.generalInformationEdit" :value="state.visibility" @change="update({visibility: $event})" :items="visibilityLevels" />
-          </WellItem>
-          <WellItem v-if="minPhase(PhaseKeys.PREANALYSIS)" labelWidth="120px" label="Lov og paragraf:">
-            <InputField :disabled="state.disabled.generalInformationEdit" :value="state.legalClause" @change="update({legalClause: $event})" />
-          </WellItem>
-        </div>
-
-        <AssociatedPersonsInput v-if="minPhase(PhaseKeys.PREANALYSIS) && isWithinMunicipality" slot="well-footer" :disabled="state.disabled.generalInformationEdit" />
-      </Well>
+    <div class="title-row">
+      <div class="title-label">Titel: *</div>
+      <InputField class="title-field flex-grow" :value="state.title" :disabled="state.disabled.generalInformationEdit" :class="{ disabled: state.disabled.generalInformationEdit }" @change="update({ title: $event })" />
+      <div v-if="!isReporting" class="bookmark-button" role="button" @click="setBookmark(!state.hasBookmarked)">
+        <StarIcon :class="{ selected: state.hasBookmarked }" />
+      </div>
+      <MunicipalityLogo :src="logo" />
     </div>
+
+    <Well>
+      <div>
+        <WellItem labelWidth="200px" label="ID:">
+          <InputField disabled :value="state.id" />
+        </WellItem>
+        <WellItem labelWidth="200px" label="KLE-nr:">
+          <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.kle" @change="setKle($event)" :items="kles" itemText="code" clearable />
+        </WellItem>
+        <WellItem labelWidth="200px" label="FORM:" v-if="state.kle">
+          <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.form" @change="update({form: $event})" :items="forms" itemText="code" clearable />
+        </WellItem>
+        <WellItem labelWidth="200px" label="Lokalt ID:">
+          <InputField :disabled="state.disabled.generalInformationEdit" :value="state.localId" @change="update({localId: $event})" />
+        </WellItem>
+        <WellItem labelWidth="200px" label="KL ID:">
+          <InputField :disabled="state.disabled.generalInformationEdit" :value="state.klId" @change="update({klId: $event})" />
+        </WellItem>
+        <WellItem labelWidth="200px" label="KL’s Arbejdsgangsbank:" tooltip="KL’s Arbejdsgangsbank nummeret henviser til en proces fra KL’s Arbejdsgangsbank.">
+          <MaskableInput :disabled="state.disabled.generalInformationEdit" mask="##.##.##.##.##" :value="state.kla" @change="setKla" />
+        </WellItem>
+      </div>
+
+      <div>
+        <WellItem v-if="minPhase(PhaseKeys.DEVELOPMENT)" labelWidth="180px" label="Leverandør:" tooltip="Her skrives enten kommunens navn eller en ekstern leverandør der har lavet løsningen.">
+          <InputField :disabled="state.disabled.generalInformationEdit" :value="state.vendor" @change="update({vendor: $event})" />
+        </WellItem>
+        <WellItem labelWidth="180px" label="Indberetter:" v-if="isWithinMunicipality">
+          <SelectionField disabled :value="state.reporter" itemText="name" />
+        </WellItem>
+        <WellItem labelWidth="180px" label="Fagligkontaktperson:" tooltip="Er en person der varetager processen til daglig og derfor har stort kendskab til den." v-if="isWithinMunicipality" :required="minPhase(PhaseKeys.SPECIFICATION)">
+          <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.owner" itemText="name" @search="search($event)" isItemsPartial @change="update({owner: $event})" :items="users" />
+        </WellItem>
+        <WellItem labelWidth="180px" label="Kontaktperson:" tooltip="En person der har teknisk viden omkring løsningen.">
+          <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.contact" itemText="name" @search="search($event)" isItemsPartial @change="update({contact: $event})" :items="users" clearable />
+        </WellItem>
+        <WellItem v-if="state.contact" labelWidth="180px" label="Mail:">
+          {{state.contact.email}}
+        </WellItem>
+      </div>
+
+      <div>
+        <WellItem labelWidth="120px" label="Fagområder:">
+          <DomainsField :disabled="state.disabled.generalInformationEdit" :value="state.domains" @change="assign({domains: $event})" />
+        </WellItem>
+        <WellItem labelWidth="120px" label="Afdelinger:" v-if="isWithinMunicipality">
+          <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.orgUnits" @change="assign({orgUnits: $event})" :items="orgUnits" multiple itemText="name" />
+        </WellItem>
+        <WellItem labelWidth="120px" label="Synlighed:" tooltip="Kommunalt betyder at alle brugere i din organisation kan se processen.
+Tværkommunalt betyder at brugere i andre kommuner kan se processen.
+Privat betyder at det kun er dig og din superbruger der kan se processen.">
+          <MappedSelectionField :disabled="!!state.parents.length || state.disabled.generalInformationEdit" :value="state.visibility" @change="update({visibility: $event})" :items="visibilityLevels" />
+        </WellItem>
+        <WellItem v-if="minPhase(PhaseKeys.PREANALYSIS)" labelWidth="120px" label="Lovparagraf:">
+          <InputField :disabled="state.disabled.generalInformationEdit" :value="state.legalClause" @change="update({legalClause: $event})" />
+        </WellItem>
+      </div>
+
+      <AssociatedPersonsInput v-if="minPhase(PhaseKeys.PREANALYSIS) && isWithinMunicipality" slot="well-footer" :disabled="state.disabled.generalInformationEdit" />
+    </Well>
 
     <div class="resume-phases">
       <div class="resume">
-        <h2>Resume *</h2>
+        <h2>
+          Resume * <InfoTooltip>Resume er en helt kort opsummering der vises på søgeoversigten.</InfoTooltip>
+        </h2>
         <TextArea :disabled="state.disabled.generalInformationEdit" @change="update({shortDescription: $event})" :value="state.shortDescription" :maxLength="140" />
-      </div>
+        </div>
       <div class="general-phases">
-        <Phases :disabled="state.disabled.generalInformationEdit" :value="state.phase" @change="phaseChanged($event)" />
-        <MappedSelectionField :disabled="state.disabled.generalInformationEdit" class="status-selection" :value="state.status" @change="update({status: $event})" :items="statusLevels" />
+        <div>
+          <div class="field-label">Fase:</div>
+          <Phases class="phase-field" :disabled="state.disabled.generalInformationEdit" :value="state.phase" @change="phaseChanged($event)" />
+        </div>
+        <div>
+          <div class="field-label">Status:</div>
+          <MappedSelectionField class="status-field" :disabled="state.disabled.generalInformationEdit" :value="state.status" @change="update({status: $event})" :items="statusLevels" />
+        </div>
 
         <div v-if="isPhaseChanged" class="phase-changed">
           <WarningIcon class="general-information-warning-icon" />
@@ -78,7 +95,9 @@
 
     <div>
       <div v-if="state.status !== StatusKeys.INPROGRESS">
-        <h2 class="comments-heading">Kommentar til status</h2>
+        <h2 class="comments-heading" v-if="state.status === StatusKeys.FAILED">Hvorfor er processen mislykket?</h2>
+        <h2 class="comments-heading" v-if="state.status === StatusKeys.PENDING">Hvorfor afventer processen?</h2>
+        <h2 class="comments-heading" v-if="state.status === StatusKeys.REJECTED">Hvorfor er processen afvist?</h2>
         <TextArea :disabled="state.disabled.generalInformationEdit" @change="update({statusText: $event})" :value="state.statusText" />
       </div>
     </div>
@@ -111,14 +130,20 @@ import { OrgUnit } from '@/store/modules/process/state';
 import { Domain, DomainKeys, DomainLabels } from '@/models/domain';
 import { Kle, Form, commonActionTypes, UserSearchRequest } from '@/store/modules/common/actions';
 import { Phase, PhaseKeys } from '@/models/phase';
+import InfoTooltip from '@/components/common/InfoTooltip.vue';
+import MunicipalityLogo from '@/components/common/MunicipalityLogo.vue';
+import StarIcon from '@/components/icons/StarIcon.vue';
 
 @Component({
   components: {
     InputField,
     DomainsField,
     SelectionField,
+    InfoTooltip,
     MappedSelectionField,
+    StarIcon,
     TextArea,
+    MunicipalityLogo,
     Phases,
     AssociatedPersonsInput,
     Well,
@@ -129,13 +154,24 @@ import { Phase, PhaseKeys } from '@/models/phase';
   }
 })
 export default class GeneralInformationForm extends Vue {
-  @Action(processActionTypes.UPDATE) update: any;
-  @Action(commonActionTypes.LOAD_FORMS) loadForms: any;
-  @Action(processActionTypes.ASSIGN) assign: any;
-  @Action(commonActionTypes.SEARCH_USERS) searchUsers!: ({ name, cvr }: UserSearchRequest) => Promise<void>;
+  @Prop(Boolean)
+  isReporting!: boolean;
 
-  @Getter(processGetterTypes.IS_GERNERAL_INFORMATION_VALID) isGeneralInformationValid!: any;
-  @Getter(processGetterTypes.MIN_PHASE) minPhase!: (phase: Phase) => boolean;
+  @Action(processActionTypes.SET_BOOKMARK)
+  setBookmark!: (hasBookmark: boolean) => Promise<void>;
+  @Action(processActionTypes.UPDATE)
+  update: any;
+  @Action(commonActionTypes.LOAD_FORMS)
+  loadForms: any;
+  @Action(processActionTypes.ASSIGN)
+  assign: any;
+  @Action(commonActionTypes.SEARCH_USERS)
+  searchUsers!: ({ name, cvr }: UserSearchRequest) => Promise<void>;
+
+  @Getter(processGetterTypes.IS_GERNERAL_INFORMATION_VALID)
+  isGeneralInformationValid!: any;
+  @Getter(processGetterTypes.MIN_PHASE)
+  minPhase!: (phase: Phase) => boolean;
 
   isPhaseChanged = false;
   StatusKeys = StatusKeys;
@@ -157,6 +193,10 @@ export default class GeneralInformationForm extends Vue {
   get isWithinMunicipality() {
     const { auth, process } = this.$store.state;
     return auth.user.cvr === process.cvr;
+  }
+
+  get logo() {
+    return `/logos/${this.$store.state.process.cvr}.png`;
   }
 
   get state() {
@@ -206,16 +246,6 @@ export default class GeneralInformationForm extends Vue {
 
 <style lang="scss" scoped>
 @import '@/styles/variables.scss';
-.general-information-wrapper {
-  background-color: $color-edit-background;
-  border-radius: 12px;
-
-  .general-information {
-    display: flex;
-    flex-direction: row;
-    padding: 1rem;
-  }
-}
 
 .resume-phases {
   background-color: white;
@@ -235,12 +265,17 @@ export default class GeneralInformationForm extends Vue {
   .general-phases {
     flex: 0 0 400px;
     margin-left: 2rem;
-    text-align: center;
 
-    .status-selection {
+    .field-label {
+      display: inline-block;
+      width: 100px;
+      margin-bottom: 1rem;
+    }
+
+    .status-field,
+    .phase-field {
+      display: inline-block;
       width: 200px;
-      text-align: center;
-      margin: 0 auto;
     }
   }
 }
@@ -273,5 +308,27 @@ export default class GeneralInformationForm extends Vue {
   vertical-align: middle;
   width: 40px;
   height: 40px;
+}
+
+.title-row {
+  display: flex;
+  align-items: center;
+
+  .title-label {
+    margin-right: 1rem;
+    color: $color-secondary;
+  }
+
+  .title-label,
+  .title-field {
+    @include heading;
+    font-size: 2rem;
+  }
+}
+
+.bookmark-button {
+  height: 2rem;
+  width: 2rem;
+  margin-left: 50px;
 }
 </style>

@@ -1,6 +1,9 @@
 <template>
   <div class="navbar">
-    <div class="logo">OS2autoproces</div>
+    <router-link class="logo-link" to="/search">
+      <div class="logo">OS2autoproces</div>
+    </router-link>
+    <router-link class="link" v-if="isFrontpageEditor" to="/">Forside</router-link>
     <router-link class="link" v-if="isAdministrator" to="/search">Søgning</router-link>
     <router-link class="link" v-if="isAdministrator" to="/manage-technologies">Teknologier</router-link>
     <div class="flex-grow"></div>
@@ -36,6 +39,10 @@ export default class NavBar extends Vue {
     return this.$store.state.auth.user && this.$store.state.auth.user.roles.includes(UserRole.administrator);
   }
 
+  get isFrontpageEditor() {
+    return this.$store.state.auth.user && this.$store.state.auth.user.roles.includes(UserRole.frontpageEditor);
+  }
+
   get roles() {
     const user: AuthState['user'] = this.$store.state.auth.user;
 
@@ -67,6 +74,10 @@ export default class NavBar extends Vue {
 
 .link {
   margin-left: 2rem;
+}
+
+.logo-link {
+  text-decoration: none;
 }
 
 .user {
