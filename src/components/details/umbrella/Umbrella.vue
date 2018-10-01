@@ -128,6 +128,7 @@ export default class Umbrella extends Vue {
       this.update({
         type: this.type,
         canEdit: true,
+        hasChanged: false,
         cvr: this.$store.state.auth.user.cvr,
         visibility: this.type === TypeKeys.PARENT ? VisibilityKeys.MUNICIPALITY : VisibilityKeys.PUBLIC,
         disabled: {
