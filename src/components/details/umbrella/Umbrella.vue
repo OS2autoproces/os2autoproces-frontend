@@ -72,6 +72,7 @@ import SnackBar from '@/components/common/SnackBar.vue';
 import { isEmpty } from 'lodash';
 import { searchActionTypes } from '@/store/modules/search/actions';
 import { VisibilityKeys } from '@/models/visibility';
+import { SearchFilters } from '@/store/modules/search/state';
 
 @Component({
   components: {
@@ -151,10 +152,16 @@ export default class Umbrella extends Vue {
     }
 
     this.$store.dispatch(searchActionTypes.RESET_FILTERS);
-    this.$store.dispatch(searchActionTypes.UPDATE_FILTERS, {
-      type: TypeKeys.CHILD,
-      municipality: this.type === TypeKeys.PARENT
-    });
+
+    const filters: Partial<SearchFilters> = {
+      umbrella: false,
+      visibility: {
+        municipality: this.type === TypeKeys.PARENT,
+        public: false
+      }
+    };
+
+    this.$store.dispatch(searchActionTypes.UPDATE_FILTERS, filters);
   }
 
   async save() {

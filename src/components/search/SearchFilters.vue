@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="wrapper">
-      <div class="types" v-if="!hideRelations">
+      <div class="types" v-if="!umbrellaProcessSearch">
         <PillCheckbox :value="!!filters.reporterId" @change="setReporterId">Indberettede
         </PillCheckbox>
         <PillCheckbox :value="!!filters.usersId" @change="setUsersId">Tilknyttede</PillCheckbox>
@@ -11,9 +11,9 @@
 
       <SearchField class="search-text" :value="filters.text" @change="updateFilters({ text: $event })" />
 
-      <h1 v-if="!hideVisibility">AVANCERET SØGNING</h1>
+      <h1 v-if="!umbrellaProcessSearch">AVANCERET SØGNING</h1>
 
-      <div class="municipality-level" v-if="!hideVisibility">
+      <div class="municipality-level" v-if="!umbrellaProcessSearch">
         <SearchOption :value="filters.visibility.municipality" @change="updateFilters({ visibility: { municipality: $event } })">
           {{VisibilityLabels.MUNICIPALITY}}
         </SearchOption>
@@ -26,7 +26,7 @@
         Søg i KL’s Arbejdsgangsbank
       </SearchOption>
 
-      <SearchOption :value="filters.umbrella" @change="updateFilters({ umbrella: $event })">
+      <SearchOption v-if="!umbrellaProcessSearch" :value="filters.umbrella" @change="updateFilters({ umbrella: $event })">
         Søg i paraplyprocesser
       </SearchOption>
 
@@ -135,9 +135,7 @@ export default class SearchFiltersComponent extends Vue {
   @Prop(Object)
   filters!: SearchFilters;
   @Prop(Boolean)
-  hideVisibility!: boolean;
-  @Prop(Boolean)
-  hideRelations!: boolean;
+  umbrellaProcessSearch!: boolean;
 
   get user() {
     return this.$store.state.auth.user;
