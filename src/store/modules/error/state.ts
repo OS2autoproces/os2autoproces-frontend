@@ -1,4 +1,5 @@
 export interface ErrorState {
+  [key: string]: { section: string; errors: string[] };
   generalInformation: { section: string; errors: string[] };
   challenges: { section: string; errors: string[] };
   assessment: { section: string; errors: string[] };

@@ -12,6 +12,7 @@ export const errorActionTypes = {
   CLEAR_ERRORS: `${namespace}/clearErrors`
 };
 
+// type ProcessLabels = { [X in keyof Process]?: { label: string; error: string } };
 type ProcessLabels = { [X in keyof Process]?: string };
 
 export const umbrellaLabels: ProcessLabels = {
@@ -106,6 +107,7 @@ export const processLabels: ProcessLabels = {
 };
 
 interface ErrorLabels {
+  [key: string]: Array<keyof Process>;
   generalInformation: Array<keyof Process>;
   challenges: Array<keyof Process>;
   assessment: Array<keyof Process>;
@@ -114,6 +116,22 @@ interface ErrorLabels {
   implementation: Array<keyof Process>;
   operation: Array<keyof Process>;
 }
+
+const errorLimitations: { [key: string]: string } = {
+  localId: ' (maks 64 tegn)',
+  klId: ' (maks 64 tegn)',
+  title: ' (mellem 1 og 50 tegn)',
+  visibility: ' (obligatorisk felt)',
+  status: ' (obligatorisk felt)',
+  kla: ' (8, 11 eller 14 tegn)',
+  timeSpendOccurancesPerEmployee: ' (kun tal)',
+  timeSpendPerOccurance: ' (kun tal)',
+  timeSpendEmployeesDoingProcess: ' (kun tal)',
+  timeSpendPercentageDigital: ' (maks 100 tegn)',
+  owner: ' (obligatorisk felt)',
+  technologies: ' (obligatorisk fra specifikations-fasen)',
+  processChallenges: ' (obligatorisk fra Idé-fasen)'
+};
 
 const errorLabels: ErrorLabels = {
   generalInformation: Object.keys(generalInformationLabels) as Array<keyof Process>,
@@ -127,11 +145,19 @@ const errorLabels: ErrorLabels = {
 
 export const actions: ActionTree<ErrorState, RootState> = {
   updateProcessErrors({ commit, state }, processState: ProcessState) {
-    const sections = Object.keys(errorLabels) as Array<keyof ErrorLabels>;
+    const sections = Object.keys(errorLabels);
 
     sections.forEach(section => {
       const sectionErrors = getInvalidProperties(processState, errorLabels[section]);
-      const errors = sectionErrors.map(error => processLabels[error]);
+      const errors = sectionErrors.map(error => {
+        if (processLabels[error]) {
+          const tempError =
+            // @ts-ignore
+            processLabels[error].length < 35 ? processLabels[error] : processLabels[error].slice(0, 25) + '...';
+          return tempError + (errorLimitations[error] ? errorLimitations[error] : '');
+        }
+        return '';
+      });
       commit(errorMutationTypes.ASSIGN, { [section]: { errors, section: state[section].section } });
     });
   },
