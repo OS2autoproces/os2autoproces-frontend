@@ -12,7 +12,6 @@ export const errorActionTypes = {
   CLEAR_ERRORS: `${namespace}/clearErrors`
 };
 
-// type ProcessLabels = { [X in keyof Process]?: { label: string; error: string } };
 type ProcessLabels = { [X in keyof Process]?: string };
 
 export const umbrellaLabels: ProcessLabels = {
