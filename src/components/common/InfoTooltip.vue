@@ -31,7 +31,8 @@ export default class ExpandPanel extends Vue {}
 }
 
 .info-tooltip-wrapper {
-  display: inline-block;
+  display: inline-flex;
+  margin-left: 0.3rem;
   position: relative;
   height: 1rem;
   cursor: help;
