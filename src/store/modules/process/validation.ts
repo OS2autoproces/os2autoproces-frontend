@@ -4,7 +4,7 @@ import * as validateJs from 'validate.js';
 import { ProcessState, Process } from '@/store/modules/process/state';
 import { PhaseKeys } from '@/models/phase';
 
-export function getInvalidProperties(state: ProcessState, properties: Array<keyof Process>): string[] {
+export function getInvalidProperties(state: ProcessState, properties: Array<keyof Process>): Array<keyof Process> {
   return properties.filter(property => {
     const validator = processFieldsValidators[property];
     return validator && !validator(state);
@@ -125,7 +125,7 @@ export const processFieldsValidators: { [P in keyof Process]?: (state: ProcessSt
       phase === PhaseKeys.IDEA ||
       phase === PhaseKeys.PREANALYSIS ||
       phase === PhaseKeys.SPECIFICATION ||
-      technologies.length > 0
+      (technologies || []).length > 0
     );
   },
   technicalImplementationNotes({ technicalImplementationNotes }: ProcessState) {

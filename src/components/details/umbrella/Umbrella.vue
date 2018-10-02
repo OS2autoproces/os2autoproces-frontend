@@ -21,11 +21,13 @@
       </div>
     </div>
 
-    <SnackBar showButton :timeout="0" color="error" :value="snack" @clicked="updateProcessErrors({processErrors: []})">
+    <SnackBar showButton :timeout="0" color="error" :value="snack" @clicked="clearErrors">
       <div>
-        Følgende felter er ugyldige:
-        <ul>
-          <li v-for="field in errors" :key="field">{{field}}</li>
+        <h3>Følgende felter er ugyldige:</h3>
+        <ul class="section-errors">
+          <li v-for="field in errors['generalInformation'].errors" :key="field">
+            {{field}}
+          </li>
         </ul>
       </div>
     </SnackBar>
@@ -107,20 +109,23 @@ export default class Umbrella extends Vue {
   loadKles!: () => Promise<void>;
   @Action(errorActionTypes.UPDATE_PROCESS_ERRORS)
   updateProcessErrors!: (processErrors: Partial<ErrorState>) => void;
+  @Action(errorActionTypes.CLEAR_ERRORS)
+  clearErrors!: () => void;
 
   showSaveSuccess = false;
   showSaveError = false;
 
   get errors() {
-    return this.$store.state.error.processErrors;
+    return this.$store.state.error;
   }
 
   get snack() {
-    return !isEmpty(this.$store.state.error.processErrors);
+    const errorState = this.$store.state.error;
+    return !!Object.keys(errorState).find(section => !isEmpty(errorState[section].errors));
   }
 
   beforeCreate() {
-    this.$store.dispatch(errorActionTypes.UPDATE_PROCESS_ERRORS, { processErrors: [] });
+    this.$store.dispatch(errorActionTypes.CLEAR_ERRORS);
   }
 
   mounted() {

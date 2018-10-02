@@ -8,11 +8,11 @@ const namespaced = true;
 
 export const state: ErrorState = {
   generalInformation: {
-    section: 'General Information',
+    section: 'Grundlæggende oplysninger',
     errors: []
   },
   challenges: {
-    section: 'Problemtstillinger',
+    section: 'Problemstillinger',
     errors: []
   },
   assessment: {
