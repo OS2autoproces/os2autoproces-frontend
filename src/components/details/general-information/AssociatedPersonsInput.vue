@@ -16,7 +16,7 @@
     </div>
     <div class="add-person" v-if="!disabled">
       <div class="associated-label">Tilknyt person</div>
-      <SelectionField ref="userSelectionField" class="search-field" placeholder="Skriv navn for at søge" @search="search($event)" @change="addUser($event)" itemText="name" :items="users" iconName="search" />
+      <SelectionField itemSubText="email" ref="userSelectionField" class="search-field" placeholder="Skriv navn for at søge" @search="search($event)" @change="addUser($event)" itemText="name" :items="users" iconName="search" />
     </div>
   </div>
 </template>
@@ -39,9 +39,11 @@ import { User } from '@/store/modules/auth/state';
   }
 })
 export default class AssociatedPersonsInput extends Vue {
-  @Prop(Boolean) disabled!: boolean;
+  @Prop(Boolean)
+  disabled!: boolean;
 
-  @Action(commonActionTypes.SEARCH_USERS) searchUsers!: (request: UserSearchRequest) => Promise<void>;
+  @Action(commonActionTypes.SEARCH_USERS)
+  searchUsers!: (request: UserSearchRequest) => Promise<void>;
 
   get state() {
     return this.$store.state;

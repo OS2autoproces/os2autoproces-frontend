@@ -39,10 +39,10 @@
           <SelectionField disabled :value="state.reporter" itemText="name" />
         </WellItem>
         <WellItem labelWidth="180px" label="Fagligkontaktperson:" tooltip="Er en person der varetager processen til daglig og derfor har stort kendskab til den." v-if="isWithinMunicipality" :required="minPhase(PhaseKeys.SPECIFICATION)">
-          <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.owner" itemText="name" @search="search($event)" isItemsPartial @change="update({owner: $event})" :items="users" />
+          <SelectionField itemSubText="email" :disabled="state.disabled.generalInformationEdit" :value="state.owner" itemText="name" @search="search($event)" isItemsPartial @change="update({owner: $event})" :items="users" />
         </WellItem>
         <WellItem labelWidth="180px" label="Kontaktperson:" tooltip="En person der har teknisk viden omkring løsningen.">
-          <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.contact" itemText="name" @search="search($event)" isItemsPartial @change="update({contact: $event})" :items="users" clearable />
+          <SelectionField itemSubText="email" :disabled="state.disabled.generalInformationEdit" :value="state.contact" itemText="name" @search="search($event)" isItemsPartial @change="update({contact: $event})" :items="users" clearable />
         </WellItem>
         <WellItem v-if="state.contact" labelWidth="180px" label="Mail:">
           {{state.contact.email}}
