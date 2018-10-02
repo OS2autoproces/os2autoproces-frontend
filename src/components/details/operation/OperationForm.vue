@@ -1,7 +1,7 @@
 <template>
   <FormSection :invalid="!isOperationValid" v-if="minPhase(PhaseKeys.OPERATION)" heading="Drift" id="operation" :disabled="state.disabled.operationEdit" @edit="update({disabled: {operationEdit: $event}})">
     <div class="rating-wrapper" :class="{disabled: state.disabled.operationEdit}">
-      <div>
+      <div class="rating-label">
         I hvor høj grad indfriede løsningen de forventede gevinster? *
         <InfoTooltip>Skalaen lav, mellem, høj angiver graden af gevinstrealisering.</InfoTooltip>
       </div>
@@ -23,7 +23,7 @@
 
     <h2>Kommentar til realiseret gevinster</h2>
     <TextArea :max-length="1200" @change="update({ratingComment: $event})" :disabled="state.disabled.operationEdit" :value="state.ratingComment" />
-  </FormSection>
+    </FormSection>
 </template>
 
 <script lang="ts">
@@ -52,10 +52,13 @@ import { Phase, PhaseKeys } from '@/models/phase';
   }
 })
 export default class OperationForm extends Vue {
-  @Action(processActionTypes.UPDATE) update: any;
+  @Action(processActionTypes.UPDATE)
+  update: any;
 
-  @Getter(processGetterTypes.IS_OPERATION_VALID) isOperationValid!: any;
-  @Getter(processGetterTypes.MIN_PHASE) minPhase!: (phase: Phase) => boolean;
+  @Getter(processGetterTypes.IS_OPERATION_VALID)
+  isOperationValid!: any;
+  @Getter(processGetterTypes.MIN_PHASE)
+  minPhase!: (phase: Phase) => boolean;
 
   PhaseKeys = PhaseKeys;
 
@@ -87,6 +90,11 @@ export default class OperationForm extends Vue {
       height: 2rem;
       width: 2rem;
     }
+  }
+
+  .rating-label {
+    display: flex;
+    align-items: center;
   }
 }
 

@@ -83,6 +83,7 @@ export default class FormSection extends Vue {
   @include heading;
   color: $color-primary;
   font-size: 1.5rem;
+  align-items: center;
 
   .edit-button {
     margin-left: 1rem;
