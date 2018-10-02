@@ -266,6 +266,7 @@ export function responseToState(process: ProcessResponse): Process {
   return {
     ...process,
     id: process.id.toString(),
+    hasChanged: false,
     timeSpendComputedTotal: process.timeSpendComputedTotal.toString(),
     timeSpendEmployeesDoingProcess: process.timeSpendEmployeesDoingProcess.toString(),
     timeSpendOccurancesPerEmployee: process.timeSpendOccurancesPerEmployee.toString(),

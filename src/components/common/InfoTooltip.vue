@@ -47,6 +47,7 @@ export default class ExpandPanel extends Vue {}
 }
 
 .info-tooltip {
+  font-family: Roboto, sans-serif;
   position: absolute;
   top: -0.5rem;
   left: -0.5rem;
@@ -59,5 +60,10 @@ export default class ExpandPanel extends Vue {}
   border-radius: 1rem;
 
   background-color: $color-background;
+  font-weight: normal;
+  font-size: 1rem;
+  white-space: pre-line;
+  text-align: left;
+  color: $color-secondary;
 }
 </style>

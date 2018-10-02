@@ -1,24 +1,33 @@
 <template>
-  <FormSection :invalid="!isUmbrellaValid" heading="Paraply proces" :disabled="state.disabled.generalInformationEdit" @edit="update({disabled: { generalInformationEdit: $event} })" always-open>
+  <FormSection :invalid="!isUmbrellaValid" heading="Paraplyproces" :disabled="state.disabled.generalInformationEdit" @edit="update({disabled: { generalInformationEdit: $event} })" always-open>
     <div class="umbrella-wrapper">
+      <div class="title-row">
+        <div class="title-label">Titel: *</div>
+        <InputField class="title-field flex-grow" :value="state.title" :disabled="state.disabled.generalInformationEdit" :class="{ disabled: state.disabled.generalInformationEdit }" @change="update({ title: $event })" />
+        <div v-if="!isReporting" class="bookmark-button" role="button" @click="setBookmark(!state.hasBookmarked)">
+          <StarIcon :class="{ selected: state.hasBookmarked }" />
+        </div>
+        <MunicipalityLogo :src="logo" />
+      </div>
+
       <Well>
         <div>
-          <WellItem labelWidth="80px" label="ID:">
+          <WellItem labelWidth="200px" label="ID:">
             <InputField disabled :value="state.id" />
           </WellItem>
-          <WellItem labelWidth="80px" label="KLE-nr:">
+          <WellItem labelWidth="200px" label="KLE-nr:">
             <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.kle" @change="setKle($event)" :items="kles" itemText="code" clearable />
           </WellItem>
-          <WellItem labelWidth="80px" label="FORM:" v-if="state.kle">
+          <WellItem labelWidth="200px" label="FORM:" v-if="state.kle">
             <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.form" @change="update({form: $event})" :items="forms" itemText="code" clearable />
           </WellItem>
-          <WellItem labelWidth="80px" label="Lokalt ID:">
+          <WellItem labelWidth="200px" label="Lokalt ID:">
             <InputField :disabled="state.disabled.generalInformationEdit" :value="state.localId" @change="update({localId: $event})" />
           </WellItem>
-          <WellItem labelWidth="80px" label="KL ID:">
+          <WellItem labelWidth="200px" label="KL ID:">
             <InputField :disabled="state.disabled.generalInformationEdit" :value="state.klId" @change="update({klId: $event})" />
           </WellItem>
-          <WellItem labelWidth="80px" label="KLA:">
+          <WellItem labelWidth="200px" label="KL’s Arbejdsgangsbank:" tooltip="KL’s Arbejdsgangsbank nummeret henviser til en proces fra KL’s Arbejdsgangsbank.">
             <MaskableInput :disabled="state.disabled.generalInformationEdit" mask="##.##.##.##.##" :value="state.kla" @change="setKla" />
           </WellItem>
         </div>
@@ -28,7 +37,7 @@
             <DomainsField :disabled="state.disabled.generalInformationEdit" :value="state.domains" @change="assign({domains: $event})" />
           </WellItem>
           <WellItem labelWidth="120px" label="Kontaktperson:">
-            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.contact" itemText="name" @search="search($event)" isItemsPartial @change="update({contact: $event})" :items="users" clearable />
+            <SelectionField itemSubText="email" :disabled="state.disabled.generalInformationEdit" :value="state.contact" itemText="name" @search="search($event)" isItemsPartial @change="update({contact: $event})" :items="users" clearable />
           </WellItem>
           <WellItem labelWidth="120px" v-if="state.contact" label="Mail:">
             {{state.contact.email}}
@@ -40,7 +49,7 @@
             {{TypeLabels[state.type]}}
           </WellItem>
           <WellItem labelWidth="120px" label="Oprettet:">
-            <DatePicker :value="state.created" disabled/>
+            <DatePicker :value="state.created" disabled />
           </WellItem>
           <WellItem labelWidth="120px" label="Sidst opdateret:">
             <DatePicker :value="state.lastChanged" disabled />
@@ -93,7 +102,6 @@ import MappedSelectionField from '@/components/common/inputs/MappedSelectionFiel
 import SmallSearchResult from '@/components/search/SmallSearchResult.vue';
 import DomainsField from '@/components/common/inputs/DomainsField.vue';
 import TextArea from '@/components/common/inputs/TextArea.vue';
-import Phases from '@/components/common/inputs/Phases.vue';
 import Well from '@/components/common/Well.vue';
 import WellItem from '@/components/common/WellItem.vue';
 import FormSection from '@/components/details/FormSection.vue';
@@ -110,9 +118,13 @@ import { TypeLabels, TypeKeys } from '@/models/types';
 import { Domain } from '@/models/domain';
 import { Phase, PhaseKeys } from '@/models/phase';
 import { searchActionTypes } from '@/store/modules/search/actions';
+import MunicipalityLogo from '@/components/common/MunicipalityLogo.vue';
+import StarIcon from '@/components/icons/StarIcon.vue';
 
 @Component({
   components: {
+    StarIcon,
+    MunicipalityLogo,
     InputField,
     DomainsField,
     SelectionField,
@@ -121,7 +133,6 @@ import { searchActionTypes } from '@/store/modules/search/actions';
     MappedSelectionField,
     DatePicker,
     TextArea,
-    Phases,
     Well,
     FormSection,
     MaskableInput,
@@ -131,15 +142,28 @@ import { searchActionTypes } from '@/store/modules/search/actions';
   }
 })
 export default class UmbrellaForm extends Vue {
-  @Action(processActionTypes.UPDATE) update: any;
-  @Action(processActionTypes.ASSIGN) assign: any;
-  @Action(commonActionTypes.LOAD_FORMS) loadForms: any;
+  @Prop(Boolean)
+  isReporting!: boolean;
 
-  @Getter(processGetterTypes.IS_UMBRELLA_VALID) isUmbrellaValid!: any;
+  @Action(processActionTypes.SET_BOOKMARK)
+  setBookmark!: (hasBookmark: boolean) => Promise<void>;
+  @Action(processActionTypes.UPDATE)
+  update: any;
+  @Action(processActionTypes.ASSIGN)
+  assign: any;
+  @Action(commonActionTypes.LOAD_FORMS)
+  loadForms: any;
+
+  @Getter(processGetterTypes.IS_UMBRELLA_VALID)
+  isUmbrellaValid!: any;
 
   TypeLabels = TypeLabels;
   VisibilityLabels = VisibilityLabels;
   VisibilityKeys = VisibilityKeys;
+
+  get logo() {
+    return `/logos/${this.$store.state.process.cvr}.png`;
+  }
 
   get users() {
     return this.$store.state.common.users;
@@ -205,7 +229,7 @@ export default class UmbrellaForm extends Vue {
   h2 {
     margin-top: 2rem;
     @include textarea-heading;
-    margin-bottom: .5rem;
+    margin-bottom: 0.5rem;
   }
 }
 
@@ -218,6 +242,22 @@ export default class UmbrellaForm extends Vue {
 .visibility-icon {
   height: 2rem;
   width: 2rem;
+}
+
+.title-row {
+  display: flex;
+  align-items: center;
+
+  .title-label {
+    margin-right: 1rem;
+    color: $color-secondary;
+  }
+
+  .title-label,
+  .title-field {
+    @include heading;
+    font-size: 2rem;
+  }
 }
 
 .process {
@@ -236,5 +276,11 @@ export default class UmbrellaForm extends Vue {
     text-decoration: inherit;
     color: inherit;
   }
+}
+
+.bookmark-button {
+  height: 2rem;
+  width: 2rem;
+  margin-left: 50px;
 }
 </style>

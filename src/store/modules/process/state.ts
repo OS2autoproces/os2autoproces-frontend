@@ -20,6 +20,7 @@ export interface Process {
   children: Process[];
   parents: Process[];
 
+  hasChanged: boolean;
   esdhReference: string;
   phase: Phase;
   status: Status;
@@ -97,10 +98,15 @@ export interface ITSystem {
 }
 
 export interface OrgUnit {
-  id: string;
+  id: number;
   uuid: string;
   name: string;
   active: boolean;
+  cvr: string;
+}
+
+export interface Municipality {
+  name: string;
   cvr: string;
 }
 
@@ -130,7 +136,6 @@ export interface Comment {
 }
 
 export interface Disabled {
-  titleEdit: boolean;
   generalInformationEdit: boolean;
   challengesEdit: boolean;
   timeAndProcessEdit: boolean;

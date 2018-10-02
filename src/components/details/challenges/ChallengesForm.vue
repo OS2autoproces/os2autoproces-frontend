@@ -2,12 +2,13 @@
   <FormSection :invalid="!isChallengesValid" heading="Problemstillinger" id="challenges" :disabled="state.disabled.challengesEdit" @edit="update({ disabled: { challengesEdit: $event}})">
     <div>
       <h2>Beskrivelse</h2>
+      <InfoTooltip>Her kan beskrive den nuværende proces i detaljer.</InfoTooltip>
       <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({longDescription: $event})" :disabled="state.disabled.challengesEdit" :value="state.longDescription" :maxLength="1200" />
     </div>
 
     <div v-if="minPhase(PhaseKeys.PREANALYSIS)">
       <h2 class="with-margin">Idéer til løsning</h2>
-      <InfoTooltip>Her kan tilføjes de ønsker, du har til en fremtidig løsning. Du kan også beskrive dine ideer til en løsning.</InfoTooltip>
+      <InfoTooltip>Her kan tilføjes de ønsker, du har til en fremtidig løsning. Ønskerne kan både være teknologiske (f.eks. RPA) og/eller ændringer til måden processen udføres på.</InfoTooltip>
       <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({solutionRequests: $event})" :disabled="state.disabled.challengesEdit" :value="state.solutionRequests" :maxLength="2400" />
     </div>
 
@@ -23,7 +24,7 @@
           <DatePicker :value="state.created" disabled/>
         </WellItem>
 
-        <WellItem label="Nuværende systemer:" v-if="minPhase(PhaseKeys.PREANALYSIS)">
+        <WellItem label="Nuværende systemer:" v-if="minPhase(PhaseKeys.PREANALYSIS)" tooltip="Vælg hvilke systemer der understøtter den nuværende proces. Listen kommer fra KITOS.">
           <SelectionField :items="itSystems" :value="state.itSystems" itemText="name" :disabled="state.disabled.challengesEdit" @change="assign({itSystems: $event})" multiple />
         </WellItem>
       </div>
@@ -33,7 +34,7 @@
           <DatePicker :value="state.lastChanged" disabled />
         </WellItem>
 
-        <WellItem labelWidth="30%" label="Andre nuværende systemer:" v-if="minPhase(PhaseKeys.PREANALYSIS)">
+        <WellItem labelWidth="30%" label="Andre nuværende systemer:" v-if="minPhase(PhaseKeys.PREANALYSIS)" tooltip="Hvis der er systemer du ikke kan finde på listen kan du notere dem her.">
           <TextArea @change="update({itSystemsDescription: $event})" fullWidth :disabled="state.disabled.challengesEdit" :value="state.itSystemsDescription" :maxLength="300" />
         </WellItem>
       </div>

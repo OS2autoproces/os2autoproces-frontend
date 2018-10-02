@@ -10,7 +10,7 @@
         <div class="results-wrapper">
           <div class="report">
             <router-link to="/report">
-              <PlusIcon/> Indberet
+              <PlusIcon /> Indberet proces
             </router-link>
           </div>
 
@@ -76,7 +76,7 @@ export default class Search extends Vue {
   }
 
   mounted() {
-    this.$store.dispatch(searchActionTypes.UPDATE_FILTERS, { type: null });
+    this.$store.dispatch(searchActionTypes.UPDATE_FILTERS, {});
   }
 }
 </script>
@@ -90,7 +90,7 @@ export default class Search extends Vue {
 }
 
 .filters {
-  padding: 4rem 2rem;
+  padding: 4rem 1.5rem;
 }
 
 .page {

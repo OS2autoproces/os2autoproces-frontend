@@ -1,7 +1,7 @@
 <template>
   <div class="associated">
     <div class="filters">
-      <SearchFilters :filters="filters" @change="updateFilters" hideVisibility hideRelations />
+      <SearchFilters :filters="filters" @change="updateFilters" @assign="assignFilters" umbrellaProcessSearch />
     </div>
 
     <div class="results">
@@ -56,6 +56,13 @@ export default class AssociatedProcesses extends Vue {
     });
   }
 
+  assignFilters(filters: Partial<SearchFilters>) {
+    this.$store.dispatch(searchActionTypes.ASSIGN_FILTERS, {
+      page: 0,
+      ...filters
+    });
+  }
+
   add(process: any) {
     this.$emit('add', process);
   }
@@ -73,7 +80,7 @@ export default class AssociatedProcesses extends Vue {
   }
 
   .filters {
-    flex: 0 0 auto;
+    flex: 0 0 300px;
     margin-right: 2rem;
   }
 }

@@ -1,19 +1,18 @@
-import { DomainKeys } from '@/models/domain';
 import { LikertScaleKeys } from '@/models/likert-scale';
 import { PhaseKeys } from '@/models/phase';
 import { StatusKeys } from '@/models/status';
 import { TypeKeys } from '@/models/types';
 import { VisibilityKeys } from '@/models/visibility';
 import { HTTP } from '@/services/http-service';
-import { ProcessRequest, ProcessResponse, responseToState, stateToRequest } from '@/services/process-converter';
+import { ProcessResponse, responseToState, stateToRequest } from '@/services/process-converter';
 import { User } from '@/store/modules/auth/state';
 import { errorActionTypes } from '@/store/modules/error/actions';
+import { getProcessKeys } from '@/store/modules/process/getters';
 import { processMutationTypes } from '@/store/modules/process/mutations';
-import { Attachment, ITSystem, Process, ProcessState, Technology, AttachmentFile } from '@/store/modules/process/state';
+import { Attachment, AttachmentFile, ITSystem, Process, ProcessState, Technology } from '@/store/modules/process/state';
+import { getInvalidProperties } from '@/store/modules/process/validation';
 import { RootState } from '@/store/store';
 import { ActionTree } from 'vuex';
-import { getInvalidProperties } from '@/store/modules/process/validation';
-import { getProcessKeys } from '@/store/modules/process/getters';
 
 export const namespace = 'process';
 
@@ -56,16 +55,16 @@ export interface NewComment {
 
 interface BackendManagedFields {
   id: string;
-  created: string | null;
-  lastChanged: string | null;
+  created?: string;
+  lastChanged?: string;
   timeSpendComputedTotal: string;
   klaProcess: boolean;
   cvr: string;
   municipalityName: string;
 }
 
-function setBackendManagedFields(process: Process): BackendManagedFields {
-  return {
+function setBackendManagedFields(process: Process): Partial<Process> {
+  const fields: BackendManagedFields = {
     id: process.id,
     created: process.created,
     timeSpendComputedTotal: process.timeSpendComputedTotal,
@@ -74,6 +73,8 @@ function setBackendManagedFields(process: Process): BackendManagedFields {
     cvr: process.cvr,
     municipalityName: process.municipalityName
   };
+
+  return fields;
 }
 
 export const actions: ActionTree<ProcessState, RootState> = {
@@ -86,12 +87,12 @@ export const actions: ActionTree<ProcessState, RootState> = {
   clear({ commit }) {
     commit(processMutationTypes.ASSIGN, initialProcessState());
   },
-  async loadAttachments({ commit, state }, id: string) {
+  async loadAttachments({ commit }, id: string) {
     if (!id) {
       return;
     }
     const attachments = (await HTTP.get<Attachment[]>(`/api/attachments/${id}`)).data;
-    commit(processMutationTypes.ASSIGN, { attachments });
+    commit(processMutationTypes.ASSIGN_WITH_NO_CHANGE, { attachments });
   },
   async uploadAttachments({ commit, state }, files: AttachmentFile[]) {
     const privateAttachments = new FormData();
@@ -124,13 +125,13 @@ export const actions: ActionTree<ProcessState, RootState> = {
   async saveComment({ commit, state }, message: string): Promise<void> {
     const comment = (await HTTP.put<Comment>(`api/comments/${state.id}`, message)).data;
 
-    commit(processMutationTypes.ASSIGN, {
+    commit(processMutationTypes.ASSIGN_WITH_NO_CHANGE, {
       comments: [...state.comments, comment]
     });
   },
   async loadComments({ commit, state }) {
     const comments = (await HTTP.get<Comment[]>(`api/comments/${state.id}`)).data;
-    commit(processMutationTypes.ASSIGN, { comments });
+    commit(processMutationTypes.ASSIGN_WITH_NO_CHANGE, { comments });
   },
 
   addUser({ commit, state }, user: User): void {
@@ -187,13 +188,23 @@ export const actions: ActionTree<ProcessState, RootState> = {
     const invalidFields = getInvalidProperties(state, validationKeys || getProcessKeys(state));
 
     if (invalidFields.length > 0) {
-      dispatch(errorActionTypes.UPDATE_PROCESS_ERRORS, { processErrors: invalidFields }, { root: true });
-      return null;
+      dispatch(errorActionTypes.UPDATE_PROCESS_ERRORS, state, { root: true });
+      throw new Error();
     } else {
       const converted = await stateToRequest(state);
-      const response = (await HTTP.post<ProcessResponse>(`api/processes`, converted)).data;
-      const process = responseToState(response);
-      await commit(processMutationTypes.UPDATE, setBackendManagedFields(process));
+      const response = await HTTP.post<ProcessResponse>(`api/processes`, converted);
+
+      if (response.status !== 201) {
+        throw new Error();
+      }
+
+      const process = responseToState(response.data);
+
+      const fields = setBackendManagedFields(process);
+      fields.hasChanged = false;
+
+      await commit(processMutationTypes.UPDATE, fields);
+
       return process.id;
     }
   },
@@ -201,13 +212,19 @@ export const actions: ActionTree<ProcessState, RootState> = {
     const invalidFields = getInvalidProperties(state, validationKeys || getProcessKeys(state));
 
     if (invalidFields.length > 0) {
-      dispatch(errorActionTypes.UPDATE_PROCESS_ERRORS, { processErrors: invalidFields }, { root: true });
+      dispatch(errorActionTypes.UPDATE_PROCESS_ERRORS, state, { root: true });
+      throw new Error();
     } else {
       const converted = await stateToRequest(state);
       const response = await HTTP.patch<ProcessResponse>(`api/processes/${state.id}`, converted);
 
-      const process = responseToState(response.data);
-      commit(processMutationTypes.UPDATE, setBackendManagedFields(process));
+      if (response.status !== 200) {
+        throw new Error();
+      }
+
+      const fields = setBackendManagedFields(responseToState(response.data));
+      fields.hasChanged = false;
+      commit(processMutationTypes.UPDATE, fields);
     }
   },
   async removeProcess({ state }) {
@@ -227,7 +244,7 @@ export const actions: ActionTree<ProcessState, RootState> = {
 
     await method(url);
 
-    commit(processMutationTypes.UPDATE, {
+    commit(processMutationTypes.UPDATE_WITH_NO_CHANGE, {
       emailNotification
     });
   },
@@ -237,12 +254,13 @@ export const actions: ActionTree<ProcessState, RootState> = {
 
     await method(url);
 
-    commit(processMutationTypes.UPDATE, { hasBookmarked });
+    commit(processMutationTypes.UPDATE_WITH_NO_CHANGE, { hasBookmarked });
   }
 };
 
 export function initialProcessState(): ProcessState {
   return {
+    hasChanged: false,
     id: '',
     localId: '',
     kle: null,
@@ -326,7 +344,6 @@ export function initialProcessState(): ProcessState {
     canEdit: false,
 
     disabled: {
-      titleEdit: true,
       generalInformationEdit: true,
       challengesEdit: true,
       timeAndProcessEdit: true,
