@@ -4,7 +4,7 @@
       <h2>Beskrivelse</h2>
       <InfoTooltip>Her kan beskrive den nuværende proces i detaljer.</InfoTooltip>
       <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({longDescription: $event})" :disabled="state.disabled.challengesEdit" :value="state.longDescription" :maxLength="1200" />
-    </div>
+      </div>
 
     <div v-if="minPhase(PhaseKeys.PREANALYSIS)">
       <h2 class="with-margin">Idéer til løsning</h2>
@@ -24,7 +24,7 @@
           <DatePicker :value="state.created" disabled/>
         </WellItem>
 
-        <WellItem label="Nuværende systemer:" v-if="minPhase(PhaseKeys.PREANALYSIS)" tooltip="Vælg hvilke systemer der understøtter den nuværende proces. Listen kommer fra KITOS.">
+        <WellItem label="Nuværende systemer:" v-if="minPhase(PhaseKeys.IDEA)" tooltip="Vælg hvilke systemer der understøtter den nuværende proces. Listen kommer fra KITOS.">
           <SelectionField :items="itSystems" :value="state.itSystems" itemText="name" :disabled="state.disabled.challengesEdit" @change="assign({itSystems: $event})" multiple />
         </WellItem>
       </div>
@@ -73,12 +73,17 @@ import { Phase, PhaseKeys } from '@/models/phase';
   }
 })
 export default class ChallengesForm extends Vue {
-  @Action(processActionTypes.UPDATE) update: any;
-  @Action(processActionTypes.ASSIGN) assign: any;
-  @Action(processActionTypes.SAVE_IT_SYSTEM) saveItSystem!: (itSystem: ITSystem) => void;
+  @Action(processActionTypes.UPDATE)
+  update: any;
+  @Action(processActionTypes.ASSIGN)
+  assign: any;
+  @Action(processActionTypes.SAVE_IT_SYSTEM)
+  saveItSystem!: (itSystem: ITSystem) => void;
 
-  @Getter(processGetterTypes.IS_CHALLENGES_VALID) isChallengesValid!: any;
-  @Getter(processGetterTypes.MIN_PHASE) minPhase!: (phase: Phase) => boolean;
+  @Getter(processGetterTypes.IS_CHALLENGES_VALID)
+  isChallengesValid!: any;
+  @Getter(processGetterTypes.MIN_PHASE)
+  minPhase!: (phase: Phase) => boolean;
 
   twoColumnBreakpoint = 1600;
   PhaseKeys = PhaseKeys;
