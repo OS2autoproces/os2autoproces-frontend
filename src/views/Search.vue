@@ -20,9 +20,6 @@
             <router-link :to="'/details/' + process.id" class="search-result-link" v-for="process in result.processes" :key="process.id">
               <SearchResult :process="process" />
             </router-link>
-            <!-- <div class="search-result-link" v-for="process in result.processes" :key="process.id">
-              <SearchResult :process="process" />
-            </div> -->
           </div>
 
           <SearchPagination v-if="result" :page="result.page.number" :pageTotal="result.page.totalPages" @change="updateFilters({ page: $event })" />
