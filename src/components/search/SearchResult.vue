@@ -46,18 +46,22 @@
         <div class="value">{{StatusLabels[process.status]}}</div>
       </div>
     </div>
-    <star-icon class="star-icon" :class="{ selected: process.hasBookmarked }" />
+    <div v-on:click.stop.prevent="setProcessBookmark()">
+      <star-icon class="star-icon" :class="{ selected: processBookmarked }" />
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
+import { Action } from 'vuex-class';
 import StarIcon from '../icons/StarIcon.vue';
 import Rating from '../common/inputs/Rating.vue';
 import Phases from '../common/inputs/Phases.vue';
 import { SearchResultProcess } from '../../store/modules/search/state';
 import { StatusLabels } from '../../models/status';
 import { DomainLabels } from '../../models/domain';
+import { processActionTypes } from '@/store/modules/process/actions';
 
 @Component({
   components: {
@@ -67,14 +71,27 @@ import { DomainLabels } from '../../models/domain';
   }
 })
 export default class SearchResult extends Vue {
-  @Prop(Object) process!: SearchResultProcess;
-  @Prop(Boolean) bookmarked!: boolean;
-  @Prop(Boolean) noPhase!: boolean;
+  @Prop(Object)
+  process!: SearchResultProcess;
+  @Prop(Boolean)
+  bookmarked!: boolean;
+  @Prop(Boolean)
+  noPhase!: boolean;
+
+  processBookmarked = this.process.hasBookmarked;
+
+  @Action(processActionTypes.SET_BOOKMARK_FROM_SEARCH)
+  setBookmark!: (bookmarkSearch: { id: number; hasBookmarked: boolean }) => Promise<void>;
 
   StatusLabels = StatusLabels;
 
   get domains() {
     return this.process.domains.map(domain => DomainLabels[domain]).join(', ');
+  }
+
+  async setProcessBookmark() {
+    const res = await this.setBookmark({ id: this.process.id, hasBookmarked: !this.processBookmarked });
+    this.processBookmarked = res ? !this.processBookmarked : this.processBookmarked;
   }
 }
 </script>
@@ -110,6 +127,7 @@ $resume-line-height: 1em * 1.5;
   right: -1rem;
   height: 2.5rem;
   width: 2.5rem;
+  z-index: 9999;
 }
 
 .rating /deep/ svg {
