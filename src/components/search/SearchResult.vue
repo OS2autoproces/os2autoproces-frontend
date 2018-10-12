@@ -127,7 +127,6 @@ $resume-line-height: 1em * 1.5;
   right: -1rem;
   height: 2.5rem;
   width: 2.5rem;
-  z-index: 9999;
 }
 
 .rating /deep/ svg {
