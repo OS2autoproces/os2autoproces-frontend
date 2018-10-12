@@ -25,7 +25,7 @@
   </div>
   <div class="form-section" v-else>
     <div class="section-header">
-      <div class="isPlaceholder">{{heading}}</div>
+      <div class="placeholder">{{heading}}</div>
       <span v-if="{ placeholder }" class="placeholder-text">{{placeholder}}</span>
     </div>
   </div>

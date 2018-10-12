@@ -1,5 +1,5 @@
 <template>
-  <FormSection v-if="!showPlaceholder" heading="Bilag" id="attachments" :disabled="state.disabled.attachmentsEdit" @edit="update({ disabled: {attachmentsEdit: $event} })">
+  <FormSection v-if="!(showPlaceholder && minPhase(PhaseKeys.PREANALYSIS))" heading="Bilag" id="attachments" :disabled="state.disabled.attachmentsEdit" @edit="update({ disabled: {attachmentsEdit: $event} })">
     <AttachmentUpload :disabled="state.disabled.attachmentsEdit" />
   </FormSection>
   <FormSection v-else heading="Bilag" id="attachments-placeholder" disable placeholder="- bilag er først tilgængelig efter de har gemt første gang." />
