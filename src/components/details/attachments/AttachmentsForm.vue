@@ -1,8 +1,9 @@
 <template>
-  <FormSection v-if="minPhase(PhaseKeys.PREANALYSIS)" heading="Bilag" id="attachments" :disabled="state.disabled.attachmentsEdit" @edit="update({ disabled: {attachmentsEdit: $event} })">
+  <FormSection v-if="!showPlaceholder" heading="Bilag" id="attachments" :disabled="state.disabled.attachmentsEdit" @edit="update({ disabled: {attachmentsEdit: $event} })">
     <AttachmentUpload :disabled="state.disabled.attachmentsEdit" />
   </FormSection>
-</template>
+  <FormSection v-else heading="Bilag" id="attachments-placeholder" disable placeholder="- bilag er først tilgængelig efter de har gemt første gang." />
+</template> 
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
@@ -20,8 +21,13 @@ import { Phase, PhaseKeys } from '@/models/phase';
   }
 })
 export default class AttachmentsForm extends Vue {
-  @Action(processActionTypes.UPDATE) update: any;
-  @Getter(processGetterTypes.MIN_PHASE) minPhase!: (phase: Phase) => boolean;
+  @Prop({ type: Boolean, default: false })
+  showPlaceholder!: boolean;
+
+  @Action(processActionTypes.UPDATE)
+  update: any;
+  @Getter(processGetterTypes.MIN_PHASE)
+  minPhase!: (phase: Phase) => boolean;
 
   PhaseKeys = PhaseKeys;
 

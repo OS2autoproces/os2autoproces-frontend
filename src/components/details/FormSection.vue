@@ -1,5 +1,5 @@
 <template>
-  <div class="form-section">
+  <div class="form-section" v-if="!placeholder">
     <div class="section-header" :class="{ disabled }">
       <div>{{heading}}</div>
       <div v-if="state.process.canEdit" class="edit-button" role="button" @click="toggleEdit">
@@ -21,6 +21,12 @@
     </div>
     <div class="section-content" v-if="isExpanded">
       <slot />
+    </div>
+  </div>
+  <div class="form-section" v-else>
+    <div class="section-header">
+      <div class="isPlaceholder">{{heading}}</div>
+      <span v-if="{ placeholder }" class="placeholder-text">{{placeholder}}</span>
     </div>
   </div>
 </template>
@@ -53,6 +59,8 @@ export default class FormSection extends Vue {
   invalid!: boolean;
   @Prop(Boolean)
   disabled!: boolean;
+  @Prop({ type: String, default: '' })
+  placeholder!: string;
 
   expand = false;
 
@@ -91,6 +99,17 @@ export default class FormSection extends Vue {
       width: 1rem;
       height: 1rem;
     }
+  }
+
+  .placeholder {
+    color: $color-grey;
+  }
+
+  .placeholder-text {
+    @include field-input-text;
+    color: $color-text;
+    align-self: center;
+    margin-left: 3rem;
   }
 
   &:not(.disabled) {
