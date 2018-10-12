@@ -1,11 +1,13 @@
 <template>
   <div class="well-item-wrap">
     <div class="well-item-label" :style="{flexBasis: labelWidth}">
-      {{required ? `${label} *`: `${label}`}}
-      <InfoTooltip v-if="tooltip">{{tooltip}}</InfoTooltip>
+      <div class="label-wrapper">
+        {{required ? `${label} *`: `${label}`}}
+        <InfoTooltip class="tooltip" v-if="tooltip">{{tooltip}}</InfoTooltip>
+      </div>
     </div>
     <div class="well-input">
-      <slot/>
+      <slot />
     </div>
   </div>
 </template>
@@ -20,11 +22,14 @@ import InfoTooltip from '@/components/common/InfoTooltip.vue';
   }
 })
 export default class WellItem extends Vue {
-  @Prop(String) label!: string;
-  @Prop(String) tooltip!: string;
+  @Prop(String)
+  label!: string;
+  @Prop(String)
+  tooltip!: string;
   @Prop({ default: '50%', type: String })
   labelWidth!: string;
-  @Prop(Boolean) required!: boolean;
+  @Prop(Boolean)
+  required!: boolean;
 }
 </script>
 
@@ -37,6 +42,16 @@ export default class WellItem extends Vue {
   .well-item-label {
     @include field-label;
     flex-shrink: 0;
+    flex-grow: 0;
+  }
+
+  .label-wrapper {
+    display: flex;
+    align-items: center;
+  }
+
+  .tooltip {
+    display: inline-flex;
   }
 
   .well-input {
