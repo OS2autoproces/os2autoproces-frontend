@@ -16,22 +16,30 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 
 @Component
 export default class TextArea extends Vue {
-  @Prop(String) value!: string;
-  @Prop(Number) maxLength!: number;
-  @Prop(Boolean) disabled!: boolean;
-  @Prop(String) placeholder!: string;
-  @Prop(Boolean) noResize!: boolean;
-  @Prop(Number) twoColumnBreakpoint!: number;
-  @Prop(Boolean) fullWidth!: boolean;
+  @Prop(String)
+  value!: string;
+  @Prop(Number)
+  maxLength!: number;
+  @Prop(Boolean)
+  disabled!: boolean;
+  @Prop(String)
+  placeholder!: string;
+  @Prop(Boolean)
+  noResize!: boolean;
+  @Prop(Number)
+  twoColumnBreakpoint!: number;
+  @Prop(Boolean)
+  fullWidth!: boolean;
 
-  currentLength = 0;
+  get currentLength() {
+    return this.value.length ? this.value.length : 0;
+  }
 
   get twoColumns() {
     return this.value ? this.value.length > this.twoColumnBreakpoint : false;
   }
 
   valueChanged(event: any) {
-    this.currentLength = event.target.value.length;
     this.$emit('change', event.target.value);
   }
 }
