@@ -24,7 +24,7 @@
           <DatePicker :value="state.created" disabled/>
         </WellItem>
 
-        <WellItem label="Nuværende systemer:" v-if="minPhase(PhaseKeys.IDEA)" tooltip="Vælg hvilke systemer der understøtter den nuværende proces. Listen kommer fra KITOS.">
+        <WellItem label="Nuværende systemer:" tooltip="Vælg hvilke systemer der understøtter den nuværende proces. Listen kommer fra KITOS.">
           <SelectionField :items="itSystems" :value="state.itSystems" itemText="name" :disabled="state.disabled.challengesEdit" @change="assign({itSystems: $event})" multiple />
         </WellItem>
       </div>
