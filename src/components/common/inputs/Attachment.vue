@@ -15,6 +15,7 @@
     </div>
 
     <a class="name" :href="attachment.url" target="_blank">{{attachment.fileName}}</a>
+    <div v-if="isAttachmentToLarge" class="attachment-error">Filen overskrider 10MB</div>
     <Checkbox v-if="!disabled && canChangeVisibility" :value="attachment.visibleToOtherMunicipalities" @change="$emit('toggleVisibility', attachment.id)">
       Synlig for alle
     </Checkbox>
@@ -30,7 +31,7 @@ import PowerPointIcon from '@/components/icons/PowerPointIcon.vue';
 import FileIcon from '@/components/icons/FileIcon.vue';
 import DeleteIcon from '@/components/icons/DeleteIcon.vue';
 import Checkbox from '@/components/common/inputs/Checkbox.vue';
-import { Attachment } from '@/store/modules/process/state';
+import { Attachment, AttachmentFile } from '@/store/modules/process/state';
 
 @Component({
   components: {
@@ -44,10 +45,20 @@ import { Attachment } from '@/store/modules/process/state';
   }
 })
 export default class AttachmentComponent extends Vue {
-  @Prop(Object) attachment!: Attachment;
-  @Prop(Boolean) disabled!: boolean;
-  @Prop(Boolean) isUploading!: boolean;
-  @Prop(Boolean) canChangeVisibility!: boolean;
+  @Prop(Object)
+  attachment!: AttachmentFile;
+  @Prop(Boolean)
+  disabled!: boolean;
+  @Prop(Boolean)
+  isUploading!: boolean;
+  @Prop(Boolean)
+  canChangeVisibility!: boolean;
+
+  maxAttachmentSize = 10000000;
+
+  get isAttachmentToLarge() {
+    return this.attachment.file ? this.attachment.file.size > this.maxAttachmentSize : false;
+  }
 
   get type() {
     const word = ['.doc', '.dot', '.wbk', '.docx', '.docm', '.dotx', '.dotm', '.docb'];
@@ -128,5 +139,9 @@ a {
 .attachment-icon {
   height: 75px;
   width: 75px;
+}
+
+.attachment-error {
+  color: red;
 }
 </style>
