@@ -45,7 +45,8 @@ export const processActionTypes = {
   REMOVE_PROCESS: `${namespace}/removeProcess`,
 
   SET_EMAIL_NOTIFICATION: `${namespace}/setEmailNotification`,
-  SET_BOOKMARK: `${namespace}/setBookmark`
+  SET_BOOKMARK: `${namespace}/setBookmark`,
+  SET_BOOKMARK_FROM_SEARCH: `${namespace}/setBookmarkFromSearch`
 };
 
 export interface NewComment {
@@ -255,6 +256,15 @@ export const actions: ActionTree<ProcessState, RootState> = {
     await method(url);
 
     commit(processMutationTypes.UPDATE_WITH_NO_CHANGE, { hasBookmarked });
+  },
+  async setBookmarkFromSearch({}, bookmarkProcess: { id: number; hasBookmarked: boolean }): Promise<boolean> {
+    const { id, hasBookmarked } = bookmarkProcess;
+    const url = `api/bookmarks/${id}`;
+    const method = hasBookmarked ? HTTP.put : HTTP.delete;
+
+    const res = await method(url);
+
+    return res.status === 200;
   }
 };
 
