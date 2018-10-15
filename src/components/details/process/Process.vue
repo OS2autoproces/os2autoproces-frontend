@@ -47,7 +47,7 @@
         <div class="snack-bar-list-container">
           <ul class="section-errors" v-for="section in errors" v-if="section.errors.length > 0" :key="section.section">
             <span class="section-errors-title">{{section.section}}</span>
-            <li v-for="field in section.errors" :key="field">
+            <li v-for="(field, i) in section.errors" :key="i">
               <div class="snack-bar-list-item">
                 {{field}}
               </div>
@@ -297,10 +297,12 @@ export default class Process extends Vue {
   }
 
   .snack-bar-list-item {
-    text-overflow: ellipsis;
-    white-space: nowrap;
     width: 15rem;
-    overflow: hidden;
+    overflow: wrap;
+
+    .error {
+      text-decoration: none;
+    }
   }
 }
 </style>
