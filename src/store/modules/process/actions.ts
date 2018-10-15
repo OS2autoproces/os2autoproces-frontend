@@ -257,14 +257,13 @@ export const actions: ActionTree<ProcessState, RootState> = {
 
     commit(processMutationTypes.UPDATE_WITH_NO_CHANGE, { hasBookmarked });
   },
-  async setBookmarkFromSearch({ commit }, bookmarkProcess: { id: number; hasBookmarked: boolean }): Promise<boolean> {
+  async setBookmarkFromSearch({}, bookmarkProcess: { id: number; hasBookmarked: boolean }): Promise<boolean> {
     const { id, hasBookmarked } = bookmarkProcess;
     const url = `api/bookmarks/${id}`;
     const method = hasBookmarked ? HTTP.put : HTTP.delete;
 
     const res = await method(url);
 
-    commit(processMutationTypes.UPDATE, { hasBookmarked });
     return res.status === 200;
   }
 };
