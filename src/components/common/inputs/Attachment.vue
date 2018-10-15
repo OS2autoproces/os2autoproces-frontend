@@ -15,7 +15,7 @@
     </div>
 
     <a class="name" :href="attachment.url" target="_blank">{{attachment.fileName}}</a>
-    <div v-if="!attachmentSize" class="attachment-error">Filen overskrider 10MB</div>
+    <div v-if="isAttachmentToLarge" class="attachment-error">Filen overskrider 10MB</div>
     <Checkbox v-if="!disabled && canChangeVisibility" :value="attachment.visibleToOtherMunicipalities" @change="$emit('toggleVisibility', attachment.id)">
       Synlig for alle
     </Checkbox>
@@ -56,8 +56,8 @@ export default class AttachmentComponent extends Vue {
 
   maxAttachmentSize = 10000000;
 
-  get attachmentSize() {
-    return this.attachment.file ? this.attachment.file.size < this.maxAttachmentSize : true;
+  get isAttachmentToLarge() {
+    return this.attachment.file ? this.attachment.file.size > this.maxAttachmentSize : false;
   }
 
   get type() {
