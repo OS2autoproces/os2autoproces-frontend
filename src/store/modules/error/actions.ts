@@ -106,7 +106,6 @@ export const processLabels: ProcessLabels = {
 };
 
 interface ErrorLabels {
-  [key: string]: Array<keyof Process>;
   generalInformation: Array<keyof Process>;
   challenges: Array<keyof Process>;
   assessment: Array<keyof Process>;
@@ -144,19 +143,22 @@ const errorLabels: ErrorLabels = {
 
 export const actions: ActionTree<ErrorState, RootState> = {
   updateProcessErrors({ commit, state }, processState: ProcessState) {
-    const sections = Object.keys(errorLabels);
+    const sections = Object.keys(errorLabels) as Array<keyof ErrorLabels>;
 
     sections.forEach(section => {
       const sectionErrors = getInvalidProperties(processState, errorLabels[section]);
+
       const errors = sectionErrors.map(error => {
-        if (processLabels[error]) {
-          const tempError =
-            // @ts-ignore
-            processLabels[error].length < 35 ? processLabels[error] : processLabels[error].slice(0, 25) + '...';
+        const errorLabel = processLabels[error];
+
+        if (errorLabel) {
+          const tempError = errorLabel.length < 35 ? errorLabel : errorLabel.slice(0, 25) + '...';
           return tempError + (errorLimitations[error] ? errorLimitations[error] : '');
         }
+
         return '';
       });
+
       commit(errorMutationTypes.ASSIGN, { [section]: { errors, section: state[section].section } });
     });
   },
