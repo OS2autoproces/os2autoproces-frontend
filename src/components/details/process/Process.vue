@@ -27,7 +27,8 @@
           <SpecificationForm v-if="isWithinMunicipality" />
           <ImplementationForm />
           <OperationForm />
-          <AttachmentsForm v-if="!isReporting" />
+          <AttachmentsForm :showPlaceholder="isReporting" v-if="minPhase(PhaseKeys.PREANALYSIS)" />
+
           <FormSection v-if="state.canEdit" id="internal-notes" heading="Interne noter" :disabled="state.disabled.internalNotesEdit" @edit="update({disabled: { internalNotesEdit: $event} })" tooltip="Her kan du tilføje noter til og om processen, der kun vil være synlige for tilknyttede personer. Noterne bliver heller ikke delt, hvis processen deles tværkommunalt.">
             <InternalNotes :internalNotes="state.internalNotes" :disabled="state.disabled.internalNotesEdit" />
           </FormSection>
@@ -70,10 +71,10 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
-import { Action } from 'vuex-class';
+import { Action, Getter } from 'vuex-class';
 import InternalNotes from '@/components/common/inputs/InternalNotes.vue';
 import { processActionTypes, NewComment } from '@/store/modules/process/actions';
-import { Phase } from '@/models/phase';
+import { Phase, PhaseKeys } from '@/models/phase';
 import { commonActionTypes } from '@/store/modules/common/actions';
 
 import Comments from '@/components/details/Comments.vue';
@@ -97,6 +98,7 @@ import { errorActionTypes } from '@/store/modules/error/actions';
 import { ErrorState } from '@/store/modules/error/state';
 import SnackBar from '@/components/common/SnackBar.vue';
 import { isEmpty } from 'lodash';
+import { processGetterTypes } from '@/store/modules/process/getters';
 
 @Component({
   components: {
@@ -137,6 +139,10 @@ export default class Process extends Vue {
   updateProcessErrors!: (processErrors: Partial<ErrorState>) => void;
   @Action(errorActionTypes.CLEAR_ERRORS)
   clearErrors!: () => void;
+  @Getter(processGetterTypes.MIN_PHASE)
+  minPhase!: (phase: Phase) => boolean;
+
+  PhaseKeys = PhaseKeys;
 
   showSaveSuccess = false;
   showSaveError = false;
