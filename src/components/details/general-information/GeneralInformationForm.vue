@@ -26,7 +26,6 @@
         <WellItem v-if="state.contact" labelWidth="180px" label="Mail:">
           {{state.contact.email}}
         </WellItem>
-
       </div>
 
       <div>
@@ -38,15 +37,12 @@ Privat betyder at det kun er dig og din superbruger der kan se processen.">
         <WellItem labelWidth="120px" label="Fagområder:">
           <DomainsField :disabled="state.disabled.generalInformationEdit" :value="state.domains" @change="assign({domains: $event})" />
         </WellItem>
-
         <WellItem labelWidth="120px" label="Afdelinger:" v-if="isWithinMunicipality">
           <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.orgUnits" @change="assign({orgUnits: $event})" :items="orgUnits" multiple itemText="name" />
         </WellItem>
-
         <WellItem v-if="minPhase(PhaseKeys.DEVELOPMENT)" labelWidth="180px" label="Leverandør:" tooltip="Her skrives enten kommunens navn eller en ekstern leverandør der har lavet løsningen.">
           <InputField :disabled="state.disabled.generalInformationEdit" :value="state.vendor" @change="update({vendor: $event})" />
         </WellItem>
-
       </div>
 
       <div>
