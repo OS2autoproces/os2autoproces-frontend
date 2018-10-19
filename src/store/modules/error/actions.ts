@@ -15,7 +15,6 @@ export const errorActionTypes = {
 type ProcessLabels = { [X in keyof Process]?: string };
 
 export const umbrellaLabels: ProcessLabels = {
-  localId: 'Lokalt ID',
   contact: 'Kontaktperson',
   title: 'Titel',
   shortDescription: 'Resume',
@@ -27,7 +26,6 @@ export const umbrellaLabels: ProcessLabels = {
 };
 
 export const generalInformationLabels: ProcessLabels = {
-  localId: 'Lokalt ID',
   phase: 'Fase',
   owner: 'Fagligkontaktperson',
   contact: 'Kontaktperson',
@@ -115,6 +113,21 @@ interface ErrorLabels {
   operation: Array<keyof Process>;
 }
 
+const errorLimitations: { [key: string]: string } = {
+  klId: 'maks 64 tegn',
+  title: 'mellem 1 og 50 tegn',
+  visibility: 'obligatorisk felt',
+  status: 'obligatorisk felt',
+  kla: '8, 11 eller 14 tegn',
+  timeSpendOccurancesPerEmployee: 'kun tal',
+  timeSpendPerOccurance: 'kun tal',
+  timeSpendEmployeesDoingProcess: 'kun tal',
+  timeSpendPercentageDigital: 'maks 100 tegn',
+  owner: 'obligatorisk felt',
+  technologies: 'obligatorisk fra specifikations-fasen',
+  processChallenges: 'obligatorisk fra Idé-fasen'
+};
+
 const errorLabels: ErrorLabels = {
   generalInformation: Object.keys(generalInformationLabels) as Array<keyof Process>,
   challenges: Object.keys(challengesLabels) as Array<keyof Process>,
@@ -131,7 +144,19 @@ export const actions: ActionTree<ErrorState, RootState> = {
 
     sections.forEach(section => {
       const sectionErrors = getInvalidProperties(processState, errorLabels[section]);
-      const errors = sectionErrors.map(error => processLabels[error]);
+
+      const errors = sectionErrors.map(error => {
+        const errorLabel = processLabels[error];
+        const limitationLabel = errorLimitations[error];
+
+        if (errorLabel) {
+          const tempError = errorLabel.length < 35 ? errorLabel : errorLabel.slice(0, 25) + '...';
+          return tempError + (limitationLabel ? ` (${limitationLabel})` : '');
+        }
+
+        return '';
+      });
+
       commit(errorMutationTypes.ASSIGN, { [section]: { errors, section: state[section].section } });
     });
   },

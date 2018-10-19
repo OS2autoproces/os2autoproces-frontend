@@ -53,6 +53,7 @@ export default class AttachmentUpload extends Vue {
   idCounter = 0;
   placeholders: AttachmentFile[] = [];
   isUploading = false;
+  maxFileSize = 10000000;
 
   @Prop(Boolean)
   disabled!: boolean;
@@ -87,10 +88,18 @@ export default class AttachmentUpload extends Vue {
   async uploadFiles() {
     this.isUploading = true;
 
-    await this.$store.dispatch(processActionTypes.UPLOAD_ATTACHMENTS, this.placeholders);
+    const { valid, invalid } = this.placeholders.reduce(
+      (files: { valid: AttachmentFile[]; invalid: AttachmentFile[] }, file) => {
+        file.file.size < this.maxFileSize ? files.valid.push(file) : files.invalid.push(file);
+        return files;
+      },
+      { valid: [], invalid: [] }
+    );
+
+    await this.$store.dispatch(processActionTypes.UPLOAD_ATTACHMENTS, valid);
 
     this.isUploading = false;
-    this.placeholders = [];
+    this.placeholders = invalid;
   }
 
   removeAttachment(id: number) {
@@ -100,7 +109,6 @@ export default class AttachmentUpload extends Vue {
 
     this.$store.dispatch(processActionTypes.REMOVE_ATTACHMENTS, id);
   }
-
   removePlaceholder(id: number) {
     if (!confirm('Er du sikker?')) {
       return;

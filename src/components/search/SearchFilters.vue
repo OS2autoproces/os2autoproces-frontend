@@ -2,10 +2,10 @@
   <div>
     <div class="wrapper">
       <div class="types" v-if="!umbrellaProcessSearch">
-        <PillCheckbox :value="!!filters.reporterId" @change="setReporterId">Indberettede
+        <PillCheckbox :value="!!filters.reporterId" @change="setReporterId">Mine indberetninger
         </PillCheckbox>
-        <PillCheckbox :value="!!filters.usersId" @change="setUsersId">Tilknyttede</PillCheckbox>
-        <PillCheckbox :value="!!filters.bookmarkedId" @change="setBookmarkedId">Favoritter
+        <PillCheckbox :value="!!filters.usersId" @change="setUsersId">Mine tilknytninger</PillCheckbox>
+        <PillCheckbox :value="!!filters.bookmarkedId" @change="setBookmarkedId">Mine favoritter
         </PillCheckbox>
       </div>
 

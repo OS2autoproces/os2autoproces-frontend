@@ -33,9 +33,6 @@ function isValid(value: any, constraints: any): boolean {
 }
 
 export const processFieldsValidators: { [P in keyof Process]?: (state: ProcessState) => boolean } = {
-  localId({ localId }: ProcessState) {
-    return isValid(localId, isMinMax(0, 64));
-  },
   klId({ klId }: ProcessState) {
     return isValid(klId, isMinMax(0, 64));
   },

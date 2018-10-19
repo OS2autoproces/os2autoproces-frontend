@@ -8,7 +8,6 @@ import { User } from '@/store/modules/auth/state';
 import { ITSystem, Link, OrgUnit, Process, ProcessState, Technology } from '@/store/modules/process/state';
 
 export interface ProcessRequest {
-  localId: string | null;
   klId: string | null;
   esdhReference: string | null;
   phase: Phase;
@@ -85,7 +84,6 @@ export interface ProcessResponse {
   form: string | null;
   itSystemsDescription: string | null;
 
-  localId: string | null;
   klId: string | null;
   esdhReference: string | null;
   phase: Phase;
@@ -170,7 +168,6 @@ function defaultZero(prop: any) {
 
 function stateToRequestFields(state: ProcessState): ProcessRequest {
   return {
-    localId: defaultNull(state.localId),
     klId: defaultNull(state.klId),
     esdhReference: defaultNull(state.esdhReference),
     phase: state.phase || PhaseKeys.IDEA,
@@ -238,7 +235,6 @@ function pickFields(request: ProcessRequest, fields: Array<keyof ProcessRequest>
 function buildUmbrellaRequest(request: ProcessRequest): Partial<ProcessRequest> {
   return pickFields(request, [
     'kle',
-    'localId',
     'klId',
     'kla',
     'form',
@@ -285,7 +281,6 @@ export function responseToState(process: ProcessResponse): Process {
     timeSpendComment: process.timeSpendComment || '',
     technologies: process.technologies || [],
     users: process.users || [],
-    localId: process.localId || '',
     klId: process.klId || '',
     form: process.form ? { code: process.form } : null,
     legalClause: process.legalClause || '',

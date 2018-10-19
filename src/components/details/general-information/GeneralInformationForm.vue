@@ -14,35 +14,14 @@
         <WellItem labelWidth="200px" label="ID:">
           <InputField disabled :value="state.id" />
         </WellItem>
-        <WellItem labelWidth="200px" label="KLE-nr:">
-          <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.kle" @change="setKle($event)" :items="kles" itemText="code" clearable />
-        </WellItem>
-        <WellItem labelWidth="200px" label="FORM:" v-if="state.kle">
-          <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.form" @change="update({form: $event})" :items="forms" itemText="code" clearable />
-        </WellItem>
-        <WellItem labelWidth="200px" label="Lokalt ID:">
-          <InputField :disabled="state.disabled.generalInformationEdit" :value="state.localId" @change="update({localId: $event})" />
-        </WellItem>
-        <WellItem labelWidth="200px" label="KL ID:">
-          <InputField :disabled="state.disabled.generalInformationEdit" :value="state.klId" @change="update({klId: $event})" />
-        </WellItem>
-        <WellItem labelWidth="200px" label="KL’s Arbejdsgangsbank:" tooltip="KL’s Arbejdsgangsbank nummeret henviser til en proces fra KL’s Arbejdsgangsbank.">
-          <MaskableInput :disabled="state.disabled.generalInformationEdit" mask="##.##.##.##.##" :value="state.kla" @change="setKla" />
-        </WellItem>
-      </div>
-
-      <div>
-        <WellItem v-if="minPhase(PhaseKeys.DEVELOPMENT)" labelWidth="180px" label="Leverandør:" tooltip="Her skrives enten kommunens navn eller en ekstern leverandør der har lavet løsningen.">
-          <InputField :disabled="state.disabled.generalInformationEdit" :value="state.vendor" @change="update({vendor: $event})" />
-        </WellItem>
         <WellItem labelWidth="180px" label="Indberetter:" v-if="isWithinMunicipality">
           <SelectionField disabled :value="state.reporter" itemText="name" />
         </WellItem>
         <WellItem labelWidth="180px" label="Fagligkontaktperson:" tooltip="Er en person der varetager processen til daglig og derfor har stort kendskab til den." v-if="isWithinMunicipality" :required="minPhase(PhaseKeys.SPECIFICATION)">
-          <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.owner" itemText="name" @search="search($event)" isItemsPartial @change="update({owner: $event})" :items="users" />
+          <SelectionField itemSubText="email" :disabled="state.disabled.generalInformationEdit" :value="state.owner" itemText="name" @search="search($event)" isItemsPartial @change="update({owner: $event})" :items="users" />
         </WellItem>
         <WellItem labelWidth="180px" label="Kontaktperson:" tooltip="En person der har teknisk viden omkring løsningen.">
-          <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.contact" itemText="name" @search="search($event)" isItemsPartial @change="update({contact: $event})" :items="users" clearable />
+          <SelectionField itemSubText="email" :disabled="state.disabled.generalInformationEdit" :value="state.contact" itemText="name" @search="search($event)" isItemsPartial @change="update({contact: $event})" :items="users" clearable />
         </WellItem>
         <WellItem v-if="state.contact" labelWidth="180px" label="Mail:">
           {{state.contact.email}}
@@ -50,19 +29,37 @@
       </div>
 
       <div>
+        <WellItem labelWidth="120px" label="Synlighed:" tooltip="Kommunalt betyder at alle brugere i din organisation kan se processen.
+Tværkommunalt betyder at brugere i andre kommuner kan se processen.
+Privat betyder at det kun er dig og din superbruger der kan se processen.">
+          <MappedSelectionField :disabled="!!state.parents.length || state.disabled.generalInformationEdit" :value="state.visibility" @change="update({visibility: $event})" :items="visibilityLevels" />
+        </WellItem>
         <WellItem labelWidth="120px" label="Fagområder:">
           <DomainsField :disabled="state.disabled.generalInformationEdit" :value="state.domains" @change="assign({domains: $event})" />
         </WellItem>
         <WellItem labelWidth="120px" label="Afdelinger:" v-if="isWithinMunicipality">
           <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.orgUnits" @change="assign({orgUnits: $event})" :items="orgUnits" multiple itemText="name" />
         </WellItem>
-        <WellItem labelWidth="120px" label="Synlighed:" tooltip="Kommunalt betyder at alle brugere i din organisation kan se processen.
-Tværkommunalt betyder at brugere i andre kommuner kan se processen.
-Privat betyder at det kun er dig og din superbruger der kan se processen.">
-          <MappedSelectionField :disabled="!!state.parents.length || state.disabled.generalInformationEdit" :value="state.visibility" @change="update({visibility: $event})" :items="visibilityLevels" />
+        <WellItem v-if="minPhase(PhaseKeys.DEVELOPMENT)" labelWidth="180px" label="Leverandør:" tooltip="Her skrives enten kommunens navn eller en ekstern leverandør der har lavet løsningen.">
+          <InputField :disabled="state.disabled.generalInformationEdit" :value="state.vendor" @change="update({vendor: $event})" />
         </WellItem>
+      </div>
+
+      <div>
         <WellItem v-if="minPhase(PhaseKeys.PREANALYSIS)" labelWidth="120px" label="Lovparagraf:">
           <InputField :disabled="state.disabled.generalInformationEdit" :value="state.legalClause" @change="update({legalClause: $event})" />
+        </WellItem>
+        <WellItem labelWidth="200px" label="KLE-nr:">
+          <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.kle" @change="setKle($event)" :items="kles" itemText="code" clearable />
+        </WellItem>
+        <WellItem labelWidth="200px" label="FORM:" v-if="state.kle">
+          <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.form" @change="update({form: $event})" :items="forms" itemText="code" clearable />
+        </WellItem>
+        <WellItem labelWidth="200px" label="KL ID:">
+          <InputField :disabled="state.disabled.generalInformationEdit" :value="state.klId" @change="update({klId: $event})" />
+        </WellItem>
+        <WellItem labelWidth="200px" label="KL’s Arbejdsgangsbank:" tooltip="KL’s Arbejdsgangsbank nummeret henviser til en proces fra KL’s Arbejdsgangsbank.">
+          <MaskableInput :disabled="state.disabled.generalInformationEdit" mask="##.##.##.##.##" :value="state.kla" @change="setKla" />
         </WellItem>
       </div>
 
