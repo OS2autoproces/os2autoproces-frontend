@@ -15,7 +15,6 @@ export interface ProcessState extends Process {
 
 export interface Process {
   id: string;
-  localId: string;
   klId: string;
   children: Process[];
   parents: Process[];

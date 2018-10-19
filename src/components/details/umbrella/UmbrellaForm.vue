@@ -21,9 +21,6 @@
           <WellItem labelWidth="200px" label="FORM:" v-if="state.kle">
             <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.form" @change="update({form: $event})" :items="forms" itemText="code" clearable />
           </WellItem>
-          <WellItem labelWidth="200px" label="Lokalt ID:">
-            <InputField :disabled="state.disabled.generalInformationEdit" :value="state.localId" @change="update({localId: $event})" />
-          </WellItem>
           <WellItem labelWidth="200px" label="KL ID:">
             <InputField :disabled="state.disabled.generalInformationEdit" :value="state.klId" @change="update({klId: $event})" />
           </WellItem>

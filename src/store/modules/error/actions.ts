@@ -15,7 +15,6 @@ export const errorActionTypes = {
 type ProcessLabels = { [X in keyof Process]?: string };
 
 export const umbrellaLabels: ProcessLabels = {
-  localId: 'Lokalt ID',
   contact: 'Kontaktperson',
   title: 'Titel',
   shortDescription: 'Resume',
@@ -27,7 +26,6 @@ export const umbrellaLabels: ProcessLabels = {
 };
 
 export const generalInformationLabels: ProcessLabels = {
-  localId: 'Lokalt ID',
   phase: 'Fase',
   owner: 'Fagligkontaktperson',
   contact: 'Kontaktperson',
@@ -116,7 +114,6 @@ interface ErrorLabels {
 }
 
 const errorLimitations: { [key: string]: string } = {
-  localId: 'maks 64 tegn',
   klId: 'maks 64 tegn',
   title: 'mellem 1 og 50 tegn',
   visibility: 'obligatorisk felt',
