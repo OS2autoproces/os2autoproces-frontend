@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-autocomplete ref="autocomplete" v-if="!disabled" :clearable="clearable" :label="placeholder" :items="_items" single-line no-data-text="Ingen resultater" :item-text="itemText" :append-icon="iconName" :search-input.sync="searchQuery" @change="valueChanged" :value="value" return-object :multiple="multiple">
+    <v-autocomplete ref="autocomplete" v-if="!disabled" :clearable="clearable" :label="placeholder" :items="_items" single-line no-data-text="Ingen resultater" :item-text="itemText" :item-value="itemValue" :append-icon="iconName" :search-input.sync="searchQuery" @change="valueChanged" :value="value" return-object :multiple="multiple">
       <template slot="item" slot-scope="data">
         <template v-if="itemSubText">
           <v-list-tile-content>
@@ -44,6 +44,8 @@ export default class SelectionField<T extends any> extends Vue {
   itemText!: string;
   @Prop({ type: String })
   itemSubText!: string;
+  @Prop({ type: String, default: 'id' })
+  itemValue!: string;
 
   get _items(): T[] {
     let items: T[] = [];
