@@ -53,3 +53,12 @@ HTTP.interceptors.response.use((response) => {
   }
   return response;
 });
+
+// When the session has expired, a response with a 302 redirect will be returned from the API.
+// This will fail, giving a Network Error with no response.
+HTTP.interceptors.response.use(undefined, error => {
+  if (!error.response) {
+    alert('Din session er udløbet. Log ind i et nyt vindue og prøv igen.');
+    open(`${window.autoProcessConfiguration.apiUrl}/saml/login`);
+  }
+});
