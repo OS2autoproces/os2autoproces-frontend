@@ -42,11 +42,10 @@ export const actions: ActionTree<AuthState, RootState> = {
       };
 
       commit(authMutationTypes.SET_USER, user);
+      dispatch(authActionTypes.LOAD_BOOKMARKS, {}, { root: true });
     } else {
       commit(authMutationTypes.SET_USER, undefined);
     }
-
-    dispatch(authActionTypes.LOAD_BOOKMARKS, {}, { root: true });
   },
 
   async loadBookmarks({ commit }): Promise<void> {
