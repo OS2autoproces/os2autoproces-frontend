@@ -1,20 +1,38 @@
 <template>
   <div class="page">
     <div class="header">
-      <a class="login-button" :href="loginUrl">Log ind</a>
+      <a
+        class="login-button"
+        :href="loginUrl"
+      >Log ind</a>
 
       <h1>OS2autoproces</h1>
       <h2>Tværkommunal procesdeling</h2>
     </div>
 
-    <div class="details" :class="{ editing }">
-      <div class="edit-button-container" v-if="isEditor && !editing" @click="editing = true">
+    <div
+      class="details"
+      :class="{ editing }"
+    >
+      <div
+        class="edit-button-container"
+        v-if="isEditor && !editing"
+        @click="editing = true"
+      >
         <EditIcon></EditIcon>
       </div>
-      <div class="save-button-container" v-if="editing" @click="save">
+      <div
+        class="save-button-container"
+        v-if="editing"
+        @click="save"
+      >
         <Button class="save-button">Gem</Button>
       </div>
-      <MarkdownEditor :editing="editing" :value="state.common.frontPage" @change="update({frontPage: $event})" />
+      <MarkdownEditor
+        :editing="editing"
+        :value="state.common.frontPage"
+        @change="update({frontPage: $event})"
+      />
     </div>
 
     <div class="idea-sharing-icon">
@@ -25,15 +43,15 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator';
-import { Action, Getter } from 'vuex-class';
-import IdeaSharingIcon from '../components/icons/IdeaSharingIcon.vue';
-import EditIcon from '../components/icons/EditIcon.vue';
-import Button from '../components/common/inputs/Button.vue';
-import MarkdownEditor from '../components/common/inputs/MarkdownEditor.vue';
-import { commonActionTypes, Cms } from '@/store/modules/common/actions';
-import { CommonState } from '@/store/modules/common/state';
-import { authGetterTypes } from '@/store/modules/auth/getters';
+import { Vue, Component, Prop } from "vue-property-decorator";
+import { Action, Getter } from "vuex-class";
+import IdeaSharingIcon from "../components/icons/IdeaSharingIcon.vue";
+import EditIcon from "../components/icons/EditIcon.vue";
+import Button from "../components/common/inputs/Button.vue";
+import MarkdownEditor from "../components/common/inputs/MarkdownEditor.vue";
+import { commonActionTypes, Cms } from "@/store/modules/common/actions";
+import { CommonState } from "@/store/modules/common/state";
+import { authGetterTypes } from "@/store/modules/auth/getters";
 
 @Component({
   components: {
@@ -59,15 +77,16 @@ export default class Home extends Vue {
 
   editing = false;
 
-  loginUrl = `${window.autoProcessConfiguration.apiUrl}/saml/login`;
+  // loginUrl = `${window.autoProcessConfiguration.apiUrl}/saml/login`;
+  loginUrl = `${window.autoProcessConfiguration.apiUrl}/discovery`;
 
   mounted() {
-    this.loadCmsContent('frontPage');
+    this.loadCmsContent("frontPage");
   }
 
   save() {
     this.saveCmsContent({
-      label: 'frontPage',
+      label: "frontPage",
       content: this.state.common.frontPage
     });
     this.editing = false;
@@ -76,7 +95,7 @@ export default class Home extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import '../styles/variables';
+@import "../styles/variables";
 
 .page {
   background-color: $color-secondary;
@@ -84,7 +103,7 @@ export default class Home extends Vue {
 
 .header {
   background-size: cover;
-  background-image: url('../assets/Stack_of_Copy_Paper.jpg');
+  background-image: url("../assets/Stack_of_Copy_Paper.jpg");
   height: 350px;
   display: flex;
   flex-direction: column;
