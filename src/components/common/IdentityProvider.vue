@@ -2,7 +2,7 @@
   <v-card class="card">
     <v-toolbar class="toolbar">
       <v-spacer></v-spacer>
-      <v-toolbar-title>Vælg Region</v-toolbar-title>
+      Vælg Region
       <v-spacer></v-spacer>
     </v-toolbar>
     <div>
@@ -63,6 +63,8 @@ export default class IdentityProvider extends Vue {
   margin: auto;
   color: white;
   background-color: $color-primary;
+  font-size: 1.8rem;
+  font-weight: bold;
 }
 
 .list-elements {
@@ -76,5 +78,10 @@ export default class IdentityProvider extends Vue {
 
 .element-title {
   text-align: center;
+  font-size: 1.5rem;
+}
+
+.headline {
+  font-weight: bold;
 }
 </style>

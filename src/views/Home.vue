@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <div class="header">
-      <div class="wrapper">
+      <div class="button-wrapper">
         <a
           class="login-button"
           :href="loginUrl"
@@ -114,7 +114,7 @@ export default class Home extends Vue {
   justify-content: center;
   align-items: center;
 
-  .wrapper {
+  .button-wrapper {
     width: 100%;
     text-align: right;
     position: absolute;
