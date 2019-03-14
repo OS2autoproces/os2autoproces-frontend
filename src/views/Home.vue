@@ -1,11 +1,16 @@
 <template>
   <div class="page">
     <div class="header">
-      <a
-        class="login-button"
-        :href="loginUrl"
-      >Log ind</a>
-
+      <div class="wrapper">
+        <a
+          class="login-button"
+          :href="loginUrl"
+        >Kommune</a>
+        <a
+          class="login-button"
+          href="/discovery"
+        >Region</a>
+      </div>
       <h1>OS2autoproces</h1>
       <h2>Tværkommunal procesdeling</h2>
     </div>
@@ -77,8 +82,7 @@ export default class Home extends Vue {
 
   editing = false;
 
-  // loginUrl = `${window.autoProcessConfiguration.apiUrl}/saml/login`;
-  loginUrl = `${window.autoProcessConfiguration.apiUrl}/discovery`;
+  loginUrl = `${window.autoProcessConfiguration.apiUrl}/saml/login`;
 
   mounted() {
     this.loadCmsContent("frontPage");
@@ -110,6 +114,13 @@ export default class Home extends Vue {
   justify-content: center;
   align-items: center;
 
+  .wrapper {
+    width: 100%;
+    text-align: right;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+  }
   .login-button {
     border: 1px solid rgba(0, 0, 0, 0.3);
     border-radius: 0.5rem;
@@ -118,11 +129,13 @@ export default class Home extends Vue {
     background-color: $color-primary;
     @include heading;
     font-size: 1.5rem;
-    display: block;
+    display: inline-block;
     text-decoration: none;
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
+    margin-left: 1rem;
+    &:hover {
+      background-color: darken($color-primary, 10%);
+      color: darken(white, 10%);
+    }
   }
 
   h1 {

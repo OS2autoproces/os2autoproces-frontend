@@ -59,6 +59,6 @@ HTTP.interceptors.response.use((response) => {
 HTTP.interceptors.response.use(undefined, error => {
   if (error.message === 'Network Error') {
     alert('Din session er udløbet. Log ind i et nyt vindue og prøv igen.');
-    open(`${window.autoProcessConfiguration.apiUrl}/saml/login`);
+    open(location.origin);
   }
 });
