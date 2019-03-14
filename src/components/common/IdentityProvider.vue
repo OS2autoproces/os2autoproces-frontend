@@ -1,0 +1,80 @@
+<template>
+  <v-card class="card">
+    <v-toolbar class="toolbar">
+      <v-spacer></v-spacer>
+      <v-toolbar-title>Vælg Region</v-toolbar-title>
+      <v-spacer></v-spacer>
+    </v-toolbar>
+    <div>
+      <v-list>
+        <template v-for="item in loginProviders">
+          <v-list-tile
+            class="list-elements"
+            :key="item.name"
+            ripple
+            @click="login(item.entityId)"
+          >
+            <v-list-tile-content>
+              <v-list-tile-title class="element-title">
+                {{item.name}}
+              </v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+        </template>
+      </v-list>
+    </div>
+  </v-card>
+</template>
+
+<script lang="ts">
+import { Vue, Component, Prop } from "vue-property-decorator";
+import { HTTP } from "@/services/http-service";
+
+interface IdProvider {
+  entityId: string;
+  name: string;
+}
+
+@Component({
+  components: {}
+})
+export default class IdentityProvider extends Vue {
+  loginProviders: IdProvider[] = [];
+
+  async mounted() {
+    const loginProvidersRequest = (await HTTP.get<IdProvider[]>(
+      `public/identityproviders`
+    )).data;
+    this.loginProviders = loginProvidersRequest;
+  }
+
+  login(entityId: string) {
+    window.location.href = `${
+      window.autoProcessConfiguration.apiUrl
+    }/saml/login?idp=${encodeURIComponent(entityId)}`;
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+@import "../../styles/variables";
+
+.toolbar {
+  margin: auto;
+  color: white;
+  background-color: $color-primary;
+}
+
+.list-elements {
+  background-color: $color-background;
+  color: $color-text;
+}
+
+.card {
+  border-radius: 0.5rem;
+}
+
+.element-title {
+  text-align: center;
+}
+</style>
