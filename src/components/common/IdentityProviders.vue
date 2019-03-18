@@ -7,7 +7,7 @@
     </v-toolbar>
     <div>
       <v-list>
-        <template v-for="item in loginProviders">
+        <template v-for="item in identityProviders">
           <v-list-tile
             class="list-elements"
             :key="item.name"
@@ -30,22 +30,21 @@
 import { Vue, Component, Prop } from "vue-property-decorator";
 import { HTTP } from "@/services/http-service";
 
-interface IdProvider {
+interface IdentityProvider {
   entityId: string;
   name: string;
 }
 
-@Component({
-  components: {}
-})
-export default class IdentityProvider extends Vue {
-  loginProviders: IdProvider[] = [];
+@Component({})
+export default class IdentityProviders extends Vue {
+  identityProviders: IdentityProvider[] = [];
 
   async mounted() {
-    const loginProvidersRequest = (await HTTP.get<IdProvider[]>(
+    const response = await HTTP.get<IdentityProvider[]>(
       `public/identityproviders`
-    )).data;
-    this.loginProviders = loginProvidersRequest;
+    );
+
+    this.identityProviders = response.data;
   }
 
   login(entityId: string) {

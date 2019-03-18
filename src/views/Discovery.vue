@@ -9,7 +9,7 @@
         offset-sm3
         offset-md4
       >
-        <IdentityProvider />
+        <IdentityProviders />
       </v-flex>
     </v-layout>
   </div>
@@ -18,10 +18,10 @@
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
 import { HTTP } from "@/services/http-service";
-import IdentityProvider from "../components/common/IdentityProvider.vue";
+import IdentityProviders from "../components/common/IdentityProviders.vue";
 
 @Component({
-  components: { IdentityProvider }
+  components: { IdentityProviders }
 })
 export default class Discovery extends Vue {}
 </script>

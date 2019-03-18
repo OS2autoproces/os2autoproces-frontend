@@ -2,6 +2,7 @@
   <div class="page">
     <div class="header">
       <div class="button-wrapper">
+        <span class="login-label">Login som</span>
         <a
           class="login-button"
           :href="loginUrl"
@@ -115,12 +116,16 @@ export default class Home extends Vue {
   align-items: center;
 
   .button-wrapper {
-    width: 100%;
-    text-align: right;
     position: absolute;
     top: 1rem;
     right: 1rem;
   }
+
+  .login-label {
+    color: white;
+    font-size: 1.5em;
+  }
+
   .login-button {
     border: 1px solid rgba(0, 0, 0, 0.3);
     border-radius: 0.5rem;
