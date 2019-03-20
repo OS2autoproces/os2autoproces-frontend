@@ -1,9 +1,8 @@
 <template>
   <div class="page">
     <div class="header">
-      <div class="button-wrapper">
-        <a class="login-button" href="/discovery">Log ind</a>
-      </div>
+      <a class="login-button" href="/discovery">Log ind</a>
+
       <h1>OS2autoproces</h1>
       <h2>Tværkommunal procesdeling</h2>
     </div>
@@ -93,17 +92,6 @@ export default class Home extends Vue {
   justify-content: center;
   align-items: center;
 
-  .button-wrapper {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-  }
-
-  .login-label {
-    color: white;
-    font-size: 1.5em;
-  }
-
   .login-button {
     border: 1px solid rgba(0, 0, 0, 0.3);
     border-radius: 0.5rem;
@@ -112,9 +100,12 @@ export default class Home extends Vue {
     background-color: $color-primary;
     @include heading;
     font-size: 1.5rem;
-    display: inline-block;
+    display: block;
     text-decoration: none;
-    margin-left: 1rem;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+
     &:hover {
       background-color: darken($color-primary, 10%);
       color: darken(white, 10%);
