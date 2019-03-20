@@ -1,23 +1,15 @@
 <template>
   <v-card class="card">
     <v-toolbar class="toolbar">
-      <v-spacer></v-spacer>
-      Vælg Region
+      <v-spacer></v-spacer>Log ind som
       <v-spacer></v-spacer>
     </v-toolbar>
     <div>
       <v-list>
         <template v-for="item in identityProviders">
-          <v-list-tile
-            class="list-elements"
-            :key="item.name"
-            ripple
-            @click="login(item.entityId)"
-          >
+          <v-list-tile class="list-elements" :key="item.name" ripple :href="item.url">
             <v-list-tile-content>
-              <v-list-tile-title class="element-title">
-                {{item.name}}
-              </v-list-tile-title>
+              <v-list-tile-title class="element-title">{{item.name}}</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
         </template>
@@ -35,22 +27,28 @@ interface IdentityProvider {
   name: string;
 }
 
+interface IdentityProviderLink {
+  url: string;
+  name: string;
+}
+
 @Component({})
 export default class IdentityProviders extends Vue {
-  identityProviders: IdentityProvider[] = [];
+  identityProviders: IdentityProviderLink[] = [];
 
   async mounted() {
     const response = await HTTP.get<IdentityProvider[]>(
       `public/identityproviders`
     );
 
-    this.identityProviders = response.data;
-  }
+    const apiUrl = window.autoProcessConfiguration.apiUrl;
 
-  login(entityId: string) {
-    window.location.href = `${
-      window.autoProcessConfiguration.apiUrl
-    }/saml/login?idp=${encodeURIComponent(entityId)}`;
+    this.identityProviders = response.data.map(provider => {
+      return {
+        name: provider.name,
+        url: `${apiUrl}/saml/login?idp=${encodeURIComponent(provider.entityId)}`
+      };
+    });
   }
 }
 </script>

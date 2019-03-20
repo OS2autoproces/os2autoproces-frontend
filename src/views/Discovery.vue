@@ -1,15 +1,8 @@
 <template>
   <div class="page">
     <v-layout row>
-      <v-flex
-        xs8
-        sm6
-        md4
-        offset-xs2
-        offset-sm3
-        offset-md4
-      >
-        <IdentityProviders />
+      <v-flex xs8 sm6 md4 offset-xs2 offset-sm3 offset-md4>
+        <IdentityProviders/>
       </v-flex>
     </v-layout>
   </div>
