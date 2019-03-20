@@ -108,7 +108,6 @@ export default class Home extends Vue {
 
     &:hover {
       background-color: darken($color-primary, 10%);
-      color: darken(white, 10%);
     }
   }
 
