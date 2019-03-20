@@ -7,6 +7,7 @@ import Home from './views/Home.vue';
 import ManageTechnologies from './views/ManageTechnologies.vue';
 import ReportProcess from './views/ReportProcess.vue';
 import Search from './views/Search.vue';
+import Discovery from './views/Discovery.vue'
 
 Vue.use(Router);
 
@@ -40,6 +41,10 @@ export const routes: RouteConfig[] = [
     component: Home
   },
   {
+    path: '/discovery',
+    component: Discovery
+  },
+  {
     path: '/manage-technologies',
     component: ManageTechnologies,
     beforeEnter: hasRole(UserRole.administrator)
@@ -67,7 +72,7 @@ export const routes: RouteConfig[] = [
     beforeEnter: isLoggedIn()
   },
   { path: '/logged-in', redirect: '/search' },
-  { path: '/logged-out', redirect: '/' }
+  { path: '/logged-out', redirect: '/' },
 ];
 
 export const router = new Router({

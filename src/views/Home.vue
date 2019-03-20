@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <div class="header">
-      <a class="login-button" :href="loginUrl">Log ind</a>
+      <a class="login-button" href="/discovery">Log ind</a>
 
       <h1>OS2autoproces</h1>
       <h2>Tværkommunal procesdeling</h2>
@@ -14,13 +14,16 @@
       <div class="save-button-container" v-if="editing" @click="save">
         <Button class="save-button">Gem</Button>
       </div>
-      <MarkdownEditor :editing="editing" :value="state.common.frontPage" @change="update({frontPage: $event})" />
+      <MarkdownEditor
+        :editing="editing"
+        :value="state.common.frontPage"
+        @change="update({frontPage: $event})"
+      />
     </div>
 
     <div class="idea-sharing-icon">
-      <idea-sharing-icon />
+      <idea-sharing-icon/>
     </div>
-
   </div>
 </template>
 
@@ -58,8 +61,6 @@ export default class Home extends Vue {
   }
 
   editing = false;
-
-  loginUrl = `${window.autoProcessConfiguration.apiUrl}/saml/login`;
 
   mounted() {
     this.loadCmsContent('frontPage');
@@ -104,6 +105,10 @@ export default class Home extends Vue {
     position: absolute;
     top: 1rem;
     right: 1rem;
+
+    &:hover {
+      background-color: darken($color-primary, 10%);
+    }
   }
 
   h1 {

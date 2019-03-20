@@ -17,7 +17,6 @@ function paramsSerializer(params: object): string {
       const isDefined = value !== null && value !== undefined && value !== '';
       const isNonEmpty = !Array.isArray(value) || value.length > 0;
 
-
       return isDefined && isNonEmpty;
     })
     .map(([key, values]) => {
@@ -25,16 +24,16 @@ function paramsSerializer(params: object): string {
         values = [values];
       }
 
-      return values.map((value: any) => {
-        if (value instanceof Date) {
-          value = value.toISOString();
-        }
-        else if (typeof value === 'object') {
-          value = JSON.stringify(value);
-        }
+      return values
+        .map((value: any) => {
+          if (value instanceof Date) {
+            value = value.toISOString();
+          } else if (typeof value === 'object') {
+            value = JSON.stringify(value);
+          }
 
-        return encode(key) + '=' + encode(value);
-      })
+          return encode(key) + '=' + encode(value);
+        })
         .join('&');
     })
     .join('&');
@@ -46,8 +45,8 @@ export const HTTP = axios.create({
   paramsSerializer
 });
 
-HTTP.interceptors.response.use((response) => {
-  const token = response.headers["x-csrf-token"];
+HTTP.interceptors.response.use(response => {
+  const token = response.headers['x-csrf-token'];
   if (token) {
     HTTP.defaults.headers.common['x-csrf-token'] = token;
   }
@@ -59,6 +58,6 @@ HTTP.interceptors.response.use((response) => {
 HTTP.interceptors.response.use(undefined, error => {
   if (error.message === 'Network Error') {
     alert('Din session er udløbet. Log ind i et nyt vindue og prøv igen.');
-    open(`${window.autoProcessConfiguration.apiUrl}/saml/login`);
+    open(`${location.origin}/discovery`);
   }
 });
