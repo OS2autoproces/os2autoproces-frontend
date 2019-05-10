@@ -43,8 +43,8 @@
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import ProfileIcon from '../icons/ProfileIcon.vue';
 import { AuthState, UserRoleName, UserRole, User } from '@/store/modules/auth/state';
-import { State } from 'vuex-class';
 import { RootState } from '../../store/store';
+import { State } from 'vuex-class';
 
 @Component({
   components: {
@@ -53,7 +53,8 @@ import { RootState } from '../../store/store';
 })
 export default class NavBar extends Vue {
   logoutUrl = `${window.autoProcessConfiguration.apiUrl}/saml/logout`;
-  @State((state: RootState) => state.auth.user) user: User = {} as User;
+
+  @State((state: RootState) => state.auth.user) user!: User;
 
   @State((state: RootState) => {
     if (!state.auth.user || !state.auth.user.roles) {
@@ -62,10 +63,10 @@ export default class NavBar extends Vue {
 
     return state.auth.user.roles.map(role => UserRoleName[role]);
   })
-  roles: UserRole[] = [];
+  roles!: UserRole[];
 
   get isAdministrator() {
-    return this.user && this.user.roles.includes(UserRole.administrator);
+    return this.user && this.user.roles && this.user.roles.includes(UserRole.administrator);
   }
 
   get isFrontpageEditor() {
