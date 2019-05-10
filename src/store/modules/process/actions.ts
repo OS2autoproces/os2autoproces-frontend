@@ -264,6 +264,11 @@ export const actions: ActionTree<ProcessState, RootState> = {
 
     const res = await method(url);
 
+    // TODO change to update process state instead
+    // this is not the way to do flow
+    // action results should not be use for mutations directly in view.
+    // Actions should affect changes in state
+
     return res.status === 200;
   }
 };

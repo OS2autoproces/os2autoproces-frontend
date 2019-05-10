@@ -8,7 +8,11 @@
       <div>
         <div class="field">Vurderet potentiale:</div>
         <div class="value">
-          <Rating class="rating" :value="process.rating" disabled />
+          <Rating
+            class="rating"
+            :value="process.rating"
+            disabled
+          />
         </div>
       </div>
       <div>
@@ -34,11 +38,17 @@
         <div class="value">{{process.legalClause}}</div>
       </div>
     </div>
-    <div class="result-column phase" v-if="!noPhase">
+    <div
+      class="result-column phase"
+      v-if="!noPhase"
+    >
       <div>
         <div class="field">Fase:</div>
         <div class="value">
-          <Phases :value="process.phase" disabled />
+          <Phases
+            :value="process.phase"
+            disabled
+          />
         </div>
       </div>
       <div>
@@ -47,7 +57,10 @@
       </div>
     </div>
     <div v-on:click.stop.prevent="setProcessBookmark()">
-      <star-icon class="star-icon" :class="{ selected: processBookmarked }" />
+      <star-icon
+        class="star-icon"
+        :class="{ selected: processBookmarked }"
+      />
     </div>
   </div>
 </template>
@@ -81,7 +94,7 @@ export default class SearchResult extends Vue {
   processBookmarked = this.process.hasBookmarked;
 
   @Action(processActionTypes.SET_BOOKMARK_FROM_SEARCH)
-  setBookmark!: (bookmarkSearch: { id: number; hasBookmarked: boolean }) => Promise<void>;
+  setBookmark!: (bookmarkSearch: { id: number; hasBookmarked: boolean }) => Promise<boolean>;
 
   StatusLabels = StatusLabels;
 
@@ -90,6 +103,7 @@ export default class SearchResult extends Vue {
   }
 
   async setProcessBookmark() {
+    // TODO not the way to do flow - action results should not be use for mutations directly in view. Actions should affect changes in state
     const res = await this.setBookmark({ id: this.process.id, hasBookmarked: !this.processBookmarked });
     this.processBookmarked = res ? !this.processBookmarked : this.processBookmarked;
   }
