@@ -9,7 +9,8 @@
         <WellItem labelWidth="70%" label="Tidsforbrug pr. proces i minutter" :required="minPhase(PhaseKeys.PREANALYSIS)">
           <InputField :disabled="state.disabled.timeAndProcessEdit" :value="state.timeSpendPerOccurance" @change="update({timeSpendPerOccurance: $event})" />
         </WellItem>
-        <WellItem labelWidth="70%" label="Total tidsforbrug i timer" tooltip="Det samlede tidsforbrug udregnes automatisk når processen gemmes.">
+        <WellItem labelWidth="70%" label="Total tidsforbrug i timer" tooltip="Det samlede tidsforbrug udregnes automatisk når processen gemmes. 
+        Formlen: ‘Antal gange pr. år' x ‘Tidsforbrug i min’ x 'Digital procent besparelse’.">
           <InputField disabled :value="state.timeSpendComputedTotal" />
         </WellItem>
       </div>

@@ -78,9 +78,23 @@ function setBackendManagedFields(process: Process): Partial<Process> {
   return fields;
 }
 
+function calculateTotalTimeSpent(perEmployee: number, perOccurence: number, percentage: number) {
+  return (perEmployee * (perOccurence / 60.0) * (1 - (percentage / 100.0))).toFixed(2);
+}
+
+function updateTimeSpendComputedTotal(payload: Partial<ProcessState>, state: ProcessState) {
+  if (!payload.timeSpendOccurancesPerEmployee && !payload.timeSpendPerOccurance && !payload.timeSpendPercentageDigital) {
+    return payload;
+  }
+  const perEmployee: number = parseInt(payload.timeSpendOccurancesPerEmployee || state.timeSpendOccurancesPerEmployee, 10);
+  const perOccurence: number = parseInt(payload.timeSpendPerOccurance || state.timeSpendPerOccurance, 10);
+  const percentage: number = parseInt(payload.timeSpendPercentageDigital || state.timeSpendPercentageDigital, 10);
+  return Object.assign({}, payload, { timeSpendComputedTotal: calculateTotalTimeSpent(perEmployee, perOccurence, percentage).toString() });
+}
+
 export const actions: ActionTree<ProcessState, RootState> = {
-  update({ commit }, payload: Partial<ProcessState>) {
-    commit(processMutationTypes.UPDATE, payload);
+  update({ commit, state }, payload: Partial<ProcessState>) {
+    commit(processMutationTypes.UPDATE, updateTimeSpendComputedTotal(payload, state));
   },
   assign({ commit }, payload: Partial<ProcessState>) {
     commit(processMutationTypes.ASSIGN, payload);
@@ -88,6 +102,7 @@ export const actions: ActionTree<ProcessState, RootState> = {
   clear({ commit }) {
     commit(processMutationTypes.ASSIGN, initialProcessState());
   },
+
   async loadAttachments({ commit }, id: string) {
     if (!id) {
       return;
@@ -257,7 +272,7 @@ export const actions: ActionTree<ProcessState, RootState> = {
 
     commit(processMutationTypes.UPDATE_WITH_NO_CHANGE, { hasBookmarked });
   },
-  async setBookmarkFromSearch({}, bookmarkProcess: { id: number; hasBookmarked: boolean }): Promise<boolean> {
+  async setBookmarkFromSearch({ }, bookmarkProcess: { id: number; hasBookmarked: boolean }): Promise<boolean> {
     const { id, hasBookmarked } = bookmarkProcess;
     const url = `api/bookmarks/${id}`;
     const method = hasBookmarked ? HTTP.put : HTTP.delete;
