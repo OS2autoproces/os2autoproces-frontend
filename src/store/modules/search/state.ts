@@ -56,4 +56,5 @@ export interface SearchFilters {
 export interface SearchState {
   result?: SearchResult;
   filters: SearchFilters;
+  allowClear: boolean;
 }
