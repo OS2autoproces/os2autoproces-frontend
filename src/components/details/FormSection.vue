@@ -127,7 +127,7 @@ export default class FormSection extends Vue {
     }
   }
 
-  &.disabled.isExpandable {
+  &.isExpandable {
       cursor: pointer
   }
 
