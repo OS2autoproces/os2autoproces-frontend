@@ -2,7 +2,7 @@
   <FormSection v-if="!showPlaceholder" heading="Bilag" id="attachments" :disabled="state.disabled.attachmentsEdit" @edit="update({ disabled: {attachmentsEdit: $event} })">
     <AttachmentUpload :disabled="state.disabled.attachmentsEdit" />
   </FormSection>
-  <FormSection v-else heading="Bilag" id="attachments" disabled placeholder="Bilag er først tilgængelig efter de har gemt første gang." />
+  <FormSection v-else heading="Bilag" id="attachments" disabled placeholder="Det er først muligt at tilføje et bilag, efter du har klikket på Gem første gang." />
 </template>
 
 <script lang="ts">
