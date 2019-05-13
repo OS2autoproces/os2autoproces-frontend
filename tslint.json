@@ -16,6 +16,7 @@
     "member-access": false,
     "no-implicit-dependencies": false,
     "no-submodule-imports": false,
+    "no-console": false,
     "strictPropertyInitialization": false
   }
 }
