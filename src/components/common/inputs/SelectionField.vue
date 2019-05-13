@@ -1,9 +1,20 @@
 <template>
   <div>
+    <v-select
+      class="select-wrap"
+      v-if="!disabled && dropdown"
+      :items="_items"
+      :value="value"
+      return-object
+      single-line
+      @change="valueChanged"
+    >
+
+    </v-select>
     <v-autocomplete
-      :class="{readonly}"
+      class="select-wrap"
       ref="autocomplete"
-      v-if="!disabled"
+      v-if="!disabled && !dropdown"
       :clearable="clearable"
       :label="placeholder"
       :items="_items"
@@ -70,7 +81,7 @@ export default class SelectionField<T extends any> extends Vue {
   @Prop({ type: String, default: 'id' })
   itemValue!: string;
   @Prop({ type: Boolean, default: false })
-  readonly!: boolean;
+  dropdown!: boolean;
 
   get _items(): T[] {
     let items: T[] = [];
@@ -115,15 +126,7 @@ export default class SelectionField<T extends any> extends Vue {
 <style scoped lang="scss">
 @import '@/styles/variables.scss';
 
-.v-autocomplete.readonly /deep/ {
-  .v-input__slot {
-    input {
-      user-select: none;
-    }
-  }
-}
-
-.v-autocomplete /deep/ {
+.select-wrap /deep/ {
   padding-top: 0 !important;
   margin: 0;
 

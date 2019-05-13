@@ -43,7 +43,7 @@
         :items="sizes"
         :type="'number'"
         :clearable="false"
-        :readonly="true"
+        :dropdown="true"
         @change="onSizeChange($event.value)"
       ></SelectionField>
       <span>Side {{page + 1}} af {{pageTotal}}</span>
