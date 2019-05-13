@@ -1,6 +1,6 @@
 <template>
   <div class="form-section" v-if="!placeholder">
-    <div class="section-header" :class="{ disabled }">
+    <div class="section-header" @click="toggleExpand" :class="{ disabled, isExpandable }">
       <div>{{heading}}</div>
       <div v-if="state.process.canEdit" class="edit-button" role="button" @click="toggleEdit">
         <EditIcon />
@@ -8,10 +8,10 @@
       <InfoTooltip class="tooltip" v-if="tooltip">{{tooltip}}</InfoTooltip>
       <div class="flex-grow"></div>
       <div class="section-action">
-        <div role="button" @click="expand = true" v-if="isExpandable && !expand">
+        <div role="button" v-if="isExpandable && !expand">
           <ArrowDownIcon />
         </div>
-        <div role="button" @click="expand = false" v-if="isExpandable && expand">
+        <div role="button" v-if="isExpandable && expand">
           <ArrowUpIcon />
         </div>
         <div class="warning-icon" v-if="invalid">
@@ -65,7 +65,15 @@ export default class FormSection extends Vue {
   expand = false;
 
   toggleEdit() {
+    this.expand = this.disabled;
     this.$emit('edit', !this.disabled);
+  }
+
+  toggleExpand() {
+    if (!this.disabled) {
+      return
+    }
+    this.expand = !this.expand;
   }
 
   get state() {
@@ -117,6 +125,10 @@ export default class FormSection extends Vue {
     .edit-button svg /deep/ path {
       fill: $color-primary;
     }
+  }
+
+  &.disabled.isExpandable {
+      cursor: pointer
   }
 
   .section-action {
