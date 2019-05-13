@@ -10,6 +10,7 @@ const namespaced = true;
 export function getInitialState(): SearchState {
   return {
     result: undefined,
+    allowClear: false,
     filters: {
       page: 0,
       size: 5,

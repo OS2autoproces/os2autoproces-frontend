@@ -5,7 +5,8 @@ import { merge } from 'lodash';
 export const searchMutationTypes = {
   UPDATE_FILTERS: 'updateFilters',
   ASSIGN_FILTERS: 'assignFilters',
-  SET_SEARCH_RESULT: 'setSearchResult'
+  SET_SEARCH_RESULT: 'setSearchResult',
+  SET_ALLOW_CLEAR: 'setAllowClear'
 };
 
 export const mutations: MutationTree<SearchState> = {
@@ -17,5 +18,8 @@ export const mutations: MutationTree<SearchState> = {
   },
   setSearchResult(state: SearchState, result: SearchResult) {
     state.result = result;
+  },
+  setAllowClear(state: SearchState, allowClear: boolean) {
+    state.allowClear = allowClear;
   }
 };
