@@ -34,7 +34,7 @@
           <DatePicker :value="state.lastChanged" disabled />
         </WellItem>
 
-        <WellItem labelWidth="30%" label="Andre nuværende systemer:" v-if="minPhase(PhaseKeys.PREANALYSIS)" tooltip="Hvis der er systemer du ikke kan finde på listen kan du notere dem her.">
+        <WellItem labelWidth="30%" label="Andre nuværende systemer:" tooltip="Hvis der er systemer du ikke kan finde på listen kan du notere dem her.">
           <TextArea @change="update({itSystemsDescription: $event})" fullWidth :disabled="state.disabled.challengesEdit" :value="state.itSystemsDescription" :maxLength="300" />
         </WellItem>
       </div>
