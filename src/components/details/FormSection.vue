@@ -1,26 +1,26 @@
 <template>
   <div class="form-section" v-if="!placeholder">
-    <div class="section-header" :class="{ disabled }">
+    <div class="section-header" @click="toggleExpand" :class="{ disabled, isExpandable }">
       <div>{{heading}}</div>
       <div v-if="state.process.canEdit" class="edit-button" role="button" @click="toggleEdit">
-        <EditIcon />
+        <EditIcon/>
       </div>
       <InfoTooltip class="tooltip" v-if="tooltip">{{tooltip}}</InfoTooltip>
       <div class="flex-grow"></div>
       <div class="section-action">
-        <div role="button" @click="expand = true" v-if="isExpandable && !expand">
-          <ArrowDownIcon />
+        <div role="button" v-if="isExpandable && !expanded">
+          <ArrowDownIcon/>
         </div>
-        <div role="button" @click="expand = false" v-if="isExpandable && expand">
-          <ArrowUpIcon />
+        <div role="button" v-if="isExpandable && expanded">
+          <ArrowUpIcon/>
         </div>
         <div class="warning-icon" v-if="invalid">
-          <WarningIcon />
+          <WarningIcon/>
         </div>
       </div>
     </div>
     <div class="section-content" v-if="isExpanded">
-      <slot />
+      <slot/>
     </div>
   </div>
   <div class="form-section" v-else>
@@ -62,10 +62,18 @@ export default class FormSection extends Vue {
   @Prop({ type: String, default: '' })
   placeholder!: string;
 
-  expand = false;
+  expanded = false;
 
   toggleEdit() {
+    this.expanded = this.disabled;
     this.$emit('edit', !this.disabled);
+  }
+
+  toggleExpand() {
+    if (!this.disabled) {
+      return;
+    }
+    this.expanded = !this.expanded;
   }
 
   get state() {
@@ -77,7 +85,7 @@ export default class FormSection extends Vue {
   }
 
   get isExpanded() {
-    return this.expand || this.alwaysOpen || this.invalid || !this.disabled;
+    return this.expanded || this.alwaysOpen || this.invalid || !this.disabled;
   }
 }
 </script>
@@ -117,6 +125,10 @@ export default class FormSection extends Vue {
     .edit-button svg /deep/ path {
       fill: $color-primary;
     }
+  }
+
+  &.isExpandable {
+    cursor: pointer;
   }
 
   .section-action {
