@@ -89,6 +89,7 @@ export default class Search extends Vue {
       page: 0,
       ...filters
     });
+    this.setUrl(filters);
   }
 
   setUrl(filters: Partial<SearchFilters>) {
