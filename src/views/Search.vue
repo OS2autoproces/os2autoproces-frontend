@@ -41,7 +41,9 @@
             v-if="result"
             :page="result.page.number"
             :pageTotal="result.page.totalPages"
-            @change="updateFilters({ page: $event })"
+            :size="result.page.size"
+            @on-page-change="updateFilters({ page: $event })"
+            @on-size-change="updateFilters({ size: $event })"
           />
         </div>
       </div>

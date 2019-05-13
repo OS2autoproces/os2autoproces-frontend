@@ -1,7 +1,38 @@
 <template>
   <div>
-    <v-autocomplete ref="autocomplete" v-if="!disabled" :clearable="clearable" :label="placeholder" :items="_items" single-line no-data-text="Ingen resultater" :item-text="itemText" :item-value="itemValue" :append-icon="iconName" :search-input.sync="searchQuery" @change="valueChanged" :value="value" return-object :multiple="multiple">
-      <template slot="item" slot-scope="data">
+    <v-select
+      class="select-wrap"
+      v-if="!disabled && dropdown"
+      :items="_items"
+      :value="value"
+      return-object
+      single-line
+      @change="valueChanged"
+    >
+
+    </v-select>
+    <v-autocomplete
+      class="select-wrap"
+      ref="autocomplete"
+      v-if="!disabled && !dropdown"
+      :clearable="clearable"
+      :label="placeholder"
+      :items="_items"
+      single-line
+      no-data-text="Ingen resultater"
+      :item-text="itemText"
+      :item-value="itemValue"
+      :append-icon="iconName"
+      :search-input.sync="searchQuery"
+      @change="valueChanged"
+      :value="value"
+      return-object
+      :multiple="multiple"
+    >
+      <template
+        slot="item"
+        slot-scope="data"
+      >
         <template v-if="itemSubText">
           <v-list-tile-content>
             <v-list-tile-title>{{data.item[itemText]}}</v-list-tile-title>
@@ -13,7 +44,10 @@
         </template>
       </template>
     </v-autocomplete>
-    <div class="selection-text" v-if="disabled && value">{{ label }}</div>
+    <div
+      class="selection-text"
+      v-if="disabled && value"
+    >{{ label }}</div>
   </div>
 </template>
 
@@ -24,7 +58,7 @@ import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 export default class SelectionField<T extends any> extends Vue {
   searchQuery = '';
 
-  @Prop([Boolean, Object, String, Array])
+  @Prop([Boolean, Object, String, Array, Number])
   value!: T;
   @Prop({ default: 'keyboard_arrow_down', type: String })
   iconName!: string;
@@ -46,6 +80,8 @@ export default class SelectionField<T extends any> extends Vue {
   itemSubText!: string;
   @Prop({ type: String, default: 'id' })
   itemValue!: string;
+  @Prop({ type: Boolean, default: false })
+  dropdown!: boolean;
 
   get _items(): T[] {
     let items: T[] = [];
@@ -90,7 +126,7 @@ export default class SelectionField<T extends any> extends Vue {
 <style scoped lang="scss">
 @import '@/styles/variables.scss';
 
-.v-autocomplete /deep/ {
+.select-wrap /deep/ {
   padding-top: 0 !important;
   margin: 0;
 
