@@ -4,7 +4,11 @@
 
     <div class="page">
       <div class="filters">
-        <SearchFiltersComponent :filters="filters" @change="updateFilters" @assign="assignFilters" />
+        <SearchFiltersComponent
+          :filters="filters"
+          @change="updateFilters"
+          @assign="assignFilters"
+        />
       </div>
       <div>
         <div class="results-wrapper">
@@ -14,15 +18,31 @@
             </router-link>
           </div>
 
-          <SearchSorting :sorting="filters.sorting" @change="updateFilters({ sorting: $event })" />
+          <SearchSorting
+            :sorting="filters.sorting"
+            @change="updateFilters({ sorting: $event })"
+          />
 
-          <div class="results" v-if="result">
-            <router-link :to="'/details/' + process.id" class="search-result-link" v-for="process in result.processes" :key="process.id">
+          <div
+            class="results"
+            v-if="result"
+          >
+            <router-link
+              :to="'/details/' + process.id"
+              class="search-result-link"
+              v-for="process in result.processes"
+              :key="process.id"
+            >
               <SearchResult :process="process" />
             </router-link>
           </div>
 
-          <SearchPagination v-if="result" :page="result.page.number" :pageTotal="result.page.totalPages" @change="updateFilters({ page: $event })" />
+          <SearchPagination
+            v-if="result"
+            :page="result.page.number"
+            :pageTotal="result.page.totalPages"
+            @change="updateFilters({ page: $event })"
+          />
         </div>
       </div>
     </div>
@@ -30,7 +50,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
+import { Vue, Component, Prop } from 'vue-property-decorator';
 import { Action } from 'vuex-class';
 import NavBar from '../components/common/NavBar.vue';
 import SearchFiltersComponent from '../components/search/SearchFilters.vue';
@@ -53,6 +73,9 @@ import { SearchFilters, SearchResultProcess } from '../store/modules/search/stat
   }
 })
 export default class Search extends Vue {
+  @Prop(Number) page!: number;
+  @Prop(Number) size!: number;
+
   get filters() {
     return this.$store.state.search.filters;
   }
@@ -68,6 +91,25 @@ export default class Search extends Vue {
     });
   }
 
+  setUrl(filters: Partial<SearchFilters>) {
+    // This is kind of hacky, nut it is needed for deeplinking specific searches.
+    // It has no impect on rerendering, it only pushes a new history state
+    // TODO consider placing in seperate helper / service
+    try {
+      if (history.pushState) {
+        const newurl =
+          window.location.protocol +
+          '//' +
+          window.location.host +
+          window.location.pathname +
+          `?size=${filters.size || this.size}&page=${filters.page || this.page}`;
+        window.history.pushState({ path: newurl }, '', newurl);
+      }
+    } catch (e) {
+      console.warn(`Updating search url failed with error: ${e}`);
+    }
+  }
+
   assignFilters(filters: Partial<SearchFilters>) {
     this.$store.dispatch(searchActionTypes.ASSIGN_FILTERS, {
       page: 0,
@@ -76,14 +118,12 @@ export default class Search extends Vue {
   }
 
   mounted() {
-    this.$store.dispatch(searchActionTypes.UPDATE_FILTERS, {});
+    this.$store.dispatch(searchActionTypes.UPDATE_FILTERS, { page: this.page, size: this.size });
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import '../styles/variables';
-
 .search {
   display: flex;
   flex-direction: column;
