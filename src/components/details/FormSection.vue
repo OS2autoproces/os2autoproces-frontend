@@ -3,24 +3,24 @@
     <div class="section-header" @click="toggleExpand" :class="{ disabled, isExpandable }">
       <div>{{heading}}</div>
       <div v-if="state.process.canEdit" class="edit-button" role="button" @click="toggleEdit">
-        <EditIcon />
+        <EditIcon/>
       </div>
       <InfoTooltip class="tooltip" v-if="tooltip">{{tooltip}}</InfoTooltip>
       <div class="flex-grow"></div>
       <div class="section-action">
-        <div role="button" v-if="isExpandable && !expand">
-          <ArrowDownIcon />
+        <div role="button" v-if="isExpandable && !expanded">
+          <ArrowDownIcon/>
         </div>
-        <div role="button" v-if="isExpandable && expand">
-          <ArrowUpIcon />
+        <div role="button" v-if="isExpandable && expanded">
+          <ArrowUpIcon/>
         </div>
         <div class="warning-icon" v-if="invalid">
-          <WarningIcon />
+          <WarningIcon/>
         </div>
       </div>
     </div>
     <div class="section-content" v-if="isExpanded">
-      <slot />
+      <slot/>
     </div>
   </div>
   <div class="form-section" v-else>
@@ -62,18 +62,18 @@ export default class FormSection extends Vue {
   @Prop({ type: String, default: '' })
   placeholder!: string;
 
-  expand = false;
+  expanded = false;
 
   toggleEdit() {
-    this.expand = this.disabled;
+    this.expanded = this.disabled;
     this.$emit('edit', !this.disabled);
   }
 
   toggleExpand() {
     if (!this.disabled) {
-      return
+      return;
     }
-    this.expand = !this.expand;
+    this.expanded = !this.expanded;
   }
 
   get state() {
@@ -85,7 +85,7 @@ export default class FormSection extends Vue {
   }
 
   get isExpanded() {
-    return this.expand || this.alwaysOpen || this.invalid || !this.disabled;
+    return this.expanded || this.alwaysOpen || this.invalid || !this.disabled;
   }
 }
 </script>
@@ -128,7 +128,7 @@ export default class FormSection extends Vue {
   }
 
   &.isExpandable {
-      cursor: pointer
+    cursor: pointer;
   }
 
   .section-action {
