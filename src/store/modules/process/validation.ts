@@ -52,7 +52,7 @@ export const processFieldsValidators: { [P in keyof Process]?: (state: ProcessSt
     return isValid(shortDescription, isMinMax(1, 140));
   },
   longDescription({ longDescription }: ProcessState) {
-    return isValid(longDescription, isMinMax(0, 1200));
+    return isValid(longDescription, isMinMax(0, 3000));
   },
   visibility({ visibility }: ProcessState) {
     return !!visibility;

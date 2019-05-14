@@ -3,7 +3,7 @@
     <div>
       <h2>Beskrivelse</h2>
       <InfoTooltip>Her kan beskrive den nuværende proces i detaljer.</InfoTooltip>
-      <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({longDescription: $event})" :disabled="state.disabled.challengesEdit" :value="state.longDescription" :maxLength="1200" />
+      <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({longDescription: $event})" :disabled="state.disabled.challengesEdit" :value="state.longDescription" :maxLength="3000" />
       </div>
 
     <div v-if="minPhase(PhaseKeys.PREANALYSIS)">
