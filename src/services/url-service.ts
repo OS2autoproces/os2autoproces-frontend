@@ -6,7 +6,6 @@ import { getInitialState } from '@/store/modules/search';
 
 // This is kind of hacky, nut it is needed for deeplinking specific searches.
 // It has no impect on rerendering, it only pushes a new history state
-// TODO consider placing in seperate helper / service
 export const setUrlSearchQuery = (filters: SearchFilters) => {
   try {
     if (history.pushState) {

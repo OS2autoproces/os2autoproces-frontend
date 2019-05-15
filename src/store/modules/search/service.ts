@@ -71,8 +71,7 @@ function dateFromISODateTime(datetime: string): string {
 export async function search(filters: SearchFilters): Promise<SearchResult> {
   setUrlSearchQuery(filters);
   const params: SearchParams = {
-    // TODO change back to grid when API is extended
-    projection: 'extended',
+    projection: 'grid',
     phase: Object.entries(filters.phase)
       .filter(([phase, isSelected]) => isSelected)
       .map(([phase]) => phase) as Phase[],
