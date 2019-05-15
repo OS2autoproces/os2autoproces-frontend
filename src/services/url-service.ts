@@ -53,6 +53,10 @@ export const mapSearchQueryToObject = (query: string): any => {
 };
 
 export const mapQueryObjToFilters = (query: any): SearchFilters => {
+  if (!query) {
+    return getInitialState().filters;
+  }
+
   const {
     visibility,
     page,
