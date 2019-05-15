@@ -140,7 +140,6 @@ export interface Disabled {
   timeAndProcessEdit: boolean;
   assessmentEdit: boolean;
   operationEdit: boolean;
-  specificationEdit: boolean;
   implementationEdit: boolean;
   attachmentsEdit: boolean;
   internalNotesEdit: boolean;

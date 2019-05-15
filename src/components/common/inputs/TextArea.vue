@@ -1,13 +1,29 @@
 <template>
   <div>
-    <div class="text-area" :class="{ 'out-of-bounds': (currentLength > maxLength) }" v-if="!disabled">
-      <textarea :value="value" @input="valueChanged" :placeholder="placeholder" :class="{ 'no-resize': noResize }" />
+    <div
+      class="text-area"
+      :class="{ 'out-of-bounds': (currentLength > maxLength) }"
+      v-if="!disabled"
+    >
+      <textarea
+        :value="value"
+        @input="valueChanged"
+        :placeholder="placeholder"
+        :class="{ 'no-resize': noResize }"
+      />
       <div class="text-area-overlay">
-        <div class="text-area-char-count" v-if="maxLength">({{currentLength}} ud af {{maxLength}} tegn)</div>
-        <slot />
+        <div
+          class="text-area-char-count"
+          v-if="maxLength"
+        >({{currentLength}} ud af {{maxLength}} tegn)</div>
+        <slot/>
       </div>
     </div>
-    <div class="text-area-readonly" :class="{'double-column': twoColumns, 'full-width': fullWidth }" v-if="disabled">{{value}}</div>
+    <div
+      class="text-area-readonly"
+      :class="{'double-column': twoColumns, 'full-width': fullWidth }"
+      v-if="disabled"
+    >{{value}}</div>
   </div>
 </template>
 

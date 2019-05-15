@@ -74,7 +74,7 @@ export const assessmentLabels: ProcessLabels = {
   evaluatedLevelOfRoi: 'I hvor høj grad vurderes det at processen kan automatiseres?'
 };
 
-export const specificationLabels: ProcessLabels = {
+export const attachmentsLabels: ProcessLabels = {
   esdhReference: 'ESDH Reference'
 };
 
@@ -96,7 +96,7 @@ export const processLabels: ProcessLabels = {
   ...challengesLabels,
   ...timeAndProcessLabels,
   ...assessmentLabels,
-  ...specificationLabels,
+  ...attachmentsLabels,
   ...implementationLabels,
   ...operationLabels,
 
@@ -108,7 +108,7 @@ interface ErrorLabels {
   challenges: Array<keyof Process>;
   assessment: Array<keyof Process>;
   timeAndProcess: Array<keyof Process>;
-  specification: Array<keyof Process>;
+  attachments: Array<keyof Process>;
   implementation: Array<keyof Process>;
   operation: Array<keyof Process>;
 }
@@ -133,7 +133,7 @@ const errorLabels: ErrorLabels = {
   challenges: Object.keys(challengesLabels) as Array<keyof Process>,
   assessment: Object.keys(assessmentLabels) as Array<keyof Process>,
   timeAndProcess: Object.keys(timeAndProcessLabels) as Array<keyof Process>,
-  specification: Object.keys(specificationLabels) as Array<keyof Process>,
+  attachments: Object.keys(attachmentsLabels) as Array<keyof Process>,
   implementation: Object.keys(implementationLabels) as Array<keyof Process>,
   operation: Object.keys(operationLabels) as Array<keyof Process>
 };
