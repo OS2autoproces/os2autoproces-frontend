@@ -18,6 +18,7 @@
         @change="setBookmarkedId"
       >Mine favoritter
       </PillCheckbox>
+      <SearchSelectSavedFilters />
     </div>
 
     <SearchField
@@ -184,14 +185,8 @@
         multiple
       />
     </ExpandPanel>
-    <transition name="slide-y-reverse-transition">
-      <Button
-        v-if="allowClearFilters"
-        class="clear-filters elevation-3"
-        v-ripple
-        @click="dispatchClearFilters()"
-      >Ryd filtre</Button>
-    </transition>
+
+    <SearchFiltersActions />
   </div>
 </template>
 
@@ -214,6 +209,8 @@ import { SearchFilters } from '../../store/modules/search/state';
 import { commonActionTypes } from '@/store/modules/common/actions';
 import Button from '../common/inputs/Button.vue';
 import { RootState } from '../../store/store';
+import SearchFiltersActions from './SearchFiltersActions.vue';
+import SearchSelectSavedFilters from './SearchSelectSavedFilters.vue';
 
 @Component({
   components: {
@@ -225,7 +222,9 @@ import { RootState } from '../../store/store';
     Checkbox,
     SelectionField,
     PillCheckbox,
-    Button
+    Button,
+    SearchFiltersActions,
+    SearchSelectSavedFilters
   }
 })
 export default class SearchFiltersComponent extends Vue {
@@ -237,9 +236,6 @@ export default class SearchFiltersComponent extends Vue {
   filters!: SearchFilters;
   @Prop(Boolean)
   umbrellaProcessSearch!: boolean;
-
-  @State((state: RootState) => state.search.allowClear)
-  allowClearFilters!: boolean;
 
   @Action(searchActionTypes.CLEAR_FILTERS) dispatchClearFilters!: VoidFunction;
 
@@ -295,12 +291,6 @@ export default class SearchFiltersComponent extends Vue {
 
 .wrapper {
   padding-bottom: 2.5rem;
-}
-
-.clear-filters {
-  position: fixed;
-  bottom: 2rem;
-  left: 2rem;
 }
 
 .types {
