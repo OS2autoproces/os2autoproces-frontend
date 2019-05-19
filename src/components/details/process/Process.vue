@@ -2,14 +2,31 @@
   <div class="page">
     <div class="side-bar">
       <div class="side-bar-content">
-        <router-link to="/search" class="search-page-link">
+        <router-link
+          to="/search"
+          class="search-page-link"
+        >
           <ArrowLeftIcon /> Tilbage til søgning
         </router-link>
 
-        <ProcessMenu :phase="phase" :canEdit="state.canEdit" :isReporting="isReporting" />
+        <ProcessMenu
+          :phase="phase"
+          :canEdit="state.canEdit"
+          :isReporting="isReporting"
+        />
 
-        <Button primary v-if="isReporting" class="report-button" @click="report">Gem</Button>
-        <Button primary v-if="!isReporting" class="save-button" @click="save">Gem</Button>
+        <Button
+          primary
+          v-if="isReporting"
+          class="report-button"
+          @click="report"
+        >Gem</Button>
+        <Button
+          primary
+          v-if="!isReporting"
+          class="save-button"
+          @click="save"
+        >Gem</Button>
       </div>
     </div>
 
@@ -27,28 +44,62 @@
           <SpecificationForm v-if="isWithinMunicipality" />
           <ImplementationForm />
           <OperationForm />
-          <AttachmentsForm :showPlaceholder="isReporting" v-if="minPhase(PhaseKeys.PREANALYSIS)" />
+          <AttachmentsForm
+            :showPlaceholder="isReporting"
+            v-if="minPhase(PhaseKeys.PREANALYSIS)"
+          />
 
-          <FormSection v-if="state.canEdit" id="internal-notes" heading="Interne noter" :disabled="state.disabled.internalNotesEdit" @edit="update({disabled: { internalNotesEdit: $event} })" tooltip="Her kan du tilføje noter til og om processen, der kun vil være synlige for tilknyttede personer. Noterne bliver heller ikke delt, hvis processen deles tværkommunalt.">
-            <InternalNotes :internalNotes="state.internalNotes" :disabled="state.disabled.internalNotesEdit" />
+          <FormSection
+            v-if="state.canEdit"
+            id="internal-notes"
+            heading="Interne noter"
+            :disabled="state.disabled.internalNotesEdit"
+            @edit="update({disabled: { internalNotesEdit: $event} })"
+            tooltip="Her kan du tilføje noter til og om processen, der kun vil være synlige for tilknyttede personer. Noterne bliver heller ikke delt, hvis processen deles tværkommunalt."
+          >
+            <InternalNotes
+              :internalNotes="state.internalNotes"
+              :disabled="state.disabled.internalNotesEdit"
+            />
           </FormSection>
         </div>
 
-        <div class="comments" v-if="!isReporting">
+        <div
+          class="comments"
+          v-if="!isReporting"
+        >
           <h2 class="comments-heading">Kommentarer</h2>
-          <Comments :comments="state.comments" @submit="saveComment({ message: $event })" />
+          <Comments
+            :comments="state.comments"
+            @submit="saveComment({ message: $event })"
+          />
         </div>
 
       </div>
     </div>
 
-    <SnackBar showButton :timeout="0" color="error" :value="snack" @clicked="clearErrors">
+    <SnackBar
+      showButton
+      :timeout="0"
+      color="error"
+      :value="snack"
+      @clicked="clearErrors"
+    >
       <div>
         <h3>Følgende felter er ugyldige:</h3>
         <div class="snack-bar-list-container">
-          <ul class="section-errors" v-for="section in errors" v-if="section.errors.length > 0" :key="section.section">
+          <!-- TODO Fix v if in v for and computation in template -->
+          <ul
+            class="section-errors"
+            v-for="section in errors"
+            v-if="section.errors.length > 0"
+            :key="section.section"
+          >
             <span class="section-errors-title">{{section.section}}</span>
-            <li v-for="(field, i) in section.errors" :key="i">
+            <li
+              v-for="(field, i) in section.errors"
+              :key="i"
+            >
               <div class="snack-bar-list-item">
                 {{field}}
               </div>
@@ -58,11 +109,23 @@
       </div>
     </SnackBar>
 
-    <SnackBar :showButton="false" :value="showSaveSuccess" :timeout="3000" color="success" @onSnackClose="showSaveSuccess = false">
+    <SnackBar
+      :showButton="false"
+      :value="showSaveSuccess"
+      :timeout="3000"
+      color="success"
+      @onSnackClose="showSaveSuccess = false"
+    >
       Processen er gemt!
     </SnackBar>
 
-    <SnackBar :showButton="false" :value="showSaveError" :timeout="5000" color="error" @onSnackClose="showSaveError = false">
+    <SnackBar
+      :showButton="false"
+      :value="showSaveError"
+      :timeout="5000"
+      color="error"
+      @onSnackClose="showSaveError = false"
+    >
       Processen er IKKE gemt - prøv igen!
     </SnackBar>
 
