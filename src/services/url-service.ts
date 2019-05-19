@@ -3,6 +3,7 @@ import { SearchFilters } from '@/store/modules/search/state';
 import qs from 'qs';
 import DOMPurify from 'dompurify';
 import { getInitialState } from '@/store/modules/search';
+import { strictEqual } from 'assert';
 
 // This is kind of hacky, nut it is needed for deeplinking specific searches.
 // It has no impect on rerendering, it only pushes a new history state
@@ -56,35 +57,24 @@ export const mapQueryObjToFilters = (query: any): SearchFilters => {
     return getInitialState().filters;
   }
 
-  const {
-    visibility,
-    page,
-    size,
-    sorting,
-    phase,
-    domain,
-    itSystems,
-    technologies,
-    klaProcess,
-    umbrella
-  } = getInitialState().filters;
+  const state = getInitialState().filters;
   return {
-    reporterId: query.reporterId,
-    usersId: query.usersId,
-    bookmarkedId: query.bookmarkedId,
-    text: query.text || '',
-    created: query.created || '',
-    lastChanged: query.lastChanged || '',
-    municipality: query.municipality || null,
-    visibility: query.visibility || visibility,
-    page: query.page || page,
-    size: query.size || size,
-    sorting: query.sorting || sorting,
-    phase: query.phase || phase,
-    domain: query.domain || domain,
-    klaProcess: query.klaProcess || klaProcess,
-    umbrella: query.umbrella || umbrella,
-    itSystems: query.itSystems || itSystems,
-    technologies: query.technologies || technologies
+    reporterId: query.reporterId || state.reporterId,
+    usersId: query.usersId || state.usersId,
+    bookmarkedId: query.bookmarkedId || state.bookmarkedId,
+    text: query.text || state.text,
+    created: query.created || state.created,
+    lastChanged: query.lastChanged || state.lastChanged,
+    municipality: query.municipality || state.municipality,
+    visibility: query.visibility || state.visibility,
+    page: query.page || state.page,
+    size: query.size || state.size,
+    sorting: query.sorting || state.sorting,
+    phase: query.phase || state.phase,
+    domain: query.domain || state.domain,
+    klaProcess: query.klaProcess || state.klaProcess,
+    umbrella: query.umbrella || state.umbrella,
+    itSystems: query.itSystems || state.itSystems,
+    technologies: query.technologies || state.technologies
   };
 };
