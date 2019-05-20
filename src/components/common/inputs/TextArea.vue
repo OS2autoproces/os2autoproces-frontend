@@ -25,6 +25,7 @@
       v-if="disabled"
       v-html="readonlyHtml"
     >{{value}}</div>
+    <!-- TODO: Sanitize readonlyHtml" -->
   </div>
 </template>
 
