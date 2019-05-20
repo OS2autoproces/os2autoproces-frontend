@@ -261,7 +261,6 @@ export function stateToRequest(state: ProcessState): Partial<ProcessRequest> {
 export function responseToState(process: ProcessResponse): Process {
   return {
     ...process,
-    status: StatusKeys.NOTASSESSED, // TODO: Remove mock when API delivers correct status
     id: process.id.toString(),
     hasChanged: false,
     timeSpendComputedTotal: process.timeSpendComputedTotal.toString(),

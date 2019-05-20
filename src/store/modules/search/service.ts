@@ -1,7 +1,7 @@
 import { HTTP } from '@/services/http-service';
 import { SearchFilters, SearchResult } from '@/store/modules/search/state';
 import { Phase, PhaseLabels } from '@/models/phase';
-import { Status, StatusLabels, StatusKeys } from '@/models/status';
+import { Status, StatusLabels } from '@/models/status';
 import { Domain, DomainLabels } from '@/models/domain';
 import { Visibility, VisibilityKeys } from '@/models/visibility';
 import { User } from '@/store/modules/auth/state';
@@ -58,9 +58,8 @@ interface SearchParams {
 function mapSearchResponse(response: SearchResponse): SearchResult {
   return {
     page: response.page,
-    processes: response._embedded.processes.map(p => ({ ...p, status: StatusKeys.NOTASSESSED }))
+    processes: response._embedded.processes
   };
-  // TODO: Remove mock when API delivers correct status
 }
 
 function dateFromISODateTime(datetime: string): string {

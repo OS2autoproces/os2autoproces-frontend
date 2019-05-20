@@ -91,7 +91,7 @@ Privat betyder at det kun er dig og din superbruger der kan se processen.">
     </div>
 
     <div>
-      <div v-if="state.status !== StatusKeys.INPROGRESS && state.status !== StatusKeys.NOTASSESSED">
+      <div v-if="state.status !== StatusKeys.INPROGRESS && state.status !== StatusKeys.NOT_RATED">
         <h2 class="comments-heading" v-if="state.status === StatusKeys.FAILED">Hvorfor er processen mislykket?</h2>
         <h2 class="comments-heading" v-if="state.status === StatusKeys.PENDING">Hvorfor afventer processen?</h2>
         <h2 class="comments-heading" v-if="state.status === StatusKeys.REJECTED">Hvorfor er processen afvist?</h2>
@@ -185,7 +185,7 @@ export default class GeneralInformationForm extends Vue {
     { value: StatusKeys.FAILED, text: StatusLabels.FAILED },
     { value: StatusKeys.PENDING, text: StatusLabels.PENDING },
     { value: StatusKeys.INPROGRESS, text: StatusLabels.INPROGRESS },
-    { value: StatusKeys.NOTASSESSED, text: StatusLabels.NOTASSESSED}
+    { value: StatusKeys.NOT_RATED, text: StatusLabels.NOT_RATED}
   ];
 
   get isWithinMunicipality() {

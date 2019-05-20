@@ -307,7 +307,7 @@ export function initialProcessState(): ProcessState {
     users: [],
     shortDescription: '',
     phase: PhaseKeys.IDEA,
-    status: StatusKeys.NOTASSESSED,
+    status: StatusKeys.NOT_RATED,
     statusText: '',
     klaProcess: false,
     municipalityName: '',
