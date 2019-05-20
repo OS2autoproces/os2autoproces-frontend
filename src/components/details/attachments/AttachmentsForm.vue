@@ -18,6 +18,15 @@
       />
     </div>
 
+    <h2 class="with-margin">Links</h2>
+    <TextArea
+      :readonly-html="readonlyLinks"
+      :value="state.disabled.attachmentsEdit ? '' : state.links"
+      @change="update({links: $event})"
+      :disabled="state.disabled.attachmentsEdit"
+      :max-length="65536"
+    />
+
     <h2>Bilag</h2>
     <div v-if="!showPlaceholder">
       <AttachmentUpload :disabled="state.disabled.attachmentsEdit"/>
@@ -64,6 +73,16 @@ export default class AttachmentsForm extends Vue {
   get state() {
     return this.$store.state.process;
   }
+
+  get readonlyLinks() {
+    const state = this.state;
+    return !state.disabled.attachmentsEdit
+      ? ''
+      : state.links.replace(
+          /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/g,
+          "<a href='$1'>$1</a>"
+        );
+  }
 }
 </script>
 
@@ -81,7 +100,7 @@ h2 {
     margin-top: 2rem;
   }
 
-  &.with-margin {
+  &.with-margin:not(:first-child) {
     margin-top: 2rem;
   }
 }

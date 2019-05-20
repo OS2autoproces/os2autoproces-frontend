@@ -23,6 +23,7 @@
       class="text-area-readonly"
       :class="{'double-column': twoColumns, 'full-width': fullWidth }"
       v-if="disabled"
+      v-html="readonlyHtml"
     >{{value}}</div>
   </div>
 </template>
@@ -34,6 +35,8 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 export default class TextArea extends Vue {
   @Prop(String)
   value!: string;
+  @Prop(String)
+  readonlyHtml!: string;
   @Prop(Number)
   maxLength!: number;
   @Prop(Boolean)
