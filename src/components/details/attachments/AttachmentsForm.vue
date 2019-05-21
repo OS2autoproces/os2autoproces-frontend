@@ -7,8 +7,8 @@
     :disabled="state.disabled.attachmentsEdit"
     @edit="update({disabled: { attachmentsEdit: $event}})"
   >
+    <h2 v-if="isWithinMunicipality && minPhase(PhaseKeys.SPECIFICATION)">Sagsreference i ESDH</h2>
     <div v-if="isWithinMunicipality && minPhase(PhaseKeys.SPECIFICATION)">
-      <h2>Sagsreference i ESDH</h2>
       <InfoTooltip>Skriv sagsreferencen eller indsæt et direkte link til sagen i ESDH systemet.</InfoTooltip>
       <TextArea
         :max-length="300"
@@ -18,20 +18,24 @@
       />
     </div>
 
-    <h2 class="with-margin">Links</h2>
-    <TextArea
-      :readonly-html="readonlyLinks"
-      :value="state.disabled.attachmentsEdit ? '' : state.links"
-      @change="update({links: $event})"
-      :disabled="state.disabled.attachmentsEdit"
-      :max-length="65536"
-    />
+    <h2>Links</h2>
+    <div>
+      <TextArea
+        :readonly-html="readonlyLinks"
+        :value="state.disabled.attachmentsEdit ? '' : state.links"
+        @change="update({links: $event})"
+        :disabled="state.disabled.attachmentsEdit"
+        :max-length="65536"
+      />
+    </div>
 
     <h2>Bilag</h2>
-    <div v-if="!showPlaceholder">
-      <AttachmentUpload :disabled="state.disabled.attachmentsEdit"/>
+    <div>
+      <div v-if="!showPlaceholder">
+        <AttachmentUpload :disabled="state.disabled.attachmentsEdit"/>
+      </div>
+      <div v-else>Det er først muligt at tilføje et bilag, efter du har klikket på Gem første gang.</div>
     </div>
-    <div v-else>Det er først muligt at tilføje et bilag, efter du har klikket på Gem første gang.</div>
   </FormSection>
 </template>
 
@@ -100,10 +104,6 @@ h2 {
   margin-right: 1rem;
 
   &:not(:first-of-type) {
-    margin-top: 2rem;
-  }
-
-  &.with-margin:not(:first-child) {
     margin-top: 2rem;
   }
 }

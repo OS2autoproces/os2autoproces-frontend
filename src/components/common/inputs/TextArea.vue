@@ -23,7 +23,7 @@
       class="text-area-readonly"
       :class="{'double-column': twoColumns, 'full-width': fullWidth }"
       v-if="disabled"
-      v-html="readonlyHtml"
+      v-html="sanitizedHtml"
     >{{value}}</div>
     <!-- TODO: Sanitize readonlyHtml" -->
   </div>
@@ -31,6 +31,7 @@
 
 <script lang='ts'>
 import { Vue, Component, Prop } from 'vue-property-decorator';
+import DOMPurify from 'dompurify';
 
 @Component
 export default class TextArea extends Vue {
@@ -50,6 +51,12 @@ export default class TextArea extends Vue {
   twoColumnBreakpoint!: number;
   @Prop(Boolean)
   fullWidth!: boolean;
+
+  get sanitizedHtml() {
+    const clean = DOMPurify.sanitize(this.readonlyHtml, { ALLOWED_TAGS: ['a'], ALLOWED_ATTR: ['href', 'target'] });
+    console.log(DOMPurify.removed);
+    return clean;
+  }
 
   get currentLength() {
     return this.value.length ? this.value.length : 0;
