@@ -22,7 +22,8 @@ export default class AppDialog extends Vue {
     return this.open;
   }
 
-  set _open(open: boolean) {
+  set _open(_: boolean) {
+    // When _open changes, it means that the user has clicked outside the dialog, and thereby closed is.
     this.close();
   }
 }
