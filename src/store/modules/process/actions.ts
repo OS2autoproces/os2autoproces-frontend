@@ -58,7 +58,6 @@ interface BackendManagedFields {
   id: string;
   created?: string;
   lastChanged?: string;
-  timeSpendComputedTotal: string;
   klaProcess: boolean;
   cvr: string;
   municipalityName: string;
@@ -68,7 +67,6 @@ function setBackendManagedFields(process: Process): Partial<Process> {
   const fields: BackendManagedFields = {
     id: process.id,
     created: process.created,
-    timeSpendComputedTotal: process.timeSpendComputedTotal,
     lastChanged: process.lastChanged,
     klaProcess: process.klaProcess,
     cvr: process.cvr,

@@ -7,6 +7,7 @@ import { Visibility, VisibilityKeys } from '@/models/visibility';
 import { User } from '@/store/modules/auth/state';
 import { Type, TypeKeys } from '@/models/types';
 import { umbrellaLabels } from '@/store/modules/error/actions';
+import { setUrlSearchQuery } from '@/services/url-service';
 
 interface ProcessSearchResponse {
   id: number;
@@ -20,6 +21,7 @@ interface ProcessSearchResponse {
   kle: string;
   legalClause: string;
   hasBookmarked: boolean;
+  lastChanged: number;
 }
 
 interface SearchResponse {
@@ -67,6 +69,7 @@ function dateFromISODateTime(datetime: string): string {
 }
 
 export async function search(filters: SearchFilters): Promise<SearchResult> {
+  setUrlSearchQuery(filters);
   const params: SearchParams = {
     projection: 'grid',
     phase: Object.entries(filters.phase)
@@ -78,6 +81,7 @@ export async function search(filters: SearchFilters): Promise<SearchResult> {
     sort: `${filters.sorting.property},${filters.sorting.descending ? 'desc' : 'asc'}`,
     itSystems: filters.itSystems.map(system => system.id),
     technologies: filters.technologies.map(technology => technology.id),
+    // TODO should visibility be used?
     visibility: [],
     page: filters.page,
     size: filters.size,

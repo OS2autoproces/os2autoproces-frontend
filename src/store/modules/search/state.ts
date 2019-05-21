@@ -23,6 +23,7 @@ export interface SearchResultProcess {
   kle: string;
   legalClause: string;
   hasBookmarked: boolean;
+  lastChanged: number;
 }
 
 export interface SortingOption {
@@ -56,4 +57,5 @@ export interface SearchFilters {
 export interface SearchState {
   result?: SearchResult;
   filters: SearchFilters;
+  allowClear: boolean;
 }
