@@ -86,7 +86,7 @@ export default class AttachmentsForm extends Vue {
           /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/g,
           '<a href="$1" target="_blank">$1</a>'
         );
-    const httpPass = firstPass.replace('href="www', 'href="http://www');
+    const httpPass = firstPass.replace(/href="www/g, 'href="http://www');
     return httpPass;
     // TODO: Fix mails without schema and maybe other edge cases
   }
