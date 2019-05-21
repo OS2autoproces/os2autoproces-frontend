@@ -122,8 +122,9 @@ export default class Search extends Vue {
   flex-grow: 1;
   display: flex;
 
+  // TODO clean - this is messy
   > div:first-of-type {
-    flex: 0 1 300px;
+    flex: 0 1 $dimension-search-filters-width;
     border-right: 1px solid #e6e6e8;
   }
 

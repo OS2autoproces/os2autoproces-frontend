@@ -1,5 +1,5 @@
 import { HTTP } from '@/services/http-service';
-import { SearchFilters, SearchResult } from '@/store/modules/search/state';
+import { SearchFilters, SearchResult, SavedSearchFilters } from '@/store/modules/search/state';
 import { Phase, PhaseLabels } from '@/models/phase';
 import { Status, StatusLabels } from '@/models/status';
 import { Domain, DomainLabels } from '@/models/domain';
@@ -7,7 +7,8 @@ import { Visibility, VisibilityKeys } from '@/models/visibility';
 import { User } from '@/store/modules/auth/state';
 import { Type, TypeKeys } from '@/models/types';
 import { umbrellaLabels } from '@/store/modules/error/actions';
-import { setUrlSearchQuery } from '@/services/url-service';
+import { setUrlSearchQuery, mapSearchQueryToObject, mapQueryObjToFilters } from '@/services/url-service';
+import qs from 'qs';
 
 interface ProcessSearchResponse {
   id: number;
@@ -108,3 +109,43 @@ export async function search(filters: SearchFilters): Promise<SearchResult> {
 
   return mapSearchResponse(response.data);
 }
+
+// TODO Should we obfuscate?
+const STORAGE_KEY = 'OS2AUTOPROCES_FILTERS';
+const DELIMITER = '__';
+
+const mapQsStringToSavedFilters = (filterStr: string): SavedSearchFilters | null => {
+  try {
+    const obj = mapSearchQueryToObject(filterStr);
+    const filters = mapQueryObjToFilters(obj.filters);
+    const text = obj.text;
+    return { text, filters };
+  } catch (e) {
+    console.error(`Error when trying to deserialize saved filters: ${e}`);
+    return null;
+  }
+};
+
+export const saveFiltersToStorage = (filters: SavedSearchFilters) => {
+  if (!window || !window.localStorage) {
+    return;
+  }
+
+  // load possible existing saved filters
+  const savedFiltersString = localStorage.getItem(STORAGE_KEY);
+  const filtersArray = loadFiltersFromStorage();
+
+  filtersArray.push(filters);
+  localStorage.setItem(STORAGE_KEY, filtersArray.map(f => qs.stringify(f)).join(DELIMITER));
+};
+
+export const loadFiltersFromStorage = (): SavedSearchFilters[] => {
+  const savedFiltersString = localStorage.getItem(STORAGE_KEY);
+  return !!savedFiltersString
+    ? savedFiltersString.split(DELIMITER).reduce((filters: SavedSearchFilters[], str) => {
+        const filter = mapQsStringToSavedFilters(str);
+
+        return !!filter ? [...filters, filter] : filters;
+      }, [])
+    : [];
+};
