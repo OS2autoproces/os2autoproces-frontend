@@ -1,6 +1,6 @@
 <template>
   <div class="internal-notes">
-    <TextArea :value="internalNotes" @change="update({ internalNotes: $event })" placeholder="Skriv interne noter her..." :max-length="2400" :disabled="disabled" />
+    <TextArea :value="internalNotes" @change="update({ internalNotes: $event })" placeholder="Skriv interne noter her..." :max-length="10000" :disabled="disabled" />
   </div>
 </template>
 
