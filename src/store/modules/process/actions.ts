@@ -78,6 +78,7 @@ function setBackendManagedFields(process: Process): Partial<Process> {
 }
 
 function calculateTotalTimeSpent(perEmployee: number, perOccurence: number, percentage: number) {
+
   return (perEmployee * (perOccurence / 60.0) * (1 - (percentage / 100.0))).toFixed(2);
 }
 
@@ -85,9 +86,9 @@ function updateTimeSpendComputedTotal(payload: Partial<ProcessState>, state: Pro
   if (!payload.timeSpendOccurancesPerEmployee && !payload.timeSpendPerOccurance && !payload.timeSpendPercentageDigital) {
     return payload;
   }
-  const perEmployee: number = parseInt(payload.timeSpendOccurancesPerEmployee || state.timeSpendOccurancesPerEmployee, 10);
-  const perOccurence: number = parseInt(payload.timeSpendPerOccurance || state.timeSpendPerOccurance, 10);
-  const percentage: number = parseInt(payload.timeSpendPercentageDigital || state.timeSpendPercentageDigital, 10);
+  const perEmployee: number = parseInt(payload.timeSpendOccurancesPerEmployee || state.timeSpendOccurancesPerEmployee, 10) || 0;
+  const perOccurence: number = parseInt(payload.timeSpendPerOccurance || state.timeSpendPerOccurance, 10) || 0;
+  const percentage: number = parseInt(payload.timeSpendPercentageDigital || state.timeSpendPercentageDigital, 10) || 0;
   return Object.assign({}, payload, { timeSpendComputedTotal: calculateTotalTimeSpent(perEmployee, perOccurence, percentage).toString() });
 }
 
