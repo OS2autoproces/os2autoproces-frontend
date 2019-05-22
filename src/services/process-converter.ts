@@ -2,6 +2,7 @@ import { Domain } from '@/models/domain';
 import { LikertScale, LikertScaleKeys } from '@/models/likert-scale';
 import { Phase, PhaseKeys } from '@/models/phase';
 import { Status, StatusKeys } from '@/models/status';
+import { RunPeriod, RunPeriodKeys } from '@/models/runperiod';
 import { Type, TypeKeys } from '@/models/types';
 import { Visibility, VisibilityKeys } from '@/models/visibility';
 import { User } from '@/store/modules/auth/state';
@@ -12,6 +13,7 @@ export interface ProcessRequest {
   esdhReference: string | null;
   phase: Phase;
   status: Status;
+  runPeriod: RunPeriod;
   statusText: string | null;
   type: Type;
 
@@ -88,6 +90,7 @@ export interface ProcessResponse {
   esdhReference: string | null;
   phase: Phase;
   status: Status;
+  runPeriod: RunPeriod;
   statusText: string | null;
   type: Type;
 
@@ -173,6 +176,7 @@ function stateToRequestFields(state: ProcessState): ProcessRequest {
     phase: state.phase || PhaseKeys.IDEA,
     status: state.status || StatusKeys.PENDING,
     statusText: defaultNull(state.statusText),
+    runPeriod: state.runPeriod || RunPeriodKeys.ONDEMAND,
     created: defaultNull(state.created),
     lastChanged: defaultNull(state.lastChanged),
     decommissioned: defaultNull(state.decommissioned),

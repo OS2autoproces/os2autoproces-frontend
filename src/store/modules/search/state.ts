@@ -11,6 +11,11 @@ export interface SearchResult {
   processes: SearchResultProcess[];
 }
 
+export interface SavedSearchFilters {
+  text: string;
+  filters: SearchFilters;
+}
+
 export interface SearchResultProcess {
   id: number;
   title: string;
@@ -23,6 +28,7 @@ export interface SearchResultProcess {
   kle: string;
   legalClause: string;
   hasBookmarked: boolean;
+  lastChanged: number;
 }
 
 export interface SortingOption {
@@ -56,5 +62,6 @@ export interface SearchFilters {
 export interface SearchState {
   result?: SearchResult;
   filters: SearchFilters;
-  allowClear: boolean;
+  filtersTouched: boolean;
+  savedFilters: SavedSearchFilters[];
 }

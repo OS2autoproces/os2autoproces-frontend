@@ -1,6 +1,7 @@
 import { LikertScaleKeys } from '@/models/likert-scale';
 import { PhaseKeys } from '@/models/phase';
 import { StatusKeys } from '@/models/status';
+import { RunPeriodKeys } from '@/models/runperiod';
 import { TypeKeys } from '@/models/types';
 import { VisibilityKeys } from '@/models/visibility';
 import { HTTP } from '@/services/http-service';
@@ -58,7 +59,6 @@ interface BackendManagedFields {
   id: string;
   created?: string;
   lastChanged?: string;
-  timeSpendComputedTotal: string;
   klaProcess: boolean;
   cvr: string;
   municipalityName: string;
@@ -68,7 +68,6 @@ function setBackendManagedFields(process: Process): Partial<Process> {
   const fields: BackendManagedFields = {
     id: process.id,
     created: process.created,
-    timeSpendComputedTotal: process.timeSpendComputedTotal,
     lastChanged: process.lastChanged,
     klaProcess: process.klaProcess,
     cvr: process.cvr,
@@ -307,8 +306,9 @@ export function initialProcessState(): ProcessState {
     users: [],
     shortDescription: '',
     phase: PhaseKeys.IDEA,
-    status: StatusKeys.INPROGRESS,
+    status: StatusKeys.NOT_RATED,
     statusText: '',
+    runPeriod: RunPeriodKeys.ONDEMAND,
     klaProcess: false,
     municipalityName: '',
     type: TypeKeys.CHILD,

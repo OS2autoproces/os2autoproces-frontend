@@ -1,15 +1,17 @@
-export type Status = 'REJECTED' | 'FAILED' | 'PENDING' | 'INPROGRESS';
+export type Status = 'REJECTED' | 'FAILED' | 'PENDING' | 'INPROGRESS' | 'NOT_RATED';
 
-export const StatusLabels: {[x in Status]: string} = {
+export const StatusLabels: { [x in Status]: string } = {
   REJECTED: 'Afvist',
   FAILED: 'Mislykket',
   PENDING: 'Afventer',
-  INPROGRESS: 'Igang'
+  INPROGRESS: 'Igang',
+  NOT_RATED: 'Ikke vurderet',
 };
 
-export const StatusKeys: {[x in Status]: x} = {
+export const StatusKeys: { [x in Status]: x } = {
   REJECTED: 'REJECTED',
   FAILED: 'FAILED',
   PENDING: 'PENDING',
-  INPROGRESS: 'INPROGRESS'
+  INPROGRESS: 'INPROGRESS',
+  NOT_RATED: 'NOT_RATED'
 };

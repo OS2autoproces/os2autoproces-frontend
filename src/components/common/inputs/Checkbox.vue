@@ -1,5 +1,11 @@
 <template>
-  <div class="checkbox" role="checkbox" :aria-checked="value.toString()" @click="click" :class="{ disabled }">
+  <div
+    class="checkbox"
+    role="checkbox"
+    :aria-checked="valueString"
+    @click="click"
+    :class="{ disabled }"
+  >
     <div class="checkbox-icon">
       <CheckIcon v-if="value" />
     </div>
@@ -19,6 +25,10 @@ import CheckIcon from '../../icons/CheckIcon.vue';
 export default class Checkbox extends Vue {
   @Prop(Boolean) value!: boolean;
   @Prop(Boolean) disabled!: boolean;
+
+  get valueString() {
+    return this.value ? this.value.toString() : 'false';
+  }
 
   click() {
     if (!this.disabled) {
