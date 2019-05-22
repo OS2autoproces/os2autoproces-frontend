@@ -11,7 +11,7 @@
       <h2>Teknisk implementering</h2>
       <InfoTooltip>Her kan du notere, hvordan den tekniske implementering er forløbet og eventuelle ting, som andre bør være opmærksomme på.</InfoTooltip>
       <TextArea
-        :max-length="3000"
+        :max-length="10000"
         :twoColumnBreakpoint="twoColumnBreakpoint"
         @change="update({technicalImplementationNotes: $event})"
         :disabled="state.disabled.implementationEdit"
@@ -23,7 +23,7 @@
       <h2 class="with-margin">Organisatorisk implementering</h2>
       <InfoTooltip>Her kan du notere, hvordan den organisatoriske implementering er forløbet og eventuelle opmærksomhedspunkter omkring det.</InfoTooltip>
       <TextArea
-        :max-length="3000"
+        :max-length="10000"
         :twoColumnBreakpoint="twoColumnBreakpoint"
         @change="update({organizationalImplementationNotes: $event})"
         :disabled="state.disabled.implementationEdit"
