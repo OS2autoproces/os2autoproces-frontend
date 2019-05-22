@@ -1,6 +1,7 @@
 import { Domain } from '@/models/domain';
 import { Phase } from '@/models/phase';
 import { Status } from '@/models/status';
+import { RunPeriod } from '@/models/runperiod';
 import { ITSystem, Municipality, Technology } from '@/store/modules/process/state';
 
 export interface SearchResult {
@@ -23,6 +24,7 @@ export interface SearchResultProcess {
   rating: number;
   phase: Phase;
   status: Status;
+  runPeriod: RunPeriod;
   municipalityName: string;
   domains: Domain[];
   kle: string;
@@ -54,6 +56,7 @@ export interface SearchFilters {
   sorting: SortingOption;
   phase: { [x in Phase]: boolean };
   domain: { [x in Domain]: boolean };
+  runPeriod: { [x in RunPeriod]: boolean };
   klaProcess: boolean;
   noSepMep: boolean;
   umbrella: boolean;

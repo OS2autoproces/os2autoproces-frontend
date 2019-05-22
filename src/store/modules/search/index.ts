@@ -51,6 +51,15 @@ export function getInitialState(): SearchState {
         DEMOCRACY: false,
         ENVIRONMENT: false,
         HEALTH: false
+      },
+      runPeriod: {
+        ONDEMAND: false,
+        ONCE: false,
+        DAILY: false,
+        WEEKLY: false,
+        MONTHLY: false,
+        QUATERLY: false,
+        YEARLY: false
       }
     }
   };

@@ -136,6 +136,22 @@
       />
     </ExpandPanel>
 
+    <ExpandPanel title="Skedulering">
+      <SearchOption
+        :value="filters.runPeriod.ONCE"
+        @change="updateFilters({ runPeriod: { ONCE: $event } })"
+      >Engangskørsel</SearchOption>
+      <SearchOption
+        :value="filters.runPeriod.ONDEMAND"
+        @change="updateFilters({ runPeriod: { ONDEMAND: $event,
+                                              DAILY: $event, 
+                                              WEEKLY: $event,
+                                              MONTHLY: $event,
+                                              QUATERLY: $event,
+                                              YEARLY: $event } })"
+      >Løbende kørsel</SearchOption>
+    </ExpandPanel>
+
     <SearchFiltersActions/>
   </div>
 </template>

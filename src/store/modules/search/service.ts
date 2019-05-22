@@ -3,6 +3,7 @@ import { SearchFilters, SearchResult, SavedSearchFilters } from '@/store/modules
 import { Phase, PhaseLabels } from '@/models/phase';
 import { Status, StatusLabels } from '@/models/status';
 import { Domain, DomainLabels } from '@/models/domain';
+import { RunPeriod, RunPeriodLabels } from '@/models/runperiod';
 import { Visibility, VisibilityKeys } from '@/models/visibility';
 import { User } from '@/store/modules/auth/state';
 import { Type, TypeKeys } from '@/models/types';
@@ -18,6 +19,7 @@ interface ProcessSearchResponse {
   rating: number;
   phase: Phase;
   status: Status;
+  runPeriod: RunPeriod;
   domains: Domain[];
   kle: string;
   sepMep: boolean;
@@ -42,6 +44,7 @@ interface SearchParams {
   projection: 'grid' | 'extended';
   phase: Phase[];
   domains: Domain[];
+  runPeriod: RunPeriod[];
   visibility: Visibility[];
   itSystems: number[];
   technologies: number[];
@@ -81,6 +84,9 @@ export async function search(filters: SearchFilters): Promise<SearchResult> {
     domains: Object.entries(filters.domain)
       .filter(([phase, isSelected]) => isSelected)
       .map(([domain]) => domain) as Domain[],
+    runPeriod: Object.entries(filters.runPeriod)
+      .filter(([runPeriod, isSelected]) => isSelected)
+      .map(([runPeriod]) => runPeriod) as RunPeriod[],
     sort: `${filters.sorting.property},${filters.sorting.descending ? 'desc' : 'asc'}`,
     itSystems: filters.itSystems.map(system => system.id),
     technologies: filters.technologies.map(technology => technology.id),
