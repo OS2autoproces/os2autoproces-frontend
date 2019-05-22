@@ -21,6 +21,7 @@ export interface Process {
   parents: Process[];
 
   hasChanged: boolean;
+  sepMep: boolean;
   esdhReference: string;
   phase: Phase;
   status: Status;

@@ -7,6 +7,7 @@ import { Type, TypeKeys } from '@/models/types';
 import { Visibility, VisibilityKeys } from '@/models/visibility';
 import { User } from '@/store/modules/auth/state';
 import { ITSystem, Link, OrgUnit, Process, ProcessState, Technology } from '@/store/modules/process/state';
+import { state } from '@/store/modules/search';
 
 export interface ProcessRequest {
   klId: string | null;
@@ -61,6 +62,8 @@ export interface ProcessRequest {
 
   technicalImplementationNotes: string | null;
   organizationalImplementationNotes: string | null;
+
+  sepMep: boolean;
 
   rating: number | null;
   ratingComment: string | null;
@@ -137,6 +140,8 @@ export interface ProcessResponse {
 
   technicalImplementationNotes: string | null;
   organizationalImplementationNotes: string | null;
+
+  sepMep: boolean;
 
   rating: number | null;
   ratingComment: string | null;
@@ -218,7 +223,7 @@ function stateToRequestFields(state: ProcessState): ProcessRequest {
     searchWords: '',
     type: state.type || TypeKeys.CHILD,
     itSystemsDescription: defaultNull(state.itSystemsDescription),
-
+    sepMep: state.sepMep,
     contact: state.contact && relation('users', state.contact),
     owner: state.owner && relation('users', state.owner),
     orgUnits: relationArray('orgUnits', state.orgUnits),
@@ -266,6 +271,7 @@ export function responseToState(process: ProcessResponse): Process {
   return {
     ...process,
     id: process.id.toString(),
+    sepMep: process.sepMep,
     hasChanged: false,
     timeSpendComputedTotal: process.timeSpendComputedTotal.toString(),
     timeSpendEmployeesDoingProcess: process.timeSpendEmployeesDoingProcess.toString(),
