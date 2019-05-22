@@ -117,6 +117,13 @@ Privat betyder at det kun er dig og din superbruger der kan se processen."
             @change="update({vendor: $event})"
           />
         </WellItem>
+        <WellItem labelWidth="120px" label="SEP/MEP:">
+          <Checkbox
+            :disabled="state.disabled.generalInformationEdit"
+            :value="state.sepMep"
+            @change="update({sepMep: $event})"
+          />
+        </WellItem>
       </div>
 
       <div>
@@ -248,6 +255,7 @@ import InputField from '@/components/common/inputs/InputField.vue';
 import MaskableInput from '@/components/common/inputs/MaskableInput.vue';
 import SelectionField from '@/components/common/inputs/SelectionField.vue';
 import MappedSelectionField from '@/components/common/inputs/MappedSelectionField.vue';
+import Checkbox from '@/components/common/inputs/Checkbox.vue';
 import DomainsField from '@/components/common/inputs/DomainsField.vue';
 import TextArea from '@/components/common/inputs/TextArea.vue';
 import Phases from '@/components/common/inputs/Phases.vue';
@@ -272,6 +280,7 @@ import StarIcon from '@/components/icons/StarIcon.vue';
 @Component({
   components: {
     InputField,
+    Checkbox,
     DomainsField,
     SelectionField,
     InfoTooltip,

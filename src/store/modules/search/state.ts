@@ -26,6 +26,7 @@ export interface SearchResultProcess {
   municipalityName: string;
   domains: Domain[];
   kle: string;
+  sepMep: boolean;
   legalClause: string;
   hasBookmarked: boolean;
   lastChanged: number;
@@ -54,6 +55,7 @@ export interface SearchFilters {
   phase: { [x in Phase]: boolean };
   domain: { [x in Domain]: boolean };
   klaProcess: boolean;
+  noSepMep: boolean;
   umbrella: boolean;
   itSystems: ITSystem[];
   technologies: Technology[];

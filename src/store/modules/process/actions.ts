@@ -315,6 +315,7 @@ export function initialProcessState(): ProcessState {
     type: TypeKeys.CHILD,
     children: [],
     parents: [],
+    sepMep: false,
 
     /* Assessment */
     levelOfProfessionalAssessment: LikertScaleKeys.NOT_SET,
