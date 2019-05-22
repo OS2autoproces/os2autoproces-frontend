@@ -62,6 +62,8 @@ export interface ProcessRequest {
   technicalImplementationNotes: string | null;
   organizationalImplementationNotes: string | null;
 
+  sepMep: boolean;
+
   rating: number | null;
   ratingComment: string | null;
   searchWords: string | null;
@@ -137,6 +139,8 @@ export interface ProcessResponse {
 
   technicalImplementationNotes: string | null;
   organizationalImplementationNotes: string | null;
+
+  sepMep: boolean;
 
   rating: number | null;
   ratingComment: string | null;
@@ -218,7 +222,7 @@ function stateToRequestFields(state: ProcessState): ProcessRequest {
     searchWords: '',
     type: state.type || TypeKeys.CHILD,
     itSystemsDescription: defaultNull(state.itSystemsDescription),
-
+    sepMep: state.sepMep,
     contact: state.contact && relation('users', state.contact),
     owner: state.owner && relation('users', state.owner),
     orgUnits: relationArray('orgUnits', state.orgUnits),
@@ -248,7 +252,8 @@ function buildUmbrellaRequest(request: ProcessRequest): Partial<ProcessRequest> 
     'title',
     'type',
     'longDescription',
-    'shortDescription'
+    'shortDescription',
+    'runPeriod',
   ]);
 }
 
@@ -266,6 +271,7 @@ export function responseToState(process: ProcessResponse): Process {
   return {
     ...process,
     id: process.id.toString(),
+    sepMep: process.sepMep,
     hasChanged: false,
     timeSpendComputedTotal: process.timeSpendComputedTotal.toString(),
     timeSpendEmployeesDoingProcess: process.timeSpendEmployeesDoingProcess.toString(),
