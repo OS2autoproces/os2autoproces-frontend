@@ -73,6 +73,7 @@ export const mapQueryObjToFilters = (query: any): SearchFilters => {
     phase: query.phase || state.phase,
     domain: query.domain || state.domain,
     klaProcess: query.klaProcess || state.klaProcess,
+    noSepMep: query.noSepMep || state.noSepMep,
     umbrella: query.umbrella || state.umbrella,
     itSystems: query.itSystems || state.itSystems,
     technologies: query.technologies || state.technologies
