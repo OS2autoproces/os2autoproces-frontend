@@ -1,24 +1,10 @@
 <template>
   <div class="wrapper">
-    <div
-      class="types"
-      v-if="!umbrellaProcessSearch"
-    >
-      <PillCheckbox
-        :value="!!filters.reporterId"
-        @change="setReporterId"
-      >Mine indberetninger
-      </PillCheckbox>
-      <PillCheckbox
-        :value="!!filters.usersId"
-        @change="setUsersId"
-      >Mine tilknytninger</PillCheckbox>
-      <PillCheckbox
-        :value="!!filters.bookmarkedId"
-        @change="setBookmarkedId"
-      >Mine favoritter
-      </PillCheckbox>
-      <SearchSelectSavedFilters />
+    <div class="types" v-if="!umbrellaProcessSearch">
+      <PillCheckbox :value="!!filters.reporterId" @change="setReporterId">Mine indberetninger</PillCheckbox>
+      <PillCheckbox :value="!!filters.usersId" @change="setUsersId">Mine tilknytninger</PillCheckbox>
+      <PillCheckbox :value="!!filters.bookmarkedId" @change="setBookmarkedId">Mine favoritter</PillCheckbox>
+      <SearchSelectSavedFilters/>
     </div>
 
     <SearchField
@@ -29,53 +15,41 @@
 
     <h1 v-if="!umbrellaProcessSearch">AVANCERET SØGNING</h1>
 
-    <div
-      class="municipality-level"
-      v-if="!umbrellaProcessSearch"
-    >
+    <div class="municipality-level" v-if="!umbrellaProcessSearch">
       <SearchOption
         :value="filters.visibility.municipality"
         @change="updateFilters({ visibility: { municipality: $event } })"
-      >
-        {{VisibilityLabels.MUNICIPALITY}}
-      </SearchOption>
+      >{{VisibilityLabels.MUNICIPALITY}}</SearchOption>
       <SearchOption
         :value="filters.visibility.public"
         @change="updateFilters({ visibility: { public: $event } })"
-      >
-        {{VisibilityLabels.PUBLIC}}
-      </SearchOption>
+      >{{VisibilityLabels.PUBLIC}}</SearchOption>
     </div>
 
     <SearchOption
       :value="filters.klaProcess"
       @change="updateFilters({ klaProcess: $event })"
-    >
-      Søg i KL’s Arbejdsgangsbank
-    </SearchOption>
+    >Søg i KL’s Arbejdsgangsbank</SearchOption>
 
     <SearchOption
       v-if="!umbrellaProcessSearch"
       :value="filters.umbrella"
       @change="updateFilters({ umbrella: $event })"
-    >
-      Søg i paraplyprocesser
-    </SearchOption>
+    >Søg i paraplyprocesser</SearchOption>
+
+    <SearchOption
+      :value="filters.noSepMep"
+      @change="updateFilters({ noSepMep: $event })"
+    >Frasorter SEP/MEP-processer</SearchOption>
 
     <div class="datepicker">
       Oprettet:
-      <DatePicker
-        :value="filters.created"
-        @change="updateFilters({created: $event})"
-      />
+      <DatePicker :value="filters.created" @change="updateFilters({created: $event})"/>
     </div>
 
     <div class="datepicker">
       Senest ændret:
-      <DatePicker
-        :value="filters.lastChanged"
-        @change="updateFilters({lastChanged: $event})"
-      />
+      <DatePicker :value="filters.lastChanged" @change="updateFilters({lastChanged: $event})"/>
     </div>
 
     <ExpandPanel title="Kommune">
@@ -102,78 +76,54 @@
       <SearchOption
         :value="filters.phase.IDEA"
         @change="updateFilters({ phase: { IDEA: $event } })"
-      >
-        {{PhaseLabels.IDEA}}
-      </SearchOption>
+      >{{PhaseLabels.IDEA}}</SearchOption>
       <SearchOption
         :value="filters.phase.PREANALYSIS"
         @change="updateFilters({ phase: { PREANALYSIS: $event } })"
-      >
-        {{PhaseLabels.PREANALYSIS}}
-      </SearchOption>
+      >{{PhaseLabels.PREANALYSIS}}</SearchOption>
       <SearchOption
         :value="filters.phase.SPECIFICATION"
         @change="updateFilters({ phase: { SPECIFICATION: $event } })"
-      >
-        {{PhaseLabels.SPECIFICATION}}
-      </SearchOption>
+      >{{PhaseLabels.SPECIFICATION}}</SearchOption>
       <SearchOption
         :value="filters.phase.DEVELOPMENT"
         @change="updateFilters({ phase: { DEVELOPMENT: $event } })"
-      >
-        {{PhaseLabels.DEVELOPMENT}}
-      </SearchOption>
+      >{{PhaseLabels.DEVELOPMENT}}</SearchOption>
       <SearchOption
         :value="filters.phase.IMPLEMENTATION"
         @change="updateFilters({ phase: { IMPLEMENTATION: $event } })"
-      >
-        {{PhaseLabels.IMPLEMENTATION}}
-      </SearchOption>
+      >{{PhaseLabels.IMPLEMENTATION}}</SearchOption>
       <SearchOption
         :value="filters.phase.OPERATION"
         @change="updateFilters({ phase: { OPERATION: $event } })"
-      >
-        {{PhaseLabels.OPERATION}}
-      </SearchOption>
+      >{{PhaseLabels.OPERATION}}</SearchOption>
     </ExpandPanel>
 
     <ExpandPanel title="Fagområde">
       <SearchOption
         :value="filters.domain.HEALTH"
         @change="updateFilters({ domain: { HEALTH: $event } })"
-      >
-        {{DomainLabels.HEALTH}}
-      </SearchOption>
+      >{{DomainLabels.HEALTH}}</SearchOption>
       <SearchOption
         :value="filters.domain.ENVIRONMENT"
         @change="updateFilters({ domain: { ENVIRONMENT: $event } })"
-      >
-        {{DomainLabels.ENVIRONMENT}}
-      </SearchOption>
+      >{{DomainLabels.ENVIRONMENT}}</SearchOption>
       <SearchOption
         :value="filters.domain.DEMOCRACY"
         @change="updateFilters({ domain: { DEMOCRACY: $event } })"
-      >
-        {{DomainLabels.DEMOCRACY}}
-      </SearchOption>
+      >{{DomainLabels.DEMOCRACY}}</SearchOption>
       <SearchOption
         :value="filters.domain.CHILDREN"
         @change="updateFilters({ domain: { CHILDREN: $event } })"
-      >
-        {{DomainLabels.CHILDREN}}
-      </SearchOption>
+      >{{DomainLabels.CHILDREN}}</SearchOption>
       <SearchOption
         :value="filters.domain.ADMINISTRATION"
         @change="updateFilters({ domain: { ADMINISTRATION: $event } })"
-      >
-        {{DomainLabels.ADMINISTRATION}}
-      </SearchOption>
+      >{{DomainLabels.ADMINISTRATION}}</SearchOption>
       <SearchOption
         :value="filters.domain.WORK"
         @change="updateFilters({ domain: { WORK: $event } })"
-      >
-        {{DomainLabels.WORK}}
-      </SearchOption>
+      >{{DomainLabels.WORK}}</SearchOption>
     </ExpandPanel>
 
     <ExpandPanel title="System">
@@ -186,7 +136,7 @@
       />
     </ExpandPanel>
 
-    <SearchFiltersActions />
+    <SearchFiltersActions/>
   </div>
 </template>
 
