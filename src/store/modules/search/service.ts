@@ -95,7 +95,7 @@ export async function search(filters: SearchFilters): Promise<SearchResult> {
     'bookmarkUsers.uuid': filters.bookmarkedId,
     freetext: filters.text,
     klaProcess: filters.klaProcess,
-    sepMep: null,
+    sepMep: filters.noSepMep ? false : null,
     cvr: filters.municipality ? filters.municipality.cvr : null,
     type: filters.umbrella ? [TypeKeys.GLOBAL_PARENT, TypeKeys.PARENT] : [TypeKeys.CHILD]
   };
@@ -106,10 +106,6 @@ export async function search(filters: SearchFilters): Promise<SearchResult> {
 
   if (filters.visibility.public) {
     params.visibility.push(VisibilityKeys.PUBLIC);
-  }
-
-  if (filters.noSepMep) {
-    params.sepMep = false;
   }
 
   const response = await HTTP.get<SearchResponse>('api/processes', { params });
