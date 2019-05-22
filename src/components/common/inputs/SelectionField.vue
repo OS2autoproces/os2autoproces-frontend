@@ -7,9 +7,23 @@
       :value="value"
       return-object
       single-line
+      :placeholder="placeholder"
       @change="valueChanged"
     >
-
+      <template
+        slot="item"
+        slot-scope="data"
+      >
+        <SelectionFieldText
+          :itemText="data.item[itemText]"
+          :subText="data.item[itemSubText]"
+        />
+        <SelectionFieldAction
+          v-if="hasAction"
+          :actionIcon="actionIcon"
+          @action="action(data.item)"
+        />
+      </template>
     </v-select>
     <v-autocomplete
       class="select-wrap"
@@ -33,15 +47,15 @@
         slot="item"
         slot-scope="data"
       >
-        <template v-if="itemSubText">
-          <v-list-tile-content>
-            <v-list-tile-title>{{data.item[itemText]}}</v-list-tile-title>
-            <v-list-tile-sub-title>{{data.item[itemSubText]}}</v-list-tile-sub-title>
-          </v-list-tile-content>
-        </template>
-        <template v-else>
-          {{data.item[itemText]}}
-        </template>
+        <SelectionFieldText
+          :itemText="data.item[itemText]"
+          :subText="data.item[itemSubText]"
+        />
+        <SelectionFieldAction
+          v-if="hasAction"
+          :actionIcon="actionIcon"
+          @action="action(data.item)"
+        />
       </template>
     </v-autocomplete>
     <div
@@ -52,9 +66,11 @@
 </template>
 
 <script lang='ts'>
-import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
+import { Vue, Component, Prop, Watch, Emit } from 'vue-property-decorator';
+import SelectionFieldText from './SelectionFieldText.vue';
+import SelectionFieldAction from './SelectionFieldAction.vue';
 
-@Component
+@Component({ components: { SelectionFieldText, SelectionFieldAction } })
 export default class SelectionField<T extends any> extends Vue {
   searchQuery = '';
 
@@ -82,6 +98,12 @@ export default class SelectionField<T extends any> extends Vue {
   itemValue!: string;
   @Prop({ type: Boolean, default: false })
   dropdown!: boolean;
+  @Prop({ type: Boolean, default: false }) hasAction!: boolean;
+  @Prop({ type: String, default: 'info' }) actionIcon!: string;
+  @Emit()
+  action(item: T) {
+    return item;
+  }
 
   get _items(): T[] {
     let items: T[] = [];

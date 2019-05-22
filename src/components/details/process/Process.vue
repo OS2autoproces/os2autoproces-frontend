@@ -2,14 +2,31 @@
   <div class="page">
     <div class="side-bar">
       <div class="side-bar-content">
-        <router-link to="/search" class="search-page-link">
-          <ArrowLeftIcon/>Tilbage til søgning
+        <router-link
+          to="/search"
+          class="search-page-link"
+        >
+          <ArrowLeftIcon /> Tilbage til søgning
         </router-link>
 
-        <ProcessMenu :phase="phase" :canEdit="state.canEdit" :isReporting="isReporting"/>
+        <ProcessMenu
+          :phase="phase"
+          :canEdit="state.canEdit"
+          :isReporting="isReporting"
+        />
 
-        <Button primary v-if="isReporting" class="report-button" @click="report">Gem</Button>
-        <Button primary v-if="!isReporting" class="save-button" @click="save">Gem</Button>
+        <Button
+          primary
+          v-if="isReporting"
+          class="report-button"
+          @click="report"
+        >Gem</Button>
+        <Button
+          primary
+          v-if="!isReporting"
+          class="save-button"
+          @click="save"
+        >Gem</Button>
       </div>
     </div>
 
@@ -26,8 +43,11 @@
           <AssessmentForm/>
           <ImplementationForm/>
           <OperationForm/>
-          <AttachmentsForm :showPlaceholder="isReporting" v-if="minPhase(PhaseKeys.PREANALYSIS)"/>
-
+          <AttachmentsForm
+            :showPlaceholder="isReporting"
+            v-if="minPhase(PhaseKeys.PREANALYSIS)"
+          />
+          
           <FormSection
             v-if="state.canEdit"
             id="internal-notes"
@@ -43,17 +63,30 @@
           </FormSection>
         </div>
 
-        <div class="comments" v-if="!isReporting">
+        <div
+          class="comments"
+          v-if="!isReporting"
+        >
           <h2 class="comments-heading">Kommentarer</h2>
-          <Comments :comments="state.comments" @submit="saveComment({ message: $event })"/>
+          <Comments
+            :comments="state.comments"
+            @submit="saveComment({ message: $event })"
+          />
         </div>
       </div>
     </div>
 
-    <SnackBar showButton :timeout="0" color="error" :value="snack" @clicked="clearErrors">
+    <SnackBar
+      showButton
+      :timeout="0"
+      color="error"
+      :value="snack"
+      @clicked="clearErrors"
+    >
       <div>
         <h3>Følgende felter er ugyldige:</h3>
         <div class="snack-bar-list-container">
+          <!-- TODO Fix v if in v for and computation in template -->
           <ul
             class="section-errors"
             v-for="section in errors"
@@ -61,8 +94,13 @@
             :key="section.section"
           >
             <span class="section-errors-title">{{section.section}}</span>
-            <li v-for="(field, i) in section.errors" :key="i">
-              <div class="snack-bar-list-item">{{field}}</div>
+            <li
+              v-for="(field, i) in section.errors"
+              :key="i"
+            >
+              <div class="snack-bar-list-item">
+                {{field}}
+              </div>
             </li>
           </ul>
         </div>
@@ -75,7 +113,9 @@
       :timeout="3000"
       color="success"
       @onSnackClose="showSaveSuccess = false"
-    >Processen er gemt!</SnackBar>
+    >
+      Processen er gemt!
+    </SnackBar>
 
     <SnackBar
       :showButton="false"
@@ -83,7 +123,10 @@
       :timeout="5000"
       color="error"
       @onSnackClose="showSaveError = false"
-    >Processen er IKKE gemt - prøv igen!</SnackBar>
+    >
+      Processen er IKKE gemt - prøv igen!
+    </SnackBar>
+
   </div>
 </template>
 

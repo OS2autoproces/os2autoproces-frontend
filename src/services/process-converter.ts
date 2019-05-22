@@ -2,6 +2,7 @@ import { Domain } from '@/models/domain';
 import { LikertScale, LikertScaleKeys } from '@/models/likert-scale';
 import { Phase, PhaseKeys } from '@/models/phase';
 import { Status, StatusKeys } from '@/models/status';
+import { RunPeriod, RunPeriodKeys } from '@/models/runperiod';
 import { Type, TypeKeys } from '@/models/types';
 import { Visibility, VisibilityKeys } from '@/models/visibility';
 import { User } from '@/store/modules/auth/state';
@@ -12,6 +13,7 @@ export interface ProcessRequest {
   esdhReference: string | null;
   phase: Phase;
   status: Status;
+  runPeriod: RunPeriod;
   statusText: string | null;
   type: Type;
 
@@ -60,6 +62,8 @@ export interface ProcessRequest {
   technicalImplementationNotes: string | null;
   organizationalImplementationNotes: string | null;
 
+  sepMep: boolean;
+
   rating: number | null;
   ratingComment: string | null;
   searchWords: string | null;
@@ -88,6 +92,7 @@ export interface ProcessResponse {
   esdhReference: string | null;
   phase: Phase;
   status: Status;
+  runPeriod: RunPeriod;
   statusText: string | null;
   type: Type;
 
@@ -135,6 +140,8 @@ export interface ProcessResponse {
   technicalImplementationNotes: string | null;
   organizationalImplementationNotes: string | null;
 
+  sepMep: boolean;
+
   rating: number | null;
   ratingComment: string | null;
   searchWords: string | null;
@@ -173,6 +180,7 @@ function stateToRequestFields(state: ProcessState): ProcessRequest {
     phase: state.phase || PhaseKeys.IDEA,
     status: state.status || StatusKeys.PENDING,
     statusText: defaultNull(state.statusText),
+    runPeriod: state.runPeriod || RunPeriodKeys.ONDEMAND,
     created: defaultNull(state.created),
     lastChanged: defaultNull(state.lastChanged),
     decommissioned: defaultNull(state.decommissioned),
@@ -214,7 +222,7 @@ function stateToRequestFields(state: ProcessState): ProcessRequest {
     searchWords: '',
     type: state.type || TypeKeys.CHILD,
     itSystemsDescription: defaultNull(state.itSystemsDescription),
-
+    sepMep: state.sepMep,
     contact: state.contact && relation('users', state.contact),
     owner: state.owner && relation('users', state.owner),
     orgUnits: relationArray('orgUnits', state.orgUnits),
@@ -244,7 +252,8 @@ function buildUmbrellaRequest(request: ProcessRequest): Partial<ProcessRequest> 
     'title',
     'type',
     'longDescription',
-    'shortDescription'
+    'shortDescription',
+    'runPeriod',
   ]);
 }
 
@@ -262,6 +271,7 @@ export function responseToState(process: ProcessResponse): Process {
   return {
     ...process,
     id: process.id.toString(),
+    sepMep: process.sepMep,
     hasChanged: false,
     timeSpendComputedTotal: process.timeSpendComputedTotal.toString(),
     timeSpendEmployeesDoingProcess: process.timeSpendEmployeesDoingProcess.toString(),

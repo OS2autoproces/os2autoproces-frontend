@@ -4,13 +4,15 @@ import { Module } from 'vuex';
 import { actions } from '@/store/modules/search/actions';
 import { getters } from '@/store/modules/search/getters';
 import { mutations } from '@/store/modules/search/mutations';
+import { loadFiltersFromStorage } from './service';
 
 const namespaced = true;
 
 export function getInitialState(): SearchState {
   return {
     result: undefined,
-    allowClear: false,
+    filtersTouched: false,
+    savedFilters: [],
     filters: {
       page: 0,
       size: 5,
@@ -27,6 +29,7 @@ export function getInitialState(): SearchState {
       },
       klaProcess: false,
       umbrella: false,
+      noSepMep: false,
       itSystems: [],
       technologies: [],
       sorting: {

@@ -37,7 +37,7 @@
     <div class="comments-wrap">
       <span>Kommentar vedr. tidsforbrug</span>
       <InfoTooltip class="time-proces-tooltip">Her kan du uddybe eller kommentere på de indtastede værdier ovenfor og på tidsforbruget generelt. F.eks. hvordan det er målt.</InfoTooltip>
-      <TextArea :value="state.timeSpendComment" :disabled="state.disabled.timeAndProcessEdit" @change="update({timeSpendComment: $event})" :maxLength="300" />
+      <TextArea :value="state.timeSpendComment" :disabled="state.disabled.timeAndProcessEdit" @change="update({timeSpendComment: $event})" :maxLength="10000" />
     </div>
   </FormSection>
 </template>

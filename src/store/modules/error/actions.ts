@@ -40,7 +40,8 @@ export const generalInformationLabels: ProcessLabels = {
   kla: 'KL’s Arbejdsgangsbank',
   vendor: 'Leverandør',
   klId: 'KL ID',
-  orgUnits: 'Afdelinger'
+  orgUnits: 'Afdelinger',
+  sepMep: 'SEP/MEP'
 };
 
 export const challengesLabels: ProcessLabels = {

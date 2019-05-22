@@ -11,6 +11,11 @@ export interface SearchResult {
   processes: SearchResultProcess[];
 }
 
+export interface SavedSearchFilters {
+  text: string;
+  filters: SearchFilters;
+}
+
 export interface SearchResultProcess {
   id: number;
   title: string;
@@ -21,8 +26,10 @@ export interface SearchResultProcess {
   municipalityName: string;
   domains: Domain[];
   kle: string;
+  sepMep: boolean;
   legalClause: string;
   hasBookmarked: boolean;
+  lastChanged: number;
 }
 
 export interface SortingOption {
@@ -48,6 +55,7 @@ export interface SearchFilters {
   phase: { [x in Phase]: boolean };
   domain: { [x in Domain]: boolean };
   klaProcess: boolean;
+  noSepMep: boolean;
   umbrella: boolean;
   itSystems: ITSystem[];
   technologies: Technology[];
@@ -56,5 +64,6 @@ export interface SearchFilters {
 export interface SearchState {
   result?: SearchResult;
   filters: SearchFilters;
-  allowClear: boolean;
+  filtersTouched: boolean;
+  savedFilters: SavedSearchFilters[];
 }

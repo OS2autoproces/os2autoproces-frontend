@@ -8,6 +8,9 @@ import ManageTechnologies from './views/ManageTechnologies.vue';
 import ReportProcess from './views/ReportProcess.vue';
 import Search from './views/Search.vue';
 import Discovery from './views/Discovery.vue';
+import { mapSearchQueryToObject, mapQueryObjToFilters } from './services/url-service';
+import { SearchFilters } from './store/modules/search/state';
+import { size } from 'lodash';
 
 Vue.use(Router);
 
@@ -51,13 +54,9 @@ export const routes: RouteConfig[] = [
   },
   {
     path: '/search',
-    props: route => {
-      const page = Number.parseInt(route.query.page, 10) || 0;
-      const size = Number.parseInt(route.query.size, 10) || 5;
-
+    props: ({ query }) => {
       return {
-        page,
-        size
+        initialFilters: mapQueryObjToFilters(query.filters)
       };
     },
     component: Search,
@@ -86,5 +85,8 @@ export const routes: RouteConfig[] = [
 
 export const router = new Router({
   routes,
-  mode: 'history'
+  mode: 'history',
+  parseQuery: (query: string) => {
+    return mapSearchQueryToObject(query);
+  }
 });

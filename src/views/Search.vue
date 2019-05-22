@@ -13,6 +13,7 @@
       <div>
         <div class="results-wrapper">
           <div class="report">
+            <SearchSortingDropdown />
             <router-link to="/report">
               <PlusIcon /> Indberet proces
             </router-link>
@@ -63,6 +64,7 @@ import PlusIcon from '../components/icons/PlusIcon.vue';
 import { searchActionTypes } from '../store/modules/search/actions';
 import { processActionTypes } from '../store/modules/process/actions';
 import { SearchFilters, SearchResultProcess } from '../store/modules/search/state';
+import SearchSortingDropdown from '@/components/search/SearchSortingDropdown.vue';
 
 @Component({
   components: {
@@ -71,12 +73,12 @@ import { SearchFilters, SearchResultProcess } from '../store/modules/search/stat
     SearchFiltersComponent,
     SearchPagination,
     SearchResult,
-    SearchSorting
+    SearchSorting,
+    SearchSortingDropdown
   }
 })
 export default class Search extends Vue {
-  @Prop(Number) page!: number;
-  @Prop(Number) size!: number;
+  @Prop({ type: Object as () => SearchFilters }) initialFilters!: SearchFilters;
 
   get filters() {
     return this.$store.state.search.filters;
@@ -87,30 +89,10 @@ export default class Search extends Vue {
   }
 
   updateFilters(filters: Partial<SearchFilters>) {
-    this.$store.dispatch(searchActionTypes.UPDATE_FILTERS, {
+    this.$store.dispatch(searchActionTypes.ASSIGN_FILTERS, {
       page: 0,
       ...filters
     });
-    this.setUrl(filters);
-  }
-
-  setUrl(filters: Partial<SearchFilters>) {
-    // This is kind of hacky, nut it is needed for deeplinking specific searches.
-    // It has no impect on rerendering, it only pushes a new history state
-    // TODO consider placing in seperate helper / service
-    try {
-      if (history.pushState) {
-        const newurl =
-          window.location.protocol +
-          '//' +
-          window.location.host +
-          window.location.pathname +
-          `?size=${filters.size || this.size}&page=${filters.page || this.page}`;
-        window.history.pushState({ path: newurl }, '', newurl);
-      }
-    } catch (e) {
-      console.warn(`Updating search url failed with error: ${e}`);
-    }
   }
 
   assignFilters(filters: Partial<SearchFilters>) {
@@ -121,7 +103,7 @@ export default class Search extends Vue {
   }
 
   mounted() {
-    this.$store.dispatch(searchActionTypes.UPDATE_FILTERS, { page: this.page, size: this.size });
+    this.$store.dispatch(searchActionTypes.UPDATE_FILTERS, this.initialFilters);
   }
 }
 </script>
@@ -140,8 +122,9 @@ export default class Search extends Vue {
   flex-grow: 1;
   display: flex;
 
+  // TODO clean - this is messy
   > div:first-of-type {
-    flex: 0 1 300px;
+    flex: 0 1 $dimension-search-filters-width;
     border-right: 1px solid #e6e6e8;
   }
 
@@ -156,9 +139,11 @@ export default class Search extends Vue {
 }
 
 .report {
-  padding-top: 3rem;
-  padding-bottom: 1rem;
+  padding: 2rem 0;
   text-align: right;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
   a {
     @include heading;

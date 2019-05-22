@@ -1,6 +1,7 @@
 import { LikertScaleKeys } from '@/models/likert-scale';
 import { PhaseKeys } from '@/models/phase';
 import { StatusKeys } from '@/models/status';
+import { RunPeriodKeys } from '@/models/runperiod';
 import { TypeKeys } from '@/models/types';
 import { VisibilityKeys } from '@/models/visibility';
 import { HTTP } from '@/services/http-service';
@@ -58,7 +59,6 @@ interface BackendManagedFields {
   id: string;
   created?: string;
   lastChanged?: string;
-  timeSpendComputedTotal: string;
   klaProcess: boolean;
   cvr: string;
   municipalityName: string;
@@ -68,7 +68,6 @@ function setBackendManagedFields(process: Process): Partial<Process> {
   const fields: BackendManagedFields = {
     id: process.id,
     created: process.created,
-    timeSpendComputedTotal: process.timeSpendComputedTotal,
     lastChanged: process.lastChanged,
     klaProcess: process.klaProcess,
     cvr: process.cvr,
@@ -79,6 +78,7 @@ function setBackendManagedFields(process: Process): Partial<Process> {
 }
 
 function calculateTotalTimeSpent(perEmployee: number, perOccurence: number, percentage: number) {
+
   return (perEmployee * (perOccurence / 60.0) * (1 - (percentage / 100.0))).toFixed(2);
 }
 
@@ -86,9 +86,9 @@ function updateTimeSpendComputedTotal(payload: Partial<ProcessState>, state: Pro
   if (!payload.timeSpendOccurancesPerEmployee && !payload.timeSpendPerOccurance && !payload.timeSpendPercentageDigital) {
     return payload;
   }
-  const perEmployee: number = parseInt(payload.timeSpendOccurancesPerEmployee || state.timeSpendOccurancesPerEmployee, 10);
-  const perOccurence: number = parseInt(payload.timeSpendPerOccurance || state.timeSpendPerOccurance, 10);
-  const percentage: number = parseInt(payload.timeSpendPercentageDigital || state.timeSpendPercentageDigital, 10);
+  const perEmployee: number = parseInt(payload.timeSpendOccurancesPerEmployee || state.timeSpendOccurancesPerEmployee, 10) || 0;
+  const perOccurence: number = parseInt(payload.timeSpendPerOccurance || state.timeSpendPerOccurance, 10) || 0;
+  const percentage: number = parseInt(payload.timeSpendPercentageDigital || state.timeSpendPercentageDigital, 10) || 0;
   return Object.assign({}, payload, { timeSpendComputedTotal: calculateTotalTimeSpent(perEmployee, perOccurence, percentage).toString() });
 }
 
@@ -307,13 +307,15 @@ export function initialProcessState(): ProcessState {
     users: [],
     shortDescription: '',
     phase: PhaseKeys.IDEA,
-    status: StatusKeys.INPROGRESS,
+    status: StatusKeys.NOT_RATED,
     statusText: '',
+    runPeriod: RunPeriodKeys.ONDEMAND,
     klaProcess: false,
     municipalityName: '',
     type: TypeKeys.CHILD,
     children: [],
     parents: [],
+    sepMep: false,
 
     /* Assessment */
     levelOfProfessionalAssessment: LikertScaleKeys.NOT_SET,

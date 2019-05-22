@@ -22,7 +22,7 @@
     </Well>
 
     <h2>Kommentar til realiseret gevinster</h2>
-    <TextArea :max-length="1200" @change="update({ratingComment: $event})" :disabled="state.disabled.operationEdit" :value="state.ratingComment" />
+    <TextArea :max-length="10000" @change="update({ratingComment: $event})" :disabled="state.disabled.operationEdit" :value="state.ratingComment" />
     </FormSection>
 </template>
 
