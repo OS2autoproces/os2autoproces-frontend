@@ -143,9 +143,9 @@ export const loadFiltersFromStorage = (): SavedSearchFilters[] => {
   const savedFiltersString = localStorage.getItem(STORAGE_KEY);
   return !!savedFiltersString
     ? savedFiltersString.split(DELIMITER).reduce((filters: SavedSearchFilters[], str) => {
-        const filter = mapQsStringToSavedFilters(str);
+      const filter = mapQsStringToSavedFilters(str);
 
-        return !!filter ? [...filters, filter] : filters;
-      }, [])
+      return !!filter ? [...filters, filter] : filters;
+    }, [])
     : [];
 };

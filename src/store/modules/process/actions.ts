@@ -1,6 +1,7 @@
 import { LikertScaleKeys } from '@/models/likert-scale';
 import { PhaseKeys } from '@/models/phase';
 import { StatusKeys } from '@/models/status';
+import { RunPeriodKeys } from '@/models/runperiod';
 import { TypeKeys } from '@/models/types';
 import { VisibilityKeys } from '@/models/visibility';
 import { HTTP } from '@/services/http-service';
@@ -306,6 +307,7 @@ export function initialProcessState(): ProcessState {
     shortDescription: '',
     phase: PhaseKeys.IDEA,
     status: StatusKeys.INPROGRESS,
+    runPeriod: RunPeriodKeys.ONDEMAND,
     statusText: '',
     klaProcess: false,
     municipalityName: '',
