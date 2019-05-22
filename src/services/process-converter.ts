@@ -253,7 +253,8 @@ function buildUmbrellaRequest(request: ProcessRequest): Partial<ProcessRequest> 
     'title',
     'type',
     'longDescription',
-    'shortDescription'
+    'shortDescription',
+    'runPeriod',
   ]);
 }
 

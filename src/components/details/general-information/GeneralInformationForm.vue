@@ -224,7 +224,7 @@ Privat betyder at det kun er dig og din superbruger der kan se processen."
     </div>
 
     <div>
-      <div v-if="state.status !== StatusKeys.INPROGRESS">
+      <div v-if="state.status !== StatusKeys.INPROGRESS && state.status !== StatusKeys.NOT_RATED">
         <h2
           class="comments-heading"
           v-if="state.status === StatusKeys.FAILED"
