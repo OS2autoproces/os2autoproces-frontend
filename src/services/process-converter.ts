@@ -7,7 +7,6 @@ import { Type, TypeKeys } from '@/models/types';
 import { Visibility, VisibilityKeys } from '@/models/visibility';
 import { User } from '@/store/modules/auth/state';
 import { ITSystem, Link, OrgUnit, Process, ProcessState, Technology } from '@/store/modules/process/state';
-import { state } from '@/store/modules/search';
 
 export interface ProcessRequest {
   klId: string | null;
