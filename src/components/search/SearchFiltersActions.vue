@@ -1,12 +1,4 @@
 <style lang="scss" scoped>
-.dialog-content {
-  width: 100%;
-  background: white;
-  padding: 1rem;
-  border-radius: 1rem;
-  border: 0.1rem solid $color-primary;
-}
-
 .actions {
   position: fixed;
   bottom: 2rem;
@@ -20,6 +12,7 @@
 .form-header {
   margin-bottom: 1rem;
 }
+
 .save-filters-form {
   display: flex;
   flex-direction: column;
@@ -41,46 +34,25 @@
 
 <template>
   <transition name="slide-y-reverse-transition">
-    <div
-      class="actions"
-      v-if="filtersTouched"
-    >
-      <Button
-        class="action elevation-3"
-        v-ripple
-        @click="dispatchClearFilters()"
-      >Ryd filtre</Button>
+    <div class="actions" v-if="filtersTouched">
+      <Button class="action elevation-3" v-ripple @click="dispatchClearFilters()">Ryd filtre</Button>
       <Button
         class="action elevation-3"
         v-ripple
         @click.stop.prevent="toggleSaveFiltersDialog()"
       >Gem Søgning</Button>
-      <AppDialog
-        :open="saveFiltersDialogOpen"
-        @close="closeSaveFilterDialog"
-      >
-        <div class="dialog-content elevation-4">
+      <AppDialog :open="saveFiltersDialogOpen" @close="closeSaveFilterDialog">
+        <DialogContent>
           <h2 class="form-header">Gem din søgning</h2>
           <div class="save-filters-form">
-            <InputField
-              class="input"
-              placeholder="Navn"
-              :value="name"
-              @change="onNameChange"
-            ></InputField>
-            <span
-              class="error--text"
-              v-if="!!error"
-            >{{error}}</span>
+            <InputField class="input" placeholder="Navn" :value="name" @change="onNameChange"></InputField>
+            <span class="error--text" v-if="!!error">{{error}}</span>
             <div class="dialog-actions">
               <Button @click="closeSaveFilterDialog()">Annullér</Button>
-              <Button
-                :primary="true"
-                @click="submitSaveFilters()"
-              >GEM</Button>
+              <Button :primary="true" @click="submitSaveFilters()">GEM</Button>
             </div>
           </div>
-        </div>
+        </DialogContent>
       </AppDialog>
     </div>
   </transition>
@@ -93,6 +65,7 @@ import { State, Action } from 'vuex-class';
 import { searchActionTypes } from '@/store/modules/search/actions';
 import Button from '../common/inputs/Button.vue';
 import AppDialog from '../common/Dialog.vue';
+import DialogContent from '../common/DialogContent.vue';
 import InputField from '../common/inputs/InputField.vue';
 import { SavedSearchFilters } from '../../store/modules/search/state';
 
@@ -100,7 +73,8 @@ import { SavedSearchFilters } from '../../store/modules/search/state';
   components: {
     Button,
     AppDialog,
-    InputField
+    InputField,
+    DialogContent
   }
 })
 export default class SearchFiltersActions extends Vue {
