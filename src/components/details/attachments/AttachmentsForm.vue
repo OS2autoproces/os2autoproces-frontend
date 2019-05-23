@@ -22,10 +22,10 @@
     <div>
       <TextArea
         :readonly-html="readonlyLinks"
-        :value="state.disabled.attachmentsEdit ? '' : state.links"
-        @change="update({links: $event})"
+        :value="state.disabled.attachmentsEdit ? '' : state.codeRepositoryUrl"
+        @change="update({codeRepositoryUrl: $event})"
         :disabled="state.disabled.attachmentsEdit"
-        :max-length="65536"
+        :max-length="300"
       />
     </div>
 
@@ -82,7 +82,7 @@ export default class AttachmentsForm extends Vue {
     const state = this.state;
     const firstPass = !state.disabled.attachmentsEdit
       ? ''
-      : state.links.replace(
+      : state.codeRepositoryUrl.replace(
           /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/g,
           '<a href="$1" target="_blank">$1</a>'
         );

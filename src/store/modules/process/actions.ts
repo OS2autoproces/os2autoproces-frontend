@@ -360,7 +360,7 @@ export function initialProcessState(): ProcessState {
 
     /* Attachments */
     esdhReference: '',
-    links: '',
+    codeRepositoryUrl: '',
     attachments: [],
 
     /* Details */

@@ -41,7 +41,7 @@ export interface Process {
   kle: Kle | null;
   kla: string | null;
   klaProcess: boolean;
-  links: string;
+  codeRepositoryUrl: string;
   vendor: string | null;
   cvr: string;
   internalNotes: string;
