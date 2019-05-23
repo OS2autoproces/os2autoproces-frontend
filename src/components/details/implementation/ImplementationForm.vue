@@ -45,15 +45,13 @@
       </div>
       <div class="run-period">
         <h2 class="with-margin">Skedulering</h2>
-        <div>
-          <MappedSelectionField
-            class="run-period-field"
-            :disabled="state.disabled.implementationEdit"
-            :value="state.runPeriod"
-            @change="update({runPeriod: $event})"
-            :items="runPeriods"
-          />
-        </div>
+        <MappedSelectionField
+          class="run-period-field"
+          :disabled="state.disabled.implementationEdit"
+          :value="state.runPeriod"
+          @change="update({runPeriod: $event})"
+          :items="runPeriods"
+        />
       </div>
     </div>
   </FormSection>
@@ -135,27 +133,20 @@ h2 {
 }
 
 .technology-run-period {
-  background-color: white;
-  border-radius: 0;
   display: flex;
-  margin-top: 2rem;
 
   .technology {
-    flex-grow: 1;
+    flex: 1 1 50%;
   }
 
   .run-period {
-    flex: 0 0 400px;
-    margin-left: 2rem;
-
-    .run-period-field {
-      display: inline-block;
-      width: 200px;
-    }
+    flex: 1 1 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   h2 {
-    @include textarea-heading;
     margin-bottom: 0.5rem;
   }
 }
