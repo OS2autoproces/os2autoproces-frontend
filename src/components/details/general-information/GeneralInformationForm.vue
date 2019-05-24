@@ -335,6 +335,7 @@ export default class GeneralInformationForm extends Vue {
   minPhase!: (phase: Phase) => boolean;
 
   isPhaseChanged = false;
+  publicVisibilityDialogOpen = false;
   StatusKeys = StatusKeys;
   PhaseKeys = PhaseKeys;
 
@@ -399,9 +400,7 @@ export default class GeneralInformationForm extends Vue {
     this.isPhaseChanged = true;
     this.update({ phase });
 
-    console.log('foo');
     if (phase == PhaseKeys.OPERATION && this.state.visibility !== VisibilityKeys.PUBLIC) {
-      console.log('bar');
       this.openPublicVisibilityDialog();
     }
   }
@@ -409,8 +408,6 @@ export default class GeneralInformationForm extends Vue {
   search(name: string) {
     this.searchUsers({ name, cvr: this.$store.state.auth.user.cvr });
   }
-
-  publicVisibilityDialogOpen = false;
 
   openPublicVisibilityDialog() {
     this.publicVisibilityDialogOpen = true;
