@@ -1,8 +1,9 @@
 import { HTTP } from '@/services/http-service';
 import { SearchFilters, SearchResult, SavedSearchFilters } from '@/store/modules/search/state';
-import { Phase, PhaseLabels } from '@/models/phase';
+import { Phase, PhaseLabels, PhaseKeys } from '@/models/phase';
 import { Status, StatusLabels } from '@/models/status';
 import { Domain, DomainLabels } from '@/models/domain';
+import { RunPeriod, RunPeriodLabels } from '@/models/runperiod';
 import { Visibility, VisibilityKeys } from '@/models/visibility';
 import { User } from '@/store/modules/auth/state';
 import { Type, TypeKeys } from '@/models/types';
@@ -18,6 +19,7 @@ interface ProcessSearchResponse {
   rating: number;
   phase: Phase;
   status: Status;
+  runPeriod: RunPeriod;
   domains: Domain[];
   kle: string;
   sepMep: boolean;
@@ -42,6 +44,7 @@ interface SearchParams {
   projection: 'grid' | 'extended';
   phase: Phase[];
   domains: Domain[];
+  runPeriod: RunPeriod[];
   visibility: Visibility[];
   itSystems: number[];
   technologies: number[];
@@ -71,16 +74,22 @@ function dateFromISODateTime(datetime: string): string {
   return datetime.split('T')[0];
 }
 
+const mapObjectToTypedEnumArray = <T>(obj: { [key: string]: boolean }): Array<keyof T> =>
+  Object.entries<boolean>(obj)
+    .reduce<Array<keyof T>>((selectedValues, [key, isSelected]) => {
+      if (isSelected) {
+        selectedValues.push(key as keyof T);
+      }
+      return selectedValues;
+    }, []);
+
 export async function search(filters: SearchFilters): Promise<SearchResult> {
   setUrlSearchQuery(filters);
   const params: SearchParams = {
     projection: 'grid',
-    phase: Object.entries(filters.phase)
-      .filter(([phase, isSelected]) => isSelected)
-      .map(([phase]) => phase) as Phase[],
-    domains: Object.entries(filters.domain)
-      .filter(([phase, isSelected]) => isSelected)
-      .map(([domain]) => domain) as Domain[],
+    phase: mapObjectToTypedEnumArray(filters.phase),
+    domains: mapObjectToTypedEnumArray(filters.domain),
+    runPeriod: mapObjectToTypedEnumArray(filters.runPeriod),
     sort: `${filters.sorting.property},${filters.sorting.descending ? 'desc' : 'asc'}`,
     itSystems: filters.itSystems.map(system => system.id),
     technologies: filters.technologies.map(technology => technology.id),

@@ -71,6 +71,7 @@ export const mapQueryObjToFilters = (query: any): SearchFilters => {
     size: query.size || state.size,
     sorting: query.sorting || state.sorting,
     phase: query.phase || state.phase,
+    runPeriod: query.runPeriod || state.runPeriod,
     domain: query.domain || state.domain,
     klaProcess: query.klaProcess || state.klaProcess,
     noSepMep: query.noSepMep || state.noSepMep,
