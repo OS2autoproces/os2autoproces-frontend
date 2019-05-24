@@ -90,12 +90,16 @@ export default class AttachmentsForm extends Vue {
   }
 
   get readonlyLinks() {
+    // This function parses links and makes them clickable when the user is not editing.
+    // First, it uses a long regex that matches urls (from http://urlregex.com) to match all urls in the text. Then it wraps them with an 'a' html tag.
     const firstPass = this.attachmentsEdit
       ? ''
       : this.codeRepositoryUrl.replace(
           /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/g,
           '<a href="$1" target="_blank">$1</a>'
         );
+    // After wrapping the links with an 'a' tag, all matched links that start with 'www' but lack a protocol get an http protocol prepended in the href attribute.
+    // Finally, the result is returned.
     return firstPass.replace(/href="www/g, 'href="http://www');
     // TODO: Fix mails without schema and maybe other edge cases
   }
