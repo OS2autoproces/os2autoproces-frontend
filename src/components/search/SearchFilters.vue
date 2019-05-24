@@ -136,6 +136,17 @@
       />
     </ExpandPanel>
 
+    <ExpandPanel title="Skedulering">
+      <SearchOption
+        :value="filters.runPeriod.ONCE"
+        @change="updateFiltersOnceRunPeriod($event)"
+      >Engangskørsel</SearchOption>
+      <SearchOption
+        :value="filters.runPeriod.ONDEMAND"
+        @change="updateFiltersRecurringRunPeriod($event)"
+      >Løbende kørsel</SearchOption>
+    </ExpandPanel>
+
     <SearchFiltersActions/>
   </div>
 </template>
@@ -232,6 +243,25 @@ export default class SearchFiltersComponent extends Vue {
 
   assignFilters(filters: Partial<SearchFilters>) {
     this.$emit('assign', filters);
+  }
+
+  updateFiltersOnceRunPeriod(value: boolean) {
+    this.updateFilters({
+      runPeriod: Object.assign(this.filters.runPeriod, { ONCE: value })
+    });
+  }
+
+  updateFiltersRecurringRunPeriod(value: boolean) {
+    this.updateFilters({
+      runPeriod: Object.assign(this.filters.runPeriod, {
+        ONDEMAND: value,
+        DAILY: value,
+        WEEKLY: value,
+        MONTHLY: value,
+        QUATERLY: value,
+        YEARLY: value
+      })
+    });
   }
 }
 </script>

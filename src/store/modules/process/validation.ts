@@ -125,6 +125,7 @@ export const processFieldsValidators: { [P in keyof Process]?: (state: ProcessSt
       (technologies || []).length > 0
     );
   },
+  runPeriod: ({ runPeriod }: ProcessState) => !!runPeriod,
   technicalImplementationNotes({ technicalImplementationNotes }: ProcessState) {
     return isValid(technicalImplementationNotes, isMinMax(0, 10000));
   },
