@@ -42,13 +42,14 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import TextArea from '@/components/common/inputs/TextArea.vue';
-import { Action, Getter } from 'vuex-class';
+import { Action, Getter, State } from 'vuex-class';
 import FormSection from '@/components/details/FormSection.vue';
 import AttachmentUpload from '@/components/common/inputs/AttachmentUpload.vue';
 import InfoTooltip from '@/components/common/InfoTooltip.vue';
 import { processActionTypes } from '@/store/modules/process/actions';
 import { processGetterTypes } from '@/store/modules/process/getters';
 import { Phase, PhaseKeys } from '@/models/phase';
+import { RootState } from '@/store/store';
 
 @Component({
   components: {
@@ -67,11 +68,21 @@ export default class AttachmentsForm extends Vue {
   @Getter(processGetterTypes.IS_ATTACHMENTS_VALID) isAttachmentsValid!: any;
   @Getter(processGetterTypes.MIN_PHASE) minPhase!: (phase: Phase) => boolean;
 
+  @State((state: RootState) => state.process.cvr) processCvr!: string;
+  @State((state: RootState) => {
+    if (!state.auth.user) {
+      return '';
+    }
+    return state.auth.user.cvr;
+  })
+  userCvr!: string;
+  @State((state: RootState) => state.process.disabled.attachmentsEdit) attachmentsEdit!: boolean;
+  @State((state: RootState) => state.process.codeRepositoryUrl) codeRepositoryUrl!: string;
+
   PhaseKeys = PhaseKeys;
 
   get isWithinMunicipality() {
-    const state = this.$store.state;
-    return state.auth.user.cvr === state.process.cvr;
+    return this.processCvr === this.userCvr;
   }
 
   get state() {
@@ -79,15 +90,13 @@ export default class AttachmentsForm extends Vue {
   }
 
   get readonlyLinks() {
-    const state = this.state;
-    const firstPass = !state.disabled.attachmentsEdit
+    const firstPass = this.attachmentsEdit
       ? ''
-      : state.codeRepositoryUrl.replace(
+      : this.codeRepositoryUrl.replace(
           /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/g,
           '<a href="$1" target="_blank">$1</a>'
         );
-    const httpPass = firstPass.replace(/href="www/g, 'href="http://www');
-    return httpPass;
+    return firstPass.replace(/href="www/g, 'href="http://www');
     // TODO: Fix mails without schema and maybe other edge cases
   }
 }
