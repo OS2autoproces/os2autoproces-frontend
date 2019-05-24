@@ -1,9 +1,15 @@
 <template>
   <div>
     <div class="input-field-wrap" :class="{'has-icon': this.$slots.default }" v-if="!disabled">
-      <input :placeholder="placeholder" :value="value" @input="valueChanged" @keyup.enter="submit">
+      <input
+        :type="type"
+        :placeholder="placeholder"
+        :value="value"
+        @input="valueChanged"
+        @keyup.enter="submit"
+      >
       <div class="icon" v-if="this.$slots.default">
-        <slot />
+        <slot/>
       </div>
     </div>
     <div v-if="disabled">{{value}}</div>
@@ -17,6 +23,7 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 export default class InputField extends Vue {
   @Prop(String) value!: string;
   @Prop(String) placeholder!: string;
+  @Prop(String) type!: string;
   @Prop(Boolean) disabled!: boolean;
 
   valueChanged(event: any) {
