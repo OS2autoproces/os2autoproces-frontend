@@ -85,9 +85,9 @@ function updateTimeSpendComputedTotal(payload: Partial<ProcessState>, state: Pro
   if (!payload.timeSpendOccurancesPerEmployee && !payload.timeSpendPerOccurance && !payload.timeSpendPercentageDigital) {
     return payload;
   }
-  const perEmployee: number = parseFloat(payload.timeSpendOccurancesPerEmployee || state.timeSpendOccurancesPerEmployee) || 0;
-  const perOccurence: number = parseFloat(payload.timeSpendPerOccurance || state.timeSpendPerOccurance) || 0;
-  const percentage: number = parseFloat(payload.timeSpendPercentageDigital || state.timeSpendPercentageDigital) || 0;
+  const perEmployee: number = parseInt(payload.timeSpendOccurancesPerEmployee || state.timeSpendOccurancesPerEmployee, 10) || 0;
+  const perOccurence: number = parseInt(payload.timeSpendPerOccurance || state.timeSpendPerOccurance, 10) || 0;
+  const percentage: number = parseInt(payload.timeSpendPercentageDigital || state.timeSpendPercentageDigital, 10) || 0;
   return Object.assign({}, payload, { timeSpendComputedTotal: calculateTotalTimeSpent(perEmployee, perOccurence, percentage).toString() });
 }
 
