@@ -359,6 +359,7 @@ export function initialProcessState(): ProcessState {
     ratingComment: '',
 
     /* Attachments */
+    links: [],
     esdhReference: '',
     codeRepositoryUrl: '',
     attachments: [],
