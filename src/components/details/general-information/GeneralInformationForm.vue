@@ -244,6 +244,17 @@ Privat betyder at det kun er dig og din superbruger der kan se processen."
         />
       </div>
     </div>
+    <AppDialog :open="publicVisibilityDialogOpen" @close="closePublicVisibilityDialog">
+      <DialogContent>
+        <h2 class="form-header">Vil du ikke også ændre synligheden til tværkommunal?</h2>
+        <div class="public-visibility-form">
+          <div class="dialog-actions">
+            <Button @click="closePublicVisibilityDialog()">Nej</Button>
+            <Button :primary="true" @click="setPublicVisibilityAndCloseDialog()">Ja</Button>
+          </div>
+        </div>
+      </DialogContent>
+    </AppDialog>
   </FormSection>
 </template>
 
@@ -276,6 +287,9 @@ import { Phase, PhaseKeys } from '@/models/phase';
 import InfoTooltip from '@/components/common/InfoTooltip.vue';
 import MunicipalityLogo from '@/components/common/MunicipalityLogo.vue';
 import StarIcon from '@/components/icons/StarIcon.vue';
+import AppDialog from '@/components/common/Dialog.vue';
+import DialogContent from '@/components/common/DialogContent.vue';
+import Button from '@/components/common/inputs/Button.vue';
 
 @Component({
   components: {
@@ -294,7 +308,10 @@ import StarIcon from '@/components/icons/StarIcon.vue';
     FormSection,
     MaskableInput,
     WellItem,
-    WarningIcon
+    WarningIcon,
+    AppDialog,
+    DialogContent,
+    Button
   }
 })
 export default class GeneralInformationForm extends Vue {
@@ -318,6 +335,7 @@ export default class GeneralInformationForm extends Vue {
   minPhase!: (phase: Phase) => boolean;
 
   isPhaseChanged = false;
+  publicVisibilityDialogOpen = false;
   StatusKeys = StatusKeys;
   PhaseKeys = PhaseKeys;
 
@@ -381,10 +399,27 @@ export default class GeneralInformationForm extends Vue {
   phaseChanged(phase: any) {
     this.isPhaseChanged = true;
     this.update({ phase });
+
+    if (phase == PhaseKeys.OPERATION && this.state.visibility !== VisibilityKeys.PUBLIC) {
+      this.openPublicVisibilityDialog();
+    }
   }
 
   search(name: string) {
     this.searchUsers({ name, cvr: this.$store.state.auth.user.cvr });
+  }
+
+  openPublicVisibilityDialog() {
+    this.publicVisibilityDialogOpen = true;
+  }
+
+  closePublicVisibilityDialog() {
+    this.publicVisibilityDialogOpen = false;
+  }
+
+  setPublicVisibilityAndCloseDialog() {
+    this.state.visibility = VisibilityKeys.PUBLIC;
+    this.closePublicVisibilityDialog();
   }
 }
 </script>
@@ -475,5 +510,23 @@ export default class GeneralInformationForm extends Vue {
   height: 2rem;
   width: 2rem;
   margin-left: 50px;
+}
+
+.form-header {
+  margin-bottom: 1rem;
+}
+
+.public-visibility-form {
+  display: flex;
+  flex-direction: column;
+
+  .dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+
+    button {
+      margin: 1rem 0.5rem;
+    }
+  }
 }
 </style>
