@@ -78,8 +78,7 @@ function setBackendManagedFields(process: Process): Partial<Process> {
 }
 
 function calculateTotalTimeSpent(perEmployee: number, perOccurence: number, percentage: number) {
-
-  return (perEmployee * (perOccurence / 60.0) * (1 - (percentage / 100.0))).toFixed(2);
+  return Math.round(perEmployee * (perOccurence / 60.) * (1 - (percentage / 100.)));
 }
 
 function updateTimeSpendComputedTotal(payload: Partial<ProcessState>, state: ProcessState) {
