@@ -53,7 +53,6 @@ export default class TextArea extends Vue {
 
   get sanitizedHtml() {
     const clean = DOMPurify.sanitize(this.readonlyHtml, { ALLOWED_TAGS: ['a'], ALLOWED_ATTR: ['href', 'target'] });
-    console.log(DOMPurify.removed);
     return clean;
   }
 
