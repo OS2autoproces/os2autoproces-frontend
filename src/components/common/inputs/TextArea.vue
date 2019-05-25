@@ -52,8 +52,7 @@ export default class TextArea extends Vue {
   fullWidth!: boolean;
 
   get sanitizedHtml() {
-    const clean = DOMPurify.sanitize(this.readonlyHtml, { ALLOWED_TAGS: ['a'], ALLOWED_ATTR: ['href', 'target'] });
-    return clean;
+    return DOMPurify.sanitize(this.readonlyHtml, { ALLOWED_TAGS: ['a'], ALLOWED_ATTR: ['href', 'target'] });
   }
 
   get currentLength() {
@@ -101,7 +100,8 @@ export default class TextArea extends Vue {
 
 .text-area-readonly {
   white-space: pre-wrap;
-  width: 50%;
+  width: 100%;
+  word-break: break-all;
 }
 
 .full-width {
