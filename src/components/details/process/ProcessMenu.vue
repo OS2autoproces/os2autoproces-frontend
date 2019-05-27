@@ -1,8 +1,12 @@
 <template>
   <div>
-    <div class="menu-item" v-for="item in items.filter(item => item.show)" :key="item.id" :class="{ 'in-view': itemInView === item }" @click="scrollTo(item)">
-      {{item.heading}}
-    </div>
+    <div
+      class="menu-item"
+      v-for="item in items.filter(item => item.show)"
+      :key="item.id"
+      :class="{ 'in-view': itemInView === item }"
+      @click="scrollTo(item)"
+    >{{item.heading}}</div>
   </div>
 </template>
 
@@ -46,10 +50,9 @@ export default class ProcessMenu extends Vue {
       { heading: 'Problemstillinger', id: 'challenges', show: true },
       { heading: 'Tid og proces', id: 'time-and-process', show: true },
       { heading: 'Faglig vurdering', id: 'assessment', show: this.minPhase(PhaseKeys.PREANALYSIS) },
-      { heading: 'Specifikation', id: 'specification', show: this.minPhase(PhaseKeys.SPECIFICATION) },
       { heading: 'Udvikling og implementering', id: 'implementation', show: this.minPhase(PhaseKeys.DEVELOPMENT) },
       { heading: 'Drift', id: 'operation', show: this.minPhase(PhaseKeys.OPERATION) },
-      { heading: 'Bilag', id: 'attachments', show: this.minPhase(PhaseKeys.PREANALYSIS) },
+      { heading: 'Bilag og links', id: 'attachments', show: this.minPhase(PhaseKeys.PREANALYSIS) },
       { heading: 'Interne noter', id: 'internal-notes', show: this.canEdit }
     ];
   }

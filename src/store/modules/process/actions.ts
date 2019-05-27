@@ -330,9 +330,6 @@ export function initialProcessState(): ProcessState {
     targetsCompanies: false,
     timeSpendComment: '',
 
-    /* Specification */
-    esdhReference: '',
-
     /* Implementation */
     organizationalImplementationNotes: '',
     technicalImplementationNotes: '',
@@ -347,6 +344,8 @@ export function initialProcessState(): ProcessState {
 
     /* Attachments */
     links: [],
+    esdhReference: '',
+    codeRepositoryUrl: '',
     attachments: [],
 
     /* Details */
@@ -364,7 +363,6 @@ export function initialProcessState(): ProcessState {
       timeAndProcessEdit: true,
       assessmentEdit: true,
       operationEdit: true,
-      specificationEdit: true,
       implementationEdit: true,
       attachmentsEdit: true,
       internalNotesEdit: true

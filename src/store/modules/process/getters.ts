@@ -5,7 +5,7 @@ import {
   generalInformationLabels,
   implementationLabels,
   operationLabels,
-  specificationLabels,
+  attachmentsLabels,
   timeAndProcessLabels,
   umbrellaLabels
 } from '@/store/modules/error/actions';
@@ -27,7 +27,7 @@ export const processGetterTypes = {
   IS_CHALLENGES_VALID: `${namespace}/isChallengesValid`,
   IS_TIME_AND_PROCESS_VALID: `${namespace}/isTimeAndProcessValid`,
   IS_ASSESSMENT_VALID: `${namespace}/isAssessmentValid`,
-  IS_SPECIFICATION_VALID: `${namespace}/isSpecificationValid`,
+  IS_ATTACHMENTS_VALID: `${namespace}/isAttachmentsValid`,
   IS_IMPLEMENTATION_VALID: `${namespace}/isImplementationValid`,
   IS_OPERATION_VALID: `${namespace}/isOperationValid`,
   MIN_PHASE: `${namespace}/minPhase`
@@ -49,8 +49,8 @@ export const getters: GetterTree<ProcessState, RootState> = {
   isAssessmentValid(state: ProcessState) {
     return !state.canEdit || isEmpty(getInvalidProperties(state, getProcessKeys(assessmentLabels)));
   },
-  isSpecificationValid(state: ProcessState) {
-    return !state.canEdit || isEmpty(getInvalidProperties(state, getProcessKeys(specificationLabels)));
+  isAttachmentsValid(state: ProcessState) {
+    return !state.canEdit || isEmpty(getInvalidProperties(state, getProcessKeys(attachmentsLabels)));
   },
   isImplementationValid(state: ProcessState) {
     return !state.canEdit || isEmpty(getInvalidProperties(state, getProcessKeys(implementationLabels)));

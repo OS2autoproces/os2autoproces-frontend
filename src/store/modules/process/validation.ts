@@ -60,6 +60,9 @@ export const processFieldsValidators: { [P in keyof Process]?: (state: ProcessSt
   legalClause({ legalClause }: ProcessState) {
     return isValid(legalClause, isMinMax(0, 140));
   },
+  codeRepositoryUrl({ codeRepositoryUrl }: ProcessState) {
+    return isValid(codeRepositoryUrl, isMinMax(0, 300));
+  },
   kla({ kla }: ProcessState) {
     return !kla || kla.length === 8 || kla.length === 11 || kla.length === 14;
   },

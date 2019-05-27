@@ -32,23 +32,22 @@
 
     <div class="details-wrapper">
       <div class="details-content">
-        <ProcessHeader :isReporting="isReporting" />
+        <ProcessHeader :isReporting="isReporting"/>
 
-        <ProcessParents :parents="state.parents" />
+        <ProcessParents :parents="state.parents"/>
 
         <div class="form-sections">
-          <GeneralInformationForm :isReporting="isReporting" />
-          <ChallengesForm />
-          <TimeAndProcessForm />
-          <AssessmentForm />
-          <SpecificationForm v-if="isWithinMunicipality" />
-          <ImplementationForm />
-          <OperationForm />
+          <GeneralInformationForm :isReporting="isReporting"/>
+          <ChallengesForm/>
+          <TimeAndProcessForm/>
+          <AssessmentForm/>
+          <ImplementationForm/>
+          <OperationForm/>
           <AttachmentsForm
             :showPlaceholder="isReporting"
             v-if="minPhase(PhaseKeys.PREANALYSIS)"
           />
-
+          
           <FormSection
             v-if="state.canEdit"
             id="internal-notes"
@@ -74,7 +73,6 @@
             @submit="saveComment({ message: $event })"
           />
         </div>
-
       </div>
     </div>
 
@@ -150,7 +148,6 @@ import GeneralInformationForm from '@/components/details/general-information/Gen
 import Button from '@/components/common/inputs/Button.vue';
 import ChallengesForm from '@/components/details/challenges/ChallengesForm.vue';
 import AssessmentForm from '@/components/details/assessment/AssessmentForm.vue';
-import SpecificationForm from '@/components/details/specification/SpecificationForm.vue';
 import ImplementationForm from '@/components/details/implementation/ImplementationForm.vue';
 import TimeAndProcessForm from '@/components/details/time-process/TimeAndProcessForm.vue';
 import AttachmentsForm from '@/components/details/attachments/AttachmentsForm.vue';
@@ -176,7 +173,6 @@ import { processGetterTypes } from '@/store/modules/process/getters';
     AssessmentForm,
     TimeAndProcessForm,
     AttachmentsForm,
-    SpecificationForm,
     ImplementationForm,
     OperationForm,
     Button,
@@ -249,7 +245,6 @@ export default class Process extends Vue {
           timeAndProcessEdit: false,
           assessmentEdit: false,
           operationEdit: false,
-          specificationEdit: false,
           implementationEdit: false,
           attachmentsEdit: false,
           internalNotesEdit: false

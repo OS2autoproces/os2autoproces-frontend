@@ -23,8 +23,8 @@ export const state: ErrorState = {
     section: 'Tid og proces',
     errors: []
   },
-  specification: {
-    section: 'Specifikation',
+  attachments: {
+    section: 'Bilag og links',
     errors: []
   },
   implementation: {
