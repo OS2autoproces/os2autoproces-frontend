@@ -56,7 +56,7 @@ export interface SearchFilters {
   sorting: SortingOption;
   phase: { [x in Phase]: boolean };
   domain: { [x in Domain]: boolean };
-  runPeriod: { [x in RunPeriod]: boolean };
+  runPeriod: Partial<{ [x in RunPeriod]: boolean }>;
   klaProcess: boolean;
   noSepMep: boolean;
   umbrella: boolean;
