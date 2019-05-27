@@ -400,7 +400,7 @@ export default class GeneralInformationForm extends Vue {
     this.isPhaseChanged = true;
     this.update({ phase });
 
-    if (phase == PhaseKeys.OPERATION && this.state.visibility !== VisibilityKeys.PUBLIC) {
+    if (phase === PhaseKeys.OPERATION && this.state.visibility !== VisibilityKeys.PUBLIC) {
       this.openPublicVisibilityDialog();
     }
   }
