@@ -77,23 +77,9 @@ function setBackendManagedFields(process: Process): Partial<Process> {
   return fields;
 }
 
-function calculateTotalTimeSpent(perEmployee: number, perOccurence: number, percentage: number) {
-  return Math.round(perEmployee * (perOccurence / 60.) * (1 - (percentage / 100.)));
-}
-
-function updateTimeSpendComputedTotal(payload: Partial<ProcessState>, state: ProcessState) {
-  if (!payload.timeSpendOccurancesPerEmployee && !payload.timeSpendPerOccurance && !payload.timeSpendPercentageDigital) {
-    return payload;
-  }
-  const perEmployee: number = parseInt(payload.timeSpendOccurancesPerEmployee || state.timeSpendOccurancesPerEmployee, 10) || 0;
-  const perOccurence: number = parseInt(payload.timeSpendPerOccurance || state.timeSpendPerOccurance, 10) || 0;
-  const percentage: number = parseInt(payload.timeSpendPercentageDigital || state.timeSpendPercentageDigital, 10) || 0;
-  return Object.assign({}, payload, { timeSpendComputedTotal: calculateTotalTimeSpent(perEmployee, perOccurence, percentage).toString() });
-}
-
 export const actions: ActionTree<ProcessState, RootState> = {
-  update({ commit, state }, payload: Partial<ProcessState>) {
-    commit(processMutationTypes.UPDATE, updateTimeSpendComputedTotal(payload, state));
+  update({ commit }, payload: Partial<ProcessState>) {
+    commit(processMutationTypes.UPDATE, payload);
   },
   assign({ commit }, payload: Partial<ProcessState>) {
     commit(processMutationTypes.ASSIGN, payload);
@@ -101,7 +87,6 @@ export const actions: ActionTree<ProcessState, RootState> = {
   clear({ commit }) {
     commit(processMutationTypes.ASSIGN, initialProcessState());
   },
-
   async loadAttachments({ commit }, id: string) {
     if (!id) {
       return;
