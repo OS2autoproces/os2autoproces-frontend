@@ -35,8 +35,7 @@
         <WellItem
           labelWidth="70%"
           label="Total tidsforbrug i timer"
-          tooltip="Det samlede tidsforbrug udregnes automatisk når processen gemmes. 
-        Formlen: ‘Antal gange pr. år' x ‘Tidsforbrug i min’ x 'Digital procent besparelse’."
+          tooltip="Det samlede tidsforbrug udregnes automatisk når processen gemmes."
         >
           <InputField disabled :value="state.timeSpendComputedTotal"/>
         </WellItem>
