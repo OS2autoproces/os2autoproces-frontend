@@ -26,6 +26,8 @@ interface ProcessSearchResponse {
   legalClause: string;
   hasBookmarked: boolean;
   lastChanged: number;
+  type: Type;
+  childrenCount: number;
 }
 
 interface SearchResponse {
