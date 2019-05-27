@@ -4,7 +4,7 @@
     v-if="minPhase(PhaseKeys.PREANALYSIS)"
     heading="Bilag og links"
     id="attachments"
-    :disabled="state.disabled.attachmentsEdit"
+    :disabled="attachmentsEdit"
     @edit="update({disabled: { attachmentsEdit: $event}})"
   >
     <h2 v-if="isWithinMunicipality && minPhase(PhaseKeys.SPECIFICATION)">Sagsreference i ESDH</h2>
@@ -13,7 +13,7 @@
       <TextArea
         :max-length="300"
         @change="update({esdhReference: $event})"
-        :disabled="state.disabled.attachmentsEdit"
+        :disabled="attachmentsEdit"
         :value="state.esdhReference"
       />
     </div>
@@ -22,9 +22,9 @@
     <div>
       <TextArea
         :readonly-html="readonlyLinks"
-        :value="state.disabled.attachmentsEdit ? '' : state.codeRepositoryUrl"
+        :value="attachmentsEdit ? '' : codeRepositoryUrl"
         @change="update({codeRepositoryUrl: $event})"
-        :disabled="state.disabled.attachmentsEdit"
+        :disabled="attachmentsEdit"
         :max-length="300"
       />
     </div>
@@ -32,7 +32,7 @@
     <h2>Bilag</h2>
     <div>
       <div v-if="!showPlaceholder">
-        <AttachmentUpload :disabled="state.disabled.attachmentsEdit"/>
+        <AttachmentUpload :disabled="attachmentsEdit"/>
       </div>
       <div v-else>Det er først muligt at tilføje et bilag, efter du har klikket på Gem første gang.</div>
     </div>
@@ -50,6 +50,7 @@ import { processActionTypes } from '@/store/modules/process/actions';
 import { processGetterTypes } from '@/store/modules/process/getters';
 import { Phase, PhaseKeys } from '@/models/phase';
 import { RootState } from '@/store/store';
+import { ProcessState } from '../../../store/modules/process/state';
 
 @Component({
   components: {
@@ -78,6 +79,7 @@ export default class AttachmentsForm extends Vue {
   userCvr!: string;
   @State((state: RootState) => state.process.disabled.attachmentsEdit) attachmentsEdit!: boolean;
   @State((state: RootState) => state.process.codeRepositoryUrl) codeRepositoryUrl!: string;
+  @State((state: RootState) => state.process) state!: ProcessState;
 
   PhaseKeys = PhaseKeys;
 
@@ -85,14 +87,10 @@ export default class AttachmentsForm extends Vue {
     return this.processCvr === this.userCvr;
   }
 
-  get state() {
-    return this.$store.state.process;
-  }
-
   get readonlyLinks() {
     // This function parses links and makes them clickable when the user is not editing.
     // First, it uses a long regex that matches urls (from http://urlregex.com) to match all urls in the text. Then it wraps them with an 'a' html tag.
-    const firstPass = this.attachmentsEdit
+    const firstPass = !this.attachmentsEdit
       ? ''
       : this.codeRepositoryUrl.replace(
           /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/g,
