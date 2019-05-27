@@ -1,16 +1,9 @@
 <template>
   <div class="wrap">
-
-    <div
-      class="search-pagination"
-      v-if="pageTotal > 0"
-    >
-      <div
-        class="prev"
-        v-if="page > 0"
-      >
-        <button @click="prev">
-          <ArrowLeftIcon /> Forrige
+    <div class="search-pagination" v-if="pageTotal > 0">
+      <div class="prev">
+        <button @click="prev" v-if="page > 0">
+          <ArrowLeftIcon/>Forrige
         </button>
       </div>
       <div class="flex-grow">
@@ -21,17 +14,13 @@
             :value="page + 1"
             :length="pageTotal"
             @input="onPageChange($event - 1)"
-          >
-          </v-pagination>
+          ></v-pagination>
         </div>
       </div>
       <div class="next">
-        <button
-          @click="next"
-          v-if="page < pageTotal - 1"
-        >
+        <button @click="next" v-if="page < pageTotal - 1">
           Næste
-          <ArrowRightIcon />
+          <ArrowRightIcon/>
         </button>
       </div>
     </div>
@@ -151,6 +140,11 @@ export default class SearchPagination extends Vue {
 
 .next {
   text-align: right;
+  flex: 1;
+}
+
+.prev {
+  flex: 1;
 }
 
 button {
