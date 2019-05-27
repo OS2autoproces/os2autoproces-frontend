@@ -70,13 +70,7 @@ export default class AttachmentsForm extends Vue {
   @Getter(processGetterTypes.MIN_PHASE) minPhase!: (phase: Phase) => boolean;
 
   @State((state: RootState) => state.process.cvr) processCvr!: string;
-  @State((state: RootState) => {
-    if (!state.auth.user) {
-      return '';
-    }
-    return state.auth.user.cvr;
-  })
-  userCvr!: string;
+  @State((state: RootState) => (state.auth.user ? state.auth.user.cvr : '')) userCvr!: string;
   @State((state: RootState) => state.process.disabled.attachmentsEdit) attachmentsEdit!: boolean;
   @State((state: RootState) => state.process.codeRepositoryUrl) codeRepositoryUrl!: string;
   @State((state: RootState) => state.process) state!: ProcessState;
