@@ -248,7 +248,13 @@ export default class SearchFiltersComponent extends Vue {
   updateFiltersOnceRunPeriod(value: boolean) {
     this.updateFilters({
       runPeriod: {
-        ONCE: value
+        ONCE: value,
+        ONDEMAND: null,
+        DAILY: null,
+        WEEKLY: null,
+        MONTHLY: null,
+        QUATERLY: null,
+        YEARLY: null
       }
     });
   }
@@ -256,6 +262,7 @@ export default class SearchFiltersComponent extends Vue {
   updateFiltersRecurringRunPeriod(value: boolean) {
     this.updateFilters({
       runPeriod: {
+        ONCE: null,
         ONDEMAND: value,
         DAILY: value,
         WEEKLY: value,
