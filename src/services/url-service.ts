@@ -1,16 +1,15 @@
-import { Dictionary } from 'vue-router/types/router';
 import { SearchFilters } from '@/store/modules/search/state';
 import qs from 'qs';
 import DOMPurify from 'dompurify';
 import { getInitialState } from '@/store/modules/search';
-import { strictEqual } from 'assert';
 
+export const stringifySearchFilters = (filters: SearchFilters) => qs.stringify({ filters });
 // This is kind of hacky, nut it is needed for deeplinking specific searches.
 // It has no impect on rerendering, it only pushes a new history state
 export const setUrlSearchQuery = (filters: SearchFilters) => {
   try {
-    if (history.pushState) {
-      const query = qs.stringify({ filters });
+    if (window && history.pushState) {
+      const query = stringifySearchFilters(filters);
       const newurl = `
       ${window.location.protocol}//${window.location.host}${window.location.pathname}?${query}
       `;
@@ -52,31 +51,29 @@ export const mapSearchQueryToObject = (query: string): any => {
   return parsed;
 };
 
-export const mapQueryObjToFilters = (query: any): SearchFilters => {
-  if (!query) {
-    return getInitialState().filters;
-  }
-
-  const state = getInitialState().filters;
+export const mapQueryObjToFilters = (
+  query: any = {},
+  initial: SearchFilters = getInitialState().filters
+): SearchFilters => {
   return {
-    reporterId: query.reporterId || state.reporterId,
-    usersId: query.usersId || state.usersId,
-    bookmarkedId: query.bookmarkedId || state.bookmarkedId,
-    text: query.text || state.text,
-    created: query.created || state.created,
-    lastChanged: query.lastChanged || state.lastChanged,
-    municipality: query.municipality || state.municipality,
-    visibility: query.visibility || state.visibility,
-    page: query.page || state.page,
-    size: query.size || state.size,
-    sorting: query.sorting || state.sorting,
-    phase: query.phase || state.phase,
-    runPeriod: query.runPeriod || state.runPeriod,
-    domain: query.domain || state.domain,
-    klaProcess: query.klaProcess || state.klaProcess,
-    noSepMep: query.noSepMep || state.noSepMep,
-    umbrella: query.umbrella || state.umbrella,
-    itSystems: query.itSystems || state.itSystems,
-    technologies: query.technologies || state.technologies
+    reporterId: query.reporterId || initial.reporterId,
+    usersId: query.usersId || initial.usersId,
+    bookmarkedId: query.bookmarkedId || initial.bookmarkedId,
+    text: query.text || initial.text,
+    created: query.created || initial.created,
+    lastChanged: query.lastChanged || initial.lastChanged,
+    municipality: query.municipality || initial.municipality,
+    visibility: query.visibility || initial.visibility,
+    page: query.page || initial.page,
+    size: query.size || initial.size,
+    sorting: query.sorting || initial.sorting,
+    phase: query.phase || initial.phase,
+    runPeriod: query.runPeriod || initial.runPeriod,
+    domain: query.domain || initial.domain,
+    klaProcess: query.klaProcess || initial.klaProcess,
+    noSepMep: query.noSepMep || initial.noSepMep,
+    umbrella: query.umbrella || initial.umbrella,
+    itSystems: query.itSystems || initial.itSystems,
+    technologies: query.technologies || initial.technologies
   };
 };

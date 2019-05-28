@@ -4,7 +4,12 @@ import { RootState } from '@/store/store';
 import { ActionTree, Commit } from 'vuex';
 import { searchMutationTypes } from '@/store/modules/search/mutations';
 import { debounce, isEqual } from 'lodash';
-import { search, saveFiltersToStorage, loadFiltersFromStorage } from '@/store/modules/search/service';
+import {
+  search,
+  saveFiltersToStorage,
+  loadFiltersFromStorage,
+  deleteFiltersFromStorage
+} from '@/store/modules/search/service';
 import { getInitialState } from '@/store/modules/search';
 
 const namespace = 'search';
@@ -12,10 +17,10 @@ const namespace = 'search';
 export const searchActionTypes = {
   DELETE_SAVED_FILTER: `${namespace}/deleteSavedFilter`,
   LOAD_SAVED_FILTERS: `${namespace}/loadSavedFilters`,
+  SELECT_SAVED_FILTERS: `${namespace}/selectSavedFilters`,
   RESET_FILTERS: `${namespace}/resetFilters`,
   UPDATE_FILTERS: `${namespace}/updateFilters`,
   ASSIGN_FILTERS: `${namespace}/assignFilters`,
-  CLEAR_FILTERS: `${namespace}/clearFilters`,
   SAVE_FILTERS: `${namespace}/saveFilters`,
   SEARCH: `${namespace}/search`
 };
@@ -33,19 +38,27 @@ const debouncedSearch = debounce(async (filters: SearchFilters, commit: Commit) 
 }, 250);
 
 export const actions: ActionTree<SearchState, RootState> = {
-  deleteSavedFilter({ commit }, filter: SavedSearchFilters) {
+  selectSavedFilters({ commit, dispatch }, savedFilters: SavedSearchFilters) {
+    if (!savedFilters) {
+      dispatch(searchActionTypes.RESET_FILTERS, {}, { root: true });
+      return;
+    }
+
+    dispatch(searchActionTypes.ASSIGN_FILTERS, savedFilters.filters, { root: true });
+    commit(searchMutationTypes.SET_SELECTED_SAVED_FILTERS, savedFilters.text);
+  },
+  deleteSavedFilter({ commit, state }, filter: SavedSearchFilters) {
+    deleteFiltersFromStorage(filter);
     commit(searchMutationTypes.DELETE_SAVED_FILTERS, filter);
   },
   loadSavedFilters({ commit }) {
     const filters = loadFiltersFromStorage();
     commit(searchMutationTypes.SET_SAVED_FILTERS, filters);
   },
-  clearFilters({ commit, dispatch }) {
-    dispatch(searchActionTypes.ASSIGN_FILTERS, getInitialState().filters, { root: true });
-  },
   saveFilters({ state: { filters }, commit }, text: string) {
     saveFiltersToStorage({ text, filters });
     commit(searchMutationTypes.ADD_SAVED_FILTERS, { text, filters });
+    commit(searchMutationTypes.SET_SELECTED_SAVED_FILTERS, text);
   },
   updateFilters({ commit, dispatch, state }, filters: Partial<SearchFilters>) {
     commit(searchMutationTypes.SET_FILTERS_TOUCHED, getFiltersTouched(state.filters, filters));
@@ -60,7 +73,7 @@ export const actions: ActionTree<SearchState, RootState> = {
   resetFilters({ commit, dispatch }) {
     const { filters } = getInitialState();
     commit(searchMutationTypes.ASSIGN_FILTERS, filters);
-    dispatch(searchActionTypes.SEARCH, {}, { root: true });
+    commit(searchMutationTypes.SET_SELECTED_SAVED_FILTERS, '');
   },
   search({ commit, state }) {
     debouncedSearch(state.filters, commit);

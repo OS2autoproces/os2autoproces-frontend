@@ -13,6 +13,7 @@ export function getInitialState(): SearchState {
     result: undefined,
     filtersTouched: false,
     savedFilters: [],
+    selectedSavedFiltersText: '',
     filters: {
       page: 0,
       size: 5,

@@ -5,6 +5,7 @@ import { merge, isEqual } from 'lodash';
 export const searchMutationTypes = {
   DELETE_SAVED_FILTERS: 'deleteSavedFilters',
   SET_SAVED_FILTERS: 'setSavedFilters',
+  SET_SELECTED_SAVED_FILTERS: 'setSelectedSavedFilters',
   ADD_SAVED_FILTERS: 'addSavedFilters',
   UPDATE_FILTERS: 'updateFilters',
   ASSIGN_FILTERS: 'assignFilters',
@@ -21,6 +22,9 @@ export const mutations: MutationTree<SearchState> = {
   },
   setSavedFilters(state: SearchState, savedFilters: SavedSearchFilters[]) {
     state.savedFilters = savedFilters;
+  },
+  setSelectedSavedFilters(state: SearchState, filtersText: string) {
+    state.selectedSavedFiltersText = filtersText;
   },
   addSavedFilters(state: SearchState, filters: SavedSearchFilters) {
     state.savedFilters = [...state.savedFilters, filters];

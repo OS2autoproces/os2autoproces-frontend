@@ -3,12 +3,13 @@
     class="size-select"
     :items="savedFilters"
     :type="'number'"
-    :clearable="false"
+    :clearable="true"
     :dropdown="true"
     placeholder="Vælg fra gemte søgninger"
     @change="onFiltersSelected($event)"
     @action="dispatchDeleteSavedFilter($event)"
     :hasAction="true"
+    :value="selectedSavedFilters"
     actionIcon="delete"
   ></SelectionField>
 </template>
@@ -24,16 +25,23 @@ import SelectionField from '../common/inputs/SelectionField.vue';
 @Component({ components: { SelectionField } })
 export default class SearchSelectSavedFilters extends Vue {
   @Action(searchActionTypes.LOAD_SAVED_FILTERS) dispatchLoadSavedFlters!: VoidFunction;
-  @Action(searchActionTypes.ASSIGN_FILTERS) dispatchAssignFilters!: (filters: SearchFilters) => void;
+  @Action(searchActionTypes.SELECT_SAVED_FILTERS) dispatchSelectSavedFilters!: (filters: SavedSearchFilters) => void;
   @Action(searchActionTypes.DELETE_SAVED_FILTER) dispatchDeleteSavedFilter!: (filters: SavedSearchFilters) => void;
   @State((state: RootState) => state.search.savedFilters) savedFilters!: SavedSearchFilters[];
+  @State(({ search: { savedFilters, selectedSavedFiltersText } }: RootState) => {
+    if (!savedFilters) {
+      return null;
+    }
+    return savedFilters.find(f => f.text === selectedSavedFiltersText) || null;
+  })
+  selectedSavedFilters?: SavedSearchFilters;
 
   mounted() {
     this.dispatchLoadSavedFlters();
   }
 
-  onFiltersSelected({ filters }: SavedSearchFilters) {
-    this.dispatchAssignFilters(filters);
+  onFiltersSelected(filters: SavedSearchFilters) {
+    this.dispatchSelectSavedFilters(filters);
   }
 }
 </script>

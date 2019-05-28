@@ -69,4 +69,5 @@ export interface SearchState {
   filters: SearchFilters;
   filtersTouched: boolean;
   savedFilters: SavedSearchFilters[];
+  selectedSavedFiltersText: string;
 }
