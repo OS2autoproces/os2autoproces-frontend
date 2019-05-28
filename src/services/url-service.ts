@@ -24,7 +24,6 @@ export const setUrlSearchQuery = (filters: SearchFilters) => {
 export const mapSearchQueryToObject = (query: string): any => {
   const sanitized = DOMPurify.sanitize(query);
   const parsed = qs.parse(sanitized, {
-    strictNullHandling: true,
     decoder(str) {
       const strWithoutPlus = str.replace(/\+/g, ' ');
 
