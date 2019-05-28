@@ -31,6 +31,7 @@ export interface ProcessRequest {
   legalClauseLastVerified: string | null;
   kle: string | null;
   kla: string | null;
+  codeRepositoryUrl: string | null;
   links: Link[] | null;
   form: string | null;
   itSystemsDescription: string | null;
@@ -110,6 +111,7 @@ export interface ProcessResponse {
   legalClauseLastVerified: string | null;
   kle: string | null;
   kla: string | null;
+  codeRepositoryUrl: string | null;
   links: Link[] | null;
 
   vendor: string | null;
@@ -194,6 +196,7 @@ function stateToRequestFields(state: ProcessState): ProcessRequest {
     kle: state.kle ? state.kle.code : null,
     form: state.form ? state.form.code : null,
     kla: defaultNull(state.kla),
+    codeRepositoryUrl: state.codeRepositoryUrl,
     links: defaultNull(state.links),
     vendor: defaultNull(state.vendor),
     internalNotes: defaultNull(state.internalNotes),
@@ -296,6 +299,7 @@ export function responseToState(process: ProcessResponse): Process {
     legalClause: process.legalClause || '',
     kle: process.kle ? { code: process.kle } : null,
     kla: process.kla || '',
+    codeRepositoryUrl: process.codeRepositoryUrl || '',
     links: process.links || [],
     internalNotes: process.internalNotes || '',
     processChallenges: process.processChallenges || '',

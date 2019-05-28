@@ -3,7 +3,7 @@
     <div class="side-bar">
       <div class="side-bar-content">
         <router-link to="/search" class="search-page-link">
-          <ArrowLeftIcon /> Tilbage til søgning
+          <ArrowLeftIcon/>Tilbage til søgning
         </router-link>
 
         <Button primary v-if="isReporting" class="report-button" @click="report">Gem</Button>
@@ -13,10 +13,10 @@
 
     <div class="details-wrapper">
       <div class="details-content">
-        <ProcessHeader :isReporting="isReporting" isUmbrella />
+        <ProcessHeader :isReporting="isReporting" isUmbrella/>
 
         <div class="form-sections">
-          <UmbrellaForm :isReporting="isReporting" />
+          <UmbrellaForm :isReporting="isReporting"/>
         </div>
       </div>
     </div>
@@ -25,20 +25,24 @@
       <div>
         <h3>Følgende felter er ugyldige:</h3>
         <ul class="section-errors">
-          <li v-for="field in errors['generalInformation'].errors" :key="field">
-            {{field}}
-          </li>
+          <li v-for="field in errors['generalInformation'].errors" :key="field">{{field}}</li>
         </ul>
       </div>
     </SnackBar>
 
-    <SnackBar :timeout="3000" color="success" @onSnackClose="showSaveSuccess = false" :value="showSaveSuccess">
-      Processen er gemt!
-    </SnackBar>
+    <SnackBar
+      :timeout="3000"
+      color="success"
+      @onSnackClose="showSaveSuccess = false"
+      :value="showSaveSuccess"
+    >Processen er gemt!</SnackBar>
 
-    <SnackBar :value="showSaveError" @onSnackClose="showSaveError = false" :timeout="5000" color="error">
-      Processen er IKKE gemt - prøv igen!
-    </SnackBar>
+    <SnackBar
+      :value="showSaveError"
+      @onSnackClose="showSaveError = false"
+      :timeout="5000"
+      color="error"
+    >Processen er IKKE gemt - prøv igen!</SnackBar>
   </div>
 </template>
 
@@ -59,7 +63,6 @@ import GeneralInformationForm from '@/components/details/general-information/Gen
 import Button from '@/components/common/inputs/Button.vue';
 import ChallengesForm from '@/components/details/challenges/ChallengesForm.vue';
 import AssessmentForm from '@/components/details/assessment/AssessmentForm.vue';
-import SpecificationForm from '@/components/details/specification/SpecificationForm.vue';
 import ImplementationForm from '@/components/details/implementation/ImplementationForm.vue';
 import TimeAndProcessForm from '@/components/details/time-process/TimeAndProcessForm.vue';
 import AttachmentsForm from '@/components/details/attachments/AttachmentsForm.vue';
@@ -86,7 +89,6 @@ import { SearchFilters } from '@/store/modules/search/state';
     AssessmentForm,
     TimeAndProcessForm,
     AttachmentsForm,
-    SpecificationForm,
     ImplementationForm,
     OperationForm,
     Button,
@@ -143,7 +145,6 @@ export default class Umbrella extends Vue {
           timeAndProcessEdit: false,
           assessmentEdit: false,
           operationEdit: false,
-          specificationEdit: false,
           implementationEdit: false,
           attachmentsEdit: false,
           internalNotesEdit: false

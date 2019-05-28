@@ -41,6 +41,7 @@ export interface Process {
   kle: Kle | null;
   kla: string | null;
   klaProcess: boolean;
+  codeRepositoryUrl: string;
   links: Link[];
   vendor: string | null;
   cvr: string;
@@ -143,7 +144,6 @@ export interface Disabled {
   timeAndProcessEdit: boolean;
   assessmentEdit: boolean;
   operationEdit: boolean;
-  specificationEdit: boolean;
   implementationEdit: boolean;
   attachmentsEdit: boolean;
   internalNotesEdit: boolean;
