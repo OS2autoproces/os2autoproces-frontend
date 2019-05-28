@@ -34,6 +34,7 @@ export interface SearchResultProcess {
   hasBookmarked: boolean;
   lastChanged: number;
   type: Type;
+  childrenCount: number;
 }
 
 export interface SortingOption {

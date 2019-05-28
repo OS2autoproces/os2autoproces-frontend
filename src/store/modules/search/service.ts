@@ -27,6 +27,7 @@ interface ProcessSearchResponse {
   hasBookmarked: boolean;
   lastChanged: number;
   type: Type;
+  childrenCount: number;
 }
 
 interface SearchResponse {
