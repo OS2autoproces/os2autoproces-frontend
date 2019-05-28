@@ -44,7 +44,7 @@
         <div class="value">{{StatusLabels[process.status]}}</div>
       </div>
     </div>
-    <div class="result-column umbrella" v-if="isParentProcess">
+    <div class="result-column umbrella" v-if="!isChildProcess">
       <div>
         <div class="field">Antal tilknyttede processer:</div>
         <div class="value">{{process.childrenCount}}</div>
@@ -93,8 +93,9 @@ export default class SearchResult extends Vue {
 
   StatusLabels = StatusLabels;
 
-  isChildProcess: boolean = this.process.type === TypeKeys.CHILD;
-  isParentProcess: boolean = this.process.type === TypeKeys.PARENT || this.process.type === TypeKeys.GLOBAL_PARENT;
+  get isChildProcess() {
+    return this.process.type === TypeKeys.CHILD;
+  }
 
   get domains() {
     return this.process.domains.map(domain => DomainLabels[domain]).join(', ');
