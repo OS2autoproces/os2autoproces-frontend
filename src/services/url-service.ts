@@ -2,7 +2,6 @@ import { SearchFilters } from '@/store/modules/search/state';
 import qs from 'qs';
 import DOMPurify from 'dompurify';
 import { getInitialState } from '@/store/modules/search';
-import { SIGQUIT } from 'constants';
 
 export const stringify = (obj: any) => qs.stringify(obj, { strictNullHandling: true });
 
