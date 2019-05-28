@@ -26,6 +26,7 @@ interface ProcessSearchResponse {
   legalClause: string;
   hasBookmarked: boolean;
   lastChanged: number;
+  type: Type;
 }
 
 interface SearchResponse {
@@ -74,8 +75,8 @@ function dateFromISODateTime(datetime: string): string {
   return datetime.split('T')[0];
 }
 
-const mapObjectToTypedEnumArray = <T>(obj: { [key: string]: boolean }): Array<keyof T> =>
-  Object.entries<boolean>(obj)
+const mapObjectToTypedEnumArray = <T>(obj: { [key: string]: boolean | null }): Array<keyof T> =>
+  Object.entries<boolean | null>(obj)
     .reduce<Array<keyof T>>((selectedValues, [key, isSelected]) => {
       if (isSelected) {
         selectedValues.push(key as keyof T);
