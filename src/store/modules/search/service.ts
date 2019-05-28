@@ -146,9 +146,8 @@ export const saveFiltersToStorage = (filters: SavedSearchFilters) => {
   // load possible existing saved filters
   const savedFiltersString = localStorage.getItem(STORAGE_KEY);
   const filtersArray = loadFiltersFromStorage();
-
   filtersArray.push(filters);
-  localStorage.setItem(STORAGE_KEY, filtersArray.map(f => qs.stringify(f)).join(DELIMITER));
+  localStorage.setItem(STORAGE_KEY, filtersArray.map(f => qs.stringify(f, { strictNullHandling: true })).join(DELIMITER));
 };
 
 export const loadFiltersFromStorage = (): SavedSearchFilters[] => {
