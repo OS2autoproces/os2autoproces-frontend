@@ -7,7 +7,7 @@ export const stringify = (obj: any) => qs.stringify(obj, { strictNullHandling: t
 
 export const stringifySearchFilters = (filters: SearchFilters) => stringify({ filters });
 
-// This is kind of hacky, nut it is needed for deeplinking specific searches.
+// This is kind of hacky, but it is needed for deeplinking specific searches.
 // It has no impect on rerendering, it only pushes a new history state
 export const setUrlSearchQuery = (filters: SearchFilters) => {
   try {
