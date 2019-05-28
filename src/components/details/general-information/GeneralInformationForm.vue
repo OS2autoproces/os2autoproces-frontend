@@ -129,7 +129,7 @@ Privat betyder at det kun er dig og din superbruger der kan se processen."
       <div>
         <WellItem v-if="minPhase(PhaseKeys.PREANALYSIS)" labelWidth="120px" label="Lovparagraf:">
           <InputField
-            :disabled="state.disabled.generalInformationEdit"
+            :disabled="state.disabled.generalInformationEdit || state.form"
             :value="state.legalClause"
             @change="update({legalClause: $event})"
           />
