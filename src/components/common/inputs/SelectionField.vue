@@ -7,6 +7,7 @@
       :value="value"
       return-object
       single-line
+      :clearable="clearable"
       :placeholder="placeholder"
       @change="valueChanged"
     >

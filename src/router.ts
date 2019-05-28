@@ -10,7 +10,8 @@ import Search from './views/Search.vue';
 import Discovery from './views/Discovery.vue';
 import { mapSearchQueryToObject, mapQueryObjToFilters } from './services/url-service';
 import { SearchFilters } from './store/modules/search/state';
-import { size } from 'lodash';
+import { size, isEmpty } from 'lodash';
+import { getInitialState } from './store/modules/search';
 
 Vue.use(Router);
 
@@ -56,7 +57,7 @@ export const routes: RouteConfig[] = [
     path: '/search',
     props: ({ query }) => {
       return {
-        initialFilters: mapQueryObjToFilters(query.filters)
+        initialFilters: isEmpty(query) ? undefined : mapQueryObjToFilters(query.filters, getInitialState().filters)
       };
     },
     component: Search,

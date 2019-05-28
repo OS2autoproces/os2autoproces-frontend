@@ -1,10 +1,22 @@
 <template>
   <div class="wrapper">
-    <div class="types" v-if="!umbrellaProcessSearch">
-      <PillCheckbox :value="!!filters.reporterId" @change="setReporterId">Mine indberetninger</PillCheckbox>
-      <PillCheckbox :value="!!filters.usersId" @change="setUsersId">Mine tilknytninger</PillCheckbox>
-      <PillCheckbox :value="!!filters.bookmarkedId" @change="setBookmarkedId">Mine favoritter</PillCheckbox>
-      <SearchSelectSavedFilters/>
+    <div
+      class="types"
+      v-if="!umbrellaProcessSearch"
+    >
+      <PillCheckbox
+        :value="!!filters.reporterId"
+        @change="setReporterId"
+      >Mine indberetninger</PillCheckbox>
+      <PillCheckbox
+        :value="!!filters.usersId"
+        @change="setUsersId"
+      >Mine tilknytninger</PillCheckbox>
+      <PillCheckbox
+        :value="!!filters.bookmarkedId"
+        @change="setBookmarkedId"
+      >Mine favoritter</PillCheckbox>
+      <SearchSelectSavedFilters />
     </div>
 
     <SearchField
@@ -15,7 +27,10 @@
 
     <h1 v-if="!umbrellaProcessSearch">AVANCERET SØGNING</h1>
 
-    <div class="municipality-level" v-if="!umbrellaProcessSearch">
+    <div
+      class="municipality-level"
+      v-if="!umbrellaProcessSearch"
+    >
       <SearchOption
         :value="filters.visibility.municipality"
         @change="updateFilters({ visibility: { municipality: $event } })"
@@ -44,12 +59,18 @@
 
     <div class="datepicker">
       Oprettet:
-      <DatePicker :value="filters.created" @change="updateFilters({created: $event})"/>
+      <DatePicker
+        :value="filters.created"
+        @change="updateFilters({created: $event})"
+      />
     </div>
 
     <div class="datepicker">
       Senest ændret:
-      <DatePicker :value="filters.lastChanged" @change="updateFilters({lastChanged: $event})"/>
+      <DatePicker
+        :value="filters.lastChanged"
+        @change="updateFilters({lastChanged: $event})"
+      />
     </div>
 
     <ExpandPanel title="Kommune">
@@ -138,7 +159,7 @@
 
     <SearchFiltersRunPeriod/>
 
-    <SearchFiltersActions/>
+    <SearchFiltersActions />
   </div>
 </template>
 
@@ -190,8 +211,6 @@ export default class SearchFiltersComponent extends Vue {
 
   @Prop(Boolean)
   umbrellaProcessSearch!: boolean;
-
-  @Action(searchActionTypes.CLEAR_FILTERS) dispatchClearFilters!: VoidFunction;
 
   get user() {
     return this.$store.state.auth.user;

@@ -8,7 +8,7 @@ import { Visibility, VisibilityKeys } from '@/models/visibility';
 import { User } from '@/store/modules/auth/state';
 import { Type, TypeKeys } from '@/models/types';
 import { umbrellaLabels } from '@/store/modules/error/actions';
-import { setUrlSearchQuery, mapSearchQueryToObject, mapQueryObjToFilters } from '@/services/url-service';
+import { setUrlSearchQuery, mapSearchQueryToObject, mapQueryObjToFilters, stringify } from '@/services/url-service';
 import qs from 'qs';
 
 interface ProcessSearchResponse {
@@ -77,13 +77,12 @@ function dateFromISODateTime(datetime: string): string {
 }
 
 const mapObjectToTypedEnumArray = <T>(obj: { [key: string]: boolean | null }): Array<keyof T> =>
-  Object.entries<boolean | null>(obj)
-    .reduce<Array<keyof T>>((selectedValues, [key, isSelected]) => {
-      if (isSelected) {
-        selectedValues.push(key as keyof T);
-      }
-      return selectedValues;
-    }, []);
+  Object.entries<boolean | null>(obj).reduce<Array<keyof T>>((selectedValues, [key, isSelected]) => {
+    if (isSelected) {
+      selectedValues.push(key as keyof T);
+    }
+    return selectedValues;
+  }, []);
 
 export async function search(filters: SearchFilters): Promise<SearchResult> {
   setUrlSearchQuery(filters);
@@ -140,25 +139,39 @@ const mapQsStringToSavedFilters = (filterStr: string): SavedSearchFilters | null
   }
 };
 
+const stringifySavedFiltersArray = (filtersArray: SavedSearchFilters[]): string =>
+  filtersArray.map(f => stringify(f)).join(DELIMITER);
+
 export const saveFiltersToStorage = (filters: SavedSearchFilters) => {
   if (!window || !window.localStorage) {
     return;
   }
 
   // load possible existing saved filters
-  const savedFiltersString = localStorage.getItem(STORAGE_KEY);
   const filtersArray = loadFiltersFromStorage();
   filtersArray.push(filters);
-  localStorage.setItem(STORAGE_KEY, filtersArray.map(f => qs.stringify(f, { strictNullHandling: true })).join(DELIMITER));
+  localStorage.setItem(STORAGE_KEY, stringifySavedFiltersArray(filtersArray));
+};
+
+export const deleteFiltersFromStorage = (filters: SavedSearchFilters) => {
+  if (!window || !window.localStorage) {
+    return;
+  }
+
+  const existingFilters = loadFiltersFromStorage();
+
+  const newFilters = existingFilters.filter(f => f.text !== filters.text);
+
+  localStorage.setItem(STORAGE_KEY, stringifySavedFiltersArray(newFilters));
 };
 
 export const loadFiltersFromStorage = (): SavedSearchFilters[] => {
   const savedFiltersString = localStorage.getItem(STORAGE_KEY);
   return !!savedFiltersString
     ? savedFiltersString.split(DELIMITER).reduce((filters: SavedSearchFilters[], str) => {
-      const filter = mapQsStringToSavedFilters(str);
+        const filter = mapQsStringToSavedFilters(str);
 
-      return !!filter ? [...filters, filter] : filters;
-    }, [])
+        return !!filter ? [...filters, filter] : filters;
+      }, [])
     : [];
 };

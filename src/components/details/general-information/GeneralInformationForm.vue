@@ -22,18 +22,32 @@
         role="button"
         @click="setBookmark(!state.hasBookmarked)"
       >
-        <StarIcon :class="{ selected: state.hasBookmarked }"/>
+        <StarIcon :class="{ selected: state.hasBookmarked }" />
       </div>
-      <MunicipalityLogo :src="logo"/>
+      <MunicipalityLogo :src="logo" />
     </div>
 
     <Well>
       <div>
-        <WellItem labelWidth="200px" label="ID:">
-          <InputField disabled :value="state.id"/>
+        <WellItem
+          labelWidth="200px"
+          label="ID:"
+        >
+          <InputField
+            disabled
+            :value="state.id"
+          />
         </WellItem>
-        <WellItem labelWidth="180px" label="Indberetter:" v-if="isWithinMunicipality">
-          <SelectionField disabled :value="state.reporter" itemText="name"/>
+        <WellItem
+          labelWidth="180px"
+          label="Indberetter:"
+          v-if="isWithinMunicipality"
+        >
+          <SelectionField
+            disabled
+            :value="state.reporter"
+            itemText="name"
+          />
         </WellItem>
         <WellItem
           labelWidth="180px"
@@ -70,7 +84,11 @@
             clearable
           />
         </WellItem>
-        <WellItem v-if="state.contact" labelWidth="180px" label="Mail:">{{state.contact.email}}</WellItem>
+        <WellItem
+          v-if="state.contact"
+          labelWidth="180px"
+          label="Mail:"
+        >{{state.contact.email}}</WellItem>
       </div>
 
       <div>
@@ -88,14 +106,21 @@ Privat betyder at det kun er dig og din superbruger der kan se processen."
             :items="visibilityLevels"
           />
         </WellItem>
-        <WellItem labelWidth="120px" label="Fagområder:">
+        <WellItem
+          labelWidth="120px"
+          label="Fagområder:"
+        >
           <DomainsField
             :disabled="state.disabled.generalInformationEdit"
             :value="state.domains"
             @change="assign({domains: $event})"
           />
         </WellItem>
-        <WellItem labelWidth="120px" label="Afdelinger:" v-if="isWithinMunicipality">
+        <WellItem
+          labelWidth="120px"
+          label="Afdelinger:"
+          v-if="isWithinMunicipality"
+        >
           <SelectionField
             :disabled="state.disabled.generalInformationEdit"
             :value="state.orgUnits"
@@ -117,7 +142,10 @@ Privat betyder at det kun er dig og din superbruger der kan se processen."
             @change="update({vendor: $event})"
           />
         </WellItem>
-        <WellItem labelWidth="120px" label="SEP/MEP:">
+        <WellItem
+          labelWidth="120px"
+          label="SEP/MEP:"
+        >
           <Checkbox
             :disabled="state.disabled.generalInformationEdit"
             :value="state.sepMep"
@@ -127,14 +155,21 @@ Privat betyder at det kun er dig og din superbruger der kan se processen."
       </div>
 
       <div>
-        <WellItem v-if="minPhase(PhaseKeys.PREANALYSIS)" labelWidth="120px" label="Lovparagraf:">
+        <WellItem
+          v-if="minPhase(PhaseKeys.PREANALYSIS)"
+          labelWidth="120px"
+          label="Lovparagraf:"
+        >
           <InputField
             :disabled="state.disabled.generalInformationEdit || state.form"
             :value="state.legalClause"
             @change="update({legalClause: $event})"
           />
         </WellItem>
-        <WellItem labelWidth="200px" label="KLE-nr:">
+        <WellItem
+          labelWidth="200px"
+          label="KLE-nr:"
+        >
           <SelectionField
             :disabled="state.disabled.generalInformationEdit"
             :value="state.kle"
@@ -144,7 +179,11 @@ Privat betyder at det kun er dig og din superbruger der kan se processen."
             clearable
           />
         </WellItem>
-        <WellItem labelWidth="200px" label="FORM:" v-if="state.kle">
+        <WellItem
+          labelWidth="200px"
+          label="FORM:"
+          v-if="state.kle"
+        >
           <SelectionField
             :disabled="state.disabled.generalInformationEdit"
             :value="state.form"
@@ -154,7 +193,10 @@ Privat betyder at det kun er dig og din superbruger der kan se processen."
             clearable
           />
         </WellItem>
-        <WellItem labelWidth="200px" label="KL ID:">
+        <WellItem
+          labelWidth="200px"
+          label="KL ID:"
+        >
           <InputField
             :disabled="state.disabled.generalInformationEdit"
             :value="state.klId"
@@ -194,7 +236,7 @@ Privat betyder at det kun er dig og din superbruger der kan se processen."
           :value="state.shortDescription"
           :maxLength="140"
         />
-      </div>
+        </div>
       <div class="general-phases">
         <div>
           <div class="field-label">Fase:</div>
@@ -290,7 +332,7 @@ import StarIcon from '@/components/icons/StarIcon.vue';
 import AppDialog from '@/components/common/Dialog.vue';
 import DialogContent from '@/components/common/DialogContent.vue';
 import Button from '@/components/common/inputs/Button.vue';
-
+// TODO - split this component. No component should be 500 lines
 @Component({
   components: {
     InputField,
