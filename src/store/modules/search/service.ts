@@ -8,7 +8,7 @@ import { Visibility, VisibilityKeys } from '@/models/visibility';
 import { User } from '@/store/modules/auth/state';
 import { Type, TypeKeys } from '@/models/types';
 import { umbrellaLabels } from '@/store/modules/error/actions';
-import { setUrlSearchQuery, mapSearchQueryToObject, mapQueryObjToFilters } from '@/services/url-service';
+import { setUrlSearchQuery, mapSearchQueryToObject, mapQueryObjToFilters, stringify } from '@/services/url-service';
 import qs from 'qs';
 
 interface ProcessSearchResponse {
@@ -77,13 +77,12 @@ function dateFromISODateTime(datetime: string): string {
 }
 
 const mapObjectToTypedEnumArray = <T>(obj: { [key: string]: boolean | null }): Array<keyof T> =>
-  Object.entries<boolean | null>(obj)
-    .reduce<Array<keyof T>>((selectedValues, [key, isSelected]) => {
-      if (isSelected) {
-        selectedValues.push(key as keyof T);
-      }
-      return selectedValues;
-    }, []);
+  Object.entries<boolean | null>(obj).reduce<Array<keyof T>>((selectedValues, [key, isSelected]) => {
+    if (isSelected) {
+      selectedValues.push(key as keyof T);
+    }
+    return selectedValues;
+  }, []);
 
 export async function search(filters: SearchFilters): Promise<SearchResult> {
   setUrlSearchQuery(filters);
@@ -141,7 +140,7 @@ const mapQsStringToSavedFilters = (filterStr: string): SavedSearchFilters | null
 };
 
 const stringifySavedFiltersArray = (filtersArray: SavedSearchFilters[]): string =>
-  filtersArray.map(f => qs.stringify(f)).join(DELIMITER);
+  filtersArray.map(f => stringify(f)).join(DELIMITER);
 
 export const saveFiltersToStorage = (filters: SavedSearchFilters) => {
   if (!window || !window.localStorage) {
@@ -152,7 +151,6 @@ export const saveFiltersToStorage = (filters: SavedSearchFilters) => {
   const filtersArray = loadFiltersFromStorage();
   filtersArray.push(filters);
   localStorage.setItem(STORAGE_KEY, stringifySavedFiltersArray(filtersArray));
-  localStorage.setItem(STORAGE_KEY, filtersArray.map(f => qs.stringify(f, { strictNullHandling: true })).join(DELIMITER));
 };
 
 export const deleteFiltersFromStorage = (filters: SavedSearchFilters) => {

@@ -2,8 +2,12 @@ import { SearchFilters } from '@/store/modules/search/state';
 import qs from 'qs';
 import DOMPurify from 'dompurify';
 import { getInitialState } from '@/store/modules/search';
+import { SIGQUIT } from 'constants';
 
-export const stringifySearchFilters = (filters: SearchFilters) => qs.stringify({ filters });
+export const stringify = (obj: any) => qs.stringify(obj, { strictNullHandling: true });
+
+export const stringifySearchFilters = (filters: SearchFilters) => stringify({ filters });
+
 // This is kind of hacky, nut it is needed for deeplinking specific searches.
 // It has no impect on rerendering, it only pushes a new history state
 export const setUrlSearchQuery = (filters: SearchFilters) => {
