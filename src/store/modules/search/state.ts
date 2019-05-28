@@ -3,6 +3,7 @@ import { Phase } from '@/models/phase';
 import { Status } from '@/models/status';
 import { RunPeriod } from '@/models/runperiod';
 import { ITSystem, Municipality, Technology } from '@/store/modules/process/state';
+import { Type } from '@/models/types';
 
 export interface SearchResult {
   page: {
@@ -32,6 +33,8 @@ export interface SearchResultProcess {
   legalClause: string;
   hasBookmarked: boolean;
   lastChanged: number;
+  type: Type;
+  childrenCount: number;
 }
 
 export interface SortingOption {
@@ -54,9 +57,9 @@ export interface SearchFilters {
   page: number;
   size: number;
   sorting: SortingOption;
-  phase: { [x in Phase]: boolean };
-  domain: { [x in Domain]: boolean };
-  runPeriod: { [x in RunPeriod]: boolean };
+  phase: { [x in Phase]: boolean | null };
+  domain: { [x in Domain]: boolean | null };
+  runPeriod: { [x in RunPeriod]: boolean | null };
   klaProcess: boolean;
   noSepMep: boolean;
   umbrella: boolean;

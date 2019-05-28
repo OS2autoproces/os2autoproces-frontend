@@ -26,6 +26,8 @@ interface ProcessSearchResponse {
   legalClause: string;
   hasBookmarked: boolean;
   lastChanged: number;
+  type: Type;
+  childrenCount: number;
 }
 
 interface SearchResponse {
@@ -74,13 +76,14 @@ function dateFromISODateTime(datetime: string): string {
   return datetime.split('T')[0];
 }
 
-const mapObjectToTypedEnumArray = <T>(obj: { [key: string]: boolean }): Array<keyof T> =>
-  Object.entries<boolean>(obj).reduce<Array<keyof T>>((selectedValues, [key, isSelected]) => {
-    if (isSelected) {
-      selectedValues.push(key as keyof T);
-    }
-    return selectedValues;
-  }, []);
+const mapObjectToTypedEnumArray = <T>(obj: { [key: string]: boolean | null }): Array<keyof T> =>
+  Object.entries<boolean | null>(obj)
+    .reduce<Array<keyof T>>((selectedValues, [key, isSelected]) => {
+      if (isSelected) {
+        selectedValues.push(key as keyof T);
+      }
+      return selectedValues;
+    }, []);
 
 export async function search(filters: SearchFilters): Promise<SearchResult> {
   setUrlSearchQuery(filters);
@@ -147,9 +150,9 @@ export const saveFiltersToStorage = (filters: SavedSearchFilters) => {
 
   // load possible existing saved filters
   const filtersArray = loadFiltersFromStorage();
-
   filtersArray.push(filters);
   localStorage.setItem(STORAGE_KEY, stringifySavedFiltersArray(filtersArray));
+  localStorage.setItem(STORAGE_KEY, filtersArray.map(f => qs.stringify(f, { strictNullHandling: true })).join(DELIMITER));
 };
 
 export const deleteFiltersFromStorage = (filters: SavedSearchFilters) => {

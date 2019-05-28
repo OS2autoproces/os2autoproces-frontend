@@ -1,40 +1,30 @@
 <template>
   <div class="search">
-    <NavBar />
+    <NavBar/>
 
     <div class="page">
       <div class="filters">
-        <SearchFiltersComponent
-          :filters="filters"
-          @change="updateFilters"
-          @assign="assignFilters"
-        />
+        <SearchFiltersComponent @change="updateFilters" @assign="assignFilters"/>
       </div>
       <div>
         <div class="results-wrapper">
           <div class="report">
-            <SearchSortingDropdown />
+            <SearchSortingDropdown/>
             <router-link to="/report">
-              <PlusIcon /> Indberet proces
+              <PlusIcon/>Indberet proces
             </router-link>
           </div>
 
-          <SearchSorting
-            :sorting="filters.sorting"
-            @change="updateFilters({ sorting: $event })"
-          />
+          <SearchSorting :sorting="filters.sorting" @change="updateFilters({ sorting: $event })"/>
 
-          <div
-            class="results"
-            v-if="result"
-          >
+          <div class="results" v-if="result">
             <router-link
               :to="'/details/' + process.id"
               class="search-result-link"
               v-for="process in result.processes"
               :key="process.id"
             >
-              <SearchResult :process="process" />
+              <SearchResult :process="process"/>
             </router-link>
           </div>
 

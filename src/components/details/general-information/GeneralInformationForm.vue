@@ -161,7 +161,7 @@ Privat betyder at det kun er dig og din superbruger der kan se processen."
           label="Lovparagraf:"
         >
           <InputField
-            :disabled="state.disabled.generalInformationEdit"
+            :disabled="state.disabled.generalInformationEdit || state.form"
             :value="state.legalClause"
             @change="update({legalClause: $event})"
           />
@@ -441,8 +441,8 @@ export default class GeneralInformationForm extends Vue {
   phaseChanged(phase: any) {
     this.isPhaseChanged = true;
     this.update({ phase });
-    // TODO check if == is a typo or correct?
-    if (phase == PhaseKeys.OPERATION && this.state.visibility !== VisibilityKeys.PUBLIC) {
+
+    if (phase === PhaseKeys.OPERATION && this.state.visibility !== VisibilityKeys.PUBLIC) {
       this.openPublicVisibilityDialog();
     }
   }

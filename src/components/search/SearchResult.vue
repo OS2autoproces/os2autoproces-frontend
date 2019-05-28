@@ -5,17 +5,13 @@
       <div class="resume">{{process.shortDescription}}</div>
     </div>
     <div class="result-column potential">
-      <div>
+      <div v-if="isChildProcess">
         <div class="field">Vurderet potentiale:</div>
         <div class="value">
-          <Rating
-            class="rating"
-            :value="process.rating"
-            disabled
-          />
+          <Rating class="rating" :value="process.rating" disabled/>
         </div>
       </div>
-      <div>
+      <div v-if="isChildProcess">
         <div class="field">Kommune:</div>
         <div class="value">{{process.municipalityName}}</div>
       </div>
@@ -38,30 +34,26 @@
         <div class="value">{{process.legalClause}}</div>
       </div>
     </div>
-    <div
-      class="result-column phase"
-      v-if="!noPhase"
-    >
-      <div>
-        <div class="field">Fase:</div>
-        <div class="value">
-          <Phases
-            :value="process.phase"
-            disabled
-          />
-        </div>
+    <div class="result-column phase" v-if="!noPhase && isChildProcess">
+      <div class="field">Fase:</div>
+      <div class="value">
+        <Phases :value="process.phase" disabled/>
       </div>
       <div>
         <div class="field">Status:</div>
         <div class="value">{{StatusLabels[process.status]}}</div>
       </div>
     </div>
-    <div v-on:click.stop.prevent="setProcessBookmark()">
-      <star-icon
-        class="star-icon"
-        :class="{ selected: processBookmarked }"
-      />
+    <div class="result-column umbrella" v-if="!isChildProcess">
+      <div>
+        <div class="field">Antal tilknyttede processer:</div>
+        <div class="value">{{process.childrenCount}}</div>
+      </div>
     </div>
+    <div v-on:click.stop.prevent="setProcessBookmark()">
+      <star-icon class="star-icon" :class="{ selected: processBookmarked }"/>
+    </div>
+    <umbrella-icon v-if="!isChildProcess" class="umbrella-icon"/>
   </div>
 </template>
 
@@ -69,16 +61,19 @@
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import { Action } from 'vuex-class';
 import StarIcon from '../icons/StarIcon.vue';
+import UmbrellaIcon from '../icons/UmbrellaIcon.vue';
 import Rating from '../common/inputs/Rating.vue';
 import Phases from '../common/inputs/Phases.vue';
 import { SearchResultProcess } from '../../store/modules/search/state';
 import { StatusLabels } from '../../models/status';
 import { DomainLabels } from '../../models/domain';
 import { processActionTypes } from '@/store/modules/process/actions';
+import { TypeKeys } from '@/models/types';
 
 @Component({
   components: {
     StarIcon,
+    UmbrellaIcon,
     Rating,
     Phases
   }
@@ -97,6 +92,10 @@ export default class SearchResult extends Vue {
   setBookmark!: (bookmarkSearch: { id: number; hasBookmarked: boolean }) => Promise<boolean>;
 
   StatusLabels = StatusLabels;
+
+  get isChildProcess() {
+    return this.process.type === TypeKeys.CHILD;
+  }
 
   get domains() {
     return this.process.domains.map(domain => DomainLabels[domain]).join(', ');
@@ -143,6 +142,14 @@ $resume-line-height: 1em * 1.5;
   width: 2.5rem;
 }
 
+.umbrella-icon {
+  position: absolute;
+  top: -1rem;
+  left: -1.15rem;
+  height: 2.5rem;
+  width: 2.5rem;
+}
+
 .rating /deep/ svg {
   height: 16px;
   width: 16px;
@@ -164,7 +171,8 @@ $resume-line-height: 1em * 1.5;
 
 .domain,
 .phase,
-.potential {
+.potential,
+.umbrella {
   > div {
     display: flex;
 
