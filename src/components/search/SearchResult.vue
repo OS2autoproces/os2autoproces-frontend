@@ -53,7 +53,7 @@
     <div v-on:click.stop.prevent="setProcessBookmark()">
       <star-icon class="star-icon" :class="{ selected: processBookmarked }"/>
     </div>
-    <umbrella-icon v-if="isParentProcess" class="umbrella-icon"/>
+    <umbrella-icon v-if="!isChildProcess" class="umbrella-icon"/>
   </div>
 </template>
 
