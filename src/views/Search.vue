@@ -65,6 +65,7 @@ import { searchActionTypes } from '../store/modules/search/actions';
 import { processActionTypes } from '../store/modules/process/actions';
 import { SearchFilters, SearchResultProcess } from '../store/modules/search/state';
 import SearchSortingDropdown from '@/components/search/SearchSortingDropdown.vue';
+import { getInitialState } from '../store/modules/search';
 
 @Component({
   components: {
@@ -79,6 +80,8 @@ import SearchSortingDropdown from '@/components/search/SearchSortingDropdown.vue
 })
 export default class Search extends Vue {
   @Prop({ type: Object as () => SearchFilters }) initialFilters!: SearchFilters;
+  @Action(searchActionTypes.SEARCH) dispatchSearch!: VoidFunction;
+  @Action(searchActionTypes.ASSIGN_FILTERS) dispatchAssignFilters!: (filters: SearchFilters) => void;
 
   get filters() {
     return this.$store.state.search.filters;
@@ -103,7 +106,7 @@ export default class Search extends Vue {
   }
 
   mounted() {
-    this.$store.dispatch(searchActionTypes.UPDATE_FILTERS, this.initialFilters);
+    !!this.initialFilters ? this.dispatchAssignFilters(this.initialFilters) : this.dispatchSearch();
   }
 }
 </script>
