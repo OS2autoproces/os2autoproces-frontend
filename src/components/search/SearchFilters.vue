@@ -136,16 +136,7 @@
       />
     </ExpandPanel>
 
-    <ExpandPanel title="Skedulering">
-      <SearchOption
-        :value="filters.runPeriod.ONCE"
-        @change="updateFiltersOnceRunPeriod($event)"
-      >Engangskørsel</SearchOption>
-      <SearchOption
-        :value="filters.runPeriod.ONDEMAND"
-        @change="updateFiltersRecurringRunPeriod($event)"
-      >Løbende kørsel</SearchOption>
-    </ExpandPanel>
+    <SearchFiltersRunPeriod/>
 
     <SearchFiltersActions/>
   </div>
@@ -172,6 +163,7 @@ import Button from '../common/inputs/Button.vue';
 import { RootState } from '../../store/store';
 import SearchFiltersActions from './SearchFiltersActions.vue';
 import SearchSelectSavedFilters from './SearchSelectSavedFilters.vue';
+import SearchFiltersRunPeriod from './SearchFiltersRunPeriod.vue';
 
 @Component({
   components: {
@@ -185,6 +177,7 @@ import SearchSelectSavedFilters from './SearchSelectSavedFilters.vue';
     PillCheckbox,
     Button,
     SearchFiltersActions,
+    SearchFiltersRunPeriod,
     SearchSelectSavedFilters
   }
 })
@@ -193,8 +186,8 @@ export default class SearchFiltersComponent extends Vue {
   DomainLabels = DomainLabels;
   VisibilityLabels = VisibilityLabels;
 
-  @Prop(Object)
-  filters!: SearchFilters;
+  @State((state: RootState) => state.search.filters) filters!: SearchFilters;
+
   @Prop(Boolean)
   umbrellaProcessSearch!: boolean;
 
@@ -243,25 +236,6 @@ export default class SearchFiltersComponent extends Vue {
 
   assignFilters(filters: Partial<SearchFilters>) {
     this.$emit('assign', filters);
-  }
-
-  updateFiltersOnceRunPeriod(value: boolean) {
-    this.updateFilters({
-      runPeriod: Object.assign(this.filters.runPeriod, { ONCE: value })
-    });
-  }
-
-  updateFiltersRecurringRunPeriod(value: boolean) {
-    this.updateFilters({
-      runPeriod: Object.assign(this.filters.runPeriod, {
-        ONDEMAND: value,
-        DAILY: value,
-        WEEKLY: value,
-        MONTHLY: value,
-        QUATERLY: value,
-        YEARLY: value
-      })
-    });
   }
 }
 </script>

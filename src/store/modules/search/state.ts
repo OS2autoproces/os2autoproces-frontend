@@ -57,9 +57,9 @@ export interface SearchFilters {
   page: number;
   size: number;
   sorting: SortingOption;
-  phase: { [x in Phase]: boolean };
-  domain: { [x in Domain]: boolean };
-  runPeriod: { [x in RunPeriod]: boolean };
+  phase: { [x in Phase]: boolean | null };
+  domain: { [x in Domain]: boolean | null };
+  runPeriod: { [x in RunPeriod]: boolean | null };
   klaProcess: boolean;
   noSepMep: boolean;
   umbrella: boolean;

@@ -76,8 +76,8 @@ function dateFromISODateTime(datetime: string): string {
   return datetime.split('T')[0];
 }
 
-const mapObjectToTypedEnumArray = <T>(obj: { [key: string]: boolean }): Array<keyof T> =>
-  Object.entries<boolean>(obj)
+const mapObjectToTypedEnumArray = <T>(obj: { [key: string]: boolean | null }): Array<keyof T> =>
+  Object.entries<boolean | null>(obj)
     .reduce<Array<keyof T>>((selectedValues, [key, isSelected]) => {
       if (isSelected) {
         selectedValues.push(key as keyof T);
@@ -148,9 +148,8 @@ export const saveFiltersToStorage = (filters: SavedSearchFilters) => {
   // load possible existing saved filters
   const savedFiltersString = localStorage.getItem(STORAGE_KEY);
   const filtersArray = loadFiltersFromStorage();
-
   filtersArray.push(filters);
-  localStorage.setItem(STORAGE_KEY, filtersArray.map(f => qs.stringify(f)).join(DELIMITER));
+  localStorage.setItem(STORAGE_KEY, filtersArray.map(f => qs.stringify(f, { strictNullHandling: true })).join(DELIMITER));
 };
 
 export const loadFiltersFromStorage = (): SavedSearchFilters[] => {
