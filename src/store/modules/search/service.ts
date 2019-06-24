@@ -84,8 +84,7 @@ const mapObjectToTypedEnumArray = <T>(obj: { [key: string]: boolean | null }): A
     return selectedValues;
   }, []);
 
-export async function search(filters: SearchFilters): Promise<SearchResult> {
-  setUrlSearchQuery(filters);
+export const mapFiltersToSearchParams = (filters: SearchFilters): SearchParams => {
   const params: SearchParams = {
     projection: 'grid',
     phase: mapObjectToTypedEnumArray(filters.phase),
@@ -117,6 +116,13 @@ export async function search(filters: SearchFilters): Promise<SearchResult> {
   if (filters.visibility.public) {
     params.visibility.push(VisibilityKeys.PUBLIC);
   }
+
+  return params;
+};
+export async function search(filters: SearchFilters): Promise<SearchResult> {
+  setUrlSearchQuery(filters);
+
+  const params = mapFiltersToSearchParams(filters);
 
   const response = await HTTP.get<SearchResponse>('api/processes', { params });
 

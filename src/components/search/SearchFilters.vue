@@ -17,6 +17,7 @@
         @change="setBookmarkedId"
       >Mine favoritter</PillCheckbox>
       <SearchSelectSavedFilters />
+      <excelBtn></excelBtn>
     </div>
 
     <SearchField
@@ -157,7 +158,7 @@
       />
     </ExpandPanel>
 
-    <SearchFiltersRunPeriod/>
+    <SearchFiltersRunPeriod />
 
     <SearchFiltersActions />
   </div>
@@ -185,6 +186,7 @@ import { RootState } from '../../store/store';
 import SearchFiltersActions from './SearchFiltersActions.vue';
 import SearchSelectSavedFilters from './SearchSelectSavedFilters.vue';
 import SearchFiltersRunPeriod from './SearchFiltersRunPeriod.vue';
+import ExcelBtn from './ExcelBtn.vue';
 
 @Component({
   components: {
@@ -199,7 +201,8 @@ import SearchFiltersRunPeriod from './SearchFiltersRunPeriod.vue';
     Button,
     SearchFiltersActions,
     SearchFiltersRunPeriod,
-    SearchSelectSavedFilters
+    SearchSelectSavedFilters,
+    ExcelBtn
   }
 })
 export default class SearchFiltersComponent extends Vue {
