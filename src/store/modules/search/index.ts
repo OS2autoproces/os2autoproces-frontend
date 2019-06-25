@@ -5,6 +5,7 @@ import { actions } from '@/store/modules/search/actions';
 import { getters } from '@/store/modules/search/getters';
 import { mutations } from '@/store/modules/search/mutations';
 import { loadFiltersFromStorage } from './service';
+import { defaultStatusSelects } from '@/models/status';
 
 const namespaced = true;
 
@@ -61,7 +62,8 @@ export function getInitialState(): SearchState {
         MONTHLY: false,
         QUATERLY: false,
         YEARLY: false
-      }
+      },
+      status: defaultStatusSelects
     }
   };
 }

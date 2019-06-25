@@ -94,6 +94,16 @@
       />
     </ExpandPanel>
 
+    <ExpandPanel title="Status">
+      <SelectionField
+        :items="status"
+        :value="filters.status"
+        itemText="label"
+        @change="assignFilters({status: $event})"
+        multiple
+      />
+    </ExpandPanel>
+
     <ExpandPanel title="Fase">
       <SearchOption
         :value="filters.phase.IDEA"
@@ -187,6 +197,7 @@ import SearchFiltersActions from './SearchFiltersActions.vue';
 import SearchSelectSavedFilters from './SearchSelectSavedFilters.vue';
 import SearchFiltersRunPeriod from './SearchFiltersRunPeriod.vue';
 import ExcelBtn from './ExcelBtn.vue';
+import { StatusSelect, StatusLabels, StatusKeys, defaultStatusSelects } from '../../models/status';
 
 @Component({
   components: {
@@ -230,6 +241,8 @@ export default class SearchFiltersComponent extends Vue {
   get technologies() {
     return this.$store.state.common.technologies;
   }
+
+  status = defaultStatusSelects;
 
   mounted() {
     this.$store.dispatch(commonActionTypes.LOAD_IT_SYSTEMS);

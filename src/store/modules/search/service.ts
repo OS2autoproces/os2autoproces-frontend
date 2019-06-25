@@ -63,6 +63,7 @@ interface SearchParams {
   'bookmarkUsers.uuid': string | null;
   klaProcess: boolean;
   sepMep: boolean | null;
+  status: Status[];
 }
 
 function mapSearchResponse(response: SearchResponse): SearchResult {
@@ -93,7 +94,7 @@ export const mapFiltersToSearchParams = (filters: SearchFilters): SearchParams =
     sort: `${filters.sorting.property},${filters.sorting.descending ? 'desc' : 'asc'}`,
     itSystems: filters.itSystems.map(system => system.id),
     technologies: filters.technologies.map(technology => technology.id),
-    // TODO should visibility be used?
+    status: filters.status.map(s => s.key),
     visibility: [],
     page: filters.page,
     size: filters.size,

@@ -1,3 +1,4 @@
+import { StatusSelect } from './../../../models/status';
 import { Domain } from '@/models/domain';
 import { Phase } from '@/models/phase';
 import { Status } from '@/models/status';
@@ -65,6 +66,7 @@ export interface SearchFilters {
   umbrella: boolean;
   itSystems: ITSystem[];
   technologies: Technology[];
+  status: StatusSelect[];
 }
 
 export interface SearchState {
