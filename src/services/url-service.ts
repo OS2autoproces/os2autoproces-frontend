@@ -78,6 +78,7 @@ export const mapQueryObjToFilters = (
     noSepMep: query.noSepMep || initial.noSepMep,
     umbrella: query.umbrella || initial.umbrella,
     itSystems: query.itSystems || initial.itSystems,
-    technologies: query.technologies || initial.technologies
+    technologies: query.technologies || initial.technologies,
+    status: query.status || initial.status
   };
 };
