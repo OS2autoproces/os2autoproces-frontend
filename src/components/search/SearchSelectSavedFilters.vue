@@ -25,7 +25,9 @@ import SelectionField from '../common/inputs/SelectionField.vue';
 @Component({ components: { SelectionField } })
 export default class SearchSelectSavedFilters extends Vue {
   @Action(searchActionTypes.LOAD_SAVED_FILTERS) dispatchLoadSavedFlters!: VoidFunction;
-  @Action(searchActionTypes.SELECT_SAVED_FILTERS) dispatchSelectSavedFilters!: (filters: SavedSearchFilters) => void;
+  @Action(searchActionTypes.SELECT_SAVED_FILTERS) dispatchSelectSavedFilters!: (
+    filters: SavedSearchFilters | null
+  ) => void;
   @Action(searchActionTypes.DELETE_SAVED_FILTER) dispatchDeleteSavedFilter!: (filters: SavedSearchFilters) => void;
   @State((state: RootState) => state.search.savedFilters) savedFilters!: SavedSearchFilters[];
   @State(({ search: { savedFilters, selectedSavedFiltersText } }: RootState) => {
