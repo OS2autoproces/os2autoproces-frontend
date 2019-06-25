@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Vue, Component, Prop, Emit, Watch } from 'vue-property-decorator';
 import { Action, State } from 'vuex-class';
 import { searchActionTypes } from '../../store/modules/search/actions';
 import { SavedSearchFilters, SearchFilters } from '../../store/modules/search/state';
@@ -36,7 +36,7 @@ export default class SearchSelectSavedFilters extends Vue {
     }
     return savedFilters.find(f => f.text === selectedSavedFiltersText) || null;
   })
-  selectedSavedFilters?: SavedSearchFilters;
+  selectedSavedFilters?: SavedSearchFilters | null;
 
   mounted() {
     this.dispatchLoadSavedFlters();
