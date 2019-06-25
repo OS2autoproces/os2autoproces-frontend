@@ -147,7 +147,7 @@ Privat betyder at det kun er dig og din superbruger der kan se processen."
           label="SEP/MEP:"
         >
           <Checkbox
-            :disabled="state.disabled.generalInformationEdit"
+            :disabled="true"
             :value="state.sepMep"
             @change="update({sepMep: $event})"
           />

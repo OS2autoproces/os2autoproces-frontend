@@ -30,7 +30,7 @@ export function getInitialState(): SearchState {
       },
       klaProcess: false,
       umbrella: false,
-      noSepMep: false,
+      noSepMep: true,
       itSystems: [],
       technologies: [],
       sorting: {
