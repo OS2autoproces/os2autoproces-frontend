@@ -27,13 +27,13 @@ export const mutations: MutationTree<SearchState> = {
     state.selectedSavedFiltersText = filtersText;
   },
   addSavedFilters(state: SearchState, filters: SavedSearchFilters) {
-    state.savedFilters = [...state.savedFilters, filters];
+    state.savedFilters = [...state.savedFilters, Object.assign({}, filters)];
   },
   updateFilters(state: SearchState, filters: Partial<SearchFilters>) {
     state.filters = merge(state.filters, filters);
   },
   assignFilters(state: SearchState, filters: Partial<SearchFilters>) {
-    Object.assign(state.filters, filters);
+    state.filters = Object.assign({}, state.filters, filters);
   },
   setSearchResult(state: SearchState, result: SearchResult) {
     state.result = result;
