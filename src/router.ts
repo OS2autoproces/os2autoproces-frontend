@@ -7,7 +7,11 @@ import Home from './views/Home.vue';
 import ManageTechnologies from './views/ManageTechnologies.vue';
 import ReportProcess from './views/ReportProcess.vue';
 import Search from './views/Search.vue';
-import Discovery from './views/Discovery.vue'
+import Discovery from './views/Discovery.vue';
+import { mapSearchQueryToObject, mapQueryObjToFilters } from './services/url-service';
+import { SearchFilters } from './store/modules/search/state';
+import { size, isEmpty } from 'lodash';
+import { getInitialState } from './store/modules/search';
 
 Vue.use(Router);
 
@@ -51,6 +55,11 @@ export const routes: RouteConfig[] = [
   },
   {
     path: '/search',
+    props: ({ query }) => {
+      return {
+        initialFilters: isEmpty(query) ? undefined : mapQueryObjToFilters(query.filters, getInitialState().filters)
+      };
+    },
     component: Search,
     beforeEnter: isLoggedIn()
   },
@@ -72,10 +81,13 @@ export const routes: RouteConfig[] = [
     beforeEnter: isLoggedIn()
   },
   { path: '/logged-in', redirect: '/search' },
-  { path: '/logged-out', redirect: '/' },
+  { path: '/logged-out', redirect: '/' }
 ];
 
 export const router = new Router({
   routes,
-  mode: 'history'
+  mode: 'history',
+  parseQuery: (query: string) => {
+    return mapSearchQueryToObject(query);
+  }
 });

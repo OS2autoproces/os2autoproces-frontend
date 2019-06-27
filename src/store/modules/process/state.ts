@@ -2,6 +2,7 @@ import { Domain } from '@/models/domain';
 import { LikertScale } from '@/models/likert-scale';
 import { Phase } from '@/models/phase';
 import { Status } from '@/models/status';
+import { RunPeriod } from '@/models/runperiod';
 import { Type } from '@/models/types';
 import { Visibility } from '@/models/visibility';
 import { User } from '@/store/modules/auth/state';
@@ -20,9 +21,11 @@ export interface Process {
   parents: Process[];
 
   hasChanged: boolean;
+  sepMep: boolean;
   esdhReference: string;
   phase: Phase;
   status: Status;
+  runPeriod: RunPeriod;
   statusText: string;
   created: string;
   lastChanged: string;
@@ -38,6 +41,7 @@ export interface Process {
   kle: Kle | null;
   kla: string | null;
   klaProcess: boolean;
+  codeRepositoryUrl: string;
   links: Link[];
   vendor: string | null;
   cvr: string;
@@ -140,7 +144,6 @@ export interface Disabled {
   timeAndProcessEdit: boolean;
   assessmentEdit: boolean;
   operationEdit: boolean;
-  specificationEdit: boolean;
   implementationEdit: boolean;
   attachmentsEdit: boolean;
   internalNotesEdit: boolean;

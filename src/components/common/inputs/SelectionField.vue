@@ -1,30 +1,81 @@
 <template>
   <div>
-    <v-autocomplete ref="autocomplete" v-if="!disabled" :clearable="clearable" :label="placeholder" :items="_items" single-line no-data-text="Ingen resultater" :item-text="itemText" :item-value="itemValue" :append-icon="iconName" :search-input.sync="searchQuery" @change="valueChanged" :value="value" return-object :multiple="multiple">
-      <template slot="item" slot-scope="data">
-        <template v-if="itemSubText">
-          <v-list-tile-content>
-            <v-list-tile-title>{{data.item[itemText]}}</v-list-tile-title>
-            <v-list-tile-sub-title>{{data.item[itemSubText]}}</v-list-tile-sub-title>
-          </v-list-tile-content>
-        </template>
-        <template v-else>
-          {{data.item[itemText]}}
-        </template>
+    <v-select
+      class="select-wrap"
+      v-if="!disabled && dropdown"
+      :items="_items"
+      :value="value"
+      return-object
+      single-line
+      :clearable="clearable"
+      :placeholder="placeholder"
+      @change="valueChanged"
+    >
+      <template
+        slot="item"
+        slot-scope="data"
+      >
+        <SelectionFieldText
+          :itemText="data.item[itemText]"
+          :subText="data.item[itemSubText]"
+        />
+        <SelectionFieldAction
+          v-if="hasAction"
+          :actionIcon="actionIcon"
+          @action="action(data.item)"
+        />
+      </template>
+    </v-select>
+    <v-autocomplete
+      class="select-wrap"
+      ref="autocomplete"
+      v-if="!disabled && !dropdown"
+      :clearable="clearable"
+      :label="placeholder"
+      :items="_items"
+      single-line
+      no-data-text="Ingen resultater"
+      :item-text="itemText"
+      :item-value="itemValue"
+      :append-icon="iconName"
+      :search-input.sync="searchQuery"
+      @change="valueChanged"
+      :value="value"
+      return-object
+      :multiple="multiple"
+    >
+      <template
+        slot="item"
+        slot-scope="data"
+      >
+        <SelectionFieldText
+          :itemText="data.item[itemText]"
+          :subText="data.item[itemSubText]"
+        />
+        <SelectionFieldAction
+          v-if="hasAction"
+          :actionIcon="actionIcon"
+          @action="action(data.item)"
+        />
       </template>
     </v-autocomplete>
-    <div class="selection-text" v-if="disabled && value">{{ label }}</div>
+    <div
+      class="selection-text"
+      v-if="disabled && value"
+    >{{ label }}</div>
   </div>
 </template>
 
 <script lang='ts'>
-import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
+import { Vue, Component, Prop, Watch, Emit } from 'vue-property-decorator';
+import SelectionFieldText from './SelectionFieldText.vue';
+import SelectionFieldAction from './SelectionFieldAction.vue';
 
-@Component
+@Component({ components: { SelectionFieldText, SelectionFieldAction } })
 export default class SelectionField<T extends any> extends Vue {
   searchQuery = '';
 
-  @Prop([Boolean, Object, String, Array])
+  @Prop([Boolean, Object, String, Array, Number])
   value!: T;
   @Prop({ default: 'keyboard_arrow_down', type: String })
   iconName!: string;
@@ -46,6 +97,14 @@ export default class SelectionField<T extends any> extends Vue {
   itemSubText!: string;
   @Prop({ type: String, default: 'id' })
   itemValue!: string;
+  @Prop({ type: Boolean, default: false })
+  dropdown!: boolean;
+  @Prop({ type: Boolean, default: false }) hasAction!: boolean;
+  @Prop({ type: String, default: 'info' }) actionIcon!: string;
+  @Emit()
+  action(item: T) {
+    return item;
+  }
 
   get _items(): T[] {
     let items: T[] = [];
@@ -90,7 +149,7 @@ export default class SelectionField<T extends any> extends Vue {
 <style scoped lang="scss">
 @import '@/styles/variables.scss';
 
-.v-autocomplete /deep/ {
+.select-wrap /deep/ {
   padding-top: 0 !important;
   margin: 0;
 

@@ -77,6 +77,10 @@ First install packages with `npm install`.
 
 The application depends on the backend running on https://dev.os2autoproces.eu/
 
+### Test Credentials
+
+Test credentials for use during development can be found in the API docs at https://dev.os2autoproces.eu/doc#chapter-2-3, Temporary Development Setup.
+
 ### Tests
 
 `npm run test:unit` will run the unit tests.

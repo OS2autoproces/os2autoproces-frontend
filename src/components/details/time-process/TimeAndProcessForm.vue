@@ -1,42 +1,104 @@
 <template>
-  <FormSection :invalid="!isTimeAndProcessValid" heading="Tid og proces" id="time-and-process" :disabled="state.disabled.timeAndProcessEdit" @edit="update({disabled: {timeAndProcessEdit: $event}})">
-
+  <FormSection
+    :invalid="!isTimeAndProcessValid"
+    heading="Tid og proces"
+    id="time-and-process"
+    :disabled="state.disabled.timeAndProcessEdit"
+    @edit="update({disabled: {timeAndProcessEdit: $event}})"
+  >
     <Well>
       <div>
-        <WellItem labelWidth="70%" label="Antal gange processen foretages årligt" :required="minPhase(PhaseKeys.PREANALYSIS)">
-          <InputField :value="state.timeSpendOccurancesPerEmployee" :disabled="state.disabled.timeAndProcessEdit" @change="update({timeSpendOccurancesPerEmployee: $event})" />
+        <WellItem
+          labelWidth="70%"
+          label="Antal gange processen foretages årligt"
+          :required="minPhase(PhaseKeys.PREANALYSIS)"
+        >
+          <InputField
+            :type="'number'"
+            :value="state.timeSpendOccurancesPerEmployee"
+            :disabled="state.disabled.timeAndProcessEdit"
+            @change="update({timeSpendOccurancesPerEmployee: $event})"
+          />
         </WellItem>
-        <WellItem labelWidth="70%" label="Tidsforbrug pr. proces i minutter" :required="minPhase(PhaseKeys.PREANALYSIS)">
-          <InputField :disabled="state.disabled.timeAndProcessEdit" :value="state.timeSpendPerOccurance" @change="update({timeSpendPerOccurance: $event})" />
+        <WellItem
+          labelWidth="70%"
+          label="Tidsforbrug pr. proces i minutter"
+          :required="minPhase(PhaseKeys.PREANALYSIS)"
+        >
+          <InputField
+            :type="'number'"
+            :disabled="state.disabled.timeAndProcessEdit"
+            :value="state.timeSpendPerOccurance"
+            @change="update({timeSpendPerOccurance: $event})"
+          />
         </WellItem>
-        <WellItem labelWidth="70%" label="Total tidsforbrug" tooltip="Det samlede tidsforbrug udregnes automatisk når processen gemmes.">
-          <InputField disabled :value="state.timeSpendComputedTotal" />
+        <WellItem
+          labelWidth="70%"
+          label="Total tidsforbrug i timer"
+          tooltip="Det samlede tidsforbrug udregnes automatisk når processen gemmes."
+        >
+          <InputField disabled :value="state.timeSpendComputedTotal"/>
         </WellItem>
       </div>
 
       <div>
-        <WellItem labelWidth="70%" label="Antal medarbejdere der foretager processen" :required="minPhase(PhaseKeys.PREANALYSIS)">
-          <InputField :disabled="state.disabled.timeAndProcessEdit" :value="state.timeSpendEmployeesDoingProcess" @change="update({timeSpendEmployeesDoingProcess: $event})" />
+        <WellItem
+          labelWidth="70%"
+          label="Antal medarbejdere der foretager processen"
+          :required="minPhase(PhaseKeys.PREANALYSIS)"
+        >
+          <InputField
+            :type="'number'"
+            :disabled="state.disabled.timeAndProcessEdit"
+            :value="state.timeSpendEmployeesDoingProcess"
+            @change="update({timeSpendEmployeesDoingProcess: $event})"
+          />
         </WellItem>
-        <WellItem labelWidth="70%" label="Digital procent besparelse" tooltip="Hvor meget af processen vurderer du kan automatiseres på en skala fra 0-100.">
-          <InputField :disabled="state.disabled.timeAndProcessEdit" :value="state.timeSpendPercentageDigital" @change="update({timeSpendPercentageDigital: $event})" />
+        <WellItem
+          labelWidth="70%"
+          label="Digital procent besparelse"
+          tooltip="Hvor meget af processen vurderer du kan automatiseres på en skala fra 0-100."
+        >
+          <InputField
+            :type="'number'"
+            :disabled="state.disabled.timeAndProcessEdit"
+            :value="state.timeSpendPercentageDigital"
+            @change="update({timeSpendPercentageDigital: $event})"
+          />
         </WellItem>
       </div>
 
       <div>
         <WellItem labelWidth="70%" label="Er borgere påvirket?">
-          <MappedSelectionField :disabled="state.disabled.timeAndProcessEdit" :value="state.targetsCitizens" @change="update({targetsCitizens: $event})" :items="yesNoItems" />
+          <MappedSelectionField
+            :disabled="state.disabled.timeAndProcessEdit"
+            :value="state.targetsCitizens"
+            @change="update({targetsCitizens: $event})"
+            :items="yesNoItems"
+          />
         </WellItem>
         <WellItem labelWidth="70%" label="Er virksomheder påvirket?">
-          <MappedSelectionField :disabled="state.disabled.timeAndProcessEdit" :value="state.targetsCompanies" @change="update({targetsCompanies: $event})" :items="yesNoItems" />
+          <MappedSelectionField
+            :disabled="state.disabled.timeAndProcessEdit"
+            :value="state.targetsCompanies"
+            @change="update({targetsCompanies: $event})"
+            :items="yesNoItems"
+          />
         </WellItem>
       </div>
     </Well>
 
     <div class="comments-wrap">
       <span>Kommentar vedr. tidsforbrug</span>
-      <InfoTooltip class="time-proces-tooltip">Her kan du uddybe eller kommentere på de indtastede værdier ovenfor og på tidsforbruget generelt. F.eks. hvordan det er målt.</InfoTooltip>
-      <TextArea :value="state.timeSpendComment" :disabled="state.disabled.timeAndProcessEdit" @change="update({timeSpendComment: $event})" :maxLength="300" />
+      <InfoTooltip
+        class="time-proces-tooltip"
+      >Her kan du uddybe eller kommentere på de indtastede værdier ovenfor og på tidsforbruget generelt. F.eks. hvordan det er målt.</InfoTooltip>
+      <TextArea
+        :value="state.timeSpendComment"
+        :disabled="state.disabled.timeAndProcessEdit"
+        @change="update({timeSpendComment: $event})"
+        :maxLength="10000"
+      />
     </div>
   </FormSection>
 </template>

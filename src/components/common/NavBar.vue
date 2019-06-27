@@ -1,17 +1,38 @@
 <template>
   <div class="navbar">
-    <router-link class="logo-link" to="/search">
+    <router-link
+      class="logo-link"
+      to="/search"
+    >
       <div class="logo">OS2autoproces</div>
     </router-link>
-    <router-link class="link" v-if="isFrontpageEditor" to="/">Forside</router-link>
-    <router-link class="link" v-if="isAdministrator" to="/search">Søgning</router-link>
-    <router-link class="link" v-if="isAdministrator" to="/manage-technologies">Teknologier</router-link>
+    <router-link
+      class="link"
+      v-if="isFrontpageEditor"
+      to="/"
+    >Forside</router-link>
+    <router-link
+      class="link"
+      v-if="isAdministrator"
+      to="/search"
+    >Søgning</router-link>
+    <router-link
+      class="link"
+      v-if="isAdministrator"
+      to="/manage-technologies"
+    >Teknologier</router-link>
     <div class="flex-grow"></div>
-    <div class="user-info" v-if="user">
+    <div
+      class="user-info"
+      v-if="user"
+    >
       <div class="user">
         <div>{{user.name}}</div>
         <div>{{roles.join(', ')}}</div>
-        <a class="logout-button" :href="logoutUrl">Log ud</a>
+        <a
+          class="logout-button"
+          :href="logoutUrl"
+        >Log ud</a>
       </div>
       <ProfileIcon class="profile-icon" />
     </div>
@@ -21,7 +42,9 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import ProfileIcon from '../icons/ProfileIcon.vue';
-import { AuthState, UserRoleName, UserRole } from '@/store/modules/auth/state';
+import { AuthState, UserRoleName, UserRole, User } from '@/store/modules/auth/state';
+import { RootState } from '../../store/store';
+import { State } from 'vuex-class';
 
 @Component({
   components: {
@@ -31,26 +54,23 @@ import { AuthState, UserRoleName, UserRole } from '@/store/modules/auth/state';
 export default class NavBar extends Vue {
   logoutUrl = `${window.autoProcessConfiguration.apiUrl}/saml/logout`;
 
-  get user() {
-    return this.$store.state.auth.user;
-  }
+  @State((state: RootState) => state.auth.user) user!: User;
 
-  get isAdministrator() {
-    return this.$store.state.auth.user && this.$store.state.auth.user.roles.includes(UserRole.administrator);
-  }
-
-  get isFrontpageEditor() {
-    return this.$store.state.auth.user && this.$store.state.auth.user.roles.includes(UserRole.frontpageEditor);
-  }
-
-  get roles() {
-    const user: AuthState['user'] = this.$store.state.auth.user;
-
-    if (!user) {
+  @State((state: RootState) => {
+    if (!state.auth.user || !state.auth.user.roles) {
       return [];
     }
 
-    return user.roles.map(role => UserRoleName[role]);
+    return state.auth.user.roles.map(role => UserRoleName[role]);
+  })
+  roles!: UserRole[];
+
+  get isAdministrator() {
+    return this.user && this.user.roles && this.user.roles.includes(UserRole.administrator);
+  }
+
+  get isFrontpageEditor() {
+    return this.user && this.user.roles.includes(UserRole.frontpageEditor);
   }
 }
 </script>

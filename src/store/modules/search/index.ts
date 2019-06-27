@@ -4,12 +4,17 @@ import { Module } from 'vuex';
 import { actions } from '@/store/modules/search/actions';
 import { getters } from '@/store/modules/search/getters';
 import { mutations } from '@/store/modules/search/mutations';
+import { loadFiltersFromStorage } from './service';
+import { defaultStatusSelects } from '@/models/status';
 
 const namespaced = true;
 
 export function getInitialState(): SearchState {
   return {
     result: undefined,
+    filtersTouched: false,
+    savedFilters: [],
+    selectedSavedFiltersText: '',
     filters: {
       page: 0,
       size: 5,
@@ -26,6 +31,7 @@ export function getInitialState(): SearchState {
       },
       klaProcess: false,
       umbrella: false,
+      noSepMep: true,
       itSystems: [],
       technologies: [],
       sorting: {
@@ -47,7 +53,17 @@ export function getInitialState(): SearchState {
         DEMOCRACY: false,
         ENVIRONMENT: false,
         HEALTH: false
-      }
+      },
+      runPeriod: {
+        ONDEMAND: false,
+        ONCE: false,
+        DAILY: false,
+        WEEKLY: false,
+        MONTHLY: false,
+        QUATERLY: false,
+        YEARLY: false
+      },
+      status: defaultStatusSelects
     }
   };
 }

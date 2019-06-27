@@ -1,23 +1,43 @@
 <template>
   <div>
-    <div class="text-area" :class="{ 'out-of-bounds': (currentLength > maxLength) }" v-if="!disabled">
-      <textarea :value="value" @input="valueChanged" :placeholder="placeholder" :class="{ 'no-resize': noResize }" />
+    <div
+      class="text-area"
+      :class="{ 'out-of-bounds': (currentLength > maxLength) }"
+      v-if="!disabled"
+    >
+      <textarea
+        :value="value"
+        @input="valueChanged"
+        :placeholder="placeholder"
+        :class="{ 'no-resize': noResize }"
+      />
       <div class="text-area-overlay">
-        <div class="text-area-char-count" v-if="maxLength">({{currentLength}} ud af {{maxLength}} tegn)</div>
-        <slot />
+        <div
+          class="text-area-char-count"
+          v-if="maxLength"
+        >({{currentLength}} ud af {{maxLength}} tegn)</div>
+        <slot/>
       </div>
     </div>
-    <div class="text-area-readonly" :class="{'double-column': twoColumns, 'full-width': fullWidth }" v-if="disabled">{{value}}</div>
+    <div
+      class="text-area-readonly"
+      :class="{'double-column': twoColumns, 'full-width': fullWidth }"
+      v-if="disabled"
+      v-html="sanitizedHtml"
+    >{{value}}</div>
   </div>
 </template>
 
 <script lang='ts'>
 import { Vue, Component, Prop } from 'vue-property-decorator';
+import DOMPurify from 'dompurify';
 
 @Component
 export default class TextArea extends Vue {
   @Prop(String)
   value!: string;
+  @Prop(String)
+  readonlyHtml!: string;
   @Prop(Number)
   maxLength!: number;
   @Prop(Boolean)
@@ -30,6 +50,10 @@ export default class TextArea extends Vue {
   twoColumnBreakpoint!: number;
   @Prop(Boolean)
   fullWidth!: boolean;
+
+  get sanitizedHtml() {
+    return DOMPurify.sanitize(this.readonlyHtml, { ALLOWED_TAGS: ['a'], ALLOWED_ATTR: ['href', 'target'] });
+  }
 
   get currentLength() {
     return this.value.length ? this.value.length : 0;
@@ -76,7 +100,8 @@ export default class TextArea extends Vue {
 
 .text-area-readonly {
   white-space: pre-wrap;
-  width: 50%;
+  width: 100%;
+  word-break: break-all;
 }
 
 .full-width {
