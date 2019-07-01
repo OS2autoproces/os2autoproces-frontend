@@ -1,6 +1,6 @@
 <template>
   <div class="dialog-content elevation-4">
-    <slot/>
+    <slot />
   </div>
 </template>
 
@@ -12,6 +12,8 @@ export default class DialogContent extends Vue {}
 </script>
 
 <style lang="scss" scoped>
+@import '@/styles/variables.scss';
+
 .dialog-content {
   width: 100%;
   background: white;
