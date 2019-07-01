@@ -102,6 +102,8 @@ export default class Search extends Vue {
 </script>
 
 <style lang="scss" scoped>
+@import "@/styles/variables.scss";
+
 .search {
   display: flex;
   flex-direction: column;

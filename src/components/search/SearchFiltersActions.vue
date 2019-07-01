@@ -1,4 +1,6 @@
 <style lang="scss" scoped>
+@import '@/styles/variables.scss';
+
 .actions {
   position: fixed;
   bottom: 2rem;
