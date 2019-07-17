@@ -7,12 +7,17 @@
         :value="value"
         @input="valueChanged"
         @keyup.enter="submit"
-      >
+      />
       <div class="icon" v-if="this.$slots.default">
-        <slot/>
+        <slot />
       </div>
     </div>
-    <div v-if="disabled">{{value}}</div>
+    <div class="disabled-flex" v-if="disabled">
+      {{value}}
+      <span>
+        <slot />
+      </span>
+    </div>
   </div>
 </template>
 
@@ -66,5 +71,10 @@ export default class InputField extends Vue {
     height: 32px;
     width: 100%;
   }
+}
+.disabled-flex {
+  display: flex;
+  justify-content: space-between;
+  padding: 0px 10px;
 }
 </style>
