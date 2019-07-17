@@ -4,7 +4,7 @@
 
     <div class="wrapper">
       <router-link to="/search" class="search-page-link">
-        <ArrowLeftIcon /> Tilbage til søgning
+        <ArrowLeftIcon />Tilbage til søgning
       </router-link>
 
       <div class="process-selector">
@@ -15,23 +15,33 @@
             <h2>Proces</h2>
 
             <div class="options">
-              <router-link v-for="phase in phasesLevels" :key="phase.route" :to="`/details/new/${phase.route}`"> {{phase.label}} </router-link>
+              <router-link
+                v-for="phase in phasesLevels"
+                :key="phase.route"
+                :to="`/details/new/${phase.route}`"
+              >{{phase.label}}</router-link>
             </div>
           </div>
 
           <div class="umbrella">
-            <h2>Paraplyproces <InfoTooltip>En paraplyproces er en overordnet proces, hvor det er muligt at samle lignede processer under.
-
-                Et eksempel er: Paraplyen Lægeerklæringer. Hvortil processerne Lægeerklæring Randers, Lægeerklæring Skanderborg og Lægeerklæringer Syddjurs er tilknyttet.
+            <h2>
+              Paraplyproces
+              <InfoTooltip>
+                En paraplyproces er en overordnet proces, hvor det er muligt at samle lignede processer under.
+                <!--no format-->
+                Et eksempel er: Paraplyen Lægeerklæringer. Hvortil processerne Lægeerklæring Randers, Lægeerklæring Skanderborg og Lægeerklæringer Syddjurs er tilknyttet.Forskellen på en ’egen paraply’ og ’fælles paraply’ er synligheden. Fælles paraplyer kan ses på tværs af organisationer, mens ’egen paraply’ kun kan ses i egen organisation.
               </InfoTooltip>
             </h2>
 
             <div class="options">
-              <router-link v-for="type in typeLevels" :key="type.route" :to="`/details/new/${type.route}`"> {{type.label}} </router-link>
+              <router-link
+                v-for="type in typeLevels"
+                :key="type.route"
+                :to="`/details/new/${type.route}`"
+              >{{type.label}}</router-link>
             </div>
           </div>
         </div>
-
       </div>
     </div>
   </div>

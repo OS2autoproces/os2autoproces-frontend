@@ -29,25 +29,11 @@
 
     <Well>
       <div>
-        <WellItem
-          labelWidth="200px"
-          label="ID:"
-        >
-          <InputField
-            disabled
-            :value="state.id"
-          />
+        <WellItem labelWidth="200px" label="ID:">
+          <InputField disabled :value="state.id" />
         </WellItem>
-        <WellItem
-          labelWidth="180px"
-          label="Indberetter:"
-          v-if="isWithinMunicipality"
-        >
-          <SelectionField
-            disabled
-            :value="state.reporter"
-            itemText="name"
-          />
+        <WellItem labelWidth="180px" label="Indberetter:" v-if="isWithinMunicipality">
+          <SelectionField disabled :value="state.reporter" itemText="name" />
         </WellItem>
         <WellItem
           labelWidth="180px"
@@ -84,20 +70,14 @@
             clearable
           />
         </WellItem>
-        <WellItem
-          v-if="state.contact"
-          labelWidth="180px"
-          label="Mail:"
-        >{{state.contact.email}}</WellItem>
+        <WellItem v-if="state.contact" labelWidth="180px" label="Mail:">{{state.contact.email}}</WellItem>
       </div>
 
       <div>
         <WellItem
           labelWidth="120px"
           label="Synlighed:"
-          tooltip="Kommunalt betyder at alle brugere i din organisation kan se processen.
-Tværkommunalt betyder at brugere i andre kommuner kan se processen.
-Privat betyder at det kun er dig og din superbruger der kan se processen."
+          tooltip="Synligheden ’Egen organisation’ betyder at alle brugere i din organisation kan se processen. Synligheden ’Alle i OS2autoproces’ betyder at brugere i andre kommuner og regioner kan se processen. Privat betyder at det kun er dig og din superbruger der kan se processen."
         >
           <MappedSelectionField
             :disabled="!!state.parents.length || state.disabled.generalInformationEdit"
@@ -106,21 +86,14 @@ Privat betyder at det kun er dig og din superbruger der kan se processen."
             :items="visibilityLevels"
           />
         </WellItem>
-        <WellItem
-          labelWidth="120px"
-          label="Fagområder:"
-        >
+        <WellItem labelWidth="120px" label="Fagområder:">
           <DomainsField
             :disabled="state.disabled.generalInformationEdit"
             :value="state.domains"
             @change="assign({domains: $event})"
           />
         </WellItem>
-        <WellItem
-          labelWidth="120px"
-          label="Afdelinger:"
-          v-if="isWithinMunicipality"
-        >
+        <WellItem labelWidth="120px" label="Afdelinger:" v-if="isWithinMunicipality">
           <SelectionField
             :disabled="state.disabled.generalInformationEdit"
             :value="state.orgUnits"
@@ -142,34 +115,20 @@ Privat betyder at det kun er dig og din superbruger der kan se processen."
             @change="update({vendor: $event})"
           />
         </WellItem>
-        <WellItem
-          labelWidth="120px"
-          label="SEP/MEP:"
-        >
-          <Checkbox
-            :disabled="true"
-            :value="state.sepMep"
-            @change="update({sepMep: $event})"
-          />
+        <WellItem labelWidth="120px" label="SEP/MEP:">
+          <Checkbox :disabled="true" :value="state.sepMep" @change="update({sepMep: $event})" />
         </WellItem>
       </div>
 
       <div>
-        <WellItem
-          v-if="minPhase(PhaseKeys.PREANALYSIS)"
-          labelWidth="120px"
-          label="Lovparagraf:"
-        >
+        <WellItem v-if="minPhase(PhaseKeys.PREANALYSIS)" labelWidth="120px" label="Lovparagraf:">
           <InputField
             :disabled="state.disabled.generalInformationEdit || state.form"
             :value="state.legalClause"
             @change="update({legalClause: $event})"
           />
         </WellItem>
-        <WellItem
-          labelWidth="200px"
-          label="KLE-nr:"
-        >
+        <WellItem labelWidth="200px" label="KLE-nr:">
           <SelectionField
             :disabled="state.disabled.generalInformationEdit"
             :value="state.kle"
@@ -179,11 +138,7 @@ Privat betyder at det kun er dig og din superbruger der kan se processen."
             clearable
           />
         </WellItem>
-        <WellItem
-          labelWidth="200px"
-          label="FORM:"
-          v-if="state.kle"
-        >
+        <WellItem labelWidth="200px" label="FORM:" v-if="state.kle">
           <SelectionField
             :disabled="state.disabled.generalInformationEdit"
             :value="state.form"
@@ -193,10 +148,7 @@ Privat betyder at det kun er dig og din superbruger der kan se processen."
             clearable
           />
         </WellItem>
-        <WellItem
-          labelWidth="200px"
-          label="KL ID:"
-        >
+        <WellItem labelWidth="200px" label="KL ID:">
           <InputField
             :disabled="state.disabled.generalInformationEdit"
             :value="state.klId"
@@ -236,7 +188,7 @@ Privat betyder at det kun er dig og din superbruger der kan se processen."
           :value="state.shortDescription"
           :maxLength="140"
         />
-        </div>
+      </div>
       <div class="general-phases">
         <div>
           <div class="field-label">Fase:</div>
@@ -259,7 +211,7 @@ Privat betyder at det kun er dig og din superbruger der kan se processen."
         </div>
 
         <div v-if="isPhaseChanged" class="phase-changed">
-          <WarningIcon class="general-information-warning-icon"/>
+          <WarningIcon class="general-information-warning-icon" />
           <div>Når du skifter fase, skal yderligere information om processen udfyldes</div>
         </div>
       </div>
