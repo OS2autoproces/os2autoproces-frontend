@@ -56,8 +56,8 @@ export default class SearchSortingDropdown extends Vue {
       return ascLabel && descLabel
         ? [
             ...options,
-            { text: `${text}${ascLabel ? ascLabel : ''}`, value: { property, descending: false } },
-            { text: `${text}${descLabel ? descLabel : ''}`, value: { property, descending: true } }
+            { text: `${text}${ascLabel || ''}`, value: { property, descending: false } },
+            { text: `${text}${descLabel || ''}`, value: { property, descending: true } }
           ]
         : [...options, { text: `${text}`, value: { property, descending: true } }];
     },
