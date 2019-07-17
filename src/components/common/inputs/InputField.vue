@@ -72,6 +72,7 @@ export default class InputField extends Vue {
     width: 100%;
   }
 }
+
 .disabled-flex {
   display: flex;
   justify-content: space-between;
