@@ -42,21 +42,21 @@
             :disabled="state.disabled.timeAndProcessEdit"
             :value="state.timeSpendPercentageDigital"
             @change="update({timeSpendPercentageDigital: $event})"
-          >{{'%'}}</InputField>
+          >%</InputField>
         </WellItem>
         <WellItem
           labelWidth="70%"
           label="Manuelt tidsforbrug i timer"
           tooltip="Udregningen for det manuelle årlige tidsforbrug er: antal gange processen foretages * tidsforbrug i minutter / 60"
         >
-          <InputField disabled :value="timeSpendHours">{{'timer'}}</InputField>
+          <InputField disabled :value="timeSpendHours">timer</InputField>
         </WellItem>
         <WellItem
           labelWidth="70%"
           label="Forventet årligt effektiviseringspotentiale"
           tooltip="Udregning af det forventet årligt effektiviseringspotentiale er: antal gange processen foretages * tidsforbrug i minutter / 60 * automatiseringsgrad"
         >
-          <InputField disabled :value="exptectedYearlyPotential">{{'timer'}}</InputField>
+          <InputField disabled :value="exptectedYearlyPotential">timer</InputField>
         </WellItem>
       </div>
 
@@ -141,20 +141,22 @@ export default class TimeAndProcessForm extends Vue {
   yesNoItems = [{ value: true, text: 'Ja' }, { value: false, text: 'Nej' }];
 
   get timeSpendHours() {
-    const hours = ((this.state.timeSpendOccurancesPerEmployee * this.state.timeSpendPerOccurance) / 60)
-      .toString()
-      .substring(0, 4);
-    return hours ? hours : '0';
+    const hours =
+      ((this.state.timeSpendOccurancesPerEmployee * this.state.timeSpendPerOccurance) / 60)
+        .toString()
+        .substring(0, 4) || '0';
+    return hours;
   }
 
   get exptectedYearlyPotential() {
-    const hours = (
-      ((this.state.timeSpendOccurancesPerEmployee * this.state.timeSpendPerOccurance) / 60) *
-      this.state.timeSpendPercentageDigital
-    )
-      .toString()
-      .substring(0, 4);
-    return hours ? hours : '0';
+    const hours =
+      (
+        ((this.state.timeSpendOccurancesPerEmployee * this.state.timeSpendPerOccurance) / 60) *
+        this.state.timeSpendPercentageDigital
+      )
+        .toString()
+        .substring(0, 4) || '0';
+    return hours;
   }
 
   get state() {
