@@ -74,13 +74,13 @@
     </ExpandPanel>
 
     <ExpandPanel title="Status">
-      <SelectionField
-        :items="status"
-        :value="filters.status"
-        itemText="label"
-        @change="assignFilters({status: $event})"
-        multiple
-      />
+      <SearchOption
+        class
+        v-for="(stati, index) in status"
+        :key="index"
+        :value="isInFilter(stati)"
+        @change="appendStatus(stati)"
+      >{{stati.label}}</SearchOption>
     </ExpandPanel>
 
     <ExpandPanel title="Fase">
@@ -250,6 +250,18 @@ export default class SearchFiltersComponent extends Vue {
 
   assignFilters(filters: Partial<SearchFilters>) {
     this.$emit('assign', filters);
+  }
+
+  appendStatus(stati: StatusSelect) {
+    const status = this.isInFilter(stati)
+      ? this.filters.status.filter(val => val.key !== stati.key)
+      : [...this.filters.status, stati];
+
+    this.assignFilters({ status });
+  }
+
+  isInFilter(status: StatusSelect) {
+    return this.filters.status.some(e => e.key === status.key);
   }
 }
 </script>
