@@ -5,7 +5,6 @@
       <PillCheckbox :value="!!filters.usersId" @change="setUsersId">Mine tilknytninger</PillCheckbox>
       <PillCheckbox :value="!!filters.bookmarkedId" @change="setBookmarkedId">Mine favoritter</PillCheckbox>
       <SearchSelectSavedFilters />
-      <excelBtn></excelBtn>
     </div>
 
     <SearchField
@@ -175,7 +174,6 @@ import { RootState } from '../../store/store';
 import SearchFiltersActions from './SearchFiltersActions.vue';
 import SearchSelectSavedFilters from './SearchSelectSavedFilters.vue';
 import SearchFiltersRunPeriod from './SearchFiltersRunPeriod.vue';
-import ExcelBtn from './ExcelBtn.vue';
 import { StatusSelect, StatusLabels, StatusKeys, defaultStatusSelects } from '../../models/status';
 
 @Component({
@@ -191,8 +189,7 @@ import { StatusSelect, StatusLabels, StatusKeys, defaultStatusSelects } from '..
     Button,
     SearchFiltersActions,
     SearchFiltersRunPeriod,
-    SearchSelectSavedFilters,
-    ExcelBtn
+    SearchSelectSavedFilters
   }
 })
 export default class SearchFiltersComponent extends Vue {
