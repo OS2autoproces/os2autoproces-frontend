@@ -187,6 +187,7 @@
           @change="update({shortDescription: $event})"
           :value="state.shortDescription"
           :maxLength="140"
+          :minHeight="'50px'"
         />
       </div>
       <div class="general-phases">
