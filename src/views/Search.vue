@@ -1,21 +1,30 @@
 <template>
   <div class="search">
-    <NavBar/>
+    <NavBar />
 
     <div class="page">
       <div class="filters">
-        <SearchFiltersComponent @change="updateFilters" @assign="assignFilters"/>
+        <SearchFiltersComponent @change="updateFilters" @assign="assignFilters" />
       </div>
       <div>
         <div class="results-wrapper">
           <div class="report">
-            <SearchSortingDropdown/>
+            <SearchSortingDropdown />
             <router-link to="/report">
-              <PlusIcon/>Indberet proces
+              <PlusIcon />Indberet proces
             </router-link>
           </div>
 
-          <SearchSorting :sorting="filters.sorting" @change="updateFilters({ sorting: $event })"/>
+          <SearchSorting
+            v-if="!isSearchingForUmbrellaProcess"
+            :sorting="filters.sorting"
+            @change="updateFilters({ sorting: $event })"
+          />
+          <SearchSortingUmbrella
+            v-else
+            :sorting="filters.sorting"
+            @change="updateFilters({sorting: $event})"
+          />
 
           <div class="results" v-if="result">
             <router-link
@@ -24,7 +33,7 @@
               v-for="process in result.processes"
               :key="process.id"
             >
-              <SearchResult :process="process"/>
+              <SearchResult :process="process" />
             </router-link>
           </div>
 
@@ -44,18 +53,20 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
-import { Action } from 'vuex-class';
+import { Action, Getter } from 'vuex-class';
 import NavBar from '../components/common/NavBar.vue';
 import SearchFiltersComponent from '../components/search/SearchFilters.vue';
 import SearchPagination from '../components/search/SearchPagination.vue';
 import SearchResult from '../components/search/SearchResult.vue';
 import SearchSorting from '../components/search/SearchSorting.vue';
+import SearchSortingUmbrella from '../components/search/SearchSortingUmbrella.vue';
 import PlusIcon from '../components/icons/PlusIcon.vue';
 import { searchActionTypes } from '../store/modules/search/actions';
 import { processActionTypes } from '../store/modules/process/actions';
 import { SearchFilters, SearchResultProcess } from '../store/modules/search/state';
 import SearchSortingDropdown from '@/components/search/SearchSortingDropdown.vue';
 import { getInitialState } from '../store/modules/search';
+import { searchGetterTypes } from '../store/modules/search/getters';
 
 @Component({
   components: {
@@ -65,6 +76,7 @@ import { getInitialState } from '../store/modules/search';
     SearchPagination,
     SearchResult,
     SearchSorting,
+    SearchSortingUmbrella,
     SearchSortingDropdown
   }
 })
@@ -72,6 +84,7 @@ export default class Search extends Vue {
   @Prop({ type: Object as () => SearchFilters }) initialFilters!: SearchFilters;
   @Action(searchActionTypes.SEARCH) dispatchSearch!: VoidFunction;
   @Action(searchActionTypes.ASSIGN_FILTERS) dispatchAssignFilters!: (filters: SearchFilters) => void;
+  @Getter(searchGetterTypes.IS_SEARCHING_FOR_UMBRELLA_PROCESS) isSearchingForUmbrellaProcess!: () => boolean;
 
   get filters() {
     return this.$store.state.search.filters;
@@ -102,7 +115,7 @@ export default class Search extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import "@/styles/variables.scss";
+@import '@/styles/variables.scss';
 
 .search {
   display: flex;
