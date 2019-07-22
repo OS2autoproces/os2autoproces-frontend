@@ -17,13 +17,11 @@
 
     <div class="municipality-level" v-if="!umbrellaProcessSearch">
       <SearchOption
-        :value="filters.visibility.municipality"
-        @change="updateFilters({ visibility: { municipality: $event } })"
-      >{{VisibilityLabels.MUNICIPALITY}}</SearchOption>
-      <SearchOption
-        :value="filters.visibility.public"
-        @change="updateFilters({ visibility: { public: $event } })"
-      >{{VisibilityLabels.PUBLIC}}</SearchOption>
+        v-for="(visibilityKey, index) in VisibilityKeys"
+        :key="index"
+        :value="filters.visibility[visibilityKey]"
+        @change="updateFilters({ visibility: {...filters.visibility, ...{ [visibilityKey]: $event } }})"
+      >{{VisibilityLabels[visibilityKey]}}</SearchOption>
     </div>
 
     <SearchOption
@@ -130,7 +128,7 @@ import { Action, State } from 'vuex-class';
 import { searchActionTypes } from '@/store/modules/search/actions';
 import { PhaseLabels, PhaseKeys } from '@/models/phase';
 import { DomainLabels, DomainKeys } from '@/models/domain';
-import { VisibilityLabels } from '@/models/visibility';
+import { VisibilityLabels, VisibilityKeys } from '@/models/visibility';
 import { SearchFilters } from '../../store/modules/search/state';
 import { commonActionTypes } from '@/store/modules/common/actions';
 import Button from '../common/inputs/Button.vue';
@@ -162,6 +160,7 @@ export default class SearchFiltersComponent extends Vue {
   DomainLabels = DomainLabels;
   DomainKeys = DomainKeys;
   VisibilityLabels = VisibilityLabels;
+  VisibilityKeys = [VisibilityKeys.MUNICIPALITY, VisibilityKeys.PUBLIC];
 
   @State((state: RootState) => state.search.filters) filters!: SearchFilters;
 
