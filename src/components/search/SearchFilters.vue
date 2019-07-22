@@ -84,29 +84,11 @@
 
     <ExpandPanel title="Fase">
       <SearchOption
-        :value="filters.phase.IDEA"
-        @change="updateFilters({ phase: { IDEA: $event } })"
-      >{{PhaseLabels.IDEA}}</SearchOption>
-      <SearchOption
-        :value="filters.phase.PREANALYSIS"
-        @change="updateFilters({ phase: { PREANALYSIS: $event } })"
-      >{{PhaseLabels.PREANALYSIS}}</SearchOption>
-      <SearchOption
-        :value="filters.phase.SPECIFICATION"
-        @change="updateFilters({ phase: { SPECIFICATION: $event } })"
-      >{{PhaseLabels.SPECIFICATION}}</SearchOption>
-      <SearchOption
-        :value="filters.phase.DEVELOPMENT"
-        @change="updateFilters({ phase: { DEVELOPMENT: $event } })"
-      >{{PhaseLabels.DEVELOPMENT}}</SearchOption>
-      <SearchOption
-        :value="filters.phase.IMPLEMENTATION"
-        @change="updateFilters({ phase: { IMPLEMENTATION: $event } })"
-      >{{PhaseLabels.IMPLEMENTATION}}</SearchOption>
-      <SearchOption
-        :value="filters.phase.OPERATION"
-        @change="updateFilters({ phase: { OPERATION: $event } })"
-      >{{PhaseLabels.OPERATION}}</SearchOption>
+        v-for="(phaseKey, index) in PhaseKeys"
+        :value="filters.phase[phaseKey]"
+        :key="index"
+        @change="updateFilters({phase: {...filters.phase, ...{ [phaseKey]: $event }}})"
+      >{{PhaseLabels[phaseKey]}}</SearchOption>
     </ExpandPanel>
 
     <ExpandPanel title="Fagområde">
@@ -164,7 +146,7 @@ import SelectionField from '../common/inputs/SelectionField.vue';
 import ExpandPanel from '../common/ExpandPanel.vue';
 import { Action, State } from 'vuex-class';
 import { searchActionTypes } from '@/store/modules/search/actions';
-import { PhaseLabels } from '@/models/phase';
+import { PhaseLabels, PhaseKeys } from '@/models/phase';
 import { DomainLabels } from '@/models/domain';
 import { VisibilityLabels } from '@/models/visibility';
 import { SearchFilters } from '../../store/modules/search/state';
@@ -194,6 +176,7 @@ import { StatusSelect, StatusLabels, StatusKeys, defaultStatusSelects } from '..
 })
 export default class SearchFiltersComponent extends Vue {
   PhaseLabels = PhaseLabels;
+  PhaseKeys = PhaseKeys;
   DomainLabels = DomainLabels;
   VisibilityLabels = VisibilityLabels;
 
