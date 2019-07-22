@@ -14,7 +14,12 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import { SortingOption, SearchFilters, SearchResultProcess } from '@/store/modules/search/state.ts';
+import {
+  SortingOption,
+  SearchFilters,
+  SearchResultProcess,
+  SortingOptionParams
+} from '@/store/modules/search/state.ts';
 import SelectionField from '../common/inputs/SelectionField.vue';
 import { State, Action } from 'vuex-class';
 import { RootState } from '../../store/store';
@@ -23,6 +28,8 @@ import { isEqual } from 'lodash';
 
 interface DropdownSortingOption {
   text: string;
+  ascLabel?: string;
+  descLabel?: string;
   value: SortingOption;
 }
 
@@ -35,22 +42,25 @@ export default class SearchSortingDropdown extends Vue {
   @State((state: RootState) => state.search.filters.sorting) selectedOption!: SortingOption;
   @Action(searchActionTypes.UPDATE_FILTERS) updateFilters!: (filters: Partial<SearchFilters>) => Promise<void>;
 
-  ascLabel = ', stigende';
-  descLabel = ', faldende';
+  ascLabel = ', lavest';
+  descLabel = ', højest';
 
-  keys: Array<{ property: keyof SearchResultProcess; text: string }> = [
-    { property: 'lastChanged', text: 'Sidst ændret' },
-    { property: 'title', text: 'Proces' },
-    { property: 'rating', text: 'Vurderet potentiale' },
-    { property: 'status', text: 'Status' }
+  keys: Array<{ property: keyof SortingOptionParams; text: string; ascLabel?: string; descLabel?: string }> = [
+    { property: 'created', text: 'Seneste tilføjede' },
+    { property: 'title', text: 'Proces', ascLabel: ', A-Z', descLabel: ', Z-A' },
+    { property: 'rating', text: 'Vurderet potentiale', ascLabel: this.ascLabel, descLabel: this.descLabel }
   ];
 
   options: DropdownSortingOption[] = this.keys.reduce(
-    (options: DropdownSortingOption[], { property, text }) => [
-      ...options,
-      { text: `${text}${this.ascLabel}`, value: { property, descending: false } },
-      { text: `${text}${this.descLabel}`, value: { property, descending: true } }
-    ],
+    (options: DropdownSortingOption[], { property, text, ascLabel, descLabel }) => {
+      return ascLabel && descLabel
+        ? [
+            ...options,
+            { text: `${text}${ascLabel}`, value: { property, descending: false } },
+            { text: `${text}${descLabel}`, value: { property, descending: true } }
+          ]
+        : [...options, { text: `${text}`, value: { property, descending: true } }];
+    },
     []
   );
 
