@@ -1,8 +1,5 @@
 <template>
-  <appButton
-    class="btn"
-    @click="downloadExcel()"
-  >Hent resultat som Excel</appButton>
+  <appButton class="btn" @click="downloadExcel()">Hent resultat som Excel</appButton>
 </template>
 
 <script lang="ts">
@@ -23,7 +20,13 @@ export default class ExcelBtn extends Vue {
 </script>
 
 <style lang="scss" scoped>
+@import '@/styles/variables.scss';
 .btn {
-  width: 100%;
+  display: flex;
+  background: $color-secondary;
+  padding: 0.5rem 1rem;
+  color: white;
+  border-radius: 20px;
+  margin-left: 1rem;
 }
 </style>

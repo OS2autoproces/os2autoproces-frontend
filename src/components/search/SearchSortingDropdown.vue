@@ -9,6 +9,7 @@
       :dropdown="true"
       @change="updateFilters({ sorting: $event.value })"
     ></SelectionField>
+    <excelBtn></excelBtn>
   </div>
 </template>
 
@@ -25,6 +26,7 @@ import { State, Action } from 'vuex-class';
 import { RootState } from '../../store/store';
 import { searchActionTypes } from '@/store/modules/search/actions';
 import { isEqual } from 'lodash';
+import excelBtn from '@/components/search/ExcelBtn.vue';
 
 interface DropdownSortingOption {
   text: string;
@@ -35,7 +37,8 @@ interface DropdownSortingOption {
 
 @Component({
   components: {
-    SelectionField
+    SelectionField,
+    excelBtn
   }
 })
 export default class SearchSortingDropdown extends Vue {
