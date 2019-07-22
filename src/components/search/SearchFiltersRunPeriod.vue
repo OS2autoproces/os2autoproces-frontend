@@ -32,10 +32,9 @@ export default class SearchFiltersRunPeriod extends Vue {
   @Action(searchActionTypes.UPDATE_FILTERS) updateFilters!: (filters: Partial<SearchFilters>) => void;
 
   RunPeriodLabels = RunPeriodLabels;
-  RunPeriodKeys = RunPeriodKeys;
+  RunPeriodKeys = [RunPeriodKeys.ONDEMAND, RunPeriodKeys.ONCE];
 
   update(keyToUpdate: keyof typeof RunPeriodKeys, active: boolean) {
-    console.log(active);
     this.updateFilters({
       runPeriod: { ...this.filters.runPeriod, ...{ [keyToUpdate]: active } }
     });
