@@ -93,29 +93,11 @@
 
     <ExpandPanel title="Fagområde">
       <SearchOption
-        :value="filters.domain.HEALTH"
-        @change="updateFilters({ domain: { HEALTH: $event } })"
-      >{{DomainLabels.HEALTH}}</SearchOption>
-      <SearchOption
-        :value="filters.domain.ENVIRONMENT"
-        @change="updateFilters({ domain: { ENVIRONMENT: $event } })"
-      >{{DomainLabels.ENVIRONMENT}}</SearchOption>
-      <SearchOption
-        :value="filters.domain.DEMOCRACY"
-        @change="updateFilters({ domain: { DEMOCRACY: $event } })"
-      >{{DomainLabels.DEMOCRACY}}</SearchOption>
-      <SearchOption
-        :value="filters.domain.CHILDREN"
-        @change="updateFilters({ domain: { CHILDREN: $event } })"
-      >{{DomainLabels.CHILDREN}}</SearchOption>
-      <SearchOption
-        :value="filters.domain.ADMINISTRATION"
-        @change="updateFilters({ domain: { ADMINISTRATION: $event } })"
-      >{{DomainLabels.ADMINISTRATION}}</SearchOption>
-      <SearchOption
-        :value="filters.domain.WORK"
-        @change="updateFilters({ domain: { WORK: $event } })"
-      >{{DomainLabels.WORK}}</SearchOption>
+        v-for="(domainKey, index) in DomainKeys"
+        :key="index"
+        :value="filters.domain[domainKey]"
+        @change="updateFilters({domain: {...filters.domain, ...{[domainKey]: $event}}})"
+      >{{DomainLabels[domainKey]}}</SearchOption>
     </ExpandPanel>
 
     <ExpandPanel title="System">
@@ -147,7 +129,7 @@ import ExpandPanel from '../common/ExpandPanel.vue';
 import { Action, State } from 'vuex-class';
 import { searchActionTypes } from '@/store/modules/search/actions';
 import { PhaseLabels, PhaseKeys } from '@/models/phase';
-import { DomainLabels } from '@/models/domain';
+import { DomainLabels, DomainKeys } from '@/models/domain';
 import { VisibilityLabels } from '@/models/visibility';
 import { SearchFilters } from '../../store/modules/search/state';
 import { commonActionTypes } from '@/store/modules/common/actions';
@@ -178,6 +160,7 @@ export default class SearchFiltersComponent extends Vue {
   PhaseLabels = PhaseLabels;
   PhaseKeys = PhaseKeys;
   DomainLabels = DomainLabels;
+  DomainKeys = DomainKeys;
   VisibilityLabels = VisibilityLabels;
 
   @State((state: RootState) => state.search.filters) filters!: SearchFilters;
