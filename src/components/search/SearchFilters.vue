@@ -76,11 +76,11 @@
     <ExpandPanel title="Status">
       <SearchOption
         class
-        v-for="(stati, index) in status"
+        v-for="(status, index) in statuses"
         :key="index"
-        :value="isInFilter(stati)"
-        @change="appendStatus(stati)"
-      >{{stati.label}}</SearchOption>
+        :value="isInFilter(status)"
+        @change="appendStatus(status)"
+      >{{status.label}}</SearchOption>
     </ExpandPanel>
 
     <ExpandPanel title="Fase">
@@ -221,7 +221,7 @@ export default class SearchFiltersComponent extends Vue {
     return this.$store.state.common.technologies;
   }
 
-  status = defaultStatusSelects;
+  statuses = defaultStatusSelects;
 
   mounted() {
     this.$store.dispatch(commonActionTypes.LOAD_IT_SYSTEMS);
