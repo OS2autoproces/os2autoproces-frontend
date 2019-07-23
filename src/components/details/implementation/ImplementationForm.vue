@@ -146,7 +146,7 @@ h2 {
     align-items: flex-start;
     .run-period-field {
       display: inline-block;
-      width: 200px;
+      min-width: 12rem;
     }
   }
 
