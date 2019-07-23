@@ -40,7 +40,7 @@
     <SearchOption
       :value="filters.noSepMep"
       @change="updateFilters({ noSepMep: $event })"
-    >Frasorter SEP/MEP-processer</SearchOption>
+    >Søg i KL's automatiseringsprojekter</SearchOption>
 
     <div class="datepicker">
       Oprettet:
@@ -73,13 +73,13 @@
     </ExpandPanel>
 
     <ExpandPanel title="Status">
-      <SelectionField
-        :items="status"
-        :value="filters.status"
-        itemText="label"
-        @change="assignFilters({status: $event})"
-        multiple
-      />
+      <SearchOption
+        class
+        v-for="(status, index) in statuses"
+        :key="index"
+        :value="isInFilter(status)"
+        @change="appendStatus(status)"
+      >{{status.label}}</SearchOption>
     </ExpandPanel>
 
     <ExpandPanel title="Fase">
@@ -218,7 +218,7 @@ export default class SearchFiltersComponent extends Vue {
     return this.$store.state.common.technologies;
   }
 
-  status = defaultStatusSelects;
+  statuses = defaultStatusSelects;
 
   mounted() {
     this.$store.dispatch(commonActionTypes.LOAD_IT_SYSTEMS);
@@ -247,6 +247,18 @@ export default class SearchFiltersComponent extends Vue {
 
   assignFilters(filters: Partial<SearchFilters>) {
     this.$emit('assign', filters);
+  }
+
+  appendStatus(stati: StatusSelect) {
+    const status = this.isInFilter(stati)
+      ? this.filters.status.filter(val => val.key !== stati.key)
+      : [...this.filters.status, stati];
+
+    this.assignFilters({ status });
+  }
+
+  isInFilter(status: StatusSelect) {
+    return this.filters.status.some(e => e.key === status.key);
   }
 }
 </script>
