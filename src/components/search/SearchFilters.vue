@@ -40,7 +40,7 @@
     <SearchOption
       :value="filters.noSepMep"
       @change="updateFilters({ noSepMep: $event })"
-    >Frasorter SEP/MEP-processer</SearchOption>
+    >Søg i KL's automatiseringsprojekter</SearchOption>
 
     <div class="datepicker">
       Oprettet:
