@@ -512,8 +512,7 @@ export default class GeneralInformationForm extends Vue {
 }
 
 .public-visibility-form {
-  display: flex;
-  flex-direction: column;
+  display: block;
 
   .dialog-actions {
     display: flex;
