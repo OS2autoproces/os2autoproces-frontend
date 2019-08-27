@@ -56,8 +56,8 @@ export interface SearchFilters {
   lastChanged: string;
   municipality: Municipality | null;
   visibility: {
-    municipality: boolean;
-    public: boolean;
+    MUNICIPALITY: boolean;
+    PUBLIC: boolean;
   };
   page: number;
   size: number;

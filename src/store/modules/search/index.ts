@@ -26,8 +26,8 @@ export function getInitialState(): SearchState {
       lastChanged: '',
       municipality: null,
       visibility: {
-        municipality: false,
-        public: false
+        MUNICIPALITY: false,
+        PUBLIC: false
       },
       klaProcess: false,
       umbrella: false,

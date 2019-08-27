@@ -3,7 +3,7 @@
     <div class="side-bar">
       <div class="side-bar-content">
         <router-link to="/search" class="search-page-link">
-          <ArrowLeftIcon/>Tilbage til søgning
+          <ArrowLeftIcon />Tilbage til søgning
         </router-link>
 
         <Button primary v-if="isReporting" class="report-button" @click="report">Gem</Button>
@@ -13,10 +13,10 @@
 
     <div class="details-wrapper">
       <div class="details-content">
-        <ProcessHeader :isReporting="isReporting" isUmbrella/>
+        <ProcessHeader :isReporting="isReporting" isUmbrella />
 
         <div class="form-sections">
-          <UmbrellaForm :isReporting="isReporting"/>
+          <UmbrellaForm :isReporting="isReporting" />
         </div>
       </div>
     </div>
@@ -157,8 +157,8 @@ export default class Umbrella extends Vue {
     const filters: Partial<SearchFilters> = {
       umbrella: false,
       visibility: {
-        municipality: this.type === TypeKeys.PARENT,
-        public: false
+        MUNICIPALITY: this.type === TypeKeys.PARENT,
+        PUBLIC: false
       }
     };
 
