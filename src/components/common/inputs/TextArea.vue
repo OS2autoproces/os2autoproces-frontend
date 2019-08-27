@@ -10,13 +10,14 @@
         @input="valueChanged"
         :placeholder="placeholder"
         :class="{ 'no-resize': noResize }"
+        :style="{'min-height': minHeight}"
       />
       <div class="text-area-overlay">
         <div
           class="text-area-char-count"
           v-if="maxLength"
         >({{currentLength}} ud af {{maxLength}} tegn)</div>
-        <slot/>
+        <slot />
       </div>
     </div>
     <div
@@ -50,6 +51,8 @@ export default class TextArea extends Vue {
   twoColumnBreakpoint!: number;
   @Prop(Boolean)
   fullWidth!: boolean;
+  @Prop({ type: String, default: '250px' })
+  minHeight!: string;
 
   get sanitizedHtml() {
     return DOMPurify.sanitize(this.readonlyHtml, { ALLOWED_TAGS: ['a'], ALLOWED_ATTR: ['href', 'target'] });
@@ -110,7 +113,6 @@ export default class TextArea extends Vue {
 
 textarea {
   width: 100%;
-  min-height: 250px;
 
   &.no-resize {
     resize: none;

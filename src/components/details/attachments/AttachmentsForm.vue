@@ -15,6 +15,7 @@
         @change="update({esdhReference: $event})"
         :disabled="attachmentsEdit"
         :value="state.esdhReference"
+        :minHeight="'50px'"
       />
     </div>
 
@@ -25,14 +26,14 @@
         :value="attachmentsEdit ? '' : codeRepositoryUrl"
         @change="update({codeRepositoryUrl: $event})"
         :disabled="attachmentsEdit"
-        :max-length="300"
+        :max-length="10000"
       />
     </div>
 
     <h2>Bilag</h2>
     <div>
       <div v-if="!showPlaceholder">
-        <AttachmentUpload :disabled="attachmentsEdit"/>
+        <AttachmentUpload :disabled="attachmentsEdit" />
       </div>
       <div v-else>Det er først muligt at tilføje et bilag, efter du har klikket på Gem første gang.</div>
     </div>

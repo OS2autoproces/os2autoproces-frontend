@@ -79,7 +79,11 @@ The application depends on the backend running on https://dev.os2autoproces.eu/
 
 ### Test Credentials
 
-Test credentials for use during development can be found in the API docs at https://dev.os2autoproces.eu/doc#chapter-2-3, Temporary Development Setup.
+Test credentials for use during development can be found in the API docs at https://dev.os2autoproces.eu/doc#chapter-2-3, Temporary Development Setup. _Note these credentials might not be up to date..._. You might need to use and/or update the credentials below:
+
+_User_: itminds2@digitalidentity
+_PW_: Test1234
+_Test municipality_: Digital Identity
 
 ### Tests
 

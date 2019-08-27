@@ -144,6 +144,10 @@ h2 {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    .run-period-field {
+      display: inline-block;
+      min-width: 12rem;
+    }
   }
 
   h2 {

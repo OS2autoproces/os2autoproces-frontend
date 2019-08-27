@@ -3,7 +3,7 @@
     <div class="search-pagination" v-if="pageTotal > 0">
       <div class="prev">
         <button @click="prev" v-if="page > 0">
-          <ArrowLeftIcon/>Forrige
+          <ArrowLeftIcon />Forrige
         </button>
       </div>
       <div class="flex-grow">
@@ -20,7 +20,7 @@
       <div class="next">
         <button @click="next" v-if="page < pageTotal - 1">
           Næste
-          <ArrowRightIcon/>
+          <ArrowRightIcon />
         </button>
       </div>
     </div>
@@ -117,7 +117,7 @@ export default class SearchPagination extends Vue {
   align-items: center;
   justify-content: flex-end;
   .size-select {
-    width: 4rem;
+    width: 4.5rem;
     margin: 0 1.5rem 0 0.5rem;
   }
 }

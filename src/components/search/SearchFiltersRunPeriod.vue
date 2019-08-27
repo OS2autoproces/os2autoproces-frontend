@@ -1,13 +1,11 @@
 <template>
   <ExpandPanel title="Skedulering">
     <SearchOption
-      :value="filters.runPeriod.ONCE"
-      @change="updateFiltersOnceRunPeriod($event)"
-    >Engangskørsel</SearchOption>
-    <SearchOption
-      :value="filters.runPeriod.ONDEMAND"
-      @change="updateFiltersRecurringRunPeriod($event)"
-    >Løbende kørsel</SearchOption>
+      v-for="(runPeriodKey, index) in RunPeriodKeys"
+      :key="index"
+      :value="filters.runPeriod[runPeriodKey]"
+      @change="update(runPeriodKey, $event)"
+    >{{RunPeriodLabels[runPeriodKey]}}</SearchOption>
   </ExpandPanel>
 </template>
 
@@ -20,6 +18,7 @@ import { Action, State } from 'vuex-class';
 import SearchOption from './SearchOption.vue';
 import ExpandPanel from '../common/ExpandPanel.vue';
 import { RootState } from '@/store/store';
+import { RunPeriodLabels, RunPeriodKeys } from '@/models/runperiod';
 
 @Component({
   components: {
@@ -32,31 +31,12 @@ export default class SearchFiltersRunPeriod extends Vue {
 
   @Action(searchActionTypes.UPDATE_FILTERS) updateFilters!: (filters: Partial<SearchFilters>) => void;
 
-  updateFiltersOnceRunPeriod(value: boolean) {
-    this.updateFilters({
-      runPeriod: {
-        ONCE: value,
-        ONDEMAND: null,
-        DAILY: null,
-        WEEKLY: null,
-        MONTHLY: null,
-        QUATERLY: null,
-        YEARLY: null
-      }
-    });
-  }
+  RunPeriodLabels = RunPeriodLabels;
+  RunPeriodKeys = [RunPeriodKeys.ONDEMAND, RunPeriodKeys.ONCE];
 
-  updateFiltersRecurringRunPeriod(value: boolean) {
+  update(keyToUpdate: keyof typeof RunPeriodKeys, active: boolean) {
     this.updateFilters({
-      runPeriod: {
-        ONCE: null,
-        ONDEMAND: value,
-        DAILY: value,
-        WEEKLY: value,
-        MONTHLY: value,
-        QUATERLY: value,
-        YEARLY: value
-      }
+      runPeriod: { ...this.filters.runPeriod, ...{ [keyToUpdate]: active } }
     });
   }
 }

@@ -110,11 +110,11 @@ export const mapFiltersToSearchParams = (filters: SearchFilters): SearchParams =
     type: filters.umbrella ? [TypeKeys.GLOBAL_PARENT, TypeKeys.PARENT] : [TypeKeys.CHILD]
   };
 
-  if (filters.visibility.municipality) {
+  if (filters.visibility.MUNICIPALITY) {
     params.visibility.push(VisibilityKeys.MUNICIPALITY);
   }
 
-  if (filters.visibility.public) {
+  if (filters.visibility.PUBLIC) {
     params.visibility.push(VisibilityKeys.PUBLIC);
   }
 

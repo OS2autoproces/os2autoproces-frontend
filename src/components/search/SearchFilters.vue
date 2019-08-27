@@ -1,23 +1,10 @@
 <template>
   <div class="wrapper">
-    <div
-      class="types"
-      v-if="!umbrellaProcessSearch"
-    >
-      <PillCheckbox
-        :value="!!filters.reporterId"
-        @change="setReporterId"
-      >Mine indberetninger</PillCheckbox>
-      <PillCheckbox
-        :value="!!filters.usersId"
-        @change="setUsersId"
-      >Mine tilknytninger</PillCheckbox>
-      <PillCheckbox
-        :value="!!filters.bookmarkedId"
-        @change="setBookmarkedId"
-      >Mine favoritter</PillCheckbox>
+    <div class="types" v-if="!umbrellaProcessSearch">
+      <PillCheckbox :value="!!filters.reporterId" @change="setReporterId">Mine indberetninger</PillCheckbox>
+      <PillCheckbox :value="!!filters.usersId" @change="setUsersId">Mine tilknytninger</PillCheckbox>
+      <PillCheckbox :value="!!filters.bookmarkedId" @change="setBookmarkedId">Mine favoritter</PillCheckbox>
       <SearchSelectSavedFilters />
-      <excelBtn></excelBtn>
     </div>
 
     <SearchField
@@ -28,18 +15,13 @@
 
     <h1 v-if="!umbrellaProcessSearch">AVANCERET SØGNING</h1>
 
-    <div
-      class="municipality-level"
-      v-if="!umbrellaProcessSearch"
-    >
+    <div class="municipality-level" v-if="!umbrellaProcessSearch">
       <SearchOption
-        :value="filters.visibility.municipality"
-        @change="updateFilters({ visibility: { municipality: $event } })"
-      >{{VisibilityLabels.MUNICIPALITY}}</SearchOption>
-      <SearchOption
-        :value="filters.visibility.public"
-        @change="updateFilters({ visibility: { public: $event } })"
-      >{{VisibilityLabels.PUBLIC}}</SearchOption>
+        v-for="(visibilityKey, index) in VisibilityKeys"
+        :key="index"
+        :value="filters.visibility[visibilityKey]"
+        @change="updateFilters({ visibility: {...filters.visibility, ...{ [visibilityKey]: $event } }})"
+      >{{VisibilityLabels[visibilityKey]}}</SearchOption>
     </div>
 
     <SearchOption
@@ -56,25 +38,19 @@
     <SearchOption
       :value="filters.noSepMep"
       @change="updateFilters({ noSepMep: $event })"
-    >Frasorter SEP/MEP-processer</SearchOption>
+    >Søg i KL's automatiseringsprojekter</SearchOption>
 
     <div class="datepicker">
       Oprettet:
-      <DatePicker
-        :value="filters.created"
-        @change="updateFilters({created: $event})"
-      />
+      <DatePicker :value="filters.created" @change="updateFilters({created: $event})" />
     </div>
 
     <div class="datepicker">
       Senest ændret:
-      <DatePicker
-        :value="filters.lastChanged"
-        @change="updateFilters({lastChanged: $event})"
-      />
+      <DatePicker :value="filters.lastChanged" @change="updateFilters({lastChanged: $event})" />
     </div>
 
-    <ExpandPanel title="Kommune">
+    <ExpandPanel title="Organisation">
       <SelectionField
         :items="municipalities"
         :value="filters.municipality"
@@ -95,67 +71,31 @@
     </ExpandPanel>
 
     <ExpandPanel title="Status">
-      <SelectionField
-        :items="status"
-        :value="filters.status"
-        itemText="label"
-        @change="assignFilters({status: $event})"
-        multiple
-      />
+      <SearchOption
+        class
+        v-for="(status, index) in statuses"
+        :key="index"
+        :value="isInFilter(status)"
+        @change="appendStatus(status)"
+      >{{status.label}}</SearchOption>
     </ExpandPanel>
 
     <ExpandPanel title="Fase">
       <SearchOption
-        :value="filters.phase.IDEA"
-        @change="updateFilters({ phase: { IDEA: $event } })"
-      >{{PhaseLabels.IDEA}}</SearchOption>
-      <SearchOption
-        :value="filters.phase.PREANALYSIS"
-        @change="updateFilters({ phase: { PREANALYSIS: $event } })"
-      >{{PhaseLabels.PREANALYSIS}}</SearchOption>
-      <SearchOption
-        :value="filters.phase.SPECIFICATION"
-        @change="updateFilters({ phase: { SPECIFICATION: $event } })"
-      >{{PhaseLabels.SPECIFICATION}}</SearchOption>
-      <SearchOption
-        :value="filters.phase.DEVELOPMENT"
-        @change="updateFilters({ phase: { DEVELOPMENT: $event } })"
-      >{{PhaseLabels.DEVELOPMENT}}</SearchOption>
-      <SearchOption
-        :value="filters.phase.IMPLEMENTATION"
-        @change="updateFilters({ phase: { IMPLEMENTATION: $event } })"
-      >{{PhaseLabels.IMPLEMENTATION}}</SearchOption>
-      <SearchOption
-        :value="filters.phase.OPERATION"
-        @change="updateFilters({ phase: { OPERATION: $event } })"
-      >{{PhaseLabels.OPERATION}}</SearchOption>
+        v-for="(phaseKey, index) in PhaseKeys"
+        :value="filters.phase[phaseKey]"
+        :key="index"
+        @change="updateFilters({phase: {...filters.phase, ...{ [phaseKey]: $event }}})"
+      >{{PhaseLabels[phaseKey]}}</SearchOption>
     </ExpandPanel>
 
     <ExpandPanel title="Fagområde">
       <SearchOption
-        :value="filters.domain.HEALTH"
-        @change="updateFilters({ domain: { HEALTH: $event } })"
-      >{{DomainLabels.HEALTH}}</SearchOption>
-      <SearchOption
-        :value="filters.domain.ENVIRONMENT"
-        @change="updateFilters({ domain: { ENVIRONMENT: $event } })"
-      >{{DomainLabels.ENVIRONMENT}}</SearchOption>
-      <SearchOption
-        :value="filters.domain.DEMOCRACY"
-        @change="updateFilters({ domain: { DEMOCRACY: $event } })"
-      >{{DomainLabels.DEMOCRACY}}</SearchOption>
-      <SearchOption
-        :value="filters.domain.CHILDREN"
-        @change="updateFilters({ domain: { CHILDREN: $event } })"
-      >{{DomainLabels.CHILDREN}}</SearchOption>
-      <SearchOption
-        :value="filters.domain.ADMINISTRATION"
-        @change="updateFilters({ domain: { ADMINISTRATION: $event } })"
-      >{{DomainLabels.ADMINISTRATION}}</SearchOption>
-      <SearchOption
-        :value="filters.domain.WORK"
-        @change="updateFilters({ domain: { WORK: $event } })"
-      >{{DomainLabels.WORK}}</SearchOption>
+        v-for="(domainKey, index) in DomainKeys"
+        :key="index"
+        :value="filters.domain[domainKey]"
+        @change="updateFilters({domain: {...filters.domain, ...{[domainKey]: $event}}})"
+      >{{DomainLabels[domainKey]}}</SearchOption>
     </ExpandPanel>
 
     <ExpandPanel title="System">
@@ -186,9 +126,9 @@ import SelectionField from '../common/inputs/SelectionField.vue';
 import ExpandPanel from '../common/ExpandPanel.vue';
 import { Action, State } from 'vuex-class';
 import { searchActionTypes } from '@/store/modules/search/actions';
-import { PhaseLabels } from '@/models/phase';
-import { DomainLabels } from '@/models/domain';
-import { VisibilityLabels } from '@/models/visibility';
+import { PhaseLabels, PhaseKeys } from '@/models/phase';
+import { DomainLabels, DomainKeys } from '@/models/domain';
+import { VisibilityLabels, VisibilityKeys } from '@/models/visibility';
 import { SearchFilters } from '../../store/modules/search/state';
 import { commonActionTypes } from '@/store/modules/common/actions';
 import Button from '../common/inputs/Button.vue';
@@ -196,7 +136,6 @@ import { RootState } from '../../store/store';
 import SearchFiltersActions from './SearchFiltersActions.vue';
 import SearchSelectSavedFilters from './SearchSelectSavedFilters.vue';
 import SearchFiltersRunPeriod from './SearchFiltersRunPeriod.vue';
-import ExcelBtn from './ExcelBtn.vue';
 import { StatusSelect, StatusLabels, StatusKeys, defaultStatusSelects } from '../../models/status';
 
 @Component({
@@ -212,14 +151,16 @@ import { StatusSelect, StatusLabels, StatusKeys, defaultStatusSelects } from '..
     Button,
     SearchFiltersActions,
     SearchFiltersRunPeriod,
-    SearchSelectSavedFilters,
-    ExcelBtn
+    SearchSelectSavedFilters
   }
 })
 export default class SearchFiltersComponent extends Vue {
   PhaseLabels = PhaseLabels;
+  PhaseKeys = PhaseKeys;
   DomainLabels = DomainLabels;
+  DomainKeys = DomainKeys;
   VisibilityLabels = VisibilityLabels;
+  VisibilityKeys = [VisibilityKeys.MUNICIPALITY, VisibilityKeys.PUBLIC];
 
   @State((state: RootState) => state.search.filters) filters!: SearchFilters;
 
@@ -242,7 +183,7 @@ export default class SearchFiltersComponent extends Vue {
     return this.$store.state.common.technologies;
   }
 
-  status = defaultStatusSelects;
+  statuses = defaultStatusSelects;
 
   mounted() {
     this.$store.dispatch(commonActionTypes.LOAD_IT_SYSTEMS);
@@ -271,6 +212,18 @@ export default class SearchFiltersComponent extends Vue {
 
   assignFilters(filters: Partial<SearchFilters>) {
     this.$emit('assign', filters);
+  }
+
+  appendStatus(stati: StatusSelect) {
+    const status = this.isInFilter(stati)
+      ? this.filters.status.filter(val => val.key !== stati.key)
+      : [...this.filters.status, stati];
+
+    this.assignFilters({ status });
+  }
+
+  isInFilter(status: StatusSelect) {
+    return this.filters.status.some(e => e.key === status.key);
   }
 }
 </script>

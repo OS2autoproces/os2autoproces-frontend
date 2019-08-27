@@ -1,10 +1,10 @@
-import { StatusSelect } from './../../../models/status';
 import { Domain } from '@/models/domain';
 import { Phase } from '@/models/phase';
-import { Status } from '@/models/status';
 import { RunPeriod } from '@/models/runperiod';
-import { ITSystem, Municipality, Technology } from '@/store/modules/process/state';
+import { Status } from '@/models/status';
 import { Type } from '@/models/types';
+import { ITSystem, Municipality, Technology } from '@/store/modules/process/state';
+import { StatusSelect } from './../../../models/status';
 
 export interface SearchResult {
   page: {
@@ -38,9 +38,13 @@ export interface SearchResultProcess {
   childrenCount: number;
 }
 
+export interface SortingOptionParams extends SearchResultProcess {
+  created: string;
+}
+
 export interface SortingOption {
-  property: keyof SearchResultProcess;
-  descending: boolean;
+  property: keyof SortingOptionParams;
+  descending?: boolean;
 }
 
 export interface SearchFilters {
@@ -52,8 +56,8 @@ export interface SearchFilters {
   lastChanged: string;
   municipality: Municipality | null;
   visibility: {
-    municipality: boolean;
-    public: boolean;
+    MUNICIPALITY: boolean;
+    PUBLIC: boolean;
   };
   page: number;
   size: number;

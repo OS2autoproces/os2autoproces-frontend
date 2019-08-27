@@ -16,8 +16,7 @@
 }
 
 .save-filters-form {
-  display: flex;
-  flex-direction: column;
+  display: block;
 
   .input {
     flex: 1;
@@ -36,43 +35,22 @@
 
 <template>
   <transition name="slide-y-reverse-transition">
-    <div
-      class="actions"
-      v-if="filtersTouched"
-    >
-      <Button
-        class="action elevation-3"
-        v-ripple
-        @click="dispatchClearFilters()"
-      >Ryd filtre</Button>
+    <div class="actions" v-if="filtersTouched">
+      <Button class="action elevation-3" v-ripple @click="dispatchClearFilters()">Ryd filtre</Button>
       <Button
         class="action elevation-3"
         v-ripple
         @click.stop.prevent="toggleSaveFiltersDialog()"
       >Gem Søgning</Button>
-      <AppDialog
-        :open="saveFiltersDialogOpen"
-        @close="closeSaveFilterDialog"
-      >
+      <AppDialog :open="saveFiltersDialogOpen" @close="closeSaveFilterDialog">
         <DialogContent>
           <h2 class="form-header">Gem din søgning</h2>
           <div class="save-filters-form">
-            <InputField
-              class="input"
-              placeholder="Navn"
-              :value="name"
-              @change="onNameChange"
-            ></InputField>
-            <span
-              class="error--text"
-              v-if="!!error"
-            >{{error}}</span>
+            <InputField class="input" placeholder="Navn" :value="name" @change="onNameChange"></InputField>
+            <span class="error--text" v-if="!!error">{{error}}</span>
             <div class="dialog-actions">
               <Button @click="closeSaveFilterDialog()">Annullér</Button>
-              <Button
-                :primary="true"
-                @click="submitSaveFilters()"
-              >GEM</Button>
+              <Button :primary="true" @click="submitSaveFilters()">GEM</Button>
             </div>
           </div>
         </DialogContent>

@@ -34,10 +34,29 @@
         </WellItem>
         <WellItem
           labelWidth="70%"
-          label="Total tidsforbrug i timer"
-          tooltip="Det samlede tidsforbrug udregnes automatisk når processen gemmes."
+          label="Forventet automatiseringsgrad"
+          tooltip="Hvor meget af processen vurderer du kan automatiseres på en skala fra 0-100."
         >
-          <InputField disabled :value="state.timeSpendComputedTotal"/>
+          <InputField
+            :type="'number'"
+            :disabled="state.disabled.timeAndProcessEdit"
+            :value="state.timeSpendPercentageDigital"
+            @change="update({timeSpendPercentageDigital: $event})"
+          >%</InputField>
+        </WellItem>
+        <WellItem
+          labelWidth="70%"
+          label="Manuelt tidsforbrug i timer"
+          tooltip="Udregningen for det manuelle årlige tidsforbrug er: antal gange processen foretages * tidsforbrug i minutter / 60"
+        >
+          <InputField disabled :value="timeSpendHours">timer</InputField>
+        </WellItem>
+        <WellItem
+          labelWidth="70%"
+          label="Forventet årligt effektiviseringspotentiale"
+          tooltip="Udregning af det forventet årligt effektiviseringspotentiale er: antal gange processen foretages * tidsforbrug i minutter / 60 * automatiseringsgrad"
+        >
+          <InputField disabled :value="exptectedYearlyPotential">timer</InputField>
         </WellItem>
       </div>
 
@@ -54,21 +73,6 @@
             @change="update({timeSpendEmployeesDoingProcess: $event})"
           />
         </WellItem>
-        <WellItem
-          labelWidth="70%"
-          label="Digital procent besparelse"
-          tooltip="Hvor meget af processen vurderer du kan automatiseres på en skala fra 0-100."
-        >
-          <InputField
-            :type="'number'"
-            :disabled="state.disabled.timeAndProcessEdit"
-            :value="state.timeSpendPercentageDigital"
-            @change="update({timeSpendPercentageDigital: $event})"
-          />
-        </WellItem>
-      </div>
-
-      <div>
         <WellItem labelWidth="70%" label="Er borgere påvirket?">
           <MappedSelectionField
             :disabled="state.disabled.timeAndProcessEdit"
@@ -135,6 +139,25 @@ export default class TimeAndProcessForm extends Vue {
   PhaseKeys = PhaseKeys;
 
   yesNoItems = [{ value: true, text: 'Ja' }, { value: false, text: 'Nej' }];
+
+  get timeSpendHours() {
+    const hours =
+      ((this.state.timeSpendOccurancesPerEmployee * this.state.timeSpendPerOccurance) / 60)
+        .toString()
+        .substring(0, 4) || '0';
+    return hours;
+  }
+
+  get exptectedYearlyPotential() {
+    const hours =
+      (
+        ((this.state.timeSpendOccurancesPerEmployee * this.state.timeSpendPerOccurance) / 60) *
+        this.state.timeSpendPercentageDigital
+      )
+        .toString()
+        .substring(0, 4) || '0';
+    return hours;
+  }
 
   get state() {
     return this.$store.state.process;
