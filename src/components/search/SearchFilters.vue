@@ -17,13 +17,11 @@
 
     <div class="municipality-level" v-if="!umbrellaProcessSearch">
       <SearchOption
-        :value="filters.visibility.municipality"
-        @change="updateFilters({ visibility: { municipality: $event } })"
-      >{{VisibilityLabels.MUNICIPALITY}}</SearchOption>
-      <SearchOption
-        :value="filters.visibility.public"
-        @change="updateFilters({ visibility: { public: $event } })"
-      >{{VisibilityLabels.PUBLIC}}</SearchOption>
+        v-for="(visibilityKey, index) in VisibilityKeys"
+        :key="index"
+        :value="filters.visibility[visibilityKey]"
+        @change="updateFilters({ visibility: {...filters.visibility, ...{ [visibilityKey]: $event } }})"
+      >{{VisibilityLabels[visibilityKey]}}</SearchOption>
     </div>
 
     <SearchOption
@@ -84,56 +82,20 @@
 
     <ExpandPanel title="Fase">
       <SearchOption
-        :value="filters.phase.IDEA"
-        @change="updateFilters({ phase: { IDEA: $event } })"
-      >{{PhaseLabels.IDEA}}</SearchOption>
-      <SearchOption
-        :value="filters.phase.PREANALYSIS"
-        @change="updateFilters({ phase: { PREANALYSIS: $event } })"
-      >{{PhaseLabels.PREANALYSIS}}</SearchOption>
-      <SearchOption
-        :value="filters.phase.SPECIFICATION"
-        @change="updateFilters({ phase: { SPECIFICATION: $event } })"
-      >{{PhaseLabels.SPECIFICATION}}</SearchOption>
-      <SearchOption
-        :value="filters.phase.DEVELOPMENT"
-        @change="updateFilters({ phase: { DEVELOPMENT: $event } })"
-      >{{PhaseLabels.DEVELOPMENT}}</SearchOption>
-      <SearchOption
-        :value="filters.phase.IMPLEMENTATION"
-        @change="updateFilters({ phase: { IMPLEMENTATION: $event } })"
-      >{{PhaseLabels.IMPLEMENTATION}}</SearchOption>
-      <SearchOption
-        :value="filters.phase.OPERATION"
-        @change="updateFilters({ phase: { OPERATION: $event } })"
-      >{{PhaseLabels.OPERATION}}</SearchOption>
+        v-for="(phaseKey, index) in PhaseKeys"
+        :value="filters.phase[phaseKey]"
+        :key="index"
+        @change="updateFilters({phase: {...filters.phase, ...{ [phaseKey]: $event }}})"
+      >{{PhaseLabels[phaseKey]}}</SearchOption>
     </ExpandPanel>
 
     <ExpandPanel title="Fagområde">
       <SearchOption
-        :value="filters.domain.HEALTH"
-        @change="updateFilters({ domain: { HEALTH: $event } })"
-      >{{DomainLabels.HEALTH}}</SearchOption>
-      <SearchOption
-        :value="filters.domain.ENVIRONMENT"
-        @change="updateFilters({ domain: { ENVIRONMENT: $event } })"
-      >{{DomainLabels.ENVIRONMENT}}</SearchOption>
-      <SearchOption
-        :value="filters.domain.DEMOCRACY"
-        @change="updateFilters({ domain: { DEMOCRACY: $event } })"
-      >{{DomainLabels.DEMOCRACY}}</SearchOption>
-      <SearchOption
-        :value="filters.domain.CHILDREN"
-        @change="updateFilters({ domain: { CHILDREN: $event } })"
-      >{{DomainLabels.CHILDREN}}</SearchOption>
-      <SearchOption
-        :value="filters.domain.ADMINISTRATION"
-        @change="updateFilters({ domain: { ADMINISTRATION: $event } })"
-      >{{DomainLabels.ADMINISTRATION}}</SearchOption>
-      <SearchOption
-        :value="filters.domain.WORK"
-        @change="updateFilters({ domain: { WORK: $event } })"
-      >{{DomainLabels.WORK}}</SearchOption>
+        v-for="(domainKey, index) in DomainKeys"
+        :key="index"
+        :value="filters.domain[domainKey]"
+        @change="updateFilters({domain: {...filters.domain, ...{[domainKey]: $event}}})"
+      >{{DomainLabels[domainKey]}}</SearchOption>
     </ExpandPanel>
 
     <ExpandPanel title="System">
@@ -164,9 +126,9 @@ import SelectionField from '../common/inputs/SelectionField.vue';
 import ExpandPanel from '../common/ExpandPanel.vue';
 import { Action, State } from 'vuex-class';
 import { searchActionTypes } from '@/store/modules/search/actions';
-import { PhaseLabels } from '@/models/phase';
-import { DomainLabels } from '@/models/domain';
-import { VisibilityLabels } from '@/models/visibility';
+import { PhaseLabels, PhaseKeys } from '@/models/phase';
+import { DomainLabels, DomainKeys } from '@/models/domain';
+import { VisibilityLabels, VisibilityKeys } from '@/models/visibility';
 import { SearchFilters } from '../../store/modules/search/state';
 import { commonActionTypes } from '@/store/modules/common/actions';
 import Button from '../common/inputs/Button.vue';
@@ -194,8 +156,11 @@ import { StatusSelect, StatusLabels, StatusKeys, defaultStatusSelects } from '..
 })
 export default class SearchFiltersComponent extends Vue {
   PhaseLabels = PhaseLabels;
+  PhaseKeys = PhaseKeys;
   DomainLabels = DomainLabels;
+  DomainKeys = DomainKeys;
   VisibilityLabels = VisibilityLabels;
+  VisibilityKeys = [VisibilityKeys.MUNICIPALITY, VisibilityKeys.PUBLIC];
 
   @State((state: RootState) => state.search.filters) filters!: SearchFilters;
 
