@@ -4,7 +4,7 @@
       <a class="login-button" href="/discovery">Log ind</a>
 
       <h1>OS2autoproces</h1>
-      <h2>Tværkommunal procesdeling</h2>
+      <h2>Procesdeling med alle i OS2autoproces</h2>
     </div>
 
     <div class="details" :class="{ editing }">

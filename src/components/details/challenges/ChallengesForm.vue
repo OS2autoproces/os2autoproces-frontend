@@ -2,7 +2,7 @@
   <FormSection :invalid="!isChallengesValid" heading="Problemstillinger" id="challenges" :disabled="state.disabled.challengesEdit" @edit="update({ disabled: { challengesEdit: $event}})">
     <div>
       <h2>Beskrivelse</h2>
-      <InfoTooltip>Her kan beskrive den nuværende proces i detaljer.</InfoTooltip>
+      <InfoTooltip>Her kan du beskrive den nuværende proces i detaljer.</InfoTooltip>
       <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({longDescription: $event})" :disabled="state.disabled.challengesEdit" :value="state.longDescription" :maxLength="10000" />
       </div>
 

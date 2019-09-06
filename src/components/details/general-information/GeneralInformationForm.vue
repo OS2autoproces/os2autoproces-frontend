@@ -241,7 +241,7 @@
     </div>
     <AppDialog :open="publicVisibilityDialogOpen" @close="closePublicVisibilityDialog">
       <DialogContent>
-        <h2 class="form-header">Vil du ikke også ændre synligheden til tværkommunal?</h2>
+        <h2 class="form-header">Vil du ikke også ændre synligheden til 'Alle i OS2Autoproces'?</h2>
         <div class="public-visibility-form">
           <div class="dialog-actions">
             <Button @click="closePublicVisibilityDialog()">Nej</Button>
