@@ -6,7 +6,7 @@ export const PhaseLabels: { [x in Phase]: string } = {
   SPECIFICATION: 'Specifikation',
   DEVELOPMENT: 'Udvikling',
   IMPLEMENTATION: 'Implementering',
-  OPERATION: 'Drift'
+  OPERATION: 'I drift'
 };
 
 export const PhaseKeys: { [phase in Phase]: phase } = {
