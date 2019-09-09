@@ -72,12 +72,11 @@
 
     <ExpandPanel title="Status">
       <SearchOption
-        class
-        v-for="(status, index) in statuses"
+        v-for="(statusKey, index) in StatusKeys"
+        :value="filters.status[statusKey]"
         :key="index"
-        :value="isInFilter(status)"
-        @change="appendStatus(status)"
-      >{{status.label}}</SearchOption>
+        @change="updateFilters({status: {...filters.status, ...{[statusKey]: $event}}})"
+      >{{StatusLabels[statusKey]}}</SearchOption>
     </ExpandPanel>
 
     <ExpandPanel title="Fase">
@@ -159,6 +158,8 @@ export default class SearchFiltersComponent extends Vue {
   PhaseKeys = PhaseKeys;
   DomainLabels = DomainLabels;
   DomainKeys = DomainKeys;
+  StatusKeys = StatusKeys;
+  StatusLabels = StatusLabels;
   VisibilityLabels = VisibilityLabels;
   VisibilityKeys = [VisibilityKeys.MUNICIPALITY, VisibilityKeys.PUBLIC];
 
@@ -182,8 +183,6 @@ export default class SearchFiltersComponent extends Vue {
   get technologies() {
     return this.$store.state.common.technologies;
   }
-
-  statuses = defaultStatusSelects;
 
   mounted() {
     this.$store.dispatch(commonActionTypes.LOAD_IT_SYSTEMS);
@@ -212,18 +211,6 @@ export default class SearchFiltersComponent extends Vue {
 
   assignFilters(filters: Partial<SearchFilters>) {
     this.$emit('assign', filters);
-  }
-
-  appendStatus(stati: StatusSelect) {
-    const status = this.isInFilter(stati)
-      ? this.filters.status.filter(val => val.key !== stati.key)
-      : [...this.filters.status, stati];
-
-    this.assignFilters({ status });
-  }
-
-  isInFilter(status: StatusSelect) {
-    return this.filters.status.some(e => e.key === status.key);
   }
 }
 </script>
