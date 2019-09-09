@@ -1,11 +1,10 @@
-import { SearchState } from '@/store/modules/search/state';
-import { RootState } from '@/store/store';
-import { Module } from 'vuex';
+import { defaultStatusSelects } from '@/models/status';
 import { actions } from '@/store/modules/search/actions';
 import { getters } from '@/store/modules/search/getters';
 import { mutations } from '@/store/modules/search/mutations';
-import { loadFiltersFromStorage } from './service';
-import { defaultStatusSelects } from '@/models/status';
+import { SearchState } from '@/store/modules/search/state';
+import { RootState } from '@/store/store';
+import { Module } from 'vuex';
 
 const namespaced = true;
 
@@ -63,7 +62,13 @@ export function getInitialState(): SearchState {
         QUATERLY: false,
         YEARLY: false
       },
-      status: defaultStatusSelects
+      status: {
+        FAILED: false,
+        INPROGRESS: false,
+        NOT_RATED: false,
+        PENDING: false,
+        REJECTED: false
+      }
     }
   };
 }
