@@ -34,7 +34,7 @@
     <div class="technology-run-period">
       <div class="technology">
         <h2 class="with-margin">Anvendt teknologi *</h2>
-        <InfoTooltip>Her kan angive teknologier anvendt i løsningen fra listen. Hvis du mangler en teknologi, så kontakt din administrator, så vil de oprette den for dig.</InfoTooltip>
+        <InfoTooltip>Her kan angive teknologier anvendt i løsningen fra listen. Hvis du mangler en teknologi, så kontakt OS2autoproces koordinationsgruppen, så vil de oprette den for dig.</InfoTooltip>
         <TagSelector
           @add="addTechnology($event)"
           @remove="removeTechnology($event)"

@@ -70,7 +70,7 @@ export interface SearchFilters {
   umbrella: boolean;
   itSystems: ITSystem[];
   technologies: Technology[];
-  status: StatusSelect[];
+  status: { [x in Status]: boolean | null };
 }
 
 export interface SearchState {

@@ -94,7 +94,7 @@ export const mapFiltersToSearchParams = (filters: SearchFilters): SearchParams =
     sort: `${filters.sorting.property},${filters.sorting.descending ? 'desc' : 'asc'}`,
     itSystems: filters.itSystems.map(system => system.id),
     technologies: filters.technologies.map(technology => technology.id),
-    status: filters.status.map(s => s.key),
+    status: mapObjectToTypedEnumArray(filters.status),
     visibility: [],
     page: filters.page,
     size: filters.size,

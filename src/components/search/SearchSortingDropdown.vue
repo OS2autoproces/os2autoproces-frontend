@@ -50,8 +50,8 @@ export default class SearchSortingDropdown extends Vue {
 
   keys: Array<{ property: keyof SortingOptionParams; text: string; ascLabel?: string; descLabel?: string }> = [
     { property: 'created', text: 'Seneste tilføjede' },
+    { property: 'rating', text: 'Vurderet potentiale', ascLabel: this.ascLabel, descLabel: this.descLabel },
     { property: 'title', text: 'Proces', ascLabel: ', A-Z', descLabel: ', Z-A' },
-    { property: 'rating', text: 'Vurderet potentiale', ascLabel: this.ascLabel, descLabel: this.descLabel }
   ];
 
   options: DropdownSortingOption[] = this.keys.reduce(
