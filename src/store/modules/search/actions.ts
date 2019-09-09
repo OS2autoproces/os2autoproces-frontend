@@ -12,7 +12,7 @@ import {
 } from '@/store/modules/search/service';
 import { getInitialState } from '@/store/modules/search';
 
-const namespace = 'search';
+export const namespace = 'search';
 
 export const searchActionTypes = {
   DELETE_SAVED_FILTER: `${namespace}/deleteSavedFilter`,
