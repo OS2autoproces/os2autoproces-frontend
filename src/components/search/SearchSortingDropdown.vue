@@ -69,7 +69,7 @@ export default class SearchSortingDropdown extends Vue {
 
   get formattedOption(): DropdownSortingOption {
     return (
-      this.options.find(option => isEqual(option, this.selectedOption)) || {
+      this.options.find(({ value: { property } }) => property === this.selectedOption.property) || {
         text: `Ukendt søgeparameter: ${this.selectedOption.property}`,
         value: this.selectedOption
       }
