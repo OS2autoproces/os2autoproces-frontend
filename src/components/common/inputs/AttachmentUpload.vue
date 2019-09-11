@@ -1,31 +1,67 @@
 <template>
   <div class="attachment-upload">
-    <h2 v-if="visibleForAll.length">Synlige for alle</h2>
-    <div class="attachment-list" v-if="visibleForAll.length > 0">
-      <AttachmentComponent v-for="attachment in visibleForAll" :key="attachment.id" :attachment="attachment" :disabled="disabled" @remove="removeAttachment(attachment.id)" />
+    <h2 v-if="visibleForAll.length">Synlige for alle brugere i OS2Autoprocess</h2>
+    <div
+      class="attachment-list"
+      v-if="visibleForAll.length > 0"
+    >
+      <AttachmentComponent
+        v-for="attachment in visibleForAll"
+        :key="attachment.id"
+        :attachment="attachment"
+        :disabled="disabled"
+        @remove="removeAttachment(attachment.id)"
+      />
     </div>
 
-    <h2 v-if="visibleForMunicipality.length">Synlige i kommunen</h2>
-    <div class="attachment-list" v-if="visibleForMunicipality.length > 0">
-      <AttachmentComponent v-for="attachment in visibleForMunicipality" :key="attachment.id" :attachment="attachment" :disabled="disabled" @remove="removeAttachment(attachment.id)" />
+    <h2 v-if="visibleForMunicipality.length">Synlige for brugere i egen organisation</h2>
+    <div
+      class="attachment-list"
+      v-if="visibleForMunicipality.length > 0"
+    >
+      <AttachmentComponent
+        v-for="attachment in visibleForMunicipality"
+        :key="attachment.id"
+        :attachment="attachment"
+        :disabled="disabled"
+        @remove="removeAttachment(attachment.id)"
+      />
     </div>
 
     <Well v-if="!disabled">
       <div>
         <h2>Tilføj bilag</h2>
         <div class="attachment-list">
-          <AttachmentComponent v-for="placeholder in placeholders" :isUploading="isUploading" :key="placeholder.id" :attachment="placeholder" :disabled="disabled" @remove="removePlaceholder(placeholder.id)" @toggleVisibility="placeholder.visibleToOtherMunicipalities = !placeholder.visibleToOtherMunicipalities" canChangeVisibility />
+          <AttachmentComponent
+            v-for="placeholder in placeholders"
+            :isUploading="isUploading"
+            :key="placeholder.id"
+            :attachment="placeholder"
+            :disabled="disabled"
+            @remove="removePlaceholder(placeholder.id)"
+            @toggleVisibility="placeholder.visibleToOtherMunicipalities = !placeholder.visibleToOtherMunicipalities"
+            canChangeVisibility
+          />
         </div>
 
         <div>
           <label class="upload-button-wrapper">
-            <input type="file" multiple @change="chooseFiles($event.target.files)" ref="fileInput">
+            <input
+              type="file"
+              multiple
+              @change="chooseFiles($event.target.files)"
+              ref="fileInput"
+            >
             <Button class="upload-button">
               Vælg filer
             </Button>
           </label>
 
-          <Button class="upload-button" v-if="placeholders.length" v-on:click="uploadFiles">Upload</Button>
+          <Button
+            class="upload-button"
+            v-if="placeholders.length"
+            v-on:click="uploadFiles"
+          >Upload</Button>
 
           <span class="personal-info-warning">De dokumenter der uploades må ikke indeholde personfølsomme oplysninger.</span>
         </div>
