@@ -51,7 +51,7 @@ export default class SearchSortingDropdown extends Vue {
   keys: Array<{ property: keyof SortingOptionParams; text: string; ascLabel?: string; descLabel?: string }> = [
     { property: 'created', text: 'Seneste tilføjede' },
     { property: 'rating', text: 'Vurderet potentiale', ascLabel: this.ascLabel, descLabel: this.descLabel },
-    { property: 'title', text: 'Proces', ascLabel: ', A-Z', descLabel: ', Z-A' },
+    { property: 'title', text: 'Proces', ascLabel: ', A-Z', descLabel: ', Z-A' }
   ];
 
   options: DropdownSortingOption[] = this.keys.reduce(
@@ -69,7 +69,7 @@ export default class SearchSortingDropdown extends Vue {
 
   get formattedOption(): DropdownSortingOption {
     return (
-      this.options.find(option => isEqual(option, this.selectedOption)) || {
+      this.options.find(({ value: { property } }) => property === this.selectedOption.property) || {
         text: `Ukendt søgeparameter: ${this.selectedOption.property}`,
         value: this.selectedOption
       }
@@ -84,6 +84,7 @@ export default class SearchSortingDropdown extends Vue {
   align-items: center;
   .sort-select {
     margin-left: 1rem;
+    min-width: 13rem;
   }
 }
 </style>
