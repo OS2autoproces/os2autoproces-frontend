@@ -8,7 +8,11 @@
       <div v-if="isChildProcess">
         <div class="field">Vurderet potentiale:</div>
         <div class="value">
-          <Rating class="rating" :value="process.rating" disabled/>
+          <Rating
+            class="rating"
+            :value="process.rating"
+            disabled
+          />
         </div>
       </div>
       <div v-if="isChildProcess">
@@ -34,26 +38,43 @@
         <div class="value">{{process.legalClause}}</div>
       </div>
     </div>
-    <div class="result-column phase" v-if="!noPhase && isChildProcess">
-      <div class="field">Fase:</div>
-      <div class="value">
-        <Phases :value="process.phase" disabled/>
+    <div
+      class="result-column phase"
+      v-if="!noPhase && isChildProcess"
+    >
+      <div>
+        <div class="field">Fase:</div>
+        <div class="value">
+          <Phases
+            :value="process.phase"
+            disabled
+          />
+        </div>
       </div>
       <div>
         <div class="field">Status:</div>
         <div class="value">{{StatusLabels[process.status]}}</div>
       </div>
     </div>
-    <div class="result-column umbrella" v-if="!isChildProcess">
+    <div
+      class="result-column umbrella"
+      v-if="!isChildProcess"
+    >
       <div>
         <div class="field">Antal tilknyttede processer:</div>
         <div class="value">{{process.childrenCount}}</div>
       </div>
     </div>
     <div v-on:click.stop.prevent="setProcessBookmark()">
-      <star-icon class="star-icon" :class="{ selected: processBookmarked }"/>
+      <star-icon
+        class="star-icon"
+        :class="{ selected: processBookmarked }"
+      />
     </div>
-    <umbrella-icon v-if="!isChildProcess" class="umbrella-icon"/>
+    <umbrella-icon
+      v-if="!isChildProcess"
+      class="umbrella-icon"
+    />
   </div>
 </template>
 
