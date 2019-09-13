@@ -105,7 +105,7 @@ export const mapFiltersToSearchParams = (filters: SearchFilters): SearchParams =
     'bookmarkUsers.uuid': filters.bookmarkedId,
     freetext: filters.text,
     klaProcess: filters.klaProcess,
-    sepMep: filters.noSepMep ? false : null,
+    sepMep: filters.sepMep,
     cvr: filters.municipality ? filters.municipality.cvr : null,
     type: filters.umbrella ? [TypeKeys.GLOBAL_PARENT, TypeKeys.PARENT] : [TypeKeys.CHILD]
   };
