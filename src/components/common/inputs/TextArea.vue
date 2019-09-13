@@ -25,7 +25,7 @@
       :class="{'double-column': twoColumns, 'full-width': fullWidth }"
       v-if="disabled"
       v-html="sanitizedHtml"
-    >{{value}}</div>
+    ></div>
   </div>
 </template>
 
@@ -54,8 +54,10 @@ export default class TextArea extends Vue {
   @Prop({ type: String, default: '250px' })
   minHeight!: string;
 
-  get sanitizedHtml() {
-    return DOMPurify.sanitize(this.readonlyHtml, { ALLOWED_TAGS: ['a'], ALLOWED_ATTR: ['href', 'target'] });
+  get sanitizedHtml(): string {
+    return !!this.readonlyHtml
+      ? DOMPurify.sanitize(this.readonlyHtml, { ALLOWED_TAGS: ['a'], ALLOWED_ATTR: ['href', 'target'] })
+      : this.value;
   }
 
   get currentLength() {
