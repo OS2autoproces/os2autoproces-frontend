@@ -1,9 +1,21 @@
 <template>
   <div class="wrapper">
-    <div class="types" v-if="!umbrellaProcessSearch">
-      <PillCheckbox :value="!!filters.reporterId" @change="setReporterId">Mine indberetninger</PillCheckbox>
-      <PillCheckbox :value="!!filters.usersId" @change="setUsersId">Mine tilknytninger</PillCheckbox>
-      <PillCheckbox :value="!!filters.bookmarkedId" @change="setBookmarkedId">Mine favoritter</PillCheckbox>
+    <div
+      class="types"
+      v-if="!umbrellaProcessSearch"
+    >
+      <PillCheckbox
+        :value="!!filters.reporterId"
+        @change="setReporterId"
+      >Mine indberetninger</PillCheckbox>
+      <PillCheckbox
+        :value="!!filters.usersId"
+        @change="setUsersId"
+      >Mine tilknytninger</PillCheckbox>
+      <PillCheckbox
+        :value="!!filters.bookmarkedId"
+        @change="setBookmarkedId"
+      >Mine favoritter</PillCheckbox>
       <SearchSelectSavedFilters />
     </div>
 
@@ -15,7 +27,10 @@
 
     <h1 v-if="!umbrellaProcessSearch">AVANCERET SØGNING</h1>
 
-    <div class="municipality-level" v-if="!umbrellaProcessSearch">
+    <div
+      class="municipality-level"
+      v-if="!umbrellaProcessSearch"
+    >
       <SearchOption
         v-for="(visibilityKey, index) in VisibilityKeys"
         :key="index"
@@ -36,18 +51,24 @@
     >Søg i paraplyprocesser</SearchOption>
 
     <SearchOption
-      :value="filters.noSepMep"
-      @change="updateFilters({ noSepMep: $event })"
+      :value="filters.sepMep"
+      @change="updateFilters({ sepMep: $event })"
     >Søg i KL's automatiseringsprojekter</SearchOption>
 
     <div class="datepicker">
       Oprettet:
-      <DatePicker :value="filters.created" @change="updateFilters({created: $event})" />
+      <DatePicker
+        :value="filters.created"
+        @change="updateFilters({created: $event})"
+      />
     </div>
 
     <div class="datepicker">
       Senest ændret:
-      <DatePicker :value="filters.lastChanged" @change="updateFilters({lastChanged: $event})" />
+      <DatePicker
+        :value="filters.lastChanged"
+        @change="updateFilters({lastChanged: $event})"
+      />
     </div>
 
     <ExpandPanel title="Organisation">
