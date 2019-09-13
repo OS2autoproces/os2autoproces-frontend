@@ -35,7 +35,7 @@ export function getInitialState(): SearchState {
       technologies: [],
       sorting: {
         property: 'created',
-        descending: false
+        descending: true
       },
       phase: {
         IDEA: false,
