@@ -66,7 +66,7 @@ export interface SearchFilters {
   domain: { [x in Domain]: boolean | null };
   runPeriod: { [x in RunPeriod]: boolean | null };
   klaProcess: boolean;
-  noSepMep: boolean;
+  sepMep: boolean;
   umbrella: boolean;
   itSystems: ITSystem[];
   technologies: Technology[];
