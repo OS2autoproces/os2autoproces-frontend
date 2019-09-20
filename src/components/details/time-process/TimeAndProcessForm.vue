@@ -49,14 +49,20 @@
           label="Manuelt tidsforbrug i timer"
           tooltip="Udregningen for det manuelle årlige tidsforbrug er: antal gange processen foretages * tidsforbrug i minutter / 60"
         >
-          <InputField disabled :value="timeSpendHours">timer</InputField>
+          <InputField
+            disabled
+            :value="timeSpendHours"
+          >timer</InputField>
         </WellItem>
         <WellItem
           labelWidth="70%"
           label="Forventet årligt effektiviseringspotentiale"
           tooltip="Udregning af det forventet årligt effektiviseringspotentiale er: antal gange processen foretages * tidsforbrug i minutter / 60 * automatiseringsgrad"
         >
-          <InputField disabled :value="exptectedYearlyPotential">timer</InputField>
+          <InputField
+            disabled
+            :value="exptectedYearlyPotential"
+          >timer</InputField>
         </WellItem>
       </div>
 
@@ -73,7 +79,10 @@
             @change="update({timeSpendEmployeesDoingProcess: $event})"
           />
         </WellItem>
-        <WellItem labelWidth="70%" label="Er borgere påvirket?">
+        <WellItem
+          labelWidth="70%"
+          label="Er borgere påvirket?"
+        >
           <MappedSelectionField
             :disabled="state.disabled.timeAndProcessEdit"
             :value="state.targetsCitizens"
@@ -81,7 +90,10 @@
             :items="yesNoItems"
           />
         </WellItem>
-        <WellItem labelWidth="70%" label="Er virksomheder påvirket?">
+        <WellItem
+          labelWidth="70%"
+          label="Er virksomheder påvirket?"
+        >
           <MappedSelectionField
             :disabled="state.disabled.timeAndProcessEdit"
             :value="state.targetsCompanies"
@@ -94,16 +106,14 @@
 
     <div class="comments-wrap">
       <span>Kommentar vedr. tidsforbrug</span>
-      <InfoTooltip
-        class="time-proces-tooltip"
-      >Her kan du uddybe eller kommentere på de indtastede værdier ovenfor og på tidsforbruget generelt. F.eks. hvordan det er målt.</InfoTooltip>
+      <InfoTooltip class="time-proces-tooltip">Her kan du uddybe eller kommentere på de indtastede værdier ovenfor og på tidsforbruget generelt. F.eks. hvordan det er målt.</InfoTooltip>
       <TextArea
         :value="state.timeSpendComment"
         :disabled="state.disabled.timeAndProcessEdit"
         @change="update({timeSpendComment: $event})"
         :maxLength="10000"
       />
-    </div>
+      </div>
   </FormSection>
 </template>
 
@@ -147,15 +157,13 @@ export default class TimeAndProcessForm extends Vue {
         .substring(0, 4) || '0';
     return hours;
   }
-
+  // Antal gange processen foretages årligt * tidsforbrug pr. proces i minutter / 60 * automatiseringsgrad / 100
   get exptectedYearlyPotential() {
     const hours =
       (
         ((this.state.timeSpendOccurancesPerEmployee * this.state.timeSpendPerOccurance) / 60) *
-        this.state.timeSpendPercentageDigital
-      )
-        .toString()
-        .substring(0, 4) || '0';
+        (this.state.timeSpendPercentageDigital / 100)
+      ).toFixed(1) || '0';
     return hours;
   }
 
