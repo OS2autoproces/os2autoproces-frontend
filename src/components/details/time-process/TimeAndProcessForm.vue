@@ -157,7 +157,7 @@ export default class TimeAndProcessForm extends Vue {
         .substring(0, 4) || '0';
     return hours;
   }
-  // Antal gange processen foretages årligt * tidsforbrug pr. proces i minutter / 60 * automatiseringsgrad / 100
+  // Number of times this process is repeated yearly * amount of time required pr. process in minutes / 60 * automation potential / 100
   get exptectedYearlyPotential() {
     const hours =
       (
