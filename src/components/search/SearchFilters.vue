@@ -1,74 +1,46 @@
 <template>
   <div class="wrapper">
-    <div
-      class="types"
-      v-if="!umbrellaProcessSearch"
-    >
-      <PillCheckbox
-        :value="!!filters.reporterId"
-        @change="setReporterId"
-      >Mine indberetninger</PillCheckbox>
-      <PillCheckbox
-        :value="!!filters.usersId"
-        @change="setUsersId"
-      >Mine tilknytninger</PillCheckbox>
-      <PillCheckbox
-        :value="!!filters.bookmarkedId"
-        @change="setBookmarkedId"
-      >Mine favoritter</PillCheckbox>
+    <div class="types" v-if="!umbrellaProcessSearch">
+      <PillCheckbox :value="!!filters.reporterId" @change="setReporterId">Mine indberetninger</PillCheckbox>
+      <PillCheckbox :value="!!filters.usersId" @change="setUsersId">Mine tilknytninger</PillCheckbox>
+      <PillCheckbox :value="!!filters.bookmarkedId" @change="setBookmarkedId">Mine favoritter</PillCheckbox>
       <SearchSelectSavedFilters />
     </div>
 
-    <SearchField
-      class="search-text"
-      :value="filters.text"
-      @change="updateFilters({ text: $event })"
-    />
+    <SearchField class="search-text" :value="filters.text" @change="updateFilters({ text: $event })" />
 
     <h1 v-if="!umbrellaProcessSearch">AVANCERET SØGNING</h1>
 
-    <div
-      class="municipality-level"
-      v-if="!umbrellaProcessSearch"
-    >
+    <div class="municipality-level" v-if="!umbrellaProcessSearch">
       <SearchOption
         v-for="(visibilityKey, index) in VisibilityKeys"
         :key="index"
         :value="filters.visibility[visibilityKey]"
-        @change="updateFilters({ visibility: {...filters.visibility, ...{ [visibilityKey]: $event } }})"
-      >{{VisibilityLabels[visibilityKey]}}</SearchOption>
+        @change="updateFilters({ visibility: { ...filters.visibility, ...{ [visibilityKey]: $event } } })"
+        >{{ VisibilityLabels[visibilityKey] }}</SearchOption
+      >
     </div>
 
-    <SearchOption
-      :value="filters.klaProcess"
-      @change="updateFilters({ klaProcess: $event })"
-    >Søg i KL’s Arbejdsgangsbank</SearchOption>
+    <SearchOption :value="filters.klaProcess" @change="updateFilters({ klaProcess: $event })"
+      >Søg i KL’s Arbejdsgangsbank</SearchOption
+    >
 
-    <SearchOption
-      v-if="!umbrellaProcessSearch"
-      :value="filters.umbrella"
-      @change="updateFilters({ umbrella: $event })"
-    >Søg i paraplyprocesser</SearchOption>
+    <SearchOption v-if="!umbrellaProcessSearch" :value="filters.umbrella" @change="updateFilters({ umbrella: $event })"
+      >Søg i paraplyprocesser</SearchOption
+    >
 
-    <SearchOption
-      :value="filters.sepMep"
-      @change="updateFilters({ sepMep: $event })"
-    >Søg i KL's automatiseringsprojekter</SearchOption>
+    <SearchOption :value="filters.sepMep" @change="updateFilters({ sepMep: $event })"
+      >Søg i KL's automatiseringsprojekter</SearchOption
+    >
 
     <div class="datepicker">
       Oprettet:
-      <DatePicker
-        :value="filters.created"
-        @change="updateFilters({created: $event})"
-      />
+      <DatePicker :value="filters.created" @change="updateFilters({ created: $event })" />
     </div>
 
     <div class="datepicker">
       Senest ændret:
-      <DatePicker
-        :value="filters.lastChanged"
-        @change="updateFilters({lastChanged: $event})"
-      />
+      <DatePicker :value="filters.lastChanged" @change="updateFilters({ lastChanged: $event })" />
     </div>
 
     <ExpandPanel title="Organisation">
@@ -76,7 +48,7 @@
         :items="municipalities"
         :value="filters.municipality"
         itemText="name"
-        @change="assignFilters({municipality: $event})"
+        @change="assignFilters({ municipality: $event })"
         clearable
       />
     </ExpandPanel>
@@ -86,7 +58,7 @@
         :items="technologies"
         :value="filters.technologies"
         itemText="name"
-        @change="assignFilters({technologies: $event})"
+        @change="assignFilters({ technologies: $event })"
         multiple
       />
     </ExpandPanel>
@@ -96,8 +68,9 @@
         v-for="(statusKey, index) in StatusKeys"
         :value="filters.status[statusKey]"
         :key="index"
-        @change="updateFilters({status: {...filters.status, ...{[statusKey]: $event}}})"
-      >{{StatusLabels[statusKey]}}</SearchOption>
+        @change="updateFilters({ status: { ...filters.status, ...{ [statusKey]: $event } } })"
+        >{{ StatusLabels[statusKey] }}</SearchOption
+      >
     </ExpandPanel>
 
     <ExpandPanel title="Fase">
@@ -105,8 +78,9 @@
         v-for="(phaseKey, index) in PhaseKeys"
         :value="filters.phase[phaseKey]"
         :key="index"
-        @change="updateFilters({phase: {...filters.phase, ...{ [phaseKey]: $event }}})"
-      >{{PhaseLabels[phaseKey]}}</SearchOption>
+        @change="updateFilters({ phase: { ...filters.phase, ...{ [phaseKey]: $event } } })"
+        >{{ PhaseLabels[phaseKey] }}</SearchOption
+      >
     </ExpandPanel>
 
     <ExpandPanel title="Fagområde">
@@ -114,8 +88,9 @@
         v-for="(domainKey, index) in DomainKeys"
         :key="index"
         :value="filters.domain[domainKey]"
-        @change="updateFilters({domain: {...filters.domain, ...{[domainKey]: $event}}})"
-      >{{DomainLabels[domainKey]}}</SearchOption>
+        @change="updateFilters({ domain: { ...filters.domain, ...{ [domainKey]: $event } } })"
+        >{{ DomainLabels[domainKey] }}</SearchOption
+      >
     </ExpandPanel>
 
     <ExpandPanel title="System">
@@ -123,7 +98,7 @@
         :items="itSystems"
         :value="filters.itSystems"
         itemText="name"
-        @change="assignFilters({itSystems: $event})"
+        @change="assignFilters({ itSystems: $event })"
         multiple
       />
     </ExpandPanel>
@@ -157,6 +132,7 @@ import SearchFiltersActions from './SearchFiltersActions.vue';
 import SearchSelectSavedFilters from './SearchSelectSavedFilters.vue';
 import SearchFiltersRunPeriod from './SearchFiltersRunPeriod.vue';
 import { StatusSelect, StatusLabels, StatusKeys, defaultStatusSelects } from '../../models/status';
+import { Municipality } from '@/store/modules/process/state';
 
 @Component({
   components: {
@@ -198,7 +174,9 @@ export default class SearchFiltersComponent extends Vue {
   }
 
   get municipalities() {
-    return this.$store.state.common.municipalities;
+    return this.$store.state.common.municipalities.sort((m1: Municipality, m2: Municipality) =>
+      m1.name.localeCompare(m2.name)
+    );
   }
 
   get technologies() {
