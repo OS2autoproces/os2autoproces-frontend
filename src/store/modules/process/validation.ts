@@ -1,4 +1,3 @@
-import { isEmpty } from 'lodash';
 import { DateTime } from 'luxon';
 import * as validateJs from 'validate.js';
 import { ProcessState, Process } from '@/store/modules/process/state';
@@ -84,32 +83,32 @@ export const processFieldsValidators: { [P in keyof Process]?: (state: ProcessSt
   timeSpendComment({ timeSpendComment }: ProcessState) {
     return isValid(timeSpendComment, isMinMax(0, 10000));
   },
-  levelOfProfessionalAssessment({ phase, levelOfProfessionalAssessment }: ProcessState) {
-    return phase === PhaseKeys.IDEA || levelOfProfessionalAssessment !== 'NOT_SET';
+  levelOfProfessionalAssessment({ phase }: ProcessState) {
+    return phase === PhaseKeys.IDEA;
   },
-  levelOfChange({ phase, levelOfChange }: ProcessState) {
-    return phase === PhaseKeys.IDEA || levelOfChange !== 'NOT_SET';
+  levelOfChange({ phase }: ProcessState) {
+    return phase === PhaseKeys.IDEA;
   },
-  levelOfStructuredInformation({ phase, levelOfStructuredInformation }: ProcessState) {
-    return phase === PhaseKeys.IDEA || levelOfStructuredInformation !== 'NOT_SET';
+  levelOfStructuredInformation({ phase }: ProcessState) {
+    return phase === PhaseKeys.IDEA;
   },
-  levelOfUniformity({ phase, levelOfUniformity }: ProcessState) {
-    return phase === PhaseKeys.IDEA || levelOfUniformity !== 'NOT_SET';
+  levelOfUniformity({ phase }: ProcessState) {
+    return phase === PhaseKeys.IDEA;
   },
-  levelOfDigitalInformation({ phase, levelOfDigitalInformation }: ProcessState) {
-    return phase === PhaseKeys.IDEA || levelOfDigitalInformation !== 'NOT_SET';
+  levelOfDigitalInformation({ phase }: ProcessState) {
+    return phase === PhaseKeys.IDEA;
   },
-  levelOfQuality({ phase, levelOfQuality }: ProcessState) {
-    return phase === PhaseKeys.IDEA || levelOfQuality !== 'NOT_SET';
+  levelOfQuality({ phase }: ProcessState) {
+    return phase === PhaseKeys.IDEA;
   },
-  levelOfRoutineWorkReduction({ phase, levelOfRoutineWorkReduction }: ProcessState) {
-    return phase === PhaseKeys.IDEA || levelOfRoutineWorkReduction !== 'NOT_SET';
+  levelOfRoutineWorkReduction({ phase }: ProcessState) {
+    return phase === PhaseKeys.IDEA;
   },
-  levelOfSpeed({ phase, levelOfSpeed }: ProcessState) {
-    return phase === PhaseKeys.IDEA || levelOfSpeed !== 'NOT_SET';
+  levelOfSpeed({ phase }: ProcessState) {
+    return phase === PhaseKeys.IDEA;
   },
-  evaluatedLevelOfRoi({ phase, evaluatedLevelOfRoi }: ProcessState) {
-    return phase === PhaseKeys.IDEA || evaluatedLevelOfRoi !== 'NOT_SET';
+  evaluatedLevelOfRoi({ phase }: ProcessState) {
+    return phase === PhaseKeys.IDEA;
   },
   esdhReference({ esdhReference }: ProcessState) {
     return isValid(esdhReference, isMinMax(0, 300));
