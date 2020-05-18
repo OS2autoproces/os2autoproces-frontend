@@ -1,4 +1,3 @@
-import { isEmpty } from 'lodash';
 import { DateTime } from 'luxon';
 import * as validateJs from 'validate.js';
 import { ProcessState, Process } from '@/store/modules/process/state';
@@ -11,7 +10,7 @@ export function getInvalidProperties(state: ProcessState, properties: Array<keyo
   });
 }
 
-const isInteger = { numericality: { onlyInteger: true } };
+const isFloat = { numericality: true };
 
 const isBetween = (from: number, to: number) => ({
   numericality: {
@@ -70,13 +69,13 @@ export const processFieldsValidators: { [P in keyof Process]?: (state: ProcessSt
     return isValid(solutionRequests, isMinMax(0, 10000));
   },
   timeSpendOccurancesPerEmployee({ phase, timeSpendOccurancesPerEmployee }: ProcessState) {
-    return phase === PhaseKeys.IDEA || isValid(timeSpendOccurancesPerEmployee, isInteger);
+    return phase === PhaseKeys.IDEA || isValid(timeSpendOccurancesPerEmployee, isFloat);
   },
   timeSpendPerOccurance({ phase, timeSpendPerOccurance }: ProcessState) {
-    return phase === PhaseKeys.IDEA || isValid(timeSpendPerOccurance, isInteger);
+    return phase === PhaseKeys.IDEA || isValid(timeSpendPerOccurance, isFloat);
   },
   timeSpendEmployeesDoingProcess({ phase, timeSpendEmployeesDoingProcess }: ProcessState) {
-    return phase === PhaseKeys.IDEA || isValid(timeSpendEmployeesDoingProcess, isInteger);
+    return phase === PhaseKeys.IDEA || isValid(timeSpendEmployeesDoingProcess, isFloat);
   },
   timeSpendPercentageDigital({ phase, timeSpendPercentageDigital }: ProcessState) {
     return phase === PhaseKeys.IDEA || isValid(timeSpendPercentageDigital, isBetween(0, 100));
