@@ -83,31 +83,31 @@ export const processFieldsValidators: { [P in keyof Process]?: (state: ProcessSt
   timeSpendComment({ timeSpendComment }: ProcessState) {
     return isValid(timeSpendComment, isMinMax(0, 10000));
   },
-  levelOfProfessionalAssessment({ phase }: ProcessState) {
+  levelOfProfessionalAssessment() {
     return true; // allow any phase to not have an assessment
   },
-  levelOfChange({ phase }: ProcessState) {
+  levelOfChange() {
     return true; // allow any phase to not have an assessment
   },
-  levelOfStructuredInformation({ phase }: ProcessState) {
+  levelOfStructuredInformation() {
     return true; // allow any phase to not have an assessment
   },
-  levelOfUniformity({ phase }: ProcessState) {
+  levelOfUniformity() {
     return true; // allow any phase to not have an assessment
   },
-  levelOfDigitalInformation({ phase }: ProcessState) {
+  levelOfDigitalInformation() {
     return true; // allow any phase to not have an assessment
   },
-  levelOfQuality({ phase }: ProcessState) {
+  levelOfQuality() {
     return true; // allow any phase to not have an assessment
   },
-  levelOfRoutineWorkReduction({ phase }: ProcessState) {
+  levelOfRoutineWorkReduction() {
     return true; // allow any phase to not have an assessment
   },
-  levelOfSpeed({ phase }: ProcessState) {
+  levelOfSpeed() {
     return true; // allow any phase to not have an assessment
   },
-  evaluatedLevelOfRoi({ phase }: ProcessState) {
+  evaluatedLevelOfRoi() {
     return true; // allow any phase to not have an assessment
   },
   esdhReference({ esdhReference }: ProcessState) {
