@@ -295,9 +295,11 @@ export function responseToState(process: ProcessResponse): Process {
     technologies: process.technologies || [],
     users: process.users || [],
     klId: process.klId || '',
-    form: process.form ? { code: process.form } : null,
+    // TODO?: Get form description from store
+    form: process.form ? { code: process.form, description: '' } : null,
     legalClause: process.legalClause || '',
-    kle: process.kle ? { code: process.kle } : null,
+    // TODO?: Get kle name from store
+    kle: process.kle ? { code: process.kle, name: '' } : null,
     kla: process.kla || '',
     codeRepositoryUrl: process.codeRepositoryUrl || '',
     links: process.links || [],
