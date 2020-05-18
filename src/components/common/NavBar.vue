@@ -6,7 +6,9 @@
     <router-link class="link" v-if="isFrontpageEditor" to="/">Forside</router-link>
     <router-link class="link" v-if="isAdministrator" to="/search">Søgning</router-link>
     <router-link class="link" v-if="isAdministrator" to="/manage-technologies">Teknologier</router-link>
-    <a class="link" href="https://os2autoproces.os2.eu/">Spørgsmål og vejledning</a>
+    <a class="link" target="_blank" rel="noopener noreferrer" href="https://os2autoproces.os2.eu/"
+      >Spørgsmål og vejledning</a
+    >
     <div class="flex-grow"></div>
     <div class="user-info" v-if="user">
       <div class="user">
