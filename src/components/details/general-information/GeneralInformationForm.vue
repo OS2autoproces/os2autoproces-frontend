@@ -128,7 +128,7 @@
             @change="update({legalClause: $event})"
           />
         </WellItem>
-        <WellItem labelWidth="200px" label="KLE-nr:">
+        <WellItem labelWidth="200px" label="KLE:">
           <SelectionField
             :disabled="state.disabled.generalInformationEdit"
             :value="state.kle"
