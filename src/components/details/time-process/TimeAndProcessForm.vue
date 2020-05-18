@@ -4,7 +4,7 @@
     heading="Tid og proces"
     id="time-and-process"
     :disabled="state.disabled.timeAndProcessEdit"
-    @edit="update({disabled: {timeAndProcessEdit: $event}})"
+    @edit="update({ disabled: { timeAndProcessEdit: $event } })"
   >
     <Well>
       <div>
@@ -17,20 +17,28 @@
             :type="'number'"
             :value="state.timeSpendOccurancesPerEmployee"
             :disabled="state.disabled.timeAndProcessEdit"
-            @change="update({timeSpendOccurancesPerEmployee: $event})"
+            @change="update({ timeSpendOccurancesPerEmployee: $event })"
           />
         </WellItem>
         <WellItem
           labelWidth="70%"
-          label="Tidsforbrug pr. proces i minutter"
+          label="Tidsforbrug pr. proces i minutter og sekunder"
           :required="minPhase(PhaseKeys.PREANALYSIS)"
         >
           <InputField
             :type="'number'"
             :disabled="state.disabled.timeAndProcessEdit"
-            :value="state.timeSpendPerOccurance"
-            @change="update({timeSpendPerOccurance: $event})"
-          />
+            :value="timeSpentPerOccurance.minutes"
+            @change="updateTimeSpentPerOccurance({ minutes: $event })"
+            >m</InputField
+          >
+          <InputField
+            :type="'number'"
+            :disabled="state.disabled.timeAndProcessEdit"
+            :value="timeSpentPerOccurance.seconds"
+            @change="updateTimeSpentPerOccurance({ seconds: $event })"
+            >s</InputField
+          >
         </WellItem>
         <WellItem
           labelWidth="70%"
@@ -41,28 +49,23 @@
             :type="'number'"
             :disabled="state.disabled.timeAndProcessEdit"
             :value="state.timeSpendPercentageDigital"
-            @change="update({timeSpendPercentageDigital: $event})"
-          >%</InputField>
+            @change="update({ timeSpendPercentageDigital: $event })"
+            >%</InputField
+          >
         </WellItem>
         <WellItem
           labelWidth="70%"
           label="Manuelt tidsforbrug i timer"
           tooltip="Udregningen for det manuelle årlige tidsforbrug er: antal gange processen foretages * tidsforbrug i minutter / 60"
         >
-          <InputField
-            disabled
-            :value="timeSpendHours"
-          >timer</InputField>
+          <InputField disabled :value="timeSpendHours">timer</InputField>
         </WellItem>
         <WellItem
           labelWidth="70%"
           label="Forventet årligt effektiviseringspotentiale"
           tooltip="Udregning af det forventet årligt effektiviseringspotentiale er: antal gange processen foretages * tidsforbrug i minutter / 60 * automatiseringsgrad"
         >
-          <InputField
-            disabled
-            :value="exptectedYearlyPotential"
-          >timer</InputField>
+          <InputField disabled :value="exptectedYearlyPotential">timer</InputField>
         </WellItem>
       </div>
 
@@ -76,28 +79,22 @@
             :type="'number'"
             :disabled="state.disabled.timeAndProcessEdit"
             :value="state.timeSpendEmployeesDoingProcess"
-            @change="update({timeSpendEmployeesDoingProcess: $event})"
+            @change="update({ timeSpendEmployeesDoingProcess: $event })"
           />
         </WellItem>
-        <WellItem
-          labelWidth="70%"
-          label="Er borgere påvirket?"
-        >
+        <WellItem labelWidth="70%" label="Er borgere påvirket?">
           <MappedSelectionField
             :disabled="state.disabled.timeAndProcessEdit"
             :value="state.targetsCitizens"
-            @change="update({targetsCitizens: $event})"
+            @change="update({ targetsCitizens: $event })"
             :items="yesNoItems"
           />
         </WellItem>
-        <WellItem
-          labelWidth="70%"
-          label="Er virksomheder påvirket?"
-        >
+        <WellItem labelWidth="70%" label="Er virksomheder påvirket?">
           <MappedSelectionField
             :disabled="state.disabled.timeAndProcessEdit"
             :value="state.targetsCompanies"
-            @change="update({targetsCompanies: $event})"
+            @change="update({ targetsCompanies: $event })"
             :items="yesNoItems"
           />
         </WellItem>
@@ -106,14 +103,17 @@
 
     <div class="comments-wrap">
       <span>Kommentar vedr. tidsforbrug</span>
-      <InfoTooltip class="time-proces-tooltip">Her kan du uddybe eller kommentere på de indtastede værdier ovenfor og på tidsforbruget generelt. F.eks. hvordan det er målt.</InfoTooltip>
+      <InfoTooltip class="time-proces-tooltip"
+        >Her kan du uddybe eller kommentere på de indtastede værdier ovenfor og på tidsforbruget generelt. F.eks.
+        hvordan det er målt.</InfoTooltip
+      >
       <TextArea
         :value="state.timeSpendComment"
         :disabled="state.disabled.timeAndProcessEdit"
-        @change="update({timeSpendComment: $event})"
+        @change="update({ timeSpendComment: $event })"
         :maxLength="10000"
       />
-      </div>
+    </div>
   </FormSection>
 </template>
 
@@ -152,9 +152,7 @@ export default class TimeAndProcessForm extends Vue {
 
   get timeSpendHours() {
     const hours =
-      ((this.state.timeSpendOccurancesPerEmployee * this.state.timeSpendPerOccurance) / 60)
-        .toString()
-        .substring(0, 4) || '0';
+      ((this.state.timeSpendOccurancesPerEmployee * this.state.timeSpendPerOccurance) / 60).toFixed(2) || '0';
     return hours;
   }
   // Number of times this process is repeated yearly * amount of time required pr. process in minutes / 60 * automation potential / 100
@@ -163,12 +161,41 @@ export default class TimeAndProcessForm extends Vue {
       (
         ((this.state.timeSpendOccurancesPerEmployee * this.state.timeSpendPerOccurance) / 60) *
         (this.state.timeSpendPercentageDigital / 100)
-      ).toFixed(1) || '0';
+      ).toFixed(2) || '0';
     return hours;
+  }
+
+  get timeSpentPerOccurance(): { minutes: string; seconds: string } {
+    let time = this.state.timeSpendPerOccurance;
+    const minutes: number = parseInt(time); // remove decimals
+    const seconds: number = (time - minutes) * 60; // remove minute part and convert decimals to seconds
+    return { minutes: minutes.toFixed(0), seconds: seconds.toFixed(0) }; // ensure no decimals are returned
   }
 
   get state() {
     return this.$store.state.process;
+  }
+
+  updateTimeSpentPerOccurance(changeEvents: { minutes: string; seconds: string }) {
+    // get old state
+    let newMinutes = parseInt(this.timeSpentPerOccurance.minutes);
+    let newSeconds = parseInt(this.timeSpentPerOccurance.seconds);
+
+    // handle minutes or seconds changed event and update state accordingly
+    if (changeEvents.minutes || changeEvents.minutes === '') {
+      newMinutes = parseInt(changeEvents.minutes || '0');
+      this.timeSpentPerOccurance.minutes = newMinutes.toString();
+    }
+
+    // handle how seconds are changed, and restrict inputs to be between 0 and 59 seconds
+    if (changeEvents.seconds || changeEvents.seconds === '') {
+      newSeconds = parseInt(changeEvents.seconds || '0');
+      this.timeSpentPerOccurance.seconds = newSeconds.toString();
+    }
+
+    // use original state containing a decimal number for minutes/seconds and propagate that
+    let calculatedTimeSpentMinutes = newMinutes + newSeconds / 60;
+    this.update({ timeSpendPerOccurance: calculatedTimeSpentMinutes });
   }
 }
 </script>
