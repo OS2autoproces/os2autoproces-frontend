@@ -187,7 +187,8 @@ export default class TimeAndProcessForm extends Vue {
       this.timeSpentPerOccurance.minutes = newMinutes.toString();
     }
 
-    // handle how seconds are changed, and restrict inputs to be between 0 and 59 seconds
+    // handle how seconds are changed. We don't care about values larger than 59, as they are calculated into minutes.
+    // Maybe we should limit the amount of characters a user is allowed to input?
     if (changeEvents.seconds || changeEvents.seconds === '') {
       newSeconds = parseInt(changeEvents.seconds || '0');
       this.timeSpentPerOccurance.seconds = newSeconds.toString();
