@@ -42,7 +42,7 @@
             :page="result.page.number"
             :pageTotal="result.page.totalPages"
             :size="result.page.size"
-            @on-page-change="updateFilters({ page: $event })"
+            @on-page-change="changePage({ page: $event })"
             @on-size-change="updateFilters({ size: $event })"
           />
         </div>
@@ -92,6 +92,15 @@ export default class Search extends Vue {
 
   get result() {
     return this.$store.state.search.result;
+  }
+
+  async changePage(filters: Partial<SearchFilters>) {
+    await this.$store.dispatch(searchActionTypes.ASSIGN_FILTERS, {
+      page: 0,
+      ...filters
+    });
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
   }
 
   updateFilters(filters: Partial<SearchFilters>) {
