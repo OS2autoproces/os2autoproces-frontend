@@ -2,9 +2,9 @@
   <div class="page">
     <div class="side-bar">
       <div class="side-bar-content">
-        <router-link to="/search" class="search-page-link">
+        <a @click="goBack" class="search-page-link">
           <ArrowLeftIcon />Tilbage til søgning
-        </router-link>
+        </a>
 
         <ProcessMenu :phase="phase" :canEdit="state.canEdit" :isReporting="isReporting" />
 
@@ -163,7 +163,6 @@ export default class Process extends Vue {
 
   showSaveSuccess = false;
   showSaveError = false;
-
   get state() {
     return this.$store.state.process;
   }
@@ -180,6 +179,23 @@ export default class Process extends Vue {
   get isWithinMunicipality() {
     const { auth, process } = this.$store.state;
     return auth.user.cvr === process.cvr;
+  }
+
+  // Test if browser is Internet Explorer, for use in goBack
+  isIE() {
+    const ua = window.navigator.userAgent;
+    const msie = ua.indexOf('MSIE ');
+
+    return msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./);
+  }
+
+  // If browser is Internet Explorer, the parent details view is nested in the search view, and we just hide it.
+  goBack() {
+    if (!this.isIE() || this.isReporting) {
+      this.$router.push('/search');
+    } else {
+      this.$emit('goBack');
+    }
   }
 
   beforeCreate() {
