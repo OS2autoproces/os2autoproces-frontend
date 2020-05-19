@@ -1,19 +1,20 @@
 <template>
   <div>
-    <div class="input-field-wrap" :class="{'has-icon': this.$slots.default }" v-if="!disabled">
+    <div class="input-field-wrap" :class="{ 'has-icon': this.$slots.default }" v-if="!disabled">
       <input
         :type="type"
         :placeholder="placeholder"
         :value="value"
         @input="valueChanged"
         @keyup.enter="submit"
+        :maxlength="maxLength"
       />
       <div class="icon" v-if="this.$slots.default">
         <slot />
       </div>
     </div>
     <div class="disabled-flex" v-if="disabled">
-      {{value}}
+      {{ value }}
       <span>
         <slot />
       </span>
@@ -21,7 +22,7 @@
   </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 
 @Component
@@ -30,6 +31,7 @@ export default class InputField extends Vue {
   @Prop(String) placeholder!: string;
   @Prop(String) type!: string;
   @Prop(Boolean) disabled!: boolean;
+  @Prop({ default: Number.MAX_VALUE, type: Number }) maxLength!: number;
 
   valueChanged(event: any) {
     this.$emit('change', event.target.value);

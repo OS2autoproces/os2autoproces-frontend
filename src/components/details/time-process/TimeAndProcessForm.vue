@@ -28,15 +28,16 @@
           <InputField
             :type="'number'"
             :disabled="state.disabled.timeAndProcessEdit"
-            :value="timeSpentPerOccurance.minutes"
+            :value="timeSpentPerOccurance.minutes.toFixed(0)"
             @change="updateTimeSpentPerOccurance({ minutes: $event })"
             >m</InputField
           >
           <InputField
             :type="'number'"
             :disabled="state.disabled.timeAndProcessEdit"
-            :value="timeSpentPerOccurance.seconds"
+            :value="timeSpentPerOccurance.seconds.toFixed(0)"
             @change="updateTimeSpentPerOccurance({ seconds: $event })"
+            :maxLength="2"
             >s</InputField
           >
         </WellItem>
@@ -165,38 +166,22 @@ export default class TimeAndProcessForm extends Vue {
     return hours;
   }
 
-  get timeSpentPerOccurance(): { minutes: string; seconds: string } {
-    let time = this.state.timeSpendPerOccurance;
-    const minutes: number = parseInt(time); // remove decimals
-    const seconds: number = (time - minutes) * 60; // remove minute part and convert decimals to seconds
-    return { minutes: minutes.toFixed(0), seconds: seconds.toFixed(0) }; // ensure no decimals are returned
+  get timeSpentPerOccurance(): { minutes: number; seconds: number } {
+    const time = this.state.timeSpendPerOccurance;
+    const minutes = parseInt(time, 10); // remove decimals
+    const seconds = (time - minutes) * 60; // remove minute part and convert decimals to seconds
+    return { minutes, seconds };
   }
 
   get state() {
     return this.$store.state.process;
   }
 
-  updateTimeSpentPerOccurance(changeEvents: { minutes: string; seconds: string }) {
-    // get old state
-    let newMinutes = parseInt(this.timeSpentPerOccurance.minutes);
-    let newSeconds = parseInt(this.timeSpentPerOccurance.seconds);
-
-    // handle minutes or seconds changed event and update state accordingly
-    if (changeEvents.minutes || changeEvents.minutes === '') {
-      newMinutes = parseInt(changeEvents.minutes || '0');
-      this.timeSpentPerOccurance.minutes = newMinutes.toString();
-    }
-
-    // handle how seconds are changed. We don't care about values larger than 59, as they are calculated into minutes.
-    // Maybe we should limit the amount of characters a user is allowed to input?
-    if (changeEvents.seconds || changeEvents.seconds === '') {
-      newSeconds = parseInt(changeEvents.seconds || '0');
-      this.timeSpentPerOccurance.seconds = newSeconds.toString();
-    }
-
-    // use original state containing a decimal number for minutes/seconds and propagate that
-    let calculatedTimeSpentMinutes = newMinutes + newSeconds / 60;
-    this.update({ timeSpendPerOccurance: calculatedTimeSpentMinutes });
+  updateTimeSpentPerOccurance({ minutes, seconds }: { minutes: string; seconds: string }) {
+    const newMinutes = !!minutes || minutes === '' ? parseInt(minutes || '0', 10) : this.timeSpentPerOccurance.minutes;
+    const newSeconds = !!seconds || seconds === '' ? parseInt(seconds || '0', 10) : this.timeSpentPerOccurance.seconds;
+    const timeSpendPerOccurance = newMinutes + newSeconds / 60;
+    this.update({ timeSpendPerOccurance });
   }
 }
 </script>
