@@ -5,15 +5,18 @@
     heading="Udvikling og implementering"
     id="implementation"
     :disabled="state.disabled.implementationEdit"
-    @edit="update({disabled: {implementationEdit: $event}})"
+    @edit="update({ disabled: { implementationEdit: $event } })"
   >
     <div v-if="minPhase(PhaseKeys.IMPLEMENTATION)">
       <h2>Teknisk implementering</h2>
-      <InfoTooltip>Her kan du notere, hvordan den tekniske implementering er forløbet og eventuelle ting, som andre bør være opmærksomme på.</InfoTooltip>
-      <TextArea
+      <InfoTooltip
+        >Her kan du notere, hvordan den tekniske implementering er forløbet og eventuelle ting, som andre bør være
+        opmærksomme på.</InfoTooltip
+      >
+      <RichTextArea
         :max-length="10000"
         :twoColumnBreakpoint="twoColumnBreakpoint"
-        @change="update({technicalImplementationNotes: $event})"
+        @change="update({ technicalImplementationNotes: $event })"
         :disabled="state.disabled.implementationEdit"
         :value="state.technicalImplementationNotes"
       />
@@ -21,11 +24,14 @@
 
     <div v-if="minPhase(PhaseKeys.IMPLEMENTATION)">
       <h2 class="with-margin">Organisatorisk implementering</h2>
-      <InfoTooltip>Her kan du notere, hvordan den organisatoriske implementering er forløbet og eventuelle opmærksomhedspunkter omkring det.</InfoTooltip>
-      <TextArea
+      <InfoTooltip
+        >Her kan du notere, hvordan den organisatoriske implementering er forløbet og eventuelle opmærksomhedspunkter
+        omkring det.</InfoTooltip
+      >
+      <RichTextArea
         :max-length="10000"
         :twoColumnBreakpoint="twoColumnBreakpoint"
-        @change="update({organizationalImplementationNotes: $event})"
+        @change="update({ organizationalImplementationNotes: $event })"
         :disabled="state.disabled.implementationEdit"
         :value="state.organizationalImplementationNotes"
       />
@@ -34,7 +40,10 @@
     <div class="technology-run-period">
       <div class="technology">
         <h2 class="with-margin">Anvendt teknologi *</h2>
-        <InfoTooltip>Her kan angive teknologier anvendt i løsningen fra listen. Hvis du mangler en teknologi, så kontakt OS2autoproces koordinationsgruppen, så vil de oprette den for dig.</InfoTooltip>
+        <InfoTooltip
+          >Her kan angive teknologier anvendt i løsningen fra listen. Hvis du mangler en teknologi, så kontakt
+          OS2autoproces koordinationsgruppen, så vil de oprette den for dig.</InfoTooltip
+        >
         <TagSelector
           @add="addTechnology($event)"
           @remove="removeTechnology($event)"
@@ -49,7 +58,7 @@
           class="run-period-field"
           :disabled="state.disabled.implementationEdit"
           :value="state.runPeriod"
-          @change="update({runPeriod: $event})"
+          @change="update({ runPeriod: $event })"
           :items="runPeriods"
         />
       </div>
@@ -59,7 +68,7 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
-import TextArea from '@/components/common/inputs/TextArea.vue';
+import RichTextArea from '@/components/common/inputs/RichTextArea.vue';
 import { Action, Getter } from 'vuex-class';
 import FormSection from '@/components/details/FormSection.vue';
 import InfoTooltip from '@/components/common/InfoTooltip.vue';
@@ -74,7 +83,7 @@ import { RunPeriodKeys, RunPeriodLabels } from '@/models/runperiod';
 
 @Component({
   components: {
-    TextArea,
+    RichTextArea,
     FormSection,
     InfoTooltip,
     TagSelector,

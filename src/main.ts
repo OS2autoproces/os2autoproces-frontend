@@ -2,6 +2,11 @@ import 'babel-polyfill';
 import Vue from 'vue';
 import Vuetify from 'vuetify';
 import 'vuetify/dist/vuetify.min.css';
+
+// @ts-ignore
+import { TiptapVuetifyPlugin } from 'tiptap-vuetify';
+import 'tiptap-vuetify/dist/main.css';
+
 import App from './App.vue';
 import { router } from '@/router';
 import store from '@/store/store';
@@ -17,9 +22,12 @@ Vue.use(Vuetify, {
   }
 });
 
+Vue.use(TiptapVuetifyPlugin, {
+  iconsGroup: 'md'
+});
+
 new Vue({
   router,
   store,
   render: h => h(App)
 }).$mount('#app');
-

@@ -1,31 +1,71 @@
 <template>
-  <FormSection :invalid="!isChallengesValid" heading="Problemstillinger" id="challenges" :disabled="state.disabled.challengesEdit" @edit="update({ disabled: { challengesEdit: $event}})">
+  <FormSection
+    :invalid="!isChallengesValid"
+    heading="Problemstillinger"
+    id="challenges"
+    :disabled="state.disabled.challengesEdit"
+    @edit="update({ disabled: { challengesEdit: $event } })"
+  >
     <div>
       <h2>Beskrivelse</h2>
       <InfoTooltip>Her kan du beskrive den nuværende proces i detaljer.</InfoTooltip>
-      <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({longDescription: $event})" :disabled="state.disabled.challengesEdit" :value="state.longDescription" :maxLength="10000" />
-      </div>
+      <RichTextArea
+        :twoColumnBreakpoint="twoColumnBreakpoint"
+        @change="update({ longDescription: $event })"
+        :disabled="state.disabled.challengesEdit"
+        :value="state.longDescription"
+        :maxLength="10000"
+      />
+    </div>
 
     <div v-if="minPhase(PhaseKeys.PREANALYSIS)">
       <h2 class="with-margin">Idéer til løsning</h2>
-      <InfoTooltip>Her kan tilføjes de ønsker, du har til en fremtidig løsning. Ønskerne kan både være teknologiske (f.eks. RPA) og/eller ændringer til måden processen udføres på.</InfoTooltip>
-      <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({solutionRequests: $event})" :disabled="state.disabled.challengesEdit" :value="state.solutionRequests" :maxLength="10000" />
+      <InfoTooltip
+        >Her kan tilføjes de ønsker, du har til en fremtidig løsning. Ønskerne kan både være teknologiske (f.eks. RPA)
+        og/eller ændringer til måden processen udføres på.</InfoTooltip
+      >
+      <RichTextArea
+        :twoColumnBreakpoint="twoColumnBreakpoint"
+        @change="update({ solutionRequests: $event })"
+        :disabled="state.disabled.challengesEdit"
+        :value="state.solutionRequests"
+        :maxLength="10000"
+      />
     </div>
 
     <div v-if="minPhase(PhaseKeys.PREANALYSIS)">
       <h2 class="with-margin">Udfordringer i den nuværende proces *</h2>
-      <InfoTooltip>Her kan du beskrive de trivielle handlinger, udfordringer eller vaskeligheder der opleves i udførelsen af den nuværende proces.</InfoTooltip>
-      <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({processChallenges: $event})" :disabled="state.disabled.challengesEdit" :value="state.processChallenges" :maxLength="10000" />
+      <InfoTooltip
+        >Her kan du beskrive de trivielle handlinger, udfordringer eller vaskeligheder der opleves i udførelsen af den
+        nuværende proces.</InfoTooltip
+      >
+      <RichTextArea
+        :twoColumnBreakpoint="twoColumnBreakpoint"
+        @change="update({ processChallenges: $event })"
+        :disabled="state.disabled.challengesEdit"
+        :value="state.processChallenges"
+        :maxLength="10000"
+      />
     </div>
 
     <Well class="challenges-well">
       <div>
         <WellItem label="Oprettet:">
-          <DatePicker :value="state.created" disabled/>
+          <DatePicker :value="state.created" disabled />
         </WellItem>
 
-        <WellItem label="Nuværende systemer:" tooltip="Vælg hvilke systemer der understøtter den nuværende proces. Listen kommer fra KITOS.">
-          <SelectionField :items="itSystems" :value="state.itSystems" itemText="name" :disabled="state.disabled.challengesEdit" @change="assign({itSystems: $event})" multiple />
+        <WellItem
+          label="Nuværende systemer:"
+          tooltip="Vælg hvilke systemer der understøtter den nuværende proces. Listen kommer fra KITOS."
+        >
+          <SelectionField
+            :items="itSystems"
+            :value="state.itSystems"
+            itemText="name"
+            :disabled="state.disabled.challengesEdit"
+            @change="assign({ itSystems: $event })"
+            multiple
+          />
         </WellItem>
       </div>
 
@@ -34,18 +74,28 @@
           <DatePicker :value="state.lastChanged" disabled />
         </WellItem>
 
-        <WellItem labelWidth="30%" label="Andre nuværende systemer:" tooltip="Hvis der er systemer du ikke kan finde på listen kan du notere dem her.">
-          <TextArea @change="update({itSystemsDescription: $event})" fullWidth :disabled="state.disabled.challengesEdit" :value="state.itSystemsDescription" :maxLength="10000" />
+        <WellItem
+          labelWidth="30%"
+          label="Andre nuværende systemer:"
+          tooltip="Hvis der er systemer du ikke kan finde på listen kan du notere dem her."
+        >
+          <TextArea
+            fullWidth
+            @change="update({ itSystemsDescription: $event })"
+            :disabled="state.disabled.challengesEdit"
+            :value="state.itSystemsDescription"
+            :maxLength="10000"
+          />
         </WellItem>
       </div>
     </Well>
-
   </FormSection>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import TextArea from '@/components/common/inputs/TextArea.vue';
+import RichTextArea from '@/components/common/inputs/RichTextArea.vue';
 import { Action, Getter } from 'vuex-class';
 import SelectionField from '@/components/common/inputs/SelectionField.vue';
 import DatePicker from '@/components/common/inputs/DatePicker.vue';
@@ -64,6 +114,7 @@ import { Phase, PhaseKeys } from '@/models/phase';
 @Component({
   components: {
     TextArea,
+    RichTextArea,
     SelectionField,
     DatePicker,
     Well,
