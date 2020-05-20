@@ -1,16 +1,23 @@
 <template>
   <div class="comments-form">
     <div class="comment-input-wrapper" v-if="!disabled">
-      <text-area :value="newComment" @change="newComment = $event" class="comment-input" placeholder="Skriv en kommentar her" :max-length="maxLength" noResize>
+      <text-area
+        :value="newComment"
+        @change="newComment = $event"
+        class="comment-input"
+        placeholder="Skriv en kommentar her"
+        :max-length="maxLength"
+        noResize
+      >
         <Button class="submit-comment" @click="submit">Send</Button>
       </text-area>
     </div>
     <div class="comment-list-wrapper">
       <div class="comment-list" ref="comments-list">
         <div class="comment" v-for="(comment, index) in comments" :key="index">
-          <span class="author">{{comment.name}}: </span>
-          <span class="time">{{comment.created}}</span>
-          <div>{{comment.message}}</div>
+          <span class="author">{{ comment.name }}: </span>
+          <span class="time">{{ comment.created }}</span>
+          <div>{{ comment.message }}</div>
         </div>
       </div>
     </div>
@@ -72,7 +79,7 @@ export default class Comments extends Vue {
 .comment-input {
   height: 100%;
 
-  /deep/ {
+  >>> {
     .text-area {
       border: 1px solid $color-secondary;
     }

@@ -1,35 +1,35 @@
 <template>
   <div class="result">
     <div class="result-column">
-      <div class="name">{{process.title}}</div>
-      <div class="resume">{{process.shortDescription}}</div>
+      <div class="name">{{ process.title }}</div>
+      <div class="resume">{{ process.shortDescription }}</div>
     </div>
     <div class="result-column potential">
       <div>
         <div class="field">Kommune:</div>
-        <div class="value">{{process.municipalityName}}</div>
+        <div class="value">{{ process.municipalityName }}</div>
       </div>
       <div>
         <div class="field">Fagområder:</div>
-        <div class="value">{{domains}}</div>
+        <div class="value">{{ domains }}</div>
       </div>
     </div>
     <div class="result-column domain">
       <div>
         <div class="field">Fase:</div>
-        <div class="value">{{PhaseLabels[process.phase]}}</div>
+        <div class="value">{{ PhaseLabels[process.phase] }}</div>
       </div>
       <div>
         <div class="field">Status:</div>
-        <div class="value">{{StatusLabels[process.status]}}</div>
+        <div class="value">{{ StatusLabels[process.status] }}</div>
       </div>
       <div>
         <div class="field">KLE-nr:</div>
-        <div class="value">{{process.kle}}</div>
+        <div class="value">{{ process.kle }}</div>
       </div>
       <div>
         <div class="field">Unik ID:</div>
-        <div class="value">{{process.id}}</div>
+        <div class="value">{{ process.id }}</div>
       </div>
     </div>
   </div>
@@ -47,7 +47,7 @@ import { DomainLabels } from '../../models/domain';
 @Component({
   components: {
     StarIcon,
-    Rating,
+    Rating
   }
 })
 export default class SearchResult extends Vue {
@@ -97,7 +97,7 @@ $resume-line-height: 1em * 1.5;
   width: 2.5rem;
 }
 
-.rating /deep/ svg {
+.rating >>> svg {
   height: 16px;
   width: 16px;
 }

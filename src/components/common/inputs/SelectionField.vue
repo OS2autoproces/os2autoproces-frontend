@@ -126,7 +126,7 @@ export default class SelectionField<T extends any> extends Vue {
 <style scoped lang="scss">
 @import '@/styles/variables.scss';
 
-.select-wrap /deep/ {
+.select-wrap >>> {
   padding-top: 0 !important;
   margin: 0;
 
