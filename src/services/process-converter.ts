@@ -238,6 +238,7 @@ function stateToRequestFields(state: ProcessState): ProcessRequest {
 
 function pickFields(request: ProcessRequest, fields: Array<keyof ProcessRequest>): Partial<ProcessRequest> {
   return fields.reduce<Partial<ProcessRequest>>((partialRequest, field) => {
+    // @ts-ignore
     partialRequest[field] = request[field];
     return partialRequest;
   }, {});
@@ -256,7 +257,7 @@ function buildUmbrellaRequest(request: ProcessRequest): Partial<ProcessRequest> 
     'type',
     'longDescription',
     'shortDescription',
-    'runPeriod',
+    'runPeriod'
   ]);
 }
 

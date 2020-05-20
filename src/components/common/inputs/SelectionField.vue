@@ -11,19 +11,9 @@
       :placeholder="placeholder"
       @change="valueChanged"
     >
-      <template
-        slot="item"
-        slot-scope="data"
-      >
-        <SelectionFieldText
-          :itemText="data.item[itemText]"
-          :subText="data.item[itemSubText]"
-        />
-        <SelectionFieldAction
-          v-if="hasAction"
-          :actionIcon="actionIcon"
-          @action="action(data.item)"
-        />
+      <template slot="item" slot-scope="data">
+        <SelectionFieldText :itemText="data.item[itemText]" :subText="data.item[itemSubText]" />
+        <SelectionFieldAction v-if="hasAction" :actionIcon="actionIcon" @action="action(data.item)" />
       </template>
     </v-select>
     <v-autocomplete
@@ -44,29 +34,16 @@
       return-object
       :multiple="multiple"
     >
-      <template
-        slot="item"
-        slot-scope="data"
-      >
-        <SelectionFieldText
-          :itemText="data.item[itemText]"
-          :subText="data.item[itemSubText]"
-        />
-        <SelectionFieldAction
-          v-if="hasAction"
-          :actionIcon="actionIcon"
-          @action="action(data.item)"
-        />
+      <template slot="item" slot-scope="data">
+        <SelectionFieldText :itemText="data.item[itemText]" :subText="data.item[itemSubText]" />
+        <SelectionFieldAction v-if="hasAction" :actionIcon="actionIcon" @action="action(data.item)" />
       </template>
     </v-autocomplete>
-    <div
-      class="selection-text"
-      v-if="disabled && value"
-    >{{ label }}</div>
+    <div class="selection-text" v-if="disabled && value">{{ label }}</div>
   </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import { Vue, Component, Prop, Watch, Emit } from 'vue-property-decorator';
 import SelectionFieldText from './SelectionFieldText.vue';
 import SelectionFieldAction from './SelectionFieldAction.vue';
@@ -124,7 +101,7 @@ export default class SelectionField<T extends any> extends Vue {
     if (Array.isArray(this.value)) {
       return this.value.map((item: any) => item[this.itemText]).join(', ');
     }
-
+    // @ts-ignore
     return this.value[this.itemText];
   }
 
