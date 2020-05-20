@@ -30,7 +30,7 @@ export default class MaskableInputComponent extends Vue {
 <style lang="scss" scoped>
 @import '@/styles/variables.scss';
 
-.v-text-field >>> {
+.v-text-field ::v-deep {
   display: flex;
   border: 1px solid $color-primary;
   border-radius: 30px;

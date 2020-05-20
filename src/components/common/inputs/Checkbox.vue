@@ -50,7 +50,7 @@ export default class Checkbox extends Vue {
     width: 20px;
     height: 20px;
 
-    >>> svg {
+    ::v-deep svg {
       position: absolute;
       bottom: 1px;
       left: -1px;

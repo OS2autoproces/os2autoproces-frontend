@@ -127,7 +127,7 @@ export default class SearchPagination extends Vue {
   margin: 0 3rem;
 
   // Hide vuetify pagination navigation
-  >>> .v-pagination__navigation {
+  ::v-deep .v-pagination__navigation {
     display: none;
   }
 }

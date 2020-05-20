@@ -122,7 +122,7 @@ export default class FormSection extends Vue {
   }
 
   &:not(.disabled) {
-    .edit-button svg >>> path {
+    .edit-button svg ::v-deep path {
       fill: $color-primary;
     }
   }

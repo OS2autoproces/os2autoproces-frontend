@@ -54,12 +54,12 @@ export default class LikertScale extends Vue {
 .scale-option {
   text-align: center;
 
-  &:last-of-type .checkbox >>> .checkbox-icon {
+  &:last-of-type .checkbox ::v-deep .checkbox-icon {
     border-color: $color-grey;
   }
 }
 
-.checkbox >>> .checkbox-icon {
+.checkbox ::v-deep .checkbox-icon {
   height: 2rem;
   width: 2rem;
 }

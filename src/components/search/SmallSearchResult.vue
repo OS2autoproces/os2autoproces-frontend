@@ -97,7 +97,7 @@ $resume-line-height: 1em * 1.5;
   width: 2.5rem;
 }
 
-.rating >>> svg {
+.rating ::v-deep svg {
   height: 16px;
   width: 16px;
 }

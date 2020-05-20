@@ -154,7 +154,7 @@ export default class Home extends Vue {
   height: 20px;
   width: 20px;
 
-  >>> path {
+  ::v-deep path {
     fill: $color-primary;
   }
 }

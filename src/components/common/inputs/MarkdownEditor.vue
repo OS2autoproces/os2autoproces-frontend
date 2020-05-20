@@ -43,7 +43,7 @@ textarea {
   min-height: 500px;
 }
 
-.rendered >>> {
+.rendered ::v-deep {
   h1,
   h2,
   h3,

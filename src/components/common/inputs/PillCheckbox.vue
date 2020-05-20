@@ -60,7 +60,7 @@ export default class Checkbox extends Vue {
     height: 20px;
     width: 20px;
 
-    >>> path {
+    ::v-deep path {
       fill: $color-background;
     }
   }

@@ -87,7 +87,7 @@ export default class TagSelector extends Vue {
 .tag-input {
   width: 33%;
 
-  >>> .v-autocomplete {
+  ::v-deep .v-autocomplete {
     .v-icon {
       transform: none !important;
     }

@@ -79,7 +79,7 @@ export default class Comments extends Vue {
 .comment-input {
   height: 100%;
 
-  >>> {
+  ::v-deep {
     .text-area {
       border: 1px solid $color-secondary;
     }

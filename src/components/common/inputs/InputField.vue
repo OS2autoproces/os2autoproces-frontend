@@ -53,7 +53,7 @@ export default class InputField extends Vue {
     width: 20px;
     flex: 0 0 auto;
 
-    >>> svg {
+    ::v-deep svg {
       height: 20px;
       width: 20px;
     }
