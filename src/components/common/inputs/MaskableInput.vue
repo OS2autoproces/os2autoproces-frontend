@@ -14,7 +14,7 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 
-@Component
+@Component({})
 export default class MaskableInputComponent extends Vue {
   @Prop(String) mask!: string;
   @Prop(String) value!: string;
