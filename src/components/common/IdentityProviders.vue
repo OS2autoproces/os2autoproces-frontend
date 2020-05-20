@@ -1,9 +1,9 @@
 <template>
   <v-card class="card">
-    <v-app-bar class="toolbar">
+    <v-toolbar class="toolbar">
       <v-spacer></v-spacer>Log ind som
       <v-spacer></v-spacer>
-    </v-app-bar>
+    </v-toolbar>
     <div>
       <v-list>
         <template v-for="item in identityProviders">
@@ -54,7 +54,7 @@ export default class IdentityProviders extends Vue {
 <style lang="scss" scoped>
 @import '../../styles/variables';
 
-.toolbar {
+.theme--light.v-toolbar.v-sheet {
   margin: auto;
   color: white;
   background-color: $color-primary;

@@ -69,7 +69,7 @@ body {
     color: inherit;
   }
 
-  .application--wrap {
+  .v-application--wrap {
     .router-view {
       flex-grow: 1;
       display: flex;
