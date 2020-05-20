@@ -10,6 +10,7 @@
       :clearable="clearable"
       :placeholder="placeholder"
       @change="valueChanged"
+      autocomplete="on"
     >
       <template slot="item" slot-scope="data">
         <SelectionFieldText :itemText="data.item[itemText]" :subText="data.item[itemSubText]" />

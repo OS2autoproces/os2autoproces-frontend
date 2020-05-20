@@ -76,10 +76,16 @@ export default class NavBar extends Vue {
 
 .link {
   margin-left: 2rem;
+  color: $color-primary;
+}
+
+.logout-button {
+  color: $color-primary;
 }
 
 .logo-link {
   text-decoration: none;
+  color: $color-primary;
 }
 
 .user {
