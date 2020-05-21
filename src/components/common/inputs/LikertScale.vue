@@ -1,23 +1,13 @@
 <template>
   <div class="scale" :class="{ disabled }">
-    <div
-      class="scale-option"
-      v-for="likert in items"
-      :key="likert.value"
-      @click="select(likert.value)"
-    >
-      <Checkbox
-        class="checkbox"
-        :hasError="hasError"
-        :disabled="disabled"
-        :value="likert.value === value"
-      />
-      <div class="label">{{likert.label}}</div>
+    <div class="scale-option" v-for="likert in items" :key="likert.value" @click="select(likert.value)">
+      <Checkbox class="checkbox" :disabled="disabled" :value="likert.value === value" :hasError="hasError" />
+      <div class="label">{{ likert.label }}</div>
     </div>
   </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import Checkbox from './Checkbox.vue';
 import { LikertScaleKeys, LikertScaleLabels } from '@/models/likert-scale';
@@ -65,12 +55,12 @@ export default class LikertScale extends Vue {
 .scale-option {
   text-align: center;
 
-  &:last-of-type .checkbox /deep/ .checkbox-icon {
+  &:last-of-type .checkbox ::v-deep .checkbox-icon {
     border-color: $color-grey;
   }
 }
 
-.checkbox /deep/ .checkbox-icon {
+.checkbox ::v-deep .checkbox-icon {
   height: 2rem;
   width: 2rem;
 }
@@ -81,4 +71,3 @@ export default class LikertScale extends Vue {
   color: $color-secondary;
 }
 </style>
-

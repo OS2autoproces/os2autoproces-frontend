@@ -5,16 +5,16 @@
     heading="Drift"
     id="operation"
     :disabled="state.disabled.operationEdit"
-    @edit="update({disabled: {operationEdit: $event}})"
+    @edit="update({ disabled: { operationEdit: $event } })"
   >
-    <div class="rating-wrapper" :class="{disabled: state.disabled.operationEdit}">
+    <div class="rating-wrapper" :class="{ disabled: state.disabled.operationEdit }">
       <div class="rating-label">
         I hvor høj grad indfriede løsningen de forventede gevinster? *
         <InfoTooltip>Skalaen lav, mellem, høj angiver graden af gevinstrealisering.</InfoTooltip>
       </div>
       <Rating
         class="rating"
-        @change="update({rating: $event})"
+        @change="update({ rating: $event })"
         :disabled="state.disabled.operationEdit"
         :value="state.rating"
         id="rating"
@@ -25,7 +25,7 @@
       <div>
         <WellItem labelWidth="55%" label="Sidst kontrolleret i forhold til §">
           <DatePicker
-            @change="update({legalClauseLastVerified: $event})"
+            @change="update({ legalClauseLastVerified: $event })"
             :disabled="state.disabled.operationEdit"
             :value="state.legalClauseLastVerified"
             id="legalClauseLastVerified"
@@ -35,7 +35,7 @@
       <div>
         <WellItem labelWidth="55%" label="Løsning taget ud af drift">
           <DatePicker
-            @change="update({decommissioned: $event})"
+            @change="update({ decommissioned: $event })"
             :disabled="state.disabled.operationEdit"
             :value="state.decommissioned"
             id="decommissioned"
@@ -47,7 +47,7 @@
     <h2>Kommentar til realiseret gevinster</h2>
     <TextArea
       :max-length="10000"
-      @change="update({ratingComment: $event})"
+      @change="update({ ratingComment: $event })"
       :disabled="state.disabled.operationEdit"
       :value="state.ratingComment"
       id="ratingComment"
@@ -115,7 +115,7 @@ export default class OperationForm extends Vue {
     margin-top: 0.5rem;
     width: 160px;
 
-    /deep/ svg {
+    ::v-deep svg {
       height: 2rem;
       width: 2rem;
     }

@@ -3,14 +3,14 @@
     <div class="associated-list">
       <div class="associated-label">
         Tilknyttede personer
-        <InfoTooltip>Her kan du tilføje personer der arbejder med automatisering af processen og derfor skal kunne redigere i beskrivelserne. Det kan f.eks. være projektmedarbejdere og udviklere.</InfoTooltip>
+        <InfoTooltip
+          >Her kan du tilføje personer der arbejder med automatisering af processen og derfor skal kunne redigere i
+          beskrivelserne. Det kan f.eks. være projektmedarbejdere og udviklere.</InfoTooltip
+        >
       </div>
-      <div
-        class="associated-persons-list"
-        :class="{ disabled, empty: !state.process.users.length }"
-      >
+      <div class="associated-persons-list" :class="{ disabled, empty: !state.process.users.length }">
         <div v-for="(user, index) in state.process.users" :key="index">
-          <div class="name">{{user.name}}</div>
+          <div class="name">{{ user.name }}</div>
           <div v-if="!disabled" @click="removeUser(user)" class="delete-icon">
             <DeleteIcon />
           </div>
@@ -143,7 +143,7 @@ export default class AssociatedPersonsInput extends Vue {
     width: 250px;
   }
 
-  /deep/ .v-autocomplete {
+  ::v-deep .v-autocomplete {
     .v-icon {
       transform: none !important;
     }

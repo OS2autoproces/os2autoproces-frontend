@@ -6,7 +6,9 @@
       :key="item.id"
       :class="{ 'in-view': itemInView === item }"
       @click="scrollTo(item)"
-    >{{item.heading}}</div>
+    >
+      {{ item.heading }}
+    </div>
   </div>
 </template>
 
@@ -22,7 +24,7 @@ export interface MenuItem {
   show: boolean;
 }
 
-@Component
+@Component({})
 export default class ProcessMenu extends Vue {
   @Prop(String) phase!: Phase;
   @Prop(Boolean) canEdit!: boolean;

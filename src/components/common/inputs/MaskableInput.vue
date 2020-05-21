@@ -3,23 +3,27 @@
     <v-text-field
       v-if="!disabled"
       :value="value"
-      :mask="mask"
-      :return-masked-value="returnMasked"
+      v-facade="mask"
       @input="valueChanged($event)"
-      :class="{hasError: hasError}"
+      :class="{ hasError: hasError }"
     />
-    <div v-if="disabled">{{value}}</div>
+    <div v-if="disabled">{{ value }}</div>
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
+// @ts-ignore
+import { InputFacade, facade, filter } from 'vue-input-facade';
 
-@Component
+@Component({
+  components: { InputFacade },
+  directives: { facade },
+  filters: { facade: filter }
+})
 export default class MaskableInputComponent extends Vue {
   @Prop(String) mask!: string;
   @Prop(String) value!: string;
-  @Prop(Boolean) returnMasked!: boolean;
   @Prop(Boolean) disabled!: boolean;
   @Prop(Boolean) hasError!: boolean;
 
@@ -32,7 +36,7 @@ export default class MaskableInputComponent extends Vue {
 <style lang="scss" scoped>
 @import '@/styles/variables.scss';
 
-.v-text-field::v-deep {
+.v-text-field ::v-deep {
   display: flex;
   border: 1px solid $color-primary;
   border-radius: 30px;

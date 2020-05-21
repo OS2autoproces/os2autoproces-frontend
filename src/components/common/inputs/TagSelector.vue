@@ -2,13 +2,8 @@
   <div>
     <div class="tag-list">
       <div v-for="(tag, index) in value" :key="index" class="tag-item">
-        {{tag.name}}
-        <span
-          role="button"
-          @click="removeTag(index)"
-          class="delete-icon"
-          v-if="!disabled"
-        >
+        {{ tag.name }}
+        <span role="button" @click="removeTag(index)" class="delete-icon" v-if="!disabled">
           <DeleteIcon />
         </span>
       </div>
@@ -94,7 +89,7 @@ export default class TagSelector extends Vue {
 .tag-input {
   width: 33%;
 
-  /deep/ .v-autocomplete {
+  ::v-deep .v-autocomplete {
     .v-icon {
       transform: none !important;
     }

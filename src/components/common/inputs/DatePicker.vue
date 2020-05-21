@@ -1,14 +1,22 @@
 <template>
   <div class="date-picker-wrap">
-    <InputField class="date-picker" :disabled="disabled" :value="inputValue" placeholder="DD/MM/YYYY" @change="onInputChange($event)" />
-    <v-menu v-if="!disabled" :close-on-content-click="false" transition="scale-transition">
+    <InputField
+      class="date-picker"
+      :disabled="disabled"
+      :value="inputValue"
+      placeholder="DD/MM/YYYY"
+      @change="onInputChange($event)"
+    />
+    <v-menu eager v-if="!disabled" :close-on-content-click="false" transition="scale-transition">
       <v-date-picker :value="value" no-title @input="onDatePickerChange($event)" />
-      <i slot="activator" class="material-icons md-36 calender-icon">today</i>
+      <template v-slot:activator="{ on }">
+        <em v-on="on" class="material-icons md-36 calender-icon">today</em>
+      </template>
     </v-menu>
   </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import InputField from '@/components/common/inputs/InputField.vue';
 import { DateTime } from 'luxon';

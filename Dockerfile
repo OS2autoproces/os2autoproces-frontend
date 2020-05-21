@@ -1,5 +1,5 @@
 #==================== Building Stage =====================================
-FROM node:10.4.1 as node
+FROM node:14.2.0 as node
 
 WORKDIR /app
 
@@ -23,7 +23,7 @@ COPY .postcssrc.js /app
 RUN npm run build
 
 #==================== Setting up stage ====================
-FROM nginx:1.15.0-alpine
+FROM nginx:1.17.10-alpine
 
 EXPOSE 80
 

@@ -1,39 +1,32 @@
 <template>
   <div>
-    <div
-      class="text-area"
-      :class="{ 'out-of-bounds': (currentLength > maxLength),  hasError: hasError }"
-      v-if="!disabled"
-    >
+    <div class="text-area" :class="{ 'out-of-bounds': currentLength > maxLength, hasError: hasError }" v-if="!disabled">
       <textarea
         :value="value"
         @input="valueChanged"
         :placeholder="placeholder"
-        :class="{ 'no-resize': noResize}"
-        :style="{'min-height': minHeight}"
+        :class="{ 'no-resize': noResize }"
+        :style="{ 'min-height': minHeight }"
       />
       <div class="text-area-overlay">
-        <div
-          class="text-area-char-count"
-          v-if="maxLength"
-        >({{currentLength}} ud af {{maxLength}} tegn)</div>
+        <div class="text-area-char-count" v-if="maxLength">({{ currentLength }} ud af {{ maxLength }} tegn)</div>
         <slot />
       </div>
     </div>
     <div
       class="text-area-readonly"
-      :class="{'double-column': twoColumns, 'full-width': fullWidth }"
+      :class="{ 'double-column': twoColumns, 'full-width': fullWidth }"
       v-if="disabled"
       v-html="sanitizedHtml"
     ></div>
   </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import DOMPurify from 'dompurify';
 
-@Component
+@Component({})
 export default class TextArea extends Vue {
   @Prop(String)
   value!: string;
@@ -131,4 +124,3 @@ textarea {
   column-gap: 5rem;
 }
 </style>
-
