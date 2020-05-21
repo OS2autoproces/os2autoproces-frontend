@@ -6,8 +6,8 @@ import { RunPeriod, RunPeriodKeys } from '@/models/runperiod';
 import { Type, TypeKeys } from '@/models/types';
 import { Visibility, VisibilityKeys } from '@/models/visibility';
 import { User } from '@/store/modules/auth/state';
-import { state } from '@/store/modules/common';
 import { ITSystem, Link, OrgUnit, Process, ProcessState, Technology } from '@/store/modules/process/state';
+import store from '@/store/store';
 
 export interface ProcessRequest {
   klId: string | null;
@@ -176,64 +176,64 @@ function defaultZero(prop: any) {
   return prop ? Number(prop) : 0;
 }
 
-function stateToRequestFields(processState: ProcessState): ProcessRequest {
+function stateToRequestFields(state: ProcessState): ProcessRequest {
   return {
-    klId: defaultNull(processState.klId),
-    esdhReference: defaultNull(processState.esdhReference),
-    phase: processState.phase || PhaseKeys.IDEA,
-    status: processState.status || StatusKeys.PENDING,
-    statusText: defaultNull(processState.statusText),
-    runPeriod: processState.runPeriod || RunPeriodKeys.ONDEMAND,
-    created: defaultNull(processState.created),
-    lastChanged: defaultNull(processState.lastChanged),
-    decommissioned: defaultNull(processState.decommissioned),
-    title: processState.title,
-    shortDescription: processState.shortDescription,
-    longDescription: defaultNull(processState.longDescription),
-    domains: processState.domains || [],
-    visibility: processState.visibility || VisibilityKeys.MUNICIPALITY,
-    legalClause: defaultNull(processState.legalClause),
-    legalClauseLastVerified: defaultNull(processState.legalClauseLastVerified),
-    kle: processState.kle ? processState.kle.code : null,
-    form: processState.form ? processState.form.code : null,
-    kla: defaultNull(processState.kla),
-    codeRepositoryUrl: processState.codeRepositoryUrl,
-    links: defaultNull(processState.links),
-    vendor: defaultNull(processState.vendor),
-    internalNotes: defaultNull(processState.internalNotes),
-    processChallenges: defaultNull(processState.processChallenges),
-    solutionRequests: defaultNull(processState.solutionRequests),
-    timeSpendEmployeesDoingProcess: defaultZero(processState.timeSpendEmployeesDoingProcess),
-    timeSpendOccurancesPerEmployee: defaultZero(processState.timeSpendOccurancesPerEmployee),
-    timeSpendPercentageDigital: defaultZero(processState.timeSpendPercentageDigital),
-    timeSpendPerOccurance: defaultZero(processState.timeSpendPerOccurance),
-    timeSpendComment: processState.timeSpendComment,
-    targetsCompanies: processState.targetsCompanies,
-    targetsCitizens: processState.targetsCitizens,
-    levelOfProfessionalAssessment: processState.levelOfProfessionalAssessment || LikertScaleKeys.UNKNOWN,
-    levelOfChange: processState.levelOfChange || LikertScaleKeys.UNKNOWN,
-    levelOfDigitalInformation: processState.levelOfDigitalInformation || LikertScaleKeys.UNKNOWN,
-    levelOfStructuredInformation: processState.levelOfStructuredInformation || LikertScaleKeys.UNKNOWN,
-    levelOfUniformity: processState.levelOfUniformity || LikertScaleKeys.UNKNOWN,
-    evaluatedLevelOfRoi: processState.evaluatedLevelOfRoi || LikertScaleKeys.UNKNOWN,
-    levelOfQuality: processState.levelOfQuality || LikertScaleKeys.UNKNOWN,
-    levelOfSpeed: processState.levelOfSpeed || LikertScaleKeys.UNKNOWN,
-    levelOfRoutineWorkReduction: processState.levelOfRoutineWorkReduction || LikertScaleKeys.UNKNOWN,
-    technicalImplementationNotes: defaultNull(processState.technicalImplementationNotes),
-    organizationalImplementationNotes: defaultNull(processState.organizationalImplementationNotes),
-    rating: defaultNull(processState.rating),
-    ratingComment: defaultNull(processState.ratingComment),
+    klId: defaultNull(state.klId),
+    esdhReference: defaultNull(state.esdhReference),
+    phase: state.phase || PhaseKeys.IDEA,
+    status: state.status || StatusKeys.PENDING,
+    statusText: defaultNull(state.statusText),
+    runPeriod: state.runPeriod || RunPeriodKeys.ONDEMAND,
+    created: defaultNull(state.created),
+    lastChanged: defaultNull(state.lastChanged),
+    decommissioned: defaultNull(state.decommissioned),
+    title: state.title,
+    shortDescription: state.shortDescription,
+    longDescription: defaultNull(state.longDescription),
+    domains: state.domains || [],
+    visibility: state.visibility || VisibilityKeys.MUNICIPALITY,
+    legalClause: defaultNull(state.legalClause),
+    legalClauseLastVerified: defaultNull(state.legalClauseLastVerified),
+    kle: state.kle ? state.kle.code : null,
+    form: state.form ? state.form.code : null,
+    kla: defaultNull(state.kla),
+    codeRepositoryUrl: state.codeRepositoryUrl,
+    links: defaultNull(state.links),
+    vendor: defaultNull(state.vendor),
+    internalNotes: defaultNull(state.internalNotes),
+    processChallenges: defaultNull(state.processChallenges),
+    solutionRequests: defaultNull(state.solutionRequests),
+    timeSpendEmployeesDoingProcess: defaultZero(state.timeSpendEmployeesDoingProcess),
+    timeSpendOccurancesPerEmployee: defaultZero(state.timeSpendOccurancesPerEmployee),
+    timeSpendPercentageDigital: defaultZero(state.timeSpendPercentageDigital),
+    timeSpendPerOccurance: defaultZero(state.timeSpendPerOccurance),
+    timeSpendComment: state.timeSpendComment,
+    targetsCompanies: state.targetsCompanies,
+    targetsCitizens: state.targetsCitizens,
+    levelOfProfessionalAssessment: state.levelOfProfessionalAssessment || LikertScaleKeys.UNKNOWN,
+    levelOfChange: state.levelOfChange || LikertScaleKeys.UNKNOWN,
+    levelOfDigitalInformation: state.levelOfDigitalInformation || LikertScaleKeys.UNKNOWN,
+    levelOfStructuredInformation: state.levelOfStructuredInformation || LikertScaleKeys.UNKNOWN,
+    levelOfUniformity: state.levelOfUniformity || LikertScaleKeys.UNKNOWN,
+    evaluatedLevelOfRoi: state.evaluatedLevelOfRoi || LikertScaleKeys.UNKNOWN,
+    levelOfQuality: state.levelOfQuality || LikertScaleKeys.UNKNOWN,
+    levelOfSpeed: state.levelOfSpeed || LikertScaleKeys.UNKNOWN,
+    levelOfRoutineWorkReduction: state.levelOfRoutineWorkReduction || LikertScaleKeys.UNKNOWN,
+    technicalImplementationNotes: defaultNull(state.technicalImplementationNotes),
+    organizationalImplementationNotes: defaultNull(state.organizationalImplementationNotes),
+    rating: defaultNull(state.rating),
+    ratingComment: defaultNull(state.ratingComment),
     searchWords: '',
-    type: processState.type || TypeKeys.CHILD,
-    itSystemsDescription: defaultNull(processState.itSystemsDescription),
-    sepMep: processState.sepMep,
-    contact: processState.contact && relation('users', processState.contact),
-    owner: processState.owner && relation('users', processState.owner),
-    orgUnits: relationArray('orgUnits', processState.orgUnits),
-    users: relationArray('users', processState.users),
-    technologies: relationArray('technologies', processState.technologies),
-    itSystems: relationArray('itSystems', processState.itSystems),
-    children: relationArray('processes', processState.children)
+    type: state.type || TypeKeys.CHILD,
+    itSystemsDescription: defaultNull(state.itSystemsDescription),
+    sepMep: state.sepMep,
+    contact: state.contact && relation('users', state.contact),
+    owner: state.owner && relation('users', state.owner),
+    orgUnits: relationArray('orgUnits', state.orgUnits),
+    users: relationArray('users', state.users),
+    technologies: relationArray('technologies', state.technologies),
+    itSystems: relationArray('itSystems', state.itSystems),
+    children: relationArray('processes', state.children)
   };
 }
 
@@ -261,21 +261,18 @@ function buildUmbrellaRequest(request: ProcessRequest): Partial<ProcessRequest> 
   ]);
 }
 
-export function stateToRequest(processState: ProcessState): Partial<ProcessRequest> {
-  const request = stateToRequestFields(processState);
+export function stateToRequest(state: ProcessState): Partial<ProcessRequest> {
+  const request = stateToRequestFields(state);
 
-  if (processState.type === TypeKeys.GLOBAL_PARENT || processState.type === TypeKeys.PARENT) {
+  if (state.type === TypeKeys.GLOBAL_PARENT || state.type === TypeKeys.PARENT) {
     return buildUmbrellaRequest(request);
   }
-
-  return stateToRequestFields(processState);
+  return request;
 }
 
 export function responseToState(process: ProcessResponse): Process {
-  const kle = state.kles.find(k => k.code === process.kle);
-  const kleName = !!kle ? kle.name : null;
-  const form = state.forms.find(f => f.code === process.form);
-  const formDesc = !!form ? form.description : null;
+  const form = store.state.common.forms.find(f => f.code === process.form);
+  const kle = store.state.common.kles.find(k => k.code === process.kle);
   return {
     ...process,
     id: process.id.toString(),
@@ -300,9 +297,9 @@ export function responseToState(process: ProcessResponse): Process {
     technologies: process.technologies || [],
     users: process.users || [],
     klId: process.klId || '',
-    form: process.form ? { code: process.form, description: !!formDesc ? formDesc : '' } : null,
+    form: process.form ? { code: process.form, description: !!form ? form.description : '' } : null,
     legalClause: process.legalClause || '',
-    kle: process.kle ? { code: process.kle, name: !!kleName ? kleName : '' } : null,
+    kle: process.kle ? { code: process.kle, name: !!kle ? kle.name : '' } : null,
     kla: process.kla || '',
     codeRepositoryUrl: process.codeRepositoryUrl || '',
     links: process.links || [],
