@@ -4,7 +4,7 @@
     heading="Tid og proces"
     id="time-and-process"
     :disabled="state.disabled.timeAndProcessEdit"
-    @edit="update({disabled: {timeAndProcessEdit: $event}})"
+    @edit="update({ disabled: { timeAndProcessEdit: $event } })"
   >
     <Well>
       <div>
@@ -16,9 +16,10 @@
           <InputField
             :type="'number'"
             :value="state.timeSpendOccurancesPerEmployee"
+            :hasError="isInErrors('timeSpendOccurancesPerEmployee')"
             id="timeSpendOccurancesPerEmployee"
             :disabled="state.disabled.timeAndProcessEdit"
-            @change="update({timeSpendOccurancesPerEmployee: $event})"
+            @change="update({ timeSpendOccurancesPerEmployee: $event })"
           />
         </WellItem>
         <WellItem
@@ -30,8 +31,9 @@
             :type="'number'"
             :disabled="state.disabled.timeAndProcessEdit"
             :value="state.timeSpendPerOccurance"
+            :hasError="isInErrors('timeSpendPerOccurance')"
             id="timeSpendPerOccurance"
-            @change="update({timeSpendPerOccurance: $event})"
+            @change="update({ timeSpendPerOccurance: $event })"
           />
         </WellItem>
         <WellItem
@@ -43,9 +45,11 @@
             :type="'number'"
             :disabled="state.disabled.timeAndProcessEdit"
             :value="state.timeSpendPercentageDigital"
+            :hasError="isInErrors('timeSpendPercentageDigital')"
             id="timeSpendPercentageDigital"
-            @change="update({timeSpendPercentageDigital: $event})"
-          >%</InputField>
+            @change="update({ timeSpendPercentageDigital: $event })"
+            >%</InputField
+          >
         </WellItem>
         <WellItem
           labelWidth="70%"
@@ -73,16 +77,18 @@
             :type="'number'"
             :disabled="state.disabled.timeAndProcessEdit"
             :value="state.timeSpendEmployeesDoingProcess"
+            :hasError="isInErrors('timeSpendEmployeesDoingProcess')"
             id="timeSpendEmployeesDoingProcess"
-            @change="update({timeSpendEmployeesDoingProcess: $event})"
+            @change="update({ timeSpendEmployeesDoingProcess: $event })"
           />
         </WellItem>
         <WellItem labelWidth="70%" label="Er borgere påvirket?">
           <MappedSelectionField
             :disabled="state.disabled.timeAndProcessEdit"
             :value="state.targetsCitizens"
+            :hasError="isInErrors('targetsCitizens')"
             id="targetsCitizens"
-            @change="update({targetsCitizens: $event})"
+            @change="update({ targetsCitizens: $event })"
             :items="yesNoItems"
           />
         </WellItem>
@@ -90,8 +96,9 @@
           <MappedSelectionField
             :disabled="state.disabled.timeAndProcessEdit"
             :value="state.targetsCompanies"
+            :hasError="isInErrors('targetsCompanies')"
             id="targetsCompanies"
-            @change="update({targetsCompanies: $event})"
+            @change="update({ targetsCompanies: $event })"
             :items="yesNoItems"
           />
         </WellItem>
@@ -100,14 +107,16 @@
 
     <div class="comments-wrap">
       <span>Kommentar vedr. tidsforbrug</span>
-      <InfoTooltip
-        class="time-proces-tooltip"
-      >Her kan du uddybe eller kommentere på de indtastede værdier ovenfor og på tidsforbruget generelt. F.eks. hvordan det er målt.</InfoTooltip>
+      <InfoTooltip class="time-proces-tooltip"
+        >Her kan du uddybe eller kommentere på de indtastede værdier ovenfor og på tidsforbruget generelt. F.eks.
+        hvordan det er målt.</InfoTooltip
+      >
       <TextArea
         :value="state.timeSpendComment"
+        :hasError="isInErrors('timeSpendComment')"
         id="timeSpendComment"
         :disabled="state.disabled.timeAndProcessEdit"
-        @change="update({timeSpendComment: $event})"
+        @change="update({ timeSpendComment: $event })"
         :maxLength="10000"
       />
     </div>
@@ -169,6 +178,10 @@ export default class TimeAndProcessForm extends Vue {
 
   get state() {
     return this.$store.state.process;
+  }
+
+  isInErrors(name: string) {
+    return this.$store.state.error['timeAndProcess']['errors'].some((e: any) => e['name'] === name);
   }
 }
 </script>

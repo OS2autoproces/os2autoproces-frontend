@@ -4,36 +4,21 @@
     heading="Grundlæggende oplysninger"
     id="general-information"
     :disabled="state.disabled.generalInformationEdit"
-    @edit="update({disabled: { generalInformationEdit: $event} })"
+    @edit="update({ disabled: { generalInformationEdit: $event } })"
     always-open
   >
     <div class="title-row">
       <div class="title-label">Titel: *</div>
-      <v-text-field
-        solo
-        outline
-        dense
-        rounded
-        flat
-        :value="state.title"
-        :disabled="state.disabled.generalInformationEdit"
-        id="title"
-      />
-      <!-- <InputField
+      <InputField
         class="title-field flex-grow"
         :value="state.title"
         :disabled="state.disabled.generalInformationEdit"
         :hasError="isInErrors('title')"
-        :class="{ disabled: state.disabled.generalInformationEdit}"
+        :class="{ disabled: state.disabled.generalInformationEdit }"
         @change="update({ title: $event })"
         id="title"
-      />-->
-      <div
-        v-if="!isReporting"
-        class="bookmark-button"
-        role="button"
-        @click="setBookmark(!state.hasBookmarked)"
-      >
+      />
+      <div v-if="!isReporting" class="bookmark-button" role="button" @click="setBookmark(!state.hasBookmarked)">
         <StarIcon :class="{ selected: state.hasBookmarked }" />
       </div>
       <MunicipalityLogo :src="logo" />
@@ -62,7 +47,7 @@
             itemText="name"
             @search="search($event)"
             isItemsPartial
-            @change="update({owner: $event})"
+            @change="update({ owner: $event })"
             :items="users"
             id="owner"
           />
@@ -80,13 +65,13 @@
             itemText="name"
             @search="search($event)"
             isItemsPartial
-            @change="update({contact: $event})"
+            @change="update({ contact: $event })"
             :items="users"
             id="contact"
             clearable
           />
         </WellItem>
-        <WellItem v-if="state.contact" labelWidth="180px" label="Mail:">{{state.contact.email}}</WellItem>
+        <WellItem v-if="state.contact" labelWidth="180px" label="Mail:">{{ state.contact.email }}</WellItem>
       </div>
 
       <div>
@@ -100,7 +85,7 @@
             :value="state.visibility"
             :hasError="isInErrors('visibility')"
             id="visibility"
-            @change="update({visibility: $event})"
+            @change="update({ visibility: $event })"
             :items="visibilityLevels"
           />
         </WellItem>
@@ -110,7 +95,7 @@
             :value="state.domains"
             :hasError="isInErrors('domains')"
             id="domains"
-            @change="assign({domains: $event})"
+            @change="assign({ domains: $event })"
           />
         </WellItem>
         <WellItem labelWidth="120px" label="Afdelinger:" v-if="isWithinMunicipality">
@@ -118,7 +103,7 @@
             :disabled="state.disabled.generalInformationEdit"
             :value="state.orgUnits"
             :hasError="isInErrors('orgUnits')"
-            @change="assign({orgUnits: $event})"
+            @change="assign({ orgUnits: $event })"
             :items="orgUnits"
             id="orgUnits"
             multiple
@@ -136,7 +121,7 @@
             :value="state.vendor"
             :hasError="isInErrors('vendor')"
             id="vendor"
-            @change="update({vendor: $event})"
+            @change="update({ vendor: $event })"
           />
         </WellItem>
         <WellItem v-if="state.sepMep" labelWidth="120px" label="SEP/MEP:">
@@ -144,7 +129,7 @@
             :disabled="true"
             :value="state.sepMep"
             :hasError="isInErrors('sepMep')"
-            @change="update({sepMep: $event})"
+            @change="update({ sepMep: $event })"
             id="sepMep"
           />
         </WellItem>
@@ -157,7 +142,7 @@
             :value="state.legalClause"
             :hasError="isInErrors('legalClause')"
             id="legalClause"
-            @change="update({legalClause: $event})"
+            @change="update({ legalClause: $event })"
           />
         </WellItem>
         <WellItem labelWidth="200px" label="KLE-nr:">
@@ -177,7 +162,7 @@
             :disabled="state.disabled.generalInformationEdit"
             :value="state.form"
             :hasError="isInErrors('form')"
-            @change="update({form: $event})"
+            @change="update({ form: $event })"
             :items="forms"
             id="form"
             itemText="code"
@@ -190,7 +175,7 @@
             :value="state.klId"
             :hasError="isInErrors('klId')"
             id="klId"
-            @change="update({klId: $event})"
+            @change="update({ klId: $event })"
           />
         </WellItem>
         <WellItem
@@ -224,7 +209,7 @@
         </h2>
         <TextArea
           :disabled="state.disabled.generalInformationEdit"
-          @change="update({shortDescription: $event})"
+          @change="update({ shortDescription: $event })"
           :value="state.shortDescription"
           :hasError="isInErrors('shortDescription')"
           id="shortDescription"
@@ -252,7 +237,7 @@
             :value="state.status"
             :hasError="isInErrors('status')"
             id="status"
-            @change="update({status: $event})"
+            @change="update({ status: $event })"
             :items="statusLevels"
           />
         </div>
@@ -266,21 +251,12 @@
 
     <div>
       <div v-if="state.status !== StatusKeys.INPROGRESS && state.status !== StatusKeys.NOT_RATED">
-        <h2
-          class="comments-heading"
-          v-if="state.status === StatusKeys.FAILED"
-        >Hvorfor er processen mislykket?</h2>
-        <h2
-          class="comments-heading"
-          v-if="state.status === StatusKeys.PENDING"
-        >Hvorfor afventer processen?</h2>
-        <h2
-          class="comments-heading"
-          v-if="state.status === StatusKeys.REJECTED"
-        >Hvorfor er processen afvist?</h2>
+        <h2 class="comments-heading" v-if="state.status === StatusKeys.FAILED">Hvorfor er processen mislykket?</h2>
+        <h2 class="comments-heading" v-if="state.status === StatusKeys.PENDING">Hvorfor afventer processen?</h2>
+        <h2 class="comments-heading" v-if="state.status === StatusKeys.REJECTED">Hvorfor er processen afvist?</h2>
         <TextArea
           :disabled="state.disabled.generalInformationEdit"
-          @change="update({statusText: $event})"
+          @change="update({ statusText: $event })"
           :value="state.statusText"
           id="statusText"
         />

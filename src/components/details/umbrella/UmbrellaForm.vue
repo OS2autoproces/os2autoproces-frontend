@@ -3,7 +3,7 @@
     :invalid="!isUmbrellaValid"
     heading="Paraplyproces"
     :disabled="state.disabled.generalInformationEdit"
-    @edit="update({disabled: { generalInformationEdit: $event} })"
+    @edit="update({ disabled: { generalInformationEdit: $event } })"
     always-open
   >
     <div class="umbrella-wrapper">
@@ -12,17 +12,13 @@
         <InputField
           class="title-field flex-grow"
           :value="state.title"
+          :hasError="isInErrors('title')"
           id="title"
           :disabled="state.disabled.generalInformationEdit"
           :class="{ disabled: state.disabled.generalInformationEdit }"
           @change="update({ title: $event })"
         />
-        <div
-          v-if="!isReporting"
-          class="bookmark-button"
-          role="button"
-          @click="setBookmark(!state.hasBookmarked)"
-        >
+        <div v-if="!isReporting" class="bookmark-button" role="button" @click="setBookmark(!state.hasBookmarked)">
           <StarIcon :class="{ selected: state.hasBookmarked }" />
         </div>
         <MunicipalityLogo :src="logo" />
@@ -37,6 +33,7 @@
             <SelectionField
               :disabled="state.disabled.generalInformationEdit"
               :value="state.kle"
+              :hasError="isInErrors('kle')"
               id="kle"
               @change="setKle($event)"
               :items="kles"
@@ -48,8 +45,9 @@
             <SelectionField
               :disabled="state.disabled.generalInformationEdit"
               :value="state.form"
+              :hasError="isInErrors('form')"
               id="form"
-              @change="update({form: $event})"
+              @change="update({ form: $event })"
               :items="forms"
               itemText="code"
               clearable
@@ -59,8 +57,9 @@
             <InputField
               :disabled="state.disabled.generalInformationEdit"
               :value="state.klId"
+              :hasError="isInErrors('klId')"
               id="klId"
-              @change="update({klId: $event})"
+              @change="update({ klId: $event })"
             />
           </WellItem>
           <WellItem
@@ -72,6 +71,7 @@
               :disabled="state.disabled.generalInformationEdit"
               mask="##.##.##.##.##"
               :value="state.kla"
+              :hasError="isInErrors('kla')"
               id="kla"
               @change="setKla"
             />
@@ -83,8 +83,9 @@
             <DomainsField
               :disabled="state.disabled.generalInformationEdit"
               :value="state.domains"
+              :hasError="isInErrors('domains')"
               id="domains"
-              @change="assign({domains: $event})"
+              @change="assign({ domains: $event })"
             />
           </WellItem>
           <WellItem labelWidth="120px" label="Kontaktperson:">
@@ -92,20 +93,21 @@
               itemSubText="email"
               :disabled="state.disabled.generalInformationEdit"
               :value="state.contact"
+              :hasError="isInErrors('contact')"
               id="contact"
               itemText="name"
               @search="search($event)"
               isItemsPartial
-              @change="update({contact: $event})"
+              @change="update({ contact: $event })"
               :items="users"
               clearable
             />
           </WellItem>
-          <WellItem labelWidth="120px" v-if="state.contact" label="Mail:">{{state.contact.email}}</WellItem>
+          <WellItem labelWidth="120px" v-if="state.contact" label="Mail:">{{ state.contact.email }}</WellItem>
         </div>
 
         <div>
-          <WellItem labelWidth="120px" label="Synlighed:">{{TypeLabels[state.type]}}</WellItem>
+          <WellItem labelWidth="120px" label="Synlighed:">{{ TypeLabels[state.type] }}</WellItem>
           <WellItem labelWidth="120px" label="Oprettet:">
             <DatePicker :value="state.created" id="created" disabled />
           </WellItem>
@@ -120,8 +122,9 @@
       <h2>Resume *</h2>
       <TextArea
         :disabled="state.disabled.generalInformationEdit"
-        @change="update({shortDescription: $event})"
+        @change="update({ shortDescription: $event })"
         :value="state.shortDescription"
+        :hasError="isInErrors('shortDescription')"
         id="shortDescription"
         :maxLength="140"
       />
@@ -129,8 +132,9 @@
       <h2>Beskrivelse</h2>
       <TextArea
         :disabled="state.disabled.generalInformationEdit"
-        @change="update({longDescription: $event})"
+        @change="update({ longDescription: $event })"
         :value="state.longDescription"
+        :hasError="isInErrors('longDescription')"
         id="longDescription"
         :maxLength="10000"
       />
@@ -143,7 +147,8 @@
           <SmallSearchResult :process="process" />
           <div class="visibility-warning" v-if="isLessVisible(process.visibility)">
             <WarningIcon class="visibility-icon" />
-            Synligheden ændres fra {{VisibilityLabels[process.visibility]}} til {{VisibilityLabels[state.visibility]}}
+            Synligheden ændres fra {{ VisibilityLabels[process.visibility] }} til
+            {{ VisibilityLabels[state.visibility] }}
           </div>
         </router-link>
 
@@ -255,6 +260,10 @@ export default class UmbrellaForm extends Vue {
 
   get forms() {
     return this.$store.state.common.forms;
+  }
+
+  isInErrors(name: string) {
+    return this.$store.state.error['generalInformation']['errors'].some((e: any) => e['name'] === name);
   }
 
   search(name: string) {

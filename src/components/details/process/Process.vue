@@ -2,9 +2,7 @@
   <div class="page">
     <div class="side-bar">
       <div class="side-bar-content">
-        <router-link to="/search" class="search-page-link">
-          <ArrowLeftIcon />Tilbage til søgning
-        </router-link>
+        <router-link to="/search" class="search-page-link"> <ArrowLeftIcon />Tilbage til søgning </router-link>
 
         <ProcessMenu :phase="phase" :canEdit="state.canEdit" :isReporting="isReporting" />
 
@@ -33,13 +31,10 @@
             id="internal-notes"
             heading="Interne noter"
             :disabled="state.disabled.internalNotesEdit"
-            @edit="update({disabled: { internalNotesEdit: $event} })"
+            @edit="update({ disabled: { internalNotesEdit: $event } })"
             tooltip="Her kan du tilføje noter til og om processen, der kun vil være synlige for tilknyttede personer. Noterne bliver heller ikke delt, hvis processen deles med alle brugere i OS2autoproces."
           >
-            <InternalNotes
-              :internalNotes="state.internalNotes"
-              :disabled="state.disabled.internalNotesEdit"
-            />
+            <InternalNotes :internalNotes="state.internalNotes" :disabled="state.disabled.internalNotesEdit" />
           </FormSection>
         </div>
 
@@ -50,26 +45,17 @@
       </div>
     </div>
 
-    <SnackBar
-      showButton
-      :timeout="0"
-      color="error"
-      :value="snack"
-      @clicked="clearErrors"
-      class="bottom"
-    >
+    <SnackBar showButton :timeout="0" color="error" :value="snack" @clicked="clearErrors" bottom>
       <div>
         <h3>Følgende felter er ugyldige:</h3>
         <div class="snack-bar-list-container">
           <div v-for="section in errors" :key="section.section">
             <ul class="section-errors" v-if="section.errors.length > 0">
-              <span class="section-errors-title">{{section.section}}</span>
+              <span class="section-errors-title">{{ section.section }}</span>
               <li v-for="(field, i) in section.errors" :key="i">
-                <a
-                  class="snack-bar-list-item"
-                  @click="clickHashLink"
-                  :href="hashLink(field.name)"
-                >{{field.description}}</a>
+                <a class="snack-bar-list-item" @click="clickHashLink" :href="hashLink(field.name)">{{
+                  field.description
+                }}</a>
               </li>
             </ul>
           </div>
@@ -83,7 +69,8 @@
       :timeout="3000"
       color="success"
       @onSnackClose="showSaveSuccess = false"
-    >Processen er gemt!</SnackBar>
+      >Processen er gemt!</SnackBar
+    >
 
     <SnackBar
       :showButton="false"
@@ -91,7 +78,8 @@
       :timeout="5000"
       color="error"
       @onSnackClose="showSaveError = false"
-    >Processen er IKKE gemt - prøv igen!</SnackBar>
+      >Processen er IKKE gemt - prøv igen!</SnackBar
+    >
   </div>
 </template>
 
