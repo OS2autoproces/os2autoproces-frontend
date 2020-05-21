@@ -16,6 +16,8 @@
         @change="update({technicalImplementationNotes: $event})"
         :disabled="state.disabled.implementationEdit"
         :value="state.technicalImplementationNotes"
+        :hasError="isInErrors('technicalImplementationNotes')"
+        id="technicalImplementationNotes"
       />
     </div>
 
@@ -28,6 +30,8 @@
         @change="update({organizationalImplementationNotes: $event})"
         :disabled="state.disabled.implementationEdit"
         :value="state.organizationalImplementationNotes"
+        :hasError="isInErrors('organizationalImplementationNotes')"
+        id="organizationalImplementationNotes"
       />
     </div>
 
@@ -40,6 +44,8 @@
           @remove="removeTechnology($event)"
           :disabled="state.disabled.implementationEdit"
           :value="state.technologies"
+          :hasError="isInErrors('technologies')"
+          id="technologies"
           :items="technologies"
         />
       </div>
@@ -49,6 +55,8 @@
           class="run-period-field"
           :disabled="state.disabled.implementationEdit"
           :value="state.runPeriod"
+          :hasError="isInErrors('runPeriod')"
+          id="runPeriod"
           @change="update({runPeriod: $event})"
           :items="runPeriods"
         />
@@ -109,6 +117,10 @@ export default class ImplementationForm extends Vue {
 
   get state() {
     return this.$store.state.process;
+  }
+
+  isInErrors(name: string) {
+    return this.$store.state.error['implementation']['errors'].some((e: any) => e['name'] === name);
   }
 
   async mounted() {

@@ -7,6 +7,15 @@ import { ActionTree } from 'vuex';
 
 export const namespace = 'error';
 
+export class ErrorWithDescription {
+  name: string;
+  description: string;
+
+  constructor(name: string, description: string) {
+    this.name = name;
+    this.description = description;
+  }
+}
 export const errorActionTypes = {
   UPDATE_PROCESS_ERRORS: `${namespace}/updateProcessErrors`,
   CLEAR_ERRORS: `${namespace}/clearErrors`
@@ -114,6 +123,16 @@ interface ErrorLabels {
   operation: Array<keyof Process>;
 }
 
+const errorLabels: ErrorLabels = {
+  generalInformation: Object.keys(generalInformationLabels) as Array<keyof Process>,
+  challenges: Object.keys(challengesLabels) as Array<keyof Process>,
+  assessment: Object.keys(assessmentLabels) as Array<keyof Process>,
+  timeAndProcess: Object.keys(timeAndProcessLabels) as Array<keyof Process>,
+  attachments: Object.keys(attachmentsLabels) as Array<keyof Process>,
+  implementation: Object.keys(implementationLabels) as Array<keyof Process>,
+  operation: Object.keys(operationLabels) as Array<keyof Process>
+};
+
 const errorLimitations: { [key: string]: string } = {
   klId: 'maks 64 tegn',
   title: 'mellem 1 og 50 tegn',
@@ -129,16 +148,6 @@ const errorLimitations: { [key: string]: string } = {
   processChallenges: 'obligatorisk fra Idé-fasen'
 };
 
-const errorLabels: ErrorLabels = {
-  generalInformation: Object.keys(generalInformationLabels) as Array<keyof Process>,
-  challenges: Object.keys(challengesLabels) as Array<keyof Process>,
-  assessment: Object.keys(assessmentLabels) as Array<keyof Process>,
-  timeAndProcess: Object.keys(timeAndProcessLabels) as Array<keyof Process>,
-  attachments: Object.keys(attachmentsLabels) as Array<keyof Process>,
-  implementation: Object.keys(implementationLabels) as Array<keyof Process>,
-  operation: Object.keys(operationLabels) as Array<keyof Process>
-};
-
 export const actions: ActionTree<ErrorState, RootState> = {
   updateProcessErrors({ commit, state }, processState: ProcessState) {
     const sections = Object.keys(errorLabels) as Array<keyof ErrorLabels>;
@@ -146,17 +155,19 @@ export const actions: ActionTree<ErrorState, RootState> = {
     sections.forEach(section => {
       const sectionErrors = getInvalidProperties(processState, errorLabels[section]);
 
-      const errors = sectionErrors.map(error => {
-        const errorLabel = processLabels[error];
-        const limitationLabel = errorLimitations[error];
+      const errors = sectionErrors
+        .filter(error => processLabels[error])
+        .map(error => {
+          const errorLabel = processLabels[error];
+          const limitationLabel = errorLimitations[error];
 
-        if (errorLabel) {
-          const tempError = errorLabel.length < 35 ? errorLabel : errorLabel.slice(0, 25) + '...';
-          return tempError + (limitationLabel ? ` (${limitationLabel})` : '');
-        }
+          if (errorLabel) {
+            const tempError = errorLabel.length < 35 ? errorLabel : errorLabel.slice(0, 25) + '...';
+            return new ErrorWithDescription(error, tempError + (limitationLabel ? ` (${limitationLabel})` : ''));
+          }
 
-        return '';
-      });
+          return '';
+        });
 
       commit(errorMutationTypes.ASSIGN, { [section]: { errors, section: state[section].section } });
     });

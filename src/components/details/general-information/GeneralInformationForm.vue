@@ -9,13 +9,25 @@
   >
     <div class="title-row">
       <div class="title-label">Titel: *</div>
-      <InputField
+      <v-text-field
+        solo
+        outline
+        dense
+        rounded
+        flat
+        :value="state.title"
+        :disabled="state.disabled.generalInformationEdit"
+        id="title"
+      />
+      <!-- <InputField
         class="title-field flex-grow"
         :value="state.title"
         :disabled="state.disabled.generalInformationEdit"
-        :class="{ disabled: state.disabled.generalInformationEdit }"
+        :hasError="isInErrors('title')"
+        :class="{ disabled: state.disabled.generalInformationEdit}"
         @change="update({ title: $event })"
-      />
+        id="title"
+      />-->
       <div
         v-if="!isReporting"
         class="bookmark-button"
@@ -46,11 +58,13 @@
             itemSubText="email"
             :disabled="state.disabled.generalInformationEdit"
             :value="state.owner"
+            :hasError="isInErrors('owner')"
             itemText="name"
             @search="search($event)"
             isItemsPartial
             @change="update({owner: $event})"
             :items="users"
+            id="owner"
           />
         </WellItem>
         <WellItem
@@ -62,11 +76,13 @@
             itemSubText="email"
             :disabled="state.disabled.generalInformationEdit"
             :value="state.contact"
+            :hasError="isInErrors('contact')"
             itemText="name"
             @search="search($event)"
             isItemsPartial
             @change="update({contact: $event})"
             :items="users"
+            id="contact"
             clearable
           />
         </WellItem>
@@ -82,6 +98,8 @@
           <MappedSelectionField
             :disabled="!!state.parents.length || state.disabled.generalInformationEdit"
             :value="state.visibility"
+            :hasError="isInErrors('visibility')"
+            id="visibility"
             @change="update({visibility: $event})"
             :items="visibilityLevels"
           />
@@ -90,6 +108,8 @@
           <DomainsField
             :disabled="state.disabled.generalInformationEdit"
             :value="state.domains"
+            :hasError="isInErrors('domains')"
+            id="domains"
             @change="assign({domains: $event})"
           />
         </WellItem>
@@ -97,8 +117,10 @@
           <SelectionField
             :disabled="state.disabled.generalInformationEdit"
             :value="state.orgUnits"
+            :hasError="isInErrors('orgUnits')"
             @change="assign({orgUnits: $event})"
             :items="orgUnits"
+            id="orgUnits"
             multiple
             itemText="name"
           />
@@ -112,11 +134,19 @@
           <InputField
             :disabled="state.disabled.generalInformationEdit"
             :value="state.vendor"
+            :hasError="isInErrors('vendor')"
+            id="vendor"
             @change="update({vendor: $event})"
           />
         </WellItem>
         <WellItem v-if="state.sepMep" labelWidth="120px" label="SEP/MEP:">
-          <Checkbox :disabled="true" :value="state.sepMep" @change="update({sepMep: $event})" />
+          <Checkbox
+            :disabled="true"
+            :value="state.sepMep"
+            :hasError="isInErrors('sepMep')"
+            @change="update({sepMep: $event})"
+            id="sepMep"
+          />
         </WellItem>
       </div>
 
@@ -125,6 +155,8 @@
           <InputField
             :disabled="state.disabled.generalInformationEdit || state.form"
             :value="state.legalClause"
+            :hasError="isInErrors('legalClause')"
+            id="legalClause"
             @change="update({legalClause: $event})"
           />
         </WellItem>
@@ -132,8 +164,10 @@
           <SelectionField
             :disabled="state.disabled.generalInformationEdit"
             :value="state.kle"
+            :hasError="isInErrors('kle')"
             @change="setKle($event)"
             :items="kles"
+            id="kle"
             itemText="code"
             clearable
           />
@@ -142,8 +176,10 @@
           <SelectionField
             :disabled="state.disabled.generalInformationEdit"
             :value="state.form"
+            :hasError="isInErrors('form')"
             @change="update({form: $event})"
             :items="forms"
+            id="form"
             itemText="code"
             clearable
           />
@@ -152,6 +188,8 @@
           <InputField
             :disabled="state.disabled.generalInformationEdit"
             :value="state.klId"
+            :hasError="isInErrors('klId')"
+            id="klId"
             @change="update({klId: $event})"
           />
         </WellItem>
@@ -164,6 +202,8 @@
             :disabled="state.disabled.generalInformationEdit"
             mask="##.##.##.##.##"
             :value="state.kla"
+            :hasError="isInErrors('kla')"
+            id="kla"
             @change="setKla"
           />
         </WellItem>
@@ -186,6 +226,8 @@
           :disabled="state.disabled.generalInformationEdit"
           @change="update({shortDescription: $event})"
           :value="state.shortDescription"
+          :hasError="isInErrors('shortDescription')"
+          id="shortDescription"
           :maxLength="140"
           :minHeight="'50px'"
         />
@@ -197,6 +239,8 @@
             class="phase-field"
             :disabled="state.disabled.generalInformationEdit"
             :value="state.phase"
+            :hasError="isInErrors('phase')"
+            id="phase"
             @change="phaseChanged($event)"
           />
         </div>
@@ -206,6 +250,8 @@
             class="status-field"
             :disabled="state.disabled.generalInformationEdit"
             :value="state.status"
+            :hasError="isInErrors('status')"
+            id="status"
             @change="update({status: $event})"
             :items="statusLevels"
           />
@@ -236,6 +282,7 @@
           :disabled="state.disabled.generalInformationEdit"
           @change="update({statusText: $event})"
           :value="state.statusText"
+          id="statusText"
         />
       </div>
     </div>
@@ -285,6 +332,7 @@ import StarIcon from '@/components/icons/StarIcon.vue';
 import AppDialog from '@/components/common/Dialog.vue';
 import DialogContent from '@/components/common/DialogContent.vue';
 import Button from '@/components/common/inputs/Button.vue';
+import { ErrorState } from '@/store/modules/error/state';
 // TODO - split this component. No component should be 500 lines
 @Component({
   components: {
@@ -375,6 +423,10 @@ export default class GeneralInformationForm extends Vue {
 
   get orgUnits() {
     return this.$store.state.common.orgUnits;
+  }
+
+  isInErrors(name: string) {
+    return this.$store.state.error['generalInformation']['errors'].some((e: any) => e['name'] === name);
   }
 
   setKla(kla: string) {

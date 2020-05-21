@@ -2,14 +2,14 @@
   <div>
     <div
       class="text-area"
-      :class="{ 'out-of-bounds': (currentLength > maxLength) }"
+      :class="{ 'out-of-bounds': (currentLength > maxLength),  hasError: hasError }"
       v-if="!disabled"
     >
       <textarea
         :value="value"
         @input="valueChanged"
         :placeholder="placeholder"
-        :class="{ 'no-resize': noResize }"
+        :class="{ 'no-resize': noResize}"
         :style="{'min-height': minHeight}"
       />
       <div class="text-area-overlay">
@@ -53,6 +53,7 @@ export default class TextArea extends Vue {
   fullWidth!: boolean;
   @Prop({ type: String, default: '250px' })
   minHeight!: string;
+  @Prop(Boolean) hasError!: boolean;
 
   get sanitizedHtml(): string {
     return !!this.readonlyHtml
@@ -85,6 +86,9 @@ export default class TextArea extends Vue {
   padding-bottom: 25px;
   background: $color-background;
 
+  &.hasError {
+    border-color: red;
+  }
   &.out-of-bounds {
     border-color: red;
     box-shadow: inset 0 0 8px rgb(235, 98, 98);

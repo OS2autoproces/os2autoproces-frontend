@@ -1,10 +1,28 @@
 <template>
-  <FormSection :invalid="!isUmbrellaValid" heading="Paraplyproces" :disabled="state.disabled.generalInformationEdit" @edit="update({disabled: { generalInformationEdit: $event} })" always-open>
+  <FormSection
+    :invalid="!isUmbrellaValid"
+    heading="Paraplyproces"
+    :disabled="state.disabled.generalInformationEdit"
+    @edit="update({disabled: { generalInformationEdit: $event} })"
+    always-open
+  >
     <div class="umbrella-wrapper">
       <div class="title-row">
         <div class="title-label">Titel: *</div>
-        <InputField class="title-field flex-grow" :value="state.title" :disabled="state.disabled.generalInformationEdit" :class="{ disabled: state.disabled.generalInformationEdit }" @change="update({ title: $event })" />
-        <div v-if="!isReporting" class="bookmark-button" role="button" @click="setBookmark(!state.hasBookmarked)">
+        <InputField
+          class="title-field flex-grow"
+          :value="state.title"
+          id="title"
+          :disabled="state.disabled.generalInformationEdit"
+          :class="{ disabled: state.disabled.generalInformationEdit }"
+          @change="update({ title: $event })"
+        />
+        <div
+          v-if="!isReporting"
+          class="bookmark-button"
+          role="button"
+          @click="setBookmark(!state.hasBookmarked)"
+        >
           <StarIcon :class="{ selected: state.hasBookmarked }" />
         </div>
         <MunicipalityLogo :src="logo" />
@@ -13,43 +31,86 @@
       <Well>
         <div>
           <WellItem labelWidth="200px" label="ID:">
-            <InputField disabled :value="state.id" />
+            <InputField disabled :value="state.id" id="id" />
           </WellItem>
           <WellItem labelWidth="200px" label="KLE-nr:">
-            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.kle" @change="setKle($event)" :items="kles" itemText="code" clearable />
+            <SelectionField
+              :disabled="state.disabled.generalInformationEdit"
+              :value="state.kle"
+              id="kle"
+              @change="setKle($event)"
+              :items="kles"
+              itemText="code"
+              clearable
+            />
           </WellItem>
           <WellItem labelWidth="200px" label="FORM:" v-if="state.kle">
-            <SelectionField :disabled="state.disabled.generalInformationEdit" :value="state.form" @change="update({form: $event})" :items="forms" itemText="code" clearable />
+            <SelectionField
+              :disabled="state.disabled.generalInformationEdit"
+              :value="state.form"
+              id="form"
+              @change="update({form: $event})"
+              :items="forms"
+              itemText="code"
+              clearable
+            />
           </WellItem>
           <WellItem labelWidth="200px" label="KL ID:">
-            <InputField :disabled="state.disabled.generalInformationEdit" :value="state.klId" @change="update({klId: $event})" />
+            <InputField
+              :disabled="state.disabled.generalInformationEdit"
+              :value="state.klId"
+              id="klId"
+              @change="update({klId: $event})"
+            />
           </WellItem>
-          <WellItem labelWidth="200px" label="KL’s Arbejdsgangsbank:" tooltip="KL’s Arbejdsgangsbank nummeret henviser til en proces fra KL’s Arbejdsgangsbank.">
-            <MaskableInput :disabled="state.disabled.generalInformationEdit" mask="##.##.##.##.##" :value="state.kla" @change="setKla" />
+          <WellItem
+            labelWidth="200px"
+            label="KL’s Arbejdsgangsbank:"
+            tooltip="KL’s Arbejdsgangsbank nummeret henviser til en proces fra KL’s Arbejdsgangsbank."
+          >
+            <MaskableInput
+              :disabled="state.disabled.generalInformationEdit"
+              mask="##.##.##.##.##"
+              :value="state.kla"
+              id="kla"
+              @change="setKla"
+            />
           </WellItem>
         </div>
 
         <div>
           <WellItem labelWidth="120px" label="Fagområder:">
-            <DomainsField :disabled="state.disabled.generalInformationEdit" :value="state.domains" @change="assign({domains: $event})" />
+            <DomainsField
+              :disabled="state.disabled.generalInformationEdit"
+              :value="state.domains"
+              id="domains"
+              @change="assign({domains: $event})"
+            />
           </WellItem>
           <WellItem labelWidth="120px" label="Kontaktperson:">
-            <SelectionField itemSubText="email" :disabled="state.disabled.generalInformationEdit" :value="state.contact" itemText="name" @search="search($event)" isItemsPartial @change="update({contact: $event})" :items="users" clearable />
+            <SelectionField
+              itemSubText="email"
+              :disabled="state.disabled.generalInformationEdit"
+              :value="state.contact"
+              id="contact"
+              itemText="name"
+              @search="search($event)"
+              isItemsPartial
+              @change="update({contact: $event})"
+              :items="users"
+              clearable
+            />
           </WellItem>
-          <WellItem labelWidth="120px" v-if="state.contact" label="Mail:">
-            {{state.contact.email}}
-          </WellItem>
+          <WellItem labelWidth="120px" v-if="state.contact" label="Mail:">{{state.contact.email}}</WellItem>
         </div>
 
         <div>
-          <WellItem labelWidth="120px" label="Synlighed:">
-            {{TypeLabels[state.type]}}
-          </WellItem>
+          <WellItem labelWidth="120px" label="Synlighed:">{{TypeLabels[state.type]}}</WellItem>
           <WellItem labelWidth="120px" label="Oprettet:">
-            <DatePicker :value="state.created" disabled />
+            <DatePicker :value="state.created" id="created" disabled />
           </WellItem>
           <WellItem labelWidth="120px" label="Sidst opdateret:">
-            <DatePicker :value="state.lastChanged" disabled />
+            <DatePicker :value="state.lastChanged" id="lastChanged" disabled />
           </WellItem>
         </div>
       </Well>
@@ -57,10 +118,22 @@
 
     <div class="description">
       <h2>Resume *</h2>
-      <TextArea :disabled="state.disabled.generalInformationEdit" @change="update({shortDescription: $event})" :value="state.shortDescription" :maxLength="140" />
+      <TextArea
+        :disabled="state.disabled.generalInformationEdit"
+        @change="update({shortDescription: $event})"
+        :value="state.shortDescription"
+        id="shortDescription"
+        :maxLength="140"
+      />
 
       <h2>Beskrivelse</h2>
-      <TextArea :disabled="state.disabled.generalInformationEdit" @change="update({longDescription: $event})" :value="state.longDescription" :maxLength="10000" />
+      <TextArea
+        :disabled="state.disabled.generalInformationEdit"
+        @change="update({longDescription: $event})"
+        :value="state.longDescription"
+        id="longDescription"
+        :maxLength="10000"
+      />
     </div>
 
     <div class="processes">
@@ -69,11 +142,17 @@
         <router-link :to="'/details/' + process.id" class="search-result-link">
           <SmallSearchResult :process="process" />
           <div class="visibility-warning" v-if="isLessVisible(process.visibility)">
-            <WarningIcon class="visibility-icon" /> Synligheden ændres fra {{VisibilityLabels[process.visibility]}} til {{VisibilityLabels[state.visibility]}}
+            <WarningIcon class="visibility-icon" />
+            Synligheden ændres fra {{VisibilityLabels[process.visibility]}} til {{VisibilityLabels[state.visibility]}}
           </div>
         </router-link>
 
-        <div v-if="!state.disabled.generalInformationEdit" class="delete-icon" @click="removeProcess(process)" role="button">
+        <div
+          v-if="!state.disabled.generalInformationEdit"
+          class="delete-icon"
+          @click="removeProcess(process)"
+          role="button"
+        >
           <DeleteIcon />
         </div>
       </div>

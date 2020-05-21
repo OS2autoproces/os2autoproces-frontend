@@ -16,6 +16,7 @@
           <InputField
             :type="'number'"
             :value="state.timeSpendOccurancesPerEmployee"
+            id="timeSpendOccurancesPerEmployee"
             :disabled="state.disabled.timeAndProcessEdit"
             @change="update({timeSpendOccurancesPerEmployee: $event})"
           />
@@ -29,6 +30,7 @@
             :type="'number'"
             :disabled="state.disabled.timeAndProcessEdit"
             :value="state.timeSpendPerOccurance"
+            id="timeSpendPerOccurance"
             @change="update({timeSpendPerOccurance: $event})"
           />
         </WellItem>
@@ -41,6 +43,7 @@
             :type="'number'"
             :disabled="state.disabled.timeAndProcessEdit"
             :value="state.timeSpendPercentageDigital"
+            id="timeSpendPercentageDigital"
             @change="update({timeSpendPercentageDigital: $event})"
           >%</InputField>
         </WellItem>
@@ -49,20 +52,14 @@
           label="Manuelt tidsforbrug i timer"
           tooltip="Udregningen for det manuelle årlige tidsforbrug er: antal gange processen foretages * tidsforbrug i minutter / 60"
         >
-          <InputField
-            disabled
-            :value="timeSpendHours"
-          >timer</InputField>
+          <InputField disabled :value="timeSpendHours" id="timeSpendHours">timer</InputField>
         </WellItem>
         <WellItem
           labelWidth="70%"
           label="Forventet årligt effektiviseringspotentiale"
           tooltip="Udregning af det forventet årligt effektiviseringspotentiale er: antal gange processen foretages * tidsforbrug i minutter / 60 * automatiseringsgrad"
         >
-          <InputField
-            disabled
-            :value="exptectedYearlyPotential"
-          >timer</InputField>
+          <InputField disabled :value="exptectedYearlyPotential" id="exptectedYearlyPotential">timer</InputField>
         </WellItem>
       </div>
 
@@ -76,27 +73,24 @@
             :type="'number'"
             :disabled="state.disabled.timeAndProcessEdit"
             :value="state.timeSpendEmployeesDoingProcess"
+            id="timeSpendEmployeesDoingProcess"
             @change="update({timeSpendEmployeesDoingProcess: $event})"
           />
         </WellItem>
-        <WellItem
-          labelWidth="70%"
-          label="Er borgere påvirket?"
-        >
+        <WellItem labelWidth="70%" label="Er borgere påvirket?">
           <MappedSelectionField
             :disabled="state.disabled.timeAndProcessEdit"
             :value="state.targetsCitizens"
+            id="targetsCitizens"
             @change="update({targetsCitizens: $event})"
             :items="yesNoItems"
           />
         </WellItem>
-        <WellItem
-          labelWidth="70%"
-          label="Er virksomheder påvirket?"
-        >
+        <WellItem labelWidth="70%" label="Er virksomheder påvirket?">
           <MappedSelectionField
             :disabled="state.disabled.timeAndProcessEdit"
             :value="state.targetsCompanies"
+            id="targetsCompanies"
             @change="update({targetsCompanies: $event})"
             :items="yesNoItems"
           />
@@ -106,14 +100,17 @@
 
     <div class="comments-wrap">
       <span>Kommentar vedr. tidsforbrug</span>
-      <InfoTooltip class="time-proces-tooltip">Her kan du uddybe eller kommentere på de indtastede værdier ovenfor og på tidsforbruget generelt. F.eks. hvordan det er målt.</InfoTooltip>
+      <InfoTooltip
+        class="time-proces-tooltip"
+      >Her kan du uddybe eller kommentere på de indtastede værdier ovenfor og på tidsforbruget generelt. F.eks. hvordan det er målt.</InfoTooltip>
       <TextArea
         :value="state.timeSpendComment"
+        id="timeSpendComment"
         :disabled="state.disabled.timeAndProcessEdit"
         @change="update({timeSpendComment: $event})"
         :maxLength="10000"
       />
-      </div>
+    </div>
   </FormSection>
 </template>
 
@@ -148,7 +145,10 @@ export default class TimeAndProcessForm extends Vue {
   @Getter(processGetterTypes.MIN_PHASE) minPhase!: (phase: Phase) => boolean;
   PhaseKeys = PhaseKeys;
 
-  yesNoItems = [{ value: true, text: 'Ja' }, { value: false, text: 'Nej' }];
+  yesNoItems = [
+    { value: true, text: 'Ja' },
+    { value: false, text: 'Nej' }
+  ];
 
   get timeSpendHours() {
     const hours =

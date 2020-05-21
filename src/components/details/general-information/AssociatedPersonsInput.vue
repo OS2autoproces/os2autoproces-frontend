@@ -5,7 +5,10 @@
         Tilknyttede personer
         <InfoTooltip>Her kan du tilføje personer der arbejder med automatisering af processen og derfor skal kunne redigere i beskrivelserne. Det kan f.eks. være projektmedarbejdere og udviklere.</InfoTooltip>
       </div>
-      <div class="associated-persons-list" :class="{ disabled, empty: !state.process.users.length }">
+      <div
+        class="associated-persons-list"
+        :class="{ disabled, empty: !state.process.users.length }"
+      >
         <div v-for="(user, index) in state.process.users" :key="index">
           <div class="name">{{user.name}}</div>
           <div v-if="!disabled" @click="removeUser(user)" class="delete-icon">
@@ -16,7 +19,18 @@
     </div>
     <div class="add-person" v-if="!disabled">
       <div class="associated-label">Tilknyt person</div>
-      <SelectionField itemSubText="email" ref="userSelectionField" class="search-field" placeholder="Skriv navn for at søge" @search="search($event)" @change="addUser($event)" itemText="name" :items="users" iconName="search" />
+      <SelectionField
+        itemSubText="email"
+        ref="userSelectionField"
+        class="search-field"
+        :hasError="hasError"
+        placeholder="Skriv navn for at søge"
+        @search="search($event)"
+        @change="addUser($event)"
+        itemText="name"
+        :items="users"
+        iconName="search"
+      />
     </div>
   </div>
 </template>
@@ -41,6 +55,8 @@ import { User } from '@/store/modules/auth/state';
 export default class AssociatedPersonsInput extends Vue {
   @Prop(Boolean)
   disabled!: boolean;
+  @Prop(Boolean)
+  hasError!: boolean;
 
   @Action(commonActionTypes.SEARCH_USERS)
   searchUsers!: (request: UserSearchRequest) => Promise<void>;

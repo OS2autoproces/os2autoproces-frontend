@@ -1,9 +1,7 @@
 <template>
-  <v-snackbar auto-height top :value="value" :color="color" :timeout="timeout">
+  <v-snackbar auto-height bottom :value="value" :color="color" :timeout="timeout">
     <slot />
-    <v-btn v-if="showButton" dark flat @click="clicked">
-      OK
-    </v-btn>
+    <v-btn v-if="showButton" dark flat @click="clicked">OK</v-btn>
   </v-snackbar>
 </template>
 

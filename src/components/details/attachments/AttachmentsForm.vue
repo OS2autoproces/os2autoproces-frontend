@@ -15,6 +15,7 @@
         @change="update({esdhReference: $event})"
         :disabled="attachmentsEdit"
         :value="state.esdhReference"
+        id="esdhReference"
         :minHeight="'50px'"
       />
     </div>

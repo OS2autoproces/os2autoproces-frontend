@@ -50,22 +50,29 @@
       </div>
     </div>
 
-    <SnackBar showButton :timeout="0" color="error" :value="snack" @clicked="clearErrors">
+    <SnackBar
+      showButton
+      :timeout="0"
+      color="error"
+      :value="snack"
+      @clicked="clearErrors"
+      class="bottom"
+    >
       <div>
         <h3>Følgende felter er ugyldige:</h3>
         <div class="snack-bar-list-container">
-          <!-- TODO Fix v if in v for and computation in template -->
-          <ul
-            class="section-errors"
-            v-for="section in errors"
-            v-if="section.errors.length > 0"
-            :key="section.section"
-          >
-            <span class="section-errors-title">{{section.section}}</span>
-            <li v-for="(field, i) in section.errors" :key="i">
-              <div class="snack-bar-list-item">{{field}}</div>
-            </li>
-          </ul>
+          <div v-for="section in errors" :key="section.section">
+            <ul class="section-errors" v-if="section.errors.length > 0">
+              <span class="section-errors-title">{{section.section}}</span>
+              <li v-for="(field, i) in section.errors" :key="i">
+                <a
+                  class="snack-bar-list-item"
+                  @click="clickHashLink"
+                  :href="hashLink(field.name)"
+                >{{field.description}}</a>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </SnackBar>
@@ -180,6 +187,14 @@ export default class Process extends Vue {
   get isWithinMunicipality() {
     const { auth, process } = this.$store.state;
     return auth.user.cvr === process.cvr;
+  }
+
+  hashLink(target: string) {
+    return `#${target}`;
+  }
+
+  clickHashLink() {
+    this.$emit('clickedHashLink');
   }
 
   beforeCreate() {

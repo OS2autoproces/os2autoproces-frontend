@@ -1,68 +1,57 @@
 <template>
   <div>
-    <v-select
-      class="select-wrap"
-      v-if="!disabled && dropdown"
-      :items="_items"
-      :value="value"
-      return-object
-      single-line
-      :clearable="clearable"
-      :placeholder="placeholder"
-      @change="valueChanged"
-    >
-      <template
-        slot="item"
-        slot-scope="data"
+    <div>
+      <v-select
+        class="select-wrap"
+        :class="{hasError:hasError}"
+        v-if="!disabled && dropdown"
+        :items="_items"
+        :value="value"
+        return-object
+        single-line
+        :clearable="clearable"
+        :placeholder="placeholder"
+        @change="valueChanged"
       >
-        <SelectionFieldText
-          :itemText="data.item[itemText]"
-          :subText="data.item[itemSubText]"
-        />
-        <SelectionFieldAction
-          v-if="hasAction"
-          :actionIcon="actionIcon"
-          @action="action(data.item)"
-        />
-      </template>
-    </v-select>
-    <v-autocomplete
-      class="select-wrap"
-      ref="autocomplete"
-      v-if="!disabled && !dropdown"
-      :clearable="clearable"
-      :label="placeholder"
-      :items="_items"
-      single-line
-      no-data-text="Ingen resultater"
-      :item-text="itemText"
-      :item-value="itemValue"
-      :append-icon="iconName"
-      :search-input.sync="searchQuery"
-      @change="valueChanged"
-      :value="value"
-      return-object
-      :multiple="multiple"
-    >
-      <template
-        slot="item"
-        slot-scope="data"
+        <template slot="item" slot-scope="data">
+          <SelectionFieldText :itemText="data.item[itemText]" :subText="data.item[itemSubText]" />
+          <SelectionFieldAction
+            v-if="hasAction"
+            :actionIcon="actionIcon"
+            @action="action(data.item)"
+          />
+        </template>
+      </v-select>
+      <v-autocomplete
+        class="select-wrap"
+        :class="{hasError:hasError}"
+        ref="autocomplete"
+        v-if="!disabled && !dropdown"
+        :clearable="clearable"
+        :label="placeholder"
+        :items="_items"
+        single-line
+        no-data-text="Ingen resultater"
+        :item-text="itemText"
+        :item-value="itemValue"
+        :append-icon="iconName"
+        :search-input.sync="searchQuery"
+        @change="valueChanged"
+        :value="value"
+        return-object
+        :multiple="multiple"
       >
-        <SelectionFieldText
-          :itemText="data.item[itemText]"
-          :subText="data.item[itemSubText]"
-        />
-        <SelectionFieldAction
-          v-if="hasAction"
-          :actionIcon="actionIcon"
-          @action="action(data.item)"
-        />
-      </template>
-    </v-autocomplete>
-    <div
-      class="selection-text"
-      v-if="disabled && value"
-    >{{ label }}</div>
+        <template slot="item" slot-scope="data">
+          <SelectionFieldText :itemText="data.item[itemText]" :subText="data.item[itemSubText]" />
+          <SelectionFieldAction
+            v-if="hasAction"
+            :actionIcon="actionIcon"
+            @action="action(data.item)"
+          />
+        </template>
+      </v-autocomplete>
+      <div class="selection-text" v-if="disabled && value">{{ label }}</div>
+    </div>
   </div>
 </template>
 
@@ -101,6 +90,7 @@ export default class SelectionField<T extends any> extends Vue {
   dropdown!: boolean;
   @Prop({ type: Boolean, default: false }) hasAction!: boolean;
   @Prop({ type: String, default: 'info' }) actionIcon!: string;
+  @Prop(Boolean) hasError!: boolean;
   @Emit()
   action(item: T) {
     return item;
@@ -149,7 +139,7 @@ export default class SelectionField<T extends any> extends Vue {
 <style scoped lang="scss">
 @import '@/styles/variables.scss';
 
-.select-wrap /deep/ {
+.select-wrap::v-deep {
   padding-top: 0 !important;
   margin: 0;
 
@@ -164,7 +154,6 @@ export default class SelectionField<T extends any> extends Vue {
     flex: 1 1 auto;
     min-height: 2rem;
     margin: 0;
-
     &::before,
     &::after {
       display: none !important;
@@ -178,6 +167,11 @@ export default class SelectionField<T extends any> extends Vue {
 
   .v-text-field__details {
     display: none !important;
+  }
+}
+.hasError::v-deep {
+  .v-input__slot {
+    border-color: red;
   }
 }
 

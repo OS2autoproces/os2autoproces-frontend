@@ -1,9 +1,11 @@
+import { ErrorWithDescription } from './actions';
+
 export interface ErrorState {
-  generalInformation: { section: string; errors: string[] };
-  challenges: { section: string; errors: string[] };
-  assessment: { section: string; errors: string[] };
-  timeAndProcess: { section: string; errors: string[] };
-  attachments: { section: string; errors: string[] };
-  implementation: { section: string; errors: string[] };
-  operation: { section: string; errors: string[] };
+  generalInformation: { section: string; errors: ErrorWithDescription[] };
+  challenges: { section: string; errors: ErrorWithDescription[] };
+  assessment: { section: string; errors: ErrorWithDescription[] };
+  timeAndProcess: { section: string; errors: ErrorWithDescription[] };
+  attachments: { section: string; errors: ErrorWithDescription[] };
+  implementation: { section: string; errors: ErrorWithDescription[] };
+  operation: { section: string; errors: ErrorWithDescription[] };
 }

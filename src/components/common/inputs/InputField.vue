@@ -1,6 +1,10 @@
 <template>
   <div>
-    <div class="input-field-wrap" :class="{'has-icon': this.$slots.default }" v-if="!disabled">
+    <div
+      class="input-field-wrap"
+      :class="{'has-icon': this.$slots.default, hasError: hasError}"
+      v-if="!disabled"
+    >
       <input
         :type="type"
         :placeholder="placeholder"
@@ -30,6 +34,7 @@ export default class InputField extends Vue {
   @Prop(String) placeholder!: string;
   @Prop(String) type!: string;
   @Prop(Boolean) disabled!: boolean;
+  @Prop(Boolean) hasError!: boolean;
 
   valueChanged(event: any) {
     this.$emit('change', event.target.value);
@@ -45,10 +50,13 @@ export default class InputField extends Vue {
 @import '@/styles/variables.scss';
 .input-field-wrap {
   display: flex;
-  border: 1px solid $color-primary;
   border-radius: 30px;
   align-items: center;
+  border: 1px solid $color-primary;
 
+  &.hasError {
+    border-color: red;
+  }
   &.has-icon {
     padding-right: 2px;
   }
