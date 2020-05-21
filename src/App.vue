@@ -1,9 +1,11 @@
 <template>
   <div id="app">
     <v-app>
-      <div class="router-view">
-        <router-view />
-      </div>
+      <v-content>
+        <div class="router-view">
+          <router-view />
+        </div>
+      </v-content>
     </v-app>
   </div>
 </template>
@@ -64,7 +66,7 @@ body {
 }
 
 #app {
-  .application.theme--light {
+  .v-application.theme--light {
     background: $color-background;
     color: inherit;
   }
