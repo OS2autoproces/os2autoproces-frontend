@@ -7,6 +7,7 @@ import { Type, TypeKeys } from '@/models/types';
 import { Visibility, VisibilityKeys } from '@/models/visibility';
 import { User } from '@/store/modules/auth/state';
 import { ITSystem, Link, OrgUnit, Process, ProcessState, Technology } from '@/store/modules/process/state';
+import store from '@/store/store';
 
 export interface ProcessRequest {
   klId: string | null;
@@ -256,7 +257,7 @@ function buildUmbrellaRequest(request: ProcessRequest): Partial<ProcessRequest> 
     'type',
     'longDescription',
     'shortDescription',
-    'runPeriod',
+    'runPeriod'
   ]);
 }
 
@@ -266,11 +267,12 @@ export function stateToRequest(state: ProcessState): Partial<ProcessRequest> {
   if (state.type === TypeKeys.GLOBAL_PARENT || state.type === TypeKeys.PARENT) {
     return buildUmbrellaRequest(request);
   }
-
-  return stateToRequestFields(state);
+  return request;
 }
 
 export function responseToState(process: ProcessResponse): Process {
+  const form = store.state.common.forms.find(f => f.code === process.form);
+  const kle = store.state.common.kles.find(k => k.code === process.kle);
   return {
     ...process,
     id: process.id.toString(),
@@ -295,9 +297,9 @@ export function responseToState(process: ProcessResponse): Process {
     technologies: process.technologies || [],
     users: process.users || [],
     klId: process.klId || '',
-    form: process.form ? { code: process.form } : null,
+    form: process.form ? { code: process.form, description: !!form ? form.description : '' } : null,
     legalClause: process.legalClause || '',
-    kle: process.kle ? { code: process.kle } : null,
+    kle: process.kle ? { code: process.kle, name: !!kle ? kle.name : '' } : null,
     kla: process.kla || '',
     codeRepositoryUrl: process.codeRepositoryUrl || '',
     links: process.links || [],
