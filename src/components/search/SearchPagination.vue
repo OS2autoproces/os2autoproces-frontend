@@ -2,9 +2,7 @@
   <div class="wrap">
     <div class="search-pagination" v-if="pageTotal > 0">
       <div class="prev">
-        <button @click="prev" v-if="page > 0">
-          <ArrowLeftIcon />Forrige
-        </button>
+        <button @click="prev" v-if="page > 0"><ArrowLeftIcon />Forrige</button>
       </div>
       <div class="flex-grow">
         <div class="pages">
@@ -35,7 +33,7 @@
         :dropdown="true"
         @change="onSizeChange($event.value)"
       ></SelectionField>
-      <span>Side {{page + 1}} af {{pageTotal}}</span>
+      <span>Side {{ page + 1 }} af {{ pageTotal }}</span>
     </div>
   </div>
 </template>
@@ -129,7 +127,7 @@ export default class SearchPagination extends Vue {
   margin: 0 3rem;
 
   // Hide vuetify pagination navigation
-  /deep/ .v-pagination__navigation {
+  ::v-deep .v-pagination__navigation {
     display: none;
   }
 }

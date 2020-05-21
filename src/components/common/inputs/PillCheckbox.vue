@@ -1,5 +1,11 @@
 <template>
-  <div class="checkbox" role="checkbox" :aria-checked="value.toString()" @click="click" :class="{ disabled, selected: value }">
+  <div
+    class="checkbox"
+    role="checkbox"
+    :aria-checked="value.toString()"
+    @click="click"
+    :class="{ disabled, selected: value }"
+  >
     <div>
       <slot />
     </div>
@@ -7,7 +13,7 @@
   </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import CheckIcon from '../../icons/CheckIcon.vue';
 
@@ -34,7 +40,7 @@ export default class Checkbox extends Vue {
 .checkbox {
   display: flex;
   background: $color-secondary;
-  padding: .5rem 1rem;
+  padding: 0.5rem 1rem;
   color: white;
   border-radius: 20px;
 
@@ -54,10 +60,9 @@ export default class Checkbox extends Vue {
     height: 20px;
     width: 20px;
 
-    /deep/ path {
+    ::v-deep path {
       fill: $color-background;
     }
   }
 }
 </style>
-

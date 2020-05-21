@@ -2,13 +2,22 @@
   <div>
     <div class="tag-list">
       <div v-for="(tag, index) in value" :key="index" class="tag-item">
-        {{tag.name}}
+        {{ tag.name }}
         <span role="button" @click="removeTag(index)" class="delete-icon" v-if="!disabled">
           <DeleteIcon />
         </span>
       </div>
     </div>
-    <SelectionField v-if="!disabled" class="tag-input" :value="item" placeholder="Tilføj flere teknologier her" @change="addTag" itemText="name" :items="items" iconName="search" />
+    <SelectionField
+      v-if="!disabled"
+      class="tag-input"
+      :value="item"
+      placeholder="Tilføj flere teknologier her"
+      @change="addTag"
+      itemText="name"
+      :items="items"
+      iconName="search"
+    />
   </div>
 </template>
 
@@ -59,16 +68,16 @@ export default class TagSelector extends Vue {
     color: $color-background;
     background-color: $color-secondary;
     border-radius: 1rem;
-    padding: 0 .5rem;
+    padding: 0 0.5rem;
     line-height: 1.8em;
-    margin: .5rem 0;
+    margin: 0.5rem 0;
     margin-right: 1rem;
     min-width: 7rem;
 
     .delete-icon {
       position: absolute;
-      right: -.5rem;
-      top: -.5rem;
+      right: -0.5rem;
+      top: -0.5rem;
       width: 1rem;
       height: 1rem;
     }
@@ -78,7 +87,7 @@ export default class TagSelector extends Vue {
 .tag-input {
   width: 33%;
 
-  /deep/ .v-autocomplete {
+  ::v-deep .v-autocomplete {
     .v-icon {
       transform: none !important;
     }

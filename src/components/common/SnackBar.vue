@@ -10,7 +10,7 @@
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 
-@Component
+@Component({})
 export default class SnackBarComponent extends Vue {
   @Prop(Number)
   timeout!: number;
@@ -41,7 +41,7 @@ export default class SnackBarComponent extends Vue {
 </script>
 
 <style scoped lang="scss">
-.v-snack /deep/ {
+.v-snack ::v-deep {
   .v-snack__wrapper {
     max-width: 60%;
   }

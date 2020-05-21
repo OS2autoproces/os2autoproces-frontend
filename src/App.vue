@@ -2,7 +2,7 @@
   <div id="app">
     <v-app light>
       <div class="router-view">
-        <router-view/>
+        <router-view />
       </div>
     </v-app>
   </div>
@@ -16,7 +16,7 @@ import { Action } from 'vuex-class';
 import { authActionTypes } from '@/store/modules/auth/actions';
 import { commonActionTypes, Cms } from '@/store/modules/common/actions';
 
-@Component
+@Component({})
 export default class App extends Vue {
   @Action(authActionTypes.LOAD_USER) loadUser: any;
 
