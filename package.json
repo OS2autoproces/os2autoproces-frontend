@@ -10,7 +10,6 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@types/dompurify": "0.0.32",
     "ajv": "^6.12.2",
     "axios": "^0.19.2",
     "babel-polyfill": "^6.26.0",
@@ -34,6 +33,7 @@
     "vuex-class": "^0.3.2"
   },
   "devDependencies": {
+    "@types/dompurify": "0.0.32",
     "@types/axios": "^0.14.0",
     "@types/file-saver": "^2.0.1",
     "@types/jest": "^25.2.3",
@@ -63,6 +63,7 @@
   "browserslist": [
     "> 1%",
     "last 2 versions",
-    "not ie <= 8"
+    "not ie <= 8",
+    "ie 11"
   ]
 }
