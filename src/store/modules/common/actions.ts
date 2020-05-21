@@ -16,10 +16,12 @@ export interface Cms {
 
 export interface Kle {
   code: string;
+  name: string;
 }
 
 export interface Form {
   code: string;
+  description: string;
 }
 
 interface TechnologiesResponse {
@@ -159,7 +161,8 @@ export const actions: ActionTree<CommonState, RootState> = {
   async loadKles({ commit }) {
     const response = await HTTP.get<KleResponse>(`api/kles?size=100000`);
     const kles = response.data._embedded.kles.map(kle => ({
-      code: kle.code
+      code: kle.code,
+      name: kle.name
     }));
 
     commit(commonMutationTypes.ASSIGN, { kles });
@@ -189,7 +192,8 @@ export const actions: ActionTree<CommonState, RootState> = {
     }
     const response = await HTTP.get<FormResponse>(`api/kles/${kle.code}/forms`);
     const forms = response.data._embedded.forms.map((form: Form) => ({
-      code: form.code
+      code: form.code,
+      description: form.description
     }));
 
     commit(commonMutationTypes.ASSIGN, { forms });
