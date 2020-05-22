@@ -39,7 +39,7 @@
               :page="result.page.number"
               :pageTotal="result.page.totalPages"
               :size="result.page.size"
-              @on-page-change="updateFilters({ page: $event })"
+              @on-page-change="updateFiltersAndScrollToTop({ page: $event })"
               @on-size-change="updateFilters({ size: $event })"
             />
           </div>
@@ -88,6 +88,8 @@ export default class Search extends Vue {
   @Action(searchActionTypes.ASSIGN_FILTERS) dispatchAssignFilters!: (filters: SearchFilters) => void;
   @Getter(searchGetterTypes.IS_SEARCHING_FOR_UMBRELLA_PROCESS) isSearchingForUmbrellaProcess!: () => boolean;
 
+  lastFilterUpdate: Partial<SearchFilters> = {};
+
   get filters() {
     return this.$store.state.search.filters;
   }
@@ -96,12 +98,20 @@ export default class Search extends Vue {
     return this.$store.state.search.result;
   }
 
-  ieGoBack() {
-    this.updateFilters({});
+  async ieGoBack() {
+    await this.updateFilters(this.lastFilterUpdate);
+  }
+
+  async updateFiltersAndScrollToTop(filters: Partial<SearchFilters>) {
+    await this.updateFilters(filters);
+
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
   }
 
   updateFilters(filters: Partial<SearchFilters>) {
-    this.$store.dispatch(searchActionTypes.ASSIGN_FILTERS, {
+    this.lastFilterUpdate = filters;
+    return this.$store.dispatch(searchActionTypes.ASSIGN_FILTERS, {
       page: 0,
       ...filters
     });
