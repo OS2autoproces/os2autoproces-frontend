@@ -11,9 +11,7 @@
           <div class="results-wrapper">
             <div class="report">
               <SearchSortingDropdown />
-              <router-link to="/report">
-                <PlusIcon />Indberet proces
-              </router-link>
+              <router-link to="/report"> <PlusIcon />Indberet proces </router-link>
             </div>
 
             <SearchSorting
@@ -21,31 +19,18 @@
               :sorting="filters.sorting"
               @change="updateFilters({ sorting: $event })"
             />
-            <SearchSortingUmbrella
-              v-else
-              :sorting="filters.sorting"
-              @change="updateFilters({sorting: $event})"
-            />
+            <SearchSortingUmbrella v-else :sorting="filters.sorting" @change="updateFilters({ sorting: $event })" />
             <div class="results" v-if="result">
-              <div v-if="!isIE()">
+              <div>
                 <router-link
                   :to="'/details/' + process.id"
+                  @click="setID(process.id)"
                   class="search-result-link"
                   v-for="process in result.processes"
                   :key="process.id"
                 >
                   <SearchResult :process="process" />
                 </router-link>
-              </div>
-              <div v-if="isIE()">
-                <a
-                  class="search-result-link"
-                  v-for="process in result.processes"
-                  :key="process.id"
-                  @click="goToIEProcess(process.id)"
-                >
-                  <SearchResult :process="process" />
-                </a>
               </div>
             </div>
 
@@ -61,13 +46,7 @@
         </div>
       </div>
     </div>
-    <Details
-      :isReporting="false"
-      :id="id"
-      v-if="this.ieProcess"
-      class="detailsView"
-      @goBack="goBack"
-    />
+    <Details :isReporting="false" :id="id" v-if="id" class="detailsView" @goBack="ieGoBack" />
   </div>
 </template>
 
@@ -104,12 +83,10 @@ import Details from './Details.vue';
 })
 export default class Search extends Vue {
   @Prop({ type: Object as () => SearchFilters }) initialFilters!: SearchFilters;
+  @Prop(Number) id!: number;
   @Action(searchActionTypes.SEARCH) dispatchSearch!: VoidFunction;
   @Action(searchActionTypes.ASSIGN_FILTERS) dispatchAssignFilters!: (filters: SearchFilters) => void;
   @Getter(searchGetterTypes.IS_SEARCHING_FOR_UMBRELLA_PROCESS) isSearchingForUmbrellaProcess!: () => boolean;
-
-  id = 1000;
-  ieProcess = false;
 
   get filters() {
     return this.$store.state.search.filters;
@@ -119,23 +96,8 @@ export default class Search extends Vue {
     return this.$store.state.search.result;
   }
 
-  // Test if browser is Internet Explorer, for use in linking to the details view
-  isIE() {
-    const ua = window.navigator.userAgent;
-    const msie = ua.indexOf('MSIE ');
-
-    return msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./);
-  }
-
-  // Used by the links made specifically for Internet Explorer, to display a nested details component.
-  goToIEProcess(id: number) {
-    this.id = id;
-    this.ieProcess = true;
-  }
-
-  // Used by the nested details component to return to the search view. Only used in Internet Explorer
-  goBack() {
-    this.ieProcess = false;
+  ieGoBack() {
+    this.updateFilters({});
   }
 
   updateFilters(filters: Partial<SearchFilters>) {

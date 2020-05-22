@@ -2,9 +2,9 @@
   <div class="page">
     <div class="side-bar">
       <div class="side-bar-content">
-        <a @click="goBack" class="search-page-link">
-          <ArrowLeftIcon />Tilbage til søgning
-        </a>
+        <router-link to="/search" class="search-page-link">
+          <span @click="goBack"><ArrowLeftIcon />Tilbage til søgning </span>
+        </router-link>
 
         <Button primary v-if="isReporting" class="report-button" @click="report">Gem</Button>
         <Button primary v-if="!isReporting" class="save-button" @click="save">Gem</Button>
@@ -25,24 +25,18 @@
       <div>
         <h3>Følgende felter er ugyldige:</h3>
         <ul class="section-errors">
-          <li v-for="field in errors['generalInformation'].errors" :key="field">{{field}}</li>
+          <li v-for="field in errors['generalInformation'].errors" :key="field">{{ field }}</li>
         </ul>
       </div>
     </SnackBar>
 
-    <SnackBar
-      :timeout="3000"
-      color="success"
-      @onSnackClose="showSaveSuccess = false"
-      :value="showSaveSuccess"
-    >Processen er gemt!</SnackBar>
+    <SnackBar :timeout="3000" color="success" @onSnackClose="showSaveSuccess = false" :value="showSaveSuccess"
+      >Processen er gemt!</SnackBar
+    >
 
-    <SnackBar
-      :value="showSaveError"
-      @onSnackClose="showSaveError = false"
-      :timeout="5000"
-      color="error"
-    >Processen er IKKE gemt - prøv igen!</SnackBar>
+    <SnackBar :value="showSaveError" @onSnackClose="showSaveError = false" :timeout="5000" color="error"
+      >Processen er IKKE gemt - prøv igen!</SnackBar
+    >
   </div>
 </template>
 
@@ -137,9 +131,7 @@ export default class Umbrella extends Vue {
 
   // If browser is Internet Explorer, the parent details view is nested in the search view, and we just hide it.
   goBack() {
-    if (!this.isIE() || this.isReporting) {
-      this.$router.push('/search');
-    } else {
+    if (this.isIE()) {
       this.$emit('goBack');
     }
   }

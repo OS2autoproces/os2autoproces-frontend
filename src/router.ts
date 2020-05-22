@@ -31,8 +31,19 @@ function validateAuth(isValid: (user: User | null) => boolean) {
   };
 }
 
+function handleDetailsIE() {
+  return isIE() ? isLoggedIn() : isLoggedIn();
+}
+
 function isLoggedIn() {
   return validateAuth(user => !!user);
+}
+
+function isIE() {
+  const ua = window.navigator.userAgent;
+  const msie = ua.indexOf('MSIE ');
+
+  return msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./);
 }
 
 function hasRole(role: UserRole) {
@@ -65,7 +76,7 @@ export const routes: RouteConfig[] = [
   },
   {
     path: '/details/:id',
-    component: Details,
+    component: isIE() ? Search : Details,
     props: route => ({ isReporting: false, id: Number(route.params.id) }),
     beforeEnter: isLoggedIn()
   },
