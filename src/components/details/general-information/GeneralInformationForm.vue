@@ -145,7 +145,7 @@
             @change="update({ legalClause: $event })"
           />
         </WellItem>
-        <WellItem labelWidth="200px" label="KLE-nr:">
+        <WellItem labelWidth="200px" label="KLE:">
           <SelectionField
             :disabled="state.disabled.generalInformationEdit"
             :value="state.kle"
@@ -153,7 +153,8 @@
             @change="setKle($event)"
             :items="kles"
             id="kle"
-            itemText="code"
+            itemText="name"
+            itemSubText="code"
             clearable
           />
         </WellItem>
@@ -165,7 +166,8 @@
             @change="update({ form: $event })"
             :items="forms"
             id="form"
-            itemText="code"
+            itemText="description"
+            itemSubText="code"
             clearable
           />
         </WellItem>
