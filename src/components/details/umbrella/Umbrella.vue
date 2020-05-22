@@ -2,9 +2,7 @@
   <div class="page">
     <div class="side-bar">
       <div class="side-bar-content">
-        <router-link to="/search" class="search-page-link">
-          <span @click="goBack"><ArrowLeftIcon />Tilbage til søgning </span>
-        </router-link>
+        <a @click="goBack" class="search-page-link"> <ArrowLeftIcon />Tilbage til søgning </a>
 
         <Button primary v-if="isReporting" class="report-button" @click="report">Gem</Button>
         <Button primary v-if="!isReporting" class="save-button" @click="save">Gem</Button>
@@ -129,11 +127,14 @@ export default class Umbrella extends Vue {
     return msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./);
   }
 
-  // If browser is Internet Explorer, the parent details view is nested in the search view, and we just hide it.
+  // If browser is Internet Explorer, the parent details view is nested in the search view,
+  // and we have to reset the search url when hiding it.
   goBack() {
+    console.log('hello there!');
     if (this.isIE()) {
       this.$emit('goBack');
     }
+    this.$router.push('/search');
   }
 
   beforeCreate() {

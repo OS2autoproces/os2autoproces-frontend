@@ -181,7 +181,8 @@ export default class Process extends Vue {
     return msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./);
   }
 
-  // If browser is Internet Explorer, the parent details view is nested in the search view, and we just hide it.
+  // If browser is Internet Explorer, the parent details view is nested in the search view,
+  // and we have to reset the search url when hiding it.
   goBack() {
     console.log('hello there!');
     if (this.isIE()) {
