@@ -404,7 +404,7 @@ export default class GeneralInformationForm extends Vue {
   }
 
   isInErrors(name: string) {
-    return this.$store.state.error['generalInformation']['errors'].some((e: any) => e['name'] === name);
+    return this.$store.state.error.generalInformation.errors.some((e: any) => e.name === name);
   }
 
   setKla(kla: string) {

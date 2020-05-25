@@ -178,7 +178,7 @@ export default class AssessmentForm extends Vue {
   }
 
   isInErrors(name: string) {
-    return this.$store.state.error['assessment']['errors'].some((e: any) => e['name'] === name);
+    return this.$store.state.error.assessment.errors.some((e: any) => e.name === name);
   }
 }
 </script>

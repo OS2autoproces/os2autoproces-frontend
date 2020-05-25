@@ -99,7 +99,7 @@ export default class OperationForm extends Vue {
     return this.$store.state.process;
   }
   isInErrors(name: string) {
-    return this.$store.state.error['operation']['errors'].some((e: any) => e['name'] === name);
+    return this.$store.state.error.operation.errors.some((e: any) => e.name === name);
   }
 }
 </script>

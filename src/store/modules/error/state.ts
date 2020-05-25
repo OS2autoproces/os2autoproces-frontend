@@ -1,4 +1,7 @@
-import { ErrorWithDescription } from './actions';
+export interface ErrorWithDescription {
+  name: string;
+  description: string;
+}
 
 export interface ErrorState {
   generalInformation: { section: string; errors: ErrorWithDescription[] };

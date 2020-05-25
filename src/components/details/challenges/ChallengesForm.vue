@@ -151,7 +151,7 @@ export default class ChallengesForm extends Vue {
   }
 
   isInErrors(name: string) {
-    return this.$store.state.error['challenges']['errors'].some((e: any) => e['name'] === name);
+    return this.$store.state.error.challenges.errors.some((e: any) => e.name === name);
   }
 }
 </script>

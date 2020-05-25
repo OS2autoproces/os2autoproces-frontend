@@ -7,15 +7,6 @@ import { ActionTree } from 'vuex';
 
 export const namespace = 'error';
 
-export class ErrorWithDescription {
-  name: string;
-  description: string;
-
-  constructor(name: string, description: string) {
-    this.name = name;
-    this.description = description;
-  }
-}
 export const errorActionTypes = {
   UPDATE_PROCESS_ERRORS: `${namespace}/updateProcessErrors`,
   CLEAR_ERRORS: `${namespace}/clearErrors`
@@ -163,7 +154,7 @@ export const actions: ActionTree<ErrorState, RootState> = {
 
           if (errorLabel) {
             const tempError = errorLabel.length < 35 ? errorLabel : errorLabel.slice(0, 25) + '...';
-            return new ErrorWithDescription(error, tempError + (limitationLabel ? ` (${limitationLabel})` : ''));
+            return { name: error, description: tempError + (limitationLabel ? ` (${limitationLabel})` : '') };
           }
 
           return '';

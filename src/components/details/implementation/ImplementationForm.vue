@@ -120,7 +120,7 @@ export default class ImplementationForm extends Vue {
   }
 
   isInErrors(name: string) {
-    return this.$store.state.error['implementation']['errors'].some((e: any) => e['name'] === name);
+    return this.$store.state.error.implementation.errors.some((e: any) => e.name === name);
   }
 
   async mounted() {
