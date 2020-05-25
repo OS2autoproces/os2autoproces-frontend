@@ -38,6 +38,7 @@
             :value="timeSpentPerOccurance.seconds.toFixed(0)"
             @change="updateTimeSpentPerOccurance({ seconds: $event })"
             :maxLength="2"
+            :rules="secondRules"
             >s</InputField
           >
         </WellItem>
@@ -149,7 +150,16 @@ export default class TimeAndProcessForm extends Vue {
   @Getter(processGetterTypes.MIN_PHASE) minPhase!: (phase: Phase) => boolean;
   PhaseKeys = PhaseKeys;
 
-  yesNoItems = [{ value: true, text: 'Ja' }, { value: false, text: 'Nej' }];
+  yesNoItems = [
+    { value: true, text: 'Ja' },
+    { value: false, text: 'Nej' }
+  ];
+
+  secondRules: Array<(value: string) => boolean | string> = [
+    value => Number.isInteger(Number(value)) || 'Sekunder skal være heltal',
+    value => parseInt(value, 10) < 60 || 'Sekunder kan højest være 59',
+    value => parseInt(value, 10) >= 0 || 'Sekunder kan ikke være negative'
+  ];
 
   get timeSpendHours() {
     const hours =

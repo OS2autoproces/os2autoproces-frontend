@@ -1,13 +1,21 @@
 <template>
   <div>
-    <div class="input-field-wrap" :class="{ 'has-icon': this.$slots.default }" v-if="!disabled">
-      <input
+    <div
+      class="input-field-wrap"
+      :class="{ 'has-icon': this.$slots.default }"
+      v-if="!disabled"
+      v-bind:style="this.violatedRules ? 'border: 4px solid red;' : ''"
+    >
+      <v-text-field
+        solo
+        flat
         :type="type"
         :placeholder="placeholder"
         :value="value"
         @input="valueChanged"
         @keyup.enter="submit"
         :maxlength="maxLength"
+        :rules="rules"
       />
       <div class="icon" v-if="this.$slots.default">
         <slot />
@@ -32,12 +40,41 @@ export default class InputField extends Vue {
   @Prop(String) type!: string;
   @Prop(Boolean) disabled!: boolean;
   @Prop({ default: Number.MAX_VALUE, type: Number }) maxLength!: number;
+  @Prop() rules!: Array<(value: string) => boolean | string>;
 
-  valueChanged(event: any) {
-    this.$emit('change', event.target.value);
+  violatedRules = false;
+
+  hasViolatedRules(value: any) {
+    if (this.rules === undefined) {
+      return false;
+    }
+    return this.rules.some(rule => {
+      const result = rule(value);
+      if (typeof result === 'boolean') {
+        // True results mean a passed rule.
+        return !result;
+      }
+      if (typeof result === 'string') {
+        // If we have an error message, a rule has been violated.
+        return true;
+      }
+    });
+  }
+
+  valueChanged(value: any) {
+    this.violatedRules = this.hasViolatedRules(value);
+    if (this.violatedRules) {
+      return;
+    }
+
+    this.$emit('change', value);
   }
 
   submit(event: any) {
+    this.violatedRules = this.hasViolatedRules(event.target.value);
+    if (this.violatedRules) {
+      return;
+    }
     this.$emit('submit', event.target.value);
   }
 }
@@ -67,11 +104,33 @@ export default class InputField extends Vue {
     }
   }
 
-  input {
-    @include field-input-text;
-    padding-left: 10px !important;
-    height: 32px;
-    width: 100%;
+  .v-text-field ::v-deep {
+    display: flex;
+    margin: 0;
+
+    .v-input__control {
+      min-height: 32px;
+      .v-input__slot {
+        margin: 0;
+        padding-left: 10px;
+        border-radius: unset;
+        background: unset;
+
+        &::before,
+        &::after {
+          display: none !important;
+        }
+      }
+
+      .v-text-field__details {
+        display: none;
+      }
+
+      input {
+        @include field-input-text;
+        color: $color-text !important;
+      }
+    }
   }
 }
 
