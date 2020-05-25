@@ -1,29 +1,54 @@
 <template>
-  <FormSection :invalid="!isOperationValid" v-if="minPhase(PhaseKeys.OPERATION)" heading="Drift" id="operation" :disabled="state.disabled.operationEdit" @edit="update({disabled: {operationEdit: $event}})">
-    <div class="rating-wrapper" :class="{disabled: state.disabled.operationEdit}">
+  <FormSection
+    :invalid="!isOperationValid"
+    v-if="minPhase(PhaseKeys.OPERATION)"
+    heading="Drift"
+    id="operation"
+    :disabled="state.disabled.operationEdit"
+    @edit="update({ disabled: { operationEdit: $event } })"
+  >
+    <div class="rating-wrapper" :class="{ disabled: state.disabled.operationEdit }">
       <div class="rating-label">
         I hvor høj grad indfriede løsningen de forventede gevinster? *
         <InfoTooltip>Skalaen lav, mellem, høj angiver graden af gevinstrealisering.</InfoTooltip>
       </div>
-      <Rating class="rating" @change="update({rating: $event})" :disabled="state.disabled.operationEdit" :value="state.rating" />
+      <Rating
+        class="rating"
+        @change="update({ rating: $event })"
+        :disabled="state.disabled.operationEdit"
+        :value="state.rating"
+      />
     </div>
 
     <Well>
       <div>
         <WellItem labelWidth="55%" label="Sidst kontrolleret i forhold til §">
-          <DatePicker @change="update({legalClauseLastVerified: $event})" :disabled="state.disabled.operationEdit" :value="state.legalClauseLastVerified" />
+          <DatePicker
+            @change="update({ legalClauseLastVerified: $event })"
+            :disabled="state.disabled.operationEdit"
+            :value="state.legalClauseLastVerified"
+          />
         </WellItem>
       </div>
       <div>
         <WellItem labelWidth="55%" label="Løsning taget ud af drift">
-          <DatePicker @change="update({decommissioned: $event})" :disabled="state.disabled.operationEdit" :value="state.decommissioned" />
+          <DatePicker
+            @change="update({ decommissioned: $event })"
+            :disabled="state.disabled.operationEdit"
+            :value="state.decommissioned"
+          />
         </WellItem>
       </div>
     </Well>
 
     <h2>Kommentar til realiseret gevinster</h2>
-    <TextArea :max-length="10000" @change="update({ratingComment: $event})" :disabled="state.disabled.operationEdit" :value="state.ratingComment" />
-    </FormSection>
+    <TextArea
+      :max-length="10000"
+      @change="update({ ratingComment: $event })"
+      :disabled="state.disabled.operationEdit"
+      :value="state.ratingComment"
+    />
+  </FormSection>
 </template>
 
 <script lang="ts">
@@ -86,7 +111,7 @@ export default class OperationForm extends Vue {
     margin-top: 0.5rem;
     width: 160px;
 
-    /deep/ svg {
+    ::v-deep svg {
       height: 2rem;
       width: 2rem;
     }

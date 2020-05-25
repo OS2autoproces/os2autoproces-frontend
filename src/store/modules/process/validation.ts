@@ -83,32 +83,32 @@ export const processFieldsValidators: { [P in keyof Process]?: (state: ProcessSt
   timeSpendComment({ timeSpendComment }: ProcessState) {
     return isValid(timeSpendComment, isMinMax(0, 10000));
   },
-  levelOfProfessionalAssessment({ phase, levelOfProfessionalAssessment }: ProcessState) {
-    return phase === PhaseKeys.IDEA || levelOfProfessionalAssessment !== 'NOT_SET';
+  levelOfProfessionalAssessment() {
+    return true; // allow any phase to not have an assessment
   },
-  levelOfChange({ phase, levelOfChange }: ProcessState) {
-    return phase === PhaseKeys.IDEA || levelOfChange !== 'NOT_SET';
+  levelOfChange() {
+    return true; // allow any phase to not have an assessment
   },
-  levelOfStructuredInformation({ phase, levelOfStructuredInformation }: ProcessState) {
-    return phase === PhaseKeys.IDEA || levelOfStructuredInformation !== 'NOT_SET';
+  levelOfStructuredInformation() {
+    return true; // allow any phase to not have an assessment
   },
-  levelOfUniformity({ phase, levelOfUniformity }: ProcessState) {
-    return phase === PhaseKeys.IDEA || levelOfUniformity !== 'NOT_SET';
+  levelOfUniformity() {
+    return true; // allow any phase to not have an assessment
   },
-  levelOfDigitalInformation({ phase, levelOfDigitalInformation }: ProcessState) {
-    return phase === PhaseKeys.IDEA || levelOfDigitalInformation !== 'NOT_SET';
+  levelOfDigitalInformation() {
+    return true; // allow any phase to not have an assessment
   },
-  levelOfQuality({ phase, levelOfQuality }: ProcessState) {
-    return phase === PhaseKeys.IDEA || levelOfQuality !== 'NOT_SET';
+  levelOfQuality() {
+    return true; // allow any phase to not have an assessment
   },
-  levelOfRoutineWorkReduction({ phase, levelOfRoutineWorkReduction }: ProcessState) {
-    return phase === PhaseKeys.IDEA || levelOfRoutineWorkReduction !== 'NOT_SET';
+  levelOfRoutineWorkReduction() {
+    return true; // allow any phase to not have an assessment
   },
-  levelOfSpeed({ phase, levelOfSpeed }: ProcessState) {
-    return phase === PhaseKeys.IDEA || levelOfSpeed !== 'NOT_SET';
+  levelOfSpeed() {
+    return true; // allow any phase to not have an assessment
   },
-  evaluatedLevelOfRoi({ phase, evaluatedLevelOfRoi }: ProcessState) {
-    return phase === PhaseKeys.IDEA || evaluatedLevelOfRoi !== 'NOT_SET';
+  evaluatedLevelOfRoi() {
+    return true; // allow any phase to not have an assessment
   },
   esdhReference({ esdhReference }: ProcessState) {
     return isValid(esdhReference, isMinMax(0, 300));
