@@ -45,7 +45,7 @@ export default class InputField extends Vue {
   border: 1px solid $color-primary;
 
   &.hasError {
-    border-color: red;
+    border-color: $color-error;
   }
   &.has-icon {
     padding-right: 2px;

@@ -80,14 +80,14 @@ export default class TextArea extends Vue {
   background: $color-background;
 
   &.hasError {
-    border-color: red;
+    border-color: $color-error;
   }
   &.out-of-bounds {
-    border-color: red;
+    border-color: $color-error;
     box-shadow: inset 0 0 8px rgb(235, 98, 98);
 
     .text-area-overlay > .text-area-char-count {
-      color: red;
+      color: $color-error;
     }
   }
 
