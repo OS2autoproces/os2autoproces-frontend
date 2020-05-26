@@ -2,7 +2,7 @@ import { actions, initialProcessState } from '@/store/modules/process/actions';
 import { getters } from '@/store/modules/process/getters';
 import { mutations } from '@/store/modules/process/mutations';
 import { ProcessState } from '@/store/modules/process/state';
-import { RootState } from '@/store/store';
+import { RootState } from '@/store';
 import { Module, GetterTree } from 'vuex';
 
 const namespaced = true;

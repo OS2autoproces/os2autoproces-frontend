@@ -94,30 +94,6 @@ export interface Link {
   internal: boolean;
 }
 
-export interface ITSystem {
-  id: number;
-  name: string;
-  vendor: string | null;
-}
-
-export interface OrgUnit {
-  id: number;
-  uuid: string;
-  name: string;
-  active: boolean;
-  cvr: string;
-}
-
-export interface Municipality {
-  name: string;
-  cvr: string;
-}
-
-export interface Technology {
-  id: number;
-  name: string;
-}
-
 export interface Attachment {
   id: number;
   fileName: string;

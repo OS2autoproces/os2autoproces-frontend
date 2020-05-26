@@ -1,4 +1,4 @@
-import { RootState } from '@/store/store';
+import { RootState } from '@/store';
 import { Module } from 'vuex';
 import { actions } from '@/store/modules/common/actions';
 import { mutations } from '@/store/modules/common/mutations';

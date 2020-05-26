@@ -3,7 +3,7 @@ import { actions } from '@/store/modules/search/actions';
 import { getters } from '@/store/modules/search/getters';
 import { mutations } from '@/store/modules/search/mutations';
 import { SearchState } from '@/store/modules/search/state';
-import { RootState } from '@/store/store';
+import { RootState } from '@/store';
 import { Module } from 'vuex';
 
 const namespaced = true;

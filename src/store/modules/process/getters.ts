@@ -11,7 +11,7 @@ import {
 } from '@/store/modules/error/actions';
 import { Process, ProcessState } from '@/store/modules/process/state';
 import { getInvalidProperties } from '@/store/modules/process/validation';
-import { RootState } from '@/store/store';
+import { RootState } from '@/store';
 import { isEmpty } from 'lodash';
 import { GetterTree } from '../../../../node_modules/vuex';
 

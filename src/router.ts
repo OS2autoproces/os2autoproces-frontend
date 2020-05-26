@@ -1,5 +1,5 @@
 import { User, UserRole } from '@/store/modules/auth/state';
-import store from '@/store/store';
+import store from '@/store';
 import Vue from 'vue';
 import Router, { Route, RouteConfig } from 'vue-router';
 import Details from './views/Details.vue';

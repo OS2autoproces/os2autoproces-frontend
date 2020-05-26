@@ -1,6 +1,6 @@
 import { SavedSearchFilters } from './state';
 import { SearchState, SearchFilters } from '@/store/modules/search/state';
-import { RootState } from '@/store/store';
+import { RootState } from '@/store';
 import { ActionTree, Commit } from 'vuex';
 import { searchMutationTypes } from '@/store/modules/search/mutations';
 import { debounce, isEqual } from 'lodash';

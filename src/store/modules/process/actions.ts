@@ -12,7 +12,7 @@ import { getProcessKeys } from '@/store/modules/process/getters';
 import { processMutationTypes } from '@/store/modules/process/mutations';
 import { Attachment, AttachmentFile, ITSystem, Process, ProcessState, Technology } from '@/store/modules/process/state';
 import { getInvalidProperties } from '@/store/modules/process/validation';
-import { RootState } from '@/store/store';
+import { RootState } from '@/store';
 import { ActionTree } from 'vuex';
 
 export const namespace = 'process';
@@ -256,7 +256,7 @@ export const actions: ActionTree<ProcessState, RootState> = {
 
     commit(processMutationTypes.UPDATE_WITH_NO_CHANGE, { hasBookmarked });
   },
-  async setBookmarkFromSearch({ }, bookmarkProcess: { id: number; hasBookmarked: boolean }): Promise<boolean> {
+  async setBookmarkFromSearch({}, bookmarkProcess: { id: number; hasBookmarked: boolean }): Promise<boolean> {
     const { id, hasBookmarked } = bookmarkProcess;
     const url = `api/bookmarks/${id}`;
     const method = hasBookmarked ? HTTP.put : HTTP.delete;

@@ -2,7 +2,7 @@ import { HTTP } from '@/services/http-service';
 import { User } from '@/store/modules/auth/state';
 import { commonMutationTypes } from '@/store/modules/common/mutations';
 import { ITSystem, Technology, OrgUnit, Municipality } from '@/store/modules/process/state';
-import { RootState } from '@/store/store';
+import { RootState } from '@/store';
 import { debounce } from 'lodash';
 import { ActionTree, Commit } from 'vuex';
 import { CommonState } from '@/store/modules/common/state';

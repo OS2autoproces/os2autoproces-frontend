@@ -1,5 +1,4 @@
-import { auth } from '@/store/modules/auth';
-import { AuthState } from '@/store/modules/auth/state';
+import AuthState from '@/store/modules/auth';
 import { common } from '@/store/modules/common';
 import { CommonState } from '@/store/modules/common/state';
 import { error } from '@/store/modules/error';
@@ -21,12 +20,4 @@ export interface RootState {
   error: ErrorState;
 }
 
-export default new Vuex.Store<RootState>({
-  modules: {
-    auth,
-    process,
-    search,
-    common,
-    error
-  }
-});
+export default new Vuex.Store<RootState>({});

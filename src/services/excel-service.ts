@@ -1,5 +1,5 @@
 import { HTTP } from './http-service';
-import store from '@/store/store';
+import store from '@/store';
 import { mapFiltersToSearchParams } from '@/store/modules/search/service';
 import { saveAs } from 'file-saver';
 

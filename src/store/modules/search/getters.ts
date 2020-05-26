@@ -1,5 +1,5 @@
 import { SearchState } from '@/store/modules/search/state';
-import { RootState } from '@/store/store';
+import { RootState } from '@/store';
 import { GetterTree } from 'vuex';
 import { namespace } from '@/store/modules/search/actions';
 
