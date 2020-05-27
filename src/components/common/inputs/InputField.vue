@@ -2,16 +2,15 @@
   <div>
     <div
       class="input-field-wrap"
-      :class="{ 'has-icon': this.$slots.default }"
+      :class="{ 'has-icon': this.$slots.default, 'has-error': this.hasError | this.hasViolatedRules }"
       v-if="!disabled"
-      v-bind:style="this.violatedRules ? 'border: 4px solid red;' : ''"
     >
       <v-text-field
         solo
         flat
         :type="type"
         :placeholder="placeholder"
-        :value="value"
+        :value="valueSynced"
         @input="valueChanged"
         @keyup.enter="submit"
         :maxlength="maxLength"
@@ -31,48 +30,50 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator';
+import { Vue, Component, Prop, PropSync } from 'vue-property-decorator';
+
+type Rule = (value: string) => boolean | string;
 
 @Component({})
 export default class InputField extends Vue {
-  @Prop(String) value!: string;
-  @Prop(String) placeholder!: string;
-  @Prop(String) type!: string;
-  @Prop(Boolean) disabled!: boolean;
-  @Prop({ default: Number.MAX_VALUE, type: Number }) maxLength!: number;
-  @Prop() rules!: Array<(value: string) => boolean | string>;
+  @PropSync('value', { required: false, type: String, default: '' })
+  valueSynced!: string;
+  @Prop(String)
+  placeholder!: string;
+  @Prop(String)
+  type!: string;
+  @Prop(Boolean)
+  disabled!: boolean;
+  @Prop({ default: Number.MAX_VALUE, type: Number })
+  maxLength!: number;
+  @Prop({ default: () => [], required: false, type: Array as () => Rule[] })
+  rules!: Rule[];
+  @Prop(Boolean)
+  hasError!: boolean;
 
-  violatedRules = false;
+  currentInput = '';
 
-  hasViolatedRules(value: any) {
-    if (this.rules === undefined) {
-      return false;
-    }
-    return this.rules.some(rule => {
-      const result = rule(value);
-      if (typeof result === 'boolean') {
-        // True results mean a passed rule.
-        return !result;
-      }
-      if (typeof result === 'string') {
-        // If we have an error message, a rule has been violated.
-        return true;
-      }
+  checkRules(value: any): boolean {
+    return this.rules?.some(rule => {
+      return !(rule(value) === true);
     });
   }
 
+  get hasViolatedRules(): boolean {
+    return this.checkRules(this.currentInput);
+  }
+
   valueChanged(value: any) {
-    this.violatedRules = this.hasViolatedRules(value);
-    if (this.violatedRules) {
+    this.currentInput = value;
+    if (this.checkRules(value)) {
       return;
     }
-
     this.$emit('change', value);
   }
 
   submit(event: any) {
-    this.violatedRules = this.hasViolatedRules(event.target.value);
-    if (this.violatedRules) {
+    this.currentInput = event.target.value;
+    if (this.checkRules(event.target.value)) {
       return;
     }
     this.$emit('submit', event.target.value);
@@ -87,6 +88,11 @@ export default class InputField extends Vue {
   border: 1px solid $color-primary;
   border-radius: 30px;
   align-items: center;
+
+  &.has-error {
+    border-color: $color-error;
+    border-width: 0.1em;
+  }
 
   &.has-icon {
     padding-right: 2px;
