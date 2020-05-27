@@ -5,7 +5,7 @@ import { Status, StatusLabels } from '@/models/status';
 import { Domain, DomainLabels } from '@/models/domain';
 import { RunPeriod, RunPeriodLabels } from '@/models/runperiod';
 import { Visibility, VisibilityKeys } from '@/models/visibility';
-import { User } from '@/store/modules/auth/state';
+import { User } from '@/store/modules/auth';
 import { Type, TypeKeys } from '@/models/types';
 import { umbrellaLabels } from '@/store/modules/error/actions';
 import { setUrlSearchQuery, mapSearchQueryToObject, mapQueryObjToFilters, stringify } from '@/services/url-service';

@@ -1,6 +1,5 @@
 import AuthState from '@/store/modules/auth';
-import { common } from '@/store/modules/common';
-import { CommonState } from '@/store/modules/common/state';
+import CommonState from '@/store/modules/common';
 import { error } from '@/store/modules/error';
 import { ErrorState } from '@/store/modules/error/state';
 import { process } from '@/store/modules/process';

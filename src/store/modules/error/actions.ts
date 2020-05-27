@@ -1,7 +1,7 @@
 import { errorMutationTypes } from '@/store/modules/error/mutations';
 import { ErrorState } from '@/store/modules/error/state';
 import { Process, ProcessState } from '@/store/modules/process/state';
-import { getInvalidProperties } from '@/store/modules/process/validation';
+import { getInvalidProperties } from '@/store/modules/validation';
 import { RootState } from '@/store';
 import { ActionTree } from 'vuex';
 

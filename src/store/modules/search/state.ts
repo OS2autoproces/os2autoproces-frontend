@@ -3,7 +3,7 @@ import { Phase } from '@/models/phase';
 import { RunPeriod } from '@/models/runperiod';
 import { Status } from '@/models/status';
 import { Type } from '@/models/types';
-import { ITSystem, Municipality, Technology } from '@/store/modules/process/state';
+import { ITSystem, Municipality, Technology } from '@/store/modules/common';
 import { StatusSelect } from './../../../models/status';
 
 export interface SearchResult {

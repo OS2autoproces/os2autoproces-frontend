@@ -11,7 +11,7 @@ import { errorActionTypes } from '@/store/modules/error/actions';
 import { getProcessKeys } from '@/store/modules/process/getters';
 import { processMutationTypes } from '@/store/modules/process/mutations';
 import { Attachment, AttachmentFile, ITSystem, Process, ProcessState, Technology } from '@/store/modules/process/state';
-import { getInvalidProperties } from '@/store/modules/process/validation';
+import { getInvalidProperties } from '@/store/modules/validation';
 import { RootState } from '@/store';
 import { ActionTree } from 'vuex';
 

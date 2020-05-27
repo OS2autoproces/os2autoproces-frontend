@@ -9,7 +9,7 @@ import {
   saveFiltersToStorage,
   loadFiltersFromStorage,
   deleteFiltersFromStorage
-} from '@/store/modules/search/service';
+} from '@/store/modules/service';
 import { getInitialState } from '@/store/modules/search';
 
 export const namespace = 'search';
