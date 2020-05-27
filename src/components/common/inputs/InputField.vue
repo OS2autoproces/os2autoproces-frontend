@@ -2,7 +2,7 @@
   <div>
     <div
       class="input-field-wrap"
-      :class="{ 'has-icon': this.$slots.default, 'has-error': this.hasError | this.hasViolatedRules }"
+      :class="{ 'has-icon': this.$slots.default, 'has-error': this.hasError || this.hasViolatedRules }"
       v-if="!disabled"
     >
       <v-text-field
@@ -52,6 +52,10 @@ export default class InputField extends Vue {
   hasError!: boolean;
 
   currentInput = '';
+
+  mounted() {
+    this.currentInput = this.valueSynced;
+  }
 
   checkRules(value: any): boolean {
     return this.rules?.some(rule => {
