@@ -13,7 +13,6 @@
         :value="valueSynced"
         @input="valueChanged"
         @keyup.enter="submit"
-        :maxlength="maxLength"
         :rules="rules"
       />
       <div class="icon" v-if="this.$slots.default">
@@ -44,8 +43,6 @@ export default class InputField extends Vue {
   type!: string;
   @Prop(Boolean)
   disabled!: boolean;
-  @Prop({ default: Number.MAX_VALUE, type: Number })
-  maxLength!: number;
   @Prop({ default: () => [], required: false, type: Array as () => Rule[] })
   rules!: Rule[];
   @Prop(Boolean)

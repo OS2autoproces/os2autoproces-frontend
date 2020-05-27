@@ -37,7 +37,6 @@
             :disabled="state.disabled.timeAndProcessEdit"
             :value="timeSpentPerOccurance.seconds.toFixed(0)"
             @change="updateTimeSpentPerOccurance({ seconds: $event })"
-            :maxLength="2"
             :rules="secondRules"
             >s</InputField
           >
