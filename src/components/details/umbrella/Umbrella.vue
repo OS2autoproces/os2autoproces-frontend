@@ -196,6 +196,7 @@ export default class Umbrella extends Vue {
 }
 
 .search-page-link {
+  color: $color-primary;
   @include heading;
   font-size: 1.2rem;
   display: flex;
