@@ -1,7 +1,9 @@
-import 'babel-polyfill';
+import 'core-js/stable';
+import 'regenerator-runtime/runtime';
+
 import Vue from 'vue';
-import Vuetify from 'vuetify';
-import 'vuetify/dist/vuetify.min.css';
+import vuetify from '@/plugins/vuetify';
+import { VueMaskDirective } from 'v-mask';
 
 // @ts-ignore
 import { TiptapVuetifyPlugin } from 'tiptap-vuetify';
@@ -13,21 +15,16 @@ import store from '@/store/store';
 
 Vue.config.productionTip = false;
 
-Vue.use(Vuetify, {
-  theme: {
-    primary: '#ee8a3c',
-    secondary: '#3d5386',
-    error: '#b71c1c',
-    background: '#fff'
-  }
-});
+Vue.directive('mask', VueMaskDirective);
 
 Vue.use(TiptapVuetifyPlugin, {
+  vuetify,
   iconsGroup: 'md'
 });
 
 new Vue({
   router,
   store,
+  vuetify,
   render: h => h(App)
 }).$mount('#app');

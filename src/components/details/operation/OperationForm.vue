@@ -111,7 +111,7 @@ export default class OperationForm extends Vue {
     margin-top: 0.5rem;
     width: 160px;
 
-    /deep/ svg {
+    ::v-deep svg {
       height: 2rem;
       width: 2rem;
     }

@@ -1,7 +1,7 @@
 <template>
-  <v-snackbar auto-height top :value="value" :color="color" :timeout="timeout">
+  <v-snackbar top :value="value" :color="color" :timeout="timeout">
     <slot />
-    <v-btn v-if="showButton" dark flat @click="clicked">
+    <v-btn v-if="showButton" dark text @click="clicked">
       OK
     </v-btn>
   </v-snackbar>
@@ -10,7 +10,7 @@
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 
-@Component
+@Component({})
 export default class SnackBarComponent extends Vue {
   @Prop(Number)
   timeout!: number;
@@ -41,7 +41,7 @@ export default class SnackBarComponent extends Vue {
 </script>
 
 <style scoped lang="scss">
-.v-snack /deep/ {
+.v-snack ::v-deep {
   .v-snack__wrapper {
     max-width: 60%;
   }

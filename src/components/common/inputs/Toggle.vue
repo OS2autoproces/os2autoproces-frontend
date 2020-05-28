@@ -1,18 +1,16 @@
 <template>
-    <div class="toggle" role="button" @click="click">
-        <div class="toggle-label">Fra</div>
-        <div class="flex-grow"></div>
-        <div class="toggle-label">Til</div>
-        <div class="toggle-slider" role="button" :class="{ on: value }">
-            <slot /> {{value ? 'til' : 'fra'}}
-        </div>
-    </div>
+  <div class="toggle" role="button" @click="click">
+    <div class="toggle-label">Fra</div>
+    <div class="flex-grow"></div>
+    <div class="toggle-label">Til</div>
+    <div class="toggle-slider" role="button" :class="{ on: value }"><slot /> {{ value ? 'til' : 'fra' }}</div>
+  </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 
-@Component
+@Component({})
 export default class Toggle extends Vue {
   @Prop(Boolean) value!: boolean;
 
@@ -27,7 +25,7 @@ export default class Toggle extends Vue {
 
 .toggle {
   border: 1px solid $color-primary;
-  border-radius: .5rem;
+  border-radius: 0.5rem;
   padding: 0 1rem;
   width: 250px;
   height: 40px;
@@ -49,7 +47,7 @@ export default class Toggle extends Vue {
   padding: 0 1rem;
   color: $color-background;
   background-color: $color-secondary;
-  border-radius: .5rem;
+  border-radius: 0.5rem;
   top: -1px;
 
   &.on {
@@ -61,4 +59,3 @@ export default class Toggle extends Vue {
   }
 }
 </style>
-

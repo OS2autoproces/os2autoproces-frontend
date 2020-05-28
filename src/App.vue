@@ -1,9 +1,11 @@
 <template>
   <div id="app">
-    <v-app light>
-      <div class="router-view">
-        <router-view/>
-      </div>
+    <v-app>
+      <v-content>
+        <div class="router-view">
+          <router-view />
+        </div>
+      </v-content>
     </v-app>
   </div>
 </template>
@@ -16,7 +18,7 @@ import { Action } from 'vuex-class';
 import { authActionTypes } from '@/store/modules/auth/actions';
 import { commonActionTypes, Cms } from '@/store/modules/common/actions';
 
-@Component
+@Component({})
 export default class App extends Vue {
   @Action(authActionTypes.LOAD_USER) loadUser: any;
 
@@ -64,12 +66,12 @@ body {
 }
 
 #app {
-  .application.theme--light {
+  .v-application.theme--light {
     background: $color-background;
     color: inherit;
   }
 
-  .application--wrap {
+  .v-application--wrap {
     .router-view {
       flex-grow: 1;
       display: flex;

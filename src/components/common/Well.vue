@@ -1,16 +1,16 @@
 <template>
-    <div class="well-container">
-        <div class="section-wrap">
-            <slot />
-        </div>
-        <slot name="well-footer" />
+  <div class="well-container">
+    <div class="section-wrap">
+      <slot />
     </div>
+    <slot name="well-footer" />
+  </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 
-@Component
+@Component({})
 export default class Well extends Vue {}
 </script>
 
@@ -20,9 +20,10 @@ export default class Well extends Vue {}
 .well-container {
   display: flex;
   flex-direction: column;
-  background-color: $color-background-grey;
+  background-color: $color-background;
   padding: 1.5rem;
   border-radius: 1rem;
+  border: 0.07rem solid $color-primary;
 
   .section-wrap {
     display: flex;
@@ -30,7 +31,7 @@ export default class Well extends Vue {}
 
     > * {
       flex: 1 1 1px;
-      padding: 0 .5rem;
+      padding: 0 0.5rem;
 
       > *:not(:last-child) {
         margin-bottom: 1rem;

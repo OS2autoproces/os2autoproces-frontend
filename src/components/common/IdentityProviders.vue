@@ -7,11 +7,11 @@
     <div>
       <v-list>
         <template v-for="item in identityProviders">
-          <v-list-tile class="list-elements" :key="item.name" ripple :href="item.url">
-            <v-list-tile-content>
-              <v-list-tile-title class="element-title">{{item.name}}</v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
+          <v-list-item class="list-elements" :key="item.name" ripple :href="item.url">
+            <v-list-item-content>
+              <v-list-item-title class="element-title">{{ item.name }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
         </template>
       </v-list>
     </div>
@@ -19,8 +19,8 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
-import { HTTP } from "@/services/http-service";
+import { Vue, Component, Prop } from 'vue-property-decorator';
+import { HTTP } from '@/services/http-service';
 
 interface IdentityProvider {
   entityId: string;
@@ -37,9 +37,7 @@ export default class IdentityProviders extends Vue {
   identityProviders: IdentityProviderLink[] = [];
 
   async mounted() {
-    const response = await HTTP.get<IdentityProvider[]>(
-      `public/identityproviders`
-    );
+    const response = await HTTP.get<IdentityProvider[]>(`public/identityproviders`);
 
     const apiUrl = window.autoProcessConfiguration.apiUrl;
 
@@ -54,9 +52,9 @@ export default class IdentityProviders extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import "../../styles/variables";
+@import '../../styles/variables';
 
-.toolbar {
+.theme--light.v-toolbar.v-sheet {
   margin: auto;
   color: white;
   background-color: $color-primary;

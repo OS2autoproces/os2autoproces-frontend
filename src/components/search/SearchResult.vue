@@ -1,80 +1,61 @@
 <template>
   <div class="result">
     <div class="result-column">
-      <div class="name">{{process.title}}</div>
-      <div class="resume">{{process.shortDescription}}</div>
+      <div class="name">{{ process.title }}</div>
+      <div class="resume">{{ process.shortDescription }}</div>
     </div>
     <div class="result-column potential">
       <div v-if="isChildProcess">
         <div class="field">Vurderet potentiale:</div>
         <div class="value">
-          <Rating
-            class="rating"
-            :value="process.rating"
-            disabled
-          />
+          <Rating class="rating" :value="process.rating" disabled />
         </div>
       </div>
       <div v-if="isChildProcess">
         <div class="field">Kommune:</div>
-        <div class="value">{{process.municipalityName}}</div>
+        <div class="value">{{ process.municipalityName }}</div>
       </div>
       <div>
         <div class="field">Unik ID:</div>
-        <div class="value">{{process.id}}</div>
+        <div class="value">{{ process.id }}</div>
       </div>
     </div>
     <div class="result-column domain">
       <div>
         <div class="field">Fagområder:</div>
-        <div class="value">{{domains}}</div>
+        <div class="value">{{ domains }}</div>
       </div>
       <div>
         <div class="field">KLE-nr:</div>
-        <div class="value">{{process.kle}}</div>
+        <div class="value">{{ process.kle }}</div>
       </div>
       <div>
         <div class="field">Lovparagraf:</div>
-        <div class="value">{{process.legalClause}}</div>
+        <div class="value">{{ process.legalClause }}</div>
       </div>
     </div>
-    <div
-      class="result-column phase"
-      v-if="!noPhase && isChildProcess"
-    >
+    <div class="result-column phase" v-if="!noPhase && isChildProcess">
       <div>
         <div class="field">Fase:</div>
         <div class="value">
-          <Phases
-            :value="process.phase"
-            disabled
-          />
+          <Phases :value="process.phase" disabled />
         </div>
       </div>
       <div>
         <div class="field">Status:</div>
-        <div class="value">{{StatusLabels[process.status]}}</div>
+        <div class="value">{{ StatusLabels[process.status] }}</div>
       </div>
     </div>
-    <div
-      class="result-column umbrella"
-      v-if="!isChildProcess"
-    >
+    <div class="result-column umbrella" v-if="!isChildProcess">
       <div>
         <div class="field">Antal tilknyttede processer:</div>
-        <div class="value">{{process.childrenCount}}</div>
+        <div class="value">{{ process.childrenCount }}</div>
       </div>
     </div>
     <div v-on:click.stop.prevent="setProcessBookmark()">
-      <star-icon
-        class="star-icon"
-        :class="{ selected: processBookmarked }"
-      />
+      <star-icon class="star-icon" :class="{ selected: processBookmarked }" />
     </div>
-    <umbrella-icon
-      v-if="!isChildProcess"
-      class="umbrella-icon"
-    />
+    <umbrella-icon v-if="!isChildProcess" class="umbrella-icon" />
   </div>
 </template>
 
@@ -171,7 +152,7 @@ $resume-line-height: 1em * 1.5;
   width: 2.5rem;
 }
 
-.rating /deep/ svg {
+.rating ::v-deep svg {
   height: 16px;
   width: 16px;
 }

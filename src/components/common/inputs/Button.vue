@@ -4,10 +4,10 @@
   </button>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 
-@Component
+@Component({})
 export default class Button extends Vue {
   @Prop(Boolean)
   primary!: boolean;
@@ -38,4 +38,3 @@ button {
   }
 }
 </style>
-
