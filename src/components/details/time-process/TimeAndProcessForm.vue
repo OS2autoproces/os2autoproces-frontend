@@ -24,17 +24,26 @@
         </WellItem>
         <WellItem
           labelWidth="70%"
-          label="Tidsforbrug pr. proces i minutter"
+          label="Tidsforbrug pr. proces i minutter og sekunder"
           :required="minPhase(PhaseKeys.PREANALYSIS)"
         >
           <InputField
             :type="'number'"
             :disabled="state.disabled.timeAndProcessEdit"
-            :value="state.timeSpendPerOccurance"
+            :value="timeSpentPerOccurance.minutes.toFixed(0)"
+            @change="updateTimeSpentPerOccurance({ minutes: $event })"
+            >m</InputField
+          >
+          <InputField
+            :type="'number'"
+            :disabled="state.disabled.timeAndProcessEdit"
+            :value="timeSpentPerOccurance.seconds.toFixed(0)"
+            @change="updateTimeSpentPerOccurance({ seconds: $event })"
+            :rules="secondRules"
             :hasError="isInErrors('timeSpendPerOccurance')"
             id="timeSpendPerOccurance"
-            @change="update({ timeSpendPerOccurance: $event })"
-          />
+            >s</InputField
+          >
         </WellItem>
         <WellItem
           labelWidth="70%"
@@ -154,16 +163,17 @@ export default class TimeAndProcessForm extends Vue {
   @Getter(processGetterTypes.MIN_PHASE) minPhase!: (phase: Phase) => boolean;
   PhaseKeys = PhaseKeys;
 
-  yesNoItems = [
-    { value: true, text: 'Ja' },
-    { value: false, text: 'Nej' }
+  yesNoItems = [{ value: true, text: 'Ja' }, { value: false, text: 'Nej' }];
+
+  secondRules: Array<(value: string) => boolean | string> = [
+    value => Number.isInteger(Number(value)) || 'Sekunder skal være heltal',
+    value => parseInt(value, 10) < 60 || 'Sekunder kan højest være 59',
+    value => parseInt(value, 10) >= 0 || 'Sekunder kan ikke være negative'
   ];
 
   get timeSpendHours() {
     const hours =
-      ((this.state.timeSpendOccurancesPerEmployee * this.state.timeSpendPerOccurance) / 60)
-        .toString()
-        .substring(0, 4) || '0';
+      ((this.state.timeSpendOccurancesPerEmployee * this.state.timeSpendPerOccurance) / 60).toFixed(2) || '0';
     return hours;
   }
   // Number of times this process is repeated yearly * amount of time required pr. process in minutes / 60 * automation potential / 100
@@ -172,8 +182,15 @@ export default class TimeAndProcessForm extends Vue {
       (
         ((this.state.timeSpendOccurancesPerEmployee * this.state.timeSpendPerOccurance) / 60) *
         (this.state.timeSpendPercentageDigital / 100)
-      ).toFixed(1) || '0';
+      ).toFixed(2) || '0';
     return hours;
+  }
+
+  get timeSpentPerOccurance(): { minutes: number; seconds: number } {
+    const time = this.state.timeSpendPerOccurance;
+    const minutes = parseInt(time, 10); // remove decimals
+    const seconds = (time - minutes) * 60; // remove minute part and convert decimals to seconds
+    return { minutes, seconds };
   }
 
   get state() {
@@ -182,6 +199,13 @@ export default class TimeAndProcessForm extends Vue {
 
   isInErrors(name: string) {
     return this.$store.state.error.timeAndProcess.errors.some((e: any) => e.name === name);
+  }
+
+  updateTimeSpentPerOccurance({ minutes, seconds }: { minutes: string; seconds: string }) {
+    const newMinutes = !!minutes || minutes === '' ? parseInt(minutes || '0', 10) : this.timeSpentPerOccurance.minutes;
+    const newSeconds = !!seconds || seconds === '' ? parseInt(seconds || '0', 10) : this.timeSpentPerOccurance.seconds;
+    const timeSpendPerOccurance = newMinutes + newSeconds / 60;
+    this.update({ timeSpendPerOccurance });
   }
 }
 </script>
