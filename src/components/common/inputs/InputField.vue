@@ -1,7 +1,20 @@
 <template>
   <div>
-    <div class="input-field-wrap" :class="{ 'has-icon': this.$slots.default }" v-if="!disabled">
-      <input :type="type" :placeholder="placeholder" :value="value" @input="valueChanged" @keyup.enter="submit" />
+    <div
+      class="input-field-wrap"
+      :class="{ 'has-icon': this.$slots.default, 'has-error': this.hasError || this.hasViolatedRules }"
+      v-if="!disabled"
+    >
+      <v-text-field
+        solo
+        flat
+        :type="type"
+        :placeholder="placeholder"
+        :value="valueSynced"
+        @input="valueChanged"
+        @keyup.enter="submit"
+        :rules="rules"
+      />
       <div class="icon" v-if="this.$slots.default">
         <slot />
       </div>
@@ -16,20 +29,54 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator';
+import { Vue, Component, Prop, PropSync } from 'vue-property-decorator';
+
+type Rule = (value: string) => boolean | string;
 
 @Component({})
 export default class InputField extends Vue {
-  @Prop(String) value!: string;
-  @Prop(String) placeholder!: string;
-  @Prop(String) type!: string;
-  @Prop(Boolean) disabled!: boolean;
+  @PropSync('value', { required: false, type: String, default: '' })
+  valueSynced!: string;
+  @Prop(String)
+  placeholder!: string;
+  @Prop(String)
+  type!: string;
+  @Prop(Boolean)
+  disabled!: boolean;
+  @Prop({ default: () => [], required: false, type: Array as () => Rule[] })
+  rules!: Rule[];
+  @Prop(Boolean)
+  hasError!: boolean;
 
-  valueChanged(event: any) {
-    this.$emit('change', event.target.value);
+  currentInput = '';
+
+  mounted() {
+    this.currentInput = this.valueSynced;
+  }
+
+  checkRules(value: any): boolean {
+    return this.rules?.some(rule => {
+      return !(rule(value) === true);
+    });
+  }
+
+  get hasViolatedRules(): boolean {
+    return this.checkRules(this.currentInput);
+  }
+
+  valueChanged(value: any) {
+    this.currentInput = value;
+    if (this.checkRules(value)) {
+      return;
+    }
+    this.$emit('change', value);
   }
 
   submit(event: any) {
+    this.currentInput = event.target.value;
+    if (this.checkRules(event.target.value)) {
+      return;
+    }
     this.$emit('submit', event.target.value);
   }
 }
@@ -42,6 +89,11 @@ export default class InputField extends Vue {
   border: 1px solid $color-primary;
   border-radius: 30px;
   align-items: center;
+
+  &.has-error {
+    border-color: $color-error;
+    border-width: 0.1em;
+  }
 
   &.has-icon {
     padding-right: 2px;
@@ -59,11 +111,33 @@ export default class InputField extends Vue {
     }
   }
 
-  input {
-    @include field-input-text;
-    padding-left: 10px !important;
-    height: 32px;
-    width: 100%;
+  .v-text-field ::v-deep {
+    display: flex;
+    margin: 0;
+
+    .v-input__control {
+      min-height: 32px;
+      .v-input__slot {
+        margin: 0;
+        padding-left: 10px;
+        border-radius: unset;
+        background: unset;
+
+        &::before,
+        &::after {
+          display: none !important;
+        }
+      }
+
+      .v-text-field__details {
+        display: none;
+      }
+
+      input {
+        @include field-input-text;
+        color: $color-text !important;
+      }
+    }
   }
 }
 
