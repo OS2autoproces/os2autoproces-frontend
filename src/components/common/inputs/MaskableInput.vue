@@ -1,12 +1,6 @@
 <template>
   <div>
-    <v-text-field
-      v-if="!disabled"
-      :value="value"
-      :mask="mask"
-      :return-masked-value="returnMasked"
-      @input="valueChanged($event)"
-    />
+    <v-text-field v-if="!disabled" :value="value" v-mask="mask" @input="valueChanged($event)" />
     <div v-if="disabled">{{ value }}</div>
   </div>
 </template>
@@ -18,7 +12,6 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 export default class MaskableInputComponent extends Vue {
   @Prop(String) mask!: string;
   @Prop(String) value!: string;
-  @Prop(Boolean) returnMasked!: boolean;
   @Prop(Boolean) disabled!: boolean;
 
   valueChanged(value: any) {

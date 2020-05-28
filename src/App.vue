@@ -1,9 +1,11 @@
 <template>
   <div id="app">
-    <v-app light>
-      <div class="router-view">
-        <router-view />
-      </div>
+    <v-app>
+      <v-content>
+        <div class="router-view">
+          <router-view />
+        </div>
+      </v-content>
     </v-app>
   </div>
 </template>
@@ -64,12 +66,12 @@ body {
 }
 
 #app {
-  .application.theme--light {
+  .v-application.theme--light {
     background: $color-background;
     color: inherit;
   }
 
-  .application--wrap {
+  .v-application--wrap {
     .router-view {
       flex-grow: 1;
       display: flex;

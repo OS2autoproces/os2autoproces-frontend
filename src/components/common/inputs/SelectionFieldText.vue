@@ -1,8 +1,8 @@
 <template>
-  <v-list-tile-content v-if="!!subText">
-    <v-list-tile-title>{{ itemText }}</v-list-tile-title>
-    <v-list-tile-sub-title>{{ subText }}</v-list-tile-sub-title>
-  </v-list-tile-content>
+  <v-list-item-content v-if="!!subText">
+    <v-list-item-title>{{ itemText }}</v-list-item-title>
+    <v-list-item-subtitle>{{ subText }}</v-list-item-subtitle>
+  </v-list-item-content>
   <span v-else class="text">
     {{ itemText }}
   </span>

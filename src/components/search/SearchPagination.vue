@@ -11,6 +11,7 @@
             :circle="true"
             :value="page + 1"
             :length="pageTotal"
+            :total-visible="10"
             @input="onPageChange($event - 1)"
           ></v-pagination>
         </div>
@@ -57,7 +58,7 @@ export default class SearchPagination extends Vue {
   @Prop(Number) size!: number;
   sizes: Array<{ text: string; value: number }> = Array.from([5, 10, 25], (value, index) => ({
     value,
-    text: value.toString()
+    text: value?.toString()
   }));
 
   @Emit()
@@ -75,7 +76,7 @@ export default class SearchPagination extends Vue {
   }
 
   get formattedSize() {
-    return { value: this.size, text: this.size.toString() };
+    return { value: this.size, text: this.size?.toString() };
   }
 
   get pages(): number[] {
