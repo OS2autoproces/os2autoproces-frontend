@@ -68,6 +68,7 @@ import { isEmpty } from 'lodash';
 import { searchActionTypes } from '@/store/modules/search/actions';
 import { VisibilityKeys } from '@/models/visibility';
 import { SearchFilters } from '@/store/modules/search/state';
+import { isIE } from '@/services/url-service';
 
 @Component({
   components: {
@@ -119,19 +120,9 @@ export default class Umbrella extends Vue {
     return !!Object.keys(errorState).find(section => !isEmpty(errorState[section].errors));
   }
 
-  // Test if browser is Internet Explorer, for use in goBack
-  isIE() {
-    const ua = window.navigator.userAgent;
-    const msie = ua.indexOf('MSIE ');
-
-    return msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./);
-  }
-
-  // If browser is Internet Explorer, the parent details view is nested in the search view,
-  // and we have to reset the search url when hiding it.
   goBack() {
     console.log('hello there!');
-    if (this.isIE()) {
+    if (isIE()) {
       this.$emit('goBack');
     }
     this.$router.push('/search');

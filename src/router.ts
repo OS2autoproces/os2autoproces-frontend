@@ -8,7 +8,7 @@ import ManageTechnologies from './views/ManageTechnologies.vue';
 import ReportProcess from './views/ReportProcess.vue';
 import Search from './views/Search.vue';
 import Discovery from './views/Discovery.vue';
-import { mapSearchQueryToObject, mapQueryObjToFilters } from './services/url-service';
+import { mapSearchQueryToObject, mapQueryObjToFilters, isIE } from './services/url-service';
 import { SearchFilters } from './store/modules/search/state';
 import { size, isEmpty } from 'lodash';
 import { getInitialState } from './store/modules/search';
@@ -37,13 +37,6 @@ function handleDetailsIE() {
 
 function isLoggedIn() {
   return validateAuth(user => !!user);
-}
-
-function isIE() {
-  const ua = window.navigator.userAgent;
-  const msie = ua.indexOf('MSIE ');
-
-  return msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./);
 }
 
 function hasRole(role: UserRole) {

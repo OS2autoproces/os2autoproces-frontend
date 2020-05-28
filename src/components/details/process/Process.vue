@@ -109,6 +109,7 @@ import { ErrorState } from '@/store/modules/error/state';
 import SnackBar from '@/components/common/SnackBar.vue';
 import { isEmpty } from 'lodash';
 import { processGetterTypes } from '@/store/modules/process/getters';
+import { isIE } from '@/services/url-service';
 
 @Component({
   components: {
@@ -173,19 +174,10 @@ export default class Process extends Vue {
     return auth.user.cvr === process.cvr;
   }
 
-  // Test if browser is Internet Explorer, for use in goBack
-  isIE() {
-    const ua = window.navigator.userAgent;
-    const msie = ua.indexOf('MSIE ');
-
-    return msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./);
-  }
-
   // If browser is Internet Explorer, the parent details view is nested in the search view,
   // and we have to reset the search url when hiding it.
   goBack() {
-    console.log('hello there!');
-    if (this.isIE()) {
+    if (isIE()) {
       this.$emit('goBack');
     }
     this.$router.push('/search');
