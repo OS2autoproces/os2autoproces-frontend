@@ -4,7 +4,7 @@
     heading="Grundlæggende oplysninger"
     id="general-information"
     :disabled="state.disabled.generalInformationEdit"
-    @edit="update({disabled: { generalInformationEdit: $event} })"
+    @edit="update({ disabled: { generalInformationEdit: $event } })"
     always-open
   >
     <div class="title-row">
@@ -16,12 +16,7 @@
         :class="{ disabled: state.disabled.generalInformationEdit }"
         @change="update({ title: $event })"
       />
-      <div
-        v-if="!isReporting"
-        class="bookmark-button"
-        role="button"
-        @click="setBookmark(!state.hasBookmarked)"
-      >
+      <div v-if="!isReporting" class="bookmark-button" role="button" @click="setBookmark(!state.hasBookmarked)">
         <StarIcon :class="{ selected: state.hasBookmarked }" />
       </div>
       <MunicipalityLogo :src="logo" />
@@ -49,7 +44,7 @@
             itemText="name"
             @search="search($event)"
             isItemsPartial
-            @change="update({owner: $event})"
+            @change="update({ owner: $event })"
             :items="users"
           />
         </WellItem>
@@ -65,12 +60,12 @@
             itemText="name"
             @search="search($event)"
             isItemsPartial
-            @change="update({contact: $event})"
+            @change="update({ contact: $event })"
             :items="users"
             clearable
           />
         </WellItem>
-        <WellItem v-if="state.contact" labelWidth="180px" label="Mail:">{{state.contact.email}}</WellItem>
+        <WellItem v-if="state.contact" labelWidth="180px" label="Mail:">{{ state.contact.email }}</WellItem>
       </div>
 
       <div>
@@ -82,7 +77,7 @@
           <MappedSelectionField
             :disabled="!!state.parents.length || state.disabled.generalInformationEdit"
             :value="state.visibility"
-            @change="update({visibility: $event})"
+            @change="update({ visibility: $event })"
             :items="visibilityLevels"
           />
         </WellItem>
@@ -90,14 +85,14 @@
           <DomainsField
             :disabled="state.disabled.generalInformationEdit"
             :value="state.domains"
-            @change="assign({domains: $event})"
+            @change="assign({ domains: $event })"
           />
         </WellItem>
         <WellItem labelWidth="120px" label="Afdelinger:" v-if="isWithinMunicipality">
           <SelectionField
             :disabled="state.disabled.generalInformationEdit"
             :value="state.orgUnits"
-            @change="assign({orgUnits: $event})"
+            @change="assign({ orgUnits: $event })"
             :items="orgUnits"
             multiple
             itemText="name"
@@ -112,11 +107,11 @@
           <InputField
             :disabled="state.disabled.generalInformationEdit"
             :value="state.vendor"
-            @change="update({vendor: $event})"
+            @change="update({ vendor: $event })"
           />
         </WellItem>
         <WellItem v-if="state.sepMep" labelWidth="120px" label="SEP/MEP:">
-          <Checkbox :disabled="true" :value="state.sepMep" @change="update({sepMep: $event})" />
+          <Checkbox :disabled="true" :value="state.sepMep" @change="update({ sepMep: $event })" />
         </WellItem>
       </div>
 
@@ -125,7 +120,7 @@
           <InputField
             :disabled="state.disabled.generalInformationEdit || state.form"
             :value="state.legalClause"
-            @change="update({legalClause: $event})"
+            @change="update({ legalClause: $event })"
           />
         </WellItem>
         <WellItem labelWidth="200px" label="KLE:">
@@ -154,7 +149,7 @@
           <InputField
             :disabled="state.disabled.generalInformationEdit"
             :value="state.klId"
-            @change="update({klId: $event})"
+            @change="update({ klId: $event })"
           />
         </WellItem>
         <WellItem
@@ -186,7 +181,7 @@
         </h2>
         <TextArea
           :disabled="state.disabled.generalInformationEdit"
-          @change="update({shortDescription: $event})"
+          @change="update({ shortDescription: $event })"
           :value="state.shortDescription"
           :maxLength="140"
           :minHeight="'50px'"
@@ -208,7 +203,7 @@
             class="status-field"
             :disabled="state.disabled.generalInformationEdit"
             :value="state.status"
-            @change="update({status: $event})"
+            @change="update({ status: $event })"
             :items="statusLevels"
           />
         </div>
@@ -222,21 +217,12 @@
 
     <div>
       <div v-if="state.status !== StatusKeys.INPROGRESS && state.status !== StatusKeys.NOT_RATED">
-        <h2
-          class="comments-heading"
-          v-if="state.status === StatusKeys.FAILED"
-        >Hvorfor er processen mislykket?</h2>
-        <h2
-          class="comments-heading"
-          v-if="state.status === StatusKeys.PENDING"
-        >Hvorfor afventer processen?</h2>
-        <h2
-          class="comments-heading"
-          v-if="state.status === StatusKeys.REJECTED"
-        >Hvorfor er processen afvist?</h2>
+        <h2 class="comments-heading" v-if="state.status === StatusKeys.FAILED">Hvorfor er processen mislykket?</h2>
+        <h2 class="comments-heading" v-if="state.status === StatusKeys.PENDING">Hvorfor afventer processen?</h2>
+        <h2 class="comments-heading" v-if="state.status === StatusKeys.REJECTED">Hvorfor er processen afvist?</h2>
         <TextArea
           :disabled="state.disabled.generalInformationEdit"
-          @change="update({statusText: $event})"
+          @change="update({ statusText: $event })"
           :value="state.statusText"
         />
       </div>
@@ -274,12 +260,10 @@ import FormSection from '@/components/details/FormSection.vue';
 import WarningIcon from '@/components/icons/WarningIcon.vue';
 import { processActionTypes } from '@/store/modules/process/actions';
 import { processGetterTypes } from '@/store/modules/process/getters';
-import { User } from '@/store/modules/auth/state';
 import { StatusKeys, StatusLabels } from '@/models/status';
 import { VisibilityKeys, VisibilityLabels } from '@/models/visibility';
-import { OrgUnit } from '@/store/modules/process/state';
 import { Domain, DomainKeys, DomainLabels } from '@/models/domain';
-import { Kle, Form, commonActionTypes, UserSearchRequest } from '@/store/modules/common/actions';
+import { Kle, Form, UserSearchRequest, OrgUnit, CommonModule } from '@/store/modules/common';
 import { Phase, PhaseKeys } from '@/models/phase';
 import InfoTooltip from '@/components/common/InfoTooltip.vue';
 import MunicipalityLogo from '@/components/common/MunicipalityLogo.vue';
@@ -287,6 +271,7 @@ import StarIcon from '@/components/icons/StarIcon.vue';
 import AppDialog from '@/components/common/Dialog.vue';
 import DialogContent from '@/components/common/DialogContent.vue';
 import Button from '@/components/common/inputs/Button.vue';
+import { AuthModule, User } from '@/store/modules/auth';
 // TODO - split this component. No component should be 500 lines
 @Component({
   components: {
@@ -319,12 +304,12 @@ export default class GeneralInformationForm extends Vue {
   setBookmark!: (hasBookmark: boolean) => Promise<void>;
   @Action(processActionTypes.UPDATE)
   update: any;
-  @Action(commonActionTypes.LOAD_FORMS)
-  loadForms: any;
+  // @Action(commonActionTypes.LOAD_FORMS)
+  // loadForms: any;
   @Action(processActionTypes.ASSIGN)
   assign: any;
-  @Action(commonActionTypes.SEARCH_USERS)
-  searchUsers!: ({ name, cvr }: UserSearchRequest) => Promise<void>;
+  // @Action(commonActionTypes.SEARCH_USERS)
+  // searchUsers!: ({ name, cvr }: UserSearchRequest) => Promise<void>;
 
   @Getter(processGetterTypes.IS_GERNERAL_INFORMATION_VALID)
   isGeneralInformationValid!: any;
@@ -390,7 +375,7 @@ export default class GeneralInformationForm extends Vue {
     } else {
       this.update({ kle });
     }
-    this.loadForms(kle);
+    CommonModule.loadFormsByKle(kle);
   }
 
   phaseChanged(phase: any) {
@@ -403,7 +388,11 @@ export default class GeneralInformationForm extends Vue {
   }
 
   search(name: string) {
-    this.searchUsers({ name, cvr: this.$store.state.auth.user.cvr });
+    if (AuthModule.user) {
+      CommonModule.searchUsers(AuthModule.user.cvr, name);
+    } else {
+      CommonModule.searchUsers('', name);
+    }
   }
 
   openPublicVisibilityDialog() {

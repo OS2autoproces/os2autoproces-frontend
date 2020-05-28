@@ -15,10 +15,10 @@ import NavBar from '@/components/common/NavBar.vue';
 import Process from '@/components/details/process/Process.vue';
 import Umbrella from '@/components/details/umbrella/Umbrella.vue';
 import { processActionTypes } from '@/store/modules/process/actions';
-import { commonActionTypes, Kle } from '@/store/modules/common/actions';
 import { TypeKeys } from '@/models/types';
 import { ProcessState } from '@/store/modules/process/state';
 import ComponentClass from 'vue-class-component';
+import { CommonModule } from '@/store/modules/common';
 
 ComponentClass.registerHooks(['beforeRouteLeave', 'beforeRouteUpdate']);
 
@@ -33,8 +33,6 @@ export default class Details extends Vue {
   @Prop(Boolean) isReporting!: boolean;
   @Prop(Number) id!: number;
   @Prop(String) type!: string;
-  @Action(commonActionTypes.LOAD_KLES) loadKles!: () => Promise<void>;
-  @Action(commonActionTypes.LOAD_FORMS) loadForms!: (kle: Kle) => Promise<void>;
 
   isUmbrella = true;
   loading = true;
@@ -95,9 +93,9 @@ export default class Details extends Vue {
     } else {
       const process = (await this.$store.dispatch(processActionTypes.LOAD_PROCESS_DETAILS, this.id)) as ProcessState;
       this.$store.dispatch(processActionTypes.LOAD_ATTACHMENTS, Number(this.id));
-      this.loadKles();
+      await CommonModule.loadKles();
       if (process.kle) {
-        this.loadForms(process.kle);
+        await CommonModule.loadFormsByKle(process.kle);
       }
       this.isUmbrella = process.type === TypeKeys.PARENT || process.type === TypeKeys.GLOBAL_PARENT;
       this.loading = false;

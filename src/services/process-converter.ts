@@ -5,8 +5,9 @@ import { Status, StatusKeys } from '@/models/status';
 import { RunPeriod, RunPeriodKeys } from '@/models/runperiod';
 import { Type, TypeKeys } from '@/models/types';
 import { Visibility, VisibilityKeys } from '@/models/visibility';
-import { User } from '@/store/modules/auth/state';
-import { ITSystem, Link, OrgUnit, Process, ProcessState, Technology } from '@/store/modules/process/state';
+import { User } from '@/store/modules/auth';
+import { Link, Process, ProcessState } from '@/store/modules/process/state';
+import { ITSystem, OrgUnit, Technology, CommonModule } from '@/store/modules/common';
 import store from '@/store';
 
 export interface ProcessRequest {
@@ -272,8 +273,8 @@ export function stateToRequest(state: ProcessState): Partial<ProcessRequest> {
 }
 
 export function responseToState(process: ProcessResponse): Process {
-  const form = store.state.common.forms.find(f => f.code === process.form);
-  const kle = store.state.common.kles.find(k => k.code === process.kle);
+  const form = CommonModule.forms?.find(f => f.code === process.form);
+  const kle = CommonModule.kles?.find(k => k.code === process.kle);
   return {
     ...process,
     id: process.id.toString(),

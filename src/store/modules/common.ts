@@ -128,7 +128,7 @@ interface MunicipalitiesResponse {
   }
   
 @Module({ dynamic: true, store, name: 'common' })
-export default class Common implements CommonState {
+export default class Common extends VuexModule implements CommonState {
   frontPage?: string;
   itSystems?: ITSystem[];
   technologies?: Technology[];
@@ -157,7 +157,7 @@ export default class Common implements CommonState {
   }
 
   @Action
-  async saveCmsContent({}, cms: Cms) {
+  async saveCmsContent(cms: Cms) {
     await HTTP.post(`api/cms/${cms.label}`, JSON.stringify(cms.content), {
       headers: {
         'content-type': 'application/json'
@@ -238,3 +238,4 @@ export default class Common implements CommonState {
     this.UPDATE({forms});
   }
 }
+export const CommonModule = getModule(Common);

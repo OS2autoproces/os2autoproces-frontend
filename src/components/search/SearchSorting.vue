@@ -1,19 +1,21 @@
 <template>
   <div class="search-sorting">
     <div class="sort-option-column">
-      <div @click="clickSortOption('title')" role="button">Proces
+      <div @click="clickSortOption('title')" role="button">
+        Proces
         <SortIcon v-if="sorting.property === 'title'" :descending="sorting.descending" />
       </div>
     </div>
     <div class="sort-option-column">
-      <div @click="clickSortOption('rating')" role="button">Vurderet potentiale
+      <div @click="clickSortOption('rating')" role="button">
+        Vurderet potentiale
         <SortIcon v-if="sorting.property === 'rating'" :descending="sorting.descending" />
       </div>
     </div>
+    <div class="sort-option-column"></div>
     <div class="sort-option-column">
-    </div>
-    <div class="sort-option-column">
-      <div @click="clickSortOption('status')" role="button">Status
+      <div @click="clickSortOption('status')" role="button">
+        Status
         <SortIcon v-if="sorting.property === 'status'" :descending="sorting.descending" />
       </div>
     </div>
@@ -23,7 +25,7 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import SortIcon from '../icons/SortIcon.vue';
-import { SortingOption } from '@/store/modules/search/state.ts';
+import { SortingOption } from '@/store/modules/search';
 
 @Component({
   components: {

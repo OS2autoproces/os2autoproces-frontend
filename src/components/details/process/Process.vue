@@ -2,9 +2,7 @@
   <div class="page">
     <div class="side-bar">
       <div class="side-bar-content">
-        <router-link to="/search" class="search-page-link">
-          <ArrowLeftIcon />Tilbage til søgning
-        </router-link>
+        <router-link to="/search" class="search-page-link"> <ArrowLeftIcon />Tilbage til søgning </router-link>
 
         <ProcessMenu :phase="phase" :canEdit="state.canEdit" :isReporting="isReporting" />
 
@@ -33,13 +31,10 @@
             id="internal-notes"
             heading="Interne noter"
             :disabled="state.disabled.internalNotesEdit"
-            @edit="update({disabled: { internalNotesEdit: $event} })"
+            @edit="update({ disabled: { internalNotesEdit: $event } })"
             tooltip="Her kan du tilføje noter til og om processen, der kun vil være synlige for tilknyttede personer. Noterne bliver heller ikke delt, hvis processen deles med alle brugere i OS2autoproces."
           >
-            <InternalNotes
-              :internalNotes="state.internalNotes"
-              :disabled="state.disabled.internalNotesEdit"
-            />
+            <InternalNotes :internalNotes="state.internalNotes" :disabled="state.disabled.internalNotesEdit" />
           </FormSection>
         </div>
 
@@ -55,15 +50,10 @@
         <h3>Følgende felter er ugyldige:</h3>
         <div class="snack-bar-list-container">
           <!-- TODO Fix v if in v for and computation in template -->
-          <ul
-            class="section-errors"
-            v-for="section in errors"
-            v-if="section.errors.length > 0"
-            :key="section.section"
-          >
-            <span class="section-errors-title">{{section.section}}</span>
+          <ul class="section-errors" v-for="section in errors" v-if="section.errors.length > 0" :key="section.section">
+            <span class="section-errors-title">{{ section.section }}</span>
             <li v-for="(field, i) in section.errors" :key="i">
-              <div class="snack-bar-list-item">{{field}}</div>
+              <div class="snack-bar-list-item">{{ field }}</div>
             </li>
           </ul>
         </div>
@@ -76,7 +66,8 @@
       :timeout="3000"
       color="success"
       @onSnackClose="showSaveSuccess = false"
-    >Processen er gemt!</SnackBar>
+      >Processen er gemt!</SnackBar
+    >
 
     <SnackBar
       :showButton="false"
@@ -84,7 +75,8 @@
       :timeout="5000"
       color="error"
       @onSnackClose="showSaveError = false"
-    >Processen er IKKE gemt - prøv igen!</SnackBar>
+      >Processen er IKKE gemt - prøv igen!</SnackBar
+    >
   </div>
 </template>
 
@@ -94,8 +86,6 @@ import { Action, Getter } from 'vuex-class';
 import InternalNotes from '@/components/common/inputs/InternalNotes.vue';
 import { processActionTypes, NewComment } from '@/store/modules/process/actions';
 import { Phase, PhaseKeys } from '@/models/phase';
-import { commonActionTypes } from '@/store/modules/common/actions';
-
 import Comments from '@/components/details/Comments.vue';
 import IntervalSelector from '@/components/common/inputs/IntervalSelector.vue';
 import FormSection from '@/components/details/FormSection.vue';
@@ -117,6 +107,7 @@ import { ErrorState } from '@/store/modules/error/state';
 import SnackBar from '@/components/common/SnackBar.vue';
 import { isEmpty } from 'lodash';
 import { processGetterTypes } from '@/store/modules/process/getters';
+import { CommonModule } from '../../../store/modules/common';
 
 @Component({
   components: {
@@ -187,9 +178,9 @@ export default class Process extends Vue {
   }
 
   mounted() {
-    this.$store.dispatch(commonActionTypes.LOAD_KLES);
-    this.$store.dispatch(commonActionTypes.LOAD_IT_SYSTEMS);
-    this.$store.dispatch(commonActionTypes.LOAD_ORGUNITS, this.$store.state.auth.user.cvr);
+    CommonModule.loadKles();
+    CommonModule.loadITSystems();
+    CommonModule.loadOrgUnits();
 
     if (this.isReporting) {
       this.update({

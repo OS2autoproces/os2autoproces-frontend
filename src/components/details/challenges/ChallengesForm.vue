@@ -1,31 +1,71 @@
 <template>
-  <FormSection :invalid="!isChallengesValid" heading="Problemstillinger" id="challenges" :disabled="state.disabled.challengesEdit" @edit="update({ disabled: { challengesEdit: $event}})">
+  <FormSection
+    :invalid="!isChallengesValid"
+    heading="Problemstillinger"
+    id="challenges"
+    :disabled="state.disabled.challengesEdit"
+    @edit="update({ disabled: { challengesEdit: $event } })"
+  >
     <div>
       <h2>Beskrivelse</h2>
       <InfoTooltip>Her kan du beskrive den nuværende proces i detaljer.</InfoTooltip>
-      <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({longDescription: $event})" :disabled="state.disabled.challengesEdit" :value="state.longDescription" :maxLength="10000" />
-      </div>
+      <TextArea
+        :twoColumnBreakpoint="twoColumnBreakpoint"
+        @change="update({ longDescription: $event })"
+        :disabled="state.disabled.challengesEdit"
+        :value="state.longDescription"
+        :maxLength="10000"
+      />
+    </div>
 
     <div v-if="minPhase(PhaseKeys.PREANALYSIS)">
       <h2 class="with-margin">Idéer til løsning</h2>
-      <InfoTooltip>Her kan tilføjes de ønsker, du har til en fremtidig løsning. Ønskerne kan både være teknologiske (f.eks. RPA) og/eller ændringer til måden processen udføres på.</InfoTooltip>
-      <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({solutionRequests: $event})" :disabled="state.disabled.challengesEdit" :value="state.solutionRequests" :maxLength="10000" />
+      <InfoTooltip
+        >Her kan tilføjes de ønsker, du har til en fremtidig løsning. Ønskerne kan både være teknologiske (f.eks. RPA)
+        og/eller ændringer til måden processen udføres på.</InfoTooltip
+      >
+      <TextArea
+        :twoColumnBreakpoint="twoColumnBreakpoint"
+        @change="update({ solutionRequests: $event })"
+        :disabled="state.disabled.challengesEdit"
+        :value="state.solutionRequests"
+        :maxLength="10000"
+      />
     </div>
 
     <div v-if="minPhase(PhaseKeys.PREANALYSIS)">
       <h2 class="with-margin">Udfordringer i den nuværende proces *</h2>
-      <InfoTooltip>Her kan du beskrive de trivielle handlinger, udfordringer eller vaskeligheder der opleves i udførelsen af den nuværende proces.</InfoTooltip>
-      <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({processChallenges: $event})" :disabled="state.disabled.challengesEdit" :value="state.processChallenges" :maxLength="10000" />
+      <InfoTooltip
+        >Her kan du beskrive de trivielle handlinger, udfordringer eller vaskeligheder der opleves i udførelsen af den
+        nuværende proces.</InfoTooltip
+      >
+      <TextArea
+        :twoColumnBreakpoint="twoColumnBreakpoint"
+        @change="update({ processChallenges: $event })"
+        :disabled="state.disabled.challengesEdit"
+        :value="state.processChallenges"
+        :maxLength="10000"
+      />
     </div>
 
     <Well class="challenges-well">
       <div>
         <WellItem label="Oprettet:">
-          <DatePicker :value="state.created" disabled/>
+          <DatePicker :value="state.created" disabled />
         </WellItem>
 
-        <WellItem label="Nuværende systemer:" tooltip="Vælg hvilke systemer der understøtter den nuværende proces. Listen kommer fra KITOS.">
-          <SelectionField :items="itSystems" :value="state.itSystems" itemText="name" :disabled="state.disabled.challengesEdit" @change="assign({itSystems: $event})" multiple />
+        <WellItem
+          label="Nuværende systemer:"
+          tooltip="Vælg hvilke systemer der understøtter den nuværende proces. Listen kommer fra KITOS."
+        >
+          <SelectionField
+            :items="itSystems"
+            :value="state.itSystems"
+            itemText="name"
+            :disabled="state.disabled.challengesEdit"
+            @change="assign({ itSystems: $event })"
+            multiple
+          />
         </WellItem>
       </div>
 
@@ -34,12 +74,21 @@
           <DatePicker :value="state.lastChanged" disabled />
         </WellItem>
 
-        <WellItem labelWidth="30%" label="Andre nuværende systemer:" tooltip="Hvis der er systemer du ikke kan finde på listen kan du notere dem her.">
-          <TextArea @change="update({itSystemsDescription: $event})" fullWidth :disabled="state.disabled.challengesEdit" :value="state.itSystemsDescription" :maxLength="10000" />
+        <WellItem
+          labelWidth="30%"
+          label="Andre nuværende systemer:"
+          tooltip="Hvis der er systemer du ikke kan finde på listen kan du notere dem her."
+        >
+          <TextArea
+            @change="update({ itSystemsDescription: $event })"
+            fullWidth
+            :disabled="state.disabled.challengesEdit"
+            :value="state.itSystemsDescription"
+            :maxLength="10000"
+          />
         </WellItem>
       </div>
     </Well>
-
   </FormSection>
 </template>
 
@@ -53,12 +102,10 @@ import FormSection from '@/components/details/FormSection.vue';
 import Well from '@/components/common/Well.vue';
 import InfoTooltip from '@/components/common/InfoTooltip.vue';
 import WellItem from '@/components/common/WellItem.vue';
-import { processActionTypes } from '@/store/modules/process/actions';
-import { ITSystem } from '@/store/modules/process/state';
-import { HTTP } from '@/services/http-service';
-import { commonActionTypes } from '@/store/modules/common/actions';
-import { CommonState } from '@/store/modules/common/state';
 import { processGetterTypes } from '@/store/modules/process/getters';
+import { processActionTypes } from '@/store/modules/process/actions';
+import { ITSystem } from '@/store/modules/common';
+import { HTTP } from '@/services/http-service';
 import { Phase, PhaseKeys } from '@/models/phase';
 
 @Component({
@@ -90,10 +137,6 @@ export default class ChallengesForm extends Vue {
 
   get state() {
     return this.$store.state.process;
-  }
-
-  get itSystems() {
-    return this.$store.state.common.itSystems;
   }
 }
 </script>

@@ -66,9 +66,9 @@ import StarIcon from '../icons/StarIcon.vue';
 import UmbrellaIcon from '../icons/UmbrellaIcon.vue';
 import Rating from '../common/inputs/Rating.vue';
 import Phases from '../common/inputs/Phases.vue';
-import { SearchResultProcess } from '../../store/modules/search/state';
-import { StatusLabels } from '../../models/status';
-import { DomainLabels } from '../../models/domain';
+import { SearchResultProcess } from '@/store/modules/search';
+import { StatusLabels } from '@/models/status';
+import { DomainLabels } from '@/models/domain';
 import { processActionTypes } from '@/store/modules/process/actions';
 import { TypeKeys } from '@/models/types';
 

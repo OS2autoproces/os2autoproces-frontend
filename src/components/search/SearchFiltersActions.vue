@@ -37,17 +37,13 @@
   <transition name="slide-y-reverse-transition">
     <div class="actions" v-if="filtersTouched">
       <Button class="action elevation-3" v-ripple @click="dispatchClearFilters()">Ryd filtre</Button>
-      <Button
-        class="action elevation-3"
-        v-ripple
-        @click.stop.prevent="toggleSaveFiltersDialog()"
-      >Gem Søgning</Button>
+      <Button class="action elevation-3" v-ripple @click.stop.prevent="toggleSaveFiltersDialog()">Gem Søgning</Button>
       <AppDialog :open="saveFiltersDialogOpen" @close="closeSaveFilterDialog">
         <DialogContent>
           <h2 class="form-header">Gem din søgning</h2>
           <div class="save-filters-form">
             <InputField class="input" placeholder="Navn" :value="name" @change="onNameChange"></InputField>
-            <span class="error--text" v-if="!!error">{{error}}</span>
+            <span class="error--text" v-if="!!error">{{ error }}</span>
             <div class="dialog-actions">
               <Button @click="closeSaveFilterDialog()">Annullér</Button>
               <Button :primary="true" @click="submitSaveFilters()">GEM</Button>
@@ -61,14 +57,12 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
-import { RootState } from '@/store/store';
 import { State, Action } from 'vuex-class';
-import { searchActionTypes } from '@/store/modules/search/actions';
 import Button from '../common/inputs/Button.vue';
 import AppDialog from '../common/Dialog.vue';
 import DialogContent from '../common/DialogContent.vue';
 import InputField from '../common/inputs/InputField.vue';
-import { SavedSearchFilters } from '../../store/modules/search/state';
+import { SavedSearchFilters, SearchModule } from '@/store/modules/search';
 
 @Component({
   components: {
@@ -79,13 +73,6 @@ import { SavedSearchFilters } from '../../store/modules/search/state';
   }
 })
 export default class SearchFiltersActions extends Vue {
-  @Action(searchActionTypes.RESET_FILTERS) dispatchClearFilters!: VoidFunction;
-  @Action(searchActionTypes.SAVE_FILTERS) dispatchSaveFilters!: (name: string) => void;
-
-  @State((state: RootState) => state.search.savedFilters) savedFilters!: SavedSearchFilters[];
-  @State((state: RootState) => state.search.filtersTouched)
-  filtersTouched!: boolean;
-
   name = '';
   touched = false;
 
@@ -109,7 +96,7 @@ export default class SearchFiltersActions extends Vue {
       return;
     }
 
-    this.dispatchSaveFilters(this.name);
+    SearchModule.saveFilters(this.name);
     this.closeSaveFilterDialog();
     this.name = '';
     this.touched = false;
@@ -127,11 +114,9 @@ export default class SearchFiltersActions extends Vue {
   }
 
   private isSavedFilterNameUnique(name: string) {
-    return this.savedFilters.findIndex(({ text }) => text.toLowerCase() === name.toLowerCase()) < 0;
+    return !!SearchModule.savedFilters
+      ? SearchModule.savedFilters.findIndex(({ text }) => text.toLowerCase() === name.toLowerCase()) < 0
+      : true;
   }
 }
 </script>
-
-
-
-

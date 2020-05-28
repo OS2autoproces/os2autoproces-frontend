@@ -109,3 +109,5 @@ export default class Auth extends VuexModule implements AuthState {
 
 
 }
+
+export const AuthModule = getModule(Auth);

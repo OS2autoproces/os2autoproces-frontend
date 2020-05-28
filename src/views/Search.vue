@@ -55,12 +55,9 @@ import SearchResult from '../components/search/SearchResult.vue';
 import SearchSorting from '../components/search/SearchSorting.vue';
 import SearchSortingUmbrella from '../components/search/SearchSortingUmbrella.vue';
 import PlusIcon from '../components/icons/PlusIcon.vue';
-import { searchActionTypes } from '../store/modules/search/actions';
 import { processActionTypes } from '../store/modules/process/actions';
-import { SearchFilters, SearchResultProcess } from '../store/modules/search/state';
+import { SearchFilters, SearchResultProcess, SearchModule } from '@/store/modules/search';
 import SearchSortingDropdown from '@/components/search/SearchSortingDropdown.vue';
-import { getInitialState } from '../store/modules/search';
-import { searchGetterTypes } from '../store/modules/search/getters';
 
 @Component({
   components: {
@@ -76,9 +73,9 @@ import { searchGetterTypes } from '../store/modules/search/getters';
 })
 export default class Search extends Vue {
   @Prop({ type: Object as () => SearchFilters }) initialFilters!: SearchFilters;
-  @Action(searchActionTypes.SEARCH) dispatchSearch!: VoidFunction;
-  @Action(searchActionTypes.ASSIGN_FILTERS) dispatchAssignFilters!: (filters: SearchFilters) => void;
-  @Getter(searchGetterTypes.IS_SEARCHING_FOR_UMBRELLA_PROCESS) isSearchingForUmbrellaProcess!: () => boolean;
+  // @Action(searchActionTypes.SEARCH) dispatchSearch!: VoidFunction;
+  // @Action(searchActionTypes.ASSIGN_FILTERS) dispatchAssignFilters!: (filters: SearchFilters) => void;
+  // @Getter(searchGetterTypes.IS_SEARCHING_FOR_UMBRELLA_PROCESS) isSearchingForUmbrellaProcess!: () => boolean;
 
   get filters() {
     return this.$store.state.search.filters;
@@ -96,21 +93,21 @@ export default class Search extends Vue {
   }
 
   updateFilters(filters: Partial<SearchFilters>) {
-    return this.$store.dispatch(searchActionTypes.ASSIGN_FILTERS, {
+    return SearchModule.assignFilters({
       page: 0,
       ...filters
     });
   }
 
   assignFilters(filters: Partial<SearchFilters>) {
-    this.$store.dispatch(searchActionTypes.ASSIGN_FILTERS, {
+    SearchModule.assignFilters({
       page: 0,
       ...filters
     });
   }
 
   mounted() {
-    !!this.initialFilters ? this.dispatchAssignFilters(this.initialFilters) : this.dispatchSearch();
+    !!this.initialFilters ? SearchModule.assignFilters(this.initialFilters) : SearchModule.search();
   }
 }
 </script>

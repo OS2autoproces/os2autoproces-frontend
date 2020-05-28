@@ -5,14 +5,14 @@
     heading="Bilag og links"
     id="attachments"
     :disabled="attachmentsEdit"
-    @edit="update({disabled: { attachmentsEdit: $event}})"
+    @edit="update({ disabled: { attachmentsEdit: $event } })"
   >
     <h2 v-if="isWithinMunicipality && minPhase(PhaseKeys.SPECIFICATION)">Sagsreference i ESDH</h2>
     <div v-if="isWithinMunicipality && minPhase(PhaseKeys.SPECIFICATION)">
       <InfoTooltip>Skriv sagsreferencen eller indsæt et direkte link til sagen i ESDH systemet.</InfoTooltip>
       <TextArea
         :max-length="300"
-        @change="update({esdhReference: $event})"
+        @change="update({ esdhReference: $event })"
         :disabled="attachmentsEdit"
         :value="state.esdhReference"
         :minHeight="'50px'"
@@ -24,7 +24,7 @@
       <TextArea
         :readonly-html="readonlyLinks"
         :value="attachmentsEdit ? '' : codeRepositoryUrl"
-        @change="update({codeRepositoryUrl: $event})"
+        @change="update({ codeRepositoryUrl: $event })"
         :disabled="attachmentsEdit"
         :max-length="10000"
       />
@@ -50,7 +50,7 @@ import InfoTooltip from '@/components/common/InfoTooltip.vue';
 import { processActionTypes } from '@/store/modules/process/actions';
 import { processGetterTypes } from '@/store/modules/process/getters';
 import { Phase, PhaseKeys } from '@/models/phase';
-import { RootState } from '@/store/store';
+import { RootState } from '@/store';
 import { ProcessState } from '../../../store/modules/process/state';
 
 @Component({

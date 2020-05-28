@@ -3,7 +3,9 @@
     <Button class="button" @click="remove" v-if="state.canEdit">Slet proces</Button>
     <Button class="button" @click="copy" v-if="!isUmbrella">Kopier proces</Button>
     <div class="flex-grow"></div>
-    <InfoTooltip class="mail-tooltip">Ved at slå mail notifikationer til, vil du modtage en mail, når der sker ændringer på denne proces.</InfoTooltip>
+    <InfoTooltip class="mail-tooltip"
+      >Ved at slå mail notifikationer til, vil du modtage en mail, når der sker ændringer på denne proces.</InfoTooltip
+    >
     <Toggle :value="state.emailNotification" @change="setEmailNotification($event)">Mail notifikation</Toggle>
   </div>
 </template>
@@ -14,8 +16,6 @@ import { Action, Getter } from 'vuex-class';
 import InfoTooltip from '@/components/common/InfoTooltip.vue';
 import Button from '@/components/common/inputs/Button.vue';
 import Toggle from '@/components/common/inputs/Toggle.vue';
-import { authGetterTypes } from '@/store/modules/auth/getters';
-import { authActionTypes } from '@/store/modules/auth/actions';
 import { processActionTypes } from '@/store/modules/process/actions';
 import { ProcessState } from '@/store/modules/process/state';
 

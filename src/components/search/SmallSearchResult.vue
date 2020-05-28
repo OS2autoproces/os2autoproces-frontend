@@ -39,7 +39,7 @@
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import StarIcon from '../icons/StarIcon.vue';
 import Rating from '../common/inputs/Rating.vue';
-import { SearchResultProcess } from '../../store/modules/search/state';
+import { SearchResultProcess } from '../../store/modules/search';
 import { StatusLabels } from '../../models/status';
 import { PhaseLabels } from '../../models/phase';
 import { DomainLabels } from '../../models/domain';

@@ -11,7 +11,12 @@
         </div>
       </div>
 
-      <SearchPagination v-if="result" :page="result.page.number" :pageTotal="result.page.totalPages" @change="updateFilters({ page: $event })" />
+      <SearchPagination
+        v-if="result"
+        :page="result.page.number"
+        :pageTotal="result.page.totalPages"
+        @change="updateFilters({ page: $event })"
+      />
     </div>
   </div>
 </template>
@@ -24,9 +29,9 @@ import SearchSorting from '@/components/search/SearchSorting.vue';
 import SmallSearchResult from '@/components/search/SmallSearchResult.vue';
 import SearchPagination from '@/components/search/SearchPagination.vue';
 import { processActionTypes } from '@/store/modules/process/actions';
-import { commonActionTypes, UserSearchRequest } from '@/store/modules/common/actions';
-import { User } from '@/store/modules/auth/state';
-import { searchActionTypes } from '@/store/modules/search/actions';
+import { UserSearchRequest, CommonModule } from '@/store/modules/common';
+import { User } from '@/store/modules/auth';
+import { SearchModule } from '@/store/modules/search';
 
 @Component({
   components: {
@@ -50,14 +55,14 @@ export default class AssociatedProcesses extends Vue {
   }
 
   updateFilters(filters: Partial<SearchFilters>) {
-    this.$store.dispatch(searchActionTypes.UPDATE_FILTERS, {
+    SearchModule.updateFilters({
       page: 0,
       ...filters
     });
   }
 
   assignFilters(filters: Partial<SearchFilters>) {
-    this.$store.dispatch(searchActionTypes.ASSIGN_FILTERS, {
+    SearchModule.assignFilters({
       page: 0,
       ...filters
     });

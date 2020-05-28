@@ -41,8 +41,8 @@ import InfoTooltip from '@/components/common/InfoTooltip.vue';
 import SelectionField from '@/components/common/inputs/SelectionField.vue';
 import DeleteIcon from '@/components/icons/DeleteIcon.vue';
 import { processActionTypes } from '@/store/modules/process/actions';
-import { commonActionTypes, UserSearchRequest } from '@/store/modules/common/actions';
-import { User } from '@/store/modules/auth/state';
+import { UserSearchRequest, CommonModule } from '@/store/modules/common';
+import { User, AuthModule } from '@/store/modules/auth';
 
 @Component({
   components: {
@@ -55,9 +55,6 @@ export default class AssociatedPersonsInput extends Vue {
   @Prop(Boolean)
   disabled!: boolean;
 
-  @Action(commonActionTypes.SEARCH_USERS)
-  searchUsers!: (request: UserSearchRequest) => Promise<void>;
-
   get state() {
     return this.$store.state;
   }
@@ -67,7 +64,11 @@ export default class AssociatedPersonsInput extends Vue {
   }
 
   search(name: string) {
-    this.searchUsers({ name, cvr: this.$store.state.auth.user.cvr });
+    if (AuthModule.user) {
+      CommonModule.searchUsers(AuthModule.user.cvr, name);
+    } else {
+      CommonModule.searchUsers('', name);
+    }
   }
 
   addUser(user: User) {

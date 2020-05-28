@@ -24,8 +24,8 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import ProfileIcon from '../icons/ProfileIcon.vue';
-import { AuthState, UserRoleName, UserRole, User } from '@/store/modules/auth/state';
-import { RootState } from '../../store/store';
+import { AuthState, UserRoleName, UserRole, User } from '@/store/modules/auth';
+import { RootState } from '../../store';
 import { State } from 'vuex-class';
 
 @Component({

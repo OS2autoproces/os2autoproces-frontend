@@ -19,12 +19,11 @@ import {
   SortingOption,
   SearchFilters,
   SearchResultProcess,
-  SortingOptionParams
-} from '@/store/modules/search/state.ts';
+  SortingOptionParams,
+  SearchModule
+} from '@/store/modules/search';
 import SelectionField from '../common/inputs/SelectionField.vue';
 import { State, Action } from 'vuex-class';
-import { RootState } from '../../store/store';
-import { searchActionTypes } from '@/store/modules/search/actions';
 import { isEqual } from 'lodash';
 import excelBtn from '@/components/search/ExcelBtn.vue';
 
@@ -42,9 +41,6 @@ interface DropdownSortingOption {
   }
 })
 export default class SearchSortingDropdown extends Vue {
-  @State((state: RootState) => state.search.filters.sorting) selectedOption!: SortingOption;
-  @Action(searchActionTypes.UPDATE_FILTERS) updateFilters!: (filters: Partial<SearchFilters>) => Promise<void>;
-
   ascLabel = ', lavest';
   descLabel = ', højest';
 
@@ -69,9 +65,9 @@ export default class SearchSortingDropdown extends Vue {
 
   get formattedOption(): DropdownSortingOption {
     return (
-      this.options.find(({ value: { property } }) => property === this.selectedOption.property) || {
-        text: `Ukendt søgeparameter: ${this.selectedOption.property}`,
-        value: this.selectedOption
+      this.options.find(({ value: { property } }) => property === SearchModule.filters.sorting.property) || {
+        text: `Ukendt søgeparameter: ${SearchModule.filters.sorting.property}`,
+        value: SearchModule.filters.sorting
       }
     );
   }
@@ -88,4 +84,3 @@ export default class SearchSortingDropdown extends Vue {
   }
 }
 </style>
-

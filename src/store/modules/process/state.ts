@@ -6,7 +6,7 @@ import { RunPeriod } from '@/models/runperiod';
 import { Type } from '@/models/types';
 import { Visibility } from '@/models/visibility';
 import { User } from '@/store/modules/auth';
-import { Form, Kle } from '@/store/modules/common';
+import { Form, Kle, Technology, ITSystem, OrgUnit } from '@/store/modules/common';
 
 export interface ProcessState extends Process {
   disabled: Disabled;

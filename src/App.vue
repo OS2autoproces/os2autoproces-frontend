@@ -13,15 +13,12 @@ import { Vue, Component } from 'vue-property-decorator';
 import { HTTP } from '@/services/http-service';
 import { AxiosResponse } from 'axios';
 import { Action } from 'vuex-class';
-import { authActionTypes } from '@/store/modules/auth/actions';
-import { commonActionTypes, Cms } from '@/store/modules/common/actions';
+import { AuthModule } from './store/modules/auth';
 
 @Component({})
 export default class App extends Vue {
-  @Action(authActionTypes.LOAD_USER) loadUser: any;
-
   mounted() {
-    this.loadUser();
+    AuthModule.loadUser();
   }
 }
 </script>

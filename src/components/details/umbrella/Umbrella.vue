@@ -2,9 +2,7 @@
   <div class="page">
     <div class="side-bar">
       <div class="side-bar-content">
-        <router-link to="/search" class="search-page-link">
-          <ArrowLeftIcon />Tilbage til søgning
-        </router-link>
+        <router-link to="/search" class="search-page-link"> <ArrowLeftIcon />Tilbage til søgning </router-link>
 
         <Button primary v-if="isReporting" class="report-button" @click="report">Gem</Button>
         <Button primary v-if="!isReporting" class="save-button" @click="save">Gem</Button>
@@ -25,24 +23,18 @@
       <div>
         <h3>Følgende felter er ugyldige:</h3>
         <ul class="section-errors">
-          <li v-for="field in errors['generalInformation'].errors" :key="field">{{field}}</li>
+          <li v-for="field in errors['generalInformation'].errors" :key="field">{{ field }}</li>
         </ul>
       </div>
     </SnackBar>
 
-    <SnackBar
-      :timeout="3000"
-      color="success"
-      @onSnackClose="showSaveSuccess = false"
-      :value="showSaveSuccess"
-    >Processen er gemt!</SnackBar>
+    <SnackBar :timeout="3000" color="success" @onSnackClose="showSaveSuccess = false" :value="showSaveSuccess"
+      >Processen er gemt!</SnackBar
+    >
 
-    <SnackBar
-      :value="showSaveError"
-      @onSnackClose="showSaveError = false"
-      :timeout="5000"
-      color="error"
-    >Processen er IKKE gemt - prøv igen!</SnackBar>
+    <SnackBar :value="showSaveError" @onSnackClose="showSaveError = false" :timeout="5000" color="error"
+      >Processen er IKKE gemt - prøv igen!</SnackBar
+    >
   </div>
 </template>
 
@@ -52,7 +44,6 @@ import { Action } from 'vuex-class';
 import InternalNotes from '@/components/common/inputs/InternalNotes.vue';
 import { processActionTypes, NewComment } from '@/store/modules/process/actions';
 import { Type, TypeKeys } from '@/models/types';
-import { commonActionTypes } from '@/store/modules/common/actions';
 
 import Comments from '@/components/details/Comments.vue';
 import IntervalSelector from '@/components/common/inputs/IntervalSelector.vue';
@@ -73,9 +64,8 @@ import { errorActionTypes, umbrellaLabels } from '@/store/modules/error/actions'
 import { ErrorState } from '@/store/modules/error/state';
 import SnackBar from '@/components/common/SnackBar.vue';
 import { isEmpty } from 'lodash';
-import { searchActionTypes } from '@/store/modules/search/actions';
 import { VisibilityKeys } from '@/models/visibility';
-import { SearchFilters } from '@/store/modules/search/state';
+import { SearchFilters, SearchModule } from '@/store/modules/search';
 
 @Component({
   components: {
@@ -108,8 +98,8 @@ export default class Umbrella extends Vue {
 
   @Action(processActionTypes.UPDATE)
   update: any;
-  @Action(commonActionTypes.LOAD_KLES)
-  loadKles!: () => Promise<void>;
+  // @Action(commonActionTypes.LOAD_KLES)
+  // loadKles!: () => Promise<void>;
   @Action(errorActionTypes.UPDATE_PROCESS_ERRORS)
   updateProcessErrors!: (processErrors: Partial<ErrorState>) => void;
   @Action(errorActionTypes.CLEAR_ERRORS)
@@ -152,7 +142,7 @@ export default class Umbrella extends Vue {
       });
     }
 
-    this.$store.dispatch(searchActionTypes.RESET_FILTERS);
+    SearchModule.resetFilters();
 
     const filters: Partial<SearchFilters> = {
       umbrella: false,
@@ -162,7 +152,7 @@ export default class Umbrella extends Vue {
       }
     };
 
-    this.$store.dispatch(searchActionTypes.UPDATE_FILTERS, filters);
+    SearchModule.updateFilters(filters);
   }
 
   async save() {
