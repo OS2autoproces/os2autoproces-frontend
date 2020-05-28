@@ -1,13 +1,7 @@
-<!--
-TODO: Upgrade vuetify to 1.4.0 + This will allow the toolbar to be shown....
-https://github.com/iliyaZelenko/tiptap-vuetify/issues/9
--->
-
 <template>
   <div>
     <div class="text-area" :class="{ 'out-of-bounds': currentLength > maxLength }" v-if="!disabled">
       <tiptap-vuetify
-        id="rich-text-area"
         :value="value"
         :extensions="extensions"
         :class="{ 'no-resize': noResize }"
@@ -38,15 +32,11 @@ import {
   Italic,
   Strike,
   Underline,
-  Code,
-  CodeBlock,
-  Paragraph,
   BulletList,
   OrderedList,
   ListItem,
   Blockquote,
   HardBreak,
-  HorizontalRule,
   History
   // @ts-ignore
 } from 'tiptap-vuetify';
@@ -75,23 +65,24 @@ export default class RichTextArea extends Vue {
   fullWidth!: boolean;
 
   extensions = [
-    new Heading({
-      levels: [1, 2, 3]
-    }),
-    new Bold(),
-    new Italic(),
-    new Strike(),
-    new Underline(),
-    new Code(),
-    new CodeBlock(),
-    new Paragraph(),
-    new BulletList(),
-    new OrderedList(),
-    new ListItem(),
-    new Blockquote(),
-    new HardBreak(),
-    new HorizontalRule(),
-    new History()
+    [
+      Heading,
+      {
+        options: {
+          levels: [1, 2, 3]
+        }
+      }
+    ],
+    Bold,
+    Italic,
+    Underline,
+    Strike,
+    ListItem,
+    BulletList,
+    OrderedList,
+    History,
+    Blockquote,
+    HardBreak
   ];
 
   get sanitizedHtml(): string {
@@ -154,12 +145,18 @@ export default class RichTextArea extends Vue {
   column-gap: 5rem;
 }
 
-#rich-text-area {
+tiptap-vuetify {
   width: 100%;
 
   &.no-resize {
     resize: none;
   }
+}
+
+.v-application .grey.lighten-4 {
+  background-color: $color-background !important;
+  border: 1px solid $color-primary !important;
+  border-radius: 10px !important;
 }
 
 .v-card {

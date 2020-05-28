@@ -1,14 +1,11 @@
 import Vue from 'vue';
 import Vuetify from 'vuetify';
+// @ts-ignore
+import { TiptapVuetifyPlugin } from 'tiptap-vuetify';
+import 'tiptap-vuetify/dist/main.css';
 import 'vuetify/dist/vuetify.min.css';
 
-Vue.use(Vuetify, {
-  icons: {
-    iconfont: 'md'
-  }
-});
-
-export default new Vuetify({
+const vuetify = new Vuetify({
   theme: {
     themes: {
       light: {
@@ -20,3 +17,16 @@ export default new Vuetify({
     }
   }
 });
+
+Vue.use(Vuetify, {
+  icons: {
+    iconfont: 'md'
+  }
+});
+
+Vue.use(TiptapVuetifyPlugin, {
+  vuetify,
+  iconsGroup: 'md'
+});
+
+export default vuetify;
