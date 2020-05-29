@@ -7,7 +7,7 @@ import { RunPeriod, RunPeriodLabels } from '@/models/runperiod';
 import { Visibility, VisibilityKeys } from '@/models/visibility';
 import { User } from '@/store/modules/auth';
 import { Type, TypeKeys } from '@/models/types';
-import { umbrellaLabels } from '@/store/modules/error/actions';
+import { umbrellaLabels } from '@/store/modules/errorInterfaces';
 import { setUrlSearchQuery, mapSearchQueryToObject, mapQueryObjToFilters, stringify } from '@/services/url-service';
 import qs from 'qs';
 

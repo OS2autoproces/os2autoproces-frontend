@@ -50,12 +50,14 @@
         <h3>Følgende felter er ugyldige:</h3>
         <div class="snack-bar-list-container">
           <!-- TODO Fix v if in v for and computation in template -->
-          <ul class="section-errors" v-for="section in errors" v-if="section.errors.length > 0" :key="section.section">
-            <span class="section-errors-title">{{ section.section }}</span>
-            <li v-for="(field, i) in section.errors" :key="i">
-              <div class="snack-bar-list-item">{{ field }}</div>
-            </li>
-          </ul>
+          <div v-if="ErrorModule.hasErrors">
+            <ul class="section-errors" v-for="section in ErrorModule" :key="section.section">
+              <span class="section-errors-title">{{ section.section }}</span>
+              <li v-for="(field, i) in section.errors" :key="i">
+                <div class="snack-bar-list-item">{{ field }}</div>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </SnackBar>
@@ -101,8 +103,7 @@ import AttachmentsForm from '@/components/details/attachments/AttachmentsForm.vu
 import OperationForm from '@/components/details/operation/OperationForm.vue';
 import ArrowLeftIcon from '@/components/icons/ArrowLeftIcon.vue';
 import EditIcon from '@/components/icons/EditIcon.vue';
-import { errorActionTypes } from '@/store/modules/error/actions';
-import { ErrorState } from '@/store/modules/error/state';
+import { ErrorState, ErrorModule } from '@/store/modules/error';
 import SnackBar from '@/components/common/SnackBar.vue';
 import { isEmpty } from 'lodash';
 import { CommonModule } from '@/store/modules/common';
@@ -138,27 +139,17 @@ export default class Process extends Vue {
   @Prop(String)
   phase!: Phase;
 
-  @Action(errorActionTypes.UPDATE_PROCESS_ERRORS)
-  updateProcessErrors!: (processErrors: Partial<ErrorState>) => void;
-  @Action(errorActionTypes.CLEAR_ERRORS)
-  clearErrors!: () => void;
-
   PhaseKeys = PhaseKeys;
 
   showSaveSuccess = false;
   showSaveError = false;
 
   get state() {
-    return this.$store.state.process;
-  }
-
-  get errors() {
-    return this.$store.state.error;
+    return ProcessModule;
   }
 
   get snack() {
-    const errorState = this.$store.state.error;
-    return !!Object.keys(errorState).find(section => !isEmpty(errorState[section].errors));
+    return !!Object.keys(ErrorModule).find(section => !isEmpty(ErrorModule[section as keyof ErrorState].errors));
   }
 
   get isWithinMunicipality() {
@@ -167,7 +158,7 @@ export default class Process extends Vue {
   }
 
   beforeCreate() {
-    this.$store.dispatch(errorActionTypes.CLEAR_ERRORS);
+    ErrorModule.clearErrors();
   }
 
   mounted() {
@@ -202,7 +193,7 @@ export default class Process extends Vue {
       await ProcessModule.save();
       this.showSaveSuccess = true;
     } catch (e) {
-      if (this.errors.length === 0) {
+      if (ErrorModule.hasErrors) {
         this.showSaveError = true;
       }
     }
@@ -214,7 +205,7 @@ export default class Process extends Vue {
       this.showSaveSuccess = true;
       this.$router.push(`/details/${processId}`);
     } catch (e) {
-      if (this.errors.length === 0) {
+      if (ErrorModule.hasErrors) {
         this.showSaveError = true;
       }
     }

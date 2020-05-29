@@ -1,17 +1,4 @@
-import { errorMutationTypes } from '@/store/modules/error/mutations';
-import { ErrorState } from '@/store/modules/error/state';
-import { ProcessState } from '@/store/modules/process';
-import { getInvalidProperties } from '@/store/modules/validation';
-import { RootState } from '@/store';
-import { ActionTree } from 'vuex';
-import { ProcessReport } from '../processInterfaces';
-
-export const namespace = 'error';
-
-export const errorActionTypes = {
-  UPDATE_PROCESS_ERRORS: `${namespace}/updateProcessErrors`,
-  CLEAR_ERRORS: `${namespace}/clearErrors`
-};
+import { ProcessReport } from './processInterfaces';
 
 type ProcessLabels = { [X in keyof ProcessReport]?: string };
 
@@ -105,7 +92,7 @@ export const processLabels: ProcessLabels = {
   internalNotes: 'Interne Noter'
 };
 
-interface ErrorLabels {
+export interface ErrorLabels {
   generalInformation: Array<keyof ProcessReport>;
   challenges: Array<keyof ProcessReport>;
   assessment: Array<keyof ProcessReport>;
@@ -115,7 +102,7 @@ interface ErrorLabels {
   operation: Array<keyof ProcessReport>;
 }
 
-const errorLimitations: { [key: string]: string } = {
+export const errorLimitations: { [key: string]: string } = {
   klId: 'maks 64 tegn',
   title: 'mellem 1 og 50 tegn',
   visibility: 'obligatorisk felt',
@@ -130,7 +117,7 @@ const errorLimitations: { [key: string]: string } = {
   processChallenges: 'obligatorisk fra Idé-fasen'
 };
 
-const errorLabels: ErrorLabels = {
+export const errorLabels: ErrorLabels = {
   generalInformation: Object.keys(generalInformationLabels) as Array<keyof ProcessReport>,
   challenges: Object.keys(challengesLabels) as Array<keyof ProcessReport>,
   assessment: Object.keys(assessmentLabels) as Array<keyof ProcessReport>,
@@ -138,35 +125,4 @@ const errorLabels: ErrorLabels = {
   attachments: Object.keys(attachmentsLabels) as Array<keyof ProcessReport>,
   implementation: Object.keys(implementationLabels) as Array<keyof ProcessReport>,
   operation: Object.keys(operationLabels) as Array<keyof ProcessReport>
-};
-
-export const actions: ActionTree<ErrorState, RootState> = {
-  updateProcessErrors({ commit, state }, processReport: ProcessReport) {
-    const sections = Object.keys(errorLabels) as Array<keyof ErrorLabels>;
-
-    sections.forEach(section => {
-      const sectionErrors = getInvalidProperties(processReport, errorLabels[section]);
-
-      const errors = sectionErrors.map(error => {
-        const errorLabel = processLabels[error];
-        const limitationLabel = errorLimitations[error];
-
-        if (errorLabel) {
-          const tempError = errorLabel.length < 35 ? errorLabel : errorLabel.slice(0, 25) + '...';
-          return tempError + (limitationLabel ? ` (${limitationLabel})` : '');
-        }
-
-        return '';
-      });
-
-      commit(errorMutationTypes.ASSIGN, { [section]: { errors, section: state[section].section } });
-    });
-  },
-  clearErrors({ commit, state }) {
-    const sections = Object.keys(errorLabels) as Array<keyof ErrorLabels>;
-
-    sections.forEach(section => {
-      commit(errorMutationTypes.ASSIGN, { [section]: { errors: [], section: state[section].section } });
-    });
-  }
 };

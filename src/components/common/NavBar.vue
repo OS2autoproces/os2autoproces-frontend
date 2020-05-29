@@ -10,9 +10,9 @@
       >Spørgsmål og vejledning</a
     >
     <div class="flex-grow"></div>
-    <div class="user-info" v-if="user">
+    <div class="user-info" v-if="AuthModule.user">
       <div class="user">
-        <div>{{ user.name }}</div>
+        <div>{{ AuthModule.user.name }}</div>
         <div>{{ roles.join(', ') }}</div>
         <a class="logout-button" :href="logoutUrl">Log ud</a>
       </div>
@@ -24,8 +24,7 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import ProfileIcon from '../icons/ProfileIcon.vue';
-import { AuthState, UserRoleName, UserRole, User } from '@/store/modules/auth';
-import { RootState } from '../../store';
+import { AuthModule, UserRole } from '@/store/modules/auth';
 import { State } from 'vuex-class';
 
 @Component({
@@ -36,23 +35,12 @@ import { State } from 'vuex-class';
 export default class NavBar extends Vue {
   logoutUrl = `${window.autoProcessConfiguration.apiUrl}/saml/logout`;
 
-  @State((state: RootState) => state.auth.user) user!: User;
-
-  @State((state: RootState) => {
-    if (!state.auth.user || !state.auth.user.roles) {
-      return [];
-    }
-
-    return state.auth.user.roles.map(role => UserRoleName[role]);
-  })
-  roles!: UserRole[];
-
   get isAdministrator() {
-    return this.user && this.user.roles && this.user.roles.includes(UserRole.administrator);
+    return AuthModule.user && AuthModule.user.roles && AuthModule.user.roles.includes(UserRole.administrator);
   }
 
   get isFrontpageEditor() {
-    return this.user && this.user.roles.includes(UserRole.frontpageEditor);
+    return AuthModule.user && AuthModule.user.roles.includes(UserRole.frontpageEditor);
   }
 }
 </script>

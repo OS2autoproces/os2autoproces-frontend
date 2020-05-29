@@ -32,7 +32,6 @@ export interface Technology {
   id: number;
   name: string;
 }
-//TODO: Move requests/responses to a service?
 export interface TechnologiesResponse {
   _embedded: {
     technologies: Technology[];

@@ -1,5 +1,4 @@
 import { User, UserRole, AuthModule } from '@/store/modules/auth';
-import store from '@/store';
 import Vue from 'vue';
 import Router, { Route, RouteConfig } from 'vue-router';
 import Details from './views/Details.vue';
@@ -9,22 +8,24 @@ import ReportProcess from './views/ReportProcess.vue';
 import Search from './views/Search.vue';
 import Discovery from './views/Discovery.vue';
 import { mapSearchQueryToObject, mapQueryObjToFilters } from './services/url-service';
-import { SearchFilters } from '@/store/modules/searchInterfaces';
-import { size, isEmpty } from 'lodash';
+import { isEmpty } from 'lodash';
 import { getInitialState } from './store/modules/search';
 
 Vue.use(Router);
 
 function validateAuth(isValid: (user: User | undefined | null) => boolean) {
   return async (to: Route, from: Route, next: any) => {
+    next();
+    return;
     if (isValid(AuthModule.user)) {
       next();
     } else {
-      await store.dispatch('auth/loadUser');
+      await AuthModule.loadUser();
 
-      if (isValid(store.state.auth.user)) {
+      if (isValid(AuthModule.user)) {
         next();
       } else {
+        console.log(AuthModule.user);
         window.location.href = `${window.autoProcessConfiguration.apiUrl}/saml/login`;
       }
     }

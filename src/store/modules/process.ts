@@ -19,13 +19,14 @@ import {
   attachmentsLabels,
   timeAndProcessLabels,
   umbrellaLabels
-} from '@/store/modules/error/actions';
+} from '@/store/modules/errorInterfaces';
 import { Status } from '@/models/status';
 import { RunPeriod } from '@/models/runperiod';
 import { Type } from '@/models/types';
 import { Domain } from '@/models/domain';
 import { Visibility } from '@/models/visibility';
 import { LikertScale } from '@/models/likert-scale';
+import { ErrorModule } from './error';
 
 export interface ProcessState extends ProcessReport {
   disabled?: Disabled;
@@ -279,8 +280,7 @@ export default class Process extends VuexModule implements ProcessState {
       const invalidFields = getInvalidProperties(this, validationKeys || getProcessKeys(this));
 
       if (invalidFields.length > 0) {
-        //Fix when implementing error
-        // dispatch(errorActionTypes.UPDATE_PROCESS_ERRORS, state, { root: true });
+        ErrorModule.updateProcessErrors(this);
         throw new Error();
       } else {
         const converted = stateToRequest(this);
@@ -307,7 +307,7 @@ export default class Process extends VuexModule implements ProcessState {
       const invalidFields = getInvalidProperties(this, validationKeys || getProcessKeys(this));
 
       if (invalidFields.length > 0) {
-        //dispatch(errorActionTypes.UPDATE_PROCESS_ERRORS, state, { root: true });
+        ErrorModule.updateProcessErrors(this);
         throw new Error();
       } else {
         const converted = stateToRequest(this);

@@ -60,8 +60,8 @@ import AttachmentsForm from '@/components/details/attachments/AttachmentsForm.vu
 import OperationForm from '@/components/details/operation/OperationForm.vue';
 import ArrowLeftIcon from '@/components/icons/ArrowLeftIcon.vue';
 import EditIcon from '@/components/icons/EditIcon.vue';
-import { errorActionTypes, umbrellaLabels } from '@/store/modules/error/actions';
-import { ErrorState } from '@/store/modules/error/state';
+import { umbrellaLabels } from '@/store/modules/errorInterfaces';
+import { ErrorState, ErrorModule } from '@/store/modules/error';
 import SnackBar from '@/components/common/SnackBar.vue';
 import { isEmpty } from 'lodash';
 import { VisibilityKeys } from '@/models/visibility';
@@ -97,25 +97,21 @@ export default class Umbrella extends Vue {
   id!: number;
   @Prop(String)
   type!: Type;
-  @Action(errorActionTypes.UPDATE_PROCESS_ERRORS)
-  updateProcessErrors!: (processErrors: Partial<ErrorState>) => void;
-  @Action(errorActionTypes.CLEAR_ERRORS)
-  clearErrors!: () => void;
 
   showSaveSuccess = false;
   showSaveError = false;
 
   get errors() {
-    return this.$store.state.error;
+    return ErrorModule.state;
   }
 
   get snack() {
-    const errorState = this.$store.state.error;
-    return !!Object.keys(errorState).find(section => !isEmpty(errorState[section].errors));
+    const errorState = ErrorModule;
+    return !!Object.keys(errorState).find(section => !isEmpty(ErrorModule[section as keyof ErrorState].errors));
   }
 
   beforeCreate() {
-    this.$store.dispatch(errorActionTypes.CLEAR_ERRORS);
+    ErrorModule.clearErrors();
   }
 
   mounted() {
@@ -157,7 +153,7 @@ export default class Umbrella extends Vue {
       await ProcessModule.save(Object.keys(umbrellaLabels) as Array<keyof ProcessReport>);
       this.showSaveSuccess = true;
     } catch (e) {
-      if (this.errors.length === 0) {
+      if (ErrorModule.hasErrors) {
         this.showSaveError = true;
       }
     }
@@ -169,7 +165,7 @@ export default class Umbrella extends Vue {
       this.showSaveSuccess = true;
       this.$router.push(`/details/${processId}`);
     } catch (e) {
-      if (this.errors.length === 0) {
+      if (ErrorModule.hasErrors) {
         this.showSaveError = true;
       }
     }

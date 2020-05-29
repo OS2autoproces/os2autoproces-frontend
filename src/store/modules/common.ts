@@ -38,7 +38,7 @@ export default class Common extends VuexModule implements CommonState {
 
   @Action
   async loadCmsContent(label: keyof CommonState) {
-    const json = (await HTTP.get<Cms>(`public/cms/${label}`)).data.content;
+    const json = (await HTTP.get<Cms>(`public/cms/${label}`))?.data.content;
 
     const cms = !!json ? JSON.parse(json) : '';
     this.UPDATE({ [label]: cms });
@@ -55,7 +55,7 @@ export default class Common extends VuexModule implements CommonState {
 
   @Action
   async loadTechnologies() {
-    const technologies = (await HTTP.get<TechnologiesResponse>(`api/technologies?size=100000`)).data._embedded
+    const technologies = (await HTTP.get<TechnologiesResponse>(`api/technologies?size=100000`))?.data._embedded
       .technologies;
     this.UPDATE({ technologies });
   }
@@ -63,6 +63,10 @@ export default class Common extends VuexModule implements CommonState {
   @Action
   async addTechnology(name: string) {
     const response = await HTTP.post(`api/technologies`, { name });
+    if(!response)
+    { 
+      return;
+    }
     this.UPDATE({ technologies: this.technologies ? [...this.technologies, response.data] : [response.data] });
   }
 
@@ -80,19 +84,19 @@ export default class Common extends VuexModule implements CommonState {
   @Action
   async loadITSystems()
   {
-      const itSystems = (await HTTP.get<ItSystemsResponse>(`api/itSystems?size=100000`)).data._embedded.itSystems;
+      const itSystems = (await HTTP.get<ItSystemsResponse>(`api/itSystems?size=100000`))?.data._embedded.itSystems;
       this.UPDATE({itSystems});
   }
 
   @Action
   async loadMunicipalities() {
-    const municipalities = (await HTTP.get<MunicipalitiesResponse>(`public/municipalities`)).data.data
+    const municipalities = (await HTTP.get<MunicipalitiesResponse>(`public/municipalities`))?.data.data
     this.UPDATE({municipalities});
   }
 
   @Action
   async loadKles() {
-    const kles = (await HTTP.get<KleResponse>(`api/kles?size=100000`)).data._embedded.kles
+    const kles = (await HTTP.get<KleResponse>(`api/kles?size=100000`))?.data._embedded.kles
     this.UPDATE({kles});
   }
 
@@ -104,14 +108,14 @@ export default class Common extends VuexModule implements CommonState {
       params.push(`cvr=${cvr}`);
     }
 
-    const orgUnits = (await HTTP.get<OrgUnitsResponse>(`api/orgUnits?${params.join('&')}`)).data._embedded.orgUnits;
+    const orgUnits = (await HTTP.get<OrgUnitsResponse>(`api/orgUnits?${params.join('&')}`))?.data._embedded.orgUnits;
     this.UPDATE({orgUnits})
   }
 
   @Action
   searchUsers(cvr: string, name: string ) {
-      debounce(async ({ name, cvr }: UserSearchRequest) => {
-        const users = (await HTTP.get<UserResponse>(`api/users?name=${name}&cvr=${cvr}`)).data._embedded.users;
+      debounce(async () => {
+        const users = (await HTTP.get<UserResponse>(`api/users?name=${name}&cvr=${cvr}`))?.data._embedded.users;
         this.UPDATE({users})
         }, 250);
   }
@@ -122,7 +126,7 @@ export default class Common extends VuexModule implements CommonState {
     if (!kle) {
       return;
     }
-    const forms = await (await HTTP.get<FormResponse>(`api/kles/${kle.code}/forms`)).data._embedded.forms;
+    const forms = await (await HTTP.get<FormResponse>(`api/kles/${kle.code}/forms`))?.data._embedded.forms;
     this.UPDATE({forms});
   }
 }
