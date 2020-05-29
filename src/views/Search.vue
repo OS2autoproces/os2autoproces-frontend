@@ -106,6 +106,10 @@ export default class Search extends Vue {
   mounted() {
     !!this.initialFilters ? SearchModule.assignFilters(this.initialFilters) : SearchModule.search();
   }
+
+  get isSearchingForUmbrellaProcess() {
+    return SearchModule.isSearchingForUmbrellaProcess;
+  }
 }
 </script>
 

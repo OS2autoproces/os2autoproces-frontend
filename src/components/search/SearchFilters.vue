@@ -132,6 +132,7 @@ import { StatusSelect, StatusLabels, StatusKeys, defaultStatusSelects } from '..
 import { Municipality } from '@/store/modules/commonInterfaces';
 import { AuthModule } from '../../store/modules/auth';
 import { CommonModule } from '@/store/modules/common';
+import { SearchModule } from '../../store/modules/search';
 
 @Component({
   components: {
@@ -189,6 +190,22 @@ export default class SearchFiltersComponent extends Vue {
 
   assignFilters(filters: Partial<SearchFilters>) {
     this.$emit('assign', filters);
+  }
+
+  get filters() {
+    return SearchModule.filters;
+  }
+
+  get municipalities() {
+    return CommonModule.municipalities;
+  }
+
+  get technologies() {
+    return CommonModule.technologies;
+  }
+
+  get itSystems() {
+    return CommonModule.itSystems;
   }
 }
 </script>

@@ -3,7 +3,7 @@
     :invalid="!isChallengesValid"
     heading="Problemstillinger"
     id="challenges"
-    :disabled="state.disabled.challengesEdit"
+    :disabled="challengesEdit"
     @edit="update({ disabled: { challengesEdit: $event } })"
   >
     <div>
@@ -12,7 +12,7 @@
       <TextArea
         :twoColumnBreakpoint="twoColumnBreakpoint"
         @change="update({ longDescription: $event })"
-        :disabled="state.disabled.challengesEdit"
+        :disabled="challengesEdit"
         :value="state.longDescription"
         :maxLength="10000"
       />
@@ -27,13 +27,13 @@
       <TextArea
         :twoColumnBreakpoint="twoColumnBreakpoint"
         @change="update({ solutionRequests: $event })"
-        :disabled="state.disabled.challengesEdit"
+        :disabled="challengesEdit"
         :value="state.solutionRequests"
         :maxLength="10000"
       />
     </div>
 
-    <div v-if="minPhase(PhaseKeys.PREANALYSIS)">
+    <div v-if="state.minPhase(PhaseKeys.PREANALYSIS)">
       <h2 class="with-margin">Udfordringer i den nuværende proces *</h2>
       <InfoTooltip
         >Her kan du beskrive de trivielle handlinger, udfordringer eller vaskeligheder der opleves i udførelsen af den
@@ -42,7 +42,7 @@
       <TextArea
         :twoColumnBreakpoint="twoColumnBreakpoint"
         @change="update({ processChallenges: $event })"
-        :disabled="state.disabled.challengesEdit"
+        :disabled="challengesEdit"
         :value="state.processChallenges"
         :maxLength="10000"
       />
@@ -62,7 +62,7 @@
             :items="itSystems"
             :value="state.itSystems"
             itemText="name"
-            :disabled="state.disabled.challengesEdit"
+            :disabled="challengesEdit"
             @change="assign({ itSystems: $event })"
             multiple
           />
@@ -82,7 +82,7 @@
           <TextArea
             @change="update({ itSystemsDescription: $event })"
             fullWidth
-            :disabled="state.disabled.challengesEdit"
+            :disabled="challengesEdit"
             :value="state.itSystemsDescription"
             :maxLength="10000"
           />
@@ -105,7 +105,8 @@ import WellItem from '@/components/common/WellItem.vue';
 import { ITSystem } from '@/store/modules/commonInterfaces';
 import { HTTP } from '@/services/http-service';
 import { Phase, PhaseKeys } from '@/models/phase';
-import { ProcessModule } from '../../../store/modules/process';
+import { ProcessModule, minPhase } from '../../../store/modules/process';
+import { CommonModule } from '../../../store/modules/common';
 
 @Component({
   components: {
@@ -123,7 +124,19 @@ export default class ChallengesForm extends Vue {
   PhaseKeys = PhaseKeys;
 
   get state() {
-    return ProcessModule.state;
+    return ProcessModule;
+  }
+
+  get challengesEdit(){
+    return ProcessModule.disabled?.challengesEdit;
+  }
+
+  get isChallengesValid() {
+    return ProcessModule.isChallengesValid;
+  }
+
+  get itSystems() {
+    return CommonModule.itSystems;
   }
 }
 </script>

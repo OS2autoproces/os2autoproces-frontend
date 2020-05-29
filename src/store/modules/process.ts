@@ -34,6 +34,10 @@ export interface ProcessState extends ProcessReport {
   comments?: Comment[];
 }
 
+export function minPhase(phase: Phase) {
+  return ProcessModule.minPhase(phase);
+}
+
 @Module({ dynamic: true, store, name: 'process' })
 export default class Process extends VuexModule implements ProcessState {
   id: string = '';

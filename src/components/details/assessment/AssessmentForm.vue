@@ -4,10 +4,10 @@
     v-if="minPhase(PhaseKeys.PREANALYSIS)"
     heading="Faglig vurdering"
     id="assessment"
-    :disabled="state.disabled.assessmentEdit"
+    :disabled="assessmentEdit"
     @edit="update({ disabled: { assessmentEdit: $event } })"
   >
-    <div class="assessment" :class="{ disabled: state.disabled.assessmentEdit }">
+    <div class="assessment" :class="{ disabled: assessmentEdit }">
       <div class="question">
         <div class="label">
           I hvor høj grad indgår der faglig vurdering i processen?
@@ -17,7 +17,7 @@
           >
         </div>
         <LikertScale
-          :disabled="state.disabled.assessmentEdit"
+          :disabled="assessmentEdit"
           :value="state.levelOfProfessionalAssessment"
           @change="update({ levelOfProfessionalAssessment: $event })"
         />
@@ -31,7 +31,7 @@
           >
         </div>
         <LikertScale
-          :disabled="state.disabled.assessmentEdit"
+          :disabled="assessmentEdit"
           :value="state.levelOfChange"
           @change="update({ levelOfChange: $event })"
         />
@@ -42,7 +42,7 @@
           <InfoTooltip class="tooltip">Det kan f.eks. være ved brug af en formular.</InfoTooltip>
         </div>
         <LikertScale
-          :disabled="state.disabled.assessmentEdit"
+          :disabled="assessmentEdit"
           :value="state.levelOfStructuredInformation"
           @change="update({ levelOfStructuredInformation: $event })"
         />
@@ -56,7 +56,7 @@
           >
         </div>
         <LikertScale
-          :disabled="state.disabled.assessmentEdit"
+          :disabled="assessmentEdit"
           :value="state.levelOfUniformity"
           @change="update({ levelOfUniformity: $event })"
         />
@@ -66,7 +66,7 @@
           Er de data og informationer, der skal bruges i processen, tilgængelige digitalt i IT-systemer?
         </div>
         <LikertScale
-          :disabled="state.disabled.assessmentEdit"
+          :disabled="assessmentEdit"
           :value="state.levelOfDigitalInformation"
           @change="update({ levelOfDigitalInformation: $event })"
         />
@@ -79,7 +79,7 @@
           >
         </div>
         <LikertScale
-          :disabled="state.disabled.assessmentEdit"
+          :disabled="assessmentEdit"
           :value="state.levelOfQuality"
           @change="update({ levelOfQuality: $event })"
         />
@@ -93,7 +93,7 @@
           >
         </div>
         <LikertScale
-          :disabled="state.disabled.assessmentEdit"
+          :disabled="assessmentEdit"
           :value="state.levelOfSpeed"
           @change="update({ levelOfSpeed: $event })"
         />
@@ -107,7 +107,7 @@
           >
         </div>
         <LikertScale
-          :disabled="state.disabled.assessmentEdit"
+          :disabled="assessmentEdit"
           :value="state.levelOfRoutineWorkReduction"
           @change="update({ levelOfRoutineWorkReduction: $event })"
         />
@@ -121,7 +121,7 @@
           >
         </div>
         <LikertScale
-          :disabled="state.disabled.assessmentEdit"
+          :disabled="assessmentEdit"
           :value="state.evaluatedLevelOfRoi"
           @change="update({ evaluatedLevelOfRoi: $event })"
         />
@@ -136,7 +136,7 @@ import { Action, Getter } from 'vuex-class';
 import LikertScale from '@/components/common/inputs/LikertScale.vue';
 import InfoTooltip from '@/components/common/InfoTooltip.vue';
 import FormSection from '@/components/details/FormSection.vue';
-import { ProcessState, ProcessModule } from '@/store/modules/process';
+import { ProcessState, ProcessModule, minPhase } from '@/store/modules/process';
 import { PhaseKeys, Phase } from '@/models/phase';
 
 @Component({
@@ -148,6 +148,10 @@ import { PhaseKeys, Phase } from '@/models/phase';
 })
 export default class AssessmentForm extends Vue {
   PhaseKeys = PhaseKeys;
+
+  get assessmentEdit() {
+    return ProcessModule.disabled?.assessmentEdit;
+  }
 
   get state() {
     return ProcessModule.state;

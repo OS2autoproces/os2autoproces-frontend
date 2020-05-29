@@ -3,7 +3,7 @@
     :invalid="!isTimeAndProcessValid"
     heading="Tid og proces"
     id="time-and-process"
-    :disabled="state.disabled.timeAndProcessEdit"
+    :disabled="timeAndProcessEdit"
     @edit="update({ disabled: { timeAndProcessEdit: $event } })"
   >
     <Well>
@@ -16,7 +16,7 @@
           <InputField
             :type="'number'"
             :value="state.timeSpendOccurancesPerEmployee"
-            :disabled="state.disabled.timeAndProcessEdit"
+            :disabled="timeAndProcessEdit"
             @change="update({ timeSpendOccurancesPerEmployee: $event })"
           />
         </WellItem>
@@ -27,14 +27,14 @@
         >
           <InputField
             :type="'number'"
-            :disabled="state.disabled.timeAndProcessEdit"
+            :disabled="timeAndProcessEdit"
             :value="timeSpentPerOccurance.minutes.toFixed(0)"
             @change="updateTimeSpentPerOccurance({ minutes: $event })"
             >m</InputField
           >
           <InputField
             :type="'number'"
-            :disabled="state.disabled.timeAndProcessEdit"
+            :disabled="timeAndProcessEdit"
             :value="timeSpentPerOccurance.seconds.toFixed(0)"
             @change="updateTimeSpentPerOccurance({ seconds: $event })"
             :rules="secondRules"
@@ -48,7 +48,7 @@
         >
           <InputField
             :type="'number'"
-            :disabled="state.disabled.timeAndProcessEdit"
+            :disabled="timeAndProcessEdit"
             :value="state.timeSpendPercentageDigital"
             @change="update({ timeSpendPercentageDigital: $event })"
             >%</InputField
@@ -78,14 +78,14 @@
         >
           <InputField
             :type="'number'"
-            :disabled="state.disabled.timeAndProcessEdit"
+            :disabled="timeAndProcessEdit"
             :value="state.timeSpendEmployeesDoingProcess"
             @change="update({ timeSpendEmployeesDoingProcess: $event })"
           />
         </WellItem>
         <WellItem labelWidth="70%" label="Er borgere påvirket?">
           <MappedSelectionField
-            :disabled="state.disabled.timeAndProcessEdit"
+            :disabled="timeAndProcessEdit"
             :value="state.targetsCitizens"
             @change="update({ targetsCitizens: $event })"
             :items="yesNoItems"
@@ -93,7 +93,7 @@
         </WellItem>
         <WellItem labelWidth="70%" label="Er virksomheder påvirket?">
           <MappedSelectionField
-            :disabled="state.disabled.timeAndProcessEdit"
+            :disabled="timeAndProcessEdit"
             :value="state.targetsCompanies"
             @change="update({ targetsCompanies: $event })"
             :items="yesNoItems"
@@ -110,7 +110,7 @@
       >
       <TextArea
         :value="state.timeSpendComment"
-        :disabled="state.disabled.timeAndProcessEdit"
+        :disabled="timeAndProcessEdit"
         @change="update({ timeSpendComment: $event })"
         :maxLength="10000"
       />
@@ -129,7 +129,7 @@ import InputField from '@/components/common/inputs/InputField.vue';
 import FormSection from '@/components/details/FormSection.vue';
 import { Action, Getter } from 'vuex-class';
 import { Phase, PhaseKeys } from '@/models/phase';
-import { ProcessModule } from '@/store/modules/process';
+import Process, { ProcessModule, minPhase } from '@/store/modules/process';
 
 @Component({
   components: {
@@ -156,30 +156,53 @@ export default class TimeAndProcessForm extends Vue {
     value => parseInt(value, 10) >= 0 || 'Sekunder kan ikke være negative'
   ];
 
+  get isTimeAndProcessValid() {
+    return ProcessModule.isTimeAndProcessValid;
+  }
+
+  get timeAndProcessEdit() {
+    return ProcessModule.disabled?.timeAndProcessEdit;
+  }
+
+  get timeSpendOccurancesPerEmployee() {
+    return Number(ProcessModule.timeSpendOccurancesPerEmployee);
+  }
+
+  get timeSpendPerOccurance() {
+    return Number(ProcessModule.timeSpendPerOccurance);
+  }
+
+  get timeSpendPercentageDigital() {
+    return Number(ProcessModule.timeSpendPercentageDigital);
+  }
+
+  get timeSpendTotal() {
+    return this.timeSpendOccurancesPerEmployee * this.timeSpendPerOccurance;
+  }
+
   get timeSpendHours() {
     const hours =
-      ((this.state.timeSpendOccurancesPerEmployee * this.state.timeSpendPerOccurance) / 60).toFixed(2) || '0';
+      ((this.timeSpendTotal) / 60).toFixed(2) || '0';
     return hours;
   }
   // Number of times this process is repeated yearly * amount of time required pr. process in minutes / 60 * automation potential / 100
   get exptectedYearlyPotential() {
     const hours =
       (
-        ((this.state.timeSpendOccurancesPerEmployee * this.state.timeSpendPerOccurance) / 60) *
-        (this.state.timeSpendPercentageDigital / 100)
+        ((this.timeSpendTotal) / 60) *
+        (this.timeSpendPercentageDigital / 100)
       ).toFixed(2) || '0';
     return hours;
   }
 
   get timeSpentPerOccurance(): { minutes: number; seconds: number } {
-    const time = this.state.timeSpendPerOccurance;
-    const minutes = parseInt(time, 10); // remove decimals
-    const seconds = (time - minutes) * 60; // remove minute part and convert decimals to seconds
+    const minutes = parseInt(ProcessModule.timeSpendPerOccurance ?? '', 10); // remove decimals
+    const seconds = (this.timeSpendPerOccurance - minutes) * 60; // remove minute part and convert decimals to seconds
     return { minutes, seconds };
   }
 
   get state() {
-    return this.$store.state.process;
+    return ProcessModule;
   }
 
   updateTimeSpentPerOccurance({ minutes, seconds }: { minutes: string; seconds: string }) {

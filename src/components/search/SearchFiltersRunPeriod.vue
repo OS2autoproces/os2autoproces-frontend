@@ -34,6 +34,10 @@ export default class SearchFiltersRunPeriod extends Vue {
       runPeriod: { ...SearchModule.filters.runPeriod, ...{ [keyToUpdate]: active } }
     });
   }
+
+  get filters() {
+    return SearchModule.filters;
+  }
 }
 </script>
 

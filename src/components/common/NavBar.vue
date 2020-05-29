@@ -10,9 +10,9 @@
       >Spørgsmål og vejledning</a
     >
     <div class="flex-grow"></div>
-    <div class="user-info" v-if="AuthModule.user">
+    <div class="user-info" v-if="user">
       <div class="user">
-        <div>{{ AuthModule.user.name }}</div>
+        <div>{{ user }}</div>
         <div>{{ roles.join(', ') }}</div>
         <a class="logout-button" :href="logoutUrl">Log ud</a>
       </div>
@@ -41,6 +41,10 @@ export default class NavBar extends Vue {
 
   get isFrontpageEditor() {
     return AuthModule.user && AuthModule.user.roles.includes(UserRole.frontpageEditor);
+  }
+
+  get user() {
+    return AuthModule.user;
   }
 }
 </script>

@@ -54,11 +54,11 @@ export default class TextArea extends Vue {
   }
 
   get currentLength() {
-    return this.value.length ? this.value.length : 0;
+    return this.value?.length ? this.value.length : 0;
   }
 
   get twoColumns() {
-    return this.value ? this.value.length > this.twoColumnBreakpoint : false;
+    return this.value ? this.value?.length > this.twoColumnBreakpoint : false;
   }
 
   valueChanged(event: any) {

@@ -30,5 +30,13 @@ export default class SearchSelectSavedFilters extends Vue {
   onFiltersSelected(filters: SavedSearchFilters) {
     SearchModule.selectSavedFilters(filters);
   }
+
+  get selectedSavedFilters() {
+    return SearchModule.selectedSavedFiltersText;
+  }
+
+  get savedFilters() {
+    return SearchModule.savedFilters;
+  }
 }
 </script>

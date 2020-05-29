@@ -50,8 +50,8 @@
         <h3>Følgende felter er ugyldige:</h3>
         <div class="snack-bar-list-container">
           <!-- TODO Fix v if in v for and computation in template -->
-          <div v-if="ErrorModule.hasErrors">
-            <ul class="section-errors" v-for="section in ErrorModule" :key="section.section">
+          <div v-if="hasErrors">
+            <ul class="section-errors" v-for="section in errors" :key="section.section">
               <span class="section-errors-title">{{ section.section }}</span>
               <li v-for="(field, i) in section.errors" :key="i">
                 <div class="snack-bar-list-item">{{ field }}</div>
@@ -148,6 +148,14 @@ export default class Process extends Vue {
     return ProcessModule;
   }
 
+  get errors() {
+    return ErrorModule;
+  }
+
+  get hasErrors() {
+    return ErrorModule.hasErrors;
+  }
+
   get snack() {
     return !!Object.keys(ErrorModule).find(section => !isEmpty(ErrorModule[section as keyof ErrorState].errors));
   }
@@ -155,6 +163,14 @@ export default class Process extends Vue {
   get isWithinMunicipality() {
     const { auth, process } = this.$store.state;
     return auth.user.cvr === process.cvr;
+  }
+
+  clearErrors() {
+    ErrorModule.clearErrors();
+  }
+
+  minPhase(phase: Phase) {
+    return ProcessModule.minPhase(phase);
   }
 
   beforeCreate() {

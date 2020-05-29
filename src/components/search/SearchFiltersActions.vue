@@ -119,5 +119,9 @@ export default class SearchFiltersActions extends Vue {
       ? SearchModule.savedFilters.findIndex(({ text }) => text.toLowerCase() === name.toLowerCase()) < 0
       : true;
   }
+
+  get filtersTouched() {
+    return SearchModule.filtersTouched;
+  }
 }
 </script>

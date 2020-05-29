@@ -4,7 +4,7 @@
     v-if="minPhase(PhaseKeys.DEVELOPMENT)"
     heading="Udvikling og implementering"
     id="implementation"
-    :disabled="state.disabled.implementationEdit"
+    :disabled="implementationEdit"
     @edit="update({ disabled: { implementationEdit: $event } })"
   >
     <div v-if="minPhase(PhaseKeys.IMPLEMENTATION)">
@@ -17,7 +17,7 @@
         :max-length="10000"
         :twoColumnBreakpoint="twoColumnBreakpoint"
         @change="update({ technicalImplementationNotes: $event })"
-        :disabled="state.disabled.implementationEdit"
+        :disabled="implementationEdit"
         :value="state.technicalImplementationNotes"
       />
     </div>
@@ -32,7 +32,7 @@
         :max-length="10000"
         :twoColumnBreakpoint="twoColumnBreakpoint"
         @change="update({ organizationalImplementationNotes: $event })"
-        :disabled="state.disabled.implementationEdit"
+        :disabled="implementationEdit"
         :value="state.organizationalImplementationNotes"
       />
     </div>
@@ -47,7 +47,7 @@
         <TagSelector
           @add="addTechnology($event)"
           @remove="removeTechnology($event)"
-          :disabled="state.disabled.implementationEdit"
+          :disabled="implementationEdit"
           :value="state.technologies"
           :items="technologies"
         />
@@ -56,7 +56,7 @@
         <h2 class="with-margin">Skedulering</h2>
         <MappedSelectionField
           class="run-period-field"
-          :disabled="state.disabled.implementationEdit"
+          :disabled="implementationEdit"
           :value="state.runPeriod"
           @change="update({ runPeriod: $event })"
           :items="runPeriods"
@@ -78,7 +78,7 @@ import { Technology } from '@/store/modules/commonInterfaces';
 import { CommonModule } from '@/store/modules/common';
 import { PhaseKeys, Phase } from '@/models/phase';
 import { RunPeriodKeys, RunPeriodLabels } from '@/models/runperiod';
-import { ProcessModule } from '@/store/modules/process';
+import { ProcessModule, minPhase } from '@/store/modules/process';
 
 @Component({
   components: {
@@ -104,6 +104,10 @@ export default class ImplementationForm extends Vue {
     { value: RunPeriodKeys.YEARLY, text: RunPeriodLabels.YEARLY }
   ];
 
+  get implementationEdit() {
+    return ProcessModule.disabled?.implementationEdit;
+  }
+
   get technologies() {
     return CommonModule.technologies;
   }
@@ -112,7 +116,7 @@ export default class ImplementationForm extends Vue {
     return ProcessModule.state;
   }
 
-  async mounted() {
+  mounted() {
     CommonModule.loadTechnologies();
   }
 }

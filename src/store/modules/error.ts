@@ -89,7 +89,9 @@ export default class Error extends VuexModule implements ErrorState {
 
   get hasErrors() {
     const sections = Object.keys(this);
-    return sections.some(section => this[section as keyof ErrorState].errors.length > 0);
+    return sections.some(
+      section => this[section as keyof ErrorState].errors && this[section as keyof ErrorState].errors.length > 0
+    );
   }
 }
 
