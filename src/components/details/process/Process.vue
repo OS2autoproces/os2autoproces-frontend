@@ -84,7 +84,6 @@
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import { Action, Getter } from 'vuex-class';
 import InternalNotes from '@/components/common/inputs/InternalNotes.vue';
-import { processActionTypes, NewComment } from '@/store/modules/process/actions';
 import { Phase, PhaseKeys } from '@/models/phase';
 import Comments from '@/components/details/Comments.vue';
 import IntervalSelector from '@/components/common/inputs/IntervalSelector.vue';
@@ -106,8 +105,8 @@ import { errorActionTypes } from '@/store/modules/error/actions';
 import { ErrorState } from '@/store/modules/error/state';
 import SnackBar from '@/components/common/SnackBar.vue';
 import { isEmpty } from 'lodash';
-import { processGetterTypes } from '@/store/modules/process/getters';
-import { CommonModule } from '../../../store/modules/common';
+import { CommonModule } from '@/store/modules/common';
+import { ProcessModule } from '@/store/modules/process';
 
 @Component({
   components: {
@@ -139,16 +138,10 @@ export default class Process extends Vue {
   @Prop(String)
   phase!: Phase;
 
-  @Action(processActionTypes.UPDATE)
-  update: any;
-  @Action(processActionTypes.SAVE_COMMENT)
-  saveComment!: (message: string) => Promise<void>;
   @Action(errorActionTypes.UPDATE_PROCESS_ERRORS)
   updateProcessErrors!: (processErrors: Partial<ErrorState>) => void;
   @Action(errorActionTypes.CLEAR_ERRORS)
   clearErrors!: () => void;
-  @Getter(processGetterTypes.MIN_PHASE)
-  minPhase!: (phase: Phase) => boolean;
 
   PhaseKeys = PhaseKeys;
 
@@ -183,7 +176,7 @@ export default class Process extends Vue {
     CommonModule.loadOrgUnits();
 
     if (this.isReporting) {
-      this.update({
+      ProcessModule.update({
         phase: this.phase,
         canEdit: true,
         hasChanged: false,
@@ -200,13 +193,13 @@ export default class Process extends Vue {
         }
       });
     } else {
-      this.$store.dispatch(processActionTypes.LOAD_COMMENTS);
+      ProcessModule.loadComments();
     }
   }
 
   async save() {
     try {
-      await this.$store.dispatch(processActionTypes.SAVE);
+      await ProcessModule.save();
       this.showSaveSuccess = true;
     } catch (e) {
       if (this.errors.length === 0) {
@@ -217,7 +210,7 @@ export default class Process extends Vue {
 
   async report() {
     try {
-      const processId = await this.$store.dispatch(processActionTypes.REPORT);
+      const processId = await ProcessModule.createReport();
       this.showSaveSuccess = true;
       this.$router.push(`/details/${processId}`);
     } catch (e) {

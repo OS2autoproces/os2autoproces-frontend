@@ -173,19 +173,19 @@ import WellItem from '@/components/common/WellItem.vue';
 import FormSection from '@/components/details/FormSection.vue';
 import WarningIcon from '@/components/icons/WarningIcon.vue';
 import DeleteIcon from '@/components/icons/DeleteIcon.vue';
-import { processActionTypes } from '@/store/modules/process/actions';
-import { processGetterTypes } from '@/store/modules/process/getters';
 import { User } from '@/store/modules/auth';
 import { StatusKeys, StatusLabels } from '@/models/status';
 import { VisibilityKeys, VisibilityLabels, VisibilityOrder, Visibility } from '@/models/visibility';
-import { Process } from '@/store/modules/process/state';
-import { Kle, OrgUnit, CommonModule } from '@/store/modules/common';
+import { ProcessReport } from '@/store/modules/processInterfaces';
+import { Kle, OrgUnit } from '@/store/modules/commonInterfaces';
+import { CommonModule } from '@/store/modules/common';
 import { TypeLabels, TypeKeys } from '@/models/types';
 import { Domain } from '@/models/domain';
 import { Phase, PhaseKeys } from '@/models/phase';
 import MunicipalityLogo from '@/components/common/MunicipalityLogo.vue';
 import StarIcon from '@/components/icons/StarIcon.vue';
 import { AuthModule } from '../../../store/modules/auth';
+import { ProcessModule } from '../../../store/modules/process';
 
 @Component({
   components: {
@@ -210,18 +210,6 @@ import { AuthModule } from '../../../store/modules/auth';
 export default class UmbrellaForm extends Vue {
   @Prop(Boolean)
   isReporting!: boolean;
-
-  @Action(processActionTypes.SET_BOOKMARK)
-  setBookmark!: (hasBookmark: boolean) => Promise<void>;
-  @Action(processActionTypes.UPDATE)
-  update: any;
-  @Action(processActionTypes.ASSIGN)
-  assign: any;
-  // @Action(commonActionTypes.LOAD_FORMS)
-  // loadForms: any;
-
-  @Getter(processGetterTypes.IS_UMBRELLA_VALID)
-  isUmbrellaValid!: any;
 
   TypeLabels = TypeLabels;
   VisibilityLabels = VisibilityLabels;
@@ -261,29 +249,29 @@ export default class UmbrellaForm extends Vue {
 
   setKla(kla: string) {
     // Inserts periodes for every 2 characters, to match format: ##.##.##.##.##
-    this.update({ kla: kla.replace(/(\d{2})(?=\d)/g, '$1.') });
+    ProcessModule.update({ kla: kla.replace(/(\d{2})(?=\d)/g, '$1.') });
   }
 
   setKle(kle: Kle) {
     if (!kle) {
-      this.update({ kle, form: null });
+      ProcessModule.update({ kle, form: null });
     } else {
-      this.update({ kle });
+      ProcessModule.update({ kle });
     }
     CommonModule.loadFormsByKle(kle);
   }
 
-  addProcess(process: Process) {
-    if (this.state.children.find((child: Process) => child.id === process.id)) {
+  addProcess(process: ProcessReport) {
+    if (this.state.children.find((child: ProcessReport) => child.id === process.id)) {
       return;
     }
 
-    this.assign({ children: [...this.state.children, process] });
+    ProcessModule.assign({ children: [...this.state.children, process] });
   }
 
-  removeProcess(process: Process) {
-    this.assign({
-      children: this.state.children.filter((child: Process) => child.id !== process.id)
+  removeProcess(process: ProcessReport) {
+    ProcessModule.assign({
+      children: this.state.children.filter((child: ProcessReport) => child.id !== process.id)
     });
   }
 }

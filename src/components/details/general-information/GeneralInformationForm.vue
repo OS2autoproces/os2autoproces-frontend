@@ -258,12 +258,11 @@ import Well from '@/components/common/Well.vue';
 import WellItem from '@/components/common/WellItem.vue';
 import FormSection from '@/components/details/FormSection.vue';
 import WarningIcon from '@/components/icons/WarningIcon.vue';
-import { processActionTypes } from '@/store/modules/process/actions';
-import { processGetterTypes } from '@/store/modules/process/getters';
 import { StatusKeys, StatusLabels } from '@/models/status';
 import { VisibilityKeys, VisibilityLabels } from '@/models/visibility';
 import { Domain, DomainKeys, DomainLabels } from '@/models/domain';
-import { Kle, Form, UserSearchRequest, OrgUnit, CommonModule } from '@/store/modules/common';
+import { Kle, Form, UserSearchRequest, OrgUnit } from '@/store/modules/commonInterfaces';
+import { CommonModule } from '@/store/modules/common';
 import { Phase, PhaseKeys } from '@/models/phase';
 import InfoTooltip from '@/components/common/InfoTooltip.vue';
 import MunicipalityLogo from '@/components/common/MunicipalityLogo.vue';
@@ -272,6 +271,7 @@ import AppDialog from '@/components/common/Dialog.vue';
 import DialogContent from '@/components/common/DialogContent.vue';
 import Button from '@/components/common/inputs/Button.vue';
 import { AuthModule, User } from '@/store/modules/auth';
+import { ProcessModule } from '../../../store/modules/process';
 // TODO - split this component. No component should be 500 lines
 @Component({
   components: {
@@ -299,23 +299,6 @@ import { AuthModule, User } from '@/store/modules/auth';
 export default class GeneralInformationForm extends Vue {
   @Prop(Boolean)
   isReporting!: boolean;
-
-  @Action(processActionTypes.SET_BOOKMARK)
-  setBookmark!: (hasBookmark: boolean) => Promise<void>;
-  @Action(processActionTypes.UPDATE)
-  update: any;
-  // @Action(commonActionTypes.LOAD_FORMS)
-  // loadForms: any;
-  @Action(processActionTypes.ASSIGN)
-  assign: any;
-  // @Action(commonActionTypes.SEARCH_USERS)
-  // searchUsers!: ({ name, cvr }: UserSearchRequest) => Promise<void>;
-
-  @Getter(processGetterTypes.IS_GERNERAL_INFORMATION_VALID)
-  isGeneralInformationValid!: any;
-  @Getter(processGetterTypes.MIN_PHASE)
-  minPhase!: (phase: Phase) => boolean;
-
   isPhaseChanged = false;
   publicVisibilityDialogOpen = false;
   StatusKeys = StatusKeys;
@@ -366,21 +349,21 @@ export default class GeneralInformationForm extends Vue {
 
   setKla(kla: string) {
     // Inserts periodes for every 2 characters, to match format: ##.##.##.##.##
-    this.update({ kla: kla.replace(/(\d{2})(?=\d)/g, '$1.') });
+    ProcessModule.update({ kla: kla.replace(/(\d{2})(?=\d)/g, '$1.') });
   }
 
   setKle(kle: Kle) {
     if (!kle) {
-      this.update({ kle, form: null });
+      ProcessModule.update({ kle, form: null });
     } else {
-      this.update({ kle });
+      ProcessModule.update({ kle });
     }
     CommonModule.loadFormsByKle(kle);
   }
 
   phaseChanged(phase: any) {
     this.isPhaseChanged = true;
-    this.update({ phase });
+    ProcessModule.update({ phase });
 
     if (phase === PhaseKeys.OPERATION && this.state.visibility !== VisibilityKeys.PUBLIC) {
       this.openPublicVisibilityDialog();

@@ -16,8 +16,7 @@ import { Action, Getter } from 'vuex-class';
 import InfoTooltip from '@/components/common/InfoTooltip.vue';
 import Button from '@/components/common/inputs/Button.vue';
 import Toggle from '@/components/common/inputs/Toggle.vue';
-import { processActionTypes } from '@/store/modules/process/actions';
-import { ProcessState } from '@/store/modules/process/state';
+import { ProcessState, ProcessModule } from '@/store/modules/process';
 
 @Component({
   components: {
@@ -27,15 +26,6 @@ import { ProcessState } from '@/store/modules/process/state';
   }
 })
 export default class ProcessHeader extends Vue {
-  @Action(processActionTypes.UPDATE)
-  update!: any;
-  @Action(processActionTypes.SET_EMAIL_NOTIFICATION)
-  setEmailNotification!: (emailNotification: boolean) => Promise<void>;
-  @Action(processActionTypes.REMOVE_PROCESS)
-  removeProcess!: () => Promise<void>;
-  @Action(processActionTypes.COPY_PROCESS)
-  copyProcess!: () => Promise<string>;
-
   @Prop(Boolean)
   isReporting!: boolean;
   @Prop(Boolean)
@@ -46,13 +36,13 @@ export default class ProcessHeader extends Vue {
   }
 
   async copy() {
-    const id = await this.copyProcess();
+    const id = await ProcessModule.copyProcess();
     this.$router.push(`/details/${id}`);
   }
 
   async remove() {
     if (confirm('Vil du slette denne proces permanent?')) {
-      await this.removeProcess();
+      await ProcessModule.removeProcess();
       this.$router.push(`/search`);
     }
   }

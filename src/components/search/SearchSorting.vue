@@ -25,7 +25,7 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import SortIcon from '../icons/SortIcon.vue';
-import { SortingOption } from '@/store/modules/search';
+import { SortingOption } from '@/store/modules/searchInterfaces';
 
 @Component({
   components: {

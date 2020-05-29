@@ -40,9 +40,10 @@ import { Action } from 'vuex-class';
 import InfoTooltip from '@/components/common/InfoTooltip.vue';
 import SelectionField from '@/components/common/inputs/SelectionField.vue';
 import DeleteIcon from '@/components/icons/DeleteIcon.vue';
-import { processActionTypes } from '@/store/modules/process/actions';
-import { UserSearchRequest, CommonModule } from '@/store/modules/common';
+import { UserSearchRequest } from '@/store/modules/commonInterfaces';
+import { CommonModule } from '@/store/modules/common';
 import { User, AuthModule } from '@/store/modules/auth';
+import { ProcessModule } from '@/store/modules/process';
 
 @Component({
   components: {
@@ -77,11 +78,11 @@ export default class AssociatedPersonsInput extends Vue {
     }
 
     setTimeout(() => (this.$refs.userSelectionField as SelectionField<User>).clear());
-    this.$store.dispatch(processActionTypes.ADD_USER, user);
+    ProcessModule.addUser(user);
   }
 
   removeUser(user: User) {
-    this.$store.dispatch(processActionTypes.REMOVE_USER, user);
+    ProcessModule.removeUser(user);
   }
 }
 </script>

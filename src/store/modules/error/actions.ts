@@ -1,9 +1,10 @@
 import { errorMutationTypes } from '@/store/modules/error/mutations';
 import { ErrorState } from '@/store/modules/error/state';
-import { Process, ProcessState } from '@/store/modules/process/state';
+import { ProcessState } from '@/store/modules/process';
 import { getInvalidProperties } from '@/store/modules/validation';
 import { RootState } from '@/store';
 import { ActionTree } from 'vuex';
+import { ProcessReport } from '../processInterfaces';
 
 export const namespace = 'error';
 
@@ -12,7 +13,7 @@ export const errorActionTypes = {
   CLEAR_ERRORS: `${namespace}/clearErrors`
 };
 
-type ProcessLabels = { [X in keyof Process]?: string };
+type ProcessLabels = { [X in keyof ProcessReport]?: string };
 
 export const umbrellaLabels: ProcessLabels = {
   contact: 'Kontaktperson',
@@ -105,13 +106,13 @@ export const processLabels: ProcessLabels = {
 };
 
 interface ErrorLabels {
-  generalInformation: Array<keyof Process>;
-  challenges: Array<keyof Process>;
-  assessment: Array<keyof Process>;
-  timeAndProcess: Array<keyof Process>;
-  attachments: Array<keyof Process>;
-  implementation: Array<keyof Process>;
-  operation: Array<keyof Process>;
+  generalInformation: Array<keyof ProcessReport>;
+  challenges: Array<keyof ProcessReport>;
+  assessment: Array<keyof ProcessReport>;
+  timeAndProcess: Array<keyof ProcessReport>;
+  attachments: Array<keyof ProcessReport>;
+  implementation: Array<keyof ProcessReport>;
+  operation: Array<keyof ProcessReport>;
 }
 
 const errorLimitations: { [key: string]: string } = {
@@ -130,21 +131,21 @@ const errorLimitations: { [key: string]: string } = {
 };
 
 const errorLabels: ErrorLabels = {
-  generalInformation: Object.keys(generalInformationLabels) as Array<keyof Process>,
-  challenges: Object.keys(challengesLabels) as Array<keyof Process>,
-  assessment: Object.keys(assessmentLabels) as Array<keyof Process>,
-  timeAndProcess: Object.keys(timeAndProcessLabels) as Array<keyof Process>,
-  attachments: Object.keys(attachmentsLabels) as Array<keyof Process>,
-  implementation: Object.keys(implementationLabels) as Array<keyof Process>,
-  operation: Object.keys(operationLabels) as Array<keyof Process>
+  generalInformation: Object.keys(generalInformationLabels) as Array<keyof ProcessReport>,
+  challenges: Object.keys(challengesLabels) as Array<keyof ProcessReport>,
+  assessment: Object.keys(assessmentLabels) as Array<keyof ProcessReport>,
+  timeAndProcess: Object.keys(timeAndProcessLabels) as Array<keyof ProcessReport>,
+  attachments: Object.keys(attachmentsLabels) as Array<keyof ProcessReport>,
+  implementation: Object.keys(implementationLabels) as Array<keyof ProcessReport>,
+  operation: Object.keys(operationLabels) as Array<keyof ProcessReport>
 };
 
 export const actions: ActionTree<ErrorState, RootState> = {
-  updateProcessErrors({ commit, state }, processState: ProcessState) {
+  updateProcessErrors({ commit, state }, processReport: ProcessReport) {
     const sections = Object.keys(errorLabels) as Array<keyof ErrorLabels>;
 
     sections.forEach(section => {
-      const sectionErrors = getInvalidProperties(processState, errorLabels[section]);
+      const sectionErrors = getInvalidProperties(processReport, errorLabels[section]);
 
       const errors = sectionErrors.map(error => {
         const errorLabel = processLabels[error];

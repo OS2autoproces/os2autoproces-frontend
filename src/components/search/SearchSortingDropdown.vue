@@ -19,13 +19,13 @@ import {
   SortingOption,
   SearchFilters,
   SearchResultProcess,
-  SortingOptionParams,
-  SearchModule
-} from '@/store/modules/search';
+  SortingOptionParams
+} from '@/store/modules/searchInterfaces';
 import SelectionField from '../common/inputs/SelectionField.vue';
 import { State, Action } from 'vuex-class';
 import { isEqual } from 'lodash';
 import excelBtn from '@/components/search/ExcelBtn.vue';
+import { SearchModule } from '@/store/modules/search';
 
 interface DropdownSortingOption {
   text: string;

@@ -1,94 +1,13 @@
-import { Domain } from '@/models/domain';
-import { Phase } from '@/models/phase';
-import { RunPeriod } from '@/models/runperiod';
-import { Status } from '@/models/status';
-import { Type } from '@/models/types';
 import { merge, debounce, isEqual } from 'lodash';
-import { VuexModule, Module, MutationAction, Mutation, Action, getModule } from 'vuex-module-decorators';
+import { VuexModule, Module, Mutation, Action, getModule } from 'vuex-module-decorators';
 import store from '@/store';
-import { ITSystem, Municipality, Technology } from '@/store/modules/common';
-import { HTTP } from '@/services/http-service';
-import { state } from './error';
 import {
   search,
   saveFiltersToStorage,
   loadFiltersFromStorage,
   deleteFiltersFromStorage
 } from '@/store/modules/service';
-
-const getFiltersTouched = (previousFilters: SearchFilters | undefined, filterChanges: Partial<SearchFilters>) => {
-    const initialFilters = getInitialState().filters;
-    const currentFilters = Object.assign({}, previousFilters, filterChanges);
-    const touched = !isEqual(initialFilters, currentFilters);
-    return touched;
-  };
-
-export interface SearchResult {
-  page: {
-    totalPages: number;
-    number: number;
-  };
-  processes: SearchResultProcess[];
-}
-
-export interface SavedSearchFilters {
-  text: string;
-  filters: SearchFilters;
-}
-
-export interface SearchResultProcess {
-  id: number;
-  title: string;
-  shortDescription: string;
-  rating: number;
-  phase: Phase;
-  status: Status;
-  runPeriod: RunPeriod;
-  municipalityName: string;
-  domains: Domain[];
-  kle: string;
-  sepMep: boolean;
-  legalClause: string;
-  hasBookmarked: boolean;
-  lastChanged: number;
-  type: Type;
-  childrenCount: number;
-}
-
-export interface SortingOptionParams extends SearchResultProcess {
-  created: string;
-}
-
-export interface SortingOption {
-  property: keyof SortingOptionParams;
-  descending?: boolean;
-}
-
-export interface SearchFilters {
-  reporterId: string | null;
-  usersId: string | null;
-  bookmarkedId: string | null;
-  text: string;
-  created: string;
-  lastChanged: string;
-  municipality: Municipality | null;
-  visibility: {
-    MUNICIPALITY: boolean;
-    PUBLIC: boolean;
-  };
-  page: number;
-  size: number;
-  sorting: SortingOption;
-  phase: { [x in Phase]: boolean | null };
-  domain: { [x in Domain]: boolean | null };
-  runPeriod: { [x in RunPeriod]: boolean | null };
-  klaProcess: boolean;
-  sepMep: boolean;
-  umbrella: boolean;
-  itSystems: ITSystem[];
-  technologies: Technology[];
-  status: { [x in Status]: boolean | null };
-}
+import { SearchFilters, SearchResult, SavedSearchFilters } from './searchInterfaces';
 
 export interface SearchState {
   result?: SearchResult;
@@ -97,6 +16,13 @@ export interface SearchState {
   savedFilters?: SavedSearchFilters[];
   selectedSavedFiltersText?: string;
 }
+
+const getFiltersTouched = (previousFilters: SearchFilters | undefined, filterChanges: Partial<SearchFilters>) => {
+    const initialFilters = getInitialState().filters;
+    const currentFilters = Object.assign({}, previousFilters, filterChanges);
+    const touched = !isEqual(initialFilters, currentFilters);
+    return touched;
+  };
 
 export function getInitialState(): SearchState {
     return {
@@ -246,8 +172,8 @@ export default class Search extends VuexModule implements SearchState {
   saveFilters(text: string) {
       if(this.filters)
       {
-        saveFiltersToStorage({text: text, filters: this.filters});
-        this.ADD_SAVED_FILTERS({text: text, filters: this.filters});
+        saveFiltersToStorage({text, filters: this.filters});
+        this.ADD_SAVED_FILTERS({text, filters: this.filters});
         this.SET_SELECTED_SAVED_FILTERS(text);
       }
   }

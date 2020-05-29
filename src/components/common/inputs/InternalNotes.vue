@@ -1,6 +1,12 @@
 <template>
   <div class="internal-notes">
-    <TextArea :value="internalNotes" @change="update({ internalNotes: $event })" placeholder="Skriv interne noter her..." :max-length="10000" :disabled="disabled" />
+    <TextArea
+      :value="internalNotes"
+      @change="update($event)"
+      placeholder="Skriv interne noter her..."
+      :max-length="10000"
+      :disabled="disabled"
+    />
   </div>
 </template>
 
@@ -8,8 +14,7 @@
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import TextArea from '@/components/common/inputs/TextArea.vue';
 import { Action } from 'vuex-class';
-import { processActionTypes } from '@/store/modules/process/actions';
-import { ProcessState } from '@/store/modules/process/state';
+import { ProcessState, ProcessModule } from '@/store/modules/process';
 
 @Component({
   components: {
@@ -19,7 +24,10 @@ import { ProcessState } from '@/store/modules/process/state';
 export default class InternalNotesComponent extends Vue {
   @Prop(String) internalNotes!: string;
   @Prop(Boolean) disabled!: boolean;
-  @Action(processActionTypes.UPDATE) update!: (notes: Partial<ProcessState>) => void;
+
+  update(notes: string): void {
+    ProcessModule.update({ internalNotes: notes });
+  }
 }
 </script>
 

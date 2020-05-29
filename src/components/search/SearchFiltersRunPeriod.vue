@@ -11,12 +11,13 @@
 </template>
 
 <script lang="ts">
-import { SearchFilters, SearchModule } from '@/store/modules/search';
+import { SearchFilters } from '@/store/modules/searchInterfaces';
 import { Vue, Prop, Component } from 'vue-property-decorator';
 import { Action, State } from 'vuex-class';
 import SearchOption from './SearchOption.vue';
 import ExpandPanel from '../common/ExpandPanel.vue';
 import { RunPeriodLabels, RunPeriodKeys } from '@/models/runperiod';
+import { SearchModule } from '@/store/modules/search';
 
 @Component({
   components: {

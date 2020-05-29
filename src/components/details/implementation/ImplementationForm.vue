@@ -74,11 +74,11 @@ import FormSection from '@/components/details/FormSection.vue';
 import InfoTooltip from '@/components/common/InfoTooltip.vue';
 import TagSelector from '@/components/common/inputs/TagSelector.vue';
 import MappedSelectionField from '@/components/common/inputs/MappedSelectionField.vue';
-import { processActionTypes } from '@/store/modules/process/actions';
-import { processGetterTypes } from '@/store/modules/process/getters';
-import { Technology, CommonModule } from '@/store/modules/common';
+import { Technology } from '@/store/modules/commonInterfaces';
+import { CommonModule } from '@/store/modules/common';
 import { PhaseKeys, Phase } from '@/models/phase';
 import { RunPeriodKeys, RunPeriodLabels } from '@/models/runperiod';
+import { ProcessModule } from '@/store/modules/process';
 
 @Component({
   components: {
@@ -90,13 +90,6 @@ import { RunPeriodKeys, RunPeriodLabels } from '@/models/runperiod';
   }
 })
 export default class ImplementationForm extends Vue {
-  @Action(processActionTypes.UPDATE) update: any;
-  @Action(processActionTypes.ADD_TECHNOLOGY) addTechnology: any;
-  @Action(processActionTypes.REMOVE_TECHNOLOGY) removeTechnology: any;
-
-  @Getter(processGetterTypes.IS_IMPLEMENTATION_VALID) isImplementationValid!: any;
-  @Getter(processGetterTypes.MIN_PHASE) minPhase!: (phase: Phase) => boolean;
-
   PhaseKeys = PhaseKeys;
 
   twoColumnBreakpoint = 1600;
@@ -116,7 +109,7 @@ export default class ImplementationForm extends Vue {
   }
 
   get state() {
-    return this.$store.state.process;
+    return ProcessModule.state;
   }
 
   async mounted() {

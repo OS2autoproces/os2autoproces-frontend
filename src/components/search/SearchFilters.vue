@@ -123,14 +123,15 @@ import { Action, State } from 'vuex-class';
 import { PhaseLabels, PhaseKeys } from '@/models/phase';
 import { DomainLabels, DomainKeys } from '@/models/domain';
 import { VisibilityLabels, VisibilityKeys } from '@/models/visibility';
-import { SearchFilters, SearchModule } from '../../store/modules/search';
+import { SearchFilters } from '../../store/modules/searchInterfaces';
 import Button from '../common/inputs/Button.vue';
 import SearchFiltersActions from './SearchFiltersActions.vue';
 import SearchSelectSavedFilters from './SearchSelectSavedFilters.vue';
 import SearchFiltersRunPeriod from './SearchFiltersRunPeriod.vue';
 import { StatusSelect, StatusLabels, StatusKeys, defaultStatusSelects } from '../../models/status';
-import { Municipality, CommonModule } from '@/store/modules/common';
+import { Municipality } from '@/store/modules/commonInterfaces';
 import { AuthModule } from '../../store/modules/auth';
+import { CommonModule } from '@/store/modules/common';
 
 @Component({
   components: {

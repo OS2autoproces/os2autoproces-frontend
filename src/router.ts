@@ -9,7 +9,7 @@ import ReportProcess from './views/ReportProcess.vue';
 import Search from './views/Search.vue';
 import Discovery from './views/Discovery.vue';
 import { mapSearchQueryToObject, mapQueryObjToFilters } from './services/url-service';
-import { SearchFilters } from '@/store/modules/search';
+import { SearchFilters } from '@/store/modules/searchInterfaces';
 import { size, isEmpty } from 'lodash';
 import { getInitialState } from './store/modules/search';
 

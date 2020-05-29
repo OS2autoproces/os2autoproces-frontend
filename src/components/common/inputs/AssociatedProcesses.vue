@@ -28,8 +28,8 @@ import SearchFilters from '@/components/search/SearchFilters.vue';
 import SearchSorting from '@/components/search/SearchSorting.vue';
 import SmallSearchResult from '@/components/search/SmallSearchResult.vue';
 import SearchPagination from '@/components/search/SearchPagination.vue';
-import { processActionTypes } from '@/store/modules/process/actions';
-import { UserSearchRequest, CommonModule } from '@/store/modules/common';
+import { UserSearchRequest } from '@/store/modules/commonInterfaces';
+import { CommonModule } from '@/store/modules/common';
 import { User } from '@/store/modules/auth';
 import { SearchModule } from '@/store/modules/search';
 
@@ -42,16 +42,12 @@ import { SearchModule } from '@/store/modules/search';
   }
 })
 export default class AssociatedProcesses extends Vue {
-  get state() {
-    return this.$store.state;
-  }
-
   get filters() {
-    return this.$store.state.search.filters;
+    return SearchModule.filters;
   }
 
   get result() {
-    return this.$store.state.search.result;
+    return SearchModule.result;
   }
 
   updateFilters(filters: Partial<SearchFilters>) {

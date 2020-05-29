@@ -128,9 +128,8 @@ import MappedSelectionField from '@/components/common/inputs/MappedSelectionFiel
 import InputField from '@/components/common/inputs/InputField.vue';
 import FormSection from '@/components/details/FormSection.vue';
 import { Action, Getter } from 'vuex-class';
-import { processActionTypes } from '@/store/modules/process/actions';
-import { processGetterTypes } from '@/store/modules/process/getters';
 import { Phase, PhaseKeys } from '@/models/phase';
+import { ProcessModule } from '@/store/modules/process';
 
 @Component({
   components: {
@@ -144,9 +143,6 @@ import { Phase, PhaseKeys } from '@/models/phase';
   }
 })
 export default class TimeAndProcessForm extends Vue {
-  @Action(processActionTypes.UPDATE) update: any;
-  @Getter(processGetterTypes.IS_TIME_AND_PROCESS_VALID) isTimeAndProcessValid!: any;
-  @Getter(processGetterTypes.MIN_PHASE) minPhase!: (phase: Phase) => boolean;
   PhaseKeys = PhaseKeys;
 
   yesNoItems = [
@@ -190,7 +186,7 @@ export default class TimeAndProcessForm extends Vue {
     const newMinutes = !!minutes || minutes === '' ? parseInt(minutes || '0', 10) : this.timeSpentPerOccurance.minutes;
     const newSeconds = !!seconds || seconds === '' ? parseInt(seconds || '0', 10) : this.timeSpentPerOccurance.seconds;
     const timeSpendPerOccurance = newMinutes + newSeconds / 60;
-    this.update({ timeSpendPerOccurance });
+    ProcessModule.update({ timeSpendPerOccurance: `${timeSpendPerOccurance}` });
   }
 }
 </script>

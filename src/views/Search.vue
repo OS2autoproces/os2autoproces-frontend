@@ -55,8 +55,8 @@ import SearchResult from '../components/search/SearchResult.vue';
 import SearchSorting from '../components/search/SearchSorting.vue';
 import SearchSortingUmbrella from '../components/search/SearchSortingUmbrella.vue';
 import PlusIcon from '../components/icons/PlusIcon.vue';
-import { processActionTypes } from '../store/modules/process/actions';
-import { SearchFilters, SearchResultProcess, SearchModule } from '@/store/modules/search';
+import { SearchModule } from '@/store/modules/search';
+import { SearchFilters, SearchResultProcess } from '@/store/modules/searchInterfaces';
 import SearchSortingDropdown from '@/components/search/SearchSortingDropdown.vue';
 
 @Component({
@@ -73,16 +73,13 @@ import SearchSortingDropdown from '@/components/search/SearchSortingDropdown.vue
 })
 export default class Search extends Vue {
   @Prop({ type: Object as () => SearchFilters }) initialFilters!: SearchFilters;
-  // @Action(searchActionTypes.SEARCH) dispatchSearch!: VoidFunction;
-  // @Action(searchActionTypes.ASSIGN_FILTERS) dispatchAssignFilters!: (filters: SearchFilters) => void;
-  // @Getter(searchGetterTypes.IS_SEARCHING_FOR_UMBRELLA_PROCESS) isSearchingForUmbrellaProcess!: () => boolean;
 
   get filters() {
-    return this.$store.state.search.filters;
+    return SearchModule.filters;
   }
 
   get result() {
-    return this.$store.state.search.result;
+    return SearchModule.result;
   }
 
   async updateFiltersAndScrollToTop(filters: Partial<SearchFilters>) {

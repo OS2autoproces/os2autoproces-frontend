@@ -1,10 +1,8 @@
 import AuthState from '@/store/modules/auth';
 import CommonState from '@/store/modules/common';
-import { error } from '@/store/modules/error';
 import { ErrorState } from '@/store/modules/error/state';
-import { process } from '@/store/modules/process';
-import { ProcessState } from '@/store/modules/process/state';
-import { SearchState } from '@/store/modules/search';
+import ProcessState from '@/store/modules/process';
+import SearchState from '@/store/modules/search';
 import Vue from 'vue';
 import Vuex from 'vuex';
 

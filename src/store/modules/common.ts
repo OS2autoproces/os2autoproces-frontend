@@ -1,47 +1,9 @@
 import { merge, debounce } from 'lodash';
-import { VuexModule, Module, MutationAction, Mutation, Action, getModule } from 'vuex-module-decorators';
+import { VuexModule, Module, Mutation, Action, getModule } from 'vuex-module-decorators';
 import store from '@/store';
 import { User } from '@/store/modules/auth';
 import { HTTP } from '@/services/http-service';
-
-export interface Cms {
-  label: keyof CommonState;
-  content: string;
-}
-
-export interface Kle {
-  code: string;
-  name: string;
-}
-
-export interface Form {
-  code: string;
-  description: string;
-}
-
-export interface ITSystem {
-  id: number;
-  name: string;
-  vendor: string | null;
-}
-
-export interface OrgUnit {
-  id: number;
-  uuid: string;
-  name: string;
-  active: boolean;
-  cvr: string;
-}
-
-export interface Municipality {
-  name: string;
-  cvr: string;
-}
-
-export interface Technology {
-  id: number;
-  name: string;
-}
+import {ITSystem, Technology, Kle, Form, OrgUnit, Municipality, Cms, TechnologiesResponse, ItSystemsResponse, MunicipalitiesResponse, KleResponse, OrgUnitsResponse, UserSearchRequest, UserResponse, FormResponse } from './commonInterfaces';
 
 export interface CommonState {
   frontPage?: string;
@@ -53,80 +15,6 @@ export interface CommonState {
   municipalities?: Municipality[];
   users?: User[];
 }
-
-//TODO: Move requests/responses to a service?
-interface TechnologiesResponse {
-  _embedded: {
-    technologies: Technology[];
-  };
-  _links: {
-    next: {
-      href: string;
-    };
-  };
-  page: {
-    size: number;
-    totalPages: number;
-  };
-}
-
-interface ItSystemsResponse {
-    _embedded: {
-      itSystems: ITSystem[];
-    };
-    _links: {
-      next: {
-        href: string;
-      };
-    };
-    page: {
-      size: number;
-      totalPages: number;
-    };
-  }
-  
-interface MunicipalitiesResponse {
-    data: Municipality[];
-  }
-
-  interface FormResponse {
-    _embedded: {
-      forms: Form[];
-    };
-  }
-  
-  interface KleResponse {
-    _embedded: {
-      kles: Kle[];
-    };
-    _links: {
-      next: {
-        href: string;
-      };
-    };
-    page: {
-      size: number;
-      totalPages: number;
-    };
-  }
-  
-  interface OrgUnitsResponse {
-    _embedded: {
-      orgUnits: OrgUnit[];
-    };
-  }
-  
-  interface UserResponse {
-    _embedded: {
-      users: User[];
-    };
-  }
-  
-  export interface UserSearchRequest {
-    cvr: string;
-    name: string;
-  }
-  
 @Module({ dynamic: true, store, name: 'common' })
 export default class Common extends VuexModule implements CommonState {
   frontPage?: string;

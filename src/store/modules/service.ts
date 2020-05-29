@@ -1,5 +1,5 @@
 import { HTTP } from '@/services/http-service';
-import { SearchFilters, SearchResult, SavedSearchFilters } from '@/store/modules/search';
+import { SearchFilters, SearchResult, SavedSearchFilters } from '@/store/modules/searchInterfaces';
 import { Phase, PhaseLabels, PhaseKeys } from '@/models/phase';
 import { Status, StatusLabels } from '@/models/status';
 import { Domain, DomainLabels } from '@/models/domain';

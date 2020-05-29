@@ -62,7 +62,8 @@ import Button from '../common/inputs/Button.vue';
 import AppDialog from '../common/Dialog.vue';
 import DialogContent from '../common/DialogContent.vue';
 import InputField from '../common/inputs/InputField.vue';
-import { SavedSearchFilters, SearchModule } from '@/store/modules/search';
+import { SavedSearchFilters } from '@/store/modules/searchInterfaces';
+import { SearchModule } from '@/store/modules/search';
 
 @Component({
   components: {

@@ -33,7 +33,7 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 import NavBar from '../components/common/NavBar.vue';
 import InputField from '../components/common/inputs/InputField.vue';
 import Button from '../components/common/inputs/Button.vue';
-import { Technology } from '@/store/modules/common';
+import { Technology } from '@/store/modules/commonInterfaces';
 import { CommonModule } from '@/store/modules/common';
 import EditIcon from '../components/icons/EditIcon.vue';
 import DeleteIcon from '../components/icons/DeleteIcon.vue';

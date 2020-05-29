@@ -42,7 +42,7 @@
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import { Action } from 'vuex-class';
 import InternalNotes from '@/components/common/inputs/InternalNotes.vue';
-import { processActionTypes, NewComment } from '@/store/modules/process/actions';
+import { NewComment, ProcessReport } from '@/store/modules/processInterfaces';
 import { Type, TypeKeys } from '@/models/types';
 
 import Comments from '@/components/details/Comments.vue';
@@ -65,7 +65,9 @@ import { ErrorState } from '@/store/modules/error/state';
 import SnackBar from '@/components/common/SnackBar.vue';
 import { isEmpty } from 'lodash';
 import { VisibilityKeys } from '@/models/visibility';
-import { SearchFilters, SearchModule } from '@/store/modules/search';
+import { SearchFilters } from '@/store/modules/searchInterfaces';
+import { SearchModule } from '@/store/modules/search';
+import { ProcessModule } from '@/store/modules/process';
 
 @Component({
   components: {
@@ -95,11 +97,6 @@ export default class Umbrella extends Vue {
   id!: number;
   @Prop(String)
   type!: Type;
-
-  @Action(processActionTypes.UPDATE)
-  update: any;
-  // @Action(commonActionTypes.LOAD_KLES)
-  // loadKles!: () => Promise<void>;
   @Action(errorActionTypes.UPDATE_PROCESS_ERRORS)
   updateProcessErrors!: (processErrors: Partial<ErrorState>) => void;
   @Action(errorActionTypes.CLEAR_ERRORS)
@@ -123,7 +120,7 @@ export default class Umbrella extends Vue {
 
   mounted() {
     if (this.isReporting) {
-      this.update({
+      ProcessModule.update({
         type: this.type,
         canEdit: true,
         hasChanged: false,
@@ -157,7 +154,7 @@ export default class Umbrella extends Vue {
 
   async save() {
     try {
-      await this.$store.dispatch(processActionTypes.SAVE, Object.keys(umbrellaLabels));
+      await ProcessModule.save(Object.keys(umbrellaLabels) as Array<keyof ProcessReport>);
       this.showSaveSuccess = true;
     } catch (e) {
       if (this.errors.length === 0) {
@@ -168,7 +165,7 @@ export default class Umbrella extends Vue {
 
   async report() {
     try {
-      const processId = await this.$store.dispatch(processActionTypes.REPORT, Object.keys(umbrellaLabels));
+      const processId = await ProcessModule.createReport(Object.keys(umbrellaLabels) as Array<keyof ProcessReport>);
       this.showSaveSuccess = true;
       this.$router.push(`/details/${processId}`);
     } catch (e) {

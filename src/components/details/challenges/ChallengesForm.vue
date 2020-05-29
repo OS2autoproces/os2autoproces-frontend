@@ -102,11 +102,10 @@ import FormSection from '@/components/details/FormSection.vue';
 import Well from '@/components/common/Well.vue';
 import InfoTooltip from '@/components/common/InfoTooltip.vue';
 import WellItem from '@/components/common/WellItem.vue';
-import { processGetterTypes } from '@/store/modules/process/getters';
-import { processActionTypes } from '@/store/modules/process/actions';
-import { ITSystem } from '@/store/modules/common';
+import { ITSystem } from '@/store/modules/commonInterfaces';
 import { HTTP } from '@/services/http-service';
 import { Phase, PhaseKeys } from '@/models/phase';
+import { ProcessModule } from '../../../store/modules/process';
 
 @Component({
   components: {
@@ -120,23 +119,11 @@ import { Phase, PhaseKeys } from '@/models/phase';
   }
 })
 export default class ChallengesForm extends Vue {
-  @Action(processActionTypes.UPDATE)
-  update: any;
-  @Action(processActionTypes.ASSIGN)
-  assign: any;
-  @Action(processActionTypes.SAVE_IT_SYSTEM)
-  saveItSystem!: (itSystem: ITSystem) => void;
-
-  @Getter(processGetterTypes.IS_CHALLENGES_VALID)
-  isChallengesValid!: any;
-  @Getter(processGetterTypes.MIN_PHASE)
-  minPhase!: (phase: Phase) => boolean;
-
   twoColumnBreakpoint = 1600;
   PhaseKeys = PhaseKeys;
 
   get state() {
-    return this.$store.state.process;
+    return ProcessModule.state;
   }
 }
 </script>

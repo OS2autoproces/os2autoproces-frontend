@@ -17,8 +17,9 @@
 <script lang="ts">
 import { Vue, Component, Prop, Emit, Watch } from 'vue-property-decorator';
 import { Action, State } from 'vuex-class';
-import { SavedSearchFilters, SearchFilters, SearchModule } from '@/store/modules/search';
+import { SavedSearchFilters, SearchFilters } from '@/store/modules/searchInterfaces';
 import SelectionField from '../common/inputs/SelectionField.vue';
+import { SearchModule } from '@/store/modules/search';
 
 @Component({ components: { SelectionField } })
 export default class SearchSelectSavedFilters extends Vue {

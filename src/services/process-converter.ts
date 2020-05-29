@@ -6,9 +6,11 @@ import { RunPeriod, RunPeriodKeys } from '@/models/runperiod';
 import { Type, TypeKeys } from '@/models/types';
 import { Visibility, VisibilityKeys } from '@/models/visibility';
 import { User } from '@/store/modules/auth';
-import { Link, Process, ProcessState } from '@/store/modules/process/state';
-import { ITSystem, OrgUnit, Technology, CommonModule } from '@/store/modules/common';
-import store from '@/store';
+import { ProcessState } from '@/store/modules/process';
+import { Link } from "@/store/modules/processInterfaces";
+import { CommonModule } from '@/store/modules/common';
+import {  ITSystem, OrgUnit, Technology, } from "@/store/modules/commonInterfaces";
+import { ProcessReport } from '@/store/modules/processInterfaces';
 
 export interface ProcessRequest {
   klId: string | null;
@@ -157,8 +159,8 @@ export interface ProcessResponse {
   itSystems: ITSystem[] | null;
   orgUnits: OrgUnit[] | null;
   technologies: Technology[] | null;
-  children: Process[];
-  parents: Process[];
+  children: ProcessState[];
+  parents: ProcessState[];
 }
 
 function relation(name: string, entity: { id: number | string }): string {
@@ -188,8 +190,8 @@ function stateToRequestFields(state: ProcessState): ProcessRequest {
     created: defaultNull(state.created),
     lastChanged: defaultNull(state.lastChanged),
     decommissioned: defaultNull(state.decommissioned),
-    title: state.title,
-    shortDescription: state.shortDescription,
+    title: !!state.title ? state.title : '',
+    shortDescription: !!state.shortDescription ? state.shortDescription : '',
     longDescription: defaultNull(state.longDescription),
     domains: state.domains || [],
     visibility: state.visibility || VisibilityKeys.MUNICIPALITY,
@@ -198,7 +200,7 @@ function stateToRequestFields(state: ProcessState): ProcessRequest {
     kle: state.kle ? state.kle.code : null,
     form: state.form ? state.form.code : null,
     kla: defaultNull(state.kla),
-    codeRepositoryUrl: state.codeRepositoryUrl,
+    codeRepositoryUrl: !!state.codeRepositoryUrl ? state.codeRepositoryUrl : '',
     links: defaultNull(state.links),
     vendor: defaultNull(state.vendor),
     internalNotes: defaultNull(state.internalNotes),
@@ -208,9 +210,9 @@ function stateToRequestFields(state: ProcessState): ProcessRequest {
     timeSpendOccurancesPerEmployee: defaultZero(state.timeSpendOccurancesPerEmployee),
     timeSpendPercentageDigital: defaultZero(state.timeSpendPercentageDigital),
     timeSpendPerOccurance: defaultZero(state.timeSpendPerOccurance),
-    timeSpendComment: state.timeSpendComment,
-    targetsCompanies: state.targetsCompanies,
-    targetsCitizens: state.targetsCitizens,
+    timeSpendComment: !!state.timeSpendComment ? state.timeSpendComment : '',
+    targetsCompanies: !!state.targetsCompanies,
+    targetsCitizens: !!state.targetsCitizens,
     levelOfProfessionalAssessment: state.levelOfProfessionalAssessment || LikertScaleKeys.UNKNOWN,
     levelOfChange: state.levelOfChange || LikertScaleKeys.UNKNOWN,
     levelOfDigitalInformation: state.levelOfDigitalInformation || LikertScaleKeys.UNKNOWN,
@@ -227,14 +229,14 @@ function stateToRequestFields(state: ProcessState): ProcessRequest {
     searchWords: '',
     type: state.type || TypeKeys.CHILD,
     itSystemsDescription: defaultNull(state.itSystemsDescription),
-    sepMep: state.sepMep,
-    contact: state.contact && relation('users', state.contact),
-    owner: state.owner && relation('users', state.owner),
-    orgUnits: relationArray('orgUnits', state.orgUnits),
-    users: relationArray('users', state.users),
-    technologies: relationArray('technologies', state.technologies),
-    itSystems: relationArray('itSystems', state.itSystems),
-    children: relationArray('processes', state.children)
+    sepMep: !!state.sepMep,
+    contact: !!state.contact ? state.contact && relation('users', state.contact) : '',
+    owner: !!state.owner ? state.owner && relation('users', state.owner) : '',
+    orgUnits: !!state.orgUnits ? relationArray('orgUnits', state.orgUnits) : [],
+    users: !!state.users ? relationArray('users', state.users) : [],
+    technologies: !!state.technologies ? relationArray('technologies', state.technologies) : [],
+    itSystems: !!state.itSystems ? relationArray('itSystems', state.itSystems) : [],
+    children: !!state.children ? relationArray('processes', state.children) : []
   };
 }
 
@@ -272,7 +274,7 @@ export function stateToRequest(state: ProcessState): Partial<ProcessRequest> {
   return request;
 }
 
-export function responseToState(process: ProcessResponse): Process {
+export function responseToState(process: ProcessResponse): ProcessReport {
   const form = CommonModule.forms?.find(f => f.code === process.form);
   const kle = CommonModule.kles?.find(k => k.code === process.kle);
   return {

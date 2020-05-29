@@ -25,7 +25,7 @@
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import DeleteIcon from '@/components/icons/DeleteIcon.vue';
 import SelectionField from '@/components/common/inputs/SelectionField.vue';
-import { Technology } from '@/store/modules/common';
+import { Technology } from '@/store/modules/commonInterfaces';
 
 @Component({
   components: {
