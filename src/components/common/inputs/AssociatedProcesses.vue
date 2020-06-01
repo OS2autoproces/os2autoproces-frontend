@@ -50,14 +50,14 @@ export default class AssociatedProcesses extends Vue {
     return SearchModule.result;
   }
 
-  updateFilters(filters: Partial<SearchFilters>) {
+  updateFilters(filters: SearchFilters) {
     SearchModule.updateFilters({
       page: 0,
       ...filters
     });
   }
 
-  assignFilters(filters: Partial<SearchFilters>) {
+  assignFilters(filters: SearchFilters) {
     SearchModule.assignFilters({
       page: 0,
       ...filters

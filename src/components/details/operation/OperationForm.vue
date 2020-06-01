@@ -1,7 +1,7 @@
 <template>
   <FormSection
     :invalid="!isOperationValid"
-    v-if="minPhase(PhaseKeys.OPERATION)"
+    v-if="state.minPhase(PhaseKeys.OPERATION)"
     heading="Drift"
     id="operation"
     :disabled="state.disabled.operationEdit"
@@ -79,7 +79,7 @@ export default class OperationForm extends Vue {
   PhaseKeys = PhaseKeys;
 
   get state() {
-    return ProcessModule.state;
+    return ProcessModule;
   }
 }
 </script>

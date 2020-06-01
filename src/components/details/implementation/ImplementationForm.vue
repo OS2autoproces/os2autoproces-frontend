@@ -1,13 +1,13 @@
 <template>
   <FormSection
     :invalid="!isImplementationValid"
-    v-if="minPhase(PhaseKeys.DEVELOPMENT)"
+    v-if="state.minPhase(PhaseKeys.DEVELOPMENT)"
     heading="Udvikling og implementering"
     id="implementation"
-    :disabled="implementationEdit"
+    :disabled="state.disabled.implementationEdit"
     @edit="update({ disabled: { implementationEdit: $event } })"
   >
-    <div v-if="minPhase(PhaseKeys.IMPLEMENTATION)">
+    <div v-if="state.minPhase(PhaseKeys.IMPLEMENTATION)">
       <h2>Teknisk implementering</h2>
       <InfoTooltip
         >Her kan du notere, hvordan den tekniske implementering er forløbet og eventuelle ting, som andre bør være
@@ -17,12 +17,12 @@
         :max-length="10000"
         :twoColumnBreakpoint="twoColumnBreakpoint"
         @change="update({ technicalImplementationNotes: $event })"
-        :disabled="implementationEdit"
+        :disabled="state.disabled.implementationEdit"
         :value="state.technicalImplementationNotes"
       />
     </div>
 
-    <div v-if="minPhase(PhaseKeys.IMPLEMENTATION)">
+    <div v-if="state.minPhase(PhaseKeys.IMPLEMENTATION)">
       <h2 class="with-margin">Organisatorisk implementering</h2>
       <InfoTooltip
         >Her kan du notere, hvordan den organisatoriske implementering er forløbet og eventuelle opmærksomhedspunkter
@@ -32,7 +32,7 @@
         :max-length="10000"
         :twoColumnBreakpoint="twoColumnBreakpoint"
         @change="update({ organizationalImplementationNotes: $event })"
-        :disabled="implementationEdit"
+        :disabled="state.disabled.implementationEdit"
         :value="state.organizationalImplementationNotes"
       />
     </div>
@@ -47,7 +47,7 @@
         <TagSelector
           @add="addTechnology($event)"
           @remove="removeTechnology($event)"
-          :disabled="implementationEdit"
+          :disabled="state.disabled.implementationEdit"
           :value="state.technologies"
           :items="technologies"
         />
@@ -56,7 +56,7 @@
         <h2 class="with-margin">Skedulering</h2>
         <MappedSelectionField
           class="run-period-field"
-          :disabled="implementationEdit"
+          :disabled="state.disabled.implementationEdit"
           :value="state.runPeriod"
           @change="update({ runPeriod: $event })"
           :items="runPeriods"
@@ -78,7 +78,7 @@ import { Technology } from '@/store/modules/commonInterfaces';
 import { CommonModule } from '@/store/modules/common';
 import { PhaseKeys, Phase } from '@/models/phase';
 import { RunPeriodKeys, RunPeriodLabels } from '@/models/runperiod';
-import { ProcessModule, minPhase } from '@/store/modules/process';
+import { ProcessModule } from '@/store/modules/process';
 
 @Component({
   components: {
@@ -104,16 +104,12 @@ export default class ImplementationForm extends Vue {
     { value: RunPeriodKeys.YEARLY, text: RunPeriodLabels.YEARLY }
   ];
 
-  get implementationEdit() {
-    return ProcessModule.disabled?.implementationEdit;
-  }
-
   get technologies() {
     return CommonModule.technologies;
   }
 
   get state() {
-    return ProcessModule.state;
+    return ProcessModule;
   }
 
   mounted() {

@@ -16,4 +16,6 @@ export interface RootState {
   error: ErrorState;
 }
 
-export default new Vuex.Store<RootState>({});
+const store = new Vuex.Store<RootState>({});
+
+export default store;

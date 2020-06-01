@@ -23,7 +23,7 @@
       <div>
         <h3>Følgende felter er ugyldige:</h3>
         <ul class="section-errors">
-          <li v-for="field in errors['generalInformation'].errors" :key="field">{{ field }}</li>
+          <li v-for="field in generalInformationErrors" :key="field">{{ field }}</li>
         </ul>
       </div>
     </SnackBar>
@@ -68,6 +68,7 @@ import { VisibilityKeys } from '@/models/visibility';
 import { SearchFilters } from '@/store/modules/searchInterfaces';
 import { SearchModule } from '@/store/modules/search';
 import { ProcessModule } from '@/store/modules/process';
+import { AuthModule } from '../../../store/modules/auth';
 
 @Component({
   components: {
@@ -101,8 +102,12 @@ export default class Umbrella extends Vue {
   showSaveSuccess = false;
   showSaveError = false;
 
-  get errors() {
-    return ErrorModule.state;
+  clearErrors() {
+    ErrorModule.clearErrors();
+  }
+
+  get generalInformationErrors() {
+    return ErrorModule.generalInformation?.errors;
   }
 
   get snack() {
@@ -120,7 +125,7 @@ export default class Umbrella extends Vue {
         type: this.type,
         canEdit: true,
         hasChanged: false,
-        cvr: this.$store.state.auth.user.cvr,
+        cvr: AuthModule.user?.cvr,
         visibility: this.type === TypeKeys.PARENT ? VisibilityKeys.MUNICIPALITY : VisibilityKeys.PUBLIC,
         disabled: {
           generalInformationEdit: false,

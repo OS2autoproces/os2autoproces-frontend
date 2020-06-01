@@ -1,19 +1,19 @@
 <template>
   <FormSection
-    :invalid="!isAttachmentsValid"
-    v-if="minPhase(PhaseKeys.PREANALYSIS)"
+    :invalid="!state.isAttachmentsValid"
+    v-if="state.minPhase(PhaseKeys.PREANALYSIS)"
     heading="Bilag og links"
     id="attachments"
-    :disabled="attachmentsEdit"
+    :disabled="state.disabled.attachmentsEdit"
     @edit="update({ disabled: { attachmentsEdit: $event } })"
   >
-    <h2 v-if="isWithinMunicipality && minPhase(PhaseKeys.SPECIFICATION)">Sagsreference i ESDH</h2>
-    <div v-if="isWithinMunicipality && minPhase(PhaseKeys.SPECIFICATION)">
+    <h2 v-if="isWithinMunicipality && state.minPhase(PhaseKeys.SPECIFICATION)">Sagsreference i ESDH</h2>
+    <div v-if="isWithinMunicipality && state.minPhase(PhaseKeys.SPECIFICATION)">
       <InfoTooltip>Skriv sagsreferencen eller indsæt et direkte link til sagen i ESDH systemet.</InfoTooltip>
       <TextArea
         :max-length="300"
         @change="update({ esdhReference: $event })"
-        :disabled="attachmentsEdit"
+        :disabled="state.disabled.attachmentsEdit"
         :value="state.esdhReference"
         :minHeight="'50px'"
       />
@@ -23,9 +23,9 @@
     <div>
       <TextArea
         :readonly-html="readonlyLinks"
-        :value="attachmentsEdit ? '' : codeRepositoryUrl"
+        :value="state.disabled.attachmentsEdit ? '' : state.codeRepositoryUrl"
         @change="update({ codeRepositoryUrl: $event })"
-        :disabled="attachmentsEdit"
+        :disabled="state.disabled.attachmentsEdit"
         :max-length="10000"
       />
     </div>
@@ -33,7 +33,7 @@
     <h2>Bilag</h2>
     <div>
       <div v-if="!showPlaceholder">
-        <AttachmentUpload :disabled="attachmentsEdit" />
+        <AttachmentUpload :disabled="state.disabled.attachmentsEdit" />
       </div>
       <div v-else>Det er først muligt at tilføje et bilag, efter du har klikket på Gem første gang.</div>
     </div>
@@ -68,6 +68,10 @@ export default class AttachmentsForm extends Vue {
 
   get isWithinMunicipality() {
     return ProcessModule.cvr === AuthModule.user?.cvr;
+  }
+
+  get state() {
+    return ProcessModule;
   }
 
   get readonlyLinks() {

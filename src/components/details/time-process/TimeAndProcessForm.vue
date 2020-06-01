@@ -1,9 +1,9 @@
 <template>
   <FormSection
-    :invalid="!isTimeAndProcessValid"
+    :invalid="!state.isTimeAndProcessValid"
     heading="Tid og proces"
     id="time-and-process"
-    :disabled="timeAndProcessEdit"
+    :disabled="state.disabled.timeAndProcessEdit"
     @edit="update({ disabled: { timeAndProcessEdit: $event } })"
   >
     <Well>
@@ -11,30 +11,30 @@
         <WellItem
           labelWidth="70%"
           label="Antal gange processen foretages årligt"
-          :required="minPhase(PhaseKeys.PREANALYSIS)"
+          :required="state.minPhase(PhaseKeys.PREANALYSIS)"
         >
           <InputField
             :type="'number'"
             :value="state.timeSpendOccurancesPerEmployee"
-            :disabled="timeAndProcessEdit"
+            :disabled="state.disabled.timeAndProcessEdit"
             @change="update({ timeSpendOccurancesPerEmployee: $event })"
           />
         </WellItem>
         <WellItem
           labelWidth="70%"
           label="Tidsforbrug pr. proces i minutter og sekunder"
-          :required="minPhase(PhaseKeys.PREANALYSIS)"
+          :required="state.minPhase(PhaseKeys.PREANALYSIS)"
         >
           <InputField
             :type="'number'"
-            :disabled="timeAndProcessEdit"
+            :disabled="state.disabled.timeAndProcessEdit"
             :value="timeSpentPerOccurance.minutes.toFixed(0)"
             @change="updateTimeSpentPerOccurance({ minutes: $event })"
             >m</InputField
           >
           <InputField
             :type="'number'"
-            :disabled="timeAndProcessEdit"
+            :disabled="state.disabled.timeAndProcessEdit"
             :value="timeSpentPerOccurance.seconds.toFixed(0)"
             @change="updateTimeSpentPerOccurance({ seconds: $event })"
             :rules="secondRules"
@@ -48,7 +48,7 @@
         >
           <InputField
             :type="'number'"
-            :disabled="timeAndProcessEdit"
+            :disabled="state.disabled.timeAndProcessEdit"
             :value="state.timeSpendPercentageDigital"
             @change="update({ timeSpendPercentageDigital: $event })"
             >%</InputField
@@ -74,18 +74,18 @@
         <WellItem
           labelWidth="70%"
           label="Antal medarbejdere der foretager processen"
-          :required="minPhase(PhaseKeys.PREANALYSIS)"
+          :required="state.minPhase(PhaseKeys.PREANALYSIS)"
         >
           <InputField
             :type="'number'"
-            :disabled="timeAndProcessEdit"
+            :disabled="state.disabled.timeAndProcessEdit"
             :value="state.timeSpendEmployeesDoingProcess"
             @change="update({ timeSpendEmployeesDoingProcess: $event })"
           />
         </WellItem>
         <WellItem labelWidth="70%" label="Er borgere påvirket?">
           <MappedSelectionField
-            :disabled="timeAndProcessEdit"
+            :disabled="state.disabled.timeAndProcessEdit"
             :value="state.targetsCitizens"
             @change="update({ targetsCitizens: $event })"
             :items="yesNoItems"
@@ -93,7 +93,7 @@
         </WellItem>
         <WellItem labelWidth="70%" label="Er virksomheder påvirket?">
           <MappedSelectionField
-            :disabled="timeAndProcessEdit"
+            :disabled="state.disabled.timeAndProcessEdit"
             :value="state.targetsCompanies"
             @change="update({ targetsCompanies: $event })"
             :items="yesNoItems"
@@ -110,7 +110,7 @@
       >
       <TextArea
         :value="state.timeSpendComment"
-        :disabled="timeAndProcessEdit"
+        :disabled="state.disabled.timeAndProcessEdit"
         @change="update({ timeSpendComment: $event })"
         :maxLength="10000"
       />
@@ -129,7 +129,7 @@ import InputField from '@/components/common/inputs/InputField.vue';
 import FormSection from '@/components/details/FormSection.vue';
 import { Action, Getter } from 'vuex-class';
 import { Phase, PhaseKeys } from '@/models/phase';
-import Process, { ProcessModule, minPhase } from '@/store/modules/process';
+import Process, { ProcessModule } from '@/store/modules/process';
 
 @Component({
   components: {
@@ -156,12 +156,8 @@ export default class TimeAndProcessForm extends Vue {
     value => parseInt(value, 10) >= 0 || 'Sekunder kan ikke være negative'
   ];
 
-  get isTimeAndProcessValid() {
-    return ProcessModule.isTimeAndProcessValid;
-  }
-
-  get timeAndProcessEdit() {
-    return ProcessModule.disabled?.timeAndProcessEdit;
+  get state() {
+    return ProcessModule;
   }
 
   get timeSpendOccurancesPerEmployee() {
@@ -181,17 +177,12 @@ export default class TimeAndProcessForm extends Vue {
   }
 
   get timeSpendHours() {
-    const hours =
-      ((this.timeSpendTotal) / 60).toFixed(2) || '0';
+    const hours = (this.timeSpendTotal / 60).toFixed(2) || '0';
     return hours;
   }
   // Number of times this process is repeated yearly * amount of time required pr. process in minutes / 60 * automation potential / 100
   get exptectedYearlyPotential() {
-    const hours =
-      (
-        ((this.timeSpendTotal) / 60) *
-        (this.timeSpendPercentageDigital / 100)
-      ).toFixed(2) || '0';
+    const hours = ((this.timeSpendTotal / 60) * (this.timeSpendPercentageDigital / 100)).toFixed(2) || '0';
     return hours;
   }
 
@@ -199,10 +190,6 @@ export default class TimeAndProcessForm extends Vue {
     const minutes = parseInt(ProcessModule.timeSpendPerOccurance ?? '', 10); // remove decimals
     const seconds = (this.timeSpendPerOccurance - minutes) * 60; // remove minute part and convert decimals to seconds
     return { minutes, seconds };
-  }
-
-  get state() {
-    return ProcessModule;
   }
 
   updateTimeSpentPerOccurance({ minutes, seconds }: { minutes: string; seconds: string }) {

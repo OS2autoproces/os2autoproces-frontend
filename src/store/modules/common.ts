@@ -3,28 +3,44 @@ import { VuexModule, Module, Mutation, Action, getModule } from 'vuex-module-dec
 import store from '@/store';
 import { User } from '@/store/modules/auth';
 import { HTTP } from '@/services/http-service';
-import {ITSystem, Technology, Kle, Form, OrgUnit, Municipality, Cms, TechnologiesResponse, ItSystemsResponse, MunicipalitiesResponse, KleResponse, OrgUnitsResponse, UserSearchRequest, UserResponse, FormResponse } from './commonInterfaces';
+import {
+  ITSystem,
+  Technology,
+  Kle,
+  Form,
+  OrgUnit,
+  Municipality,
+  Cms,
+  TechnologiesResponse,
+  ItSystemsResponse,
+  MunicipalitiesResponse,
+  KleResponse,
+  OrgUnitsResponse,
+  UserSearchRequest,
+  UserResponse,
+  FormResponse
+} from './commonInterfaces';
 
 export interface CommonState {
-  frontPage?: string;
-  itSystems?: ITSystem[];
-  technologies?: Technology[];
-  kles?: Kle[];
-  forms?: Form[];
-  orgUnits?: OrgUnit[];
-  municipalities?: Municipality[];
-  users?: User[];
+  frontPage: string | null;
+  itSystems: ITSystem[] | null;
+  technologies: Technology[] | null;
+  kles: Kle[] | null;
+  forms: Form[] | null;
+  orgUnits: OrgUnit[] | null;
+  municipalities: Municipality[] | null;
+  users: User[] | null;
 }
 @Module({ dynamic: true, store, name: 'common' })
 export default class Common extends VuexModule implements CommonState {
-  frontPage?: string;
-  itSystems?: ITSystem[];
-  technologies?: Technology[];
-  kles?: Kle[];
-  forms?: Form[];
-  orgUnits?: OrgUnit[];
-  municipalities?: Municipality[];
-  users?: User[];
+  frontPage: string | null = null;
+  itSystems: ITSystem[] | null = null;
+  technologies: Technology[] | null = null;
+  kles: Kle[] | null = null;
+  forms: Form[] | null = null;
+  orgUnits: OrgUnit[] | null = null;
+  municipalities: Municipality[] | null = null;
+  users: User[] | null = null;
 
   @Mutation
   UPDATE(partial: Partial<CommonState>) {
@@ -63,8 +79,7 @@ export default class Common extends VuexModule implements CommonState {
   @Action
   async addTechnology(name: string) {
     const response = await HTTP.post(`api/technologies`, { name });
-    if(!response)
-    { 
+    if (!response) {
       return;
     }
     this.UPDATE({ technologies: this.technologies ? [...this.technologies, response.data] : [response.data] });
@@ -77,27 +92,26 @@ export default class Common extends VuexModule implements CommonState {
 
   @Action
   async removeTechnology(id: number) {
-      await HTTP.delete(`api/technologies/${id}`);
-      this.UPDATE({technologies: this.technologies?.filter(t => t.id !== id)});
+    await HTTP.delete(`api/technologies/${id}`);
+    this.UPDATE({ technologies: this.technologies?.filter(t => t.id !== id) });
   }
 
   @Action
-  async loadITSystems()
-  {
-      const itSystems = (await HTTP.get<ItSystemsResponse>(`api/itSystems?size=100000`))?.data._embedded.itSystems;
-      this.UPDATE({itSystems});
+  async loadITSystems() {
+    const itSystems = (await HTTP.get<ItSystemsResponse>(`api/itSystems?size=100000`))?.data._embedded.itSystems;
+    this.UPDATE({ itSystems });
   }
 
   @Action
   async loadMunicipalities() {
-    const municipalities = (await HTTP.get<MunicipalitiesResponse>(`public/municipalities`))?.data.data
-    this.UPDATE({municipalities});
+    const municipalities = (await HTTP.get<MunicipalitiesResponse>(`public/municipalities`))?.data.data;
+    this.UPDATE({ municipalities });
   }
 
   @Action
   async loadKles() {
-    const kles = (await HTTP.get<KleResponse>(`api/kles?size=100000`))?.data._embedded.kles
-    this.UPDATE({kles});
+    const kles = (await HTTP.get<KleResponse>(`api/kles?size=100000`))?.data._embedded.kles;
+    this.UPDATE({ kles });
   }
 
   @Action
@@ -109,25 +123,25 @@ export default class Common extends VuexModule implements CommonState {
     }
 
     const orgUnits = (await HTTP.get<OrgUnitsResponse>(`api/orgUnits?${params.join('&')}`))?.data._embedded.orgUnits;
-    this.UPDATE({orgUnits})
+    this.UPDATE({ orgUnits });
   }
 
   @Action
-  searchUsers(cvr: string, name: string ) {
-      debounce(async () => {
-        const users = (await HTTP.get<UserResponse>(`api/users?name=${name}&cvr=${cvr}`))?.data._embedded.users;
-        this.UPDATE({users})
-        }, 250);
+  searchUsers(cvr: string, name: string) {
+    debounce(async () => {
+      const users = (await HTTP.get<UserResponse>(`api/users?name=${name}&cvr=${cvr}`))?.data._embedded.users;
+      this.UPDATE({ users });
+    }, 250);
   }
 
   @Action
   async loadFormsByKle(kle: Kle) {
-      this.UPDATE({forms:[]})
+    this.UPDATE({ forms: [] });
     if (!kle) {
       return;
     }
     const forms = await (await HTTP.get<FormResponse>(`api/kles/${kle.code}/forms`))?.data._embedded.forms;
-    this.UPDATE({forms});
+    this.UPDATE({ forms });
   }
 }
 export const CommonModule = getModule(Common);

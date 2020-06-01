@@ -8,8 +8,8 @@
           beskrivelserne. Det kan f.eks. være projektmedarbejdere og udviklere.</InfoTooltip
         >
       </div>
-      <div class="associated-persons-list" :class="{ disabled, empty: !state.process.users.length }">
-        <div v-for="(user, index) in state.process.users" :key="index">
+      <div class="associated-persons-list" :class="{ disabled, empty: !state.users.length }">
+        <div v-for="(user, index) in state.users" :key="index">
           <div class="name">{{ user.name }}</div>
           <div v-if="!disabled" @click="removeUser(user)" class="delete-icon">
             <DeleteIcon />
@@ -57,11 +57,11 @@ export default class AssociatedPersonsInput extends Vue {
   disabled!: boolean;
 
   get state() {
-    return this.$store.state;
+    return ProcessModule;
   }
 
   get users() {
-    return this.$store.state.common.users;
+    return CommonModule.users;
   }
 
   search(name: string) {
@@ -73,7 +73,7 @@ export default class AssociatedPersonsInput extends Vue {
   }
 
   addUser(user: User) {
-    if (!user || this.state.process.users.find((u: User) => user.id === u.id)) {
+    if (!user || ProcessModule.users?.find((u: User) => user.id === u.id)) {
       return;
     }
 

@@ -14,7 +14,7 @@
       <div class="save-button-container" v-if="editing" @click="save">
         <Button class="save-button">Gem</Button>
       </div>
-      <MarkdownEditor :editing="editing" :value="state.common.frontPage" @change="update({ frontPage: $event })" />
+      <MarkdownEditor :editing="editing" :value="state.frontPage" @change="update({ frontPage: $event })" />
     </div>
 
     <div class="idea-sharing-icon">
@@ -43,10 +43,12 @@ import { CommonModule } from '@/store/modules/common';
   }
 })
 export default class Home extends Vue {
-  isEditor!: () => boolean;
-
   get state() {
-    return this.$store.state;
+    return CommonModule;
+  }
+
+  get isEditor() {
+    return AuthModule.isFrontpageEditor;
   }
 
   editing = false;

@@ -36,7 +36,7 @@
 <template>
   <transition name="slide-y-reverse-transition">
     <div class="actions" v-if="filtersTouched">
-      <Button class="action elevation-3" v-ripple @click="dispatchClearFilters()">Ryd filtre</Button>
+      <Button class="action elevation-3" v-ripple @click="clearFilters()">Ryd filtre</Button>
       <Button class="action elevation-3" v-ripple @click.stop.prevent="toggleSaveFiltersDialog()">Gem Søgning</Button>
       <AppDialog :open="saveFiltersDialogOpen" @close="closeSaveFilterDialog">
         <DialogContent>
@@ -112,6 +112,11 @@ export default class SearchFiltersActions extends Vue {
   }
   closeSaveFilterDialog() {
     this.saveFiltersDialogOpen = false;
+  }
+
+  clearFilters() {
+    console.log('HEY LISTEN');
+    SearchModule.resetFilters();
   }
 
   private isSavedFilterNameUnique(name: string) {

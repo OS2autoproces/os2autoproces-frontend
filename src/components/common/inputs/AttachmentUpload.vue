@@ -82,11 +82,11 @@ export default class AttachmentUpload extends Vue {
   disabled!: boolean;
 
   get visibleForAll() {
-    return ProcessModule.attachments?.filter((att: Attachment) => att.visibleToOtherMunicipalities);
+    return ProcessModule.attachments?.filter(att => att.visibleToOtherMunicipalities);
   }
 
   get visibleForMunicipality() {
-    return ProcessModule.attachments?.filter((att: Attachment) => !att.visibleToOtherMunicipalities);
+    return ProcessModule.attachments?.filter(att => !att.visibleToOtherMunicipalities);
   }
 
   chooseFiles(files: FileList) {

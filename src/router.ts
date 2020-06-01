@@ -15,8 +15,6 @@ Vue.use(Router);
 
 function validateAuth(isValid: (user: User | undefined | null) => boolean) {
   return async (to: Route, from: Route, next: any) => {
-    next();
-    return;
     if (isValid(AuthModule.user)) {
       next();
     } else {

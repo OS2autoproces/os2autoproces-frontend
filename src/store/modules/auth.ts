@@ -34,15 +34,15 @@ interface BookmarkResponse {
 }
 
 export interface AuthState {
-  user?: User;
+  user: User | null;
 }
 
 @Module({ dynamic: true, store, name: 'auth' })
 export default class Auth extends VuexModule implements AuthState {
-  user?: User;
+  user: User | null = null;
 
   @Mutation
-  SET_USER(user: User | undefined) {
+  SET_USER(user: User | null) {
     this.user = user;
   }
 
@@ -62,11 +62,11 @@ export default class Auth extends VuexModule implements AuthState {
   async loadUser() {
     const user = (await HTTP.get<User>('public/whoami')).data;
 
-    if(user.uuid !==null) {
+    if (user.uuid !== null) {
       this.SET_USER(user);
       this.loadBookmarks();
     } else {
-      this.SET_USER(undefined);
+      this.SET_USER(null);
     }
   }
 
@@ -74,24 +74,23 @@ export default class Auth extends VuexModule implements AuthState {
   async loadBookmarks() {
     const bookmarks = (await HTTP.get<BookmarkResponse[]>('api/bookmarks')).data.map(bookmark => bookmark.id);
 
-    this.UPDATE({bookmarks});
+    this.UPDATE({ bookmarks });
   }
 
   @Action
   async bookmark(id: number) {
     await HTTP.put(`api/bookmarks/${id}`);
-    if(this.user) {
-      if(this.user.bookmarks){
-        this.UPDATE({bookmarks: [...this.user.bookmarks, id]})
+    if (this.user) {
+      if (this.user.bookmarks) {
+        this.UPDATE({ bookmarks: [...this.user.bookmarks, id] });
       } else {
-        this.UPDATE({bookmarks: [id]});
+        this.UPDATE({ bookmarks: [id] });
       }
     }
   }
 
   @Action
-  async removeBookmark(id: number)
-  {
+  async removeBookmark(id: number) {
     await HTTP.delete(`api/bookmarks/${id}`);
     this.REMOVE_BOOKMARK(id);
   }
@@ -99,15 +98,13 @@ export default class Auth extends VuexModule implements AuthState {
   get hasRole() {
     return (roles: UserRole | UserRole[]) => {
       const validRoles = Array.isArray(roles) ? roles : [roles];
-      return !!this.user?.roles ? this.user.roles.some(role => validRoles.includes(role)): false;
+      return !!this.user?.roles ? this.user.roles.some(role => validRoles.includes(role)) : false;
     };
   }
 
   get isFrontpageEditor() {
     return !!this.user?.roles ? this.user.roles.some(role => role === UserRole.frontpageEditor) : false;
   }
-
-
 }
 
 export const AuthModule = getModule(Auth);

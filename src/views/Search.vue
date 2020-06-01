@@ -55,9 +55,10 @@ import SearchResult from '../components/search/SearchResult.vue';
 import SearchSorting from '../components/search/SearchSorting.vue';
 import SearchSortingUmbrella from '../components/search/SearchSortingUmbrella.vue';
 import PlusIcon from '../components/icons/PlusIcon.vue';
-import { SearchModule } from '@/store/modules/search';
 import { SearchFilters, SearchResultProcess } from '@/store/modules/searchInterfaces';
 import SearchSortingDropdown from '@/components/search/SearchSortingDropdown.vue';
+import { SearchModule } from '../store/modules/search';
+import store from '../store';
 
 @Component({
   components: {
@@ -73,13 +74,15 @@ import SearchSortingDropdown from '@/components/search/SearchSortingDropdown.vue
 })
 export default class Search extends Vue {
   @Prop({ type: Object as () => SearchFilters }) initialFilters!: SearchFilters;
+  @Action('search/assignFilters') dispactAssignFilters!: (filters: Partial<SearchFilters>) => void;
+  @Action('search/search') dispatchSearch!: VoidFunction;
 
   get filters() {
     return SearchModule.filters;
   }
 
   get result() {
-    return SearchModule.result;
+    return store.state.search.result;
   }
 
   async updateFiltersAndScrollToTop(filters: Partial<SearchFilters>) {
@@ -90,21 +93,21 @@ export default class Search extends Vue {
   }
 
   updateFilters(filters: Partial<SearchFilters>) {
-    return SearchModule.assignFilters({
+    return this.dispactAssignFilters({
       page: 0,
       ...filters
     });
   }
 
   assignFilters(filters: Partial<SearchFilters>) {
-    SearchModule.assignFilters({
+    this.dispactAssignFilters({
       page: 0,
       ...filters
     });
   }
 
   mounted() {
-    !!this.initialFilters ? SearchModule.assignFilters(this.initialFilters) : SearchModule.search();
+    !!this.initialFilters ? this.dispactAssignFilters(this.initialFilters) : this.dispatchSearch();
   }
 
   get isSearchingForUmbrellaProcess() {

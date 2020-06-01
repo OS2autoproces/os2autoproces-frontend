@@ -7,11 +7,11 @@ import { TypeKeys } from '@/models/types';
 import { LikertScaleKeys } from '@/models/likert-scale';
 import { ProcessState } from './process';
 
-export function setBackendManagedFields(process: ProcessState): Partial<ProcessState> {
+export function setBackendManagedFields(process: ProcessReport): Partial<ProcessState> {
   const fields: BackendManagedFields = {
-    id: process.id,
-    created: process.created,
-    lastChanged: process.lastChanged,
+    id: !!process.id ? process.id : '',
+    created: !!process.created ? process.created : '',
+    lastChanged: !!process.lastChanged ? process.lastChanged : '',
     klaProcess: !!process.klaProcess,
     cvr: !!process.cvr ? process.cvr : '',
     municipalityName: !!process.municipalityName ? process.municipalityName : ''

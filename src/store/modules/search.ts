@@ -10,7 +10,7 @@ import {
 import { SearchFilters, SearchResult, SavedSearchFilters } from './searchInterfaces';
 
 export interface SearchState {
-  result?: SearchResult;
+  result: SearchResult | null;
   filters: SearchFilters;
   filtersTouched: boolean;
   savedFilters?: SavedSearchFilters[];
@@ -18,93 +18,97 @@ export interface SearchState {
 }
 
 const getFiltersTouched = (previousFilters: SearchFilters | undefined, filterChanges: Partial<SearchFilters>) => {
-    const initialFilters = getInitialState().filters;
-    const currentFilters = Object.assign({}, previousFilters, filterChanges);
-    const touched = !isEqual(initialFilters, currentFilters);
-    return touched;
-  };
+  const initialFilters = getInitialState().filters;
+  const currentFilters = Object.assign({}, previousFilters, filterChanges);
+  const touched = !isEqual(initialFilters, currentFilters);
+  return touched;
+};
+
+const debouncedSearch = debounce(async (filters: SearchFilters) => {
+  SearchModule.SET_SEARCH_RESULT(null);
+  SearchModule.SET_SEARCH_RESULT(await search(filters));
+}, 250);
 
 export function getInitialState(): SearchState {
-    return {
-      result: undefined,
-      filtersTouched: false,
-      savedFilters: [],
-      selectedSavedFiltersText: '',
-      filters: {
-        page: 0,
-        size: 5,
-        reporterId: null,
-        usersId: null,
-        bookmarkedId: null,
-        text: '',
-        created: '',
-        lastChanged: '',
-        municipality: null,
-        visibility: {
-          MUNICIPALITY: false,
-          PUBLIC: false
-        },
-        klaProcess: false,
-        umbrella: false,
-        sepMep: false,
-        itSystems: [],
-        technologies: [],
-        sorting: {
-          property: 'created',
-          descending: true
-        },
-        phase: {
-          IDEA: false,
-          PREANALYSIS: false,
-          SPECIFICATION: false,
-          DEVELOPMENT: false,
-          IMPLEMENTATION: false,
-          OPERATION: false
-        },
-        domain: {
-          WORK: false,
-          ADMINISTRATION: false,
-          CHILDREN: false,
-          DEMOCRACY: false,
-          ENVIRONMENT: false,
-          HEALTH: false
-        },
-        runPeriod: {
-          ONDEMAND: false,
-          ONCE: false,
-          DAILY: false,
-          WEEKLY: false,
-          MONTHLY: false,
-          QUATERLY: false,
-          YEARLY: false
-        },
-        status: {
-          FAILED: false,
-          INPROGRESS: false,
-          NOT_RATED: false,
-          PENDING: false,
-          REJECTED: false
-        }
+  return {
+    result: null,
+    filtersTouched: false,
+    savedFilters: [],
+    selectedSavedFiltersText: '',
+    filters: {
+      page: 0,
+      size: 5,
+      reporterId: null,
+      usersId: null,
+      bookmarkedId: null,
+      text: '',
+      created: '',
+      lastChanged: '',
+      municipality: null,
+      visibility: {
+        MUNICIPALITY: false,
+        PUBLIC: false
+      },
+      klaProcess: false,
+      umbrella: false,
+      sepMep: false,
+      itSystems: [],
+      technologies: [],
+      sorting: {
+        property: 'created',
+        descending: true
+      },
+      phase: {
+        IDEA: false,
+        PREANALYSIS: false,
+        SPECIFICATION: false,
+        DEVELOPMENT: false,
+        IMPLEMENTATION: false,
+        OPERATION: false
+      },
+      domain: {
+        WORK: false,
+        ADMINISTRATION: false,
+        CHILDREN: false,
+        DEMOCRACY: false,
+        ENVIRONMENT: false,
+        HEALTH: false
+      },
+      runPeriod: {
+        ONDEMAND: false,
+        ONCE: false,
+        DAILY: false,
+        WEEKLY: false,
+        MONTHLY: false,
+        QUATERLY: false,
+        YEARLY: false
+      },
+      status: {
+        FAILED: false,
+        INPROGRESS: false,
+        NOT_RATED: false,
+        PENDING: false,
+        REJECTED: false
       }
-    };
-  }
+    }
+  };
+}
 
-@Module({ dynamic: true, store, name: 'search' })
-export default class Search extends VuexModule implements SearchState {
-  result?: SearchResult;
+@Module({ dynamic: true, store, name: 'search', namespaced: true })
+export default class SearchStore extends VuexModule implements SearchState {
+  result: SearchResult | null = null;
   filters: SearchFilters = getInitialState().filters;
   filtersTouched: boolean = false;
   savedFilters?: SavedSearchFilters[];
   selectedSavedFiltersText?: string;
+  searchKey: number = 0;
 
   @Mutation
-  DELETE_SAVED_FILTERS({text}: Partial<SavedSearchFilters>)
-  {
-      this.savedFilters = this.savedFilters?.reduce(
-          (filters: SavedSearchFilters[], f) => 
-            (f.text.toLowerCase() === text?.toLowerCase() ? filters : [...filters, f]
-            ), []
-        );
+  DELETE_SAVED_FILTERS({ text }: Partial<SavedSearchFilters>) {
+    this.savedFilters = this.savedFilters?.reduce(
+      (filters: SavedSearchFilters[], f) => (f.text.toLowerCase() === text?.toLowerCase() ? filters : [...filters, f]),
+      []
+    );
   }
 
   @Mutation
@@ -119,11 +123,11 @@ export default class Search extends VuexModule implements SearchState {
 
   @Mutation
   ADD_SAVED_FILTERS(filters: SavedSearchFilters) {
-      if(this.savedFilters) {
-        this.savedFilters = [...this.savedFilters, Object.assign({}, filters)];
-      } else {
-          this.savedFilters = [Object.assign({}, filters)];
-      }
+    if (this.savedFilters) {
+      this.savedFilters = [...this.savedFilters, Object.assign({}, filters)];
+    } else {
+      this.savedFilters = [Object.assign({}, filters)];
+    }
   }
 
   @Mutation
@@ -137,7 +141,7 @@ export default class Search extends VuexModule implements SearchState {
   }
 
   @Mutation
-  SET_SEARCH_RESULT(result: SearchResult | undefined) {
+  SET_SEARCH_RESULT(result: SearchResult | null) {
     this.result = result;
   }
 
@@ -149,7 +153,7 @@ export default class Search extends VuexModule implements SearchState {
   @Action
   selectSavedFilters(savedFilters: SavedSearchFilters) {
     if (!savedFilters) {
-        this.resetFilters();
+      this.resetFilters();
       return;
     }
     this.assignFilters(savedFilters.filters);
@@ -170,47 +174,41 @@ export default class Search extends VuexModule implements SearchState {
 
   @Action
   saveFilters(text: string) {
-      if(this.filters)
-      {
-        saveFiltersToStorage({text, filters: this.filters});
-        this.ADD_SAVED_FILTERS({text, filters: this.filters});
-        this.SET_SELECTED_SAVED_FILTERS(text);
-      }
+    if (this.filters) {
+      saveFiltersToStorage({ text, filters: this.filters });
+      this.ADD_SAVED_FILTERS({ text, filters: this.filters });
+      this.SET_SELECTED_SAVED_FILTERS(text);
+    }
   }
 
-    @Action
-    updateFilters(filters: Partial<SearchFilters>) {
-      this.SET_FILTERS_TOUCHED(getFiltersTouched(this.filters, filters))
+  @Action
+  updateFilters(filters: Partial<SearchFilters>) {
+    this.SET_FILTERS_TOUCHED(getFiltersTouched(this.filters, filters));
     this.UPDATE_FILTERS(filters);
     this.search();
-    }
+  }
 
-    @Action
-    assignFilters( filters: Partial<SearchFilters>) {
-        this.SET_FILTERS_TOUCHED(getFiltersTouched(this.filters, filters));
-        this.ASSIGN_FILTERS(filters);
-        this.search();
-    }
+  @Action
+  assignFilters(filters: Partial<SearchFilters>) {
+    this.SET_FILTERS_TOUCHED(getFiltersTouched(this.filters, filters));
+    this.ASSIGN_FILTERS(filters);
+    this.search();
+  }
 
-    @Action
-    resetFilters() {
-        const filters = getInitialState();
-        this.ASSIGN_FILTERS(Object.assign(this.filters, filters));
-        this.SET_SELECTED_SAVED_FILTERS('');
-    }
+  @Action
+  resetFilters() {
+    const filters = getInitialState();
+    this.ASSIGN_FILTERS(Object.assign(this.filters, filters));
+    this.SET_SELECTED_SAVED_FILTERS('');
+  }
 
-    @Action
-    search() {
-        debounce(async (filters: SearchFilters) => {
-            this.SET_SEARCH_RESULT(undefined);
-            this.SET_SEARCH_RESULT(await search(filters));
-        }, 250);
-    }
+  @Action
+  search() {
+    debouncedSearch(this.filters);
+  }
 
-    get isSearchingForUmbrellaProcess() : boolean  {
-        return !!this.filters?.umbrella ? this.filters.umbrella : false;
-      }
-
+  get isSearchingForUmbrellaProcess(): boolean {
+    return !!this.filters?.umbrella ? this.filters.umbrella : false;
+  }
 }
-
-export const SearchModule = getModule(Search);
+export const SearchModule = getModule(SearchStore);

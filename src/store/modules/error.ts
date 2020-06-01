@@ -1,7 +1,7 @@
 import { VuexModule, Module, MutationAction, Mutation, Action, getModule } from 'vuex-module-decorators';
 import store from '@/store';
 import { ProcessReport } from './processInterfaces';
-import { errorLabels, ErrorLabels, processLabels, errorLimitations } from './errorInterfaces';
+import { errorLabels, ErrorLabels, processLabels, errorLimitations, ErrorSection } from './errorInterfaces';
 import { getInvalidProperties } from './validation';
 
 export interface ErrorState {
@@ -12,11 +12,6 @@ export interface ErrorState {
   attachments: ErrorSection;
   implementation: ErrorSection;
   operation: ErrorSection;
-}
-
-export interface ErrorSection {
-  section: string;
-  errors: string[];
 }
 
 @Module({ dynamic: true, store, name: 'error' })

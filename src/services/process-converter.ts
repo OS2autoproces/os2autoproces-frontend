@@ -7,9 +7,9 @@ import { Type, TypeKeys } from '@/models/types';
 import { Visibility, VisibilityKeys } from '@/models/visibility';
 import { User } from '@/store/modules/auth';
 import { ProcessState } from '@/store/modules/process';
-import { Link } from "@/store/modules/processInterfaces";
+import { Link } from '@/store/modules/processInterfaces';
 import { CommonModule } from '@/store/modules/common';
-import {  ITSystem, OrgUnit, Technology, } from "@/store/modules/commonInterfaces";
+import { ITSystem, OrgUnit, Technology } from '@/store/modules/commonInterfaces';
 import { ProcessReport } from '@/store/modules/processInterfaces';
 
 export interface ProcessRequest {
@@ -159,8 +159,8 @@ export interface ProcessResponse {
   itSystems: ITSystem[] | null;
   orgUnits: OrgUnit[] | null;
   technologies: Technology[] | null;
-  children: ProcessState[];
-  parents: ProcessState[];
+  children: ProcessReport[];
+  parents: ProcessReport[];
 }
 
 function relation(name: string, entity: { id: number | string }): string {
@@ -179,7 +179,7 @@ function defaultZero(prop: any) {
   return prop ? Number(prop) : 0;
 }
 
-function stateToRequestFields(state: ProcessState): ProcessRequest {
+function stateToRequestFields(state: ProcessReport): ProcessRequest {
   return {
     klId: defaultNull(state.klId),
     esdhReference: defaultNull(state.esdhReference),

@@ -126,7 +126,6 @@ export async function search(filters: SearchFilters): Promise<SearchResult> {
   const params = mapFiltersToSearchParams(filters);
 
   const response = await HTTP.get<SearchResponse>('api/processes', { params });
-
   return mapSearchResponse(response.data);
 }
 

@@ -10,10 +10,10 @@
       >Spørgsmål og vejledning</a
     >
     <div class="flex-grow"></div>
-    <div class="user-info" v-if="user">
+    <div class="user-info" v-if="state.user">
       <div class="user">
-        <div>{{ user }}</div>
-        <div>{{ roles.join(', ') }}</div>
+        <div>{{ state.user.name }}</div>
+        <div>{{ roles }}</div>
         <a class="logout-button" :href="logoutUrl">Log ud</a>
       </div>
       <ProfileIcon class="profile-icon" />
@@ -24,7 +24,7 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import ProfileIcon from '../icons/ProfileIcon.vue';
-import { AuthModule, UserRole } from '@/store/modules/auth';
+import { AuthModule, UserRole, UserRoleName } from '@/store/modules/auth';
 import { State } from 'vuex-class';
 
 @Component({
@@ -43,8 +43,12 @@ export default class NavBar extends Vue {
     return AuthModule.user && AuthModule.user.roles.includes(UserRole.frontpageEditor);
   }
 
-  get user() {
-    return AuthModule.user;
+  get state() {
+    return AuthModule;
+  }
+
+  get roles() {
+    return AuthModule.user?.roles?.map(r => UserRoleName[r]).join(', ');
   }
 }
 </script>

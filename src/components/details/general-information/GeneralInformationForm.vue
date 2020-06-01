@@ -1,9 +1,9 @@
 <template>
   <FormSection
-    :invalid="!isGeneralInformationValid"
+    :invalid="!state.isGeneralInformationValid"
     heading="Grundlæggende oplysninger"
     id="general-information"
-    :disabled="generalInformationEdit"
+    :disabled="state.disabled.generalInformationEdit"
     @edit="update({ disabled: { generalInformationEdit: $event } })"
     always-open
   >
@@ -12,8 +12,8 @@
       <InputField
         class="title-field flex-grow"
         :value="state.title"
-        :disabled="generalInformationEdit"
-        :class="{ disabled: generalInformationEdit }"
+        :disabled="state.disabled.generalInformationEdit"
+        :class="{ disabled: state.disabled.generalInformationEdit }"
         @change="update({ title: $event })"
       />
       <div v-if="!isReporting" class="bookmark-button" role="button" @click="setBookmark(!state.hasBookmarked)">
@@ -35,17 +35,17 @@
           label="Fagligkontaktperson:"
           tooltip="Er en person der varetager processen til daglig og derfor har stort kendskab til den."
           v-if="isWithinMunicipality"
-          :required="minPhase(PhaseKeys.SPECIFICATION)"
+          :required="state.minPhase(PhaseKeys.SPECIFICATION)"
         >
           <SelectionField
             itemSubText="email"
-            :disabled="generalInformationEdit"
+            :disabled="state.disabled.generalInformationEdit"
             :value="state.owner"
             itemText="name"
             @search="search($event)"
             isItemsPartial
             @change="update({ owner: $event })"
-            :items="users"
+            :items="common.users"
           />
         </WellItem>
         <WellItem
@@ -55,13 +55,13 @@
         >
           <SelectionField
             itemSubText="email"
-            :disabled="generalInformationEdit"
+            :disabled="state.disabled.generalInformationEdit"
             :value="state.contact"
             itemText="name"
             @search="search($event)"
             isItemsPartial
             @change="update({ contact: $event })"
-            :items="users"
+            :items="common.users"
             clearable
           />
         </WellItem>
@@ -75,7 +75,7 @@
           tooltip="Synligheden ’Egen organisation’ betyder at alle brugere i din organisation kan se processen. Synligheden ’Alle i OS2autoproces’ betyder at brugere i andre kommuner og regioner kan se processen. Privat betyder at det kun er dig og din superbruger der kan se processen."
         >
           <MappedSelectionField
-            :disabled="!!parentLength || generalInformationEdit"
+            :disabled="!!state.parents.length || state.disabled.generalInformationEdit"
             :value="state.visibility"
             @change="update({ visibility: $event })"
             :items="visibilityLevels"
@@ -83,28 +83,32 @@
         </WellItem>
         <WellItem labelWidth="120px" label="Fagområder:">
           <DomainsField
-            :disabled="generalInformationEdit"
+            :disabled="state.disabled.generalInformationEdit"
             :value="state.domains"
             @change="assign({ domains: $event })"
           />
         </WellItem>
         <WellItem labelWidth="120px" label="Afdelinger:" v-if="isWithinMunicipality">
           <SelectionField
-            :disabled="generalInformationEdit"
+            :disabled="state.disabled.generalInformationEdit"
             :value="state.orgUnits"
             @change="assign({ orgUnits: $event })"
-            :items="orgUnits"
+            :items="common.orgUnits"
             multiple
             itemText="name"
           />
         </WellItem>
         <WellItem
-          v-if="minPhase(PhaseKeys.DEVELOPMENT)"
+          v-if="state.minPhase(PhaseKeys.DEVELOPMENT)"
           labelWidth="180px"
           label="Leverandør:"
           tooltip="Her skrives enten kommunens navn eller en ekstern leverandør der har lavet løsningen."
         >
-          <InputField :disabled="generalInformationEdit" :value="state.vendor" @change="update({ vendor: $event })" />
+          <InputField
+            :disabled="state.disabled.generalInformationEdit"
+            :value="state.vendor"
+            @change="update({ vendor: $event })"
+          />
         </WellItem>
         <WellItem v-if="state.sepMep" labelWidth="120px" label="SEP/MEP:">
           <Checkbox :disabled="true" :value="state.sepMep" @change="update({ sepMep: $event })" />
@@ -112,19 +116,19 @@
       </div>
 
       <div>
-        <WellItem v-if="minPhase(PhaseKeys.PREANALYSIS)" labelWidth="120px" label="Lovparagraf:">
+        <WellItem v-if="state.minPhase(PhaseKeys.PREANALYSIS)" labelWidth="120px" label="Lovparagraf:">
           <InputField
-            :disabled="generalInformationEdit || state.form"
+            :disabled="state.disabled.generalInformationEdit || state.form"
             :value="state.legalClause"
             @change="update({ legalClause: $event })"
           />
         </WellItem>
         <WellItem labelWidth="200px" label="KLE:">
           <SelectionField
-            :disabled="generalInformationEdit"
+            :disabled="state.disabled.generalInformationEdit"
             :value="state.kle"
             @change="setKle($event)"
-            :items="kles"
+            :items="common.kles"
             itemText="name"
             itemSubText="code"
             clearable
@@ -132,31 +136,40 @@
         </WellItem>
         <WellItem labelWidth="200px" label="FORM:" v-if="state.kle">
           <SelectionField
-            :disabled="generalInformationEdit"
+            :disabled="state.disabled.generalInformationEdit"
             :value="state.form"
             @change="update({ form: $event })"
-            :items="forms"
+            :items="common.forms"
             itemText="description"
             itemSubText="code"
             clearable
           />
         </WellItem>
         <WellItem labelWidth="200px" label="KL ID:">
-          <InputField :disabled="generalInformationEdit" :value="state.klId" @change="update({ klId: $event })" />
+          <InputField
+            :disabled="state.disabled.generalInformationEdit"
+            :value="state.klId"
+            @change="update({ klId: $event })"
+          />
         </WellItem>
         <WellItem
           labelWidth="200px"
           label="KL’s Arbejdsgangsbank:"
           tooltip="KL’s Arbejdsgangsbank nummeret henviser til en proces fra KL’s Arbejdsgangsbank."
         >
-          <MaskableInput :disabled="generalInformationEdit" mask="##.##.##.##.##" :value="state.kla" @change="setKla" />
+          <MaskableInput
+            :disabled="state.disabled.generalInformationEdit"
+            mask="##.##.##.##.##"
+            :value="state.kla"
+            @change="setKla"
+          />
         </WellItem>
       </div>
 
       <AssociatedPersonsInput
-        v-if="minPhase(PhaseKeys.PREANALYSIS) && isWithinMunicipality"
+        v-if="state.minPhase(PhaseKeys.PREANALYSIS) && isWithinMunicipality"
         slot="well-footer"
-        :disabled="generalInformationEdit"
+        :disabled="state.disabled.generalInformationEdit"
       />
     </Well>
 
@@ -167,7 +180,7 @@
           <InfoTooltip>Resume er en helt kort opsummering der vises på søgeoversigten.</InfoTooltip>
         </h2>
         <TextArea
-          :disabled="generalInformationEdit"
+          :disabled="state.disabled.generalInformationEdit"
           @change="update({ shortDescription: $event })"
           :value="state.shortDescription"
           :maxLength="140"
@@ -179,7 +192,7 @@
           <div class="field-label">Fase:</div>
           <Phases
             class="phase-field"
-            :disabled="generalInformationEdit"
+            :disabled="state.disabled.generalInformationEdit"
             :value="state.phase"
             @change="phaseChanged($event)"
           />
@@ -188,7 +201,7 @@
           <div class="field-label">Status:</div>
           <MappedSelectionField
             class="status-field"
-            :disabled="generalInformationEdit"
+            :disabled="state.disabled.generalInformationEdit"
             :value="state.status"
             @change="update({ status: $event })"
             :items="statusLevels"
@@ -208,7 +221,7 @@
         <h2 class="comments-heading" v-if="state.status === StatusKeys.PENDING">Hvorfor afventer processen?</h2>
         <h2 class="comments-heading" v-if="state.status === StatusKeys.REJECTED">Hvorfor er processen afvist?</h2>
         <TextArea
-          :disabled="generalInformationEdit"
+          :disabled="state.disabled.generalInformationEdit"
           @change="update({ statusText: $event })"
           :value="state.statusText"
         />
@@ -258,7 +271,7 @@ import AppDialog from '@/components/common/Dialog.vue';
 import DialogContent from '@/components/common/DialogContent.vue';
 import Button from '@/components/common/inputs/Button.vue';
 import { AuthModule, User } from '@/store/modules/auth';
-import { ProcessModule, minPhase } from '../../../store/modules/process';
+import { ProcessModule } from '@/store/modules/process';
 // TODO - split this component. No component should be 500 lines
 @Component({
   components: {
@@ -305,14 +318,6 @@ export default class GeneralInformationForm extends Vue {
     { value: StatusKeys.NOT_RATED, text: StatusLabels.NOT_RATED }
   ];
 
-  get parentLength() {
-    return ProcessModule.parents?.length;
-  }
-
-  get isGeneralInformationValid() {
-    return ProcessModule.isGeneralInformationValid;
-  }
-
   get isWithinMunicipality() {
     return AuthModule.user?.cvr === ProcessModule?.cvr;
   }
@@ -325,24 +330,8 @@ export default class GeneralInformationForm extends Vue {
     return ProcessModule;
   }
 
-  get users() {
-    return CommonModule.users;
-  }
-
-  get kles() {
-    return CommonModule.kles;
-  }
-
-  get forms() {
-    return CommonModule.forms;
-  }
-
-  get orgUnits() {
-    return CommonModule.orgUnits;
-  }
-
-  get generalInformationEdit() {
-    return ProcessModule.disabled?.generalInformationEdit;
+  get common() {
+    return CommonModule;
   }
 
   setKla(kla: string) {

@@ -1,9 +1,9 @@
 <template>
   <FormSection
-    :invalid="!isChallengesValid"
+    :invalid="!state.isChallengesValid"
     heading="Problemstillinger"
     id="challenges"
-    :disabled="challengesEdit"
+    :disabled="state.disabled.challengesEdit"
     @edit="update({ disabled: { challengesEdit: $event } })"
   >
     <div>
@@ -12,7 +12,7 @@
       <TextArea
         :twoColumnBreakpoint="twoColumnBreakpoint"
         @change="update({ longDescription: $event })"
-        :disabled="challengesEdit"
+        :disabled="state.disabled.challengesEdit"
         :value="state.longDescription"
         :maxLength="10000"
       />
@@ -27,7 +27,7 @@
       <TextArea
         :twoColumnBreakpoint="twoColumnBreakpoint"
         @change="update({ solutionRequests: $event })"
-        :disabled="challengesEdit"
+        :disabled="state.disabled.challengesEdit"
         :value="state.solutionRequests"
         :maxLength="10000"
       />
@@ -42,7 +42,7 @@
       <TextArea
         :twoColumnBreakpoint="twoColumnBreakpoint"
         @change="update({ processChallenges: $event })"
-        :disabled="challengesEdit"
+        :disabled="state.disabled.challengesEdit"
         :value="state.processChallenges"
         :maxLength="10000"
       />
@@ -62,7 +62,7 @@
             :items="itSystems"
             :value="state.itSystems"
             itemText="name"
-            :disabled="challengesEdit"
+            :disabled="state.disabled.challengesEdit"
             @change="assign({ itSystems: $event })"
             multiple
           />
@@ -82,7 +82,7 @@
           <TextArea
             @change="update({ itSystemsDescription: $event })"
             fullWidth
-            :disabled="challengesEdit"
+            :disabled="state.disabled.challengesEdit"
             :value="state.itSystemsDescription"
             :maxLength="10000"
           />
@@ -105,7 +105,7 @@ import WellItem from '@/components/common/WellItem.vue';
 import { ITSystem } from '@/store/modules/commonInterfaces';
 import { HTTP } from '@/services/http-service';
 import { Phase, PhaseKeys } from '@/models/phase';
-import { ProcessModule, minPhase } from '../../../store/modules/process';
+import { ProcessModule } from '../../../store/modules/process';
 import { CommonModule } from '../../../store/modules/common';
 
 @Component({
@@ -127,16 +127,12 @@ export default class ChallengesForm extends Vue {
     return ProcessModule;
   }
 
-  get challengesEdit(){
-    return ProcessModule.disabled?.challengesEdit;
-  }
-
-  get isChallengesValid() {
-    return ProcessModule.isChallengesValid;
-  }
-
   get itSystems() {
     return CommonModule.itSystems;
+  }
+
+  minPhase(phase: Phase) {
+    return ProcessModule.minPhase(phase);
   }
 }
 </script>

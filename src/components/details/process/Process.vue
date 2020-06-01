@@ -24,7 +24,7 @@
           <AssessmentForm />
           <ImplementationForm />
           <OperationForm />
-          <AttachmentsForm :showPlaceholder="isReporting" v-if="minPhase(PhaseKeys.PREANALYSIS)" />
+          <AttachmentsForm :showPlaceholder="isReporting" v-if="state.minPhase(PhaseKeys.PREANALYSIS)" />
 
           <FormSection
             v-if="state.canEdit"
@@ -108,6 +108,7 @@ import SnackBar from '@/components/common/SnackBar.vue';
 import { isEmpty } from 'lodash';
 import { CommonModule } from '@/store/modules/common';
 import { ProcessModule } from '@/store/modules/process';
+import { AuthModule } from '../../../store/modules/auth';
 
 @Component({
   components: {
@@ -161,16 +162,11 @@ export default class Process extends Vue {
   }
 
   get isWithinMunicipality() {
-    const { auth, process } = this.$store.state;
-    return auth.user.cvr === process.cvr;
+    return AuthModule.user?.cvr === ProcessModule.cvr;
   }
 
   clearErrors() {
     ErrorModule.clearErrors();
-  }
-
-  minPhase(phase: Phase) {
-    return ProcessModule.minPhase(phase);
   }
 
   beforeCreate() {
@@ -187,7 +183,7 @@ export default class Process extends Vue {
         phase: this.phase,
         canEdit: true,
         hasChanged: false,
-        cvr: this.$store.state.auth.user.cvr,
+        cvr: AuthModule.user?.cvr,
         disabled: {
           generalInformationEdit: false,
           challengesEdit: false,

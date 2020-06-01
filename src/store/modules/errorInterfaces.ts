@@ -1,5 +1,9 @@
 import { ProcessReport } from './processInterfaces';
 
+export interface ErrorSection {
+  section: string;
+  errors: string[];
+}
 type ProcessLabels = { [X in keyof ProcessReport]?: string };
 
 export const umbrellaLabels: ProcessLabels = {

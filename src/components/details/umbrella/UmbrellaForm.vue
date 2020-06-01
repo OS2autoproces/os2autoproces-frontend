@@ -1,6 +1,6 @@
 <template>
   <FormSection
-    :invalid="!isUmbrellaValid"
+    :invalid="!state.isUmbrellaValid"
     heading="Paraplyproces"
     :disabled="state.disabled.generalInformationEdit"
     @edit="update({ disabled: { generalInformationEdit: $event } })"
@@ -16,8 +16,8 @@
           :class="{ disabled: state.disabled.generalInformationEdit }"
           @change="update({ title: $event })"
         />
-        <div v-if="!isReporting" class="bookmark-button" role="button" @click="setBookmark(!state.hasBookmarked)">
-          <StarIcon :class="{ selected: state.hasBookmarked }" />
+        <div v-if="!isReporting" class="bookmark-button" role="button" @click="setBookmark(!hasBookmarked)">
+          <StarIcon :class="{ selected: hasBookmarked }" />
         </div>
         <MunicipalityLogo :src="logo" />
       </div>
@@ -32,7 +32,7 @@
               :disabled="state.disabled.generalInformationEdit"
               :value="state.kle"
               @change="setKle($event)"
-              :items="kles"
+              :items="common.kles"
               itemText="code"
               clearable
             />
@@ -42,7 +42,7 @@
               :disabled="state.disabled.generalInformationEdit"
               :value="state.form"
               @change="update({ form: $event })"
-              :items="forms"
+              :items="common.forms"
               itemText="code"
               clearable
             />
@@ -85,7 +85,7 @@
               @search="search($event)"
               isItemsPartial
               @change="update({ contact: $event })"
-              :items="users"
+              :items="common.users"
               clearable
             />
           </WellItem>
@@ -133,7 +133,7 @@
           <SmallSearchResult :process="process" />
           <div class="visibility-warning" v-if="isLessVisible(process.visibility)">
             <WarningIcon class="visibility-icon" /> Synligheden ændres fra
-            {{ VisibilityLabels[process.visibility] }} til {{ VisibilityLabels[state.visibility] }}
+            {{ VisibilityLabels[process.visibility] }} til {{ VisibilityLabels[visibility] }}
           </div>
         </router-link>
 
@@ -215,24 +215,16 @@ export default class UmbrellaForm extends Vue {
   VisibilityLabels = VisibilityLabels;
   VisibilityKeys = VisibilityKeys;
 
-  get logo() {
-    return `/logos/${this.$store.state.process.cvr}.png`;
-  }
-
-  get users() {
-    return this.$store.state.common.users;
-  }
-
   get state() {
-    return this.$store.state.process;
+    return ProcessModule;
   }
 
-  get kles() {
-    return this.$store.state.common.kles;
+  get common() {
+    return CommonModule;
   }
 
-  get forms() {
-    return this.$store.state.common.forms;
+  get logo() {
+    return `/logos/${ProcessModule.cvr}.png`;
   }
 
   search(name: string) {
@@ -244,7 +236,9 @@ export default class UmbrellaForm extends Vue {
   }
 
   isLessVisible(visiblity: Visibility) {
-    return VisibilityOrder.indexOf(visiblity) < VisibilityOrder.indexOf(this.state.visibility);
+    return !!ProcessModule.visibility
+      ? VisibilityOrder.indexOf(visiblity) < VisibilityOrder.indexOf(ProcessModule.visibility)
+      : false;
   }
 
   setKla(kla: string) {
@@ -262,16 +256,14 @@ export default class UmbrellaForm extends Vue {
   }
 
   addProcess(process: ProcessReport) {
-    if (this.state.children.find((child: ProcessReport) => child.id === process.id)) {
-      return;
+    if (ProcessModule.children && !ProcessModule.children?.find((child: ProcessReport) => child.id === process.id)) {
+      ProcessModule.assign({ children: [...ProcessModule.children, process] });
     }
-
-    ProcessModule.assign({ children: [...this.state.children, process] });
   }
 
   removeProcess(process: ProcessReport) {
     ProcessModule.assign({
-      children: this.state.children.filter((child: ProcessReport) => child.id !== process.id)
+      children: ProcessModule.children?.filter((child: ProcessReport) => child.id !== process.id)
     });
   }
 }
