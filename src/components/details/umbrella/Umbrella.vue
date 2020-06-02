@@ -121,7 +121,6 @@ export default class Umbrella extends Vue {
   }
 
   goBack() {
-    console.log('hello there!');
     if (isIE()) {
       this.$emit('goBack');
     }
