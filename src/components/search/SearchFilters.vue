@@ -105,7 +105,7 @@
 
     <SearchFiltersRunPeriod />
 
-    <SearchFiltersActions />
+    <SearchFiltersActions @reset="onReset()" />
   </div>
 </template>
 
@@ -190,6 +190,10 @@ export default class SearchFiltersComponent extends Vue {
 
   assignFilters(filters: Partial<SearchFilters>) {
     this.$emit('assign', filters);
+  }
+
+  onReset() {
+    this.$emit('change', this.filters);
   }
 
   get filters() {

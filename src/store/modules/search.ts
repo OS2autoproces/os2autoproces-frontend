@@ -14,8 +14,8 @@ export interface SearchState {
   result: SearchResult | null;
   filters: SearchFilters;
   filtersTouched: boolean;
-  savedFilters?: SavedSearchFilters[];
-  selectedSavedFiltersText?: string;
+  savedFilters: SavedSearchFilters[];
+  selectedSavedFiltersText: string;
 }
 
 const debouncedSearch = debounce(async (filters: SearchFilters) => {
@@ -28,8 +28,8 @@ export default class SearchStore extends VuexModule implements SearchState {
   result: SearchResult | null = null;
   filters: SearchFilters = getInitialState().filters;
   filtersTouched: boolean = false;
-  savedFilters?: SavedSearchFilters[];
-  selectedSavedFiltersText?: string;
+  savedFilters: SavedSearchFilters[] = [];
+  selectedSavedFiltersText: string = '';
   searchKey: number = 0;
 
   @Mutation
@@ -127,9 +127,8 @@ export default class SearchStore extends VuexModule implements SearchState {
   @Action
   resetFilters() {
     const initState = getInitialState();
-    this.ASSIGN_FILTERS(initState.filters);
     this.SET_SELECTED_SAVED_FILTERS('');
-    this.SET_FILTERS_TOUCHED(true);
+    this.assignFilters(initState.filters);
   }
 
   @Action

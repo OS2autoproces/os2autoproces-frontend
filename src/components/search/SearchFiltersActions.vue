@@ -114,8 +114,9 @@ export default class SearchFiltersActions extends Vue {
     this.saveFiltersDialogOpen = false;
   }
 
-  clearFilters() {
-    SearchModule.resetFilters();
+  async clearFilters() {
+    await SearchModule.resetFilters();
+    this.$emit('reset');
   }
 
   private isSavedFilterNameUnique(name: string) {
