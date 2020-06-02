@@ -1,4 +1,5 @@
 import { ProcessReport } from './processInterfaces';
+import { ErrorState } from './error';
 
 export interface ErrorSection {
   section: string;
@@ -129,4 +130,35 @@ export const errorLabels: ErrorLabels = {
   attachments: Object.keys(attachmentsLabels) as Array<keyof ProcessReport>,
   implementation: Object.keys(implementationLabels) as Array<keyof ProcessReport>,
   operation: Object.keys(operationLabels) as Array<keyof ProcessReport>
+};
+
+export const defaultErrorState: ErrorState = {
+  generalInformation: {
+    section: 'Grundlæggende oplysninger',
+    errors: []
+  },
+  challenges: {
+    section: 'Problemstillinger',
+    errors: []
+  },
+  assessment: {
+    section: 'Faglig vurdering',
+    errors: []
+  },
+  timeAndProcess: {
+    section: 'Tid og proces',
+    errors: []
+  },
+  attachments: {
+    section: 'Bilag og links',
+    errors: []
+  },
+  implementation: {
+    section: 'Udvikling og implementering',
+    errors: []
+  },
+  operation: {
+    section: 'Drift',
+    errors: []
+  }
 };

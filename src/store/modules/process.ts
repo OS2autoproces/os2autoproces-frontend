@@ -272,7 +272,7 @@ export default class Process extends VuexModule implements ProcessState {
 
   @Action
   async createReport(validationKeys?: Array<keyof ProcessReport>): Promise<string | null> {
-    const invalidFields = getInvalidProperties(this, validationKeys || getProcessKeys(this));
+    const invalidFields = getInvalidProperties(this, validationKeys || getProcessKeys(initialProcessState()));
 
     if (invalidFields.length > 0) {
       ErrorModule.updateProcessErrors(this);
@@ -299,7 +299,6 @@ export default class Process extends VuexModule implements ProcessState {
   @Action
   async save(validationKeys?: Array<keyof ProcessReport>) {
     const invalidFields = getInvalidProperties(this, validationKeys || getProcessKeys(this));
-
     if (invalidFields.length > 0) {
       ErrorModule.updateProcessErrors(this);
       throw new Error();

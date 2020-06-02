@@ -9,7 +9,7 @@ import Search from './views/Search.vue';
 import Discovery from './views/Discovery.vue';
 import { mapSearchQueryToObject, mapQueryObjToFilters } from './services/url-service';
 import { isEmpty } from 'lodash';
-import { getInitialState } from './store/modules/search';
+import { getInitialState } from './store/modules/searchFunctions';
 
 Vue.use(Router);
 

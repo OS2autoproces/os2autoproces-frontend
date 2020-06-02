@@ -115,7 +115,6 @@ export default class SearchFiltersActions extends Vue {
   }
 
   clearFilters() {
-    console.log('HEY LISTEN');
     SearchModule.resetFilters();
   }
 

@@ -1,6 +1,6 @@
 <template>
   <FormSection
-    :invalid="!isOperationValid"
+    :invalid="!state.isOperationValid"
     v-if="state.minPhase(PhaseKeys.OPERATION)"
     heading="Drift"
     id="operation"

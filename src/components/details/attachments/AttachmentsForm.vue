@@ -49,8 +49,8 @@ import AttachmentUpload from '@/components/common/inputs/AttachmentUpload.vue';
 import InfoTooltip from '@/components/common/InfoTooltip.vue';
 import { Phase, PhaseKeys } from '@/models/phase';
 import { RootState } from '@/store';
-import { ProcessState, ProcessModule } from '../../../store/modules/process';
-import { AuthModule } from '../../../store/modules/auth';
+import { ProcessState, ProcessModule } from '@/store/modules/process';
+import { AuthModule } from '@/store/modules/auth';
 
 @Component({
   components: {

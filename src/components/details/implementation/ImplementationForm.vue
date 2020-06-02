@@ -1,6 +1,6 @@
 <template>
   <FormSection
-    :invalid="!isImplementationValid"
+    :invalid="!state.isImplementationValid"
     v-if="state.minPhase(PhaseKeys.DEVELOPMENT)"
     heading="Udvikling og implementering"
     id="implementation"

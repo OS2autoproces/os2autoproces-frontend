@@ -14,17 +14,17 @@
           </div>
 
           <SearchSorting
-            v-if="!isSearchingForUmbrellaProcess"
-            :sorting="filters.sorting"
+            v-if="!state.isSearchingForUmbrellaProcess"
+            :sorting="state.filters.sorting"
             @change="updateFilters({ sorting: $event })"
           />
-          <SearchSortingUmbrella v-else :sorting="filters.sorting" @change="updateFilters({ sorting: $event })" />
+          <SearchSortingUmbrella v-else :sorting="state.filters.sorting" @change="updateFilters({ sorting: $event })" />
 
-          <div class="results" v-if="result">
+          <div class="results" v-if="state.result">
             <router-link
               :to="'/details/' + process.id"
               class="search-result-link"
-              v-for="process in result.processes"
+              v-for="process in state.result.processes"
               :key="process.id"
             >
               <SearchResult :process="process" />
@@ -32,10 +32,10 @@
           </div>
 
           <SearchPagination
-            v-if="result"
-            :page="result.page.number"
-            :pageTotal="result.page.totalPages"
-            :size="result.page.size"
+            v-if="state.result"
+            :page="state.result.page.number"
+            :pageTotal="state.result.page.totalPages"
+            :size="state.result.page.size"
             @on-page-change="updateFiltersAndScrollToTop({ page: $event })"
             @on-size-change="updateFilters({ size: $event })"
           />
@@ -74,15 +74,9 @@ import store from '../store';
 })
 export default class Search extends Vue {
   @Prop({ type: Object as () => SearchFilters }) initialFilters!: SearchFilters;
-  @Action('search/assignFilters') dispactAssignFilters!: (filters: Partial<SearchFilters>) => void;
-  @Action('search/search') dispatchSearch!: VoidFunction;
 
-  get filters() {
-    return SearchModule.filters;
-  }
-
-  get result() {
-    return store.state.search.result;
+  get state() {
+    return SearchModule;
   }
 
   async updateFiltersAndScrollToTop(filters: Partial<SearchFilters>) {
@@ -93,25 +87,21 @@ export default class Search extends Vue {
   }
 
   updateFilters(filters: Partial<SearchFilters>) {
-    return this.dispactAssignFilters({
+    return SearchModule.assignFilters({
       page: 0,
       ...filters
     });
   }
 
   assignFilters(filters: Partial<SearchFilters>) {
-    this.dispactAssignFilters({
+    SearchModule.assignFilters({
       page: 0,
       ...filters
     });
   }
 
   mounted() {
-    !!this.initialFilters ? this.dispactAssignFilters(this.initialFilters) : this.dispatchSearch();
-  }
-
-  get isSearchingForUmbrellaProcess() {
-    return SearchModule.isSearchingForUmbrellaProcess;
+    !!this.initialFilters ? SearchModule.assignFilters(this.initialFilters) : SearchModule.search();
   }
 }
 </script>

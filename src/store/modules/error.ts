@@ -1,7 +1,14 @@
 import { VuexModule, Module, MutationAction, Mutation, Action, getModule } from 'vuex-module-decorators';
 import store from '@/store';
 import { ProcessReport } from './processInterfaces';
-import { errorLabels, ErrorLabels, processLabels, errorLimitations, ErrorSection } from './errorInterfaces';
+import {
+  errorLabels,
+  ErrorLabels,
+  processLabels,
+  errorLimitations,
+  ErrorSection,
+  defaultErrorState
+} from './errorInterfaces';
 import { getInvalidProperties } from './validation';
 
 export interface ErrorState {
@@ -83,7 +90,7 @@ export default class Error extends VuexModule implements ErrorState {
   }
 
   get hasErrors() {
-    const sections = Object.keys(this);
+    const sections = Object.keys(defaultErrorState);
     return sections.some(
       section => this[section as keyof ErrorState].errors && this[section as keyof ErrorState].errors.length > 0
     );

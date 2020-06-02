@@ -8,6 +8,7 @@ import {
   deleteFiltersFromStorage
 } from '@/store/modules/service';
 import { SearchFilters, SearchResult, SavedSearchFilters } from './searchInterfaces';
+import { getInitialState, getFiltersTouched } from './searchFunctions';
 
 export interface SearchState {
   result: SearchResult | null;
@@ -17,82 +18,10 @@ export interface SearchState {
   selectedSavedFiltersText?: string;
 }
 
-const getFiltersTouched = (previousFilters: SearchFilters | undefined, filterChanges: Partial<SearchFilters>) => {
-  const initialFilters = getInitialState().filters;
-  const currentFilters = Object.assign({}, previousFilters, filterChanges);
-  const touched = !isEqual(initialFilters, currentFilters);
-  return touched;
-};
-
 const debouncedSearch = debounce(async (filters: SearchFilters) => {
   SearchModule.SET_SEARCH_RESULT(null);
   SearchModule.SET_SEARCH_RESULT(await search(filters));
 }, 250);
-
-export function getInitialState(): SearchState {
-  return {
-    result: null,
-    filtersTouched: false,
-    savedFilters: [],
-    selectedSavedFiltersText: '',
-    filters: {
-      page: 0,
-      size: 5,
-      reporterId: null,
-      usersId: null,
-      bookmarkedId: null,
-      text: '',
-      created: '',
-      lastChanged: '',
-      municipality: null,
-      visibility: {
-        MUNICIPALITY: false,
-        PUBLIC: false
-      },
-      klaProcess: false,
-      umbrella: false,
-      sepMep: false,
-      itSystems: [],
-      technologies: [],
-      sorting: {
-        property: 'created',
-        descending: true
-      },
-      phase: {
-        IDEA: false,
-        PREANALYSIS: false,
-        SPECIFICATION: false,
-        DEVELOPMENT: false,
-        IMPLEMENTATION: false,
-        OPERATION: false
-      },
-      domain: {
-        WORK: false,
-        ADMINISTRATION: false,
-        CHILDREN: false,
-        DEMOCRACY: false,
-        ENVIRONMENT: false,
-        HEALTH: false
-      },
-      runPeriod: {
-        ONDEMAND: false,
-        ONCE: false,
-        DAILY: false,
-        WEEKLY: false,
-        MONTHLY: false,
-        QUATERLY: false,
-        YEARLY: false
-      },
-      status: {
-        FAILED: false,
-        INPROGRESS: false,
-        NOT_RATED: false,
-        PENDING: false,
-        REJECTED: false
-      }
-    }
-  };
-}
 
 @Module({ dynamic: true, store, name: 'search', namespaced: true })
 export default class SearchStore extends VuexModule implements SearchState {
@@ -197,9 +126,10 @@ export default class SearchStore extends VuexModule implements SearchState {
 
   @Action
   resetFilters() {
-    const filters = getInitialState();
-    this.ASSIGN_FILTERS(Object.assign(this.filters, filters));
+    const initState = getInitialState();
+    this.ASSIGN_FILTERS(initState.filters);
     this.SET_SELECTED_SAVED_FILTERS('');
+    this.SET_FILTERS_TOUCHED(true);
   }
 
   @Action
