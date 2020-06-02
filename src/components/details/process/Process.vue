@@ -45,12 +45,20 @@
       </div>
     </div>
 
-    <SnackBar showButton :timeout="0" color="error" :value="snack" @clicked="clearErrors">
+    <SnackBar
+      :showButton="false"
+      :value="showSaveError"
+      :timeout="5000"
+      color="error"
+      @onSnackClose="showSaveError = false"
+      >Processen er IKKE gemt - prøv igen!</SnackBar
+    >
+
+    <SnackBar showButton :timeout="0" color="error" :value="errors.hasErrors" @clicked="clearErrors">
       <div>
         <h3>Følgende felter er ugyldige:</h3>
         <div class="snack-bar-list-container">
-          <!-- TODO Fix v if in v for and computation in template -->
-          <div v-if="hasErrors">
+          <div v-if="errors.hasErrors">
             <ul class="section-errors" v-for="section in errors" :key="section.section">
               <span class="section-errors-title">{{ section.section }}</span>
               <li v-for="(field, i) in section.errors" :key="i">
@@ -69,15 +77,6 @@
       color="success"
       @onSnackClose="showSaveSuccess = false"
       >Processen er gemt!</SnackBar
-    >
-
-    <SnackBar
-      :showButton="false"
-      :value="showSaveError"
-      :timeout="5000"
-      color="error"
-      @onSnackClose="showSaveError = false"
-      >Processen er IKKE gemt - prøv igen!</SnackBar
     >
   </div>
 </template>
@@ -155,10 +154,6 @@ export default class Process extends Vue {
 
   get hasErrors() {
     return ErrorModule.hasErrors;
-  }
-
-  get snack() {
-    return !!Object.keys(ErrorModule).find(section => !isEmpty(ErrorModule[section as keyof ErrorState].errors));
   }
 
   get isWithinMunicipality() {

@@ -19,21 +19,20 @@
       </div>
     </div>
 
-    <SnackBar showButton :timeout="0" color="error" :value="snack" @clicked="clearErrors">
-      <div>
+    <SnackBar :value="showSaveError" @onSnackClose="showSaveError = false" :timeout="5000" color="error"
+      >Processen er IKKE gemt - prøv igen!</SnackBar
+    >
+    <SnackBar showButton :timeout="0" color="error" :value="errors.hasErrors" @clicked="clearErrors">
+      <div v-if="errors.hasErrors">
         <h3>Følgende felter er ugyldige:</h3>
         <ul class="section-errors">
-          <li v-for="field in generalInformationErrors" :key="field">{{ field }}</li>
+          <li v-for="field in errors.generalInformation.errors" :key="field">{{ field }}</li>
         </ul>
       </div>
     </SnackBar>
 
     <SnackBar :timeout="3000" color="success" @onSnackClose="showSaveSuccess = false" :value="showSaveSuccess"
       >Processen er gemt!</SnackBar
-    >
-
-    <SnackBar :value="showSaveError" @onSnackClose="showSaveError = false" :timeout="5000" color="error"
-      >Processen er IKKE gemt - prøv igen!</SnackBar
     >
   </div>
 </template>
@@ -106,13 +105,8 @@ export default class Umbrella extends Vue {
     ErrorModule.clearErrors();
   }
 
-  get generalInformationErrors() {
-    return ErrorModule.generalInformation?.errors;
-  }
-
-  get snack() {
-    const errorState = ErrorModule;
-    return !!Object.keys(errorState).find(section => !isEmpty(ErrorModule[section as keyof ErrorState].errors));
+  get errors() {
+    return ErrorModule;
   }
 
   beforeCreate() {
