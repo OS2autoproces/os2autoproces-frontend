@@ -4,14 +4,14 @@
     heading="Problemstillinger"
     id="challenges"
     :disabled="state.disabled.challengesEdit"
-    @edit="update({ disabled: { challengesEdit: $event}})"
+    @edit="update({ disabled: { challengesEdit: $event } })"
   >
     <div>
       <h2>Beskrivelse</h2>
       <InfoTooltip>Her kan du beskrive den nuværende proces i detaljer.</InfoTooltip>
       <TextArea
         :twoColumnBreakpoint="twoColumnBreakpoint"
-        @change="update({longDescription: $event})"
+        @change="update({ longDescription: $event })"
         :disabled="state.disabled.challengesEdit"
         :value="state.longDescription"
         :hasError="isInErrors('longDescription')"
@@ -22,10 +22,13 @@
 
     <div v-if="minPhase(PhaseKeys.PREANALYSIS)">
       <h2 class="with-margin">Idéer til løsning</h2>
-      <InfoTooltip>Her kan tilføjes de ønsker, du har til en fremtidig løsning. Ønskerne kan både være teknologiske (f.eks. RPA) og/eller ændringer til måden processen udføres på.</InfoTooltip>
+      <InfoTooltip
+        >Her kan tilføjes de ønsker, du har til en fremtidig løsning. Ønskerne kan både være teknologiske (f.eks. RPA)
+        og/eller ændringer til måden processen udføres på.</InfoTooltip
+      >
       <TextArea
         :twoColumnBreakpoint="twoColumnBreakpoint"
-        @change="update({solutionRequests: $event})"
+        @change="update({ solutionRequests: $event })"
         :disabled="state.disabled.challengesEdit"
         :value="state.solutionRequests"
         :hasError="isInErrors('solutionRequests')"
@@ -36,10 +39,13 @@
 
     <div v-if="minPhase(PhaseKeys.PREANALYSIS)">
       <h2 class="with-margin">Udfordringer i den nuværende proces *</h2>
-      <InfoTooltip>Her kan du beskrive de trivielle handlinger, udfordringer eller vaskeligheder der opleves i udførelsen af den nuværende proces.</InfoTooltip>
+      <InfoTooltip
+        >Her kan du beskrive de trivielle handlinger, udfordringer eller vaskeligheder der opleves i udførelsen af den
+        nuværende proces.</InfoTooltip
+      >
       <TextArea
         :twoColumnBreakpoint="twoColumnBreakpoint"
-        @change="update({processChallenges: $event})"
+        @change="update({ processChallenges: $event })"
         :disabled="state.disabled.challengesEdit"
         :value="state.processChallenges"
         :hasError="isInErrors('processChallenges')"
@@ -64,7 +70,7 @@
             :hasError="isInErrors('itSystems')"
             itemText="name"
             :disabled="state.disabled.challengesEdit"
-            @change="assign({itSystems: $event})"
+            @change="assign({ itSystems: $event })"
             id="itSystems"
             multiple
           />
@@ -82,7 +88,7 @@
           tooltip="Hvis der er systemer du ikke kan finde på listen kan du notere dem her."
         >
           <TextArea
-            @change="update({itSystemsDescription: $event})"
+            @change="update({ itSystemsDescription: $event })"
             fullWidth
             :disabled="state.disabled.challengesEdit"
             :value="state.itSystemsDescription"
@@ -151,7 +157,7 @@ export default class ChallengesForm extends Vue {
   }
 
   isInErrors(name: string) {
-    return this.$store.state.error.challenges.errors.some((e: any) => e.name === name);
+    return this.$store.state.error.challenges.errors.includes(name);
   }
 }
 </script>

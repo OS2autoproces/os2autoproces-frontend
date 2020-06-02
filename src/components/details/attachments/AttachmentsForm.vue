@@ -100,7 +100,7 @@ export default class AttachmentsForm extends Vue {
   }
 
   isInErrors(name: string) {
-    return this.$store.state.error.attachments.errors.some((e: any) => e.name === name);
+    return this.$store.state.error.attachments.errors.includes(name);
   }
 }
 </script>

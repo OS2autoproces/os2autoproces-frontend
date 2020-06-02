@@ -163,7 +163,10 @@ export default class TimeAndProcessForm extends Vue {
   @Getter(processGetterTypes.MIN_PHASE) minPhase!: (phase: Phase) => boolean;
   PhaseKeys = PhaseKeys;
 
-  yesNoItems = [{ value: true, text: 'Ja' }, { value: false, text: 'Nej' }];
+  yesNoItems = [
+    { value: true, text: 'Ja' },
+    { value: false, text: 'Nej' }
+  ];
 
   secondRules: Array<(value: string) => boolean | string> = [
     value => Number.isInteger(Number(value)) || 'Sekunder skal være heltal',
@@ -198,7 +201,7 @@ export default class TimeAndProcessForm extends Vue {
   }
 
   isInErrors(name: string) {
-    return this.$store.state.error.timeAndProcess.errors.some((e: any) => e.name === name);
+    return this.$store.state.error.timeAndProcess.errors.includes(name);
   }
 
   updateTimeSpentPerOccurance({ minutes, seconds }: { minutes: string; seconds: string }) {
