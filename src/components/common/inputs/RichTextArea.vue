@@ -94,6 +94,10 @@ export default class RichTextArea extends Vue {
     return this.value.length ? this.value.replace(htmlTagRegex, '').length : 0;
   }
 
+  get twoColumns() {
+    return this.value ? this.value.length > this.twoColumnBreakpoint : false;
+  }
+
   valueChanged(htmlString: string) {
     this.$emit('change', htmlString);
   }
@@ -160,14 +164,14 @@ tiptap-vuetify {
 }
 
 .v-card {
-  border-radius: unset;
-  -webkit-box-shadow: unset;
-  box-shadow: unset;
+  border-radius: 0;
+  -webkit-box-shadow: none;
+  box-shadow: none;
 }
 
 .tiptap-vuetify-editor__content {
   min-height: 250px;
-  padding: unset;
+  padding: 0 0 0 0;
 }
 .tiptap-vuetify-editor__content .ProseMirror {
   min-height: 250px;

@@ -1,3 +1,3 @@
 module.exports = {
-  transpileDependencies: ['vuetify', 'tiptap-vuetify', 'v-mask']
+  transpileDependencies: ['vuetify', 'v-mask', 'tiptap-vuetify', /prosemirror/]
 };

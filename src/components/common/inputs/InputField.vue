@@ -120,8 +120,8 @@ export default class InputField extends Vue {
       .v-input__slot {
         margin: 0;
         padding-left: 10px;
-        border-radius: unset;
-        background: unset;
+        border-radius: 0;
+        background: none;
 
         &::before,
         &::after {
