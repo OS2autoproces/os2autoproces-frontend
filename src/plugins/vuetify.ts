@@ -1,8 +1,6 @@
+import 'material-design-icons-iconfont/dist/material-design-icons.css';
 import Vue from 'vue';
 import Vuetify from 'vuetify';
-// @ts-ignore
-import { TiptapVuetifyPlugin } from 'tiptap-vuetify';
-import 'tiptap-vuetify/dist/main.css';
 import 'vuetify/dist/vuetify.min.css';
 
 const vuetify = new Vuetify({
@@ -23,10 +21,4 @@ Vue.use(Vuetify, {
     iconfont: 'md'
   }
 });
-
-Vue.use(TiptapVuetifyPlugin, {
-  vuetify,
-  iconsGroup: 'md'
-});
-
 export default vuetify;
