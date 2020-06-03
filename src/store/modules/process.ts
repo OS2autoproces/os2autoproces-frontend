@@ -3,7 +3,7 @@ import { VuexModule, Module, MutationAction, Mutation, Action, getModule } from 
 import store from '@/store';
 import { HTTP } from '@/services/http-service';
 import { Disabled, Attachment, Comment, ProcessReport, AttachmentFile, Link } from './processInterfaces';
-import { initialProcessState, setBackendManagedFields, getProcessKeys } from './processFunctions';
+import { initialProcessState, setBackendManagedFields, initialProcessKeys } from './processFunctions';
 import { User } from '@/store/modules/auth';
 import { Technology, ITSystem, Kle, Form, OrgUnit } from './commonInterfaces';
 import { ProcessResponse, responseToState, stateToRequest } from '@/services/process-converter';
@@ -18,7 +18,15 @@ import {
   operationLabels,
   attachmentsLabels,
   timeAndProcessLabels,
-  umbrellaLabels
+  umbrellaLabels,
+  umbrellaKeys,
+  generalInformationKeys,
+  challengeKeys,
+  timeAndProcessKeys,
+  assessmentKeys,
+  attachmentKeys,
+  implementationKeys,
+  operationKeys
 } from '@/store/modules/errorInterfaces';
 import { Status } from '@/models/status';
 import { RunPeriod } from '@/models/runperiod';
@@ -146,7 +154,7 @@ export default class Process extends VuexModule implements ProcessState {
 
   @Action
   clear() {
-    this.ASSIGN(initialProcessState());
+    this.ASSIGN(initialProcessState);
   }
 
   @Action
@@ -271,8 +279,8 @@ export default class Process extends VuexModule implements ProcessState {
   }
 
   @Action
-  async createReport(validationKeys?: Array<keyof ProcessReport>): Promise<string | null> {
-    const invalidFields = getInvalidProperties(this, validationKeys || getProcessKeys(initialProcessState()));
+  async createReport(validationKeys?: Array<keyof ProcessState>): Promise<string | null> {
+    const invalidFields = getInvalidProperties(this, validationKeys || initialProcessKeys);
 
     if (invalidFields.length > 0) {
       ErrorModule.updateProcessErrors(this);
@@ -297,8 +305,8 @@ export default class Process extends VuexModule implements ProcessState {
   }
 
   @Action
-  async save(validationKeys?: Array<keyof ProcessReport>) {
-    const invalidFields = getInvalidProperties(this, validationKeys || getProcessKeys(this));
+  async save(validationKeys?: Array<keyof ProcessState>) {
+    const invalidFields = getInvalidProperties(this, validationKeys || initialProcessKeys);
     if (invalidFields.length > 0) {
       ErrorModule.updateProcessErrors(this);
       throw new Error();
@@ -370,33 +378,33 @@ export default class Process extends VuexModule implements ProcessState {
   }
 
   get isUmbrellaValid() {
-    return !this.canEdit || isEmpty(getInvalidProperties(this, getProcessKeys(umbrellaLabels)));
+    return !this.canEdit || isEmpty(getInvalidProperties(this, umbrellaKeys));
   }
   get isGeneralInformationValid() {
-    return !this?.canEdit || isEmpty(getInvalidProperties(this, getProcessKeys(generalInformationLabels)));
+    return !this?.canEdit || isEmpty(getInvalidProperties(this, generalInformationKeys));
   }
 
   get isChallengesValid() {
-    return !this?.canEdit || isEmpty(getInvalidProperties(this, getProcessKeys(challengesLabels)));
+    return !this?.canEdit || isEmpty(getInvalidProperties(this, challengeKeys));
   }
 
   get isTimeAndProcessValid() {
-    return !this?.canEdit || isEmpty(getInvalidProperties(this, getProcessKeys(timeAndProcessLabels)));
+    return !this?.canEdit || isEmpty(getInvalidProperties(this, timeAndProcessKeys));
   }
 
   get isAssessmentValid() {
-    return !this?.canEdit || isEmpty(getInvalidProperties(this, getProcessKeys(assessmentLabels)));
+    return !this?.canEdit || isEmpty(getInvalidProperties(this, assessmentKeys));
   }
 
   get isAttachmentsValid() {
-    return !this?.canEdit || isEmpty(getInvalidProperties(this, getProcessKeys(attachmentsLabels)));
+    return !this?.canEdit || isEmpty(getInvalidProperties(this, attachmentKeys));
   }
 
   get isImplementationValid() {
-    return !this?.canEdit || isEmpty(getInvalidProperties(this, getProcessKeys(implementationLabels)));
+    return !this?.canEdit || isEmpty(getInvalidProperties(this, implementationKeys));
   }
   get isOperationValid() {
-    return !this?.canEdit || isEmpty(getInvalidProperties(this, getProcessKeys(operationLabels)));
+    return !this?.canEdit || isEmpty(getInvalidProperties(this, operationKeys));
   }
 
   get minPhase() {

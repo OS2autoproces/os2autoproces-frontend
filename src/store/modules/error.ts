@@ -8,9 +8,12 @@ import {
   errorLimitations,
   ErrorSection,
   ErrorWithDescription,
-  defaultErrorState
+  defaultErrorState,
+  defaultSectionKeys,
+  defaultLabelKeys
 } from './errorInterfaces';
 import { getInvalidProperties } from './validation';
+import { ProcessState } from './process';
 
 export interface ErrorState {
   generalInformation: ErrorSection;
@@ -59,11 +62,9 @@ export default class Error extends VuexModule implements ErrorState {
   }
 
   @Action
-  updateProcessErrors(processReport: ProcessReport) {
-    const sections = Object.keys(errorLabels) as Array<keyof ErrorLabels>;
-
-    sections.forEach(section => {
-      const sectionErrors = getInvalidProperties(processReport, errorLabels[section]);
+  updateProcessErrors(processState: ProcessState) {
+    defaultLabelKeys.forEach(section => {
+      const sectionErrors = getInvalidProperties(processState, errorLabels[section]);
 
       const errors = sectionErrors.map(error => {
         const errorLabel = processLabels[error];
@@ -83,16 +84,13 @@ export default class Error extends VuexModule implements ErrorState {
 
   @Action
   clearErrors() {
-    const sections = Object.keys(errorLabels) as Array<keyof ErrorLabels>;
-
-    sections.forEach(section => {
+    defaultLabelKeys.forEach(section => {
       this.ASSIGN({ [section]: { errors: [], section: this[section].section } });
     });
   }
 
   get hasErrors() {
-    const sections = Object.keys(defaultErrorState);
-    return sections.some(
+    return defaultSectionKeys.some(
       section => this[section as keyof ErrorState].errors && this[section as keyof ErrorState].errors.length > 0
     );
   }

@@ -274,10 +274,22 @@ export function stateToRequest(state: ProcessState): Partial<ProcessRequest> {
   return request;
 }
 
-export function responseToState(process: ProcessResponse): ProcessReport {
+export function responseToState(process: ProcessResponse): ProcessState {
   const form = CommonModule.forms?.find(f => f.code === process.form);
   const kle = CommonModule.kles?.find(k => k.code === process.kle);
   return {
+    attachments: [],
+    comments: [],
+    disabled: {
+      generalInformationEdit: true,
+      challengesEdit: true,
+      timeAndProcessEdit: true,
+      assessmentEdit: true,
+      operationEdit: true,
+      implementationEdit: true,
+      attachmentsEdit: true,
+      internalNotesEdit: true
+    },
     ...process,
     id: process.id.toString(),
     sepMep: process.sepMep,

@@ -2,12 +2,11 @@ import { DateTime } from 'luxon';
 import * as validateJs from 'validate.js';
 import { PhaseKeys } from '@/models/phase';
 import { ProcessState } from './process';
-import { ProcessReport } from './processInterfaces';
 
 export function getInvalidProperties(
-  state: ProcessReport,
-  properties: Array<keyof ProcessReport>
-): Array<keyof ProcessReport> {
+  state: ProcessState,
+  properties: Array<keyof ProcessState>
+): Array<keyof ProcessState> {
   return properties.filter(property => {
     const validator = processFieldsValidators[property];
     return validator && !validator(state);
@@ -35,56 +34,56 @@ function isValid(value: any, constraints: any): boolean {
   return !validateJs({ value }, { value: constraints });
 }
 
-export const processFieldsValidators: { [P in keyof ProcessReport]?: (state: ProcessReport) => boolean } = {
-  klId({ klId }: ProcessReport) {
+export const processFieldsValidators: { [P in keyof ProcessState]?: (state: ProcessState) => boolean } = {
+  klId({ klId }: ProcessState) {
     return isValid(klId, isMinMax(0, 64));
   },
-  phase({ phase }: ProcessReport) {
+  phase({ phase }: ProcessState) {
     return !!phase;
   },
-  status({ status }: ProcessReport) {
+  status({ status }: ProcessState) {
     return !!status;
   },
-  statusText({ statusText }: ProcessReport) {
+  statusText({ statusText }: ProcessState) {
     return isValid(statusText, isMinMax(0, 10000));
   },
-  title({ title }: ProcessReport) {
+  title({ title }: ProcessState) {
     return isValid(title, isMinMax(1, 50));
   },
-  shortDescription({ shortDescription }: ProcessReport) {
+  shortDescription({ shortDescription }: ProcessState) {
     return isValid(shortDescription, isMinMax(1, 140));
   },
-  longDescription({ longDescription }: ProcessReport) {
+  longDescription({ longDescription }: ProcessState) {
     return isValid(longDescription, isMinMax(0, 10000));
   },
-  visibility({ visibility }: ProcessReport) {
+  visibility({ visibility }: ProcessState) {
     return !!visibility;
   },
-  legalClause({ legalClause }: ProcessReport) {
+  legalClause({ legalClause }: ProcessState) {
     return isValid(legalClause, isMinMax(0, 140));
   },
-  codeRepositoryUrl({ codeRepositoryUrl }: ProcessReport) {
+  codeRepositoryUrl({ codeRepositoryUrl }: ProcessState) {
     return isValid(codeRepositoryUrl, isMinMax(0, 300));
   },
-  kla({ kla }: ProcessReport) {
+  kla({ kla }: ProcessState) {
     return !kla || kla.length === 8 || kla.length === 11 || kla.length === 14;
   },
-  solutionRequests({ solutionRequests }: ProcessReport) {
+  solutionRequests({ solutionRequests }: ProcessState) {
     return isValid(solutionRequests, isMinMax(0, 10000));
   },
-  timeSpendOccurancesPerEmployee({ phase, timeSpendOccurancesPerEmployee }: ProcessReport) {
+  timeSpendOccurancesPerEmployee({ phase, timeSpendOccurancesPerEmployee }: ProcessState) {
     return phase === PhaseKeys.IDEA || isValid(timeSpendOccurancesPerEmployee, isFloat);
   },
-  timeSpendPerOccurance({ phase, timeSpendPerOccurance }: ProcessReport) {
+  timeSpendPerOccurance({ phase, timeSpendPerOccurance }: ProcessState) {
     return phase === PhaseKeys.IDEA || isValid(timeSpendPerOccurance, isFloat);
   },
-  timeSpendEmployeesDoingProcess({ phase, timeSpendEmployeesDoingProcess }: ProcessReport) {
+  timeSpendEmployeesDoingProcess({ phase, timeSpendEmployeesDoingProcess }: ProcessState) {
     return phase === PhaseKeys.IDEA || isValid(timeSpendEmployeesDoingProcess, isFloat);
   },
-  timeSpendPercentageDigital({ phase, timeSpendPercentageDigital }: ProcessReport) {
+  timeSpendPercentageDigital({ phase, timeSpendPercentageDigital }: ProcessState) {
     return phase === PhaseKeys.IDEA || isValid(timeSpendPercentageDigital, isBetween(0, 100));
   },
-  timeSpendComment({ timeSpendComment }: ProcessReport) {
+  timeSpendComment({ timeSpendComment }: ProcessState) {
     return isValid(timeSpendComment, isMinMax(0, 10000));
   },
   levelOfProfessionalAssessment() {
@@ -114,16 +113,16 @@ export const processFieldsValidators: { [P in keyof ProcessReport]?: (state: Pro
   evaluatedLevelOfRoi() {
     return true; // allow any phase to not have an assessment
   },
-  esdhReference({ esdhReference }: ProcessReport) {
+  esdhReference({ esdhReference }: ProcessState) {
     return isValid(esdhReference, isMinMax(0, 300));
   },
-  owner({ phase, owner }: ProcessReport) {
+  owner({ phase, owner }: ProcessState) {
     return phase === PhaseKeys.IDEA || phase === PhaseKeys.PREANALYSIS || !!owner;
   },
-  vendor({ vendor }: ProcessReport) {
+  vendor({ vendor }: ProcessState) {
     return isValid(vendor || '', isMinMax(0, 255));
   },
-  technologies({ phase, technologies }: ProcessReport) {
+  technologies({ phase, technologies }: ProcessState) {
     return (
       phase === PhaseKeys.IDEA ||
       phase === PhaseKeys.PREANALYSIS ||
@@ -131,18 +130,18 @@ export const processFieldsValidators: { [P in keyof ProcessReport]?: (state: Pro
       (technologies || []).length > 0
     );
   },
-  runPeriod: ({ runPeriod }: ProcessReport) => !!runPeriod,
-  technicalImplementationNotes({ technicalImplementationNotes }: ProcessReport) {
+  runPeriod: ({ runPeriod }: ProcessState) => !!runPeriod,
+  technicalImplementationNotes({ technicalImplementationNotes }: ProcessState) {
     return isValid(technicalImplementationNotes, isMinMax(0, 10000));
   },
-  organizationalImplementationNotes({ organizationalImplementationNotes }: ProcessReport) {
+  organizationalImplementationNotes({ organizationalImplementationNotes }: ProcessState) {
     return isValid(organizationalImplementationNotes, isMinMax(0, 10000));
   },
-  processChallenges({ phase, processChallenges }: ProcessReport) {
+  processChallenges({ phase, processChallenges }: ProcessState) {
     const minLength = phase === PhaseKeys.IDEA ? 0 : 1;
     return isValid(processChallenges, isMinMax(minLength, 10000));
   },
-  rating({ phase, rating }: ProcessReport) {
+  rating({ phase, rating }: ProcessState) {
     return (
       phase === PhaseKeys.IDEA ||
       phase === PhaseKeys.PREANALYSIS ||
@@ -152,16 +151,16 @@ export const processFieldsValidators: { [P in keyof ProcessReport]?: (state: Pro
       isValid(rating, isBetween(1, 3))
     );
   },
-  ratingComment({ ratingComment }: ProcessReport) {
+  ratingComment({ ratingComment }: ProcessState) {
     return isValid(ratingComment, isMinMax(0, 10000));
   },
-  legalClauseLastVerified({ legalClauseLastVerified }: ProcessReport) {
+  legalClauseLastVerified({ legalClauseLastVerified }: ProcessState) {
     return !legalClauseLastVerified || DateTime.fromISO(legalClauseLastVerified).isValid;
   },
-  internalNotes({ internalNotes }: ProcessReport) {
+  internalNotes({ internalNotes }: ProcessState) {
     return isValid(internalNotes, isMinMax(0, 10000));
   },
-  itSystemsDescription({ itSystemsDescription }: ProcessReport) {
+  itSystemsDescription({ itSystemsDescription }: ProcessState) {
     return isValid(itSystemsDescription, isMinMax(0, 10000));
   }
 };

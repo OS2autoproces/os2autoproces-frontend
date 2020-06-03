@@ -64,7 +64,7 @@ import AttachmentsForm from '@/components/details/attachments/AttachmentsForm.vu
 import OperationForm from '@/components/details/operation/OperationForm.vue';
 import ArrowLeftIcon from '@/components/icons/ArrowLeftIcon.vue';
 import EditIcon from '@/components/icons/EditIcon.vue';
-import { umbrellaLabels } from '@/store/modules/errorInterfaces';
+import { umbrellaLabels, umbrellaKeys } from '@/store/modules/errorInterfaces';
 import { ErrorState, ErrorModule } from '@/store/modules/error';
 import SnackBar from '@/components/common/SnackBar.vue';
 import { isEmpty } from 'lodash';
@@ -162,7 +162,7 @@ export default class Umbrella extends Vue {
 
   async save() {
     try {
-      await ProcessModule.save(Object.keys(umbrellaLabels) as Array<keyof ProcessReport>);
+      await ProcessModule.save(umbrellaKeys);
       this.showSaveSuccess = true;
     } catch (e) {
       this.showSaveError = true;
@@ -171,7 +171,7 @@ export default class Umbrella extends Vue {
 
   async report() {
     try {
-      const processId = await ProcessModule.createReport(Object.keys(umbrellaLabels) as Array<keyof ProcessReport>);
+      const processId = await ProcessModule.createReport(umbrellaKeys);
       this.showSaveSuccess = true;
       this.$router.push(`/details/${processId}`);
     } catch (e) {
