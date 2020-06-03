@@ -23,7 +23,6 @@ function validateAuth(isValid: (user: User | undefined | null) => boolean) {
       if (isValid(AuthModule.user)) {
         next();
       } else {
-        console.log(AuthModule.user);
         window.location.href = `${window.autoProcessConfiguration.apiUrl}/saml/login`;
       }
     }
