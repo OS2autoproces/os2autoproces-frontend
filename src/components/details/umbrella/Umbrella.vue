@@ -165,9 +165,7 @@ export default class Umbrella extends Vue {
       await ProcessModule.save(Object.keys(umbrellaLabels) as Array<keyof ProcessReport>);
       this.showSaveSuccess = true;
     } catch (e) {
-      if (ErrorModule.hasErrors) {
-        this.showSaveError = true;
-      }
+      this.showSaveError = true;
     }
   }
 
@@ -177,9 +175,7 @@ export default class Umbrella extends Vue {
       this.showSaveSuccess = true;
       this.$router.push(`/details/${processId}`);
     } catch (e) {
-      if (ErrorModule.hasErrors) {
-        this.showSaveError = true;
-      }
+      this.showSaveError = true;
     }
   }
 }

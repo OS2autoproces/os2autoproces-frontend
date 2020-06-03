@@ -210,9 +210,7 @@ export default class Process extends Vue {
       await ProcessModule.save();
       this.showSaveSuccess = true;
     } catch (e) {
-      if (ErrorModule.hasErrors) {
-        this.showSaveError = true;
-      }
+      this.showSaveError = true;
     }
   }
 
@@ -222,9 +220,7 @@ export default class Process extends Vue {
       this.showSaveSuccess = true;
       this.$router.push(`/details/${processId}`);
     } catch (e) {
-      if (ErrorModule.hasErrors) {
-        //this.showSaveError = true;
-      }
+      this.showSaveError = true;
     }
   }
 }
