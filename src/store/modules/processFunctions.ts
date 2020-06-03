@@ -5,7 +5,7 @@ import { StatusKeys } from '@/models/status';
 import { RunPeriodKeys } from '@/models/runperiod';
 import { TypeKeys } from '@/models/types';
 import { LikertScaleKeys } from '@/models/likert-scale';
-import { ProcessState } from './process';
+import { ProcessState, ProcessModule } from './process';
 
 export function setBackendManagedFields(process: ProcessReport): Partial<ProcessState> {
   const fields: BackendManagedFields = {

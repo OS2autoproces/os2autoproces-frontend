@@ -71,7 +71,7 @@ export default class Error extends VuexModule implements ErrorState {
 
         if (errorLabel) {
           const tempError = errorLabel.length < 35 ? errorLabel : errorLabel.slice(0, 25) + '...';
-          return tempError + (limitationLabel ? ` (${limitationLabel})` : '');
+          return { name: error, description: tempError + (limitationLabel ? ` (${limitationLabel})` : '') };
         }
 
         return '';
@@ -95,6 +95,18 @@ export default class Error extends VuexModule implements ErrorState {
     return sections.some(
       section => this[section as keyof ErrorState].errors && this[section as keyof ErrorState].errors.length > 0
     );
+  }
+
+  get errorSections() {
+    return [
+      this.generalInformation,
+      this.challenges,
+      this.assessment,
+      this.timeAndProcess,
+      this.attachments,
+      this.implementation,
+      this.operation
+    ];
   }
 
   get errorInField() {

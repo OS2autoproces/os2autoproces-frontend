@@ -199,7 +199,7 @@ import { Phase, PhaseKeys } from '@/models/phase';
 import MunicipalityLogo from '@/components/common/MunicipalityLogo.vue';
 import StarIcon from '@/components/icons/StarIcon.vue';
 import { AuthModule } from '../../../store/modules/auth';
-import { ProcessModule } from '../../../store/modules/process';
+import { ProcessModule, ProcessState } from '../../../store/modules/process';
 import { ErrorModule } from '@/store/modules/error';
 
 @Component({
@@ -240,6 +240,10 @@ export default class UmbrellaForm extends Vue {
 
   get logo() {
     return `/logos/${ProcessModule.cvr}.png`;
+  }
+
+  update(state: Partial<ProcessState>) {
+    ProcessModule.update(state);
   }
 
   isInErrors(name: string) {

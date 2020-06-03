@@ -22,11 +22,11 @@
     <SnackBar :value="showSaveError" @onSnackClose="showSaveError = false" :timeout="5000" color="error"
       >Processen er IKKE gemt - prøv igen!</SnackBar
     >
-    <SnackBar showButton :timeout="0" color="error" :value="errors.hasErrors" @clicked="clearErrors">
+    <SnackBar showButton :timeout="0" color="error" :value="errors.hasErrors" @clicked="clearErrors" bottom>
       <div v-if="errors.hasErrors">
         <h3>Følgende felter er ugyldige:</h3>
         <ul class="section-errors">
-          <li v-for="field in errors.generalInformation.errors" :key="field" @click="clickedHashLink">
+          <li v-for="field in errors.generalInformation.errors" :key="field.name" @click="clickedHashLink">
             <a :href="hashLink(field.name)">{{ field.description }}</a>
           </li>
         </ul>
@@ -114,7 +114,11 @@ export default class Umbrella extends Vue {
     return ErrorModule;
   }
 
-  clickHashLink() {
+  hashLink(target: string) {
+    return `#${target}`;
+  }
+
+  clickedHashLink() {
     this.$emit('clickedHashLink');
   }
 

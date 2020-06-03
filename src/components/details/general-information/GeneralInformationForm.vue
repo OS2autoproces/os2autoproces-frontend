@@ -104,7 +104,7 @@
             :value="state.orgUnits"
             :hasError="isInErrors('orgUnits')"
             @change="assign({ orgUnits: $event })"
-            :items="orgUnits"
+            :items="common.orgUnits"
             id="orgUnits"
             multiple
             itemText="name"
@@ -308,7 +308,7 @@ import AppDialog from '@/components/common/Dialog.vue';
 import DialogContent from '@/components/common/DialogContent.vue';
 import Button from '@/components/common/inputs/Button.vue';
 import { AuthModule, User } from '@/store/modules/auth';
-import { ProcessModule } from '@/store/modules/process';
+import { ProcessModule, ProcessState } from '@/store/modules/process';
 import { ErrorModule } from '@/store/modules/error';
 // TODO - split this component. No component should be 500 lines
 @Component({
@@ -370,6 +370,10 @@ export default class GeneralInformationForm extends Vue {
 
   get common() {
     return CommonModule;
+  }
+
+  update(state: Partial<ProcessState>) {
+    ProcessModule.update(state);
   }
 
   isInErrors(name: string) {

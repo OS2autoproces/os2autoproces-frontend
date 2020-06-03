@@ -70,7 +70,7 @@ import InfoTooltip from '@/components/common/InfoTooltip.vue';
 import Well from '@/components/common/Well.vue';
 import WellItem from '@/components/common/WellItem.vue';
 import { Phase, PhaseKeys } from '@/models/phase';
-import { ProcessModule } from '../../../store/modules/process';
+import { ProcessModule, ProcessState } from '../../../store/modules/process';
 import { ErrorModule } from '@/store/modules/error';
 
 @Component({
@@ -90,6 +90,11 @@ export default class OperationForm extends Vue {
   get state() {
     return ProcessModule;
   }
+
+  update(state: Partial<ProcessState>) {
+    ProcessModule.update(state);
+  }
+
   isInErrors(name: string) {
     return ErrorModule.errorInField(ErrorModule.operation, name);
   }

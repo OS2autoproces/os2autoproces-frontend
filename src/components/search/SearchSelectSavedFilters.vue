@@ -7,7 +7,6 @@
     :dropdown="true"
     placeholder="Vælg fra gemte søgninger"
     @change="onFiltersSelected($event)"
-    @action="dispatchDeleteSavedFilter($event)"
     :hasAction="true"
     :value="selectedSavedFilters"
     actionIcon="delete"

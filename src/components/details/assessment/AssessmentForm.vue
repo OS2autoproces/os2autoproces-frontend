@@ -172,6 +172,10 @@ export default class AssessmentForm extends Vue {
     return ProcessModule;
   }
 
+  update(state: Partial<ProcessState>) {
+    ProcessModule.update(state);
+  }
+
   isInErrors(name: string) {
     return ErrorModule.errorInField(ErrorModule.assessment, name);
   }

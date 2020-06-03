@@ -143,7 +143,7 @@ import InputField from '@/components/common/inputs/InputField.vue';
 import FormSection from '@/components/details/FormSection.vue';
 import { Action, Getter } from 'vuex-class';
 import { Phase, PhaseKeys } from '@/models/phase';
-import Process, { ProcessModule } from '@/store/modules/process';
+import Process, { ProcessModule, ProcessState } from '@/store/modules/process';
 import { ErrorModule } from '../../../store/modules/error';
 
 @Component({
@@ -205,6 +205,10 @@ export default class TimeAndProcessForm extends Vue {
     const minutes = parseInt(ProcessModule.timeSpendPerOccurance ?? '', 10); // remove decimals
     const seconds = (this.timeSpendPerOccurance - minutes) * 60; // remove minute part and convert decimals to seconds
     return { minutes, seconds };
+  }
+
+  update(state: Partial<ProcessState>) {
+    ProcessModule.update(state);
   }
 
   isInErrors(name: string) {

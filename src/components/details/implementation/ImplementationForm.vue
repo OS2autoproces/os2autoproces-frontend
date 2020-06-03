@@ -86,7 +86,7 @@ import { Technology } from '@/store/modules/commonInterfaces';
 import { CommonModule } from '@/store/modules/common';
 import { PhaseKeys, Phase } from '@/models/phase';
 import { RunPeriodKeys, RunPeriodLabels } from '@/models/runperiod';
-import { ProcessModule } from '@/store/modules/process';
+import { ProcessModule, ProcessState } from '@/store/modules/process';
 import { ErrorModule } from '@/store/modules/error';
 
 @Component({
@@ -119,6 +119,10 @@ export default class ImplementationForm extends Vue {
 
   get state() {
     return ProcessModule;
+  }
+
+  update(state: Partial<ProcessState>) {
+    ProcessModule.update(state);
   }
 
   isInErrors(name: string) {

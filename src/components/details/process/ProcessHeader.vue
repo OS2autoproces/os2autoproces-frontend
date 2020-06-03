@@ -6,7 +6,7 @@
     <InfoTooltip class="mail-tooltip"
       >Ved at slå mail notifikationer til, vil du modtage en mail, når der sker ændringer på denne proces.</InfoTooltip
     >
-    <Toggle :value="state.emailNotification" @change="setEmailNotification($event)">Mail notifikation</Toggle>
+    <Toggle :value="state.emailNotification" @change="state.setEmailNotification($event)">Mail notifikation</Toggle>
   </div>
 </template>
 
@@ -32,7 +32,7 @@ export default class ProcessHeader extends Vue {
   isUmbrella!: boolean;
 
   get state() {
-    return this.$store.state.process;
+    return ProcessModule;
   }
 
   async copy() {

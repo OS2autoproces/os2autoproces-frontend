@@ -45,11 +45,11 @@
       </div>
     </div>
 
-    <SnackBar showButton :timeout="0" color="error" :value="snack" @clicked="clearErrors" bottom>
+    <SnackBar showButton :timeout="0" color="error" :value="errors.hasErrors" @clicked="clearErrors" bottom>
       <div>
         <h3>Følgende felter er ugyldige:</h3>
-        <div class="snack-bar-list-container">
-          <div v-for="section in errors" :key="section.section">
+        <div class="snack-bar-list-container" v-if="errors.hasErrors">
+          <div v-for="section in errors.errorSections" :key="section.section">
             <ul class="section-errors" v-if="section.errors.length > 0">
               <span class="section-errors-title">{{ section.section }}</span>
               <li v-for="(field, i) in section.errors" :key="i">
@@ -108,7 +108,7 @@ import { ErrorState, ErrorModule } from '@/store/modules/error';
 import SnackBar from '@/components/common/SnackBar.vue';
 import { isEmpty } from 'lodash';
 import { CommonModule } from '@/store/modules/common';
-import { ProcessModule } from '@/store/modules/process';
+import { ProcessModule, ProcessState } from '@/store/modules/process';
 import { AuthModule } from '../../../store/modules/auth';
 
 @Component({
@@ -154,12 +154,12 @@ export default class Process extends Vue {
     return ErrorModule;
   }
 
-  get hasErrors() {
-    return ErrorModule.hasErrors;
-  }
-
   get isWithinMunicipality() {
     return AuthModule.user?.cvr === ProcessModule.cvr;
+  }
+
+  update(state: Partial<ProcessState>) {
+    ProcessModule.update(state);
   }
 
   clearErrors() {
@@ -223,7 +223,7 @@ export default class Process extends Vue {
       this.$router.push(`/details/${processId}`);
     } catch (e) {
       if (ErrorModule.hasErrors) {
-        this.showSaveError = true;
+        //this.showSaveError = true;
       }
     }
   }
