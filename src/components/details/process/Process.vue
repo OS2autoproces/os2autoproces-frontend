@@ -2,9 +2,7 @@
   <div class="page">
     <div class="side-bar">
       <div class="side-bar-content">
-        <router-link to="/search" class="search-page-link">
-          <ArrowLeftIcon />Tilbage til søgning
-        </router-link>
+        <a @click="goBack" class="search-page-link"> <ArrowLeftIcon />Tilbage til søgning </a>
 
         <ProcessMenu :phase="phase" :canEdit="state.canEdit" :isReporting="isReporting" />
 
@@ -33,13 +31,10 @@
             id="internal-notes"
             heading="Interne noter"
             :disabled="state.disabled.internalNotesEdit"
-            @edit="update({disabled: { internalNotesEdit: $event} })"
+            @edit="update({ disabled: { internalNotesEdit: $event } })"
             tooltip="Her kan du tilføje noter til og om processen, der kun vil være synlige for tilknyttede personer. Noterne bliver heller ikke delt, hvis processen deles med alle brugere i OS2autoproces."
           >
-            <InternalNotes
-              :internalNotes="state.internalNotes"
-              :disabled="state.disabled.internalNotesEdit"
-            />
+            <InternalNotes :internalNotes="state.internalNotes" :disabled="state.disabled.internalNotesEdit" />
           </FormSection>
         </div>
 
@@ -55,15 +50,10 @@
         <h3>Følgende felter er ugyldige:</h3>
         <div class="snack-bar-list-container">
           <!-- TODO Fix v if in v for and computation in template -->
-          <ul
-            class="section-errors"
-            v-for="section in errors"
-            v-if="section.errors.length > 0"
-            :key="section.section"
-          >
-            <span class="section-errors-title">{{section.section}}</span>
+          <ul class="section-errors" v-for="section in errors" v-if="section.errors.length > 0" :key="section.section">
+            <span class="section-errors-title">{{ section.section }}</span>
             <li v-for="(field, i) in section.errors" :key="i">
-              <div class="snack-bar-list-item">{{field}}</div>
+              <div class="snack-bar-list-item">{{ field }}</div>
             </li>
           </ul>
         </div>
@@ -76,7 +66,8 @@
       :timeout="3000"
       color="success"
       @onSnackClose="showSaveSuccess = false"
-    >Processen er gemt!</SnackBar>
+      >Processen er gemt!</SnackBar
+    >
 
     <SnackBar
       :showButton="false"
@@ -84,7 +75,8 @@
       :timeout="5000"
       color="error"
       @onSnackClose="showSaveError = false"
-    >Processen er IKKE gemt - prøv igen!</SnackBar>
+      >Processen er IKKE gemt - prøv igen!</SnackBar
+    >
   </div>
 </template>
 
@@ -117,6 +109,7 @@ import { ErrorState } from '@/store/modules/error/state';
 import SnackBar from '@/components/common/SnackBar.vue';
 import { isEmpty } from 'lodash';
 import { processGetterTypes } from '@/store/modules/process/getters';
+import { isIE } from '@/services/url-service';
 
 @Component({
   components: {
@@ -163,7 +156,6 @@ export default class Process extends Vue {
 
   showSaveSuccess = false;
   showSaveError = false;
-
   get state() {
     return this.$store.state.process;
   }
@@ -180,6 +172,15 @@ export default class Process extends Vue {
   get isWithinMunicipality() {
     const { auth, process } = this.$store.state;
     return auth.user.cvr === process.cvr;
+  }
+
+  // If browser is Internet Explorer, the parent details view is nested in the search view,
+  // and we have to reset the search url when hiding it.
+  goBack() {
+    if (isIE()) {
+      this.$emit('goBack');
+    }
+    this.$router.push('/search');
   }
 
   beforeCreate() {

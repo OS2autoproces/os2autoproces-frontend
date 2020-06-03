@@ -2,8 +2,20 @@
   <div class="details">
     <NavBar />
     <div class="page">
-      <Process v-if="!this.loading && !this.isUmbrella" :isReporting="isReporting" :id="id" :phase="type" />
-      <Umbrella v-if="!this.loading && this.isUmbrella" :isReporting="isReporting" :id="id" :type="type" />
+      <Process
+        v-if="!this.loading && !this.isUmbrella"
+        :isReporting="isReporting"
+        :id="id"
+        :phase="type"
+        @goBack="goBack"
+      />
+      <Umbrella
+        v-if="!this.loading && this.isUmbrella"
+        :isReporting="isReporting"
+        :id="id"
+        :type="type"
+        @goBack="goBack"
+      />
     </div>
   </div>
 </template>
@@ -47,6 +59,10 @@ export default class Details extends Vue {
   @Watch('id')
   idChanged() {
     this.loadContent();
+  }
+
+  goBack() {
+    this.$emit('goBack');
   }
 
   beforeCreate() {

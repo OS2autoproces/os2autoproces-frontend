@@ -2,9 +2,7 @@
   <div class="page">
     <div class="side-bar">
       <div class="side-bar-content">
-        <router-link to="/search" class="search-page-link">
-          <ArrowLeftIcon />Tilbage til søgning
-        </router-link>
+        <a @click="goBack" class="search-page-link"> <ArrowLeftIcon />Tilbage til søgning </a>
 
         <Button primary v-if="isReporting" class="report-button" @click="report">Gem</Button>
         <Button primary v-if="!isReporting" class="save-button" @click="save">Gem</Button>
@@ -25,24 +23,18 @@
       <div>
         <h3>Følgende felter er ugyldige:</h3>
         <ul class="section-errors">
-          <li v-for="field in errors['generalInformation'].errors" :key="field">{{field}}</li>
+          <li v-for="field in errors['generalInformation'].errors" :key="field">{{ field }}</li>
         </ul>
       </div>
     </SnackBar>
 
-    <SnackBar
-      :timeout="3000"
-      color="success"
-      @onSnackClose="showSaveSuccess = false"
-      :value="showSaveSuccess"
-    >Processen er gemt!</SnackBar>
+    <SnackBar :timeout="3000" color="success" @onSnackClose="showSaveSuccess = false" :value="showSaveSuccess"
+      >Processen er gemt!</SnackBar
+    >
 
-    <SnackBar
-      :value="showSaveError"
-      @onSnackClose="showSaveError = false"
-      :timeout="5000"
-      color="error"
-    >Processen er IKKE gemt - prøv igen!</SnackBar>
+    <SnackBar :value="showSaveError" @onSnackClose="showSaveError = false" :timeout="5000" color="error"
+      >Processen er IKKE gemt - prøv igen!</SnackBar
+    >
   </div>
 </template>
 
@@ -76,6 +68,7 @@ import { isEmpty } from 'lodash';
 import { searchActionTypes } from '@/store/modules/search/actions';
 import { VisibilityKeys } from '@/models/visibility';
 import { SearchFilters } from '@/store/modules/search/state';
+import { isIE } from '@/services/url-service';
 
 @Component({
   components: {
@@ -125,6 +118,13 @@ export default class Umbrella extends Vue {
   get snack() {
     const errorState = this.$store.state.error;
     return !!Object.keys(errorState).find(section => !isEmpty(errorState[section].errors));
+  }
+
+  goBack() {
+    if (isIE()) {
+      this.$emit('goBack');
+    }
+    this.$router.push('/search');
   }
 
   beforeCreate() {
