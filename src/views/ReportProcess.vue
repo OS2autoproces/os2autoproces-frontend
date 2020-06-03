@@ -85,6 +85,7 @@ export default class Home extends Vue {
 @import '../styles/variables';
 
 .search-page-link {
+  color: $color-primary;
   @include heading;
   font-size: 1.2rem;
   display: inline-flex;

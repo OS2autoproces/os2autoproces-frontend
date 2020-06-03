@@ -1,8 +1,5 @@
 <template>
-  <v-dialog
-    v-model="_open"
-    width="500"
-  >
+  <v-dialog eager v-model="_open" width="500">
     <slot />
   </v-dialog>
 </template>

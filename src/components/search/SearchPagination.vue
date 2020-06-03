@@ -11,6 +11,7 @@
             :circle="true"
             :value="page + 1"
             :length="pageTotal"
+            :total-visible="10"
             @input="onPageChange($event - 1)"
           ></v-pagination>
         </div>
