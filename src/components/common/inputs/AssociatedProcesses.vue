@@ -1,5 +1,5 @@
 <template>
-  <div class="associated">
+  <div class="associated" id="associated">
     <div class="filters">
       <SearchFilters :filters="filters" @change="updateFilters" @assign="assignFilters" umbrellaProcessSearch />
     </div>
@@ -13,9 +13,11 @@
 
       <SearchPagination
         v-if="result"
+        :key="key"
         :page="result.page.number"
         :pageTotal="result.page.totalPages"
-        @change="updateFilters({ page: $event })"
+        @on-page-change="updateFilters({ page: $event })"
+        @on-size-change="updateFilters({ size: $event })"
       />
     </div>
   </div>
@@ -25,6 +27,7 @@
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import { Action } from 'vuex-class';
 import SearchFilters from '@/components/search/SearchFilters.vue';
+import { SearchFilters as storeFilters } from '@/store/modules/searchInterfaces';
 import SearchSorting from '@/components/search/SearchSorting.vue';
 import SmallSearchResult from '@/components/search/SmallSearchResult.vue';
 import SearchPagination from '@/components/search/SearchPagination.vue';
@@ -42,6 +45,8 @@ import { SearchModule } from '@/store/modules/search';
   }
 })
 export default class AssociatedProcesses extends Vue {
+  initialFilters: storeFilters | null = null;
+
   get filters() {
     return SearchModule.filters;
   }
@@ -50,8 +55,12 @@ export default class AssociatedProcesses extends Vue {
     return SearchModule.result;
   }
 
+  get key() {
+    return SearchModule.filters.page * SearchModule.filters.size;
+  }
+
   updateFilters(filters: SearchFilters) {
-    SearchModule.updateFilters({
+    return SearchModule.assignFilters({
       page: 0,
       ...filters
     });
