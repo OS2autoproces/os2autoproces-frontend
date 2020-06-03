@@ -1,5 +1,11 @@
 <template>
-  <SelectionField :disabled="disabled" :value="item" @change="valueChanged" :items="items" />
+  <SelectionField
+    :hasError="hasError"
+    :disabled="disabled"
+    :value="item"
+    @change="valueChanged"
+    :items="items"
+  />
 </template>
 
 <script lang='ts'>
@@ -21,6 +27,7 @@ export default class MappedSelectionField<T> extends Vue {
   value!: T;
   @Prop(Boolean) disabled!: boolean;
   @Prop(Array) items!: Array<Item<T>>;
+  @Prop(Boolean) hasError!: boolean;
 
   get item() {
     const item = this.items.find(i => i.value === this.value);

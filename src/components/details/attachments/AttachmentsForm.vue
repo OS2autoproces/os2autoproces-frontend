@@ -15,6 +15,8 @@
         @change="update({ esdhReference: $event })"
         :disabled="state.disabled.attachmentsEdit"
         :value="state.esdhReference"
+        :hasError="isInErrors('esdhReference')"
+        id="esdhReference"
         :minHeight="'50px'"
       />
     </div>
@@ -51,6 +53,7 @@ import { Phase, PhaseKeys } from '@/models/phase';
 import { RootState } from '@/store';
 import { ProcessState, ProcessModule } from '@/store/modules/process';
 import { AuthModule } from '@/store/modules/auth';
+import { ErrorModule } from '@/store/modules/error';
 
 @Component({
   components: {
@@ -87,6 +90,10 @@ export default class AttachmentsForm extends Vue {
     // Finally, the result is returned.
     return firstPass?.replace(/href="www/g, 'href="http://www');
     // TODO: Fix mails without schema and maybe other edge cases
+  }
+
+  isInErrors(name: string) {
+    return ErrorModule.errorInField(ErrorModule.attachments, name);
   }
 }
 </script>

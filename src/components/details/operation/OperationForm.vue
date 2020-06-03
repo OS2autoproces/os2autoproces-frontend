@@ -7,7 +7,7 @@
     :disabled="state.disabled.operationEdit"
     @edit="update({ disabled: { operationEdit: $event } })"
   >
-    <div class="rating-wrapper" :class="{ disabled: state.disabled.operationEdit }">
+    <div class="rating-wrapper" :class="{ disabled: state.disabled.operationEdit, hasError: isInErrors('rating') }">
       <div class="rating-label">
         I hvor høj grad indfriede løsningen de forventede gevinster? *
         <InfoTooltip>Skalaen lav, mellem, høj angiver graden af gevinstrealisering.</InfoTooltip>
@@ -17,6 +17,8 @@
         @change="update({ rating: $event })"
         :disabled="state.disabled.operationEdit"
         :value="state.rating"
+        :hasError="isInErrors('rating')"
+        id="rating"
       />
     </div>
 
@@ -27,6 +29,8 @@
             @change="update({ legalClauseLastVerified: $event })"
             :disabled="state.disabled.operationEdit"
             :value="state.legalClauseLastVerified"
+            :hasError="isInErrors('legalClauseLastVerified')"
+            id="legalClauseLastVerified"
           />
         </WellItem>
       </div>
@@ -36,6 +40,8 @@
             @change="update({ decommissioned: $event })"
             :disabled="state.disabled.operationEdit"
             :value="state.decommissioned"
+            :hasError="isInErrors('decommissioned')"
+            id="decommissioned"
           />
         </WellItem>
       </div>
@@ -47,6 +53,8 @@
       @change="update({ ratingComment: $event })"
       :disabled="state.disabled.operationEdit"
       :value="state.ratingComment"
+      :hasError="isInErrors('ratingComment')"
+      id="ratingComment"
     />
   </FormSection>
 </template>
@@ -63,6 +71,7 @@ import Well from '@/components/common/Well.vue';
 import WellItem from '@/components/common/WellItem.vue';
 import { Phase, PhaseKeys } from '@/models/phase';
 import { ProcessModule } from '../../../store/modules/process';
+import { ErrorModule } from '@/store/modules/error';
 
 @Component({
   components: {
@@ -81,6 +90,9 @@ export default class OperationForm extends Vue {
   get state() {
     return ProcessModule;
   }
+  isInErrors(name: string) {
+    return ErrorModule.errorInField(ErrorModule.operation, name);
+  }
 }
 </script>
 
@@ -97,6 +109,9 @@ export default class OperationForm extends Vue {
   &:not(.disabled) {
     border-color: $color-primary;
     border-radius: 1rem;
+    &.hasError {
+      border-color: red;
+    }
   }
   .rating {
     margin-top: 0.5rem;

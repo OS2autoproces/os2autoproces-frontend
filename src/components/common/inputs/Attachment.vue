@@ -145,6 +145,6 @@ a {
 }
 
 .attachment-error {
-  color: red;
+  color: $color-error;
 }
 </style>

@@ -14,6 +14,8 @@
         @change="update({ longDescription: $event })"
         :disabled="state.disabled.challengesEdit"
         :value="state.longDescription"
+        :hasError="isInErrors('longDescription')"
+        id="longDescription"
         :maxLength="10000"
       />
     </div>
@@ -29,6 +31,8 @@
         @change="update({ solutionRequests: $event })"
         :disabled="state.disabled.challengesEdit"
         :value="state.solutionRequests"
+        :hasError="isInErrors('solutionRequests')"
+        id="solutionRequests"
         :maxLength="10000"
       />
     </div>
@@ -44,6 +48,8 @@
         @change="update({ processChallenges: $event })"
         :disabled="state.disabled.challengesEdit"
         :value="state.processChallenges"
+        :hasError="isInErrors('processChallenges')"
+        id="processChallenges"
         :maxLength="10000"
       />
     </div>
@@ -61,9 +67,11 @@
           <SelectionField
             :items="itSystems"
             :value="state.itSystems"
+            :hasError="isInErrors('itSystems')"
             itemText="name"
             :disabled="state.disabled.challengesEdit"
             @change="assign({ itSystems: $event })"
+            id="itSystems"
             multiple
           />
         </WellItem>
@@ -71,7 +79,7 @@
 
       <div>
         <WellItem labelWidth="30%" label="Sidst opdateret:">
-          <DatePicker :value="state.lastChanged" disabled />
+          <DatePicker :value="state.lastChanged" id="lastChanged" disabled />
         </WellItem>
 
         <WellItem
@@ -84,6 +92,8 @@
             fullWidth
             :disabled="state.disabled.challengesEdit"
             :value="state.itSystemsDescription"
+            :hasError="isInErrors('itSystemsDescription')"
+            id="itSystemsDescription"
             :maxLength="10000"
           />
         </WellItem>
@@ -107,6 +117,7 @@ import { HTTP } from '@/services/http-service';
 import { Phase, PhaseKeys } from '@/models/phase';
 import { ProcessModule } from '../../../store/modules/process';
 import { CommonModule } from '../../../store/modules/common';
+import { ErrorModule } from '@/store/modules/error';
 
 @Component({
   components: {
@@ -133,6 +144,10 @@ export default class ChallengesForm extends Vue {
 
   minPhase(phase: Phase) {
     return ProcessModule.minPhase(phase);
+  }
+
+  isInErrors(name: string) {
+    return ErrorModule.errorInField(ErrorModule.challenges, name);
   }
 }
 </script>

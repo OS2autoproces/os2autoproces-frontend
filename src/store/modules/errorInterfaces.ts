@@ -3,8 +3,14 @@ import { ErrorState } from './error';
 
 export interface ErrorSection {
   section: string;
-  errors: string[];
+  errors: ErrorWithDescription[];
 }
+
+export interface ErrorWithDescription {
+  name: string;
+  description: string;
+}
+
 type ProcessLabels = { [X in keyof ProcessReport]?: string };
 
 export const umbrellaLabels: ProcessLabels = {

@@ -19,6 +19,8 @@
         <LikertScale
           :disabled="state.disabled.assessmentEdit"
           :value="state.levelOfProfessionalAssessment"
+          :hasError="isInErrors('levelOfProfessionalAssessment')"
+          id="levelOfProfessionalAssessment"
           @change="update({ levelOfProfessionalAssessment: $event })"
         />
       </div>
@@ -33,6 +35,8 @@
         <LikertScale
           :disabled="state.disabled.assessmentEdit"
           :value="state.levelOfChange"
+          :hasError="isInErrors('levelOfChange')"
+          id="levelOfChange"
           @change="update({ levelOfChange: $event })"
         />
       </div>
@@ -44,6 +48,8 @@
         <LikertScale
           :disabled="state.disabled.assessmentEdit"
           :value="state.levelOfStructuredInformation"
+          :hasError="isInErrors('levelOfStructuredInformation')"
+          id="levelOfStructuredInformation"
           @change="update({ levelOfStructuredInformation: $event })"
         />
       </div>
@@ -58,6 +64,8 @@
         <LikertScale
           :disabled="state.disabled.assessmentEdit"
           :value="state.levelOfUniformity"
+          :hasError="isInErrors('levelOfUniformity')"
+          id="levelOfUniformity"
           @change="update({ levelOfUniformity: $event })"
         />
       </div>
@@ -68,6 +76,8 @@
         <LikertScale
           :disabled="state.disabled.assessmentEdit"
           :value="state.levelOfDigitalInformation"
+          :hasError="isInErrors('levelOfDigitalInformation')"
+          id="levelOfDigitalInformation"
           @change="update({ levelOfDigitalInformation: $event })"
         />
       </div>
@@ -81,6 +91,8 @@
         <LikertScale
           :disabled="state.disabled.assessmentEdit"
           :value="state.levelOfQuality"
+          :hasError="isInErrors('levelOfQuality')"
+          id="levelOfQuality"
           @change="update({ levelOfQuality: $event })"
         />
       </div>
@@ -95,6 +107,8 @@
         <LikertScale
           :disabled="state.disabled.assessmentEdit"
           :value="state.levelOfSpeed"
+          :hasError="isInErrors('levelOfSpeed')"
+          id="levelOfSpeed"
           @change="update({ levelOfSpeed: $event })"
         />
       </div>
@@ -109,6 +123,8 @@
         <LikertScale
           :disabled="state.disabled.assessmentEdit"
           :value="state.levelOfRoutineWorkReduction"
+          :hasError="isInErrors('levelOfRoutineWorkReduction')"
+          id="levelOfRoutineWorkReduction"
           @change="update({ levelOfRoutineWorkReduction: $event })"
         />
       </div>
@@ -123,6 +139,8 @@
         <LikertScale
           :disabled="state.disabled.assessmentEdit"
           :value="state.evaluatedLevelOfRoi"
+          :hasError="isInErrors('evaluatedLevelOfRoi')"
+          id="evaluatedLevelOfRoi"
           @change="update({ evaluatedLevelOfRoi: $event })"
         />
       </div>
@@ -138,6 +156,7 @@ import InfoTooltip from '@/components/common/InfoTooltip.vue';
 import FormSection from '@/components/details/FormSection.vue';
 import { ProcessState, ProcessModule } from '@/store/modules/process';
 import { PhaseKeys, Phase } from '@/models/phase';
+import { ErrorModule } from '@/store/modules/error';
 
 @Component({
   components: {
@@ -151,6 +170,10 @@ export default class AssessmentForm extends Vue {
 
   get state() {
     return ProcessModule;
+  }
+
+  isInErrors(name: string) {
+    return ErrorModule.errorInField(ErrorModule.assessment, name);
   }
 }
 </script>

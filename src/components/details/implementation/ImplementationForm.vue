@@ -19,6 +19,8 @@
         @change="update({ technicalImplementationNotes: $event })"
         :disabled="state.disabled.implementationEdit"
         :value="state.technicalImplementationNotes"
+        :hasError="isInErrors('technicalImplementationNotes')"
+        id="technicalImplementationNotes"
       />
     </div>
 
@@ -34,6 +36,8 @@
         @change="update({ organizationalImplementationNotes: $event })"
         :disabled="state.disabled.implementationEdit"
         :value="state.organizationalImplementationNotes"
+        :hasError="isInErrors('organizationalImplementationNotes')"
+        id="organizationalImplementationNotes"
       />
     </div>
 
@@ -49,6 +53,8 @@
           @remove="removeTechnology($event)"
           :disabled="state.disabled.implementationEdit"
           :value="state.technologies"
+          :hasError="isInErrors('technologies')"
+          id="technologies"
           :items="technologies"
         />
       </div>
@@ -58,6 +64,8 @@
           class="run-period-field"
           :disabled="state.disabled.implementationEdit"
           :value="state.runPeriod"
+          :hasError="isInErrors('runPeriod')"
+          id="runPeriod"
           @change="update({ runPeriod: $event })"
           :items="runPeriods"
         />
@@ -79,6 +87,7 @@ import { CommonModule } from '@/store/modules/common';
 import { PhaseKeys, Phase } from '@/models/phase';
 import { RunPeriodKeys, RunPeriodLabels } from '@/models/runperiod';
 import { ProcessModule } from '@/store/modules/process';
+import { ErrorModule } from '@/store/modules/error';
 
 @Component({
   components: {
@@ -110,6 +119,10 @@ export default class ImplementationForm extends Vue {
 
   get state() {
     return ProcessModule;
+  }
+
+  isInErrors(name: string) {
+    return ErrorModule.errorInField(ErrorModule.implementation, name);
   }
 
   mounted() {

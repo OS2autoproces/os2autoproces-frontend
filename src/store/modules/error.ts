@@ -7,6 +7,7 @@ import {
   processLabels,
   errorLimitations,
   ErrorSection,
+  ErrorWithDescription,
   defaultErrorState
 } from './errorInterfaces';
 import { getInvalidProperties } from './validation';
@@ -23,31 +24,31 @@ export interface ErrorState {
 
 @Module({ dynamic: true, store, name: 'error' })
 export default class Error extends VuexModule implements ErrorState {
-  generalInformation = {
+  generalInformation: ErrorSection = {
     section: 'Grundlæggende oplysninger',
     errors: []
   };
-  challenges = {
+  challenges: ErrorSection = {
     section: 'Problemstillinger',
     errors: []
   };
-  assessment = {
+  assessment: ErrorSection = {
     section: 'Faglig vurdering',
     errors: []
   };
-  timeAndProcess = {
+  timeAndProcess: ErrorSection = {
     section: 'Tid og proces',
     errors: []
   };
-  attachments = {
+  attachments: ErrorSection = {
     section: 'Bilag og links',
     errors: []
   };
-  implementation = {
+  implementation: ErrorSection = {
     section: 'Udvikling og implementering',
     errors: []
   };
-  operation = {
+  operation: ErrorSection = {
     section: 'Drift',
     errors: []
   };
@@ -94,6 +95,10 @@ export default class Error extends VuexModule implements ErrorState {
     return sections.some(
       section => this[section as keyof ErrorState].errors && this[section as keyof ErrorState].errors.length > 0
     );
+  }
+
+  get errorInField() {
+    return (section: ErrorSection, fieldName: string) => section.errors.some(e => e.name === fieldName);
   }
 }
 

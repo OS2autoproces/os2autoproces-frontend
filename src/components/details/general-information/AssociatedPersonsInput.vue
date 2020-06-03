@@ -23,6 +23,7 @@
         itemSubText="email"
         ref="userSelectionField"
         class="search-field"
+        :hasError="hasError"
         placeholder="Skriv navn for at søge"
         @search="search($event)"
         @change="addUser($event)"
@@ -55,6 +56,8 @@ import { ProcessModule } from '@/store/modules/process';
 export default class AssociatedPersonsInput extends Vue {
   @Prop(Boolean)
   disabled!: boolean;
+  @Prop(Boolean)
+  hasError!: boolean;
 
   get state() {
     return ProcessModule;

@@ -2,8 +2,20 @@
   <div class="details">
     <NavBar />
     <div class="page">
-      <Process v-if="!this.loading && !this.isUmbrella" :isReporting="isReporting" :id="id" :phase="type" />
-      <Umbrella v-if="!this.loading && this.isUmbrella" :isReporting="isReporting" :id="id" :type="type" />
+      <Process
+        v-if="!this.loading && !this.isUmbrella"
+        :isReporting="isReporting"
+        :id="id"
+        :phase="type"
+        @clickedHashLink="clickedHashLink = true"
+      />
+      <Umbrella
+        v-if="!this.loading && this.isUmbrella"
+        :isReporting="isReporting"
+        :id="id"
+        :type="type"
+        @clickedHashLink="clickedHashLink = true"
+      />
     </div>
   </div>
 </template>
@@ -35,6 +47,7 @@ export default class Details extends Vue {
 
   isUmbrella = true;
   loading = true;
+  clickedHashLink = false;
 
   constructor() {
     super();
@@ -59,15 +72,17 @@ export default class Details extends Vue {
   }
 
   shouldLeaveWithoutSaving(event: BeforeUnloadEvent) {
-    if (this.$store.state.process.hasChanged) {
+    if (this.$store.state.process.hasChanged && !this.clickedHashLink) {
       const message = 'Vil du fortsætte uden at gemme?';
       event.returnValue = message;
       return message;
     }
+    this.clickedHashLink = false;
   }
 
   shouldContinueWithoutSaving(): boolean {
-    if (!this.$store.state.process.hasChanged) {
+    if (!this.$store.state.process.hasChanged || this.clickedHashLink) {
+      this.clickedHashLink = false;
       return true;
     }
 

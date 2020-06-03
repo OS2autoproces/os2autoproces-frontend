@@ -26,13 +26,18 @@
       <div v-if="errors.hasErrors">
         <h3>Følgende felter er ugyldige:</h3>
         <ul class="section-errors">
-          <li v-for="field in errors.generalInformation.errors" :key="field">{{ field }}</li>
+          <li v-for="field in errors.generalInformation.errors" :key="field" @click="clickedHashLink">
+            <a :href="hashLink(field.name)">{{ field.description }}</a>
+          </li>
         </ul>
       </div>
     </SnackBar>
 
     <SnackBar :timeout="3000" color="success" @onSnackClose="showSaveSuccess = false" :value="showSaveSuccess"
       >Processen er gemt!</SnackBar
+    >
+    <SnackBar :value="showSaveError" @onSnackClose="showSaveError = false" :timeout="5000" color="error"
+      >Processen er IKKE gemt - prøv igen!</SnackBar
     >
   </div>
 </template>
@@ -107,6 +112,10 @@ export default class Umbrella extends Vue {
 
   get errors() {
     return ErrorModule;
+  }
+
+  clickHashLink() {
+    this.$emit('clickedHashLink');
   }
 
   beforeCreate() {

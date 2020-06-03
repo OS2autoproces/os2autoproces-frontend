@@ -9,6 +9,7 @@
       </div>
     </div>
     <SelectionField
+      :hasError="hasError"
       v-if="!disabled"
       class="tag-input"
       :value="item"
@@ -35,6 +36,7 @@ import { Technology } from '@/store/modules/commonInterfaces';
 })
 export default class TagSelector extends Vue {
   @Prop(Boolean) disabled!: boolean;
+  @Prop(Boolean) hasError!: boolean;
   @Prop(String) placeholder!: string;
   @Prop(Array) value!: Technology[];
   @Prop(Array) items!: Technology[];

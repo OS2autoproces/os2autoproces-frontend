@@ -1,7 +1,7 @@
 <template>
   <div class="scale" :class="{ disabled }">
     <div class="scale-option" v-for="likert in items" :key="likert.value" @click="select(likert.value)">
-      <Checkbox class="checkbox" :disabled="disabled" :value="likert.value === value" />
+      <Checkbox class="checkbox" :disabled="disabled" :value="likert.value === value" :hasError="hasError" />
       <div class="label">{{ likert.label }}</div>
     </div>
   </div>
@@ -20,6 +20,7 @@ import { LikertScaleKeys, LikertScaleLabels } from '@/models/likert-scale';
 export default class LikertScale extends Vue {
   @Prop(String) value!: string;
   @Prop(Boolean) disabled!: boolean;
+  @Prop(Boolean) hasError!: boolean;
 
   items = [
     { value: LikertScaleKeys.VERY_HIGH, label: LikertScaleLabels.VERY_HIGH },

@@ -12,12 +12,14 @@
         <InputField
           class="title-field flex-grow"
           :value="state.title"
+          :hasError="isInErrors('title')"
+          id="title"
           :disabled="state.disabled.generalInformationEdit"
           :class="{ disabled: state.disabled.generalInformationEdit }"
           @change="update({ title: $event })"
         />
-        <div v-if="!isReporting" class="bookmark-button" role="button" @click="setBookmark(!hasBookmarked)">
-          <StarIcon :class="{ selected: hasBookmarked }" />
+        <div v-if="!isReporting" class="bookmark-button" role="button" @click="setBookmark(!state.hasBookmarked)">
+          <StarIcon :class="{ selected: state.hasBookmarked }" />
         </div>
         <MunicipalityLogo :src="logo" />
       </div>
@@ -25,12 +27,14 @@
       <Well>
         <div>
           <WellItem labelWidth="200px" label="ID:">
-            <InputField disabled :value="state.id" />
+            <InputField disabled :value="state.id" id="id" />
           </WellItem>
           <WellItem labelWidth="200px" label="KLE-nr:">
             <SelectionField
               :disabled="state.disabled.generalInformationEdit"
               :value="state.kle"
+              :hasError="isInErrors('kle')"
+              id="kle"
               @change="setKle($event)"
               :items="common.kles"
               itemText="code"
@@ -41,6 +45,8 @@
             <SelectionField
               :disabled="state.disabled.generalInformationEdit"
               :value="state.form"
+              :hasError="isInErrors('form')"
+              id="form"
               @change="update({ form: $event })"
               :items="common.forms"
               itemText="code"
@@ -51,6 +57,8 @@
             <InputField
               :disabled="state.disabled.generalInformationEdit"
               :value="state.klId"
+              :hasError="isInErrors('klId')"
+              id="klId"
               @change="update({ klId: $event })"
             />
           </WellItem>
@@ -63,6 +71,8 @@
               :disabled="state.disabled.generalInformationEdit"
               mask="##.##.##.##.##"
               :value="state.kla"
+              :hasError="isInErrors('kla')"
+              id="kla"
               @change="setKla"
             />
           </WellItem>
@@ -73,6 +83,8 @@
             <DomainsField
               :disabled="state.disabled.generalInformationEdit"
               :value="state.domains"
+              :hasError="isInErrors('domains')"
+              id="domains"
               @change="assign({ domains: $event })"
             />
           </WellItem>
@@ -81,6 +93,8 @@
               itemSubText="email"
               :disabled="state.disabled.generalInformationEdit"
               :value="state.contact"
+              :hasError="isInErrors('contact')"
+              id="contact"
               itemText="name"
               @search="search($event)"
               isItemsPartial
@@ -89,20 +103,16 @@
               clearable
             />
           </WellItem>
-          <WellItem labelWidth="120px" v-if="state.contact" label="Mail:">
-            {{ state.contact.email }}
-          </WellItem>
+          <WellItem labelWidth="120px" v-if="state.contact" label="Mail:">{{ state.contact.email }}</WellItem>
         </div>
 
         <div>
-          <WellItem labelWidth="120px" label="Synlighed:">
-            {{ TypeLabels[state.type] }}
-          </WellItem>
+          <WellItem labelWidth="120px" label="Synlighed:">{{ TypeLabels[state.type] }}</WellItem>
           <WellItem labelWidth="120px" label="Oprettet:">
-            <DatePicker :value="state.created" disabled />
+            <DatePicker :value="state.created" id="created" disabled />
           </WellItem>
           <WellItem labelWidth="120px" label="Sidst opdateret:">
-            <DatePicker :value="state.lastChanged" disabled />
+            <DatePicker :value="state.lastChanged" id="lastChanged" disabled />
           </WellItem>
         </div>
       </Well>
@@ -114,6 +124,8 @@
         :disabled="state.disabled.generalInformationEdit"
         @change="update({ shortDescription: $event })"
         :value="state.shortDescription"
+        :hasError="isInErrors('shortDescription')"
+        id="shortDescription"
         :maxLength="140"
       />
 
@@ -122,6 +134,8 @@
         :disabled="state.disabled.generalInformationEdit"
         @change="update({ longDescription: $event })"
         :value="state.longDescription"
+        :hasError="isInErrors('longDescription')"
+        id="longDescription"
         :maxLength="10000"
       />
     </div>
@@ -186,6 +200,7 @@ import MunicipalityLogo from '@/components/common/MunicipalityLogo.vue';
 import StarIcon from '@/components/icons/StarIcon.vue';
 import { AuthModule } from '../../../store/modules/auth';
 import { ProcessModule } from '../../../store/modules/process';
+import { ErrorModule } from '@/store/modules/error';
 
 @Component({
   components: {
@@ -225,6 +240,10 @@ export default class UmbrellaForm extends Vue {
 
   get logo() {
     return `/logos/${ProcessModule.cvr}.png`;
+  }
+
+  isInErrors(name: string) {
+    return ErrorModule.errorInField(ErrorModule.generalInformation, name);
   }
 
   search(name: string) {
