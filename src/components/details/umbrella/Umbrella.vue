@@ -2,7 +2,7 @@
   <div class="page">
     <div class="side-bar">
       <div class="side-bar-content">
-        <router-link to="/search" class="search-page-link"> <ArrowLeftIcon />Tilbage til søgning </router-link>
+        <a @click="goBack" class="search-page-link"> <ArrowLeftIcon />Tilbage til søgning </a>
 
         <Button primary v-if="isReporting" class="report-button" @click="report">Gem</Button>
         <Button primary v-if="!isReporting" class="save-button" @click="save">Gem</Button>
@@ -70,6 +70,7 @@ import { isEmpty } from 'lodash';
 import { searchActionTypes } from '@/store/modules/search/actions';
 import { VisibilityKeys } from '@/models/visibility';
 import { SearchFilters } from '@/store/modules/search/state';
+import { isIE } from '@/services/url-service';
 
 @Component({
   components: {
@@ -123,6 +124,12 @@ export default class Umbrella extends Vue {
 
   clickHashLink() {
     this.$emit('clickedHashLink');
+  }
+  goBack() {
+    if (isIE()) {
+      this.$emit('goBack');
+    }
+    this.$router.push('/search');
   }
 
   beforeCreate() {

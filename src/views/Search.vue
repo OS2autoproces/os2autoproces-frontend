@@ -1,47 +1,52 @@
 <template>
   <div class="search">
-    <NavBar />
+    <div>
+      <NavBar />
 
-    <div class="page">
-      <div class="filters">
-        <SearchFiltersComponent @change="updateFilters" @assign="assignFilters" />
-      </div>
-      <div>
-        <div class="results-wrapper">
-          <div class="report">
-            <SearchSortingDropdown />
-            <router-link to="/report"> <PlusIcon />Indberet proces </router-link>
+      <div class="page">
+        <div class="filters">
+          <SearchFiltersComponent @change="updateFilters" @assign="assignFilters" />
+        </div>
+        <div>
+          <div class="results-wrapper">
+            <div class="report">
+              <SearchSortingDropdown />
+              <router-link to="/report"> <PlusIcon />Indberet proces </router-link>
+            </div>
+
+            <SearchSorting
+              v-if="!isSearchingForUmbrellaProcess"
+              :sorting="filters.sorting"
+              @change="updateFilters({ sorting: $event })"
+            />
+            <SearchSortingUmbrella v-else :sorting="filters.sorting" @change="updateFilters({ sorting: $event })" />
+            <div class="results" v-if="result">
+              <div>
+                <router-link
+                  :to="'/details/' + process.id"
+                  @click="setID(process.id)"
+                  class="search-result-link"
+                  v-for="process in result.processes"
+                  :key="process.id"
+                >
+                  <SearchResult :process="process" />
+                </router-link>
+              </div>
+            </div>
+
+            <SearchPagination
+              v-if="result"
+              :page="result.page.number"
+              :pageTotal="result.page.totalPages"
+              :size="result.page.size"
+              @on-page-change="updateFiltersAndScrollToTop({ page: $event })"
+              @on-size-change="updateFilters({ size: $event })"
+            />
           </div>
-
-          <SearchSorting
-            v-if="!isSearchingForUmbrellaProcess"
-            :sorting="filters.sorting"
-            @change="updateFilters({ sorting: $event })"
-          />
-          <SearchSortingUmbrella v-else :sorting="filters.sorting" @change="updateFilters({ sorting: $event })" />
-
-          <div class="results" v-if="result">
-            <router-link
-              :to="'/details/' + process.id"
-              class="search-result-link"
-              v-for="process in result.processes"
-              :key="process.id"
-            >
-              <SearchResult :process="process" />
-            </router-link>
-          </div>
-
-          <SearchPagination
-            v-if="result"
-            :page="result.page.number"
-            :pageTotal="result.page.totalPages"
-            :size="result.page.size"
-            @on-page-change="updateFiltersAndScrollToTop({ page: $event })"
-            @on-size-change="updateFilters({ size: $event })"
-          />
         </div>
       </div>
     </div>
+    <Details :isReporting="false" :id="id" v-if="id" class="detailsView" @goBack="ieGoBack" />
   </div>
 </template>
 
@@ -61,6 +66,7 @@ import { SearchFilters, SearchResultProcess } from '../store/modules/search/stat
 import SearchSortingDropdown from '@/components/search/SearchSortingDropdown.vue';
 import { getInitialState } from '../store/modules/search';
 import { searchGetterTypes } from '../store/modules/search/getters';
+import Details from './Details.vue';
 
 @Component({
   components: {
@@ -71,14 +77,18 @@ import { searchGetterTypes } from '../store/modules/search/getters';
     SearchResult,
     SearchSorting,
     SearchSortingUmbrella,
-    SearchSortingDropdown
+    SearchSortingDropdown,
+    Details
   }
 })
 export default class Search extends Vue {
   @Prop({ type: Object as () => SearchFilters }) initialFilters!: SearchFilters;
+  @Prop(Number) id!: number;
   @Action(searchActionTypes.SEARCH) dispatchSearch!: VoidFunction;
   @Action(searchActionTypes.ASSIGN_FILTERS) dispatchAssignFilters!: (filters: SearchFilters) => void;
   @Getter(searchGetterTypes.IS_SEARCHING_FOR_UMBRELLA_PROCESS) isSearchingForUmbrellaProcess!: () => boolean;
+
+  lastFilterUpdate: Partial<SearchFilters> = {};
 
   get filters() {
     return this.$store.state.search.filters;
@@ -86,6 +96,10 @@ export default class Search extends Vue {
 
   get result() {
     return this.$store.state.search.result;
+  }
+
+  async ieGoBack() {
+    await this.updateFilters(this.lastFilterUpdate);
   }
 
   async updateFiltersAndScrollToTop(filters: Partial<SearchFilters>) {
@@ -96,6 +110,7 @@ export default class Search extends Vue {
   }
 
   updateFilters(filters: Partial<SearchFilters>) {
+    this.lastFilterUpdate = filters;
     return this.$store.dispatch(searchActionTypes.ASSIGN_FILTERS, {
       page: 0,
       ...filters
@@ -121,6 +136,14 @@ export default class Search extends Vue {
 .search {
   display: flex;
   flex-direction: column;
+}
+
+.detailsView {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: $color-background;
 }
 
 .filters {

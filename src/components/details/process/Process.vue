@@ -2,7 +2,7 @@
   <div class="page">
     <div class="side-bar">
       <div class="side-bar-content">
-        <router-link to="/search" class="search-page-link"> <ArrowLeftIcon />Tilbage til søgning </router-link>
+        <a @click="goBack" class="search-page-link"> <ArrowLeftIcon />Tilbage til søgning </a>
 
         <ProcessMenu :phase="phase" :canEdit="state.canEdit" :isReporting="isReporting" />
 
@@ -112,6 +112,7 @@ import { ErrorState } from '@/store/modules/error/state';
 import SnackBar from '@/components/common/SnackBar.vue';
 import { isEmpty } from 'lodash';
 import { processGetterTypes } from '@/store/modules/process/getters';
+import { isIE } from '@/services/url-service';
 
 @Component({
   components: {
@@ -158,7 +159,6 @@ export default class Process extends Vue {
 
   showSaveSuccess = false;
   showSaveError = false;
-
   get state() {
     return this.$store.state.process;
   }
@@ -183,6 +183,14 @@ export default class Process extends Vue {
 
   clickHashLink() {
     this.$emit('clickedHashLink');
+  }
+  // If browser is Internet Explorer, the parent details view is nested in the search view,
+  // and we have to reset the search url when hiding it.
+  goBack() {
+    if (isIE()) {
+      this.$emit('goBack');
+    }
+    this.$router.push('/search');
   }
 
   beforeCreate() {
