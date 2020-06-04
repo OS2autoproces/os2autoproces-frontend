@@ -253,7 +253,27 @@ export default class RichTextArea extends Vue {
 .text-area-readonly {
   white-space: pre-wrap;
   width: 100%;
-  word-break: break-all;
+  word-break: keep-all;
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    margin: 10px 0 20px !important;
+  }
+
+  blockquote {
+    border-left: 0.25em solid #dfe2e5;
+    color: #6a737d;
+    padding-left: 1em;
+    margin: 20px 0 !important;
+  }
+
+  p {
+    margin-top: 16px !important;
+    margin-bottom: 16px !important;
+    min-height: 1rem;
+  }
 }
 
 .full-width {
