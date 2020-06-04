@@ -78,6 +78,7 @@ import Details from './Details.vue';
 })
 export default class Search extends Vue {
   @Prop({ type: Object as () => SearchFilters }) initialFilters!: SearchFilters;
+  @Prop(Number) id!: number;
 
   lastFilterUpdate: Partial<SearchFilters> = {};
 
@@ -94,6 +95,10 @@ export default class Search extends Vue {
 
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;
+  }
+
+  setID(id: number) {
+    this.id = id;
   }
 
   updateFilters(filters: Partial<SearchFilters>) {
