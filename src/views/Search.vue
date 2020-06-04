@@ -1,6 +1,7 @@
 <template>
   <div class="search">
-    <NavBar />
+    <div>
+      <NavBar />
 
     <div class="page">
       <div class="filters">
@@ -24,6 +25,7 @@
             <router-link
               :to="'/details/' + process.id"
               class="search-result-link"
+                  @click="setID(process.id)"
               v-for="process in state.result.processes"
               :key="process.id"
             >
@@ -42,6 +44,7 @@
         </div>
       </div>
     </div>
+    <Details :isReporting="false" :id="id" v-if="id" class="detailsView" @goBack="ieGoBack" />
   </div>
 </template>
 
@@ -59,6 +62,7 @@ import { SearchFilters, SearchResultProcess } from '@/store/modules/searchInterf
 import SearchSortingDropdown from '@/components/search/SearchSortingDropdown.vue';
 import { SearchModule } from '../store/modules/search';
 import store from '../store';
+import Details from "./Details.vue";
 
 @Component({
   components: {
@@ -69,14 +73,21 @@ import store from '../store';
     SearchResult,
     SearchSorting,
     SearchSortingUmbrella,
-    SearchSortingDropdown
+    SearchSortingDropdown,
+    Details
   }
 })
 export default class Search extends Vue {
   @Prop({ type: Object as () => SearchFilters }) initialFilters!: SearchFilters;
 
+  lastFilterUpdate: Partial<SearchFilters> = {};
+
   get state() {
     return SearchModule;
+  }
+
+  async ieGoBack() {
+    await this.updateFilters(this.lastFilterUpdate);
   }
 
   async updateFiltersAndScrollToTop(filters: Partial<SearchFilters>) {
@@ -87,6 +98,7 @@ export default class Search extends Vue {
   }
 
   updateFilters(filters: Partial<SearchFilters>) {
+    this.lastFilterUpdate = filters;
     return SearchModule.assignFilters({
       page: 0,
       ...filters
@@ -112,6 +124,14 @@ export default class Search extends Vue {
 .search {
   display: flex;
   flex-direction: column;
+}
+
+.detailsView {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: $color-background;
 }
 
 .filters {

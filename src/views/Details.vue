@@ -8,6 +8,7 @@
         :id="id"
         :phase="type"
         @clickedHashLink="clickedHashLink = true"
+        @goBack="goBack"
       />
       <Umbrella
         v-if="!this.loading && this.isUmbrella"
@@ -15,6 +16,7 @@
         :id="id"
         :type="type"
         @clickedHashLink="clickedHashLink = true"
+        @goBack="goBack"
       />
     </div>
   </div>
@@ -57,6 +59,10 @@ export default class Details extends Vue {
   @Watch('id')
   idChanged() {
     this.loadContent();
+  }
+
+  goBack() {
+    this.$emit('goBack');
   }
 
   beforeCreate() {

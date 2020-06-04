@@ -7,9 +7,9 @@ import ManageTechnologies from './views/ManageTechnologies.vue';
 import ReportProcess from './views/ReportProcess.vue';
 import Search from './views/Search.vue';
 import Discovery from './views/Discovery.vue';
-import { mapSearchQueryToObject, mapQueryObjToFilters } from './services/url-service';
+import { mapSearchQueryToObject, mapQueryObjToFilters, isIE } from '@/services/url-service';
 import { isEmpty } from 'lodash';
-import { getInitialState } from './store/modules/searchFunctions';
+import { getInitialState } from '@/store/modules/searchFunctions';
 
 Vue.use(Router);
 
@@ -27,6 +27,10 @@ function validateAuth(isValid: (user: User | undefined | null) => boolean) {
       }
     }
   };
+}
+
+function handleDetailsIE() {
+  return isIE() ? isLoggedIn() : isLoggedIn();
 }
 
 function isLoggedIn() {
@@ -63,7 +67,7 @@ export const routes: RouteConfig[] = [
   },
   {
     path: '/details/:id',
-    component: Details,
+    component: isIE() ? Search : Details,
     props: route => ({ isReporting: false, id: Number(route.params.id) }),
     beforeEnter: isLoggedIn()
   },
