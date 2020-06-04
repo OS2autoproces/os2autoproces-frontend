@@ -414,6 +414,8 @@ export default class RichTextArea extends Vue {
   padding: 0.2em;
   background-color: $color-background !important;
   border-bottom: 0.1em solid $color-primary !important;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
   display: flex;
   width: 100%;
   justify-content: space-between;
