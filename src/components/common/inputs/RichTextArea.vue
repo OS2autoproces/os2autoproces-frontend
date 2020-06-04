@@ -75,6 +75,11 @@
             <button class="menubar__button" @click="commands.redo">
               <v-icon>redo</v-icon>
             </button>
+
+            <button class="menubar__button" @click="popupEditorHelp">
+              <v-icon>help</v-icon>
+              Hjælp
+            </button>
           </div>
         </editor-menu-bar>
 
@@ -96,6 +101,90 @@
       v-if="disabled"
       v-html="sanitizedHtml"
     ></div>
+    <AppDialog :open="isEditorHelpDialogOpen" @close="closeEditorHelpDialog" width="">
+      <DialogContent>
+        <div class="editor-help-text">
+          <h1>Introduktion og genveje i tekst-editor</h1>
+          <h2>Formatering af titler</h2>
+          <p>
+            Ved tryk på <code>H1</code>, <code>H2</code> eller <code>H3</code>, kan du ændre den tekst du har markeret
+            til at være formateret som en titel eller undertitel
+          </p>
+          <h3>Genveje:</h3>
+          <p>
+            Ved indtastning af <code>#</code> efterfulgt at et mellemrum, aktiveres <code>H1</code> automatisk.
+            <br />Det samme gør sig gældende for <code>##</code> efterfulgt mellemrum, som aktiverer <code>H2</code>, og
+            <code>###</code> efterfulgt mellemrum, som aktiverer <code>H3</code>.<br />Hvis det var en fejl, kan
+            formateringen annulleres ved genvejen <code>CTRL+Z</code>.
+          </p>
+          <h2>Formatering af brødtekst</h2>
+          <p>
+            Ved tryk på <v-icon>format_bold</v-icon>, <v-icon>format_italic</v-icon>, <v-icon>strikethrough_s</v-icon>,
+            og <v-icon>format_underline</v-icon> i menubaren kan du hhv. vælge fed, kursiv, gennemstreget og
+            understreget formatering til tekst.
+          </p>
+          <h3>Genveje:</h3>
+          <ul>
+            <li>
+              <p><code>CTRL+B</code> for fed tekst</p>
+              <p>
+                Indtastning af <code>**</code> eller <code>__</code> foran og bagved ordet du vil have fremhævet virker
+                også.
+              </p>
+            </li>
+            <li>
+              <p><code>CTRL+I</code> for kursiv tekst</p>
+              <p>
+                Indtastning af <code>_</code> eller <code>*</code> foran og bagved ordet du vil have fremhævet virker
+                også.
+              </p>
+            </li>
+            <li>
+              <p><code>CTRL+U</code> for understreget tekst</p>
+            </li>
+          </ul>
+          <h2>Punkter og indentering</h2>
+          <p>
+            Ved tryk på <v-icon>format_list_bulleted</v-icon> og <v-icon>format_list_numbered</v-icon> kan du opstille
+            din tekst i punktform, med eller uden nummerering.<br />Ved tryk på <v-icon>format_quote</v-icon> kan du
+            indrykke tekst et enkelt niveau. Hvis der ønskes flere indrykninger, bedes du bruge genvejen i stedet for.
+          </p>
+          <h3>Genveje:</h3>
+          <p>
+            Ved indtastning af <code>-</code> efterfulgt et mellemrum, aktiveres <v-icon>format_list_bulleted</v-icon>.
+            <br />Ved indtastning af <code>1.</code> eller et andet tal, efterfulgt et mellemrum, aktiveres
+            <v-icon>format_list_numbered</v-icon>.<br />Ved indtastning af <code>&gt;</code> efterfulgt et mellemrum,
+            aktiveres <v-icon>format_quote</v-icon>.
+          </p>
+          <p>Man kan indrykke punkter, tal og indrykninger ved tryk på <code>TAB</code> .</p>
+          <p>Fælles for alle ovenstående genveje, er at de kan bruges <em>rekursivt, </em>eksempelvis:</p>
+          <blockquote>
+            <p>Første indryk</p>
+            <blockquote><p>Andet indryk</p></blockquote>
+          </blockquote>
+          <ul>
+            <li>
+              <p>Første punkt</p>
+              <ul>
+                <li><p>Andet indrykkede punkt</p></li>
+              </ul>
+            </li>
+          </ul>
+          <ol>
+            <li>
+              <p>Første punkt</p>
+              <ol>
+                <li><p>Andet indryk</p></li>
+              </ol>
+            </li>
+          </ol>
+          <hr />
+          <div class="dialog-actions">
+            <Button @click="closeEditorHelpDialog()">OK</Button>
+          </div>
+        </div>
+      </DialogContent>
+    </AppDialog>
   </div>
 </template>
 
@@ -113,16 +202,22 @@ import {
   Strike,
   Underline,
   History,
-  Placeholder
+  Placeholder,
+  Code
   // @ts-ignore
 } from 'tiptap-extensions';
 import Vue from 'vue';
 import { Prop, Component, Watch } from 'vue-property-decorator';
 
+import AppDialog from '@/components/common/Dialog.vue';
+import DialogContent from '@/components/common/DialogContent.vue';
+
 @Component({
   components: {
     EditorContent,
-    EditorMenuBar
+    EditorMenuBar,
+    AppDialog,
+    DialogContent
   }
 })
 export default class RichTextArea extends Vue {
@@ -142,6 +237,8 @@ export default class RichTextArea extends Vue {
   readonly twoColumnBreakpoint!: number;
   @Prop(Boolean)
   readonly fullWidth!: boolean;
+
+  isEditorHelpDialogOpen = false;
 
   emitAfterOnUpdate = false;
 
@@ -164,8 +261,17 @@ export default class RichTextArea extends Vue {
       emptyNodeText: (node: any) => {
         return this.placeholder;
       }
-    })
+    }),
+    new Code()
   ];
+
+  popupEditorHelp() {
+    this.isEditorHelpDialogOpen = true;
+  }
+
+  closeEditorHelpDialog() {
+    this.isEditorHelpDialogOpen = false;
+  }
 
   mounted() {
     this.editor = new Editor({
@@ -308,6 +414,13 @@ export default class RichTextArea extends Vue {
   padding: 0.2em;
   background-color: $color-background !important;
   border-bottom: 0.1em solid $color-primary !important;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+
+  .menubar__button:last-child {
+    margin-left: auto;
+  }
 }
 
 .menubar__button {
@@ -359,5 +472,42 @@ export default class RichTextArea extends Vue {
   margin: 0px !important;
   padding: 0.5em;
   outline: none !important;
+}
+
+.editor-help-text {
+  display: block;
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    margin: 0.7em 0 0.7em !important;
+  }
+
+  blockquote {
+    border-left: 0.25em solid #dfe2e5;
+    color: #6a737d;
+    padding-left: 1em;
+    margin: 20px 0 !important;
+  }
+
+  p {
+    margin-top: 0.7em !important;
+    margin-bottom: 0.7em !important;
+    min-height: 1rem;
+  }
+
+  .dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+
+    button {
+      margin: 1rem 0.5rem;
+    }
+  }
+}
+
+.v-dialog {
+  width: auto !important;
 }
 </style>
