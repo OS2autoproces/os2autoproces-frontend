@@ -24,7 +24,6 @@
             <router-link
               :to="'/details/' + process.id"
               class="search-result-link"
-              @click="setID(process.id)"
               v-for="process in state.result.processes"
               :key="process.id"
             >
@@ -43,7 +42,14 @@
         </div>
       </div>
     </div>
-    <Details :isReporting="false" :id="id" v-if="id" class="detailsView" @goBack="ieGoBack" />
+    <Details
+      :isReporting="false"
+      :id="id"
+      v-if="id"
+      class="detailsView"
+      @goBack="ieGoBack"
+      @clickedHashLink="clickedHashLink = true"
+    />
   </div>
 </template>
 
@@ -62,6 +68,7 @@ import SearchSortingDropdown from '@/components/search/SearchSortingDropdown.vue
 import { SearchModule } from '../store/modules/search';
 import store from '../store';
 import Details from './Details.vue';
+import { ProcessModule } from '@/store/modules/process';
 
 @Component({
   components: {
@@ -78,7 +85,8 @@ import Details from './Details.vue';
 })
 export default class Search extends Vue {
   @Prop({ type: Object as () => SearchFilters }) initialFilters!: SearchFilters;
-  @Prop(Number) id!: number;
+  @Prop(Number) id?: number;
+  clickedHashLink = false;
 
   lastFilterUpdate: Partial<SearchFilters> = {};
 
@@ -97,8 +105,30 @@ export default class Search extends Vue {
     document.documentElement.scrollTop = 0;
   }
 
-  setID(id: number) {
-    this.id = id;
+  beforeRouteUpdate(to: any, from: any, next: any) {
+    next(this.shouldContinueWithoutSaving());
+  }
+
+  beforeRouteLeave(to: any, from: any, next: any) {
+    next(this.shouldContinueWithoutSaving());
+  }
+
+  shouldLeaveWithoutSaving(event: BeforeUnloadEvent) {
+    if (this.id && ProcessModule.hasChanged && !this.clickedHashLink) {
+      const message = 'Vil du fortsætte uden at gemme?';
+      event.returnValue = message;
+      return message;
+    }
+    this.clickedHashLink = false;
+  }
+
+  shouldContinueWithoutSaving(): boolean {
+    if (!this.id || !ProcessModule.hasChanged || this.clickedHashLink) {
+      this.clickedHashLink = false;
+      return true;
+    }
+
+    return confirm('Vil du fortsætte uden at gemme?');
   }
 
   updateFilters(filters: Partial<SearchFilters>) {

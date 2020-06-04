@@ -7,7 +7,7 @@
         :isReporting="isReporting"
         :id="id"
         :phase="type"
-        @clickedHashLink="clickedHashLink = true"
+        @clickedHashLink="clickHashLink()"
         @goBack="goBack"
       />
       <Umbrella
@@ -15,7 +15,7 @@
         :isReporting="isReporting"
         :id="id"
         :type="type"
-        @clickedHashLink="clickedHashLink = true"
+        @clickedHashLink="clickHashLink()"
         @goBack="goBack"
       />
     </div>
@@ -65,6 +65,11 @@ export default class Details extends Vue {
     this.$emit('goBack');
   }
 
+  clickHashLink() {
+    this.clickedHashLink = true;
+    this.$emit('clickedHashLink');
+  }
+
   beforeCreate() {
     ProcessModule.clear();
   }
@@ -78,7 +83,7 @@ export default class Details extends Vue {
   }
 
   shouldLeaveWithoutSaving(event: BeforeUnloadEvent) {
-    if (this.$store.state.process.hasChanged && !this.clickedHashLink) {
+    if (ProcessModule.hasChanged && !this.clickedHashLink) {
       const message = 'Vil du fortsætte uden at gemme?';
       event.returnValue = message;
       return message;
@@ -87,7 +92,7 @@ export default class Details extends Vue {
   }
 
   shouldContinueWithoutSaving(): boolean {
-    if (!this.$store.state.process.hasChanged || this.clickedHashLink) {
+    if (!ProcessModule.hasChanged || this.clickedHashLink) {
       this.clickedHashLink = false;
       return true;
     }

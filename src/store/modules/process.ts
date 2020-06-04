@@ -48,7 +48,7 @@ export default class Process extends VuexModule implements ProcessState {
   klId: string | null = null;
   children: ProcessReport[] | null = null;
   parents: ProcessReport[] | null = null;
-  hasChanged: boolean | null = null;
+  hasChanged: boolean = false;
   sepMep: boolean | null = null;
   esdhReference: string | null = null;
   phase: Phase | null = null;
@@ -117,16 +117,15 @@ export default class Process extends VuexModule implements ProcessState {
 
   @Mutation
   UPDATE(state: Partial<ProcessState>) {
-    if (state.hasChanged === undefined) {
+    if (!state.hasChanged) {
       state.hasChanged = true;
     }
-
     merge(this, state);
   }
 
   @Mutation
   ASSIGN(state: Partial<ProcessState>) {
-    if (state.hasChanged === undefined) {
+    if (!state.hasChanged) {
       state.hasChanged = true;
     }
     Object.assign(this, state);
