@@ -1,7 +1,6 @@
 <template>
   <div class="search">
-    <div>
-      <NavBar />
+    <NavBar />
 
     <div class="page">
       <div class="filters">
@@ -25,7 +24,7 @@
             <router-link
               :to="'/details/' + process.id"
               class="search-result-link"
-                  @click="setID(process.id)"
+              @click="setID(process.id)"
               v-for="process in state.result.processes"
               :key="process.id"
             >
@@ -62,7 +61,7 @@ import { SearchFilters, SearchResultProcess } from '@/store/modules/searchInterf
 import SearchSortingDropdown from '@/components/search/SearchSortingDropdown.vue';
 import { SearchModule } from '../store/modules/search';
 import store from '../store';
-import Details from "./Details.vue";
+import Details from './Details.vue';
 
 @Component({
   components: {
