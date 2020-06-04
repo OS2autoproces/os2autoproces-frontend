@@ -4,7 +4,7 @@
     heading="Grundlæggende oplysninger"
     id="general-information"
     :disabled="state.disabled.generalInformationEdit"
-    @edit="update({disabled: { generalInformationEdit: $event} })"
+    @edit="update({ disabled: { generalInformationEdit: $event } })"
     always-open
   >
     <div class="title-row">
@@ -13,15 +13,12 @@
         class="title-field flex-grow"
         :value="state.title"
         :disabled="state.disabled.generalInformationEdit"
+        :hasError="isInErrors('title')"
         :class="{ disabled: state.disabled.generalInformationEdit }"
         @change="update({ title: $event })"
+        id="title"
       />
-      <div
-        v-if="!isReporting"
-        class="bookmark-button"
-        role="button"
-        @click="setBookmark(!state.hasBookmarked)"
-      >
+      <div v-if="!isReporting" class="bookmark-button" role="button" @click="setBookmark(!state.hasBookmarked)">
         <StarIcon :class="{ selected: state.hasBookmarked }" />
       </div>
       <MunicipalityLogo :src="logo" />
@@ -46,11 +43,13 @@
             itemSubText="email"
             :disabled="state.disabled.generalInformationEdit"
             :value="state.owner"
+            :hasError="isInErrors('owner')"
             itemText="name"
             @search="search($event)"
             isItemsPartial
-            @change="update({owner: $event})"
+            @change="update({ owner: $event })"
             :items="users"
+            id="owner"
           />
         </WellItem>
         <WellItem
@@ -62,15 +61,17 @@
             itemSubText="email"
             :disabled="state.disabled.generalInformationEdit"
             :value="state.contact"
+            :hasError="isInErrors('contact')"
             itemText="name"
             @search="search($event)"
             isItemsPartial
-            @change="update({contact: $event})"
+            @change="update({ contact: $event })"
             :items="users"
+            id="contact"
             clearable
           />
         </WellItem>
-        <WellItem v-if="state.contact" labelWidth="180px" label="Mail:">{{state.contact.email}}</WellItem>
+        <WellItem v-if="state.contact" labelWidth="180px" label="Mail:">{{ state.contact.email }}</WellItem>
       </div>
 
       <div>
@@ -82,7 +83,9 @@
           <MappedSelectionField
             :disabled="!!state.parents.length || state.disabled.generalInformationEdit"
             :value="state.visibility"
-            @change="update({visibility: $event})"
+            :hasError="isInErrors('visibility')"
+            id="visibility"
+            @change="update({ visibility: $event })"
             :items="visibilityLevels"
           />
         </WellItem>
@@ -90,15 +93,19 @@
           <DomainsField
             :disabled="state.disabled.generalInformationEdit"
             :value="state.domains"
-            @change="assign({domains: $event})"
+            :hasError="isInErrors('domains')"
+            id="domains"
+            @change="assign({ domains: $event })"
           />
         </WellItem>
         <WellItem labelWidth="120px" label="Afdelinger:" v-if="isWithinMunicipality">
           <SelectionField
             :disabled="state.disabled.generalInformationEdit"
             :value="state.orgUnits"
-            @change="assign({orgUnits: $event})"
+            :hasError="isInErrors('orgUnits')"
+            @change="assign({ orgUnits: $event })"
             :items="orgUnits"
+            id="orgUnits"
             multiple
             itemText="name"
           />
@@ -112,11 +119,19 @@
           <InputField
             :disabled="state.disabled.generalInformationEdit"
             :value="state.vendor"
-            @change="update({vendor: $event})"
+            :hasError="isInErrors('vendor')"
+            id="vendor"
+            @change="update({ vendor: $event })"
           />
         </WellItem>
         <WellItem v-if="state.sepMep" labelWidth="120px" label="SEP/MEP:">
-          <Checkbox :disabled="true" :value="state.sepMep" @change="update({sepMep: $event})" />
+          <Checkbox
+            :disabled="true"
+            :value="state.sepMep"
+            :hasError="isInErrors('sepMep')"
+            @change="update({ sepMep: $event })"
+            id="sepMep"
+          />
         </WellItem>
       </div>
 
@@ -125,15 +140,19 @@
           <InputField
             :disabled="state.disabled.generalInformationEdit || state.form"
             :value="state.legalClause"
-            @change="update({legalClause: $event})"
+            :hasError="isInErrors('legalClause')"
+            id="legalClause"
+            @change="update({ legalClause: $event })"
           />
         </WellItem>
         <WellItem labelWidth="200px" label="KLE:">
           <SelectionField
             :disabled="state.disabled.generalInformationEdit"
             :value="state.kle"
+            :hasError="isInErrors('kle')"
             @change="setKle($event)"
             :items="kles"
+            id="kle"
             itemText="name"
             itemSubText="code"
             clearable
@@ -143,8 +162,10 @@
           <SelectionField
             :disabled="state.disabled.generalInformationEdit"
             :value="state.form"
+            :hasError="isInErrors('form')"
             @change="update({ form: $event })"
             :items="forms"
+            id="form"
             itemText="description"
             itemSubText="code"
             clearable
@@ -154,7 +175,9 @@
           <InputField
             :disabled="state.disabled.generalInformationEdit"
             :value="state.klId"
-            @change="update({klId: $event})"
+            :hasError="isInErrors('klId')"
+            id="klId"
+            @change="update({ klId: $event })"
           />
         </WellItem>
         <WellItem
@@ -166,6 +189,8 @@
             :disabled="state.disabled.generalInformationEdit"
             mask="##.##.##.##.##"
             :value="state.kla"
+            :hasError="isInErrors('kla')"
+            id="kla"
             @change="setKla"
           />
         </WellItem>
@@ -186,8 +211,10 @@
         </h2>
         <TextArea
           :disabled="state.disabled.generalInformationEdit"
-          @change="update({shortDescription: $event})"
+          @change="update({ shortDescription: $event })"
           :value="state.shortDescription"
+          :hasError="isInErrors('shortDescription')"
+          id="shortDescription"
           :maxLength="140"
           :minHeight="'50px'"
         />
@@ -199,6 +226,8 @@
             class="phase-field"
             :disabled="state.disabled.generalInformationEdit"
             :value="state.phase"
+            :hasError="isInErrors('phase')"
+            id="phase"
             @change="phaseChanged($event)"
           />
         </div>
@@ -208,7 +237,9 @@
             class="status-field"
             :disabled="state.disabled.generalInformationEdit"
             :value="state.status"
-            @change="update({status: $event})"
+            :hasError="isInErrors('status')"
+            id="status"
+            @change="update({ status: $event })"
             :items="statusLevels"
           />
         </div>
@@ -222,22 +253,14 @@
 
     <div>
       <div v-if="state.status !== StatusKeys.INPROGRESS && state.status !== StatusKeys.NOT_RATED">
-        <h2
-          class="comments-heading"
-          v-if="state.status === StatusKeys.FAILED"
-        >Hvorfor er processen mislykket?</h2>
-        <h2
-          class="comments-heading"
-          v-if="state.status === StatusKeys.PENDING"
-        >Hvorfor afventer processen?</h2>
-        <h2
-          class="comments-heading"
-          v-if="state.status === StatusKeys.REJECTED"
-        >Hvorfor er processen afvist?</h2>
+        <h2 class="comments-heading" v-if="state.status === StatusKeys.FAILED">Hvorfor er processen mislykket?</h2>
+        <h2 class="comments-heading" v-if="state.status === StatusKeys.PENDING">Hvorfor afventer processen?</h2>
+        <h2 class="comments-heading" v-if="state.status === StatusKeys.REJECTED">Hvorfor er processen afvist?</h2>
         <TextArea
           :disabled="state.disabled.generalInformationEdit"
-          @change="update({statusText: $event})"
+          @change="update({ statusText: $event })"
           :value="state.statusText"
+          id="statusText"
         />
       </div>
     </div>
@@ -287,6 +310,7 @@ import StarIcon from '@/components/icons/StarIcon.vue';
 import AppDialog from '@/components/common/Dialog.vue';
 import DialogContent from '@/components/common/DialogContent.vue';
 import Button from '@/components/common/inputs/Button.vue';
+import { ErrorState } from '@/store/modules/error/state';
 // TODO - split this component. No component should be 500 lines
 @Component({
   components: {
@@ -377,6 +401,10 @@ export default class GeneralInformationForm extends Vue {
 
   get orgUnits() {
     return this.$store.state.common.orgUnits;
+  }
+
+  isInErrors(name: string) {
+    return this.$store.state.error.generalInformation.errors.includes(name);
   }
 
   setKla(kla: string) {

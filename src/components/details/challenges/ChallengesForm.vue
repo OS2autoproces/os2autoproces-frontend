@@ -1,45 +1,104 @@
 <template>
-  <FormSection :invalid="!isChallengesValid" heading="Problemstillinger" id="challenges" :disabled="state.disabled.challengesEdit" @edit="update({ disabled: { challengesEdit: $event}})">
+  <FormSection
+    :invalid="!isChallengesValid"
+    heading="Problemstillinger"
+    id="challenges"
+    :disabled="state.disabled.challengesEdit"
+    @edit="update({ disabled: { challengesEdit: $event } })"
+  >
     <div>
       <h2>Beskrivelse</h2>
       <InfoTooltip>Her kan du beskrive den nuværende proces i detaljer.</InfoTooltip>
-      <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({longDescription: $event})" :disabled="state.disabled.challengesEdit" :value="state.longDescription" :maxLength="10000" />
-      </div>
+      <TextArea
+        :twoColumnBreakpoint="twoColumnBreakpoint"
+        @change="update({ longDescription: $event })"
+        :disabled="state.disabled.challengesEdit"
+        :value="state.longDescription"
+        :hasError="isInErrors('longDescription')"
+        id="longDescription"
+        :maxLength="10000"
+      />
+    </div>
 
     <div v-if="minPhase(PhaseKeys.PREANALYSIS)">
       <h2 class="with-margin">Idéer til løsning</h2>
-      <InfoTooltip>Her kan tilføjes de ønsker, du har til en fremtidig løsning. Ønskerne kan både være teknologiske (f.eks. RPA) og/eller ændringer til måden processen udføres på.</InfoTooltip>
-      <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({solutionRequests: $event})" :disabled="state.disabled.challengesEdit" :value="state.solutionRequests" :maxLength="10000" />
+      <InfoTooltip
+        >Her kan tilføjes de ønsker, du har til en fremtidig løsning. Ønskerne kan både være teknologiske (f.eks. RPA)
+        og/eller ændringer til måden processen udføres på.</InfoTooltip
+      >
+      <TextArea
+        :twoColumnBreakpoint="twoColumnBreakpoint"
+        @change="update({ solutionRequests: $event })"
+        :disabled="state.disabled.challengesEdit"
+        :value="state.solutionRequests"
+        :hasError="isInErrors('solutionRequests')"
+        id="solutionRequests"
+        :maxLength="10000"
+      />
     </div>
 
     <div v-if="minPhase(PhaseKeys.PREANALYSIS)">
       <h2 class="with-margin">Udfordringer i den nuværende proces *</h2>
-      <InfoTooltip>Her kan du beskrive de trivielle handlinger, udfordringer eller vaskeligheder der opleves i udførelsen af den nuværende proces.</InfoTooltip>
-      <TextArea :twoColumnBreakpoint="twoColumnBreakpoint" @change="update({processChallenges: $event})" :disabled="state.disabled.challengesEdit" :value="state.processChallenges" :maxLength="10000" />
+      <InfoTooltip
+        >Her kan du beskrive de trivielle handlinger, udfordringer eller vaskeligheder der opleves i udførelsen af den
+        nuværende proces.</InfoTooltip
+      >
+      <TextArea
+        :twoColumnBreakpoint="twoColumnBreakpoint"
+        @change="update({ processChallenges: $event })"
+        :disabled="state.disabled.challengesEdit"
+        :value="state.processChallenges"
+        :hasError="isInErrors('processChallenges')"
+        id="processChallenges"
+        :maxLength="10000"
+      />
     </div>
 
     <Well class="challenges-well">
       <div>
         <WellItem label="Oprettet:">
-          <DatePicker :value="state.created" disabled/>
+          <DatePicker :value="state.created" disabled />
         </WellItem>
 
-        <WellItem label="Nuværende systemer:" tooltip="Vælg hvilke systemer der understøtter den nuværende proces. Listen kommer fra KITOS.">
-          <SelectionField :items="itSystems" :value="state.itSystems" itemText="name" :disabled="state.disabled.challengesEdit" @change="assign({itSystems: $event})" multiple />
+        <WellItem
+          label="Nuværende systemer:"
+          tooltip="Vælg hvilke systemer der understøtter den nuværende proces. Listen kommer fra KITOS."
+        >
+          <SelectionField
+            :items="itSystems"
+            :value="state.itSystems"
+            :hasError="isInErrors('itSystems')"
+            itemText="name"
+            :disabled="state.disabled.challengesEdit"
+            @change="assign({ itSystems: $event })"
+            id="itSystems"
+            multiple
+          />
         </WellItem>
       </div>
 
       <div>
         <WellItem labelWidth="30%" label="Sidst opdateret:">
-          <DatePicker :value="state.lastChanged" disabled />
+          <DatePicker :value="state.lastChanged" id="lastChanged" disabled />
         </WellItem>
 
-        <WellItem labelWidth="30%" label="Andre nuværende systemer:" tooltip="Hvis der er systemer du ikke kan finde på listen kan du notere dem her.">
-          <TextArea @change="update({itSystemsDescription: $event})" fullWidth :disabled="state.disabled.challengesEdit" :value="state.itSystemsDescription" :maxLength="10000" />
+        <WellItem
+          labelWidth="30%"
+          label="Andre nuværende systemer:"
+          tooltip="Hvis der er systemer du ikke kan finde på listen kan du notere dem her."
+        >
+          <TextArea
+            @change="update({ itSystemsDescription: $event })"
+            fullWidth
+            :disabled="state.disabled.challengesEdit"
+            :value="state.itSystemsDescription"
+            :hasError="isInErrors('itSystemsDescription')"
+            id="itSystemsDescription"
+            :maxLength="10000"
+          />
         </WellItem>
       </div>
     </Well>
-
   </FormSection>
 </template>
 
@@ -60,6 +119,7 @@ import { commonActionTypes } from '@/store/modules/common/actions';
 import { CommonState } from '@/store/modules/common/state';
 import { processGetterTypes } from '@/store/modules/process/getters';
 import { Phase, PhaseKeys } from '@/models/phase';
+import { ErrorState } from '@/store/modules/error/state';
 
 @Component({
   components: {
@@ -94,6 +154,10 @@ export default class ChallengesForm extends Vue {
 
   get itSystems() {
     return this.$store.state.common.itSystems;
+  }
+
+  isInErrors(name: string) {
+    return this.$store.state.error.challenges.errors.includes(name);
   }
 }
 </script>

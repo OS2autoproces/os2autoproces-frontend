@@ -86,9 +86,9 @@ export default class InputField extends Vue {
 @import '@/styles/variables.scss';
 .input-field-wrap {
   display: flex;
-  border: 1px solid $color-primary;
   border-radius: 30px;
   align-items: center;
+  border: 1px solid $color-primary;
 
   &.has-error {
     border-color: $color-error;

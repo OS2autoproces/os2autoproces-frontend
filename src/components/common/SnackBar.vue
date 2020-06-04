@@ -1,5 +1,5 @@
 <template>
-  <v-snackbar top :value="value" :color="color" :timeout="timeout">
+  <v-snackbar :top="!bottom" :bottom="bottom" :value="value" :color="color" :timeout="timeout">
     <slot />
     <v-btn v-if="showButton" dark text @click="clicked">
       OK
@@ -20,6 +20,8 @@ export default class SnackBarComponent extends Vue {
   value!: boolean;
   @Prop(Boolean)
   showButton!: boolean;
+  @Prop(Boolean)
+  bottom!: boolean;
 
   closeTimeout: any;
 

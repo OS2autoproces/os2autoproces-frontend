@@ -23,6 +23,7 @@
         itemSubText="email"
         ref="userSelectionField"
         class="search-field"
+        :hasError="hasError"
         placeholder="Skriv navn for at søge"
         @search="search($event)"
         @change="addUser($event)"
@@ -54,6 +55,8 @@ import { User } from '@/store/modules/auth/state';
 export default class AssociatedPersonsInput extends Vue {
   @Prop(Boolean)
   disabled!: boolean;
+  @Prop(Boolean)
+  hasError!: boolean;
 
   @Action(commonActionTypes.SEARCH_USERS)
   searchUsers!: (request: UserSearchRequest) => Promise<void>;

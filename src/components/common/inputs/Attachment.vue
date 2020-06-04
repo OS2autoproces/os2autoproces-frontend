@@ -8,28 +8,24 @@
         <PowerPointIcon class="attachment-icon" v-if="type === 'powerPoint'" />
         <FileIcon class="attachment-icon" v-if="type === 'other'" />
       </a>
-      <div
-        v-if="!disabled && !isUploading"
-        class="delete-button"
-        role="button"
-        @click="$emit('remove')"
-      >
+      <div v-if="!disabled && !isUploading" class="delete-button" role="button" @click="$emit('remove')">
         <DeleteIcon />
       </div>
       <v-icon v-if="isUploading" class="upload-icon">cloud_upload</v-icon>
     </div>
 
-    <a class="name" :href="attachment.url" target="_blank">{{attachment.fileName}}</a>
+    <a class="name" :href="attachment.url" target="_blank">{{ attachment.fileName }}</a>
     <div v-if="isAttachmentToLarge" class="attachment-error">Filen overskrider 10MB</div>
     <Checkbox
       v-if="!disabled && canChangeVisibility"
       :value="attachment.visibleToOtherMunicipalities"
       @change="$emit('toggleVisibility', attachment.id)"
-    >Synlig for alle brugere i OS2autoproces</Checkbox>
+      >Synlig for alle brugere i OS2autoproces</Checkbox
+    >
   </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import WordIcon from '@/components/icons/WordIcon.vue';
 import ExcelIcon from '@/components/icons/ExcelIcon.vue';
@@ -149,6 +145,6 @@ a {
 }
 
 .attachment-error {
-  color: red;
+  color: $color-error;
 }
 </style>

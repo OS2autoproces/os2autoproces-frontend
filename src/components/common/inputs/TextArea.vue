@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="text-area" :class="{ 'out-of-bounds': currentLength > maxLength }" v-if="!disabled">
+    <div class="text-area" :class="{ 'out-of-bounds': currentLength > maxLength, hasError: hasError }" v-if="!disabled">
       <textarea
         :value="value"
         @input="valueChanged"
@@ -46,6 +46,7 @@ export default class TextArea extends Vue {
   fullWidth!: boolean;
   @Prop({ type: String, default: '250px' })
   minHeight!: string;
+  @Prop(Boolean) hasError!: boolean;
 
   get sanitizedHtml(): string {
     return !!this.readonlyHtml
@@ -78,12 +79,15 @@ export default class TextArea extends Vue {
   padding-bottom: 25px;
   background: $color-background;
 
+  &.hasError {
+    border-color: $color-error;
+  }
   &.out-of-bounds {
-    border-color: red;
+    border-color: $color-error;
     box-shadow: inset 0 0 8px rgb(235, 98, 98);
 
     .text-area-overlay > .text-area-char-count {
-      color: red;
+      color: $color-error;
     }
   }
 
