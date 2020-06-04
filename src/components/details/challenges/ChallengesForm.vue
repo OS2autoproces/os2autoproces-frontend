@@ -14,6 +14,8 @@
         @change="update({ longDescription: $event })"
         :disabled="state.disabled.challengesEdit"
         :value="state.longDescription"
+        :hasError="isInErrors('longDescription')"
+        id="longDescription"
         :maxLength="10000"
       />
     </div>
@@ -29,6 +31,8 @@
         @change="update({ solutionRequests: $event })"
         :disabled="state.disabled.challengesEdit"
         :value="state.solutionRequests"
+        :hasError="isInErrors('solutionRequests')"
+        id="solutionRequests"
         :maxLength="10000"
       />
     </div>
@@ -44,6 +48,8 @@
         @change="update({ processChallenges: $event })"
         :disabled="state.disabled.challengesEdit"
         :value="state.processChallenges"
+        :hasError="isInErrors('processChallenges')"
+        id="processChallenges"
         :maxLength="10000"
       />
     </div>
@@ -61,9 +67,11 @@
           <SelectionField
             :items="itSystems"
             :value="state.itSystems"
+            :hasError="isInErrors('itSystems')"
             itemText="name"
             :disabled="state.disabled.challengesEdit"
             @change="assign({ itSystems: $event })"
+            id="itSystems"
             multiple
           />
         </WellItem>
@@ -71,7 +79,7 @@
 
       <div>
         <WellItem labelWidth="30%" label="Sidst opdateret:">
-          <DatePicker :value="state.lastChanged" disabled />
+          <DatePicker :value="state.lastChanged" id="lastChanged" disabled />
         </WellItem>
 
         <WellItem
@@ -80,10 +88,12 @@
           tooltip="Hvis der er systemer du ikke kan finde på listen kan du notere dem her."
         >
           <TextArea
-            fullWidth
             @change="update({ itSystemsDescription: $event })"
+            fullWidth
             :disabled="state.disabled.challengesEdit"
             :value="state.itSystemsDescription"
+            :hasError="isInErrors('itSystemsDescription')"
+            id="itSystemsDescription"
             :maxLength="10000"
           />
         </WellItem>
@@ -110,6 +120,7 @@ import { commonActionTypes } from '@/store/modules/common/actions';
 import { CommonState } from '@/store/modules/common/state';
 import { processGetterTypes } from '@/store/modules/process/getters';
 import { Phase, PhaseKeys } from '@/models/phase';
+import { ErrorState } from '@/store/modules/error/state';
 
 @Component({
   components: {
@@ -145,6 +156,10 @@ export default class ChallengesForm extends Vue {
 
   get itSystems() {
     return this.$store.state.common.itSystems;
+  }
+
+  isInErrors(name: string) {
+    return this.$store.state.error.challenges.errors.includes(name);
   }
 }
 </script>

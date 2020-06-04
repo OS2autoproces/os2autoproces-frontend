@@ -1,6 +1,12 @@
 <template>
   <div>
-    <v-text-field v-if="!disabled" :value="value" v-mask="mask" @input="valueChanged($event)" />
+    <v-text-field
+      v-if="!disabled"
+      :value="value"
+      v-mask="mask"
+      @input="valueChanged($event)"
+      :class="{ hasError: hasError }"
+    />
     <div v-if="disabled">{{ value }}</div>
   </div>
 </template>
@@ -13,6 +19,7 @@ export default class MaskableInputComponent extends Vue {
   @Prop(String) mask!: string;
   @Prop(String) value!: string;
   @Prop(Boolean) disabled!: boolean;
+  @Prop(Boolean) hasError!: boolean;
 
   valueChanged(value: any) {
     this.$emit('change', value);
@@ -49,6 +56,11 @@ export default class MaskableInputComponent extends Vue {
       @include field-input-text;
       color: $color-text !important;
     }
+  }
+}
+.hasError::v-deep {
+  .v-input__slot {
+    border-color: $color-error;
   }
 }
 </style>

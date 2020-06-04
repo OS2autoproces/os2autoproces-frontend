@@ -23,7 +23,9 @@
       <div>
         <h3>Følgende felter er ugyldige:</h3>
         <ul class="section-errors">
-          <li v-for="field in errors['generalInformation'].errors" :key="field">{{ field }}</li>
+          <li v-for="field in errors['generalInformation'].errors" :key="field" @click="clickedHashLink">
+            <a :href="hashLink(field.name)">{{ field.description }}</a>
+          </li>
         </ul>
       </div>
     </SnackBar>
@@ -120,6 +122,9 @@ export default class Umbrella extends Vue {
     return !!Object.keys(errorState).find(section => !isEmpty(errorState[section].errors));
   }
 
+  clickHashLink() {
+    this.$emit('clickedHashLink');
+  }
   goBack() {
     if (isIE()) {
       this.$emit('goBack');

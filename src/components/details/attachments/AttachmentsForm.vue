@@ -5,16 +5,18 @@
     heading="Bilag og links"
     id="attachments"
     :disabled="attachmentsEdit"
-    @edit="update({disabled: { attachmentsEdit: $event}})"
+    @edit="update({ disabled: { attachmentsEdit: $event } })"
   >
     <h2 v-if="isWithinMunicipality && minPhase(PhaseKeys.SPECIFICATION)">Sagsreference i ESDH</h2>
     <div v-if="isWithinMunicipality && minPhase(PhaseKeys.SPECIFICATION)">
       <InfoTooltip>Skriv sagsreferencen eller indsæt et direkte link til sagen i ESDH systemet.</InfoTooltip>
       <TextArea
         :max-length="300"
-        @change="update({esdhReference: $event})"
+        @change="update({ esdhReference: $event })"
         :disabled="attachmentsEdit"
         :value="state.esdhReference"
+        :hasError="isInErrors('esdhReference')"
+        id="esdhReference"
         :minHeight="'50px'"
       />
     </div>
@@ -24,7 +26,7 @@
       <TextArea
         :readonly-html="readonlyLinks"
         :value="attachmentsEdit ? '' : codeRepositoryUrl"
-        @change="update({codeRepositoryUrl: $event})"
+        @change="update({ codeRepositoryUrl: $event })"
         :disabled="attachmentsEdit"
         :max-length="10000"
       />
@@ -95,6 +97,10 @@ export default class AttachmentsForm extends Vue {
     // Finally, the result is returned.
     return firstPass.replace(/href="www/g, 'href="http://www');
     // TODO: Fix mails without schema and maybe other edge cases
+  }
+
+  isInErrors(name: string) {
+    return this.$store.state.error.attachments.errors.includes(name);
   }
 }
 </script>
