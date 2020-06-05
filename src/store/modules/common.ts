@@ -31,7 +31,7 @@ export interface CommonState {
   municipalities: Municipality[] | null;
   users: User[] | null;
 }
-@Module({ dynamic: true, store, name: 'common' })
+@Module({ dynamic: true, store, name: 'common', namespaced: true })
 export default class Common extends VuexModule implements CommonState {
   frontPage: string | null = null;
   itSystems: ITSystem[] | null = null;

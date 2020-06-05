@@ -70,7 +70,7 @@
             :hasError="isInErrors('itSystems')"
             itemText="name"
             :disabled="state.disabled.challengesEdit"
-            @change="assign({ itSystems: $event })"
+            @change="update({ itSystems: $event })"
             id="itSystems"
             multiple
           />
@@ -105,7 +105,7 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import TextArea from '@/components/common/inputs/TextArea.vue';
-import { Action, Getter } from 'vuex-class';
+import { Action, Getter, State } from 'vuex-class';
 import SelectionField from '@/components/common/inputs/SelectionField.vue';
 import DatePicker from '@/components/common/inputs/DatePicker.vue';
 import FormSection from '@/components/details/FormSection.vue';
@@ -115,9 +115,11 @@ import WellItem from '@/components/common/WellItem.vue';
 import { ITSystem } from '@/store/modules/commonInterfaces';
 import { HTTP } from '@/services/http-service';
 import { Phase, PhaseKeys } from '@/models/phase';
-import { ProcessModule, ProcessState } from '../../../store/modules/process';
-import { CommonModule } from '../../../store/modules/common';
+import { ProcessModule, ProcessState } from '@/store/modules/process';
+import Process from '@/store/modules/process';
+import { CommonModule } from '@/store/modules/common';
 import { ErrorModule } from '@/store/modules/error';
+import { RootState } from '@/store';
 
 @Component({
   components: {
@@ -142,12 +144,12 @@ export default class ChallengesForm extends Vue {
     return CommonModule.itSystems;
   }
 
-  update(state: Partial<ProcessState>) {
-    ProcessModule.update(state);
-  }
-
   minPhase(phase: Phase) {
     return ProcessModule.minPhase(phase);
+  }
+
+  update(state: Partial<ProcessState>) {
+    ProcessModule.update(state);
   }
 
   isInErrors(name: string) {

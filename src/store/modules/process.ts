@@ -11,14 +11,6 @@ import { getInvalidProperties } from './validation';
 import { isEmpty } from 'lodash';
 import { PhaseOrder, Phase } from '@/models/phase';
 import {
-  assessmentLabels,
-  challengesLabels,
-  generalInformationLabels,
-  implementationLabels,
-  operationLabels,
-  attachmentsLabels,
-  timeAndProcessLabels,
-  umbrellaLabels,
   umbrellaKeys,
   generalInformationKeys,
   challengeKeys,
@@ -42,12 +34,12 @@ export interface ProcessState extends ProcessReport {
   comments: Comment[] | null;
 }
 
-@Module({ dynamic: true, store, name: 'process' })
+@Module({ dynamic: true, store, name: 'process', namespaced: true })
 export default class Process extends VuexModule implements ProcessState {
   id: string = '';
   klId: string | null = null;
-  children: ProcessReport[] | null = null;
-  parents: ProcessReport[] | null = null;
+  children: ProcessReport[] = [];
+  parents: ProcessReport[] = [];
   hasChanged: boolean = false;
   sepMep: boolean | null = null;
   esdhReference: string | null = null;
@@ -62,7 +54,7 @@ export default class Process extends VuexModule implements ProcessState {
   type: Type | null = null;
   shortDescription: string | null = null;
   longDescription: string | null = null;
-  domains: Domain[] | null = null;
+  domains: Domain[] = [];
   visibility: Visibility | null = null;
   legalClause: string | null = null;
   legalClauseLastVerified: string | null = null;
@@ -70,7 +62,7 @@ export default class Process extends VuexModule implements ProcessState {
   kla: string | null = null;
   klaProcess: boolean | null = null;
   codeRepositoryUrl: string | null = null;
-  links: Link[] | null = null;
+  links: Link[] = [];
   vendor: string | null = null;
   cvr: string | null = null;
   internalNotes: string | null = null;
@@ -101,19 +93,19 @@ export default class Process extends VuexModule implements ProcessState {
   rating: number | null = null;
   ratingComment: string | null = null;
   searchWords: string | null = null;
-  users: User[] | null = null;
+  users: User[] = [];
   owner: User | null = null;
   contact: User | null = null;
   reporter: User | null = null;
-  itSystems: ITSystem[] | null = null;
-  orgUnits: OrgUnit[] | null = null;
-  technologies: Technology[] | null = null;
+  itSystems: ITSystem[] = [];
+  orgUnits: OrgUnit[] = [];
+  technologies: Technology[] = [];
   hasBookmarked: boolean | null = null;
   canEdit: boolean | null = null;
   emailNotification: boolean | null = null;
   disabled: Disabled | null = null;
-  attachments: Attachment[] | null = null;
-  comments: Comment[] | null = null;
+  attachments: Attachment[] = [];
+  comments: Comment[] = [];
 
   @Mutation
   UPDATE(state: Partial<ProcessState>) {
@@ -272,8 +264,8 @@ export default class Process extends VuexModule implements ProcessState {
     }
 
     const process = responseToState(response.data);
-
-    this.UPDATE(setBackendManagedFields(process));
+    const payload = setBackendManagedFields(process);
+    this.UPDATE(payload);
     return !!process.id ? process.id : '';
   }
 
@@ -296,7 +288,6 @@ export default class Process extends VuexModule implements ProcessState {
 
       const fields = setBackendManagedFields(process);
       fields.hasChanged = false;
-
       this.UPDATE(fields);
 
       return process.id;

@@ -37,7 +37,7 @@ export interface AuthState {
   user: User | null;
 }
 
-@Module({ dynamic: true, store, name: 'auth' })
+@Module({ dynamic: true, store, name: 'auth', namespaced: true })
 export default class Auth extends VuexModule implements AuthState {
   user: User | null = null;
 

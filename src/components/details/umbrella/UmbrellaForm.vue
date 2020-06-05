@@ -147,7 +147,7 @@
           <SmallSearchResult :process="process" />
           <div class="visibility-warning" v-if="isLessVisible(process.visibility)">
             <WarningIcon class="visibility-icon" /> Synligheden ændres fra
-            {{ VisibilityLabels[process.visibility] }} til {{ VisibilityLabels[visibility] }}
+            {{ VisibilityLabels[process.visibility] }} til {{ VisibilityLabels[state.visibility] }}
           </div>
         </router-link>
 

@@ -5,14 +5,14 @@
     heading="Bilag og links"
     id="attachments"
     :disabled="state.disabled.attachmentsEdit"
-    @edit="update({ disabled: { attachmentsEdit: $event } })"
+    @edit="state.update({ disabled: { attachmentsEdit: $event } })"
   >
     <h2 v-if="isWithinMunicipality && state.minPhase(PhaseKeys.SPECIFICATION)">Sagsreference i ESDH</h2>
     <div v-if="isWithinMunicipality && state.minPhase(PhaseKeys.SPECIFICATION)">
       <InfoTooltip>Skriv sagsreferencen eller indsæt et direkte link til sagen i ESDH systemet.</InfoTooltip>
       <TextArea
         :max-length="300"
-        @change="update({ esdhReference: $event })"
+        @change="state.update({ esdhReference: $event })"
         :disabled="state.disabled.attachmentsEdit"
         :value="state.esdhReference"
         :hasError="isInErrors('esdhReference')"
@@ -26,7 +26,7 @@
       <TextArea
         :readonly-html="readonlyLinks"
         :value="state.disabled.attachmentsEdit ? '' : state.codeRepositoryUrl"
-        @change="update({ codeRepositoryUrl: $event })"
+        @change="state.update({ codeRepositoryUrl: $event })"
         :disabled="state.disabled.attachmentsEdit"
         :max-length="10000"
       />
