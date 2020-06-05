@@ -48,8 +48,13 @@
     <SnackBar showButton :timeout="0" color="error" :value="errors.hasErrors" @clicked="clearErrors" bottom>
       <div>
         <h3>Følgende felter er ugyldige:</h3>
+<<<<<<< HEAD
         <div class="snack-bar-list-container" v-if="errors.hasErrors">
           <div v-for="section in errors.errorSections" :key="section.section">
+=======
+        <div class="snack-bar-list-container">
+          <div v-for="section in errors" :key="section.section">
+>>>>>>> master
             <ul class="section-errors" v-if="section.errors.length > 0">
               <span class="section-errors-title">{{ section.section }}</span>
               <li v-for="(field, i) in section.errors" :key="i">
@@ -173,7 +178,7 @@ export default class Process extends Vue {
   clickHashLink() {
     this.$emit('clickedHashLink');
   }
-
+  
   // If browser is Internet Explorer, the parent details view is nested in the search view,
   // and we have to reset the search url when hiding it.
   goBack() {

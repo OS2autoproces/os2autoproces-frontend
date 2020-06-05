@@ -26,7 +26,11 @@
       <div v-if="errors.hasErrors">
         <h3>Følgende felter er ugyldige:</h3>
         <ul class="section-errors">
+<<<<<<< HEAD
           <li v-for="field in errors.generalInformation.errors" :key="field.name" @click="clickedHashLink">
+=======
+          <li v-for="field in errors['generalInformation'].errors" :key="field" @click="clickedHashLink">
+>>>>>>> master
             <a :href="hashLink(field.name)">{{ field.description }}</a>
           </li>
         </ul>
@@ -119,10 +123,16 @@ export default class Umbrella extends Vue {
     return `#${target}`;
   }
 
+<<<<<<< HEAD
   clickedHashLink() {
     this.$emit('clickedHashLink');
   }
 
+=======
+  clickHashLink() {
+    this.$emit('clickedHashLink');
+  }
+>>>>>>> master
   goBack() {
     if (isIE()) {
       this.$emit('goBack');
