@@ -99,7 +99,7 @@
       class="text-area-readonly"
       :class="{ 'double-column': twoColumns, 'full-width': fullWidth }"
       v-if="disabled"
-      v-html="sanitizedHtml"
+      v-html="value"
     ></div>
     <AppDialog :open="isEditorHelpDialogOpen" @close="closeEditorHelpDialog" width="">
       <DialogContent>
@@ -277,13 +277,9 @@ export default class RichTextArea extends Vue {
     this.editor = new Editor({
       extensions: this.extensions,
       editable: !this.disabled,
-      onUpdate: this.onUpdate.bind(this),
+      onUpdate: this.onUpdate,
       content: this.value
     });
-  }
-
-  get sanitizedHtml(): string {
-    return this.value;
   }
 
   get currentLength() {
@@ -469,6 +465,7 @@ export default class RichTextArea extends Vue {
   }
 }
 
+// Override - we can't control the classname as this is internal for ProseMirror that TipTap uses.
 .ProseMirror {
   min-height: 250px;
   margin: 0px !important;
