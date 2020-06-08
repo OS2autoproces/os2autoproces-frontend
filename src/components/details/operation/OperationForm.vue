@@ -48,7 +48,7 @@
     </Well>
 
     <h2>Kommentar til realiseret gevinster</h2>
-    <TextArea
+    <RichTextArea
       :max-length="10000"
       @change="update({ ratingComment: $event })"
       :disabled="state.disabled.operationEdit"
@@ -61,7 +61,7 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
-import TextArea from '@/components/common/inputs/TextArea.vue';
+import RichTextArea from '@/components/common/inputs/RichTextArea.vue';
 import Rating from '@/components/common/inputs/Rating.vue';
 import { Action, Getter } from 'vuex-class';
 import DatePicker from '@/components/common/inputs/DatePicker.vue';
@@ -75,7 +75,7 @@ import { Phase, PhaseKeys } from '@/models/phase';
 
 @Component({
   components: {
-    TextArea,
+    RichTextArea,
     DatePicker,
     FormSection,
     Well,
