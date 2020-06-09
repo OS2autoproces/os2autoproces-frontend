@@ -9,7 +9,7 @@
     <div>
       <h2>Beskrivelse</h2>
       <InfoTooltip>Her kan du beskrive den nuværende proces i detaljer.</InfoTooltip>
-      <TextArea
+      <RichTextArea
         :twoColumnBreakpoint="twoColumnBreakpoint"
         @change="update({ longDescription: $event })"
         :disabled="state.disabled.challengesEdit"
@@ -26,7 +26,7 @@
         >Her kan tilføjes de ønsker, du har til en fremtidig løsning. Ønskerne kan både være teknologiske (f.eks. RPA)
         og/eller ændringer til måden processen udføres på.</InfoTooltip
       >
-      <TextArea
+      <RichTextArea
         :twoColumnBreakpoint="twoColumnBreakpoint"
         @change="update({ solutionRequests: $event })"
         :disabled="state.disabled.challengesEdit"
@@ -43,7 +43,7 @@
         >Her kan du beskrive de trivielle handlinger, udfordringer eller vaskeligheder der opleves i udførelsen af den
         nuværende proces.</InfoTooltip
       >
-      <TextArea
+      <RichTextArea
         :twoColumnBreakpoint="twoColumnBreakpoint"
         @change="update({ processChallenges: $event })"
         :disabled="state.disabled.challengesEdit"
@@ -105,7 +105,7 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import TextArea from '@/components/common/inputs/TextArea.vue';
-import { Action, Getter, State } from 'vuex-class';
+import RichTextArea from '@/components/common/inputs/RichTextArea.vue';
 import SelectionField from '@/components/common/inputs/SelectionField.vue';
 import DatePicker from '@/components/common/inputs/DatePicker.vue';
 import FormSection from '@/components/details/FormSection.vue';
@@ -124,6 +124,7 @@ import { RootState } from '@/store';
 @Component({
   components: {
     TextArea,
+    RichTextArea,
     SelectionField,
     DatePicker,
     Well,

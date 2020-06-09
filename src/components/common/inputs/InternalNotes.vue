@@ -1,24 +1,24 @@
 <template>
   <div class="internal-notes">
-    <TextArea
+    <RichTextArea
       :value="internalNotes"
       @change="update($event)"
-      placeholder="Skriv interne noter her..."
-      :max-length="10000"
       :disabled="disabled"
+      :max-length="10000"
+      placeholder="Skriv interne noter her..."
     />
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
-import TextArea from '@/components/common/inputs/TextArea.vue';
+import RichTextArea from '@/components/common/inputs/RichTextArea.vue';
 import { Action } from 'vuex-class';
 import { ProcessState, ProcessModule } from '@/store/modules/process';
 
 @Component({
   components: {
-    TextArea
+    RichTextArea
   }
 })
 export default class InternalNotesComponent extends Vue {

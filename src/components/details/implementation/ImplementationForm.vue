@@ -13,7 +13,7 @@
         >Her kan du notere, hvordan den tekniske implementering er forløbet og eventuelle ting, som andre bør være
         opmærksomme på.</InfoTooltip
       >
-      <TextArea
+      <RichTextArea
         :max-length="10000"
         :twoColumnBreakpoint="twoColumnBreakpoint"
         @change="update({ technicalImplementationNotes: $event })"
@@ -30,7 +30,7 @@
         >Her kan du notere, hvordan den organisatoriske implementering er forløbet og eventuelle opmærksomhedspunkter
         omkring det.</InfoTooltip
       >
-      <TextArea
+      <RichTextArea
         :max-length="10000"
         :twoColumnBreakpoint="twoColumnBreakpoint"
         @change="update({ organizationalImplementationNotes: $event })"
@@ -76,7 +76,7 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
-import TextArea from '@/components/common/inputs/TextArea.vue';
+import RichTextArea from '@/components/common/inputs/RichTextArea.vue';
 import { Action, Getter } from 'vuex-class';
 import FormSection from '@/components/details/FormSection.vue';
 import InfoTooltip from '@/components/common/InfoTooltip.vue';
@@ -91,7 +91,7 @@ import { ErrorModule } from '@/store/modules/error';
 
 @Component({
   components: {
-    TextArea,
+    RichTextArea,
     FormSection,
     InfoTooltip,
     TagSelector,
