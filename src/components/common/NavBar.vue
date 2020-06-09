@@ -48,7 +48,7 @@ export default class NavBar extends Vue {
   }
 
   get roles() {
-    return AuthModule.user?.roles?.map(r => UserRoleName[r]).join(', ');
+    return AuthModule.user?.roles?.map(r => UserRoleName[r])?.join(', ') ?? '';
   }
 }
 </script>

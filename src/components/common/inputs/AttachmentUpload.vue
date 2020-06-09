@@ -63,7 +63,7 @@ import Button from '@/components/common/inputs/Button.vue';
 import Well from '@/components/common/Well.vue';
 import AttachmentComponent from './Attachment.vue';
 import { Attachment, AttachmentFile } from '@/store/modules/processInterfaces';
-import { ProcessModule } from '../../../store/modules/process';
+import { ProcessModule } from '@/store/modules/process';
 
 @Component({
   components: {

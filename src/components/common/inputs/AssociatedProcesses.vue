@@ -45,8 +45,6 @@ import { SearchModule } from '@/store/modules/search';
   }
 })
 export default class AssociatedProcesses extends Vue {
-  initialFilters: storeFilters | null = null;
-
   get filters() {
     return SearchModule.filters;
   }

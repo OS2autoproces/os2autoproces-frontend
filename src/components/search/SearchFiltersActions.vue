@@ -120,9 +120,9 @@ export default class SearchFiltersActions extends Vue {
   }
 
   private isSavedFilterNameUnique(name: string) {
-    return !!SearchModule.savedFilters
-      ? SearchModule.savedFilters.findIndex(({ text }) => text.toLowerCase() === name.toLowerCase()) < 0
-      : true;
+    const filternameExists =
+      SearchModule.savedFilters?.findIndex(({ text }) => text.toLowerCase() === name.toLowerCase()) >= 0;
+    return !filternameExists;
   }
 
   get filtersTouched() {

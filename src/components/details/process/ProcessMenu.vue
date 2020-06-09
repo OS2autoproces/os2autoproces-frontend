@@ -16,7 +16,7 @@
 import { Vue, Prop, Component, Watch } from 'vue-property-decorator';
 import { Getter } from 'vuex-class';
 import { Phase, PhaseKeys } from '@/models/phase';
-import { ProcessModule } from '../../../store/modules/process';
+import { ProcessModule } from '@/store/modules/process';
 
 export interface MenuItem {
   heading: string;

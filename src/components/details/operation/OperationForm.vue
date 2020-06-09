@@ -70,7 +70,7 @@ import InfoTooltip from '@/components/common/InfoTooltip.vue';
 import Well from '@/components/common/Well.vue';
 import WellItem from '@/components/common/WellItem.vue';
 import { Phase, PhaseKeys } from '@/models/phase';
-import { ProcessModule, ProcessState } from '../../../store/modules/process';
+import { ProcessModule, ProcessState } from '@/store/modules/process';
 import { ErrorModule } from '@/store/modules/error';
 
 @Component({

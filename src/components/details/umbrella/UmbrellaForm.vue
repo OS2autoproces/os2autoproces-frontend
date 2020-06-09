@@ -198,8 +198,8 @@ import { Domain } from '@/models/domain';
 import { Phase, PhaseKeys } from '@/models/phase';
 import MunicipalityLogo from '@/components/common/MunicipalityLogo.vue';
 import StarIcon from '@/components/icons/StarIcon.vue';
-import { AuthModule } from '../../../store/modules/auth';
-import { ProcessModule, ProcessState } from '../../../store/modules/process';
+import { AuthModule } from '@/store/modules/auth';
+import { ProcessModule, ProcessState } from '@/store/modules/process';
 import { ErrorModule } from '@/store/modules/error';
 
 @Component({

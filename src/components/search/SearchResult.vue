@@ -70,7 +70,7 @@ import { SearchResultProcess } from '@/store/modules/searchInterfaces';
 import { StatusLabels } from '@/models/status';
 import { DomainLabels } from '@/models/domain';
 import { TypeKeys } from '@/models/types';
-import { ProcessModule } from '../../store/modules/process';
+import { ProcessModule } from '@/store/modules/process';
 
 @Component({
   components: {

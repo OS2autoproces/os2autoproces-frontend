@@ -163,12 +163,15 @@ export interface ProcessResponse {
   parents: ProcessReport[];
 }
 
-function relation(name: string, entity: { id: number | string }): string {
-  return `${window.autoProcessConfiguration.apiUrl}/api/${name}/${entity.id}`;
+function relation(name: string, entity: { id: number | string } | null | undefined): string {
+  return !!entity ? `${window.autoProcessConfiguration.apiUrl}/api/${name}/${entity.id}` : '';
 }
 
-function relationArray<T extends { id: number | string }>(name: string, array: T[]): string[] {
-  return array.map(entity => relation(name, entity));
+function relationArray<T extends { id: number | string } | null | undefined>(
+  name: string,
+  array: T[] | null | undefined
+): string[] {
+  return array?.map(entity => relation(name, entity)) ?? [];
 }
 
 function defaultNull(prop: any): any {
@@ -190,8 +193,8 @@ function stateToRequestFields(state: ProcessReport): ProcessRequest {
     created: defaultNull(state.created),
     lastChanged: defaultNull(state.lastChanged),
     decommissioned: defaultNull(state.decommissioned),
-    title: !!state.title ? state.title : '',
-    shortDescription: !!state.shortDescription ? state.shortDescription : '',
+    title: state.title ?? '',
+    shortDescription: state.shortDescription ?? '',
     longDescription: defaultNull(state.longDescription),
     domains: state.domains || [],
     visibility: state.visibility || VisibilityKeys.MUNICIPALITY,
@@ -200,7 +203,7 @@ function stateToRequestFields(state: ProcessReport): ProcessRequest {
     kle: state.kle ? state.kle.code : null,
     form: state.form ? state.form.code : null,
     kla: defaultNull(state.kla),
-    codeRepositoryUrl: !!state.codeRepositoryUrl ? state.codeRepositoryUrl : '',
+    codeRepositoryUrl: state.codeRepositoryUrl ?? '',
     links: defaultNull(state.links),
     vendor: defaultNull(state.vendor),
     internalNotes: defaultNull(state.internalNotes),
@@ -210,7 +213,7 @@ function stateToRequestFields(state: ProcessReport): ProcessRequest {
     timeSpendOccurancesPerEmployee: defaultZero(state.timeSpendOccurancesPerEmployee),
     timeSpendPercentageDigital: defaultZero(state.timeSpendPercentageDigital),
     timeSpendPerOccurance: defaultZero(state.timeSpendPerOccurance),
-    timeSpendComment: !!state.timeSpendComment ? state.timeSpendComment : '',
+    timeSpendComment: state.timeSpendComment ?? '',
     targetsCompanies: !!state.targetsCompanies,
     targetsCitizens: !!state.targetsCitizens,
     levelOfProfessionalAssessment: state.levelOfProfessionalAssessment || LikertScaleKeys.UNKNOWN,
@@ -230,13 +233,13 @@ function stateToRequestFields(state: ProcessReport): ProcessRequest {
     type: state.type || TypeKeys.CHILD,
     itSystemsDescription: defaultNull(state.itSystemsDescription),
     sepMep: !!state.sepMep,
-    contact: !!state.contact ? state.contact && relation('users', state.contact) : '',
-    owner: !!state.owner ? state.owner && relation('users', state.owner) : '',
-    orgUnits: !!state.orgUnits ? relationArray('orgUnits', state.orgUnits) : [],
-    users: !!state.users ? relationArray('users', state.users) : [],
-    technologies: !!state.technologies ? relationArray('technologies', state.technologies) : [],
-    itSystems: !!state.itSystems ? relationArray('itSystems', state.itSystems) : [],
-    children: !!state.children ? relationArray('processes', state.children) : []
+    contact: relation('users', state.contact),
+    owner: relation('users', state.owner),
+    orgUnits: relationArray('orgUnits', state.orgUnits),
+    users: relationArray('users', state.users),
+    technologies: relationArray('technologies', state.technologies),
+    itSystems: relationArray('itSystems', state.itSystems),
+    children: relationArray('processes', state.children)
   };
 }
 
@@ -313,9 +316,9 @@ export function responseToState(process: ProcessResponse): ProcessState {
     technologies: process.technologies || [],
     users: process.users || [],
     klId: process.klId || '',
-    form: process.form ? { code: process.form, description: !!form ? form.description : '' } : null,
+    form: process.form ? { code: process.form, description: form?.description ?? '' } : null,
     legalClause: process.legalClause || '',
-    kle: process.kle ? { code: process.kle, name: !!kle ? kle.name : '' } : null,
+    kle: process.kle ? { code: process.kle, name: kle?.name ?? '' } : null,
     kla: process.kla || '',
     codeRepositoryUrl: process.codeRepositoryUrl || '',
     links: process.links || [],

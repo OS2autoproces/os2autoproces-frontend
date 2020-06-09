@@ -30,14 +30,14 @@
           <InputField
             :type="'number'"
             :disabled="state.disabled.timeAndProcessEdit"
-            :value="timeSpentPerOccurance.minutes.toFixed(0)"
+            :value="minutesAndSecondsPerOccurance.minutes.toFixed(0)"
             @change="updateTimeSpentPerOccurance({ minutes: $event })"
             >m</InputField
           >
           <InputField
             :type="'number'"
             :disabled="state.disabled.timeAndProcessEdit"
-            :value="timeSpentPerOccurance.seconds.toFixed(0)"
+            :value="minutesAndSecondsPerOccurance.seconds.toFixed(0)"
             @change="updateTimeSpentPerOccurance({ seconds: $event })"
             :rules="secondRules"
             :hasError="isInErrors('timeSpendPerOccurance')"
@@ -144,7 +144,7 @@ import FormSection from '@/components/details/FormSection.vue';
 import { Action, Getter } from 'vuex-class';
 import { Phase, PhaseKeys } from '@/models/phase';
 import Process, { ProcessModule, ProcessState } from '@/store/modules/process';
-import { ErrorModule } from '../../../store/modules/error';
+import { ErrorModule } from '@/store/modules/error';
 
 @Component({
   components: {
@@ -201,7 +201,7 @@ export default class TimeAndProcessForm extends Vue {
     return hours;
   }
 
-  get timeSpentPerOccurance(): { minutes: number; seconds: number } {
+  get minutesAndSecondsPerOccurance(): { minutes: number; seconds: number } {
     const minutes = parseInt(ProcessModule.timeSpendPerOccurance ?? '', 10); // remove decimals
     const seconds = (this.timeSpendPerOccurance - minutes) * 60; // remove minute part and convert decimals to seconds
     return { minutes, seconds };
@@ -216,8 +216,10 @@ export default class TimeAndProcessForm extends Vue {
   }
 
   updateTimeSpentPerOccurance({ minutes, seconds }: { minutes: string; seconds: string }) {
-    const newMinutes = !!minutes || minutes === '' ? parseInt(minutes || '0', 10) : this.timeSpentPerOccurance.minutes;
-    const newSeconds = !!seconds || seconds === '' ? parseInt(seconds || '0', 10) : this.timeSpentPerOccurance.seconds;
+    const newMinutes =
+      !!minutes || minutes === '' ? parseInt(minutes || '0', 10) : this.minutesAndSecondsPerOccurance.minutes;
+    const newSeconds =
+      !!seconds || seconds === '' ? parseInt(seconds || '0', 10) : this.minutesAndSecondsPerOccurance.seconds;
     const timeSpendPerOccurance = newMinutes + newSeconds / 60;
     ProcessModule.update({ timeSpendPerOccurance: `${timeSpendPerOccurance}` });
   }

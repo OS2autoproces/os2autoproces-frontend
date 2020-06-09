@@ -65,8 +65,8 @@ import SearchSortingUmbrella from '../components/search/SearchSortingUmbrella.vu
 import PlusIcon from '../components/icons/PlusIcon.vue';
 import { SearchFilters, SearchResultProcess } from '@/store/modules/searchInterfaces';
 import SearchSortingDropdown from '@/components/search/SearchSortingDropdown.vue';
-import { SearchModule } from '../store/modules/search';
-import store from '../store';
+import { SearchModule } from '@/store/modules/search';
+import store from '@/store';
 import Details from './Details.vue';
 import { ProcessModule } from '@/store/modules/process';
 
