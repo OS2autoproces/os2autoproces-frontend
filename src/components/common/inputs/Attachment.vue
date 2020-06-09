@@ -34,7 +34,7 @@ import PowerPointIcon from '@/components/icons/PowerPointIcon.vue';
 import FileIcon from '@/components/icons/FileIcon.vue';
 import DeleteIcon from '@/components/icons/DeleteIcon.vue';
 import Checkbox from '@/components/common/inputs/Checkbox.vue';
-import { Attachment, AttachmentFile } from '@/store/modules/process/state';
+import { Attachment, AttachmentFile } from '@/store/modules/processInterfaces';
 
 @Component({
   components: {

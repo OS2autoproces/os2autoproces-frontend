@@ -1,9 +1,12 @@
 import { DateTime } from 'luxon';
 import * as validateJs from 'validate.js';
-import { ProcessState, Process } from '@/store/modules/process/state';
 import { PhaseKeys } from '@/models/phase';
+import { ProcessState } from './process';
 
-export function getInvalidProperties(state: ProcessState, properties: Array<keyof Process>): Array<keyof Process> {
+export function getInvalidProperties(
+  state: ProcessState,
+  properties: Array<keyof ProcessState>
+): Array<keyof ProcessState> {
   return properties.filter(property => {
     const validator = processFieldsValidators[property];
     return validator && !validator(state);
@@ -31,7 +34,7 @@ function isValid(value: any, constraints: any): boolean {
   return !validateJs({ value }, { value: constraints });
 }
 
-export const processFieldsValidators: { [P in keyof Process]?: (state: ProcessState) => boolean } = {
+export const processFieldsValidators: { [P in keyof ProcessState]?: (state: ProcessState) => boolean } = {
   klId({ klId }: ProcessState) {
     return isValid(klId, isMinMax(0, 64));
   },

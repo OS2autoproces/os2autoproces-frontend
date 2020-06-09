@@ -1,13 +1,13 @@
 <template>
   <FormSection
-    :invalid="!isImplementationValid"
-    v-if="minPhase(PhaseKeys.DEVELOPMENT)"
+    :invalid="!state.isImplementationValid"
+    v-if="state.minPhase(PhaseKeys.DEVELOPMENT)"
     heading="Udvikling og implementering"
     id="implementation"
     :disabled="state.disabled.implementationEdit"
     @edit="update({ disabled: { implementationEdit: $event } })"
   >
-    <div v-if="minPhase(PhaseKeys.IMPLEMENTATION)">
+    <div v-if="state.minPhase(PhaseKeys.IMPLEMENTATION)">
       <h2>Teknisk implementering</h2>
       <InfoTooltip
         >Her kan du notere, hvordan den tekniske implementering er forløbet og eventuelle ting, som andre bør være
@@ -24,7 +24,7 @@
       />
     </div>
 
-    <div v-if="minPhase(PhaseKeys.IMPLEMENTATION)">
+    <div v-if="state.minPhase(PhaseKeys.IMPLEMENTATION)">
       <h2 class="with-margin">Organisatorisk implementering</h2>
       <InfoTooltip
         >Her kan du notere, hvordan den organisatoriske implementering er forløbet og eventuelle opmærksomhedspunkter
@@ -82,12 +82,12 @@ import FormSection from '@/components/details/FormSection.vue';
 import InfoTooltip from '@/components/common/InfoTooltip.vue';
 import TagSelector from '@/components/common/inputs/TagSelector.vue';
 import MappedSelectionField from '@/components/common/inputs/MappedSelectionField.vue';
-import { processActionTypes } from '@/store/modules/process/actions';
-import { processGetterTypes } from '@/store/modules/process/getters';
-import { Technology } from '@/store/modules/process/state';
-import { commonActionTypes } from '@/store/modules/common/actions';
+import { Technology } from '@/store/modules/commonInterfaces';
+import { CommonModule } from '@/store/modules/common';
 import { PhaseKeys, Phase } from '@/models/phase';
 import { RunPeriodKeys, RunPeriodLabels } from '@/models/runperiod';
+import { ProcessModule, ProcessState } from '@/store/modules/process';
+import { ErrorModule } from '@/store/modules/error';
 
 @Component({
   components: {
@@ -99,13 +99,6 @@ import { RunPeriodKeys, RunPeriodLabels } from '@/models/runperiod';
   }
 })
 export default class ImplementationForm extends Vue {
-  @Action(processActionTypes.UPDATE) update: any;
-  @Action(processActionTypes.ADD_TECHNOLOGY) addTechnology: any;
-  @Action(processActionTypes.REMOVE_TECHNOLOGY) removeTechnology: any;
-
-  @Getter(processGetterTypes.IS_IMPLEMENTATION_VALID) isImplementationValid!: any;
-  @Getter(processGetterTypes.MIN_PHASE) minPhase!: (phase: Phase) => boolean;
-
   PhaseKeys = PhaseKeys;
 
   twoColumnBreakpoint = 1600;
@@ -121,19 +114,23 @@ export default class ImplementationForm extends Vue {
   ];
 
   get technologies() {
-    return this.$store.state.common.technologies;
+    return CommonModule.technologies;
   }
 
   get state() {
-    return this.$store.state.process;
+    return ProcessModule;
+  }
+
+  update(state: Partial<ProcessState>) {
+    ProcessModule.update(state);
   }
 
   isInErrors(name: string) {
-    return this.$store.state.error.implementation.errors.includes(name);
+    return ErrorModule.errorInField(ErrorModule.implementation, name);
   }
 
-  async mounted() {
-    this.$store.dispatch(commonActionTypes.LOAD_TECHNOLOGIES);
+  mounted() {
+    CommonModule.loadTechnologies();
   }
 }
 </script>

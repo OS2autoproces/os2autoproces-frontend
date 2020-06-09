@@ -1,6 +1,6 @@
 import { HTTP } from './http-service';
-import store from '@/store/store';
-import { mapFiltersToSearchParams } from '@/store/modules/search/service';
+import store from '@/store';
+import { mapFiltersToSearchParams } from '@/store/modules/service';
 import { saveAs } from 'file-saver';
 
 export const downloadSearchResultsExcel = async () => {

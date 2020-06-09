@@ -7,7 +7,7 @@
         :isReporting="isReporting"
         :id="id"
         :phase="type"
-        @clickedHashLink="clickedHashLink = true"
+        @clickedHashLink="clickHashLink()"
         @goBack="goBack"
       />
       <Umbrella
@@ -15,7 +15,7 @@
         :isReporting="isReporting"
         :id="id"
         :type="type"
-        @clickedHashLink="clickedHashLink = true"
+        @clickedHashLink="clickHashLink()"
         @goBack="goBack"
       />
     </div>
@@ -28,11 +28,10 @@ import { Action, Getter } from 'vuex-class';
 import NavBar from '@/components/common/NavBar.vue';
 import Process from '@/components/details/process/Process.vue';
 import Umbrella from '@/components/details/umbrella/Umbrella.vue';
-import { processActionTypes } from '@/store/modules/process/actions';
-import { commonActionTypes, Kle } from '@/store/modules/common/actions';
 import { TypeKeys } from '@/models/types';
-import { ProcessState } from '@/store/modules/process/state';
+import { ProcessModule } from '@/store/modules/process';
 import ComponentClass from 'vue-class-component';
+import { CommonModule } from '@/store/modules/common';
 
 ComponentClass.registerHooks(['beforeRouteLeave', 'beforeRouteUpdate']);
 
@@ -47,8 +46,6 @@ export default class Details extends Vue {
   @Prop(Boolean) isReporting!: boolean;
   @Prop(Number) id!: number;
   @Prop(String) type!: string;
-  @Action(commonActionTypes.LOAD_KLES) loadKles!: () => Promise<void>;
-  @Action(commonActionTypes.LOAD_FORMS) loadForms!: (kle: Kle) => Promise<void>;
 
   isUmbrella = true;
   loading = true;
@@ -68,8 +65,13 @@ export default class Details extends Vue {
     this.$emit('goBack');
   }
 
+  clickHashLink() {
+    this.clickedHashLink = true;
+    this.$emit('clickedHashLink');
+  }
+
   beforeCreate() {
-    this.$store.dispatch(processActionTypes.CLEAR_PROCESS);
+    ProcessModule.clear();
   }
 
   beforeRouteUpdate(to: any, from: any, next: any) {
@@ -81,7 +83,7 @@ export default class Details extends Vue {
   }
 
   shouldLeaveWithoutSaving(event: BeforeUnloadEvent) {
-    if (this.$store.state.process.hasChanged && !this.clickedHashLink) {
+    if (ProcessModule.hasChanged && !this.clickedHashLink) {
       const message = 'Vil du fortsætte uden at gemme?';
       event.returnValue = message;
       return message;
@@ -90,7 +92,7 @@ export default class Details extends Vue {
   }
 
   shouldContinueWithoutSaving(): boolean {
-    if (!this.$store.state.process.hasChanged || this.clickedHashLink) {
+    if (!ProcessModule.hasChanged || this.clickedHashLink) {
       this.clickedHashLink = false;
       return true;
     }
@@ -108,19 +110,19 @@ export default class Details extends Vue {
   }
 
   async loadContent() {
-    this.$store.dispatch(processActionTypes.CLEAR_PROCESS);
+    ProcessModule.clear();
 
     if (this.isReporting) {
       this.isUmbrella = this.type === TypeKeys.PARENT || this.type === TypeKeys.GLOBAL_PARENT;
       this.loading = false;
     } else {
-      const process = (await this.$store.dispatch(processActionTypes.LOAD_PROCESS_DETAILS, this.id)) as ProcessState;
-      this.$store.dispatch(processActionTypes.LOAD_ATTACHMENTS, Number(this.id));
-      this.loadKles();
-      if (process.kle) {
-        this.loadForms(process.kle);
+      const process = await ProcessModule.loadProcessDetails(this.id);
+      ProcessModule.loadAttachments(this.id.toString());
+      await CommonModule.loadKles();
+      if (process?.kle) {
+        await CommonModule.loadFormsByKle(process.kle);
       }
-      this.isUmbrella = process.type === TypeKeys.PARENT || process.type === TypeKeys.GLOBAL_PARENT;
+      this.isUmbrella = process?.type === TypeKeys.PARENT || process?.type === TypeKeys.GLOBAL_PARENT;
       this.loading = false;
     }
   }

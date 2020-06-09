@@ -9,11 +9,11 @@
 
 <script lang="ts">
 import { Vue, Prop, Component } from 'vue-property-decorator';
-import { Process } from '@/store/modules/process/state';
+import { ProcessReport } from '@/store/modules/processInterfaces';
 
 @Component({})
 export default class ProcessParents extends Vue {
-  @Prop() parents!: Array<Partial<Process>>;
+  @Prop() parents!: Array<Partial<ProcessReport>>;
 }
 </script>
 

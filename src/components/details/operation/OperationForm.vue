@@ -1,7 +1,7 @@
 <template>
   <FormSection
-    :invalid="!isOperationValid"
-    v-if="minPhase(PhaseKeys.OPERATION)"
+    :invalid="!state.isOperationValid"
+    v-if="state.minPhase(PhaseKeys.OPERATION)"
     heading="Drift"
     id="operation"
     :disabled="state.disabled.operationEdit"
@@ -69,9 +69,9 @@ import FormSection from '@/components/details/FormSection.vue';
 import InfoTooltip from '@/components/common/InfoTooltip.vue';
 import Well from '@/components/common/Well.vue';
 import WellItem from '@/components/common/WellItem.vue';
-import { processActionTypes } from '@/store/modules/process/actions';
-import { processGetterTypes } from '@/store/modules/process/getters';
 import { Phase, PhaseKeys } from '@/models/phase';
+import { ProcessModule, ProcessState } from '@/store/modules/process';
+import { ErrorModule } from '@/store/modules/error';
 
 @Component({
   components: {
@@ -85,21 +85,18 @@ import { Phase, PhaseKeys } from '@/models/phase';
   }
 })
 export default class OperationForm extends Vue {
-  @Action(processActionTypes.UPDATE)
-  update: any;
-
-  @Getter(processGetterTypes.IS_OPERATION_VALID)
-  isOperationValid!: any;
-  @Getter(processGetterTypes.MIN_PHASE)
-  minPhase!: (phase: Phase) => boolean;
-
   PhaseKeys = PhaseKeys;
 
   get state() {
-    return this.$store.state.process;
+    return ProcessModule;
   }
+
+  update(state: Partial<ProcessState>) {
+    ProcessModule.update(state);
+  }
+
   isInErrors(name: string) {
-    return this.$store.state.error.operation.errors.includes(name);
+    return ErrorModule.errorInField(ErrorModule.operation, name);
   }
 }
 </script>

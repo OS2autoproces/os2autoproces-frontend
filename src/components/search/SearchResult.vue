@@ -66,11 +66,11 @@ import StarIcon from '../icons/StarIcon.vue';
 import UmbrellaIcon from '../icons/UmbrellaIcon.vue';
 import Rating from '../common/inputs/Rating.vue';
 import Phases from '../common/inputs/Phases.vue';
-import { SearchResultProcess } from '../../store/modules/search/state';
-import { StatusLabels } from '../../models/status';
-import { DomainLabels } from '../../models/domain';
-import { processActionTypes } from '@/store/modules/process/actions';
+import { SearchResultProcess } from '@/store/modules/searchInterfaces';
+import { StatusLabels } from '@/models/status';
+import { DomainLabels } from '@/models/domain';
 import { TypeKeys } from '@/models/types';
+import { ProcessModule } from '@/store/modules/process';
 
 @Component({
   components: {
@@ -89,10 +89,6 @@ export default class SearchResult extends Vue {
   noPhase!: boolean;
 
   processBookmarked = this.process.hasBookmarked;
-
-  @Action(processActionTypes.SET_BOOKMARK_FROM_SEARCH)
-  setBookmark!: (bookmarkSearch: { id: number; hasBookmarked: boolean }) => Promise<boolean>;
-
   StatusLabels = StatusLabels;
 
   get isChildProcess() {
@@ -105,7 +101,10 @@ export default class SearchResult extends Vue {
 
   async setProcessBookmark() {
     // TODO not the way to do flow - action results should not be use for mutations directly in view. Actions should affect changes in state
-    const res = await this.setBookmark({ id: this.process.id, hasBookmarked: !this.processBookmarked });
+    const res = await ProcessModule.setBookmarkFromSearch({
+      id: this.process.id,
+      hasBookmarked: !this.processBookmarked
+    });
     this.processBookmarked = res ? !this.processBookmarked : this.processBookmarked;
   }
 }

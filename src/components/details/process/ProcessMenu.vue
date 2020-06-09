@@ -16,7 +16,7 @@
 import { Vue, Prop, Component, Watch } from 'vue-property-decorator';
 import { Getter } from 'vuex-class';
 import { Phase, PhaseKeys } from '@/models/phase';
-import { processGetterTypes } from '@/store/modules/process/getters';
+import { ProcessModule } from '@/store/modules/process';
 
 export interface MenuItem {
   heading: string;
@@ -29,7 +29,6 @@ export default class ProcessMenu extends Vue {
   @Prop(String) phase!: Phase;
   @Prop(Boolean) canEdit!: boolean;
   @Prop(Boolean) isReporting!: boolean;
-  @Getter(processGetterTypes.MIN_PHASE) minPhase!: (phase: Phase) => boolean;
 
   private itemInView: MenuItem | null = null;
   private listener!: () => void;
@@ -51,10 +50,14 @@ export default class ProcessMenu extends Vue {
       { heading: 'Grundlæggende oplysninger', id: 'general-information', show: true },
       { heading: 'Problemstillinger', id: 'challenges', show: true },
       { heading: 'Tid og proces', id: 'time-and-process', show: true },
-      { heading: 'Faglig vurdering', id: 'assessment', show: this.minPhase(PhaseKeys.PREANALYSIS) },
-      { heading: 'Udvikling og implementering', id: 'implementation', show: this.minPhase(PhaseKeys.DEVELOPMENT) },
-      { heading: 'Drift', id: 'operation', show: this.minPhase(PhaseKeys.OPERATION) },
-      { heading: 'Bilag og links', id: 'attachments', show: this.minPhase(PhaseKeys.PREANALYSIS) },
+      { heading: 'Faglig vurdering', id: 'assessment', show: ProcessModule.minPhase(PhaseKeys.PREANALYSIS) },
+      {
+        heading: 'Udvikling og implementering',
+        id: 'implementation',
+        show: ProcessModule.minPhase(PhaseKeys.DEVELOPMENT)
+      },
+      { heading: 'Drift', id: 'operation', show: ProcessModule.minPhase(PhaseKeys.OPERATION) },
+      { heading: 'Bilag og links', id: 'attachments', show: ProcessModule.minPhase(PhaseKeys.PREANALYSIS) },
       { heading: 'Interne noter', id: 'internal-notes', show: this.canEdit }
     ];
   }

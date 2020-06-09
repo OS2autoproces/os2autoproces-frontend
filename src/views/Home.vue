@@ -14,7 +14,7 @@
       <div class="save-button-container" v-if="editing" @click="save">
         <Button class="save-button">Gem</Button>
       </div>
-      <MarkdownEditor :editing="editing" :value="state.common.frontPage" @change="update({ frontPage: $event })" />
+      <MarkdownEditor :editing="editing" :value="state.frontPage" @change="update({ frontPage: $event })" />
     </div>
 
     <div class="idea-sharing-icon">
@@ -30,9 +30,9 @@ import IdeaSharingIcon from '../components/icons/IdeaSharingIcon.vue';
 import EditIcon from '../components/icons/EditIcon.vue';
 import Button from '../components/common/inputs/Button.vue';
 import MarkdownEditor from '../components/common/inputs/MarkdownEditor.vue';
-import { commonActionTypes, Cms } from '@/store/modules/common/actions';
-import { CommonState } from '@/store/modules/common/state';
-import { authGetterTypes } from '@/store/modules/auth/getters';
+import { Cms } from '@/store/modules/commonInterfaces';
+import { AuthModule } from '@/store/modules/auth';
+import { CommonModule } from '@/store/modules/common';
 
 @Component({
   components: {
@@ -43,29 +43,24 @@ import { authGetterTypes } from '@/store/modules/auth/getters';
   }
 })
 export default class Home extends Vue {
-  @Action(commonActionTypes.UPDATE)
-  update: any;
-  @Action(commonActionTypes.LOAD_CMS_CONTENT)
-  loadCmsContent!: (label: keyof CommonState) => Promise<void>;
-  @Action(commonActionTypes.SAVE_CMS_CONTENT)
-  saveCmsContent!: (cms: Cms) => Promise<void>;
-  @Getter(authGetterTypes.IS_FRONTPAGE_EDITOR)
-  isEditor!: () => boolean;
-
   get state() {
-    return this.$store.state;
+    return CommonModule;
+  }
+
+  get isEditor() {
+    return AuthModule.isFrontpageEditor;
   }
 
   editing = false;
 
   mounted() {
-    this.loadCmsContent('frontPage');
+    CommonModule.loadCmsContent('frontPage');
   }
 
   save() {
-    this.saveCmsContent({
+    CommonModule.saveCmsContent({
       label: 'frontPage',
-      content: this.state.common.frontPage
+      content: !!CommonModule.frontPage ? CommonModule.frontPage : ''
     });
     this.editing = false;
   }

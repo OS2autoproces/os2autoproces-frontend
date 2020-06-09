@@ -2,7 +2,7 @@
   <div class="internal-notes">
     <RichTextArea
       :value="internalNotes"
-      @change="update({ internalNotes: $event })"
+      @change="update($event)"
       :disabled="disabled"
       :max-length="10000"
       placeholder="Skriv interne noter her..."
@@ -14,8 +14,7 @@
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import RichTextArea from '@/components/common/inputs/RichTextArea.vue';
 import { Action } from 'vuex-class';
-import { processActionTypes } from '@/store/modules/process/actions';
-import { ProcessState } from '@/store/modules/process/state';
+import { ProcessState, ProcessModule } from '@/store/modules/process';
 
 @Component({
   components: {
@@ -25,7 +24,10 @@ import { ProcessState } from '@/store/modules/process/state';
 export default class InternalNotesComponent extends Vue {
   @Prop(String) internalNotes!: string;
   @Prop(Boolean) disabled!: boolean;
-  @Action(processActionTypes.UPDATE) update!: (notes: Partial<ProcessState>) => void;
+
+  update(notes: string): void {
+    ProcessModule.update({ internalNotes: notes });
+  }
 }
 </script>
 

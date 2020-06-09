@@ -1,6 +1,6 @@
 <template>
   <FormSection
-    :invalid="!isUmbrellaValid"
+    :invalid="!state.isUmbrellaValid"
     heading="Paraplyproces"
     :disabled="state.disabled.generalInformationEdit"
     @edit="update({ disabled: { generalInformationEdit: $event } })"
@@ -36,7 +36,7 @@
               :hasError="isInErrors('kle')"
               id="kle"
               @change="setKle($event)"
-              :items="kles"
+              :items="common.kles"
               itemText="code"
               clearable
             />
@@ -48,7 +48,7 @@
               :hasError="isInErrors('form')"
               id="form"
               @change="update({ form: $event })"
-              :items="forms"
+              :items="common.forms"
               itemText="code"
               clearable
             />
@@ -99,7 +99,7 @@
               @search="search($event)"
               isItemsPartial
               @change="update({ contact: $event })"
-              :items="users"
+              :items="common.users"
               clearable
             />
           </WellItem>
@@ -146,9 +146,8 @@
         <router-link :to="'/details/' + process.id" class="search-result-link">
           <SmallSearchResult :process="process" />
           <div class="visibility-warning" v-if="isLessVisible(process.visibility)">
-            <WarningIcon class="visibility-icon" />
-            Synligheden ændres fra {{ VisibilityLabels[process.visibility] }} til
-            {{ VisibilityLabels[state.visibility] }}
+            <WarningIcon class="visibility-icon" /> Synligheden ændres fra
+            {{ VisibilityLabels[process.visibility] }} til {{ VisibilityLabels[state.visibility] }}
           </div>
         </router-link>
 
@@ -188,19 +187,20 @@ import WellItem from '@/components/common/WellItem.vue';
 import FormSection from '@/components/details/FormSection.vue';
 import WarningIcon from '@/components/icons/WarningIcon.vue';
 import DeleteIcon from '@/components/icons/DeleteIcon.vue';
-import { processActionTypes } from '@/store/modules/process/actions';
-import { processGetterTypes } from '@/store/modules/process/getters';
-import { Kle, commonActionTypes, UserSearchRequest } from '@/store/modules/common/actions';
-import { User } from '@/store/modules/auth/state';
+import { User } from '@/store/modules/auth';
 import { StatusKeys, StatusLabels } from '@/models/status';
 import { VisibilityKeys, VisibilityLabels, VisibilityOrder, Visibility } from '@/models/visibility';
-import { OrgUnit, Process } from '@/store/modules/process/state';
+import { ProcessReport } from '@/store/modules/processInterfaces';
+import { Kle, OrgUnit } from '@/store/modules/commonInterfaces';
+import { CommonModule } from '@/store/modules/common';
 import { TypeLabels, TypeKeys } from '@/models/types';
 import { Domain } from '@/models/domain';
 import { Phase, PhaseKeys } from '@/models/phase';
-import { searchActionTypes } from '@/store/modules/search/actions';
 import MunicipalityLogo from '@/components/common/MunicipalityLogo.vue';
 import StarIcon from '@/components/icons/StarIcon.vue';
+import { AuthModule } from '@/store/modules/auth';
+import { ProcessModule, ProcessState } from '@/store/modules/process';
+import { ErrorModule } from '@/store/modules/error';
 
 @Component({
   components: {
@@ -226,82 +226,67 @@ export default class UmbrellaForm extends Vue {
   @Prop(Boolean)
   isReporting!: boolean;
 
-  @Action(processActionTypes.SET_BOOKMARK)
-  setBookmark!: (hasBookmark: boolean) => Promise<void>;
-  @Action(processActionTypes.UPDATE)
-  update: any;
-  @Action(processActionTypes.ASSIGN)
-  assign: any;
-  @Action(commonActionTypes.LOAD_FORMS)
-  loadForms: any;
-
-  @Getter(processGetterTypes.IS_UMBRELLA_VALID)
-  isUmbrellaValid!: any;
-
   TypeLabels = TypeLabels;
   VisibilityLabels = VisibilityLabels;
   VisibilityKeys = VisibilityKeys;
 
-  get logo() {
-    return `/logos/${this.$store.state.process.cvr}.png`;
-  }
-
-  get users() {
-    return this.$store.state.common.users;
-  }
-
   get state() {
-    return this.$store.state.process;
+    return ProcessModule;
   }
 
-  get kles() {
-    return this.$store.state.common.kles;
+  get common() {
+    return CommonModule;
   }
 
-  get forms() {
-    return this.$store.state.common.forms;
+  get logo() {
+    return `/logos/${ProcessModule.cvr}.png`;
+  }
+
+  update(state: Partial<ProcessState>) {
+    ProcessModule.update(state);
   }
 
   isInErrors(name: string) {
-    return this.$store.state.error.generalInformation.errors.includes(name);
+    return ErrorModule.errorInField(ErrorModule.generalInformation, name);
   }
 
   search(name: string) {
-    this.$store.dispatch(commonActionTypes.SEARCH_USERS, {
-      name,
-      cvr: this.$store.state.auth.user.cvr
-    });
+    if (AuthModule.user) {
+      CommonModule.searchUsers(AuthModule.user.cvr, name);
+    } else {
+      CommonModule.searchUsers('', name);
+    }
   }
 
   isLessVisible(visiblity: Visibility) {
-    return VisibilityOrder.indexOf(visiblity) < VisibilityOrder.indexOf(this.state.visibility);
+    return !!ProcessModule.visibility
+      ? VisibilityOrder.indexOf(visiblity) < VisibilityOrder.indexOf(ProcessModule.visibility)
+      : false;
   }
 
   setKla(kla: string) {
     // Inserts periodes for every 2 characters, to match format: ##.##.##.##.##
-    this.update({ kla: kla.replace(/(\d{2})(?=\d)/g, '$1.') });
+    ProcessModule.update({ kla: kla.replace(/(\d{2})(?=\d)/g, '$1.') });
   }
 
   setKle(kle: Kle) {
     if (!kle) {
-      this.update({ kle, form: null });
+      ProcessModule.update({ kle, form: null });
     } else {
-      this.update({ kle });
+      ProcessModule.update({ kle });
     }
-    this.loadForms(kle);
+    CommonModule.loadFormsByKle(kle);
   }
 
-  addProcess(process: Process) {
-    if (this.state.children.find((child: Process) => child.id === process.id)) {
-      return;
+  addProcess(process: ProcessReport) {
+    if (ProcessModule.children && !ProcessModule.children?.find((child: ProcessReport) => child.id === process.id)) {
+      ProcessModule.assign({ children: [...ProcessModule.children, process] });
     }
-
-    this.assign({ children: [...this.state.children, process] });
   }
 
-  removeProcess(process: Process) {
-    this.assign({
-      children: this.state.children.filter((child: Process) => child.id !== process.id)
+  removeProcess(process: ProcessReport) {
+    ProcessModule.assign({
+      children: ProcessModule.children?.filter((child: ProcessReport) => child.id !== process.id)
     });
   }
 }

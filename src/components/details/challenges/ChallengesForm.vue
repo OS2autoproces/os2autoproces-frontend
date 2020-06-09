@@ -1,6 +1,6 @@
 <template>
   <FormSection
-    :invalid="!isChallengesValid"
+    :invalid="!state.isChallengesValid"
     heading="Problemstillinger"
     id="challenges"
     :disabled="state.disabled.challengesEdit"
@@ -37,7 +37,7 @@
       />
     </div>
 
-    <div v-if="minPhase(PhaseKeys.PREANALYSIS)">
+    <div v-if="state.minPhase(PhaseKeys.PREANALYSIS)">
       <h2 class="with-margin">Udfordringer i den nuværende proces *</h2>
       <InfoTooltip
         >Her kan du beskrive de trivielle handlinger, udfordringer eller vaskeligheder der opleves i udførelsen af den
@@ -70,7 +70,7 @@
             :hasError="isInErrors('itSystems')"
             itemText="name"
             :disabled="state.disabled.challengesEdit"
-            @change="assign({ itSystems: $event })"
+            @change="update({ itSystems: $event })"
             id="itSystems"
             multiple
           />
@@ -106,21 +106,20 @@
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import TextArea from '@/components/common/inputs/TextArea.vue';
 import RichTextArea from '@/components/common/inputs/RichTextArea.vue';
-import { Action, Getter } from 'vuex-class';
 import SelectionField from '@/components/common/inputs/SelectionField.vue';
 import DatePicker from '@/components/common/inputs/DatePicker.vue';
 import FormSection from '@/components/details/FormSection.vue';
 import Well from '@/components/common/Well.vue';
 import InfoTooltip from '@/components/common/InfoTooltip.vue';
 import WellItem from '@/components/common/WellItem.vue';
-import { processActionTypes } from '@/store/modules/process/actions';
-import { ITSystem } from '@/store/modules/process/state';
+import { ITSystem } from '@/store/modules/commonInterfaces';
 import { HTTP } from '@/services/http-service';
-import { commonActionTypes } from '@/store/modules/common/actions';
-import { CommonState } from '@/store/modules/common/state';
-import { processGetterTypes } from '@/store/modules/process/getters';
 import { Phase, PhaseKeys } from '@/models/phase';
-import { ErrorState } from '@/store/modules/error/state';
+import { ProcessModule, ProcessState } from '@/store/modules/process';
+import Process from '@/store/modules/process';
+import { CommonModule } from '@/store/modules/common';
+import { ErrorModule } from '@/store/modules/error';
+import { RootState } from '@/store';
 
 @Component({
   components: {
@@ -135,31 +134,27 @@ import { ErrorState } from '@/store/modules/error/state';
   }
 })
 export default class ChallengesForm extends Vue {
-  @Action(processActionTypes.UPDATE)
-  update: any;
-  @Action(processActionTypes.ASSIGN)
-  assign: any;
-  @Action(processActionTypes.SAVE_IT_SYSTEM)
-  saveItSystem!: (itSystem: ITSystem) => void;
-
-  @Getter(processGetterTypes.IS_CHALLENGES_VALID)
-  isChallengesValid!: any;
-  @Getter(processGetterTypes.MIN_PHASE)
-  minPhase!: (phase: Phase) => boolean;
-
   twoColumnBreakpoint = 1600;
   PhaseKeys = PhaseKeys;
 
   get state() {
-    return this.$store.state.process;
+    return ProcessModule;
   }
 
   get itSystems() {
-    return this.$store.state.common.itSystems;
+    return CommonModule.itSystems;
+  }
+
+  minPhase(phase: Phase) {
+    return ProcessModule.minPhase(phase);
+  }
+
+  update(state: Partial<ProcessState>) {
+    ProcessModule.update(state);
   }
 
   isInErrors(name: string) {
-    return this.$store.state.error.challenges.errors.includes(name);
+    return ErrorModule.errorInField(ErrorModule.challenges, name);
   }
 }
 </script>

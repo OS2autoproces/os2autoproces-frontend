@@ -27,7 +27,7 @@
       <span>Antal viste</span>
       <SelectionField
         class="size-select"
-        :value="formattedSize"
+        :value="chosenSize"
         :items="sizes"
         :type="'number'"
         :clearable="false"
@@ -58,8 +58,9 @@ export default class SearchPagination extends Vue {
   @Prop(Number) size!: number;
   sizes: Array<{ text: string; value: number }> = Array.from([5, 10, 25], (value, index) => ({
     value,
-    text: value?.toString()
+    text: value.toString()
   }));
+  chosenSize = 5;
 
   @Emit()
   onPageChange(page: number) {
@@ -68,15 +69,12 @@ export default class SearchPagination extends Vue {
 
   @Emit()
   onSizeChange(size: number) {
+    this.chosenSize = size;
     return size;
   }
 
   pageIsActive(page: number) {
     return page === this.page;
-  }
-
-  get formattedSize() {
-    return { value: this.size, text: this.size?.toString() };
   }
 
   get pages(): number[] {

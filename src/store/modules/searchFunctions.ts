@@ -1,16 +1,10 @@
-import { defaultStatusSelects } from '@/models/status';
-import { actions } from '@/store/modules/search/actions';
-import { getters } from '@/store/modules/search/getters';
-import { mutations } from '@/store/modules/search/mutations';
-import { SearchState } from '@/store/modules/search/state';
-import { RootState } from '@/store/store';
-import { Module } from 'vuex';
-
-const namespaced = true;
+import { SearchState } from './search';
+import { SearchFilters } from './searchInterfaces';
+import { isEqual } from 'lodash';
 
 export function getInitialState(): SearchState {
   return {
-    result: undefined,
+    result: null,
     filtersTouched: false,
     savedFilters: [],
     selectedSavedFiltersText: '',
@@ -73,12 +67,12 @@ export function getInitialState(): SearchState {
   };
 }
 
-export const state = getInitialState();
-
-export const search: Module<SearchState, RootState> = {
-  namespaced,
-  state,
-  actions,
-  getters,
-  mutations
-};
+export function getFiltersTouched(
+  previousFilters: SearchFilters | undefined,
+  filterChanges: Partial<SearchFilters>
+): boolean {
+  const initialFilters = getInitialState().filters;
+  const currentFilters = Object.assign({}, previousFilters, filterChanges);
+  const touched = !isEqual(initialFilters, currentFilters);
+  return touched;
+}

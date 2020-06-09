@@ -5,7 +5,12 @@
     <div class="wrapper">
       <h1>Teknologier</h1>
       <div class="technology" v-for="technology in technologies" :key="technology.id">
-        <InputField class="name" :value="technology.name" @change="technology.name = $event" :disabled="technology.id !== editing" />
+        <InputField
+          class="name"
+          :value="technology.name"
+          @change="technology.name = $event"
+          :disabled="technology.id !== editing"
+        />
         <div class="icon" @click="editing = technology.id" role="button" v-if="technology.id !== editing">
           <EditIcon />
         </div>
@@ -28,8 +33,8 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 import NavBar from '../components/common/NavBar.vue';
 import InputField from '../components/common/inputs/InputField.vue';
 import Button from '../components/common/inputs/Button.vue';
-import { commonActionTypes } from '@/store/modules/common/actions';
-import { Technology } from '@/store/modules/process/state';
+import { Technology } from '@/store/modules/commonInterfaces';
+import { CommonModule } from '@/store/modules/common';
 import EditIcon from '../components/icons/EditIcon.vue';
 import DeleteIcon from '../components/icons/DeleteIcon.vue';
 
@@ -55,21 +60,20 @@ export default class ManageTechnologies extends Vue {
   }
 
   async load() {
-    this.$store.dispatch(commonActionTypes.LOAD_TECHNOLOGIES);
+    CommonModule.loadTechnologies();
   }
 
   edit(technology: Technology) {
     if (!technology.name) {
       return;
     }
-
-    this.$store.dispatch(commonActionTypes.EDIT_TECHNOLOGY, technology);
+    CommonModule.editTechnology(technology.id, technology.name);
     this.editing = null;
   }
 
   remove(id: number) {
     if (confirm('Er du sikker?')) {
-      this.$store.dispatch(commonActionTypes.REMOVE_TECHNOLOGY, id);
+      CommonModule.removeTechnology(id);
     }
   }
 
@@ -82,7 +86,7 @@ export default class ManageTechnologies extends Vue {
 
     this.newTechnology = '';
 
-    await this.$store.dispatch(commonActionTypes.ADD_TECHNOLOGY, name);
+    await CommonModule.addTechnology(name);
   }
 }
 </script>

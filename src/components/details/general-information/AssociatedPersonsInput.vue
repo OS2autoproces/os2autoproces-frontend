@@ -8,8 +8,8 @@
           beskrivelserne. Det kan f.eks. være projektmedarbejdere og udviklere.</InfoTooltip
         >
       </div>
-      <div class="associated-persons-list" :class="{ disabled, empty: !state.process.users.length }">
-        <div v-for="(user, index) in state.process.users" :key="index">
+      <div class="associated-persons-list" :class="{ disabled, empty: !state.users.length }">
+        <div v-for="(user, index) in state.users" :key="index">
           <div class="name">{{ user.name }}</div>
           <div v-if="!disabled" @click="removeUser(user)" class="delete-icon">
             <DeleteIcon />
@@ -41,9 +41,10 @@ import { Action } from 'vuex-class';
 import InfoTooltip from '@/components/common/InfoTooltip.vue';
 import SelectionField from '@/components/common/inputs/SelectionField.vue';
 import DeleteIcon from '@/components/icons/DeleteIcon.vue';
-import { processActionTypes } from '@/store/modules/process/actions';
-import { commonActionTypes, UserSearchRequest } from '@/store/modules/common/actions';
-import { User } from '@/store/modules/auth/state';
+import { UserSearchRequest } from '@/store/modules/commonInterfaces';
+import { CommonModule } from '@/store/modules/common';
+import { User, AuthModule } from '@/store/modules/auth';
+import { ProcessModule } from '@/store/modules/process';
 
 @Component({
   components: {
@@ -58,32 +59,33 @@ export default class AssociatedPersonsInput extends Vue {
   @Prop(Boolean)
   hasError!: boolean;
 
-  @Action(commonActionTypes.SEARCH_USERS)
-  searchUsers!: (request: UserSearchRequest) => Promise<void>;
-
   get state() {
-    return this.$store.state;
+    return ProcessModule;
   }
 
   get users() {
-    return this.$store.state.common.users;
+    return CommonModule.users;
   }
 
   search(name: string) {
-    this.searchUsers({ name, cvr: this.$store.state.auth.user.cvr });
+    if (AuthModule.user) {
+      CommonModule.searchUsers(AuthModule.user.cvr, name);
+    } else {
+      CommonModule.searchUsers('', name);
+    }
   }
 
   addUser(user: User) {
-    if (!user || this.state.process.users.find((u: User) => user.id === u.id)) {
+    if (!user || ProcessModule.users?.find((u: User) => user.id === u.id)) {
       return;
     }
 
     setTimeout(() => (this.$refs.userSelectionField as SelectionField<User>).clear());
-    this.$store.dispatch(processActionTypes.ADD_USER, user);
+    ProcessModule.addUser(user);
   }
 
   removeUser(user: User) {
-    this.$store.dispatch(processActionTypes.REMOVE_USER, user);
+    ProcessModule.removeUser(user);
   }
 }
 </script>

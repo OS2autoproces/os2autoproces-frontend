@@ -1,6 +1,6 @@
 <template>
   <FormSection
-    :invalid="!isGeneralInformationValid"
+    :invalid="!state.isGeneralInformationValid"
     heading="Grundlæggende oplysninger"
     id="general-information"
     :disabled="state.disabled.generalInformationEdit"
@@ -37,7 +37,7 @@
           label="Fagligkontaktperson:"
           tooltip="Er en person der varetager processen til daglig og derfor har stort kendskab til den."
           v-if="isWithinMunicipality"
-          :required="minPhase(PhaseKeys.SPECIFICATION)"
+          :required="state.minPhase(PhaseKeys.SPECIFICATION)"
         >
           <SelectionField
             itemSubText="email"
@@ -48,7 +48,7 @@
             @search="search($event)"
             isItemsPartial
             @change="update({ owner: $event })"
-            :items="users"
+            :items="common.users"
             id="owner"
           />
         </WellItem>
@@ -66,7 +66,7 @@
             @search="search($event)"
             isItemsPartial
             @change="update({ contact: $event })"
-            :items="users"
+            :items="common.users"
             id="contact"
             clearable
           />
@@ -104,14 +104,14 @@
             :value="state.orgUnits"
             :hasError="isInErrors('orgUnits')"
             @change="assign({ orgUnits: $event })"
-            :items="orgUnits"
+            :items="common.orgUnits"
             id="orgUnits"
             multiple
             itemText="name"
           />
         </WellItem>
         <WellItem
-          v-if="minPhase(PhaseKeys.DEVELOPMENT)"
+          v-if="state.minPhase(PhaseKeys.DEVELOPMENT)"
           labelWidth="180px"
           label="Leverandør:"
           tooltip="Her skrives enten kommunens navn eller en ekstern leverandør der har lavet løsningen."
@@ -136,7 +136,7 @@
       </div>
 
       <div>
-        <WellItem v-if="minPhase(PhaseKeys.PREANALYSIS)" labelWidth="120px" label="Lovparagraf:">
+        <WellItem v-if="state.minPhase(PhaseKeys.PREANALYSIS)" labelWidth="120px" label="Lovparagraf:">
           <InputField
             :disabled="state.disabled.generalInformationEdit || state.form"
             :value="state.legalClause"
@@ -151,7 +151,7 @@
             :value="state.kle"
             :hasError="isInErrors('kle')"
             @change="setKle($event)"
-            :items="kles"
+            :items="common.kles"
             id="kle"
             itemText="name"
             itemSubText="code"
@@ -164,7 +164,7 @@
             :value="state.form"
             :hasError="isInErrors('form')"
             @change="update({ form: $event })"
-            :items="forms"
+            :items="common.forms"
             id="form"
             itemText="description"
             itemSubText="code"
@@ -197,7 +197,7 @@
       </div>
 
       <AssociatedPersonsInput
-        v-if="minPhase(PhaseKeys.PREANALYSIS) && isWithinMunicipality"
+        v-if="state.minPhase(PhaseKeys.PREANALYSIS) && isWithinMunicipality"
         slot="well-footer"
         :disabled="state.disabled.generalInformationEdit"
       />
@@ -295,14 +295,11 @@ import Well from '@/components/common/Well.vue';
 import WellItem from '@/components/common/WellItem.vue';
 import FormSection from '@/components/details/FormSection.vue';
 import WarningIcon from '@/components/icons/WarningIcon.vue';
-import { processActionTypes } from '@/store/modules/process/actions';
-import { processGetterTypes } from '@/store/modules/process/getters';
-import { User } from '@/store/modules/auth/state';
 import { StatusKeys, StatusLabels } from '@/models/status';
 import { VisibilityKeys, VisibilityLabels } from '@/models/visibility';
-import { OrgUnit } from '@/store/modules/process/state';
 import { Domain, DomainKeys, DomainLabels } from '@/models/domain';
-import { Kle, Form, commonActionTypes, UserSearchRequest } from '@/store/modules/common/actions';
+import { Kle, Form, UserSearchRequest, OrgUnit } from '@/store/modules/commonInterfaces';
+import { CommonModule } from '@/store/modules/common';
 import { Phase, PhaseKeys } from '@/models/phase';
 import InfoTooltip from '@/components/common/InfoTooltip.vue';
 import MunicipalityLogo from '@/components/common/MunicipalityLogo.vue';
@@ -310,7 +307,9 @@ import StarIcon from '@/components/icons/StarIcon.vue';
 import AppDialog from '@/components/common/Dialog.vue';
 import DialogContent from '@/components/common/DialogContent.vue';
 import Button from '@/components/common/inputs/Button.vue';
-import { ErrorState } from '@/store/modules/error/state';
+import { AuthModule, User } from '@/store/modules/auth';
+import { ProcessModule, ProcessState } from '@/store/modules/process';
+import { ErrorModule } from '@/store/modules/error';
 // TODO - split this component. No component should be 500 lines
 @Component({
   components: {
@@ -338,23 +337,6 @@ import { ErrorState } from '@/store/modules/error/state';
 export default class GeneralInformationForm extends Vue {
   @Prop(Boolean)
   isReporting!: boolean;
-
-  @Action(processActionTypes.SET_BOOKMARK)
-  setBookmark!: (hasBookmark: boolean) => Promise<void>;
-  @Action(processActionTypes.UPDATE)
-  update: any;
-  @Action(commonActionTypes.LOAD_FORMS)
-  loadForms: any;
-  @Action(processActionTypes.ASSIGN)
-  assign: any;
-  @Action(commonActionTypes.SEARCH_USERS)
-  searchUsers!: ({ name, cvr }: UserSearchRequest) => Promise<void>;
-
-  @Getter(processGetterTypes.IS_GERNERAL_INFORMATION_VALID)
-  isGeneralInformationValid!: any;
-  @Getter(processGetterTypes.MIN_PHASE)
-  minPhase!: (phase: Phase) => boolean;
-
   isPhaseChanged = false;
   publicVisibilityDialogOpen = false;
   StatusKeys = StatusKeys;
@@ -375,55 +357,46 @@ export default class GeneralInformationForm extends Vue {
   ];
 
   get isWithinMunicipality() {
-    const { auth, process } = this.$store.state;
-    return auth.user.cvr === process.cvr;
+    return AuthModule.user?.cvr === ProcessModule?.cvr;
   }
 
   get logo() {
-    return `/logos/${this.$store.state.process.cvr}.png`;
+    return `/logos/${ProcessModule?.cvr}.png`;
   }
 
   get state() {
-    return this.$store.state.process;
+    return ProcessModule;
   }
 
-  get users() {
-    return this.$store.state.common.users;
+  get common() {
+    return CommonModule;
   }
 
-  get kles() {
-    return this.$store.state.common.kles;
-  }
-
-  get forms() {
-    return this.$store.state.common.forms;
-  }
-
-  get orgUnits() {
-    return this.$store.state.common.orgUnits;
+  update(state: Partial<ProcessState>) {
+    ProcessModule.update(state);
   }
 
   isInErrors(name: string) {
-    return this.$store.state.error.generalInformation.errors.includes(name);
+    return ErrorModule.errorInField(ErrorModule.generalInformation, name);
   }
 
   setKla(kla: string) {
     // Inserts periodes for every 2 characters, to match format: ##.##.##.##.##
-    this.update({ kla: kla.replace(/(\d{2})(?=\d)/g, '$1.') });
+    ProcessModule.update({ kla: kla.replace(/(\d{2})(?=\d)/g, '$1.') });
   }
 
   setKle(kle: Kle) {
     if (!kle) {
-      this.update({ kle, form: null });
+      ProcessModule.update({ kle, form: null });
     } else {
-      this.update({ kle });
+      ProcessModule.update({ kle });
     }
-    this.loadForms(kle);
+    CommonModule.loadFormsByKle(kle);
   }
 
   phaseChanged(phase: any) {
     this.isPhaseChanged = true;
-    this.update({ phase });
+    ProcessModule.update({ phase });
 
     if (phase === PhaseKeys.OPERATION && this.state.visibility !== VisibilityKeys.PUBLIC) {
       this.openPublicVisibilityDialog();
@@ -431,7 +404,11 @@ export default class GeneralInformationForm extends Vue {
   }
 
   search(name: string) {
-    this.searchUsers({ name, cvr: this.$store.state.auth.user.cvr });
+    if (AuthModule.user) {
+      CommonModule.searchUsers(AuthModule.user.cvr, name);
+    } else {
+      CommonModule.searchUsers('', name);
+    }
   }
 
   openPublicVisibilityDialog() {

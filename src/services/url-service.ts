@@ -1,7 +1,7 @@
-import { SearchFilters } from '@/store/modules/search/state';
+import { SearchFilters } from '@/store/modules/searchInterfaces';
 import qs from 'qs';
 import DOMPurify from 'dompurify';
-import { getInitialState } from '@/store/modules/search';
+import { getInitialState } from '@/store/modules/searchFunctions';
 
 // Test if browser is Internet Explorer
 export function isIE() {

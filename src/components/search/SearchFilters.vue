@@ -105,7 +105,7 @@
 
     <SearchFiltersRunPeriod />
 
-    <SearchFiltersActions />
+    <SearchFiltersActions @reset="onReset()" />
   </div>
 </template>
 
@@ -120,19 +120,19 @@ import PillCheckbox from '../common/inputs/PillCheckbox.vue';
 import SelectionField from '../common/inputs/SelectionField.vue';
 import ExpandPanel from '../common/ExpandPanel.vue';
 import { Action, State } from 'vuex-class';
-import { searchActionTypes } from '@/store/modules/search/actions';
 import { PhaseLabels, PhaseKeys } from '@/models/phase';
 import { DomainLabels, DomainKeys } from '@/models/domain';
 import { VisibilityLabels, VisibilityKeys } from '@/models/visibility';
-import { SearchFilters } from '../../store/modules/search/state';
-import { commonActionTypes } from '@/store/modules/common/actions';
+import { SearchFilters } from '@/store/modules/searchInterfaces';
 import Button from '../common/inputs/Button.vue';
-import { RootState } from '../../store/store';
 import SearchFiltersActions from './SearchFiltersActions.vue';
 import SearchSelectSavedFilters from './SearchSelectSavedFilters.vue';
 import SearchFiltersRunPeriod from './SearchFiltersRunPeriod.vue';
 import { StatusSelect, StatusLabels, StatusKeys, defaultStatusSelects } from '../../models/status';
-import { Municipality } from '@/store/modules/process/state';
+import { Municipality } from '@/store/modules/commonInterfaces';
+import { AuthModule } from '@/store/modules/auth';
+import { CommonModule } from '@/store/modules/common';
+import { SearchModule } from '@/store/modules/search';
 
 @Component({
   components: {
@@ -160,47 +160,27 @@ export default class SearchFiltersComponent extends Vue {
   VisibilityLabels = VisibilityLabels;
   VisibilityKeys = [VisibilityKeys.MUNICIPALITY, VisibilityKeys.PUBLIC];
 
-  @State((state: RootState) => state.search.filters) filters!: SearchFilters;
-
   @Prop(Boolean)
   umbrellaProcessSearch!: boolean;
 
-  get user() {
-    return this.$store.state.auth.user;
-  }
-
-  get itSystems() {
-    return this.$store.state.common.itSystems;
-  }
-
-  get municipalities() {
-    return this.$store.state.common.municipalities.sort((m1: Municipality, m2: Municipality) =>
-      m1.name.localeCompare(m2.name)
-    );
-  }
-
-  get technologies() {
-    return this.$store.state.common.technologies;
-  }
-
   mounted() {
-    this.$store.dispatch(commonActionTypes.LOAD_IT_SYSTEMS);
-    this.$store.dispatch(commonActionTypes.LOAD_MUNICIPALITIES);
-    this.$store.dispatch(commonActionTypes.LOAD_TECHNOLOGIES);
+    CommonModule.loadITSystems();
+    CommonModule.loadMunicipalities();
+    CommonModule.loadTechnologies();
   }
 
   setReporterId(value: boolean) {
-    const reporterId = value && this.user ? this.user.uuid : null;
+    const reporterId = value && AuthModule.user ? AuthModule.user.uuid : null;
     this.updateFilters({ reporterId });
   }
 
   setUsersId(value: boolean) {
-    const usersId = value && this.user ? this.user.uuid : null;
+    const usersId = value && AuthModule.user ? AuthModule.user.uuid : null;
     this.updateFilters({ usersId });
   }
 
   setBookmarkedId(value: boolean) {
-    const bookmarkedId = value && this.user ? this.user.uuid : null;
+    const bookmarkedId = value && AuthModule.user ? AuthModule.user.uuid : null;
     this.updateFilters({ bookmarkedId });
   }
 
@@ -210,6 +190,26 @@ export default class SearchFiltersComponent extends Vue {
 
   assignFilters(filters: Partial<SearchFilters>) {
     this.$emit('assign', filters);
+  }
+
+  onReset() {
+    this.$emit('change', this.filters);
+  }
+
+  get filters() {
+    return SearchModule.filters;
+  }
+
+  get municipalities() {
+    return CommonModule.municipalities;
+  }
+
+  get technologies() {
+    return CommonModule.technologies;
+  }
+
+  get itSystems() {
+    return CommonModule.itSystems;
   }
 }
 </script>

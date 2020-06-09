@@ -25,9 +25,11 @@ export default class InputField extends Vue {
   }
 
   get renderedMarkdown() {
-    return marked(this.value, {
-      headerIds: false
-    } as any);
+    return this.value
+      ? marked(this.value, {
+          headerIds: false
+        } as any)
+      : '';
   }
 }
 </script>

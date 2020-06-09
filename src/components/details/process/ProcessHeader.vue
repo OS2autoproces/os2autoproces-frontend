@@ -3,8 +3,10 @@
     <Button class="button" @click="remove" v-if="state.canEdit">Slet proces</Button>
     <Button class="button" @click="copy" v-if="!isUmbrella">Kopier proces</Button>
     <div class="flex-grow"></div>
-    <InfoTooltip class="mail-tooltip">Ved at slå mail notifikationer til, vil du modtage en mail, når der sker ændringer på denne proces.</InfoTooltip>
-    <Toggle :value="state.emailNotification" @change="setEmailNotification($event)">Mail notifikation</Toggle>
+    <InfoTooltip class="mail-tooltip"
+      >Ved at slå mail notifikationer til, vil du modtage en mail, når der sker ændringer på denne proces.</InfoTooltip
+    >
+    <Toggle :value="state.emailNotification" @change="state.setEmailNotification($event)">Mail notifikation</Toggle>
   </div>
 </template>
 
@@ -14,10 +16,7 @@ import { Action, Getter } from 'vuex-class';
 import InfoTooltip from '@/components/common/InfoTooltip.vue';
 import Button from '@/components/common/inputs/Button.vue';
 import Toggle from '@/components/common/inputs/Toggle.vue';
-import { authGetterTypes } from '@/store/modules/auth/getters';
-import { authActionTypes } from '@/store/modules/auth/actions';
-import { processActionTypes } from '@/store/modules/process/actions';
-import { ProcessState } from '@/store/modules/process/state';
+import { ProcessState, ProcessModule } from '@/store/modules/process';
 
 @Component({
   components: {
@@ -27,32 +26,23 @@ import { ProcessState } from '@/store/modules/process/state';
   }
 })
 export default class ProcessHeader extends Vue {
-  @Action(processActionTypes.UPDATE)
-  update!: any;
-  @Action(processActionTypes.SET_EMAIL_NOTIFICATION)
-  setEmailNotification!: (emailNotification: boolean) => Promise<void>;
-  @Action(processActionTypes.REMOVE_PROCESS)
-  removeProcess!: () => Promise<void>;
-  @Action(processActionTypes.COPY_PROCESS)
-  copyProcess!: () => Promise<string>;
-
   @Prop(Boolean)
   isReporting!: boolean;
   @Prop(Boolean)
   isUmbrella!: boolean;
 
   get state() {
-    return this.$store.state.process;
+    return ProcessModule;
   }
 
   async copy() {
-    const id = await this.copyProcess();
+    const id = await ProcessModule.copyProcess();
     this.$router.push(`/details/${id}`);
   }
 
   async remove() {
     if (confirm('Vil du slette denne proces permanent?')) {
-      await this.removeProcess();
+      await ProcessModule.removeProcess();
       this.$router.push(`/search`);
     }
   }

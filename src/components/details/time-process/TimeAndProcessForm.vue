@@ -1,6 +1,6 @@
 <template>
   <FormSection
-    :invalid="!isTimeAndProcessValid"
+    :invalid="!state.isTimeAndProcessValid"
     heading="Tid og proces"
     id="time-and-process"
     :disabled="state.disabled.timeAndProcessEdit"
@@ -11,7 +11,7 @@
         <WellItem
           labelWidth="70%"
           label="Antal gange processen foretages årligt"
-          :required="minPhase(PhaseKeys.PREANALYSIS)"
+          :required="state.minPhase(PhaseKeys.PREANALYSIS)"
         >
           <InputField
             :type="'number'"
@@ -25,19 +25,19 @@
         <WellItem
           labelWidth="70%"
           label="Tidsforbrug pr. proces i minutter og sekunder"
-          :required="minPhase(PhaseKeys.PREANALYSIS)"
+          :required="state.minPhase(PhaseKeys.PREANALYSIS)"
         >
           <InputField
             :type="'number'"
             :disabled="state.disabled.timeAndProcessEdit"
-            :value="timeSpentPerOccurance.minutes.toFixed(0)"
+            :value="minutesAndSecondsPerOccurance.minutes.toFixed(0)"
             @change="updateTimeSpentPerOccurance({ minutes: $event })"
             >m</InputField
           >
           <InputField
             :type="'number'"
             :disabled="state.disabled.timeAndProcessEdit"
-            :value="timeSpentPerOccurance.seconds.toFixed(0)"
+            :value="minutesAndSecondsPerOccurance.seconds.toFixed(0)"
             @change="updateTimeSpentPerOccurance({ seconds: $event })"
             :rules="secondRules"
             :hasError="isInErrors('timeSpendPerOccurance')"
@@ -80,7 +80,7 @@
         <WellItem
           labelWidth="70%"
           label="Antal medarbejdere der foretager processen"
-          :required="minPhase(PhaseKeys.PREANALYSIS)"
+          :required="state.minPhase(PhaseKeys.PREANALYSIS)"
         >
           <InputField
             :type="'number'"
@@ -142,9 +142,9 @@ import MappedSelectionField from '@/components/common/inputs/MappedSelectionFiel
 import InputField from '@/components/common/inputs/InputField.vue';
 import FormSection from '@/components/details/FormSection.vue';
 import { Action, Getter } from 'vuex-class';
-import { processActionTypes } from '@/store/modules/process/actions';
-import { processGetterTypes } from '@/store/modules/process/getters';
 import { Phase, PhaseKeys } from '@/models/phase';
+import Process, { ProcessModule, ProcessState } from '@/store/modules/process';
+import { ErrorModule } from '@/store/modules/error';
 
 @Component({
   components: {
@@ -158,9 +158,6 @@ import { Phase, PhaseKeys } from '@/models/phase';
   }
 })
 export default class TimeAndProcessForm extends Vue {
-  @Action(processActionTypes.UPDATE) update: any;
-  @Getter(processGetterTypes.IS_TIME_AND_PROCESS_VALID) isTimeAndProcessValid!: any;
-  @Getter(processGetterTypes.MIN_PHASE) minPhase!: (phase: Phase) => boolean;
   PhaseKeys = PhaseKeys;
 
   yesNoItems = [
@@ -174,41 +171,57 @@ export default class TimeAndProcessForm extends Vue {
     value => parseInt(value, 10) >= 0 || 'Sekunder kan ikke være negative'
   ];
 
+  get state() {
+    return ProcessModule;
+  }
+
+  get timeSpendOccurancesPerEmployee() {
+    return Number(ProcessModule.timeSpendOccurancesPerEmployee);
+  }
+
+  get timeSpendPerOccurance() {
+    return Number(ProcessModule.timeSpendPerOccurance);
+  }
+
+  get timeSpendPercentageDigital() {
+    return Number(ProcessModule.timeSpendPercentageDigital);
+  }
+
+  get timeSpendTotal() {
+    return this.timeSpendOccurancesPerEmployee * this.timeSpendPerOccurance;
+  }
+
   get timeSpendHours() {
-    const hours =
-      ((this.state.timeSpendOccurancesPerEmployee * this.state.timeSpendPerOccurance) / 60).toFixed(2) || '0';
+    const hours = (this.timeSpendTotal / 60).toFixed(2) || '0';
     return hours;
   }
   // Number of times this process is repeated yearly * amount of time required pr. process in minutes / 60 * automation potential / 100
   get exptectedYearlyPotential() {
-    const hours =
-      (
-        ((this.state.timeSpendOccurancesPerEmployee * this.state.timeSpendPerOccurance) / 60) *
-        (this.state.timeSpendPercentageDigital / 100)
-      ).toFixed(2) || '0';
+    const hours = ((this.timeSpendTotal / 60) * (this.timeSpendPercentageDigital / 100)).toFixed(2) || '0';
     return hours;
   }
 
-  get timeSpentPerOccurance(): { minutes: number; seconds: number } {
-    const time = this.state.timeSpendPerOccurance;
-    const minutes = parseInt(time, 10); // remove decimals
-    const seconds = (time - minutes) * 60; // remove minute part and convert decimals to seconds
+  get minutesAndSecondsPerOccurance(): { minutes: number; seconds: number } {
+    const minutes = parseInt(ProcessModule.timeSpendPerOccurance ?? '', 10); // remove decimals
+    const seconds = (this.timeSpendPerOccurance - minutes) * 60; // remove minute part and convert decimals to seconds
     return { minutes, seconds };
   }
 
-  get state() {
-    return this.$store.state.process;
+  update(state: Partial<ProcessState>) {
+    ProcessModule.update(state);
   }
 
   isInErrors(name: string) {
-    return this.$store.state.error.timeAndProcess.errors.includes(name);
+    return ErrorModule.errorInField(ErrorModule.timeAndProcess, name);
   }
 
   updateTimeSpentPerOccurance({ minutes, seconds }: { minutes: string; seconds: string }) {
-    const newMinutes = !!minutes || minutes === '' ? parseInt(minutes || '0', 10) : this.timeSpentPerOccurance.minutes;
-    const newSeconds = !!seconds || seconds === '' ? parseInt(seconds || '0', 10) : this.timeSpentPerOccurance.seconds;
+    const newMinutes =
+      !!minutes || minutes === '' ? parseInt(minutes || '0', 10) : this.minutesAndSecondsPerOccurance.minutes;
+    const newSeconds =
+      !!seconds || seconds === '' ? parseInt(seconds || '0', 10) : this.minutesAndSecondsPerOccurance.seconds;
     const timeSpendPerOccurance = newMinutes + newSeconds / 60;
-    this.update({ timeSpendPerOccurance });
+    ProcessModule.update({ timeSpendPerOccurance: `${timeSpendPerOccurance}` });
   }
 }
 </script>
