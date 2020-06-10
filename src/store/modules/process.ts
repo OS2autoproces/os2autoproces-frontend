@@ -289,7 +289,6 @@ export default class Process extends VuexModule implements ProcessState {
       const fields = setBackendManagedFields(process);
       fields.hasChanged = false;
       this.UPDATE_WITH_NO_CHANGE(fields);
-      console.log(process.id);
       return process.id;
     }
   }
@@ -310,7 +309,7 @@ export default class Process extends VuexModule implements ProcessState {
 
       const fields = setBackendManagedFields(responseToState(response.data));
       fields.hasChanged = false;
-      this.UPDATE(fields);
+      this.UPDATE_WITH_NO_CHANGE(fields);
     }
   }
 
