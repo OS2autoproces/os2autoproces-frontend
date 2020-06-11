@@ -31,6 +31,13 @@ export interface CommonState {
   municipalities: Municipality[] | null;
   users: User[] | null;
 }
+
+const debouncedSearch = debounce(async (request: UserSearchRequest) => {
+  const users = (await HTTP.get<UserResponse>(`api/users?name=${request.name}&orgUnit.cvr=${request.cvr}`)).data
+    ._embedded.users;
+  CommonModule.UPDATE({ users });
+}, 250);
+
 @Module({ dynamic: true, store, name: 'common', namespaced: true })
 export default class Common extends VuexModule implements CommonState {
   frontPage: string | null = null;
@@ -127,11 +134,9 @@ export default class Common extends VuexModule implements CommonState {
   }
 
   @Action
-  searchUsers(cvr: string, name: string) {
-    debounce(async () => {
-      const users = (await HTTP.get<UserResponse>(`api/users?name=${name}&cvr=${cvr}`))?.data._embedded.users;
-      this.UPDATE({ users });
-    }, 250);
+  searchUsers(request: UserSearchRequest) {
+    console.log('going in ' + request.name);
+    debouncedSearch(request);
   }
 
   @Action
