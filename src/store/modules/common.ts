@@ -47,6 +47,11 @@ export default class Common extends VuexModule implements CommonState {
     merge(this, partial);
   }
 
+  @Mutation
+  ASSIGN(partial: Partial<CommonState>) {
+    Object.assign(this, partial);
+  }
+
   @Action
   update(partial: Partial<CommonState>) {
     this.UPDATE(partial);
@@ -78,11 +83,12 @@ export default class Common extends VuexModule implements CommonState {
 
   @Action
   async addTechnology(name: string) {
-    const response = await HTTP.post(`api/technologies`, { name });
+    const response = (await HTTP.post(`api/technologies`, { name })).data as Technology;
     if (!response) {
       return;
     }
-    this.UPDATE({ technologies: this.technologies ? [...this.technologies, response.data] : [response.data] });
+    this.ASSIGN({ technologies: this.technologies ? [...this.technologies, response] : [response] });
+    console.log('Added new tech: ' + response.name);
   }
 
   @Action

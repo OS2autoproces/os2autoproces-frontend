@@ -52,7 +52,7 @@ export default class ManageTechnologies extends Vue {
   editing: number | null = null;
 
   get technologies() {
-    return this.$store.state.common.technologies;
+    return CommonModule.technologies;
   }
 
   mounted() {
