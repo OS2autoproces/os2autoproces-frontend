@@ -118,9 +118,9 @@ export default class Details extends Vue {
     } else {
       const process = await ProcessModule.loadProcessDetails(this.id);
       ProcessModule.loadAttachments(this.id.toString());
-      await CommonModule.loadKles();
+      CommonModule.loadKles();
       if (process?.kle) {
-        await CommonModule.loadFormsByKle(process.kle);
+        CommonModule.loadFormsByKle(process.kle);
       }
       this.isUmbrella = process?.type === TypeKeys.PARENT || process?.type === TypeKeys.GLOBAL_PARENT;
       this.loading = false;
