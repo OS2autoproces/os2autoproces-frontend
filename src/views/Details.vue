@@ -70,10 +70,6 @@ export default class Details extends Vue {
     this.$emit('clickedHashLink');
   }
 
-  report() {
-    this.preventSaveGuard = true;
-  }
-
   beforeCreate() {
     ProcessModule.clear();
   }
