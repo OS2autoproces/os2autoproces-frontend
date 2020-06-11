@@ -88,7 +88,6 @@ export default class Common extends VuexModule implements CommonState {
       return;
     }
     this.ASSIGN({ technologies: this.technologies ? [...this.technologies, response] : [response] });
-    console.log('Added new tech: ' + response.name);
   }
 
   @Action
