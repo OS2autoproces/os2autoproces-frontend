@@ -93,7 +93,11 @@ export default class Common extends VuexModule implements CommonState {
 
   @Action
   async editTechnology(id: number, name: string) {
-    return await HTTP.put(`api/technologies/${id}`, { name });
+    const response = (await HTTP.put(`api/technologies/${id}`, { name })).data as Technology;
+    this.ASSIGN({
+      technologies: this.technologies ? this.technologies.map(t => (t.id === id ? response : t)) : [response]
+    });
+    return response;
   }
 
   @Action
