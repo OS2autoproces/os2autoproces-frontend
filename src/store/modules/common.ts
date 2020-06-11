@@ -135,7 +135,6 @@ export default class Common extends VuexModule implements CommonState {
 
   @Action
   searchUsers(request: UserSearchRequest) {
-    console.log('going in ' + request.name);
     debouncedSearch(request);
   }
 
