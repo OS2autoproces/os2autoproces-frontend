@@ -404,10 +404,12 @@ export default class GeneralInformationForm extends Vue {
   }
 
   search(name: string) {
+    const request: UserSearchRequest = { name: `${name}`, cvr: '' };
     if (AuthModule.user) {
-      CommonModule.searchUsers(AuthModule.user.cvr, name);
+      request.cvr = AuthModule.user.cvr;
+      CommonModule.searchUsers(request);
     } else {
-      CommonModule.searchUsers('', name);
+      CommonModule.searchUsers(request);
     }
   }
 
