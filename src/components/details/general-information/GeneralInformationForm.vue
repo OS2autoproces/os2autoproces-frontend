@@ -423,6 +423,10 @@ export default class GeneralInformationForm extends Vue {
     this.state.visibility = VisibilityKeys.PUBLIC;
     this.closePublicVisibilityDialog();
   }
+
+  setBookmark(bookmarked: boolean) {
+    ProcessModule.setBookmark(bookmarked);
+  }
 }
 </script>
 
