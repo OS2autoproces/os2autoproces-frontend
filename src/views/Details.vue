@@ -49,7 +49,7 @@ export default class Details extends Vue {
 
   isUmbrella = true;
   loading = true;
-  clickedHashLink = false;
+  preventSaveGuard = false;
 
   constructor() {
     super();
@@ -66,7 +66,7 @@ export default class Details extends Vue {
   }
 
   clickHashLink() {
-    this.clickedHashLink = true;
+    this.preventSaveGuard = true;
     this.$emit('clickedHashLink');
   }
 
@@ -83,17 +83,17 @@ export default class Details extends Vue {
   }
 
   shouldLeaveWithoutSaving(event: BeforeUnloadEvent) {
-    if (ProcessModule.hasChanged && !this.clickedHashLink) {
+    if (ProcessModule.hasChanged && !this.preventSaveGuard) {
       const message = 'Vil du fortsætte uden at gemme?';
       event.returnValue = message;
       return message;
     }
-    this.clickedHashLink = false;
+    this.preventSaveGuard = false;
   }
 
   shouldContinueWithoutSaving(): boolean {
-    if (!ProcessModule.hasChanged || this.clickedHashLink) {
-      this.clickedHashLink = false;
+    if (!ProcessModule.hasChanged || this.preventSaveGuard) {
+      this.preventSaveGuard = false;
       return true;
     }
 

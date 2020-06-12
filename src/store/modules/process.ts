@@ -249,7 +249,7 @@ export default class Process extends VuexModule implements ProcessState {
 
     const process = responseToState(response.data);
 
-    this.ASSIGN(process);
+    this.ASSIGN_WITH_NO_CHANGE(process);
 
     return process;
   }
@@ -265,7 +265,7 @@ export default class Process extends VuexModule implements ProcessState {
 
     const process = responseToState(response.data);
     const payload = setBackendManagedFields(process);
-    this.UPDATE(payload);
+    this.UPDATE_WITH_NO_CHANGE(payload);
     return !!process.id ? process.id : '';
   }
 
@@ -288,8 +288,7 @@ export default class Process extends VuexModule implements ProcessState {
 
       const fields = setBackendManagedFields(process);
       fields.hasChanged = false;
-      this.UPDATE(fields);
-
+      this.UPDATE_WITH_NO_CHANGE(fields);
       return process.id;
     }
   }
@@ -310,7 +309,7 @@ export default class Process extends VuexModule implements ProcessState {
 
       const fields = setBackendManagedFields(responseToState(response.data));
       fields.hasChanged = false;
-      this.UPDATE(fields);
+      this.UPDATE_WITH_NO_CHANGE(fields);
     }
   }
 
