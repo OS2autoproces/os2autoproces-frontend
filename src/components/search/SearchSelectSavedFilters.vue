@@ -8,6 +8,7 @@
     placeholder="Vælg fra gemte søgninger"
     @change="onFiltersSelected($event)"
     :hasAction="true"
+    @action="deleteFilters($event)"
     :value="selectedSavedFilters"
     actionIcon="delete"
   ></SelectionField>
@@ -28,6 +29,10 @@ export default class SearchSelectSavedFilters extends Vue {
 
   onFiltersSelected(filters: SavedSearchFilters) {
     SearchModule.selectSavedFilters(filters);
+  }
+
+  deleteFilters(filters: SavedSearchFilters) {
+    SearchModule.deleteSavedFilter(filters);
   }
 
   get selectedSavedFilters() {
