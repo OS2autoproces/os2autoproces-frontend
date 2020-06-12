@@ -49,8 +49,8 @@
           OS2autoproces koordinationsgruppen, så vil de oprette den for dig.</InfoTooltip
         >
         <TagSelector
-          @add="addTechnology($event)"
-          @remove="removeTechnology($event)"
+          @add="state.addTechnology($event)"
+          @remove="state.removeTechnology($event)"
           :disabled="state.disabled.implementationEdit"
           :value="state.technologies"
           :hasError="isInErrors('technologies')"
