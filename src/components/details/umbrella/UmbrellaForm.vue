@@ -191,7 +191,7 @@ import { User } from '@/store/modules/auth';
 import { StatusKeys, StatusLabels } from '@/models/status';
 import { VisibilityKeys, VisibilityLabels, VisibilityOrder, Visibility } from '@/models/visibility';
 import { ProcessReport } from '@/store/modules/processInterfaces';
-import { Kle, OrgUnit } from '@/store/modules/commonInterfaces';
+import { Kle, OrgUnit, UserSearchRequest } from '@/store/modules/commonInterfaces';
 import { CommonModule } from '@/store/modules/common';
 import { TypeLabels, TypeKeys } from '@/models/types';
 import { Domain } from '@/models/domain';
@@ -251,10 +251,12 @@ export default class UmbrellaForm extends Vue {
   }
 
   search(name: string) {
+    const request: UserSearchRequest = { name: `${name}`, cvr: '' };
     if (AuthModule.user) {
-      CommonModule.searchUsers(AuthModule.user.cvr, name);
+      request.cvr = AuthModule.user.cvr;
+      CommonModule.searchUsers(request);
     } else {
-      CommonModule.searchUsers('', name);
+      CommonModule.searchUsers(request);
     }
   }
 

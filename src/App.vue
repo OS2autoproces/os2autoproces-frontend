@@ -81,6 +81,12 @@ body {
     @include heading;
   }
 
+  button.material-icons {
+    font-family: 'Material Icons';
+    font-weight: initial;
+    letter-spacing: initial;
+  }
+
   input,
   textarea,
   button {

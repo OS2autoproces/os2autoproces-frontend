@@ -13,12 +13,12 @@ const vuetify = new Vuetify({
         background: '#fff'
       }
     }
-  }
-});
-
-Vue.use(Vuetify, {
+  },
   icons: {
     iconfont: 'md'
   }
 });
+
+Vue.use(Vuetify);
+
 export default vuetify;
