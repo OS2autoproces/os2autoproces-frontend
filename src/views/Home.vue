@@ -32,7 +32,7 @@ import Button from '../components/common/inputs/Button.vue';
 import MarkdownEditor from '../components/common/inputs/MarkdownEditor.vue';
 import { Cms } from '@/store/modules/commonInterfaces';
 import { AuthModule } from '@/store/modules/auth';
-import { CommonModule } from '@/store/modules/common';
+import { CommonModule, CommonState } from '@/store/modules/common';
 
 @Component({
   components: {
@@ -55,6 +55,10 @@ export default class Home extends Vue {
 
   mounted() {
     CommonModule.loadCmsContent('frontPage');
+  }
+
+  update(partial: Partial<CommonState>) {
+    CommonModule.update(partial);
   }
 
   save() {
