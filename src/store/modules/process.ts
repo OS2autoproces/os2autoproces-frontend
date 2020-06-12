@@ -367,6 +367,11 @@ export default class Process extends VuexModule implements ProcessState {
     return res.status === 200;
   }
 
+  @Action
+  setVisibility(visibility: Visibility) {
+    this.UPDATE({ visibility });
+  }
+
   get isUmbrellaValid() {
     return !this.canEdit || isEmpty(getInvalidProperties(this, umbrellaKeys));
   }

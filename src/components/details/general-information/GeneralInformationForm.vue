@@ -398,7 +398,7 @@ export default class GeneralInformationForm extends Vue {
     this.isPhaseChanged = true;
     ProcessModule.update({ phase });
 
-    if (phase === PhaseKeys.OPERATION && this.state.visibility !== VisibilityKeys.PUBLIC) {
+    if (phase === PhaseKeys.OPERATION && ProcessModule.visibility !== VisibilityKeys.PUBLIC) {
       this.openPublicVisibilityDialog();
     }
   }
@@ -420,7 +420,7 @@ export default class GeneralInformationForm extends Vue {
   }
 
   setPublicVisibilityAndCloseDialog() {
-    this.state.visibility = VisibilityKeys.PUBLIC;
+    ProcessModule.setVisibility(VisibilityKeys.PUBLIC);
     this.closePublicVisibilityDialog();
   }
 }

@@ -2,7 +2,7 @@
   <div class="form-section" v-if="!placeholder">
     <div class="section-header" @click="toggleExpand" :class="{ disabled, isExpandable }">
       <div>{{ heading }}</div>
-      <div v-if="state.process.canEdit" class="edit-button" role="button" @click="toggleEdit">
+      <div v-if="canEdit" class="edit-button" role="button" @click="toggleEdit">
         <EditIcon />
       </div>
       <InfoTooltip class="tooltip" v-if="tooltip">{{ tooltip }}</InfoTooltip>
@@ -38,6 +38,7 @@ import ArrowUpIcon from '@/components/icons/ArrowUpIcon.vue';
 import ArrowDownIcon from '@/components/icons/ArrowDownIcon.vue';
 import WarningIcon from '@/components/icons/WarningIcon.vue';
 import InfoTooltip from '@/components/common/InfoTooltip.vue';
+import { ProcessModule } from '@/store/modules/process';
 
 @Component({
   components: {
@@ -76,8 +77,8 @@ export default class FormSection extends Vue {
     this.expanded = !this.expanded;
   }
 
-  get state() {
-    return this.$store.state;
+  get canEdit() {
+    return ProcessModule.canEdit;
   }
 
   get isExpandable() {
