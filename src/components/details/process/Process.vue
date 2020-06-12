@@ -183,6 +183,10 @@ export default class Process extends Vue {
     this.$router.push('/search');
   }
 
+  saveComment(message: string) {
+    ProcessModule.saveComment(message);
+  }
+
   beforeCreate() {
     ErrorModule.clearErrors();
   }
