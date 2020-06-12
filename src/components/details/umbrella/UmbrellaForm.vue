@@ -278,6 +278,10 @@ export default class UmbrellaForm extends Vue {
     CommonModule.loadFormsByKle(kle);
   }
 
+  setBookmark(bookmarked: boolean) {
+    ProcessModule.setBookmark(bookmarked);
+  }
+
   addProcess(process: ProcessReport) {
     if (ProcessModule.children && !ProcessModule.children?.find((child: ProcessReport) => child.id === process.id)) {
       ProcessModule.assign({ children: [...ProcessModule.children, process] });
