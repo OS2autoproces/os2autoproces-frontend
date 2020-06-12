@@ -1,38 +1,20 @@
 <template>
   <div class="navbar">
-    <router-link
-      class="logo-link"
-      to="/search"
-    >
+    <router-link class="logo-link" to="/search">
       <div class="logo">OS2autoproces</div>
     </router-link>
-    <router-link
-      class="link"
-      v-if="isFrontpageEditor"
-      to="/"
-    >Forside</router-link>
-    <router-link
-      class="link"
-      v-if="isAdministrator"
-      to="/search"
-    >Søgning</router-link>
-    <router-link
-      class="link"
-      v-if="isAdministrator"
-      to="/manage-technologies"
-    >Teknologier</router-link>
-    <div class="flex-grow"></div>
-    <div
-      class="user-info"
-      v-if="user"
+    <router-link class="link" v-if="isFrontpageEditor" to="/">Forside</router-link>
+    <router-link class="link" v-if="isAdministrator" to="/search">Søgning</router-link>
+    <router-link class="link" v-if="isAdministrator" to="/manage-technologies">Teknologier</router-link>
+    <a class="link" target="_blank" rel="noopener noreferrer" href="https://os2autoproces.os2.eu/"
+      >Spørgsmål og vejledning</a
     >
+    <div class="flex-grow"></div>
+    <div class="user-info" v-if="state.user">
       <div class="user">
-        <div>{{user.name}}</div>
-        <div>{{roles.join(', ')}}</div>
-        <a
-          class="logout-button"
-          :href="logoutUrl"
-        >Log ud</a>
+        <div>{{ state.user.name }}</div>
+        <div>{{ roles }}</div>
+        <a class="logout-button" :href="logoutUrl">Log ud</a>
       </div>
       <ProfileIcon class="profile-icon" />
     </div>
@@ -42,8 +24,7 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import ProfileIcon from '../icons/ProfileIcon.vue';
-import { AuthState, UserRoleName, UserRole, User } from '@/store/modules/auth/state';
-import { RootState } from '../../store/store';
+import { AuthModule, UserRole, UserRoleName } from '@/store/modules/auth';
 import { State } from 'vuex-class';
 
 @Component({
@@ -54,23 +35,20 @@ import { State } from 'vuex-class';
 export default class NavBar extends Vue {
   logoutUrl = `${window.autoProcessConfiguration.apiUrl}/saml/logout`;
 
-  @State((state: RootState) => state.auth.user) user!: User;
-
-  @State((state: RootState) => {
-    if (!state.auth.user || !state.auth.user.roles) {
-      return [];
-    }
-
-    return state.auth.user.roles.map(role => UserRoleName[role]);
-  })
-  roles!: UserRole[];
-
   get isAdministrator() {
-    return this.user && this.user.roles && this.user.roles.includes(UserRole.administrator);
+    return AuthModule.user && AuthModule.user.roles && AuthModule.user.roles.includes(UserRole.administrator);
   }
 
   get isFrontpageEditor() {
-    return this.user && this.user.roles.includes(UserRole.frontpageEditor);
+    return AuthModule.user && AuthModule.user.roles.includes(UserRole.frontpageEditor);
+  }
+
+  get state() {
+    return AuthModule;
+  }
+
+  get roles() {
+    return AuthModule.user?.roles?.map(r => UserRoleName[r])?.join(', ') ?? '';
   }
 }
 </script>
@@ -94,10 +72,16 @@ export default class NavBar extends Vue {
 
 .link {
   margin-left: 2rem;
+  color: $color-primary;
+}
+
+.logout-button {
+  color: $color-primary;
 }
 
 .logo-link {
   text-decoration: none;
+  color: $color-primary;
 }
 
 .user {

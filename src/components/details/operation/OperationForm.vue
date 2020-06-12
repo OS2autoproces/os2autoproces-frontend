@@ -1,34 +1,67 @@
 <template>
-  <FormSection :invalid="!isOperationValid" v-if="minPhase(PhaseKeys.OPERATION)" heading="Drift" id="operation" :disabled="state.disabled.operationEdit" @edit="update({disabled: {operationEdit: $event}})">
-    <div class="rating-wrapper" :class="{disabled: state.disabled.operationEdit}">
+  <FormSection
+    :invalid="!state.isOperationValid"
+    v-if="state.minPhase(PhaseKeys.OPERATION)"
+    heading="Drift"
+    id="operation"
+    :disabled="state.disabled.operationEdit"
+    @edit="update({ disabled: { operationEdit: $event } })"
+  >
+    <div class="rating-wrapper" :class="{ disabled: state.disabled.operationEdit, hasError: isInErrors('rating') }">
       <div class="rating-label">
         I hvor høj grad indfriede løsningen de forventede gevinster? *
         <InfoTooltip>Skalaen lav, mellem, høj angiver graden af gevinstrealisering.</InfoTooltip>
       </div>
-      <Rating class="rating" @change="update({rating: $event})" :disabled="state.disabled.operationEdit" :value="state.rating" />
+      <Rating
+        class="rating"
+        @change="update({ rating: $event })"
+        :disabled="state.disabled.operationEdit"
+        :value="state.rating"
+        :hasError="isInErrors('rating')"
+        id="rating"
+      />
     </div>
 
     <Well>
       <div>
         <WellItem labelWidth="55%" label="Sidst kontrolleret i forhold til §">
-          <DatePicker @change="update({legalClauseLastVerified: $event})" :disabled="state.disabled.operationEdit" :value="state.legalClauseLastVerified" />
+          <DatePicker
+            @change="update({ legalClauseLastVerified: $event })"
+            :disabled="state.disabled.operationEdit"
+            :value="state.legalClauseLastVerified"
+            :hasError="isInErrors('legalClauseLastVerified')"
+            id="legalClauseLastVerified"
+          />
         </WellItem>
       </div>
       <div>
         <WellItem labelWidth="55%" label="Løsning taget ud af drift">
-          <DatePicker @change="update({decommissioned: $event})" :disabled="state.disabled.operationEdit" :value="state.decommissioned" />
+          <DatePicker
+            @change="update({ decommissioned: $event })"
+            :disabled="state.disabled.operationEdit"
+            :value="state.decommissioned"
+            :hasError="isInErrors('decommissioned')"
+            id="decommissioned"
+          />
         </WellItem>
       </div>
     </Well>
 
     <h2>Kommentar til realiseret gevinster</h2>
-    <TextArea :max-length="10000" @change="update({ratingComment: $event})" :disabled="state.disabled.operationEdit" :value="state.ratingComment" />
-    </FormSection>
+    <RichTextArea
+      :max-length="10000"
+      @change="update({ ratingComment: $event })"
+      :disabled="state.disabled.operationEdit"
+      :value="state.ratingComment"
+      :hasError="isInErrors('ratingComment')"
+      id="ratingComment"
+    />
+  </FormSection>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
-import TextArea from '@/components/common/inputs/TextArea.vue';
+import RichTextArea from '@/components/common/inputs/RichTextArea.vue';
 import Rating from '@/components/common/inputs/Rating.vue';
 import { Action, Getter } from 'vuex-class';
 import DatePicker from '@/components/common/inputs/DatePicker.vue';
@@ -36,13 +69,13 @@ import FormSection from '@/components/details/FormSection.vue';
 import InfoTooltip from '@/components/common/InfoTooltip.vue';
 import Well from '@/components/common/Well.vue';
 import WellItem from '@/components/common/WellItem.vue';
-import { processActionTypes } from '@/store/modules/process/actions';
-import { processGetterTypes } from '@/store/modules/process/getters';
 import { Phase, PhaseKeys } from '@/models/phase';
+import { ProcessModule, ProcessState } from '@/store/modules/process';
+import { ErrorModule } from '@/store/modules/error';
 
 @Component({
   components: {
-    TextArea,
+    RichTextArea,
     DatePicker,
     FormSection,
     Well,
@@ -52,18 +85,18 @@ import { Phase, PhaseKeys } from '@/models/phase';
   }
 })
 export default class OperationForm extends Vue {
-  @Action(processActionTypes.UPDATE)
-  update: any;
-
-  @Getter(processGetterTypes.IS_OPERATION_VALID)
-  isOperationValid!: any;
-  @Getter(processGetterTypes.MIN_PHASE)
-  minPhase!: (phase: Phase) => boolean;
-
   PhaseKeys = PhaseKeys;
 
   get state() {
-    return this.$store.state.process;
+    return ProcessModule;
+  }
+
+  update(state: Partial<ProcessState>) {
+    ProcessModule.update(state);
+  }
+
+  isInErrors(name: string) {
+    return ErrorModule.errorInField(ErrorModule.operation, name);
   }
 }
 </script>
@@ -81,12 +114,15 @@ export default class OperationForm extends Vue {
   &:not(.disabled) {
     border-color: $color-primary;
     border-radius: 1rem;
+    &.hasError {
+      border-color: red;
+    }
   }
   .rating {
     margin-top: 0.5rem;
     width: 160px;
 
-    /deep/ svg {
+    ::v-deep svg {
       height: 2rem;
       width: 2rem;
     }

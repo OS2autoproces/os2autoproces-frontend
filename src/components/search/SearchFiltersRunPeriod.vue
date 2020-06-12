@@ -5,20 +5,19 @@
       :key="index"
       :value="filters.runPeriod[runPeriodKey]"
       @change="update(runPeriodKey, $event)"
-    >{{RunPeriodLabels[runPeriodKey]}}</SearchOption>
+      >{{ RunPeriodLabels[runPeriodKey] }}</SearchOption
+    >
   </ExpandPanel>
 </template>
 
-
 <script lang="ts">
-import { SearchFilters } from '@/store/modules/search/state';
+import { SearchFilters } from '@/store/modules/searchInterfaces';
 import { Vue, Prop, Component } from 'vue-property-decorator';
-import { searchActionTypes } from '@/store/modules/search/actions';
 import { Action, State } from 'vuex-class';
 import SearchOption from './SearchOption.vue';
 import ExpandPanel from '../common/ExpandPanel.vue';
-import { RootState } from '@/store/store';
 import { RunPeriodLabels, RunPeriodKeys } from '@/models/runperiod';
+import { SearchModule } from '@/store/modules/search';
 
 @Component({
   components: {
@@ -27,17 +26,17 @@ import { RunPeriodLabels, RunPeriodKeys } from '@/models/runperiod';
   }
 })
 export default class SearchFiltersRunPeriod extends Vue {
-  @State((state: RootState) => state.search.filters) filters!: SearchFilters;
-
-  @Action(searchActionTypes.UPDATE_FILTERS) updateFilters!: (filters: Partial<SearchFilters>) => void;
-
   RunPeriodLabels = RunPeriodLabels;
   RunPeriodKeys = [RunPeriodKeys.ONDEMAND, RunPeriodKeys.ONCE];
 
   update(keyToUpdate: keyof typeof RunPeriodKeys, active: boolean) {
-    this.updateFilters({
-      runPeriod: { ...this.filters.runPeriod, ...{ [keyToUpdate]: active } }
+    SearchModule.updateFilters({
+      runPeriod: { ...SearchModule.filters.runPeriod, ...{ [keyToUpdate]: active } }
     });
+  }
+
+  get filters() {
+    return SearchModule.filters;
   }
 }
 </script>

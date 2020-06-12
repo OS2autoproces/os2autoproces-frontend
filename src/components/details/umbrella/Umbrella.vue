@@ -2,9 +2,7 @@
   <div class="page">
     <div class="side-bar">
       <div class="side-bar-content">
-        <router-link to="/search" class="search-page-link">
-          <ArrowLeftIcon />Tilbage til søgning
-        </router-link>
+        <a @click="goBack" class="search-page-link"> <ArrowLeftIcon />Tilbage til søgning </a>
 
         <Button primary v-if="isReporting" class="report-button" @click="report">Gem</Button>
         <Button primary v-if="!isReporting" class="save-button" @click="save">Gem</Button>
@@ -21,28 +19,26 @@
       </div>
     </div>
 
-    <SnackBar showButton :timeout="0" color="error" :value="snack" @clicked="clearErrors">
-      <div>
+    <SnackBar :value="showSaveError" @onSnackClose="showSaveError = false" :timeout="5000" color="error"
+      >Processen er IKKE gemt - prøv igen!</SnackBar
+    >
+    <SnackBar showButton :timeout="0" color="error" :value="errors.hasErrors" @clicked="clearErrors" bottom>
+      <div v-if="errors.hasErrors">
         <h3>Følgende felter er ugyldige:</h3>
         <ul class="section-errors">
-          <li v-for="field in errors['generalInformation'].errors" :key="field">{{field}}</li>
+          <li v-for="field in errors.generalInformation.errors" :key="field.name" @click="clickedHashLink">
+            <a :href="hashLink(field.name)">{{ field.description }}</a>
+          </li>
         </ul>
       </div>
     </SnackBar>
 
-    <SnackBar
-      :timeout="3000"
-      color="success"
-      @onSnackClose="showSaveSuccess = false"
-      :value="showSaveSuccess"
-    >Processen er gemt!</SnackBar>
-
-    <SnackBar
-      :value="showSaveError"
-      @onSnackClose="showSaveError = false"
-      :timeout="5000"
-      color="error"
-    >Processen er IKKE gemt - prøv igen!</SnackBar>
+    <SnackBar :timeout="3000" color="success" @onSnackClose="showSaveSuccess = false" :value="showSaveSuccess"
+      >Processen er gemt!</SnackBar
+    >
+    <SnackBar :value="showSaveError" @onSnackClose="showSaveError = false" :timeout="5000" color="error"
+      >Processen er IKKE gemt - prøv igen!</SnackBar
+    >
   </div>
 </template>
 
@@ -50,9 +46,8 @@
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import { Action } from 'vuex-class';
 import InternalNotes from '@/components/common/inputs/InternalNotes.vue';
-import { processActionTypes, NewComment } from '@/store/modules/process/actions';
+import { NewComment, ProcessReport } from '@/store/modules/processInterfaces';
 import { Type, TypeKeys } from '@/models/types';
-import { commonActionTypes } from '@/store/modules/common/actions';
 
 import Comments from '@/components/details/Comments.vue';
 import IntervalSelector from '@/components/common/inputs/IntervalSelector.vue';
@@ -69,13 +64,16 @@ import AttachmentsForm from '@/components/details/attachments/AttachmentsForm.vu
 import OperationForm from '@/components/details/operation/OperationForm.vue';
 import ArrowLeftIcon from '@/components/icons/ArrowLeftIcon.vue';
 import EditIcon from '@/components/icons/EditIcon.vue';
-import { errorActionTypes, umbrellaLabels } from '@/store/modules/error/actions';
-import { ErrorState } from '@/store/modules/error/state';
+import { umbrellaLabels, umbrellaKeys } from '@/store/modules/errorInterfaces';
+import { ErrorState, ErrorModule } from '@/store/modules/error';
 import SnackBar from '@/components/common/SnackBar.vue';
 import { isEmpty } from 'lodash';
-import { searchActionTypes } from '@/store/modules/search/actions';
 import { VisibilityKeys } from '@/models/visibility';
-import { SearchFilters } from '@/store/modules/search/state';
+import { SearchFilters } from '@/store/modules/searchInterfaces';
+import { SearchModule } from '@/store/modules/search';
+import { ProcessModule } from '@/store/modules/process';
+import { AuthModule } from '@/store/modules/auth';
+import { isIE } from '@/services/url-service';
 
 @Component({
   components: {
@@ -106,38 +104,43 @@ export default class Umbrella extends Vue {
   @Prop(String)
   type!: Type;
 
-  @Action(processActionTypes.UPDATE)
-  update: any;
-  @Action(commonActionTypes.LOAD_KLES)
-  loadKles!: () => Promise<void>;
-  @Action(errorActionTypes.UPDATE_PROCESS_ERRORS)
-  updateProcessErrors!: (processErrors: Partial<ErrorState>) => void;
-  @Action(errorActionTypes.CLEAR_ERRORS)
-  clearErrors!: () => void;
-
   showSaveSuccess = false;
   showSaveError = false;
 
-  get errors() {
-    return this.$store.state.error;
+  clearErrors() {
+    ErrorModule.clearErrors();
   }
 
-  get snack() {
-    const errorState = this.$store.state.error;
-    return !!Object.keys(errorState).find(section => !isEmpty(errorState[section].errors));
+  get errors() {
+    return ErrorModule;
+  }
+
+  hashLink(target: string) {
+    return `#${target}`;
+  }
+
+  clickedHashLink() {
+    this.$emit('clickedHashLink');
+  }
+
+  goBack() {
+    if (isIE()) {
+      this.$emit('goBack');
+    }
+    this.$router.push('/search');
   }
 
   beforeCreate() {
-    this.$store.dispatch(errorActionTypes.CLEAR_ERRORS);
+    ErrorModule.clearErrors();
   }
 
   mounted() {
     if (this.isReporting) {
-      this.update({
+      ProcessModule.update({
         type: this.type,
         canEdit: true,
         hasChanged: false,
-        cvr: this.$store.state.auth.user.cvr,
+        cvr: AuthModule.user?.cvr,
         visibility: this.type === TypeKeys.PARENT ? VisibilityKeys.MUNICIPALITY : VisibilityKeys.PUBLIC,
         disabled: {
           generalInformationEdit: false,
@@ -152,7 +155,7 @@ export default class Umbrella extends Vue {
       });
     }
 
-    this.$store.dispatch(searchActionTypes.RESET_FILTERS);
+    SearchModule.resetFilters();
 
     const filters: Partial<SearchFilters> = {
       umbrella: false,
@@ -162,29 +165,25 @@ export default class Umbrella extends Vue {
       }
     };
 
-    this.$store.dispatch(searchActionTypes.UPDATE_FILTERS, filters);
+    SearchModule.updateFilters(filters);
   }
 
   async save() {
     try {
-      await this.$store.dispatch(processActionTypes.SAVE, Object.keys(umbrellaLabels));
+      await ProcessModule.save(umbrellaKeys);
       this.showSaveSuccess = true;
     } catch (e) {
-      if (this.errors.length === 0) {
-        this.showSaveError = true;
-      }
+      this.showSaveError = true;
     }
   }
 
   async report() {
     try {
-      const processId = await this.$store.dispatch(processActionTypes.REPORT, Object.keys(umbrellaLabels));
+      const processId = await ProcessModule.createReport(umbrellaKeys);
       this.showSaveSuccess = true;
       this.$router.push(`/details/${processId}`);
     } catch (e) {
-      if (this.errors.length === 0) {
-        this.showSaveError = true;
-      }
+      this.showSaveError = true;
     }
   }
 }
@@ -198,6 +197,7 @@ export default class Umbrella extends Vue {
 }
 
 .search-page-link {
+  color: $color-primary;
   @include heading;
   font-size: 1.2rem;
   display: flex;

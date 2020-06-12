@@ -1,8 +1,8 @@
 <template>
   <div id="app">
-    <v-app light>
+    <v-app>
       <div class="router-view">
-        <router-view/>
+        <router-view />
       </div>
     </v-app>
   </div>
@@ -13,15 +13,12 @@ import { Vue, Component } from 'vue-property-decorator';
 import { HTTP } from '@/services/http-service';
 import { AxiosResponse } from 'axios';
 import { Action } from 'vuex-class';
-import { authActionTypes } from '@/store/modules/auth/actions';
-import { commonActionTypes, Cms } from '@/store/modules/common/actions';
+import { AuthModule } from './store/modules/auth';
 
-@Component
+@Component({})
 export default class App extends Vue {
-  @Action(authActionTypes.LOAD_USER) loadUser: any;
-
   mounted() {
-    this.loadUser();
+    AuthModule.loadUser();
   }
 }
 </script>
@@ -64,12 +61,12 @@ body {
 }
 
 #app {
-  .application.theme--light {
+  .v-application.theme--light {
     background: $color-background;
     color: inherit;
   }
 
-  .application--wrap {
+  .v-application--wrap {
     .router-view {
       flex-grow: 1;
       display: flex;
@@ -82,6 +79,12 @@ body {
 
   button {
     @include heading;
+  }
+
+  button.material-icons {
+    font-family: 'Material Icons';
+    font-weight: initial;
+    letter-spacing: initial;
   }
 
   input,

@@ -1,12 +1,11 @@
 <template>
-    <div class="markdown-editor">
-        <textarea :value="value" @input="valueChanged" v-if="editing">
-        </TextArea>
-        <div class="rendered" v-if="!editing" v-html="renderedMarkdown"></div>
-    </div>
+  <div class="markdown-editor">
+    <textarea :value="value" @input="valueChanged" v-if="editing"> </textarea>
+    <div class="rendered" v-if="!editing" v-html="renderedMarkdown"></div>
+  </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import TextArea from './TextArea.vue';
 import marked from 'marked';
@@ -26,9 +25,11 @@ export default class InputField extends Vue {
   }
 
   get renderedMarkdown() {
-    return marked(this.value, {
-      headerIds: false
-    } as any);
+    return this.value
+      ? marked(this.value, {
+          headerIds: false
+        } as any)
+      : '';
   }
 }
 </script>
@@ -44,7 +45,7 @@ textarea {
   min-height: 500px;
 }
 
-.rendered /deep/ {
+.rendered ::v-deep {
   h1,
   h2,
   h3,

@@ -2,9 +2,7 @@
   <div class="page">
     <div class="side-bar">
       <div class="side-bar-content">
-        <router-link to="/search" class="search-page-link">
-          <ArrowLeftIcon />Tilbage til søgning
-        </router-link>
+        <a @click="goBack" class="search-page-link"> <ArrowLeftIcon />Tilbage til søgning </a>
 
         <ProcessMenu :phase="phase" :canEdit="state.canEdit" :isReporting="isReporting" />
 
@@ -26,20 +24,17 @@
           <AssessmentForm />
           <ImplementationForm />
           <OperationForm />
-          <AttachmentsForm :showPlaceholder="isReporting" v-if="minPhase(PhaseKeys.PREANALYSIS)" />
+          <AttachmentsForm :showPlaceholder="isReporting" v-if="state.minPhase(PhaseKeys.PREANALYSIS)" />
 
           <FormSection
             v-if="state.canEdit"
             id="internal-notes"
             heading="Interne noter"
             :disabled="state.disabled.internalNotesEdit"
-            @edit="update({disabled: { internalNotesEdit: $event} })"
+            @edit="update({ disabled: { internalNotesEdit: $event } })"
             tooltip="Her kan du tilføje noter til og om processen, der kun vil være synlige for tilknyttede personer. Noterne bliver heller ikke delt, hvis processen deles med alle brugere i OS2autoproces."
           >
-            <InternalNotes
-              :internalNotes="state.internalNotes"
-              :disabled="state.disabled.internalNotesEdit"
-            />
+            <InternalNotes :internalNotes="state.internalNotes" :disabled="state.disabled.internalNotesEdit" />
           </FormSection>
         </div>
 
@@ -50,22 +45,20 @@
       </div>
     </div>
 
-    <SnackBar showButton :timeout="0" color="error" :value="snack" @clicked="clearErrors">
+    <SnackBar showButton :timeout="0" color="error" :value="errors.hasErrors" @clicked="clearErrors" bottom>
       <div>
         <h3>Følgende felter er ugyldige:</h3>
-        <div class="snack-bar-list-container">
-          <!-- TODO Fix v if in v for and computation in template -->
-          <ul
-            class="section-errors"
-            v-for="section in errors"
-            v-if="section.errors.length > 0"
-            :key="section.section"
-          >
-            <span class="section-errors-title">{{section.section}}</span>
-            <li v-for="(field, i) in section.errors" :key="i">
-              <div class="snack-bar-list-item">{{field}}</div>
-            </li>
-          </ul>
+        <div class="snack-bar-list-container" v-if="errors.hasErrors">
+          <div v-for="section in errors.errorSections" :key="section.section">
+            <ul class="section-errors" v-if="section.errors.length > 0">
+              <span class="section-errors-title">{{ section.section }}</span>
+              <li v-for="(field, i) in section.errors" :key="i">
+                <a class="snack-bar-list-item" @click="clickHashLink" :href="hashLink(field.name)">{{
+                  field.description
+                }}</a>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </SnackBar>
@@ -76,7 +69,8 @@
       :timeout="3000"
       color="success"
       @onSnackClose="showSaveSuccess = false"
-    >Processen er gemt!</SnackBar>
+      >Processen er gemt!</SnackBar
+    >
 
     <SnackBar
       :showButton="false"
@@ -84,7 +78,8 @@
       :timeout="5000"
       color="error"
       @onSnackClose="showSaveError = false"
-    >Processen er IKKE gemt - prøv igen!</SnackBar>
+      >Processen er IKKE gemt - prøv igen!</SnackBar
+    >
   </div>
 </template>
 
@@ -92,10 +87,7 @@
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import { Action, Getter } from 'vuex-class';
 import InternalNotes from '@/components/common/inputs/InternalNotes.vue';
-import { processActionTypes, NewComment } from '@/store/modules/process/actions';
 import { Phase, PhaseKeys } from '@/models/phase';
-import { commonActionTypes } from '@/store/modules/common/actions';
-
 import Comments from '@/components/details/Comments.vue';
 import IntervalSelector from '@/components/common/inputs/IntervalSelector.vue';
 import FormSection from '@/components/details/FormSection.vue';
@@ -112,11 +104,13 @@ import AttachmentsForm from '@/components/details/attachments/AttachmentsForm.vu
 import OperationForm from '@/components/details/operation/OperationForm.vue';
 import ArrowLeftIcon from '@/components/icons/ArrowLeftIcon.vue';
 import EditIcon from '@/components/icons/EditIcon.vue';
-import { errorActionTypes } from '@/store/modules/error/actions';
-import { ErrorState } from '@/store/modules/error/state';
+import { ErrorState, ErrorModule } from '@/store/modules/error';
 import SnackBar from '@/components/common/SnackBar.vue';
 import { isEmpty } from 'lodash';
-import { processGetterTypes } from '@/store/modules/process/getters';
+import { CommonModule } from '@/store/modules/common';
+import { ProcessModule, ProcessState } from '@/store/modules/process';
+import { AuthModule } from '@/store/modules/auth';
+import { isIE } from '@/services/url-service';
 
 @Component({
   components: {
@@ -148,55 +142,66 @@ export default class Process extends Vue {
   @Prop(String)
   phase!: Phase;
 
-  @Action(processActionTypes.UPDATE)
-  update: any;
-  @Action(processActionTypes.SAVE_COMMENT)
-  saveComment!: (message: string) => Promise<void>;
-  @Action(errorActionTypes.UPDATE_PROCESS_ERRORS)
-  updateProcessErrors!: (processErrors: Partial<ErrorState>) => void;
-  @Action(errorActionTypes.CLEAR_ERRORS)
-  clearErrors!: () => void;
-  @Getter(processGetterTypes.MIN_PHASE)
-  minPhase!: (phase: Phase) => boolean;
-
   PhaseKeys = PhaseKeys;
 
   showSaveSuccess = false;
   showSaveError = false;
-
   get state() {
-    return this.$store.state.process;
+    return ProcessModule;
   }
 
   get errors() {
-    return this.$store.state.error;
-  }
-
-  get snack() {
-    const errorState = this.$store.state.error;
-    return !!Object.keys(errorState).find(section => !isEmpty(errorState[section].errors));
+    return ErrorModule;
   }
 
   get isWithinMunicipality() {
-    const { auth, process } = this.$store.state;
-    return auth.user.cvr === process.cvr;
+    return AuthModule.user?.cvr === ProcessModule.cvr;
+  }
+
+  update(state: Partial<ProcessState>) {
+    ProcessModule.update(state);
+  }
+
+  clearErrors() {
+    ErrorModule.clearErrors();
+  }
+
+  hashLink(target: string) {
+    return `#${target}`;
+  }
+
+  clickHashLink() {
+    this.$emit('clickedHashLink');
+  }
+
+  // If browser is Internet Explorer, the parent details view is nested in the search view,
+  // and we have to reset the search url when hiding it.
+  goBack() {
+    if (isIE()) {
+      this.$emit('goBack');
+    }
+    this.$router.push('/search');
+  }
+
+  saveComment(message: string) {
+    ProcessModule.saveComment(message);
   }
 
   beforeCreate() {
-    this.$store.dispatch(errorActionTypes.CLEAR_ERRORS);
+    ErrorModule.clearErrors();
   }
 
   mounted() {
-    this.$store.dispatch(commonActionTypes.LOAD_KLES);
-    this.$store.dispatch(commonActionTypes.LOAD_IT_SYSTEMS);
-    this.$store.dispatch(commonActionTypes.LOAD_ORGUNITS, this.$store.state.auth.user.cvr);
+    CommonModule.loadKles();
+    CommonModule.loadITSystems();
+    CommonModule.loadOrgUnits();
 
     if (this.isReporting) {
-      this.update({
+      ProcessModule.update({
         phase: this.phase,
         canEdit: true,
         hasChanged: false,
-        cvr: this.$store.state.auth.user.cvr,
+        cvr: AuthModule.user?.cvr,
         disabled: {
           generalInformationEdit: false,
           challengesEdit: false,
@@ -209,30 +214,26 @@ export default class Process extends Vue {
         }
       });
     } else {
-      this.$store.dispatch(processActionTypes.LOAD_COMMENTS);
+      ProcessModule.loadComments();
     }
   }
 
   async save() {
     try {
-      await this.$store.dispatch(processActionTypes.SAVE);
+      await ProcessModule.save();
       this.showSaveSuccess = true;
     } catch (e) {
-      if (this.errors.length === 0) {
-        this.showSaveError = true;
-      }
+      this.showSaveError = true;
     }
   }
 
   async report() {
     try {
-      const processId = await this.$store.dispatch(processActionTypes.REPORT);
+      const processId = await ProcessModule.createReport();
       this.showSaveSuccess = true;
       this.$router.push(`/details/${processId}`);
     } catch (e) {
-      if (this.errors.length === 0) {
-        this.showSaveError = true;
-      }
+      this.showSaveError = true;
     }
   }
 }
@@ -286,6 +287,7 @@ export default class Process extends Vue {
 }
 
 .search-page-link {
+  color: $color-primary;
   @include heading;
   font-size: 1.2rem;
   display: inline-flex;

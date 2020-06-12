@@ -1,36 +1,49 @@
 <template>
   <FormSection
-    :invalid="!isTimeAndProcessValid"
+    :invalid="!state.isTimeAndProcessValid"
     heading="Tid og proces"
     id="time-and-process"
     :disabled="state.disabled.timeAndProcessEdit"
-    @edit="update({disabled: {timeAndProcessEdit: $event}})"
+    @edit="update({ disabled: { timeAndProcessEdit: $event } })"
   >
     <Well>
       <div>
         <WellItem
           labelWidth="70%"
           label="Antal gange processen foretages årligt"
-          :required="minPhase(PhaseKeys.PREANALYSIS)"
+          :required="state.minPhase(PhaseKeys.PREANALYSIS)"
         >
           <InputField
             :type="'number'"
             :value="state.timeSpendOccurancesPerEmployee"
+            :hasError="isInErrors('timeSpendOccurancesPerEmployee')"
+            id="timeSpendOccurancesPerEmployee"
             :disabled="state.disabled.timeAndProcessEdit"
-            @change="update({timeSpendOccurancesPerEmployee: $event})"
+            @change="update({ timeSpendOccurancesPerEmployee: $event })"
           />
         </WellItem>
         <WellItem
           labelWidth="70%"
-          label="Tidsforbrug pr. proces i minutter"
-          :required="minPhase(PhaseKeys.PREANALYSIS)"
+          label="Tidsforbrug pr. proces i minutter og sekunder"
+          :required="state.minPhase(PhaseKeys.PREANALYSIS)"
         >
           <InputField
             :type="'number'"
             :disabled="state.disabled.timeAndProcessEdit"
-            :value="state.timeSpendPerOccurance"
-            @change="update({timeSpendPerOccurance: $event})"
-          />
+            :value="minutesAndSecondsPerOccurance.minutes.toFixed(0)"
+            @change="updateTimeSpentPerOccurance({ minutes: $event })"
+            >m</InputField
+          >
+          <InputField
+            :type="'number'"
+            :disabled="state.disabled.timeAndProcessEdit"
+            :value="minutesAndSecondsPerOccurance.seconds.toFixed(0)"
+            @change="updateTimeSpentPerOccurance({ seconds: $event })"
+            :rules="secondRules"
+            :hasError="isInErrors('timeSpendPerOccurance')"
+            id="timeSpendPerOccurance"
+            >s</InputField
+          >
         </WellItem>
         <WellItem
           labelWidth="70%"
@@ -41,28 +54,25 @@
             :type="'number'"
             :disabled="state.disabled.timeAndProcessEdit"
             :value="state.timeSpendPercentageDigital"
-            @change="update({timeSpendPercentageDigital: $event})"
-          >%</InputField>
+            :hasError="isInErrors('timeSpendPercentageDigital')"
+            id="timeSpendPercentageDigital"
+            @change="update({ timeSpendPercentageDigital: $event })"
+            >%</InputField
+          >
         </WellItem>
         <WellItem
           labelWidth="70%"
           label="Manuelt tidsforbrug i timer"
           tooltip="Udregningen for det manuelle årlige tidsforbrug er: antal gange processen foretages * tidsforbrug i minutter / 60"
         >
-          <InputField
-            disabled
-            :value="timeSpendHours"
-          >timer</InputField>
+          <InputField disabled :value="timeSpendHours" id="timeSpendHours">timer</InputField>
         </WellItem>
         <WellItem
           labelWidth="70%"
           label="Forventet årligt effektiviseringspotentiale"
           tooltip="Udregning af det forventet årligt effektiviseringspotentiale er: antal gange processen foretages * tidsforbrug i minutter / 60 * automatiseringsgrad"
         >
-          <InputField
-            disabled
-            :value="exptectedYearlyPotential"
-          >timer</InputField>
+          <InputField disabled :value="exptectedYearlyPotential" id="exptectedYearlyPotential">timer</InputField>
         </WellItem>
       </div>
 
@@ -70,34 +80,34 @@
         <WellItem
           labelWidth="70%"
           label="Antal medarbejdere der foretager processen"
-          :required="minPhase(PhaseKeys.PREANALYSIS)"
+          :required="state.minPhase(PhaseKeys.PREANALYSIS)"
         >
           <InputField
             :type="'number'"
             :disabled="state.disabled.timeAndProcessEdit"
             :value="state.timeSpendEmployeesDoingProcess"
-            @change="update({timeSpendEmployeesDoingProcess: $event})"
+            :hasError="isInErrors('timeSpendEmployeesDoingProcess')"
+            id="timeSpendEmployeesDoingProcess"
+            @change="update({ timeSpendEmployeesDoingProcess: $event })"
           />
         </WellItem>
-        <WellItem
-          labelWidth="70%"
-          label="Er borgere påvirket?"
-        >
+        <WellItem labelWidth="70%" label="Er borgere påvirket?">
           <MappedSelectionField
             :disabled="state.disabled.timeAndProcessEdit"
             :value="state.targetsCitizens"
-            @change="update({targetsCitizens: $event})"
+            :hasError="isInErrors('targetsCitizens')"
+            id="targetsCitizens"
+            @change="update({ targetsCitizens: $event })"
             :items="yesNoItems"
           />
         </WellItem>
-        <WellItem
-          labelWidth="70%"
-          label="Er virksomheder påvirket?"
-        >
+        <WellItem labelWidth="70%" label="Er virksomheder påvirket?">
           <MappedSelectionField
             :disabled="state.disabled.timeAndProcessEdit"
             :value="state.targetsCompanies"
-            @change="update({targetsCompanies: $event})"
+            :hasError="isInErrors('targetsCompanies')"
+            id="targetsCompanies"
+            @change="update({ targetsCompanies: $event })"
             :items="yesNoItems"
           />
         </WellItem>
@@ -106,14 +116,19 @@
 
     <div class="comments-wrap">
       <span>Kommentar vedr. tidsforbrug</span>
-      <InfoTooltip class="time-proces-tooltip">Her kan du uddybe eller kommentere på de indtastede værdier ovenfor og på tidsforbruget generelt. F.eks. hvordan det er målt.</InfoTooltip>
+      <InfoTooltip class="time-proces-tooltip"
+        >Her kan du uddybe eller kommentere på de indtastede værdier ovenfor og på tidsforbruget generelt. F.eks.
+        hvordan det er målt.</InfoTooltip
+      >
       <TextArea
         :value="state.timeSpendComment"
+        :hasError="isInErrors('timeSpendComment')"
+        id="timeSpendComment"
         :disabled="state.disabled.timeAndProcessEdit"
-        @change="update({timeSpendComment: $event})"
+        @change="update({ timeSpendComment: $event })"
         :maxLength="10000"
       />
-      </div>
+    </div>
   </FormSection>
 </template>
 
@@ -127,9 +142,9 @@ import MappedSelectionField from '@/components/common/inputs/MappedSelectionFiel
 import InputField from '@/components/common/inputs/InputField.vue';
 import FormSection from '@/components/details/FormSection.vue';
 import { Action, Getter } from 'vuex-class';
-import { processActionTypes } from '@/store/modules/process/actions';
-import { processGetterTypes } from '@/store/modules/process/getters';
 import { Phase, PhaseKeys } from '@/models/phase';
+import Process, { ProcessModule, ProcessState } from '@/store/modules/process';
+import { ErrorModule } from '@/store/modules/error';
 
 @Component({
   components: {
@@ -143,32 +158,70 @@ import { Phase, PhaseKeys } from '@/models/phase';
   }
 })
 export default class TimeAndProcessForm extends Vue {
-  @Action(processActionTypes.UPDATE) update: any;
-  @Getter(processGetterTypes.IS_TIME_AND_PROCESS_VALID) isTimeAndProcessValid!: any;
-  @Getter(processGetterTypes.MIN_PHASE) minPhase!: (phase: Phase) => boolean;
   PhaseKeys = PhaseKeys;
 
-  yesNoItems = [{ value: true, text: 'Ja' }, { value: false, text: 'Nej' }];
+  yesNoItems = [
+    { value: true, text: 'Ja' },
+    { value: false, text: 'Nej' }
+  ];
+
+  secondRules: Array<(value: string) => boolean | string> = [
+    value => Number.isInteger(Number(value)) || 'Sekunder skal være heltal',
+    value => parseInt(value, 10) < 60 || 'Sekunder kan højest være 59',
+    value => parseInt(value, 10) >= 0 || 'Sekunder kan ikke være negative'
+  ];
+
+  get state() {
+    return ProcessModule;
+  }
+
+  get timeSpendOccurancesPerEmployee() {
+    return Number(ProcessModule.timeSpendOccurancesPerEmployee);
+  }
+
+  get timeSpendPerOccurance() {
+    return Number(ProcessModule.timeSpendPerOccurance);
+  }
+
+  get timeSpendPercentageDigital() {
+    return Number(ProcessModule.timeSpendPercentageDigital);
+  }
+
+  get timeSpendTotal() {
+    return this.timeSpendOccurancesPerEmployee * this.timeSpendPerOccurance;
+  }
 
   get timeSpendHours() {
-    const hours =
-      ((this.state.timeSpendOccurancesPerEmployee * this.state.timeSpendPerOccurance) / 60)
-        .toString()
-        .substring(0, 4) || '0';
+    const hours = (this.timeSpendTotal / 60).toFixed(2) || '0';
     return hours;
   }
   // Number of times this process is repeated yearly * amount of time required pr. process in minutes / 60 * automation potential / 100
   get exptectedYearlyPotential() {
-    const hours =
-      (
-        ((this.state.timeSpendOccurancesPerEmployee * this.state.timeSpendPerOccurance) / 60) *
-        (this.state.timeSpendPercentageDigital / 100)
-      ).toFixed(1) || '0';
+    const hours = ((this.timeSpendTotal / 60) * (this.timeSpendPercentageDigital / 100)).toFixed(2) || '0';
     return hours;
   }
 
-  get state() {
-    return this.$store.state.process;
+  get minutesAndSecondsPerOccurance(): { minutes: number; seconds: number } {
+    const minutes = parseInt(ProcessModule.timeSpendPerOccurance ?? '', 10); // remove decimals
+    const seconds = (this.timeSpendPerOccurance - minutes) * 60; // remove minute part and convert decimals to seconds
+    return { minutes, seconds };
+  }
+
+  update(state: Partial<ProcessState>) {
+    ProcessModule.update(state);
+  }
+
+  isInErrors(name: string) {
+    return ErrorModule.errorInField(ErrorModule.timeAndProcess, name);
+  }
+
+  updateTimeSpentPerOccurance({ minutes, seconds }: { minutes: string; seconds: string }) {
+    const newMinutes =
+      !!minutes || minutes === '' ? parseInt(minutes || '0', 10) : this.minutesAndSecondsPerOccurance.minutes;
+    const newSeconds =
+      !!seconds || seconds === '' ? parseInt(seconds || '0', 10) : this.minutesAndSecondsPerOccurance.seconds;
+    const timeSpendPerOccurance = newMinutes + newSeconds / 60;
+    ProcessModule.update({ timeSpendPerOccurance: `${timeSpendPerOccurance}` });
   }
 }
 </script>

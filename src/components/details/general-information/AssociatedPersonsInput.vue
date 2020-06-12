@@ -3,11 +3,14 @@
     <div class="associated-list">
       <div class="associated-label">
         Tilknyttede personer
-        <InfoTooltip>Her kan du tilføje personer der arbejder med automatisering af processen og derfor skal kunne redigere i beskrivelserne. Det kan f.eks. være projektmedarbejdere og udviklere.</InfoTooltip>
+        <InfoTooltip
+          >Her kan du tilføje personer der arbejder med automatisering af processen og derfor skal kunne redigere i
+          beskrivelserne. Det kan f.eks. være projektmedarbejdere og udviklere.</InfoTooltip
+        >
       </div>
-      <div class="associated-persons-list" :class="{ disabled, empty: !state.process.users.length }">
-        <div v-for="(user, index) in state.process.users" :key="index">
-          <div class="name">{{user.name}}</div>
+      <div class="associated-persons-list" :class="{ disabled, empty: !state.users.length }">
+        <div v-for="(user, index) in state.users" :key="index">
+          <div class="name">{{ user.name }}</div>
           <div v-if="!disabled" @click="removeUser(user)" class="delete-icon">
             <DeleteIcon />
           </div>
@@ -16,7 +19,18 @@
     </div>
     <div class="add-person" v-if="!disabled">
       <div class="associated-label">Tilknyt person</div>
-      <SelectionField itemSubText="email" ref="userSelectionField" class="search-field" placeholder="Skriv navn for at søge" @search="search($event)" @change="addUser($event)" itemText="name" :items="users" iconName="search" />
+      <SelectionField
+        itemSubText="email"
+        ref="userSelectionField"
+        class="search-field"
+        :hasError="hasError"
+        placeholder="Skriv navn for at søge"
+        @search="search($event)"
+        @change="addUser($event)"
+        itemText="name"
+        :items="users"
+        iconName="search"
+      />
     </div>
   </div>
 </template>
@@ -27,9 +41,10 @@ import { Action } from 'vuex-class';
 import InfoTooltip from '@/components/common/InfoTooltip.vue';
 import SelectionField from '@/components/common/inputs/SelectionField.vue';
 import DeleteIcon from '@/components/icons/DeleteIcon.vue';
-import { processActionTypes } from '@/store/modules/process/actions';
-import { commonActionTypes, UserSearchRequest } from '@/store/modules/common/actions';
-import { User } from '@/store/modules/auth/state';
+import { UserSearchRequest } from '@/store/modules/commonInterfaces';
+import { CommonModule } from '@/store/modules/common';
+import { User, AuthModule } from '@/store/modules/auth';
+import { ProcessModule } from '@/store/modules/process';
 
 @Component({
   components: {
@@ -41,33 +56,38 @@ import { User } from '@/store/modules/auth/state';
 export default class AssociatedPersonsInput extends Vue {
   @Prop(Boolean)
   disabled!: boolean;
-
-  @Action(commonActionTypes.SEARCH_USERS)
-  searchUsers!: (request: UserSearchRequest) => Promise<void>;
+  @Prop(Boolean)
+  hasError!: boolean;
 
   get state() {
-    return this.$store.state;
+    return ProcessModule;
   }
 
   get users() {
-    return this.$store.state.common.users;
+    return CommonModule.users;
   }
 
   search(name: string) {
-    this.searchUsers({ name, cvr: this.$store.state.auth.user.cvr });
+    const request: UserSearchRequest = { name: `${name}`, cvr: '' };
+    if (AuthModule.user) {
+      request.cvr = AuthModule.user.cvr;
+      CommonModule.searchUsers(request);
+    } else {
+      CommonModule.searchUsers(request);
+    }
   }
 
   addUser(user: User) {
-    if (!user || this.state.process.users.find((u: User) => user.id === u.id)) {
+    if (!user || ProcessModule.users?.find((u: User) => user.id === u.id)) {
       return;
     }
 
     setTimeout(() => (this.$refs.userSelectionField as SelectionField<User>).clear());
-    this.$store.dispatch(processActionTypes.ADD_USER, user);
+    ProcessModule.addUser(user);
   }
 
   removeUser(user: User) {
-    this.$store.dispatch(processActionTypes.REMOVE_USER, user);
+    ProcessModule.removeUser(user);
   }
 }
 </script>
@@ -127,7 +147,7 @@ export default class AssociatedPersonsInput extends Vue {
     width: 250px;
   }
 
-  /deep/ .v-autocomplete {
+  ::v-deep .v-autocomplete {
     .v-icon {
       transform: none !important;
     }

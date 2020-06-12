@@ -1,39 +1,32 @@
 <template>
   <div>
-    <div
-      class="text-area"
-      :class="{ 'out-of-bounds': (currentLength > maxLength) }"
-      v-if="!disabled"
-    >
+    <div class="text-area" :class="{ 'out-of-bounds': currentLength > maxLength, hasError: hasError }" v-if="!disabled">
       <textarea
         :value="value"
         @input="valueChanged"
         :placeholder="placeholder"
         :class="{ 'no-resize': noResize }"
-        :style="{'min-height': minHeight}"
+        :style="{ 'min-height': minHeight }"
       />
       <div class="text-area-overlay">
-        <div
-          class="text-area-char-count"
-          v-if="maxLength"
-        >({{currentLength}} ud af {{maxLength}} tegn)</div>
+        <div class="text-area-char-count" v-if="maxLength">({{ currentLength }} ud af {{ maxLength }} tegn)</div>
         <slot />
       </div>
     </div>
     <div
       class="text-area-readonly"
-      :class="{'double-column': twoColumns, 'full-width': fullWidth }"
+      :class="{ 'double-column': twoColumns, 'full-width': fullWidth }"
       v-if="disabled"
       v-html="sanitizedHtml"
     ></div>
   </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import DOMPurify from 'dompurify';
 
-@Component
+@Component({})
 export default class TextArea extends Vue {
   @Prop(String)
   value!: string;
@@ -53,6 +46,7 @@ export default class TextArea extends Vue {
   fullWidth!: boolean;
   @Prop({ type: String, default: '250px' })
   minHeight!: string;
+  @Prop(Boolean) hasError!: boolean;
 
   get sanitizedHtml(): string {
     return !!this.readonlyHtml
@@ -61,11 +55,11 @@ export default class TextArea extends Vue {
   }
 
   get currentLength() {
-    return this.value.length ? this.value.length : 0;
+    return this.value?.length ?? 0;
   }
 
   get twoColumns() {
-    return this.value ? this.value.length > this.twoColumnBreakpoint : false;
+    return !!(this.value?.length > this.twoColumnBreakpoint);
   }
 
   valueChanged(event: any) {
@@ -85,12 +79,15 @@ export default class TextArea extends Vue {
   padding-bottom: 25px;
   background: $color-background;
 
+  &.hasError {
+    border-color: $color-error;
+  }
   &.out-of-bounds {
-    border-color: red;
+    border-color: $color-error;
     box-shadow: inset 0 0 8px rgb(235, 98, 98);
 
     .text-area-overlay > .text-area-char-count {
-      color: red;
+      color: $color-error;
     }
   }
 
@@ -127,4 +124,3 @@ textarea {
   column-gap: 5rem;
 }
 </style>
-

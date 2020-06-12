@@ -1,18 +1,17 @@
-import { errorMutationTypes } from '@/store/modules/error/mutations';
-import { ErrorState } from '@/store/modules/error/state';
-import { Process, ProcessState } from '@/store/modules/process/state';
-import { getInvalidProperties } from '@/store/modules/process/validation';
-import { RootState } from '@/store/store';
-import { ActionTree } from 'vuex';
+import { ProcessState } from './process';
+import { ErrorState } from './error';
 
-export const namespace = 'error';
+export interface ErrorSection {
+  section: string;
+  errors: ErrorWithDescription[];
+}
 
-export const errorActionTypes = {
-  UPDATE_PROCESS_ERRORS: `${namespace}/updateProcessErrors`,
-  CLEAR_ERRORS: `${namespace}/clearErrors`
-};
+export interface ErrorWithDescription {
+  name: string;
+  description: string;
+}
 
-type ProcessLabels = { [X in keyof Process]?: string };
+type ProcessLabels = { [X in keyof ProcessState]?: string };
 
 export const umbrellaLabels: ProcessLabels = {
   contact: 'Kontaktperson',
@@ -24,6 +23,8 @@ export const umbrellaLabels: ProcessLabels = {
   kla: 'KL’s Arbejdsgangsbank',
   klId: 'KL ID'
 };
+
+export const umbrellaKeys: Array<keyof ProcessLabels> = Object.keys(umbrellaLabels) as Array<keyof ProcessLabels>;
 
 export const generalInformationLabels: ProcessLabels = {
   phase: 'Fase',
@@ -44,12 +45,18 @@ export const generalInformationLabels: ProcessLabels = {
   sepMep: 'SEP/MEP'
 };
 
+export const generalInformationKeys: Array<keyof ProcessLabels> = Object.keys(generalInformationLabels) as Array<
+  keyof ProcessLabels
+>;
+
 export const challengesLabels: ProcessLabels = {
   longDescription: 'Beskrivelse',
   processChallenges: 'Udfordringer i den nuværende proces',
   solutionRequests: 'Løsningsbeskrivelse',
   itSystems: 'Nuværende system'
 };
+
+export const challengeKeys: Array<keyof ProcessLabels> = Object.keys(challengesLabels) as Array<keyof ProcessLabels>;
 
 export const timeAndProcessLabels: ProcessLabels = {
   timeSpendOccurancesPerEmployee: 'Antal gange processen foretages årligt',
@@ -59,6 +66,10 @@ export const timeAndProcessLabels: ProcessLabels = {
   timeSpendComputedTotal: 'Total besparelse',
   timeSpendComment: 'Kommentar vedr. tidsforbrug'
 };
+
+export const timeAndProcessKeys: Array<keyof ProcessLabels> = Object.keys(timeAndProcessLabels) as Array<
+  keyof ProcessLabels
+>;
 
 export const assessmentLabels: ProcessLabels = {
   levelOfProfessionalAssessment: 'I hvor høj grad indgår der faglig vurdering i processen?',
@@ -75,9 +86,13 @@ export const assessmentLabels: ProcessLabels = {
   evaluatedLevelOfRoi: 'I hvor høj grad vurderes det at processen kan automatiseres?'
 };
 
+export const assessmentKeys: Array<keyof ProcessLabels> = Object.keys(assessmentLabels) as Array<keyof ProcessLabels>;
+
 export const attachmentsLabels: ProcessLabels = {
   esdhReference: 'ESDH Reference'
 };
+
+export const attachmentKeys: Array<keyof ProcessLabels> = Object.keys(attachmentsLabels) as Array<keyof ProcessLabels>;
 
 export const implementationLabels: ProcessLabels = {
   technologies: 'Anvendt teknologi',
@@ -85,12 +100,18 @@ export const implementationLabels: ProcessLabels = {
   organizationalImplementationNotes: 'Organisatorisk implementering'
 };
 
+export const implementationKeys: Array<keyof ProcessLabels> = Object.keys(implementationLabels) as Array<
+  keyof ProcessLabels
+>;
+
 export const operationLabels: ProcessLabels = {
   rating: 'I hvor høj grad indfriede løsningen de forventede gevinster?',
   ratingComment: 'Kommentar til realiseret gevinster',
   decommissioned: 'Løsning taget ud af drift',
   legalClauseLastVerified: 'Sidst kontrolleret i forhold til §'
 };
+
+export const operationKeys: Array<keyof ProcessLabels> = Object.keys(operationLabels) as Array<keyof ProcessLabels>;
 
 export const processLabels: ProcessLabels = {
   ...generalInformationLabels,
@@ -104,17 +125,19 @@ export const processLabels: ProcessLabels = {
   internalNotes: 'Interne Noter'
 };
 
-interface ErrorLabels {
-  generalInformation: Array<keyof Process>;
-  challenges: Array<keyof Process>;
-  assessment: Array<keyof Process>;
-  timeAndProcess: Array<keyof Process>;
-  attachments: Array<keyof Process>;
-  implementation: Array<keyof Process>;
-  operation: Array<keyof Process>;
+export const processKeys: Array<keyof ProcessLabels> = Object.keys(processLabels) as Array<keyof ProcessLabels>;
+
+export interface ErrorLabels {
+  generalInformation: Array<keyof ProcessState>;
+  challenges: Array<keyof ProcessState>;
+  assessment: Array<keyof ProcessState>;
+  timeAndProcess: Array<keyof ProcessState>;
+  attachments: Array<keyof ProcessState>;
+  implementation: Array<keyof ProcessState>;
+  operation: Array<keyof ProcessState>;
 }
 
-const errorLimitations: { [key: string]: string } = {
+export const errorLimitations: { [key: string]: string } = {
   klId: 'maks 64 tegn',
   title: 'mellem 1 og 50 tegn',
   visibility: 'obligatorisk felt',
@@ -129,43 +152,47 @@ const errorLimitations: { [key: string]: string } = {
   processChallenges: 'obligatorisk fra Idé-fasen'
 };
 
-const errorLabels: ErrorLabels = {
-  generalInformation: Object.keys(generalInformationLabels) as Array<keyof Process>,
-  challenges: Object.keys(challengesLabels) as Array<keyof Process>,
-  assessment: Object.keys(assessmentLabels) as Array<keyof Process>,
-  timeAndProcess: Object.keys(timeAndProcessLabels) as Array<keyof Process>,
-  attachments: Object.keys(attachmentsLabels) as Array<keyof Process>,
-  implementation: Object.keys(implementationLabels) as Array<keyof Process>,
-  operation: Object.keys(operationLabels) as Array<keyof Process>
+export const errorLabels: ErrorLabels = {
+  generalInformation: Object.keys(generalInformationLabels) as Array<keyof ProcessState>,
+  challenges: Object.keys(challengesLabels) as Array<keyof ProcessState>,
+  assessment: Object.keys(assessmentLabels) as Array<keyof ProcessState>,
+  timeAndProcess: Object.keys(timeAndProcessLabels) as Array<keyof ProcessState>,
+  attachments: Object.keys(attachmentsLabels) as Array<keyof ProcessState>,
+  implementation: Object.keys(implementationLabels) as Array<keyof ProcessState>,
+  operation: Object.keys(operationLabels) as Array<keyof ProcessState>
 };
 
-export const actions: ActionTree<ErrorState, RootState> = {
-  updateProcessErrors({ commit, state }, processState: ProcessState) {
-    const sections = Object.keys(errorLabels) as Array<keyof ErrorLabels>;
+export const defaultLabelKeys: Array<keyof ErrorLabels> = Object.keys(errorLabels) as Array<keyof ErrorLabels>;
 
-    sections.forEach(section => {
-      const sectionErrors = getInvalidProperties(processState, errorLabels[section]);
-
-      const errors = sectionErrors.map(error => {
-        const errorLabel = processLabels[error];
-        const limitationLabel = errorLimitations[error];
-
-        if (errorLabel) {
-          const tempError = errorLabel.length < 35 ? errorLabel : errorLabel.slice(0, 25) + '...';
-          return tempError + (limitationLabel ? ` (${limitationLabel})` : '');
-        }
-
-        return '';
-      });
-
-      commit(errorMutationTypes.ASSIGN, { [section]: { errors, section: state[section].section } });
-    });
+export const defaultErrorState: ErrorState = {
+  generalInformation: {
+    section: 'Grundlæggende oplysninger',
+    errors: []
   },
-  clearErrors({ commit, state }) {
-    const sections = Object.keys(errorLabels) as Array<keyof ErrorLabels>;
-
-    sections.forEach(section => {
-      commit(errorMutationTypes.ASSIGN, { [section]: { errors: [], section: state[section].section } });
-    });
+  challenges: {
+    section: 'Problemstillinger',
+    errors: []
+  },
+  assessment: {
+    section: 'Faglig vurdering',
+    errors: []
+  },
+  timeAndProcess: {
+    section: 'Tid og proces',
+    errors: []
+  },
+  attachments: {
+    section: 'Bilag og links',
+    errors: []
+  },
+  implementation: {
+    section: 'Udvikling og implementering',
+    errors: []
+  },
+  operation: {
+    section: 'Drift',
+    errors: []
   }
 };
+
+export const defaultSectionKeys: Array<keyof ErrorState> = Object.keys(defaultErrorState) as Array<keyof ErrorState>;

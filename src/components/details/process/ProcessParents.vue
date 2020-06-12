@@ -1,19 +1,19 @@
 <template>
   <div class="parents">
     <router-link v-for="parent in parents" :key="parent.id" :to="'/details/' + parent.id" class="parent">
-      <div class="title">{{parent.title}}</div>
-      <div class="resume">{{parent.shortDescription}}</div>
+      <div class="title">{{ parent.title }}</div>
+      <div class="resume">{{ parent.shortDescription }}</div>
     </router-link>
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Prop, Component } from 'vue-property-decorator';
-import { Process } from '@/store/modules/process/state';
+import { ProcessReport } from '@/store/modules/processInterfaces';
 
-@Component
+@Component({})
 export default class ProcessParents extends Vue {
-  @Prop() parents!: Array<Partial<Process>>;
+  @Prop() parents!: Array<Partial<ProcessReport>>;
 }
 </script>
 

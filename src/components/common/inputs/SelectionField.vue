@@ -2,6 +2,7 @@
   <div>
     <v-select
       class="select-wrap"
+      :class="{ hasError: hasError }"
       v-if="!disabled && dropdown"
       :items="_items"
       :value="value"
@@ -10,24 +11,16 @@
       :clearable="clearable"
       :placeholder="placeholder"
       @change="valueChanged"
+      autocomplete="on"
     >
-      <template
-        slot="item"
-        slot-scope="data"
-      >
-        <SelectionFieldText
-          :itemText="data.item[itemText]"
-          :subText="data.item[itemSubText]"
-        />
-        <SelectionFieldAction
-          v-if="hasAction"
-          :actionIcon="actionIcon"
-          @action="action(data.item)"
-        />
+      <template slot="item" slot-scope="data">
+        <SelectionFieldText :itemText="data.item[itemText]" :subText="data.item[itemSubText]" />
+        <SelectionFieldAction v-if="hasAction" :actionIcon="actionIcon" @action="action(data.item)" />
       </template>
     </v-select>
     <v-autocomplete
       class="select-wrap"
+      :class="{ hasError: hasError }"
       ref="autocomplete"
       v-if="!disabled && !dropdown"
       :clearable="clearable"
@@ -44,29 +37,16 @@
       return-object
       :multiple="multiple"
     >
-      <template
-        slot="item"
-        slot-scope="data"
-      >
-        <SelectionFieldText
-          :itemText="data.item[itemText]"
-          :subText="data.item[itemSubText]"
-        />
-        <SelectionFieldAction
-          v-if="hasAction"
-          :actionIcon="actionIcon"
-          @action="action(data.item)"
-        />
+      <template slot="item" slot-scope="data">
+        <SelectionFieldText :itemText="data.item[itemText]" :subText="data.item[itemSubText]" />
+        <SelectionFieldAction v-if="hasAction" :actionIcon="actionIcon" @action="action(data.item)" />
       </template>
     </v-autocomplete>
-    <div
-      class="selection-text"
-      v-if="disabled && value"
-    >{{ label }}</div>
+    <div class="selection-text" v-if="disabled && value">{{ label }}</div>
   </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import { Vue, Component, Prop, Watch, Emit } from 'vue-property-decorator';
 import SelectionFieldText from './SelectionFieldText.vue';
 import SelectionFieldAction from './SelectionFieldAction.vue';
@@ -101,6 +81,7 @@ export default class SelectionField<T extends any> extends Vue {
   dropdown!: boolean;
   @Prop({ type: Boolean, default: false }) hasAction!: boolean;
   @Prop({ type: String, default: 'info' }) actionIcon!: string;
+  @Prop(Boolean) hasError!: boolean;
   @Emit()
   action(item: T) {
     return item;
@@ -124,7 +105,7 @@ export default class SelectionField<T extends any> extends Vue {
     if (Array.isArray(this.value)) {
       return this.value.map((item: any) => item[this.itemText]).join(', ');
     }
-
+    // @ts-ignore
     return this.value[this.itemText];
   }
 
@@ -149,7 +130,7 @@ export default class SelectionField<T extends any> extends Vue {
 <style scoped lang="scss">
 @import '@/styles/variables.scss';
 
-.select-wrap /deep/ {
+.select-wrap ::v-deep {
   padding-top: 0 !important;
   margin: 0;
 
@@ -164,7 +145,6 @@ export default class SelectionField<T extends any> extends Vue {
     flex: 1 1 auto;
     min-height: 2rem;
     margin: 0;
-
     &::before,
     &::after {
       display: none !important;
@@ -178,6 +158,11 @@ export default class SelectionField<T extends any> extends Vue {
 
   .v-text-field__details {
     display: none !important;
+  }
+}
+.hasError::v-deep {
+  .v-input__slot {
+    border-color: $color-error;
   }
 }
 

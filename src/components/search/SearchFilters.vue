@@ -1,74 +1,46 @@
 <template>
   <div class="wrapper">
-    <div
-      class="types"
-      v-if="!umbrellaProcessSearch"
-    >
-      <PillCheckbox
-        :value="!!filters.reporterId"
-        @change="setReporterId"
-      >Mine indberetninger</PillCheckbox>
-      <PillCheckbox
-        :value="!!filters.usersId"
-        @change="setUsersId"
-      >Mine tilknytninger</PillCheckbox>
-      <PillCheckbox
-        :value="!!filters.bookmarkedId"
-        @change="setBookmarkedId"
-      >Mine favoritter</PillCheckbox>
+    <div class="types" v-if="!umbrellaProcessSearch">
+      <PillCheckbox :value="!!filters.reporterId" @change="setReporterId">Mine indberetninger</PillCheckbox>
+      <PillCheckbox :value="!!filters.usersId" @change="setUsersId">Mine tilknytninger</PillCheckbox>
+      <PillCheckbox :value="!!filters.bookmarkedId" @change="setBookmarkedId">Mine favoritter</PillCheckbox>
       <SearchSelectSavedFilters />
     </div>
 
-    <SearchField
-      class="search-text"
-      :value="filters.text"
-      @change="updateFilters({ text: $event })"
-    />
+    <SearchField class="search-text" :value="filters.text" @change="updateFilters({ text: $event })" />
 
     <h1 v-if="!umbrellaProcessSearch">AVANCERET SØGNING</h1>
 
-    <div
-      class="municipality-level"
-      v-if="!umbrellaProcessSearch"
-    >
+    <div class="municipality-level" v-if="!umbrellaProcessSearch">
       <SearchOption
         v-for="(visibilityKey, index) in VisibilityKeys"
         :key="index"
         :value="filters.visibility[visibilityKey]"
-        @change="updateFilters({ visibility: {...filters.visibility, ...{ [visibilityKey]: $event } }})"
-      >{{VisibilityLabels[visibilityKey]}}</SearchOption>
+        @change="updateFilters({ visibility: { ...filters.visibility, ...{ [visibilityKey]: $event } } })"
+        >{{ VisibilityLabels[visibilityKey] }}</SearchOption
+      >
     </div>
 
-    <SearchOption
-      :value="filters.klaProcess"
-      @change="updateFilters({ klaProcess: $event })"
-    >Søg i KL’s Arbejdsgangsbank</SearchOption>
+    <SearchOption :value="filters.klaProcess" @change="updateFilters({ klaProcess: $event })"
+      >Søg i KL’s Arbejdsgangsbank</SearchOption
+    >
 
-    <SearchOption
-      v-if="!umbrellaProcessSearch"
-      :value="filters.umbrella"
-      @change="updateFilters({ umbrella: $event })"
-    >Søg i paraplyprocesser</SearchOption>
+    <SearchOption v-if="!umbrellaProcessSearch" :value="filters.umbrella" @change="updateFilters({ umbrella: $event })"
+      >Søg i paraplyprocesser</SearchOption
+    >
 
-    <SearchOption
-      :value="filters.sepMep"
-      @change="updateFilters({ sepMep: $event })"
-    >Søg i KL's automatiseringsprojekter</SearchOption>
+    <SearchOption :value="filters.sepMep" @change="updateFilters({ sepMep: $event })"
+      >Søg i KL's automatiseringsprojekter</SearchOption
+    >
 
     <div class="datepicker">
       Oprettet:
-      <DatePicker
-        :value="filters.created"
-        @change="updateFilters({created: $event})"
-      />
+      <DatePicker :value="filters.created" @change="updateFilters({ created: $event })" />
     </div>
 
     <div class="datepicker">
       Senest ændret:
-      <DatePicker
-        :value="filters.lastChanged"
-        @change="updateFilters({lastChanged: $event})"
-      />
+      <DatePicker :value="filters.lastChanged" @change="updateFilters({ lastChanged: $event })" />
     </div>
 
     <ExpandPanel title="Organisation">
@@ -76,7 +48,7 @@
         :items="municipalities"
         :value="filters.municipality"
         itemText="name"
-        @change="assignFilters({municipality: $event})"
+        @change="assignFilters({ municipality: $event })"
         clearable
       />
     </ExpandPanel>
@@ -86,7 +58,7 @@
         :items="technologies"
         :value="filters.technologies"
         itemText="name"
-        @change="assignFilters({technologies: $event})"
+        @change="assignFilters({ technologies: $event })"
         multiple
       />
     </ExpandPanel>
@@ -96,8 +68,9 @@
         v-for="(statusKey, index) in StatusKeys"
         :value="filters.status[statusKey]"
         :key="index"
-        @change="updateFilters({status: {...filters.status, ...{[statusKey]: $event}}})"
-      >{{StatusLabels[statusKey]}}</SearchOption>
+        @change="updateFilters({ status: { ...filters.status, ...{ [statusKey]: $event } } })"
+        >{{ StatusLabels[statusKey] }}</SearchOption
+      >
     </ExpandPanel>
 
     <ExpandPanel title="Fase">
@@ -105,8 +78,9 @@
         v-for="(phaseKey, index) in PhaseKeys"
         :value="filters.phase[phaseKey]"
         :key="index"
-        @change="updateFilters({phase: {...filters.phase, ...{ [phaseKey]: $event }}})"
-      >{{PhaseLabels[phaseKey]}}</SearchOption>
+        @change="updateFilters({ phase: { ...filters.phase, ...{ [phaseKey]: $event } } })"
+        >{{ PhaseLabels[phaseKey] }}</SearchOption
+      >
     </ExpandPanel>
 
     <ExpandPanel title="Fagområde">
@@ -114,8 +88,9 @@
         v-for="(domainKey, index) in DomainKeys"
         :key="index"
         :value="filters.domain[domainKey]"
-        @change="updateFilters({domain: {...filters.domain, ...{[domainKey]: $event}}})"
-      >{{DomainLabels[domainKey]}}</SearchOption>
+        @change="updateFilters({ domain: { ...filters.domain, ...{ [domainKey]: $event } } })"
+        >{{ DomainLabels[domainKey] }}</SearchOption
+      >
     </ExpandPanel>
 
     <ExpandPanel title="System">
@@ -123,14 +98,14 @@
         :items="itSystems"
         :value="filters.itSystems"
         itemText="name"
-        @change="assignFilters({itSystems: $event})"
+        @change="assignFilters({ itSystems: $event })"
         multiple
       />
     </ExpandPanel>
 
     <SearchFiltersRunPeriod />
 
-    <SearchFiltersActions />
+    <SearchFiltersActions @reset="onReset()" />
   </div>
 </template>
 
@@ -145,18 +120,19 @@ import PillCheckbox from '../common/inputs/PillCheckbox.vue';
 import SelectionField from '../common/inputs/SelectionField.vue';
 import ExpandPanel from '../common/ExpandPanel.vue';
 import { Action, State } from 'vuex-class';
-import { searchActionTypes } from '@/store/modules/search/actions';
 import { PhaseLabels, PhaseKeys } from '@/models/phase';
 import { DomainLabels, DomainKeys } from '@/models/domain';
 import { VisibilityLabels, VisibilityKeys } from '@/models/visibility';
-import { SearchFilters } from '../../store/modules/search/state';
-import { commonActionTypes } from '@/store/modules/common/actions';
+import { SearchFilters } from '@/store/modules/searchInterfaces';
 import Button from '../common/inputs/Button.vue';
-import { RootState } from '../../store/store';
 import SearchFiltersActions from './SearchFiltersActions.vue';
 import SearchSelectSavedFilters from './SearchSelectSavedFilters.vue';
 import SearchFiltersRunPeriod from './SearchFiltersRunPeriod.vue';
 import { StatusSelect, StatusLabels, StatusKeys, defaultStatusSelects } from '../../models/status';
+import { Municipality } from '@/store/modules/commonInterfaces';
+import { AuthModule } from '@/store/modules/auth';
+import { CommonModule } from '@/store/modules/common';
+import { SearchModule } from '@/store/modules/search';
 
 @Component({
   components: {
@@ -184,45 +160,27 @@ export default class SearchFiltersComponent extends Vue {
   VisibilityLabels = VisibilityLabels;
   VisibilityKeys = [VisibilityKeys.MUNICIPALITY, VisibilityKeys.PUBLIC];
 
-  @State((state: RootState) => state.search.filters) filters!: SearchFilters;
-
   @Prop(Boolean)
   umbrellaProcessSearch!: boolean;
 
-  get user() {
-    return this.$store.state.auth.user;
-  }
-
-  get itSystems() {
-    return this.$store.state.common.itSystems;
-  }
-
-  get municipalities() {
-    return this.$store.state.common.municipalities;
-  }
-
-  get technologies() {
-    return this.$store.state.common.technologies;
-  }
-
   mounted() {
-    this.$store.dispatch(commonActionTypes.LOAD_IT_SYSTEMS);
-    this.$store.dispatch(commonActionTypes.LOAD_MUNICIPALITIES);
-    this.$store.dispatch(commonActionTypes.LOAD_TECHNOLOGIES);
+    CommonModule.loadITSystems();
+    CommonModule.loadMunicipalities();
+    CommonModule.loadTechnologies();
   }
 
   setReporterId(value: boolean) {
-    const reporterId = value && this.user ? this.user.uuid : null;
+    const reporterId = value && AuthModule.user ? AuthModule.user.uuid : null;
     this.updateFilters({ reporterId });
   }
 
   setUsersId(value: boolean) {
-    const usersId = value && this.user ? this.user.uuid : null;
+    const usersId = value && AuthModule.user ? AuthModule.user.uuid : null;
     this.updateFilters({ usersId });
   }
 
   setBookmarkedId(value: boolean) {
-    const bookmarkedId = value && this.user ? this.user.uuid : null;
+    const bookmarkedId = value && AuthModule.user ? AuthModule.user.uuid : null;
     this.updateFilters({ bookmarkedId });
   }
 
@@ -232,6 +190,26 @@ export default class SearchFiltersComponent extends Vue {
 
   assignFilters(filters: Partial<SearchFilters>) {
     this.$emit('assign', filters);
+  }
+
+  onReset() {
+    this.$emit('change', this.filters);
+  }
+
+  get filters() {
+    return SearchModule.filters;
+  }
+
+  get municipalities() {
+    return CommonModule.municipalities;
+  }
+
+  get technologies() {
+    return CommonModule.technologies;
+  }
+
+  get itSystems() {
+    return CommonModule.itSystems;
   }
 }
 </script>

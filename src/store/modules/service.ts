@@ -1,13 +1,13 @@
 import { HTTP } from '@/services/http-service';
-import { SearchFilters, SearchResult, SavedSearchFilters } from '@/store/modules/search/state';
+import { SearchFilters, SearchResult, SavedSearchFilters } from '@/store/modules/searchInterfaces';
 import { Phase, PhaseLabels, PhaseKeys } from '@/models/phase';
 import { Status, StatusLabels } from '@/models/status';
 import { Domain, DomainLabels } from '@/models/domain';
 import { RunPeriod, RunPeriodLabels } from '@/models/runperiod';
 import { Visibility, VisibilityKeys } from '@/models/visibility';
-import { User } from '@/store/modules/auth/state';
+import { User } from '@/store/modules/auth';
 import { Type, TypeKeys } from '@/models/types';
-import { umbrellaLabels } from '@/store/modules/error/actions';
+import { umbrellaLabels } from '@/store/modules/errorInterfaces';
 import { setUrlSearchQuery, mapSearchQueryToObject, mapQueryObjToFilters, stringify } from '@/services/url-service';
 import qs from 'qs';
 
@@ -126,7 +126,6 @@ export async function search(filters: SearchFilters): Promise<SearchResult> {
   const params = mapFiltersToSearchParams(filters);
 
   const response = await HTTP.get<SearchResponse>('api/processes', { params });
-
   return mapSearchResponse(response.data);
 }
 

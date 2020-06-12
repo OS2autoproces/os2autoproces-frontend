@@ -1,10 +1,10 @@
 <template>
   <FormSection
-    :invalid="!isGeneralInformationValid"
+    :invalid="!state.isGeneralInformationValid"
     heading="Grundlæggende oplysninger"
     id="general-information"
     :disabled="state.disabled.generalInformationEdit"
-    @edit="update({disabled: { generalInformationEdit: $event} })"
+    @edit="update({ disabled: { generalInformationEdit: $event } })"
     always-open
   >
     <div class="title-row">
@@ -13,15 +13,12 @@
         class="title-field flex-grow"
         :value="state.title"
         :disabled="state.disabled.generalInformationEdit"
+        :hasError="isInErrors('title')"
         :class="{ disabled: state.disabled.generalInformationEdit }"
         @change="update({ title: $event })"
+        id="title"
       />
-      <div
-        v-if="!isReporting"
-        class="bookmark-button"
-        role="button"
-        @click="setBookmark(!state.hasBookmarked)"
-      >
+      <div v-if="!isReporting" class="bookmark-button" role="button" @click="setBookmark(!state.hasBookmarked)">
         <StarIcon :class="{ selected: state.hasBookmarked }" />
       </div>
       <MunicipalityLogo :src="logo" />
@@ -40,17 +37,19 @@
           label="Fagligkontaktperson:"
           tooltip="Er en person der varetager processen til daglig og derfor har stort kendskab til den."
           v-if="isWithinMunicipality"
-          :required="minPhase(PhaseKeys.SPECIFICATION)"
+          :required="state.minPhase(PhaseKeys.SPECIFICATION)"
         >
           <SelectionField
             itemSubText="email"
             :disabled="state.disabled.generalInformationEdit"
             :value="state.owner"
+            :hasError="isInErrors('owner')"
             itemText="name"
             @search="search($event)"
             isItemsPartial
-            @change="update({owner: $event})"
-            :items="users"
+            @change="update({ owner: $event })"
+            :items="common.users"
+            id="owner"
           />
         </WellItem>
         <WellItem
@@ -62,15 +61,17 @@
             itemSubText="email"
             :disabled="state.disabled.generalInformationEdit"
             :value="state.contact"
+            :hasError="isInErrors('contact')"
             itemText="name"
             @search="search($event)"
             isItemsPartial
-            @change="update({contact: $event})"
-            :items="users"
+            @change="update({ contact: $event })"
+            :items="common.users"
+            id="contact"
             clearable
           />
         </WellItem>
-        <WellItem v-if="state.contact" labelWidth="180px" label="Mail:">{{state.contact.email}}</WellItem>
+        <WellItem v-if="state.contact" labelWidth="180px" label="Mail:">{{ state.contact.email }}</WellItem>
       </div>
 
       <div>
@@ -82,7 +83,9 @@
           <MappedSelectionField
             :disabled="!!state.parents.length || state.disabled.generalInformationEdit"
             :value="state.visibility"
-            @change="update({visibility: $event})"
+            :hasError="isInErrors('visibility')"
+            id="visibility"
+            @change="update({ visibility: $event })"
             :items="visibilityLevels"
           />
         </WellItem>
@@ -90,21 +93,25 @@
           <DomainsField
             :disabled="state.disabled.generalInformationEdit"
             :value="state.domains"
-            @change="assign({domains: $event})"
+            :hasError="isInErrors('domains')"
+            id="domains"
+            @change="assign({ domains: $event })"
           />
         </WellItem>
         <WellItem labelWidth="120px" label="Afdelinger:" v-if="isWithinMunicipality">
           <SelectionField
             :disabled="state.disabled.generalInformationEdit"
             :value="state.orgUnits"
-            @change="assign({orgUnits: $event})"
-            :items="orgUnits"
+            :hasError="isInErrors('orgUnits')"
+            @change="assign({ orgUnits: $event })"
+            :items="common.orgUnits"
+            id="orgUnits"
             multiple
             itemText="name"
           />
         </WellItem>
         <WellItem
-          v-if="minPhase(PhaseKeys.DEVELOPMENT)"
+          v-if="state.minPhase(PhaseKeys.DEVELOPMENT)"
           labelWidth="180px"
           label="Leverandør:"
           tooltip="Her skrives enten kommunens navn eller en ekstern leverandør der har lavet løsningen."
@@ -112,29 +119,42 @@
           <InputField
             :disabled="state.disabled.generalInformationEdit"
             :value="state.vendor"
-            @change="update({vendor: $event})"
+            :hasError="isInErrors('vendor')"
+            id="vendor"
+            @change="update({ vendor: $event })"
           />
         </WellItem>
         <WellItem v-if="state.sepMep" labelWidth="120px" label="SEP/MEP:">
-          <Checkbox :disabled="true" :value="state.sepMep" @change="update({sepMep: $event})" />
+          <Checkbox
+            :disabled="true"
+            :value="state.sepMep"
+            :hasError="isInErrors('sepMep')"
+            @change="update({ sepMep: $event })"
+            id="sepMep"
+          />
         </WellItem>
       </div>
 
       <div>
-        <WellItem v-if="minPhase(PhaseKeys.PREANALYSIS)" labelWidth="120px" label="Lovparagraf:">
+        <WellItem v-if="state.minPhase(PhaseKeys.PREANALYSIS)" labelWidth="120px" label="Lovparagraf:">
           <InputField
             :disabled="state.disabled.generalInformationEdit || state.form"
             :value="state.legalClause"
-            @change="update({legalClause: $event})"
+            :hasError="isInErrors('legalClause')"
+            id="legalClause"
+            @change="update({ legalClause: $event })"
           />
         </WellItem>
-        <WellItem labelWidth="200px" label="KLE-nr:">
+        <WellItem labelWidth="200px" label="KLE:">
           <SelectionField
             :disabled="state.disabled.generalInformationEdit"
             :value="state.kle"
+            :hasError="isInErrors('kle')"
             @change="setKle($event)"
-            :items="kles"
-            itemText="code"
+            :items="common.kles"
+            id="kle"
+            itemText="name"
+            itemSubText="code"
             clearable
           />
         </WellItem>
@@ -142,9 +162,12 @@
           <SelectionField
             :disabled="state.disabled.generalInformationEdit"
             :value="state.form"
-            @change="update({form: $event})"
-            :items="forms"
-            itemText="code"
+            :hasError="isInErrors('form')"
+            @change="update({ form: $event })"
+            :items="common.forms"
+            id="form"
+            itemText="description"
+            itemSubText="code"
             clearable
           />
         </WellItem>
@@ -152,7 +175,9 @@
           <InputField
             :disabled="state.disabled.generalInformationEdit"
             :value="state.klId"
-            @change="update({klId: $event})"
+            :hasError="isInErrors('klId')"
+            id="klId"
+            @change="update({ klId: $event })"
           />
         </WellItem>
         <WellItem
@@ -164,13 +189,15 @@
             :disabled="state.disabled.generalInformationEdit"
             mask="##.##.##.##.##"
             :value="state.kla"
+            :hasError="isInErrors('kla')"
+            id="kla"
             @change="setKla"
           />
         </WellItem>
       </div>
 
       <AssociatedPersonsInput
-        v-if="minPhase(PhaseKeys.PREANALYSIS) && isWithinMunicipality"
+        v-if="state.minPhase(PhaseKeys.PREANALYSIS) && isWithinMunicipality"
         slot="well-footer"
         :disabled="state.disabled.generalInformationEdit"
       />
@@ -184,8 +211,10 @@
         </h2>
         <TextArea
           :disabled="state.disabled.generalInformationEdit"
-          @change="update({shortDescription: $event})"
+          @change="update({ shortDescription: $event })"
           :value="state.shortDescription"
+          :hasError="isInErrors('shortDescription')"
+          id="shortDescription"
           :maxLength="140"
           :minHeight="'50px'"
         />
@@ -197,6 +226,8 @@
             class="phase-field"
             :disabled="state.disabled.generalInformationEdit"
             :value="state.phase"
+            :hasError="isInErrors('phase')"
+            id="phase"
             @change="phaseChanged($event)"
           />
         </div>
@@ -206,7 +237,9 @@
             class="status-field"
             :disabled="state.disabled.generalInformationEdit"
             :value="state.status"
-            @change="update({status: $event})"
+            :hasError="isInErrors('status')"
+            id="status"
+            @change="update({ status: $event })"
             :items="statusLevels"
           />
         </div>
@@ -220,22 +253,14 @@
 
     <div>
       <div v-if="state.status !== StatusKeys.INPROGRESS && state.status !== StatusKeys.NOT_RATED">
-        <h2
-          class="comments-heading"
-          v-if="state.status === StatusKeys.FAILED"
-        >Hvorfor er processen mislykket?</h2>
-        <h2
-          class="comments-heading"
-          v-if="state.status === StatusKeys.PENDING"
-        >Hvorfor afventer processen?</h2>
-        <h2
-          class="comments-heading"
-          v-if="state.status === StatusKeys.REJECTED"
-        >Hvorfor er processen afvist?</h2>
+        <h2 class="comments-heading" v-if="state.status === StatusKeys.FAILED">Hvorfor er processen mislykket?</h2>
+        <h2 class="comments-heading" v-if="state.status === StatusKeys.PENDING">Hvorfor afventer processen?</h2>
+        <h2 class="comments-heading" v-if="state.status === StatusKeys.REJECTED">Hvorfor er processen afvist?</h2>
         <TextArea
           :disabled="state.disabled.generalInformationEdit"
-          @change="update({statusText: $event})"
+          @change="update({ statusText: $event })"
           :value="state.statusText"
+          id="statusText"
         />
       </div>
     </div>
@@ -270,14 +295,11 @@ import Well from '@/components/common/Well.vue';
 import WellItem from '@/components/common/WellItem.vue';
 import FormSection from '@/components/details/FormSection.vue';
 import WarningIcon from '@/components/icons/WarningIcon.vue';
-import { processActionTypes } from '@/store/modules/process/actions';
-import { processGetterTypes } from '@/store/modules/process/getters';
-import { User } from '@/store/modules/auth/state';
 import { StatusKeys, StatusLabels } from '@/models/status';
 import { VisibilityKeys, VisibilityLabels } from '@/models/visibility';
-import { OrgUnit } from '@/store/modules/process/state';
 import { Domain, DomainKeys, DomainLabels } from '@/models/domain';
-import { Kle, Form, commonActionTypes, UserSearchRequest } from '@/store/modules/common/actions';
+import { Kle, Form, UserSearchRequest, OrgUnit } from '@/store/modules/commonInterfaces';
+import { CommonModule } from '@/store/modules/common';
 import { Phase, PhaseKeys } from '@/models/phase';
 import InfoTooltip from '@/components/common/InfoTooltip.vue';
 import MunicipalityLogo from '@/components/common/MunicipalityLogo.vue';
@@ -285,6 +307,9 @@ import StarIcon from '@/components/icons/StarIcon.vue';
 import AppDialog from '@/components/common/Dialog.vue';
 import DialogContent from '@/components/common/DialogContent.vue';
 import Button from '@/components/common/inputs/Button.vue';
+import { AuthModule, User } from '@/store/modules/auth';
+import { ProcessModule, ProcessState } from '@/store/modules/process';
+import { ErrorModule } from '@/store/modules/error';
 // TODO - split this component. No component should be 500 lines
 @Component({
   components: {
@@ -312,23 +337,6 @@ import Button from '@/components/common/inputs/Button.vue';
 export default class GeneralInformationForm extends Vue {
   @Prop(Boolean)
   isReporting!: boolean;
-
-  @Action(processActionTypes.SET_BOOKMARK)
-  setBookmark!: (hasBookmark: boolean) => Promise<void>;
-  @Action(processActionTypes.UPDATE)
-  update: any;
-  @Action(commonActionTypes.LOAD_FORMS)
-  loadForms: any;
-  @Action(processActionTypes.ASSIGN)
-  assign: any;
-  @Action(commonActionTypes.SEARCH_USERS)
-  searchUsers!: ({ name, cvr }: UserSearchRequest) => Promise<void>;
-
-  @Getter(processGetterTypes.IS_GERNERAL_INFORMATION_VALID)
-  isGeneralInformationValid!: any;
-  @Getter(processGetterTypes.MIN_PHASE)
-  minPhase!: (phase: Phase) => boolean;
-
   isPhaseChanged = false;
   publicVisibilityDialogOpen = false;
   StatusKeys = StatusKeys;
@@ -349,59 +357,60 @@ export default class GeneralInformationForm extends Vue {
   ];
 
   get isWithinMunicipality() {
-    const { auth, process } = this.$store.state;
-    return auth.user.cvr === process.cvr;
+    return AuthModule.user?.cvr === ProcessModule?.cvr;
   }
 
   get logo() {
-    return `/logos/${this.$store.state.process.cvr}.png`;
+    return `/logos/${ProcessModule?.cvr}.png`;
   }
 
   get state() {
-    return this.$store.state.process;
+    return ProcessModule;
   }
 
-  get users() {
-    return this.$store.state.common.users;
+  get common() {
+    return CommonModule;
   }
 
-  get kles() {
-    return this.$store.state.common.kles;
+  update(state: Partial<ProcessState>) {
+    ProcessModule.update(state);
   }
 
-  get forms() {
-    return this.$store.state.common.forms;
-  }
-
-  get orgUnits() {
-    return this.$store.state.common.orgUnits;
+  isInErrors(name: string) {
+    return ErrorModule.errorInField(ErrorModule.generalInformation, name);
   }
 
   setKla(kla: string) {
     // Inserts periodes for every 2 characters, to match format: ##.##.##.##.##
-    this.update({ kla: kla.replace(/(\d{2})(?=\d)/g, '$1.') });
+    ProcessModule.update({ kla: kla.replace(/(\d{2})(?=\d)/g, '$1.') });
   }
 
   setKle(kle: Kle) {
     if (!kle) {
-      this.update({ kle, form: null });
+      ProcessModule.update({ kle, form: null });
     } else {
-      this.update({ kle });
+      ProcessModule.update({ kle });
     }
-    this.loadForms(kle);
+    CommonModule.loadFormsByKle(kle);
   }
 
   phaseChanged(phase: any) {
     this.isPhaseChanged = true;
-    this.update({ phase });
+    ProcessModule.update({ phase });
 
-    if (phase === PhaseKeys.OPERATION && this.state.visibility !== VisibilityKeys.PUBLIC) {
+    if (phase === PhaseKeys.OPERATION && ProcessModule.visibility !== VisibilityKeys.PUBLIC) {
       this.openPublicVisibilityDialog();
     }
   }
 
   search(name: string) {
-    this.searchUsers({ name, cvr: this.$store.state.auth.user.cvr });
+    const request: UserSearchRequest = { name: `${name}`, cvr: '' };
+    if (AuthModule.user) {
+      request.cvr = AuthModule.user.cvr;
+      CommonModule.searchUsers(request);
+    } else {
+      CommonModule.searchUsers(request);
+    }
   }
 
   openPublicVisibilityDialog() {
@@ -413,8 +422,12 @@ export default class GeneralInformationForm extends Vue {
   }
 
   setPublicVisibilityAndCloseDialog() {
-    this.state.visibility = VisibilityKeys.PUBLIC;
+    ProcessModule.setVisibility(VisibilityKeys.PUBLIC);
     this.closePublicVisibilityDialog();
+  }
+
+  setBookmark(bookmarked: boolean) {
+    ProcessModule.setBookmark(bookmarked);
   }
 }
 </script>

@@ -1,10 +1,7 @@
 <template>
   <div class="attachment-upload">
     <h2 v-if="visibleForAll.length">Synlige for alle brugere i OS2Autoprocess</h2>
-    <div
-      class="attachment-list"
-      v-if="visibleForAll.length > 0"
-    >
+    <div class="attachment-list" v-if="visibleForAll.length > 0">
       <AttachmentComponent
         v-for="attachment in visibleForAll"
         :key="attachment.id"
@@ -15,10 +12,7 @@
     </div>
 
     <h2 v-if="visibleForMunicipality.length">Synlige for brugere i egen organisation</h2>
-    <div
-      class="attachment-list"
-      v-if="visibleForMunicipality.length > 0"
-    >
+    <div class="attachment-list" v-if="visibleForMunicipality.length > 0">
       <AttachmentComponent
         v-for="attachment in visibleForMunicipality"
         :key="attachment.id"
@@ -46,37 +40,30 @@
 
         <div>
           <label class="upload-button-wrapper">
-            <input
-              type="file"
-              multiple
-              @change="chooseFiles($event.target.files)"
-              ref="fileInput"
-            >
+            <input type="file" multiple @change="chooseFiles($event.target.files)" ref="fileInput" />
             <Button class="upload-button">
               Vælg filer
             </Button>
           </label>
 
-          <Button
-            class="upload-button"
-            v-if="placeholders.length"
-            v-on:click="uploadFiles"
-          >Upload</Button>
+          <Button class="upload-button" v-if="placeholders.length" v-on:click="uploadFiles">Upload</Button>
 
-          <span class="personal-info-warning">De dokumenter der uploades må ikke indeholde personfølsomme oplysninger.</span>
+          <span class="personal-info-warning"
+            >De dokumenter der uploades må ikke indeholde personfølsomme oplysninger.</span
+          >
         </div>
       </div>
     </Well>
   </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import Button from '@/components/common/inputs/Button.vue';
 import Well from '@/components/common/Well.vue';
 import AttachmentComponent from './Attachment.vue';
-import { Attachment, AttachmentFile } from '@/store/modules/process/state';
-import { processActionTypes } from '@/store/modules/process/actions';
+import { Attachment, AttachmentFile } from '@/store/modules/processInterfaces';
+import { ProcessModule } from '@/store/modules/process';
 
 @Component({
   components: {
@@ -95,11 +82,11 @@ export default class AttachmentUpload extends Vue {
   disabled!: boolean;
 
   get visibleForAll() {
-    return this.$store.state.process.attachments.filter((att: Attachment) => att.visibleToOtherMunicipalities);
+    return ProcessModule.attachments?.filter(att => att.visibleToOtherMunicipalities);
   }
 
   get visibleForMunicipality() {
-    return this.$store.state.process.attachments.filter((att: Attachment) => !att.visibleToOtherMunicipalities);
+    return ProcessModule.attachments?.filter(att => !att.visibleToOtherMunicipalities);
   }
 
   chooseFiles(files: FileList) {
@@ -132,7 +119,7 @@ export default class AttachmentUpload extends Vue {
       { valid: [], invalid: [] }
     );
 
-    await this.$store.dispatch(processActionTypes.UPLOAD_ATTACHMENTS, valid);
+    await ProcessModule.uploadAttachments(valid);
 
     this.isUploading = false;
     this.placeholders = invalid;
@@ -143,7 +130,7 @@ export default class AttachmentUpload extends Vue {
       return;
     }
 
-    this.$store.dispatch(processActionTypes.REMOVE_ATTACHMENTS, id);
+    ProcessModule.removeAttachment(id);
   }
   removePlaceholder(id: number) {
     if (!confirm('Er du sikker?')) {

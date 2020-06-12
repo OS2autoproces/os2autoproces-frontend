@@ -10,27 +10,21 @@
         <div class="results-wrapper">
           <div class="report">
             <SearchSortingDropdown />
-            <router-link to="/report">
-              <PlusIcon />Indberet proces
-            </router-link>
+            <router-link to="/report"> <PlusIcon />Indberet proces </router-link>
           </div>
 
           <SearchSorting
-            v-if="!isSearchingForUmbrellaProcess"
-            :sorting="filters.sorting"
+            v-if="!state.isSearchingForUmbrellaProcess"
+            :sorting="state.filters.sorting"
             @change="updateFilters({ sorting: $event })"
           />
-          <SearchSortingUmbrella
-            v-else
-            :sorting="filters.sorting"
-            @change="updateFilters({sorting: $event})"
-          />
+          <SearchSortingUmbrella v-else :sorting="state.filters.sorting" @change="updateFilters({ sorting: $event })" />
 
-          <div class="results" v-if="result">
+          <div class="results" v-if="state.result">
             <router-link
               :to="'/details/' + process.id"
               class="search-result-link"
-              v-for="process in result.processes"
+              v-for="process in state.result.processes"
               :key="process.id"
             >
               <SearchResult :process="process" />
@@ -38,16 +32,24 @@
           </div>
 
           <SearchPagination
-            v-if="result"
-            :page="result.page.number"
-            :pageTotal="result.page.totalPages"
-            :size="result.page.size"
-            @on-page-change="updateFilters({ page: $event })"
+            v-if="state.result"
+            :page="state.result.page.number"
+            :pageTotal="state.result.page.totalPages"
+            :size="state.result.page.size"
+            @on-page-change="updateFiltersAndScrollToTop({ page: $event })"
             @on-size-change="updateFilters({ size: $event })"
           />
         </div>
       </div>
     </div>
+    <Details
+      :isReporting="false"
+      :id="id"
+      v-if="id"
+      class="detailsView"
+      @goBack="ieGoBack"
+      @clickedHashLink="clickedHashLink = true"
+    />
   </div>
 </template>
 
@@ -61,12 +63,12 @@ import SearchResult from '../components/search/SearchResult.vue';
 import SearchSorting from '../components/search/SearchSorting.vue';
 import SearchSortingUmbrella from '../components/search/SearchSortingUmbrella.vue';
 import PlusIcon from '../components/icons/PlusIcon.vue';
-import { searchActionTypes } from '../store/modules/search/actions';
-import { processActionTypes } from '../store/modules/process/actions';
-import { SearchFilters, SearchResultProcess } from '../store/modules/search/state';
+import { SearchFilters, SearchResultProcess } from '@/store/modules/searchInterfaces';
 import SearchSortingDropdown from '@/components/search/SearchSortingDropdown.vue';
-import { getInitialState } from '../store/modules/search';
-import { searchGetterTypes } from '../store/modules/search/getters';
+import { SearchModule } from '@/store/modules/search';
+import store from '@/store';
+import Details from './Details.vue';
+import { ProcessModule } from '@/store/modules/process';
 
 @Component({
   components: {
@@ -77,39 +79,75 @@ import { searchGetterTypes } from '../store/modules/search/getters';
     SearchResult,
     SearchSorting,
     SearchSortingUmbrella,
-    SearchSortingDropdown
+    SearchSortingDropdown,
+    Details
   }
 })
 export default class Search extends Vue {
   @Prop({ type: Object as () => SearchFilters }) initialFilters!: SearchFilters;
-  @Action(searchActionTypes.SEARCH) dispatchSearch!: VoidFunction;
-  @Action(searchActionTypes.ASSIGN_FILTERS) dispatchAssignFilters!: (filters: SearchFilters) => void;
-  @Getter(searchGetterTypes.IS_SEARCHING_FOR_UMBRELLA_PROCESS) isSearchingForUmbrellaProcess!: () => boolean;
+  @Prop(Number) id?: number;
+  clickedHashLink = false;
 
-  get filters() {
-    return this.$store.state.search.filters;
+  lastFilterUpdate: Partial<SearchFilters> = {};
+
+  get state() {
+    return SearchModule;
   }
 
-  get result() {
-    return this.$store.state.search.result;
+  async ieGoBack() {
+    await this.updateFilters(this.lastFilterUpdate);
+  }
+
+  async updateFiltersAndScrollToTop(filters: Partial<SearchFilters>) {
+    await this.updateFilters(filters);
+
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+  }
+
+  beforeRouteUpdate(to: any, from: any, next: any) {
+    next(this.shouldContinueWithoutSaving());
+  }
+
+  beforeRouteLeave(to: any, from: any, next: any) {
+    next(this.shouldContinueWithoutSaving());
+  }
+
+  shouldLeaveWithoutSaving(event: BeforeUnloadEvent) {
+    if (this.id && ProcessModule.hasChanged && !this.clickedHashLink) {
+      const message = 'Vil du fortsætte uden at gemme?';
+      event.returnValue = message;
+      return message;
+    }
+    this.clickedHashLink = false;
+  }
+
+  shouldContinueWithoutSaving(): boolean {
+    if (!this.id || !ProcessModule.hasChanged || this.clickedHashLink) {
+      this.clickedHashLink = false;
+      return true;
+    }
+
+    return confirm('Vil du fortsætte uden at gemme?');
   }
 
   updateFilters(filters: Partial<SearchFilters>) {
-    this.$store.dispatch(searchActionTypes.ASSIGN_FILTERS, {
+    this.lastFilterUpdate = filters;
+    return SearchModule.assignFilters({
       page: 0,
       ...filters
     });
   }
 
   assignFilters(filters: Partial<SearchFilters>) {
-    this.$store.dispatch(searchActionTypes.ASSIGN_FILTERS, {
+    SearchModule.assignFilters({
       page: 0,
       ...filters
     });
   }
 
   mounted() {
-    !!this.initialFilters ? this.dispatchAssignFilters(this.initialFilters) : this.dispatchSearch();
+    !!this.initialFilters ? SearchModule.assignFilters(this.initialFilters) : SearchModule.search();
   }
 }
 </script>
@@ -120,6 +158,14 @@ export default class Search extends Vue {
 .search {
   display: flex;
   flex-direction: column;
+}
+
+.detailsView {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: $color-background;
 }
 
 .filters {

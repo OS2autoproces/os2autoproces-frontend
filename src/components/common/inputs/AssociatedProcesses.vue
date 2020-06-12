@@ -1,5 +1,5 @@
 <template>
-  <div class="associated">
+  <div class="associated" id="associated">
     <div class="filters">
       <SearchFilters :filters="filters" @change="updateFilters" @assign="assignFilters" umbrellaProcessSearch />
     </div>
@@ -11,7 +11,14 @@
         </div>
       </div>
 
-      <SearchPagination v-if="result" :page="result.page.number" :pageTotal="result.page.totalPages" @change="updateFilters({ page: $event })" />
+      <SearchPagination
+        v-if="result"
+        :key="key"
+        :page="result.page.number"
+        :pageTotal="result.page.totalPages"
+        @on-page-change="updateFilters({ page: $event })"
+        @on-size-change="updateFilters({ size: $event })"
+      />
     </div>
   </div>
 </template>
@@ -20,13 +27,14 @@
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import { Action } from 'vuex-class';
 import SearchFilters from '@/components/search/SearchFilters.vue';
+import { SearchFilters as storeFilters } from '@/store/modules/searchInterfaces';
 import SearchSorting from '@/components/search/SearchSorting.vue';
 import SmallSearchResult from '@/components/search/SmallSearchResult.vue';
 import SearchPagination from '@/components/search/SearchPagination.vue';
-import { processActionTypes } from '@/store/modules/process/actions';
-import { commonActionTypes, UserSearchRequest } from '@/store/modules/common/actions';
-import { User } from '@/store/modules/auth/state';
-import { searchActionTypes } from '@/store/modules/search/actions';
+import { UserSearchRequest } from '@/store/modules/commonInterfaces';
+import { CommonModule } from '@/store/modules/common';
+import { User } from '@/store/modules/auth';
+import { SearchModule } from '@/store/modules/search';
 
 @Component({
   components: {
@@ -37,27 +45,27 @@ import { searchActionTypes } from '@/store/modules/search/actions';
   }
 })
 export default class AssociatedProcesses extends Vue {
-  get state() {
-    return this.$store.state;
-  }
-
   get filters() {
-    return this.$store.state.search.filters;
+    return SearchModule.filters;
   }
 
   get result() {
-    return this.$store.state.search.result;
+    return SearchModule.result;
   }
 
-  updateFilters(filters: Partial<SearchFilters>) {
-    this.$store.dispatch(searchActionTypes.UPDATE_FILTERS, {
+  get key() {
+    return SearchModule.filters.page * SearchModule.filters.size;
+  }
+
+  updateFilters(filters: SearchFilters) {
+    return SearchModule.assignFilters({
       page: 0,
       ...filters
     });
   }
 
-  assignFilters(filters: Partial<SearchFilters>) {
-    this.$store.dispatch(searchActionTypes.ASSIGN_FILTERS, {
+  assignFilters(filters: SearchFilters) {
+    SearchModule.assignFilters({
       page: 0,
       ...filters
     });

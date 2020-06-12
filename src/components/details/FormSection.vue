@@ -1,32 +1,32 @@
 <template>
   <div class="form-section" v-if="!placeholder">
     <div class="section-header" @click="toggleExpand" :class="{ disabled, isExpandable }">
-      <div>{{heading}}</div>
-      <div v-if="state.process.canEdit" class="edit-button" role="button" @click="toggleEdit">
-        <EditIcon/>
+      <div>{{ heading }}</div>
+      <div v-if="canEdit" class="edit-button" role="button" @click="toggleEdit">
+        <EditIcon />
       </div>
-      <InfoTooltip class="tooltip" v-if="tooltip">{{tooltip}}</InfoTooltip>
+      <InfoTooltip class="tooltip" v-if="tooltip">{{ tooltip }}</InfoTooltip>
       <div class="flex-grow"></div>
       <div class="section-action">
         <div role="button" v-if="isExpandable && !expanded">
-          <ArrowDownIcon/>
+          <ArrowDownIcon />
         </div>
         <div role="button" v-if="isExpandable && expanded">
-          <ArrowUpIcon/>
+          <ArrowUpIcon />
         </div>
         <div class="warning-icon" v-if="invalid">
-          <WarningIcon/>
+          <WarningIcon />
         </div>
       </div>
     </div>
     <div class="section-content" v-if="isExpanded">
-      <slot/>
+      <slot />
     </div>
   </div>
   <div class="form-section" v-else>
     <div class="section-header">
-      <div class="placeholder">{{heading}}</div>
-      <span class="placeholder-text">{{placeholder}}</span>
+      <div class="placeholder">{{ heading }}</div>
+      <span class="placeholder-text">{{ placeholder }}</span>
     </div>
   </div>
 </template>
@@ -38,6 +38,7 @@ import ArrowUpIcon from '@/components/icons/ArrowUpIcon.vue';
 import ArrowDownIcon from '@/components/icons/ArrowDownIcon.vue';
 import WarningIcon from '@/components/icons/WarningIcon.vue';
 import InfoTooltip from '@/components/common/InfoTooltip.vue';
+import { ProcessModule } from '@/store/modules/process';
 
 @Component({
   components: {
@@ -76,8 +77,8 @@ export default class FormSection extends Vue {
     this.expanded = !this.expanded;
   }
 
-  get state() {
-    return this.$store.state;
+  get canEdit() {
+    return ProcessModule.canEdit;
   }
 
   get isExpandable() {
@@ -122,7 +123,7 @@ export default class FormSection extends Vue {
   }
 
   &:not(.disabled) {
-    .edit-button svg /deep/ path {
+    .edit-button svg ::v-deep path {
       fill: $color-primary;
     }
   }

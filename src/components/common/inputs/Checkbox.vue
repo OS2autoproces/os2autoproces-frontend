@@ -1,19 +1,13 @@
 <template>
-  <div
-    class="checkbox"
-    role="checkbox"
-    :aria-checked="valueString"
-    @click="click"
-    :class="{ disabled }"
-  >
-    <div class="checkbox-icon">
+  <div class="checkbox" role="checkbox" :aria-checked="valueString" @click="click" :class="{ disabled }">
+    <div class="checkbox-icon" :class="{ hasError: hasError }">
       <CheckIcon v-if="value" />
     </div>
     <slot />
   </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import CheckIcon from '../../icons/CheckIcon.vue';
 
@@ -25,6 +19,7 @@ import CheckIcon from '../../icons/CheckIcon.vue';
 export default class Checkbox extends Vue {
   @Prop(Boolean) value!: boolean;
   @Prop(Boolean) disabled!: boolean;
+  @Prop(Boolean) hasError!: boolean;
 
   get valueString() {
     return this.value ? this.value.toString() : 'false';
@@ -55,8 +50,11 @@ export default class Checkbox extends Vue {
     display: inline-block;
     width: 20px;
     height: 20px;
+    &.hasError {
+      border-color: $color-error;
+    }
 
-    /deep/ svg {
+    ::v-deep svg {
       position: absolute;
       bottom: 1px;
       left: -1px;
@@ -71,4 +69,3 @@ export default class Checkbox extends Vue {
   }
 }
 </style>
-

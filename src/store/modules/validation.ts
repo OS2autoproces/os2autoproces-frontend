@@ -1,17 +1,19 @@
-import { isEmpty } from 'lodash';
 import { DateTime } from 'luxon';
 import * as validateJs from 'validate.js';
-import { ProcessState, Process } from '@/store/modules/process/state';
 import { PhaseKeys } from '@/models/phase';
+import { ProcessState } from './process';
 
-export function getInvalidProperties(state: ProcessState, properties: Array<keyof Process>): Array<keyof Process> {
+export function getInvalidProperties(
+  state: ProcessState,
+  properties: Array<keyof ProcessState>
+): Array<keyof ProcessState> {
   return properties.filter(property => {
     const validator = processFieldsValidators[property];
     return validator && !validator(state);
   });
 }
 
-const isInteger = { numericality: { onlyInteger: true } };
+const isFloat = { numericality: true };
 
 const isBetween = (from: number, to: number) => ({
   numericality: {
@@ -32,7 +34,7 @@ function isValid(value: any, constraints: any): boolean {
   return !validateJs({ value }, { value: constraints });
 }
 
-export const processFieldsValidators: { [P in keyof Process]?: (state: ProcessState) => boolean } = {
+export const processFieldsValidators: { [P in keyof ProcessState]?: (state: ProcessState) => boolean } = {
   klId({ klId }: ProcessState) {
     return isValid(klId, isMinMax(0, 64));
   },
@@ -70,13 +72,13 @@ export const processFieldsValidators: { [P in keyof Process]?: (state: ProcessSt
     return isValid(solutionRequests, isMinMax(0, 10000));
   },
   timeSpendOccurancesPerEmployee({ phase, timeSpendOccurancesPerEmployee }: ProcessState) {
-    return phase === PhaseKeys.IDEA || isValid(timeSpendOccurancesPerEmployee, isInteger);
+    return phase === PhaseKeys.IDEA || isValid(timeSpendOccurancesPerEmployee, isFloat);
   },
   timeSpendPerOccurance({ phase, timeSpendPerOccurance }: ProcessState) {
-    return phase === PhaseKeys.IDEA || isValid(timeSpendPerOccurance, isInteger);
+    return phase === PhaseKeys.IDEA || isValid(timeSpendPerOccurance, isFloat);
   },
   timeSpendEmployeesDoingProcess({ phase, timeSpendEmployeesDoingProcess }: ProcessState) {
-    return phase === PhaseKeys.IDEA || isValid(timeSpendEmployeesDoingProcess, isInteger);
+    return phase === PhaseKeys.IDEA || isValid(timeSpendEmployeesDoingProcess, isFloat);
   },
   timeSpendPercentageDigital({ phase, timeSpendPercentageDigital }: ProcessState) {
     return phase === PhaseKeys.IDEA || isValid(timeSpendPercentageDigital, isBetween(0, 100));
@@ -84,32 +86,32 @@ export const processFieldsValidators: { [P in keyof Process]?: (state: ProcessSt
   timeSpendComment({ timeSpendComment }: ProcessState) {
     return isValid(timeSpendComment, isMinMax(0, 10000));
   },
-  levelOfProfessionalAssessment({ phase, levelOfProfessionalAssessment }: ProcessState) {
-    return phase === PhaseKeys.IDEA || levelOfProfessionalAssessment !== 'NOT_SET';
+  levelOfProfessionalAssessment() {
+    return true; // allow any phase to not have an assessment
   },
-  levelOfChange({ phase, levelOfChange }: ProcessState) {
-    return phase === PhaseKeys.IDEA || levelOfChange !== 'NOT_SET';
+  levelOfChange() {
+    return true; // allow any phase to not have an assessment
   },
-  levelOfStructuredInformation({ phase, levelOfStructuredInformation }: ProcessState) {
-    return phase === PhaseKeys.IDEA || levelOfStructuredInformation !== 'NOT_SET';
+  levelOfStructuredInformation() {
+    return true; // allow any phase to not have an assessment
   },
-  levelOfUniformity({ phase, levelOfUniformity }: ProcessState) {
-    return phase === PhaseKeys.IDEA || levelOfUniformity !== 'NOT_SET';
+  levelOfUniformity() {
+    return true; // allow any phase to not have an assessment
   },
-  levelOfDigitalInformation({ phase, levelOfDigitalInformation }: ProcessState) {
-    return phase === PhaseKeys.IDEA || levelOfDigitalInformation !== 'NOT_SET';
+  levelOfDigitalInformation() {
+    return true; // allow any phase to not have an assessment
   },
-  levelOfQuality({ phase, levelOfQuality }: ProcessState) {
-    return phase === PhaseKeys.IDEA || levelOfQuality !== 'NOT_SET';
+  levelOfQuality() {
+    return true; // allow any phase to not have an assessment
   },
-  levelOfRoutineWorkReduction({ phase, levelOfRoutineWorkReduction }: ProcessState) {
-    return phase === PhaseKeys.IDEA || levelOfRoutineWorkReduction !== 'NOT_SET';
+  levelOfRoutineWorkReduction() {
+    return true; // allow any phase to not have an assessment
   },
-  levelOfSpeed({ phase, levelOfSpeed }: ProcessState) {
-    return phase === PhaseKeys.IDEA || levelOfSpeed !== 'NOT_SET';
+  levelOfSpeed() {
+    return true; // allow any phase to not have an assessment
   },
-  evaluatedLevelOfRoi({ phase, evaluatedLevelOfRoi }: ProcessState) {
-    return phase === PhaseKeys.IDEA || evaluatedLevelOfRoi !== 'NOT_SET';
+  evaluatedLevelOfRoi() {
+    return true; // allow any phase to not have an assessment
   },
   esdhReference({ esdhReference }: ProcessState) {
     return isValid(esdhReference, isMinMax(0, 300));
