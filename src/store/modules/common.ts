@@ -33,8 +33,8 @@ export interface CommonState {
 }
 
 const debouncedSearch = debounce(async (request: UserSearchRequest) => {
-  const users = (await HTTP.get<UserResponse>(`api/users?name=${request.name}&orgUnit.cvr=${request.cvr}`)).data
-    ._embedded.users;
+  const users = (await HTTP.get<UserResponse>(`api/users?name=${request.name}&cvr=${request.cvr}`)).data._embedded
+    .users;
   CommonModule.UPDATE({ users });
 }, 250);
 
