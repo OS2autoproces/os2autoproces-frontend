@@ -115,7 +115,8 @@ export default class OperationForm extends Vue {
     border-color: $color-primary;
     border-radius: 1rem;
     &.hasError {
-      border-color: red;
+      border-color: $color-error;
+      border-width: 0.1em;
     }
   }
   .rating {
