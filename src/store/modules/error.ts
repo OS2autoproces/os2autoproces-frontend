@@ -29,30 +29,37 @@ export interface ErrorState {
 export default class Error extends VuexModule implements ErrorState {
   generalInformation: ErrorSection = {
     section: 'Grundlæggende oplysninger',
+    id: 'general-information',
     errors: []
   };
   challenges: ErrorSection = {
     section: 'Problemstillinger',
+    id: 'challenges',
     errors: []
   };
   assessment: ErrorSection = {
     section: 'Faglig vurdering',
+    id: 'assessment',
     errors: []
   };
   timeAndProcess: ErrorSection = {
     section: 'Tid og proces',
+    id: 'time-and-process',
     errors: []
   };
   attachments: ErrorSection = {
     section: 'Bilag og links',
+    id: 'attachments',
     errors: []
   };
   implementation: ErrorSection = {
     section: 'Udvikling og implementering',
+    id: 'implementation',
     errors: []
   };
   operation: ErrorSection = {
     section: 'Drift',
+    id: 'operation',
     errors: []
   };
 
@@ -78,14 +85,14 @@ export default class Error extends VuexModule implements ErrorState {
         return '';
       });
 
-      this.ASSIGN({ [section]: { errors, section: this[section].section } });
+      this.ASSIGN({ [section]: { errors, section: this[section].section, id: this[section].id } });
     });
   }
 
   @Action
   clearErrors() {
     defaultLabelKeys.forEach(section => {
-      this.ASSIGN({ [section]: { errors: [], section: this[section].section } });
+      this.ASSIGN({ [section]: { errors: [], section: this[section].section, id: this[section].id } });
     });
   }
 

@@ -51,11 +51,11 @@
         <div class="snack-bar-list-container" v-if="errors.hasErrors">
           <div v-for="section in errors.errorSections" :key="section.section">
             <ul class="section-errors" v-if="section.errors.length > 0">
-              <span class="section-errors-title">{{ section.section }}</span>
+              <a class="section-errors-title" @click="clickHashLink" :href="hashLink(section.id)">
+                {{ section.section }}</a
+              >
               <li v-for="(field, i) in section.errors" :key="i">
-                <a class="snack-bar-list-item" @click="clickHashLink" :href="hashLink(field.name)">{{
-                  field.description
-                }}</a>
+                <span class="snack-bar-list-item">{{ field.description }}</span>
               </li>
             </ul>
           </div>
