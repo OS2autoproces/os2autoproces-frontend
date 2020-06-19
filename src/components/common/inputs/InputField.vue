@@ -102,7 +102,7 @@ export default class InputField extends Vue {
   .icon {
     margin: 5px;
     height: 20px;
-    width: 20px;
+    width: 30px;
     flex: 0 0 auto;
 
     ::v-deep svg {
