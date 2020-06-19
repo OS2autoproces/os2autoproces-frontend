@@ -20,10 +20,9 @@ export default class Well extends Vue {}
 .well-container {
   display: flex;
   flex-direction: column;
-  background-color: $color-background;
+  background-color: $color-background-grey;
   padding: 1.5rem;
   border-radius: 1rem;
-  border: 0.07rem solid $color-primary;
 
   .section-wrap {
     display: flex;
