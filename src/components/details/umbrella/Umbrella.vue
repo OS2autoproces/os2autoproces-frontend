@@ -20,7 +20,7 @@
     </div>
 
     <SnackBar :value="showSaveError" @onSnackClose="showSaveError = false" :timeout="5000" color="error"
-      >Processen er IKKE gemt - prøv igen!</SnackBar
+      >Processen er kunne ikke gemmes, da en ukendt fejl opstod. Prøv igen.</SnackBar
     >
     <SnackBar showButton :timeout="0" color="error" :value="errors.hasErrors" @clicked="clearErrors" bottom>
       <div v-if="errors.hasErrors">
@@ -37,7 +37,7 @@
       >Processen er gemt!</SnackBar
     >
     <SnackBar :value="showSaveError" @onSnackClose="showSaveError = false" :timeout="5000" color="error"
-      >Processen er IKKE gemt - prøv igen!</SnackBar
+      >Processen er kunne ikke gemmes, da en ukendt fejl opstod. Prøv igen.</SnackBar
     >
   </div>
 </template>

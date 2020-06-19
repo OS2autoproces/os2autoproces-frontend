@@ -78,7 +78,7 @@
       :timeout="5000"
       color="error"
       @onSnackClose="showSaveError = false"
-      >Processen er IKKE gemt - prøv igen!</SnackBar
+      >Processen er kunne ikke gemmes, da en ukendt fejl opstod. Prøv igen.</SnackBar
     >
   </div>
 </template>
