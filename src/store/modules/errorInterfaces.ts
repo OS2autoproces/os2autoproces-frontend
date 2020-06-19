@@ -139,7 +139,7 @@ export interface ErrorLabels {
 
 export const errorLimitations: { [key: string]: string } = {
   klId: 'maks 64 tegn',
-  title: 'mellem 1 og 50 tegn',
+  title: 'mellem 1 og 65 tegn',
   visibility: 'obligatorisk felt',
   status: 'obligatorisk felt',
   kla: '8, 11 eller 14 tegn',
