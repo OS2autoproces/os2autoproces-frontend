@@ -201,7 +201,7 @@ export default class SearchFiltersComponent extends Vue {
   }
 
   get municipalities() {
-    return CommonModule.municipalities;
+    return CommonModule.municipalities?.sort((m1: Municipality, m2: Municipality) => m1.name.localeCompare(m2.name));
   }
 
   get technologies() {
