@@ -145,7 +145,7 @@
             @change="update({ legalClause: $event })"
           />
         </WellItem>
-        <WellItem labelWidth="200px" label="KLE:">
+        <WellItem labelWidth="100px" label="KLE:">
           <SelectionField
             :disabled="state.disabled.generalInformationEdit"
             :value="state.kle"
@@ -155,10 +155,11 @@
             id="kle"
             itemText="name"
             itemSubText="code"
+            :filter="kleFilter"
             clearable
           />
         </WellItem>
-        <WellItem labelWidth="200px" label="FORM:" v-if="state.kle">
+        <WellItem labelWidth="100px" label="FORM:" v-if="state.kle">
           <SelectionField
             :disabled="state.disabled.generalInformationEdit"
             :value="state.form"
@@ -168,6 +169,7 @@
             id="form"
             itemText="description"
             itemSubText="code"
+            :filter="formFilter"
             clearable
           />
         </WellItem>
@@ -392,6 +394,26 @@ export default class GeneralInformationForm extends Vue {
       ProcessModule.update({ kle });
     }
     CommonModule.loadFormsByKle(kle);
+  }
+
+  kleFilter(item: Kle, queryText: string, itemText: string): boolean {
+    if (!queryText || !(queryText.length > 0)) {
+      return true;
+    }
+    return (
+      item?.code?.toLowerCase().indexOf(queryText.toLowerCase()) > -1 ||
+      item?.name?.toLowerCase().indexOf(queryText.toLowerCase()) > -1
+    );
+  }
+
+  formFilter(item: Form, queryText: string, itemText: string): boolean {
+    if (!queryText || !(queryText.length > 0)) {
+      return true;
+    }
+    return (
+      item?.code?.toLowerCase().indexOf(queryText.toLowerCase()) > -1 ||
+      item?.description?.toLowerCase().indexOf(queryText.toLowerCase()) > -1
+    );
   }
 
   phaseChanged(phase: any) {
