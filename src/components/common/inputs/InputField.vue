@@ -89,6 +89,8 @@ export default class InputField extends Vue {
   border-radius: 30px;
   align-items: center;
   border: 1px solid $color-primary;
+  background: $color-background;
+  border-radius: 20px;
 
   &.has-error {
     border-color: $color-error;

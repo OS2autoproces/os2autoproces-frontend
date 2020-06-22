@@ -140,6 +140,7 @@ export default class SelectionField<T extends any> extends Vue {
 
   .v-input__slot {
     border: 1px solid $color-primary;
+    background: $color-background;
     border-radius: 20px;
     padding-left: 13px;
     flex: 1 1 auto;
