@@ -3,6 +3,7 @@ import { ErrorState } from './error';
 
 export interface ErrorSection {
   section: string;
+  id: string;
   errors: ErrorWithDescription[];
 }
 
@@ -167,30 +168,37 @@ export const defaultLabelKeys: Array<keyof ErrorLabels> = Object.keys(errorLabel
 export const defaultErrorState: ErrorState = {
   generalInformation: {
     section: 'Grundlæggende oplysninger',
+    id: 'general-information',
     errors: []
   },
   challenges: {
     section: 'Problemstillinger',
+    id: 'challenges',
     errors: []
   },
   assessment: {
     section: 'Faglig vurdering',
+    id: 'assessment',
     errors: []
   },
   timeAndProcess: {
     section: 'Tid og proces',
+    id: 'time-and-process',
     errors: []
   },
   attachments: {
     section: 'Bilag og links',
+    id: 'attachments',
     errors: []
   },
   implementation: {
     section: 'Udvikling og implementering',
+    id: 'implementation',
     errors: []
   },
   operation: {
     section: 'Drift',
+    id: 'operation',
     errors: []
   }
 };

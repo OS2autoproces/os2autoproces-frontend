@@ -1,5 +1,5 @@
 <template>
-  <v-snackbar :top="!bottom" :bottom="bottom" :value="value" :color="color" :timeout="timeout">
+  <v-snackbar :top="!bottom" :bottom="bottom" :value="value" :color="color" :timeout="timeout" :max-width="'70%'">
     <slot />
     <v-btn v-if="showButton" dark text @click="clicked">
       OK
@@ -45,7 +45,7 @@ export default class SnackBarComponent extends Vue {
 <style scoped lang="scss">
 .v-snack ::v-deep {
   .v-snack__wrapper {
-    max-width: 60%;
+    max-width: 70%;
   }
 }
 </style>

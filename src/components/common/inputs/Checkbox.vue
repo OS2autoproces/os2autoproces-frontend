@@ -52,6 +52,7 @@ export default class Checkbox extends Vue {
     height: 20px;
     &.hasError {
       border-color: $color-error;
+      border-width: 0.1em;
     }
 
     ::v-deep svg {

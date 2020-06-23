@@ -275,7 +275,8 @@ export default class Process extends VuexModule implements ProcessState {
 
     if (invalidFields.length > 0) {
       ErrorModule.updateProcessErrors(this);
-      throw new Error();
+      // Avoid throwing any error, as this provokes the snackbar that says a HTTP error occurred.
+      return null;
     } else {
       const converted = stateToRequest(this);
       const response = await HTTP.post<ProcessResponse>(`api/processes`, converted);
@@ -294,11 +295,12 @@ export default class Process extends VuexModule implements ProcessState {
   }
 
   @Action
-  async save(validationKeys?: Array<keyof ProcessState>) {
+  async save(validationKeys?: Array<keyof ProcessState>): Promise<boolean> {
     const invalidFields = getInvalidProperties(this, validationKeys || initialProcessKeys);
     if (invalidFields.length > 0) {
       ErrorModule.updateProcessErrors(this);
-      throw new Error();
+      // Avoid throwing any error, as this provokes the snackbar that says a HTTP error occurred.
+      return false;
     } else {
       const converted = stateToRequest(this);
       const response = await HTTP.patch<ProcessResponse>(`api/processes/${this.id}`, converted);
@@ -310,6 +312,7 @@ export default class Process extends VuexModule implements ProcessState {
       const fields = setBackendManagedFields(responseToState(response.data));
       fields.hasChanged = false;
       this.UPDATE_WITH_NO_CHANGE(fields);
+      return true;
     }
   }
 

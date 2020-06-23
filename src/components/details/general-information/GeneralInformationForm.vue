@@ -7,7 +7,7 @@
     @edit="update({ disabled: { generalInformationEdit: $event } })"
     always-open
   >
-    <div class="title-row">
+    <div class="title-row" id="title">
       <div class="title-label">Titel: *</div>
       <InputField
         class="title-field flex-grow"
@@ -16,7 +16,6 @@
         :hasError="isInErrors('title')"
         :class="{ disabled: state.disabled.generalInformationEdit }"
         @change="update({ title: $event })"
-        id="title"
       />
       <div v-if="!isReporting" class="bookmark-button" role="button" @click="setBookmark(!state.hasBookmarked)">
         <StarIcon :class="{ selected: state.hasBookmarked }" />
@@ -33,6 +32,7 @@
           <SelectionField disabled :value="state.reporter" itemText="name" />
         </WellItem>
         <WellItem
+          id="owner"
           labelWidth="180px"
           label="Fagligkontaktperson:"
           tooltip="Er en person der varetager processen til daglig og derfor har stort kendskab til den."
@@ -49,10 +49,10 @@
             isItemsPartial
             @change="update({ owner: $event })"
             :items="common.users"
-            id="owner"
           />
         </WellItem>
         <WellItem
+          id="contact"
           labelWidth="180px"
           label="Kontaktperson:"
           tooltip="En person der har teknisk viden omkring løsningen."
@@ -67,7 +67,6 @@
             isItemsPartial
             @change="update({ contact: $event })"
             :items="common.users"
-            id="contact"
             clearable
           />
         </WellItem>
@@ -76,6 +75,7 @@
 
       <div>
         <WellItem
+          id="visibility"
           labelWidth="120px"
           label="Synlighed:"
           tooltip="Synligheden ’Egen organisation’ betyder at alle brugere i din organisation kan se processen. Synligheden ’Alle i OS2autoproces’ betyder at brugere i andre kommuner og regioner kan se processen. Privat betyder at det kun er dig og din superbruger der kan se processen."
@@ -84,33 +84,31 @@
             :disabled="!!state.parents.length || state.disabled.generalInformationEdit"
             :value="state.visibility"
             :hasError="isInErrors('visibility')"
-            id="visibility"
             @change="update({ visibility: $event })"
             :items="visibilityLevels"
           />
         </WellItem>
-        <WellItem labelWidth="120px" label="Fagområder:">
+        <WellItem id="domains" labelWidth="120px" label="Fagområder:">
           <DomainsField
             :disabled="state.disabled.generalInformationEdit"
             :value="state.domains"
             :hasError="isInErrors('domains')"
-            id="domains"
             @change="assign({ domains: $event })"
           />
         </WellItem>
-        <WellItem labelWidth="120px" label="Afdelinger:" v-if="isWithinMunicipality">
+        <WellItem id="orgUnits" labelWidth="120px" label="Afdelinger:" v-if="isWithinMunicipality">
           <SelectionField
             :disabled="state.disabled.generalInformationEdit"
             :value="state.orgUnits"
             :hasError="isInErrors('orgUnits')"
             @change="assign({ orgUnits: $event })"
             :items="common.orgUnits"
-            id="orgUnits"
             multiple
             itemText="name"
           />
         </WellItem>
         <WellItem
+          id="vendor"
           v-if="state.minPhase(PhaseKeys.DEVELOPMENT)"
           labelWidth="180px"
           label="Leverandør:"
@@ -120,67 +118,62 @@
             :disabled="state.disabled.generalInformationEdit"
             :value="state.vendor"
             :hasError="isInErrors('vendor')"
-            id="vendor"
             @change="update({ vendor: $event })"
           />
         </WellItem>
-        <WellItem v-if="state.sepMep" labelWidth="120px" label="SEP/MEP:">
+        <WellItem v-if="state.sepMep" labelWidth="120px" label="SEP/MEP:" id="sepMep">
           <Checkbox
             :disabled="true"
             :value="state.sepMep"
             :hasError="isInErrors('sepMep')"
             @change="update({ sepMep: $event })"
-            id="sepMep"
           />
         </WellItem>
       </div>
 
       <div>
-        <WellItem v-if="state.minPhase(PhaseKeys.PREANALYSIS)" labelWidth="120px" label="Lovparagraf:">
+        <WellItem v-if="state.minPhase(PhaseKeys.PREANALYSIS)" labelWidth="120px" label="Lovparagraf:" id="legalClause">
           <InputField
             :disabled="state.disabled.generalInformationEdit || state.form"
             :value="state.legalClause"
             :hasError="isInErrors('legalClause')"
-            id="legalClause"
             @change="update({ legalClause: $event })"
           />
         </WellItem>
-        <WellItem labelWidth="200px" label="KLE:">
+        <WellItem labelWidth="200px" label="KLE:" id="kle">
           <SelectionField
             :disabled="state.disabled.generalInformationEdit"
             :value="state.kle"
             :hasError="isInErrors('kle')"
             @change="setKle($event)"
             :items="common.kles"
-            id="kle"
             itemText="name"
             itemSubText="code"
             clearable
           />
         </WellItem>
-        <WellItem labelWidth="200px" label="FORM:" v-if="state.kle">
+        <WellItem labelWidth="200px" label="FORM:" id="form" v-if="state.kle">
           <SelectionField
             :disabled="state.disabled.generalInformationEdit"
             :value="state.form"
             :hasError="isInErrors('form')"
             @change="update({ form: $event })"
             :items="common.forms"
-            id="form"
             itemText="description"
             itemSubText="code"
             clearable
           />
         </WellItem>
-        <WellItem labelWidth="200px" label="KL ID:">
+        <WellItem labelWidth="200px" label="KL ID:" id="klId">
           <InputField
             :disabled="state.disabled.generalInformationEdit"
             :value="state.klId"
             :hasError="isInErrors('klId')"
-            id="klId"
             @change="update({ klId: $event })"
           />
         </WellItem>
         <WellItem
+          id="kla"
           labelWidth="200px"
           label="KL’s Arbejdsgangsbank:"
           tooltip="KL’s Arbejdsgangsbank nummeret henviser til en proces fra KL’s Arbejdsgangsbank."
@@ -190,7 +183,6 @@
             mask="##.##.##.##.##"
             :value="state.kla"
             :hasError="isInErrors('kla')"
-            id="kla"
             @change="setKla"
           />
         </WellItem>
@@ -204,7 +196,7 @@
     </Well>
 
     <div class="resume-phases">
-      <div class="resume">
+      <div class="resume" id="shortDescription">
         <h2>
           Resume *
           <InfoTooltip>Resume er en helt kort opsummering der vises på søgeoversigten.</InfoTooltip>
@@ -214,12 +206,11 @@
           @change="update({ shortDescription: $event })"
           :value="state.shortDescription"
           :hasError="isInErrors('shortDescription')"
-          id="shortDescription"
           :maxLength="140"
           :minHeight="'50px'"
         />
       </div>
-      <div class="general-phases">
+      <div class="general-phases" id="phase">
         <div>
           <div class="field-label">Fase:</div>
           <Phases
@@ -227,18 +218,16 @@
             :disabled="state.disabled.generalInformationEdit"
             :value="state.phase"
             :hasError="isInErrors('phase')"
-            id="phase"
             @change="phaseChanged($event)"
           />
         </div>
-        <div>
+        <div id="status">
           <div class="field-label">Status:</div>
           <MappedSelectionField
             class="status-field"
             :disabled="state.disabled.generalInformationEdit"
             :value="state.status"
             :hasError="isInErrors('status')"
-            id="status"
             @change="update({ status: $event })"
             :items="statusLevels"
           />
@@ -251,7 +240,7 @@
       </div>
     </div>
 
-    <div>
+    <div id="statusText">
       <div v-if="state.status !== StatusKeys.INPROGRESS && state.status !== StatusKeys.NOT_RATED">
         <h2 class="comments-heading" v-if="state.status === StatusKeys.FAILED">Hvorfor er processen mislykket?</h2>
         <h2 class="comments-heading" v-if="state.status === StatusKeys.PENDING">Hvorfor afventer processen?</h2>
@@ -260,7 +249,6 @@
           :disabled="state.disabled.generalInformationEdit"
           @change="update({ statusText: $event })"
           :value="state.statusText"
-          id="statusText"
         />
       </div>
     </div>

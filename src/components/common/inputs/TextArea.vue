@@ -81,6 +81,7 @@ export default class TextArea extends Vue {
 
   &.hasError {
     border-color: $color-error;
+    border-width: 0.1em;
   }
   &.out-of-bounds {
     border-color: $color-error;

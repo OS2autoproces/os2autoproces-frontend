@@ -1,6 +1,10 @@
 <template>
   <div>
-    <div class="text-area" :class="{ 'out-of-bounds': currentLength > maxLength }" v-if="!disabled">
+    <div
+      class="text-area"
+      :class="{ 'out-of-bounds': currentLength > maxLength, 'has-error': hasError }"
+      v-if="!disabled"
+    >
       <div class="editor" v-if="editor">
         <editor-menu-bar :editor="editor" v-slot="{ commands, isActive }">
           <div class="menubar">
@@ -237,6 +241,7 @@ export default class RichTextArea extends Vue {
   readonly twoColumnBreakpoint!: number;
   @Prop(Boolean)
   readonly fullWidth!: boolean;
+  @Prop(Boolean) hasError!: boolean;
 
   isEditorHelpDialogOpen = false;
 
@@ -333,6 +338,11 @@ export default class RichTextArea extends Vue {
   border-radius: 10px;
   padding-bottom: 25px;
   background: $color-background;
+
+  &.has-error {
+    border-color: $color-error;
+    border-width: 0.1em;
+  }
 
   &.out-of-bounds {
     border-color: red;
