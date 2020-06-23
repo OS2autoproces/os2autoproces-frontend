@@ -115,6 +115,7 @@ export default class AssociatedPersonsInput extends Vue {
       &.empty,
       &.disabled {
         border: none;
+        background: none;
       }
 
       > div {
