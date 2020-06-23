@@ -397,7 +397,7 @@ export default class GeneralInformationForm extends Vue {
   }
 
   kleFilter(item: Kle, queryText: string, itemText: string): boolean {
-    if (!queryText || !(queryText.length > 0)) {
+    if (!queryText) {
       return true;
     }
     return (
@@ -407,7 +407,7 @@ export default class GeneralInformationForm extends Vue {
   }
 
   formFilter(item: Form, queryText: string, itemText: string): boolean {
-    if (!queryText || !(queryText.length > 0)) {
+    if (!queryText) {
       return true;
     }
     return (
