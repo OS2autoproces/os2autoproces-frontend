@@ -1,9 +1,9 @@
 <template>
   <div class="well-item-wrap">
-    <div class="well-item-label" :style="{flexBasis: labelWidth}">
+    <div class="well-item-label" :style="{ flexBasis: labelWidth }">
       <div class="label-wrapper">
-        {{required ? `${label} *`: `${label}`}}
-        <InfoTooltip class="tooltip" v-if="tooltip">{{tooltip}}</InfoTooltip>
+        {{ required ? `${label} *` : `${label}` }}
+        <InfoTooltip class="tooltip" v-if="tooltip">{{ tooltip }}</InfoTooltip>
       </div>
     </div>
     <div class="well-input">
@@ -60,6 +60,11 @@ export default class WellItem extends Vue {
     align-self: center;
     overflow-wrap: break-word;
     min-width: 1px;
+
+    .v-input {
+      background: $color-background;
+      border-radius: 20px;
+    }
   }
 }
 </style>

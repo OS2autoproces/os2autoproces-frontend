@@ -51,11 +51,11 @@
         <div class="snack-bar-list-container" v-if="errors.hasErrors">
           <div v-for="section in errors.errorSections" :key="section.section">
             <ul class="section-errors" v-if="section.errors.length > 0">
-              <span class="section-errors-title">{{ section.section }}</span>
+              <a class="section-errors-title" @click="clickHashLink" :href="hashLink(section.id)">
+                {{ section.section }}</a
+              >
               <li v-for="(field, i) in section.errors" :key="i">
-                <a class="snack-bar-list-item" @click="clickHashLink" :href="hashLink(field.name)">{{
-                  field.description
-                }}</a>
+                <span class="snack-bar-list-item">{{ field.description }}</span>
               </li>
             </ul>
           </div>
@@ -78,7 +78,7 @@
       :timeout="5000"
       color="error"
       @onSnackClose="showSaveError = false"
-      >Processen er IKKE gemt - prøv igen!</SnackBar
+      >Processen er kunne ikke gemmes, da en ukendt fejl opstod. Prøv igen.</SnackBar
     >
   </div>
 </template>
@@ -220,8 +220,11 @@ export default class Process extends Vue {
 
   async save() {
     try {
-      await ProcessModule.save();
-      this.showSaveSuccess = true;
+      const success = await ProcessModule.save();
+      this.showSaveSuccess = success;
+      if (success) {
+        this.clearErrors();
+      }
     } catch (e) {
       this.showSaveError = true;
     }
@@ -230,7 +233,12 @@ export default class Process extends Vue {
   async report() {
     try {
       const processId = await ProcessModule.createReport();
+      if (!processId) {
+        // if we don't get a process id back, a validation error occurred.
+        return;
+      }
       this.showSaveSuccess = true;
+      this.clearErrors();
       this.$router.push(`/details/${processId}`);
     } catch (e) {
       this.showSaveError = true;

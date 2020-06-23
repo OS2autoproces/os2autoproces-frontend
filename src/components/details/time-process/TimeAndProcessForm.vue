@@ -32,7 +32,7 @@
             :disabled="state.disabled.timeAndProcessEdit"
             :value="minutesAndSecondsPerOccurance.minutes.toFixed(0)"
             @change="updateTimeSpentPerOccurance({ minutes: $event })"
-            >m</InputField
+            >min</InputField
           >
           <InputField
             :type="'number'"
@@ -42,7 +42,7 @@
             :rules="secondRules"
             :hasError="isInErrors('timeSpendPerOccurance')"
             id="timeSpendPerOccurance"
-            >s</InputField
+            >sek</InputField
           >
         </WellItem>
         <WellItem

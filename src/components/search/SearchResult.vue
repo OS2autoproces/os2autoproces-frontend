@@ -133,6 +133,8 @@ $resume-line-height: 1em * 1.5;
   @include heading;
   font-size: 1.5rem;
   color: $color-secondary;
+  word-break: break-word;
+  word-wrap: break-word;
 }
 
 .star-icon {

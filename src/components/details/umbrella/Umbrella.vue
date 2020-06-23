@@ -20,7 +20,7 @@
     </div>
 
     <SnackBar :value="showSaveError" @onSnackClose="showSaveError = false" :timeout="5000" color="error"
-      >Processen er IKKE gemt - prøv igen!</SnackBar
+      >Processen er kunne ikke gemmes, da en ukendt fejl opstod. Prøv igen.</SnackBar
     >
     <SnackBar showButton :timeout="0" color="error" :value="errors.hasErrors" @clicked="clearErrors" bottom>
       <div v-if="errors.hasErrors">
@@ -37,7 +37,7 @@
       >Processen er gemt!</SnackBar
     >
     <SnackBar :value="showSaveError" @onSnackClose="showSaveError = false" :timeout="5000" color="error"
-      >Processen er IKKE gemt - prøv igen!</SnackBar
+      >Processen er kunne ikke gemmes, da en ukendt fejl opstod. Prøv igen.</SnackBar
     >
   </div>
 </template>
@@ -170,8 +170,8 @@ export default class Umbrella extends Vue {
 
   async save() {
     try {
-      await ProcessModule.save(umbrellaKeys);
-      this.showSaveSuccess = true;
+      const success = await ProcessModule.save(umbrellaKeys);
+      this.showSaveSuccess = success;
     } catch (e) {
       this.showSaveError = true;
     }
@@ -180,6 +180,10 @@ export default class Umbrella extends Vue {
   async report() {
     try {
       const processId = await ProcessModule.createReport(umbrellaKeys);
+      if (!processId) {
+        // if we don't get a process id back, a validation error occurred.
+        return;
+      }
       this.showSaveSuccess = true;
       this.$router.push(`/details/${processId}`);
     } catch (e) {

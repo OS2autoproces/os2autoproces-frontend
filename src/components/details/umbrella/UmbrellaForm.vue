@@ -7,13 +7,12 @@
     always-open
   >
     <div class="umbrella-wrapper">
-      <div class="title-row">
+      <div class="title-row" id="title">
         <div class="title-label">Titel: *</div>
         <InputField
           class="title-field flex-grow"
           :value="state.title"
           :hasError="isInErrors('title')"
-          id="title"
           :disabled="state.disabled.generalInformationEdit"
           :class="{ disabled: state.disabled.generalInformationEdit }"
           @change="update({ title: $event })"
@@ -26,43 +25,41 @@
 
       <Well>
         <div>
-          <WellItem labelWidth="200px" label="ID:">
-            <InputField disabled :value="state.id" id="id" />
+          <WellItem id="id" labelWidth="200px" label="ID:">
+            <InputField disabled :value="state.id" />
           </WellItem>
-          <WellItem labelWidth="200px" label="KLE-nr:">
+          <WellItem id="kle" labelWidth="200px" label="KLE-nr:">
             <SelectionField
               :disabled="state.disabled.generalInformationEdit"
               :value="state.kle"
               :hasError="isInErrors('kle')"
-              id="kle"
               @change="setKle($event)"
               :items="common.kles"
               itemText="code"
               clearable
             />
           </WellItem>
-          <WellItem labelWidth="200px" label="FORM:" v-if="state.kle">
+          <WellItem id="form" labelWidth="200px" label="FORM:" v-if="state.kle">
             <SelectionField
               :disabled="state.disabled.generalInformationEdit"
               :value="state.form"
               :hasError="isInErrors('form')"
-              id="form"
               @change="update({ form: $event })"
               :items="common.forms"
               itemText="code"
               clearable
             />
           </WellItem>
-          <WellItem labelWidth="200px" label="KL ID:">
+          <WellItem id="klId" labelWidth="200px" label="KL ID:">
             <InputField
               :disabled="state.disabled.generalInformationEdit"
               :value="state.klId"
               :hasError="isInErrors('klId')"
-              id="klId"
               @change="update({ klId: $event })"
             />
           </WellItem>
           <WellItem
+            id="kla"
             labelWidth="200px"
             label="KL’s Arbejdsgangsbank:"
             tooltip="KL’s Arbejdsgangsbank nummeret henviser til en proces fra KL’s Arbejdsgangsbank."
@@ -72,29 +69,26 @@
               mask="##.##.##.##.##"
               :value="state.kla"
               :hasError="isInErrors('kla')"
-              id="kla"
               @change="setKla"
             />
           </WellItem>
         </div>
 
         <div>
-          <WellItem labelWidth="120px" label="Fagområder:">
+          <WellItem id="domains" labelWidth="120px" label="Fagområder:">
             <DomainsField
               :disabled="state.disabled.generalInformationEdit"
               :value="state.domains"
               :hasError="isInErrors('domains')"
-              id="domains"
               @change="assign({ domains: $event })"
             />
           </WellItem>
-          <WellItem labelWidth="120px" label="Kontaktperson:">
+          <WellItem id="contact" labelWidth="120px" label="Kontaktperson:">
             <SelectionField
               itemSubText="email"
               :disabled="state.disabled.generalInformationEdit"
               :value="state.contact"
               :hasError="isInErrors('contact')"
-              id="contact"
               itemText="name"
               @search="search($event)"
               isItemsPartial
@@ -108,34 +102,32 @@
 
         <div>
           <WellItem labelWidth="120px" label="Synlighed:">{{ TypeLabels[state.type] }}</WellItem>
-          <WellItem labelWidth="120px" label="Oprettet:">
-            <DatePicker :value="state.created" id="created" disabled />
+          <WellItem labelWidth="120px" label="Oprettet:" id="created">
+            <DatePicker :value="state.created" disabled />
           </WellItem>
-          <WellItem labelWidth="120px" label="Sidst opdateret:">
-            <DatePicker :value="state.lastChanged" id="lastChanged" disabled />
+          <WellItem labelWidth="120px" label="Sidst opdateret:" id="lastChanged">
+            <DatePicker :value="state.lastChanged" disabled />
           </WellItem>
         </div>
       </Well>
     </div>
 
-    <div class="description">
+    <div class="description" id="shortDescription">
       <h2>Resume *</h2>
       <TextArea
         :disabled="state.disabled.generalInformationEdit"
         @change="update({ shortDescription: $event })"
         :value="state.shortDescription"
         :hasError="isInErrors('shortDescription')"
-        id="shortDescription"
         :maxLength="140"
       />
 
-      <h2>Beskrivelse</h2>
+      <h2 id="longDescription">Beskrivelse</h2>
       <TextArea
         :disabled="state.disabled.generalInformationEdit"
         @change="update({ longDescription: $event })"
         :value="state.longDescription"
         :hasError="isInErrors('longDescription')"
-        id="longDescription"
         :maxLength="10000"
       />
     </div>

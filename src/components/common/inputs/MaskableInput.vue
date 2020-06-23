@@ -61,6 +61,7 @@ export default class MaskableInputComponent extends Vue {
 .hasError::v-deep {
   .v-input__slot {
     border-color: $color-error;
+    border-width: 0.1em;
   }
 }
 </style>
