@@ -2,7 +2,7 @@
   <div class="search">
     <NavBar />
 
-    <div class="page">
+    <div class="page" v-bind:style="[id ? { display: 'none' } : {}]">
       <div class="filters">
         <SearchFiltersComponent @change="updateFilters" @assign="assignFilters" />
       </div>

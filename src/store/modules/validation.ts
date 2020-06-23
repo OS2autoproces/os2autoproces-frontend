@@ -48,7 +48,7 @@ export const processFieldsValidators: { [P in keyof ProcessState]?: (state: Proc
     return isValid(statusText, isMinMax(0, 10000));
   },
   title({ title }: ProcessState) {
-    return isValid(title, isMinMax(1, 50));
+    return isValid(title, isMinMax(1, 65));
   },
   shortDescription({ shortDescription }: ProcessState) {
     return isValid(shortDescription, isMinMax(1, 140));

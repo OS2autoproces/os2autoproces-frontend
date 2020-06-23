@@ -109,6 +109,7 @@ export default class AssociatedPersonsInput extends Vue {
       align-content: flex-start;
       border: 1px solid $color-primary;
       border-radius: 1rem;
+      background: $color-background;
       padding: 0.5rem;
 
       &.empty,
