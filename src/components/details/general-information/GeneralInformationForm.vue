@@ -385,22 +385,18 @@ export default class GeneralInformationForm extends Vue {
   }
 
   kleFilter(item: Kle, queryText: string, itemText: string): boolean {
-    if (!queryText) {
-      return true;
-    }
     return (
-      item?.code?.toLowerCase().indexOf(queryText.toLowerCase()) > -1 ||
-      item?.name?.toLowerCase().indexOf(queryText.toLowerCase()) > -1
+      !queryText ||
+      item?.code?.toLowerCase().includes(queryText.toLowerCase()) ||
+      item?.name?.toLowerCase().includes(queryText.toLowerCase())
     );
   }
 
   formFilter(item: Form, queryText: string, itemText: string): boolean {
-    if (!queryText) {
-      return true;
-    }
     return (
-      item?.code?.toLowerCase().indexOf(queryText.toLowerCase()) > -1 ||
-      item?.description?.toLowerCase().indexOf(queryText.toLowerCase()) > -1
+      !queryText ||
+      item?.code?.toLowerCase().includes(queryText.toLowerCase()) ||
+      item?.description?.toLowerCase().includes(queryText.toLowerCase())
     );
   }
 
