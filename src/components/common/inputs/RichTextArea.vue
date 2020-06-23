@@ -101,7 +101,7 @@
     </div>
     <div
       class="text-area-readonly"
-      :class="{ 'double-column': twoColumns, 'full-width': fullWidth }"
+      :class="{ 'double-column': twoColumns, 'full-width': fullWidth, 'has-error': hasError }"
       v-if="disabled"
       v-html="value"
     ></div>
@@ -341,15 +341,15 @@ export default class RichTextArea extends Vue {
 
   &.has-error {
     border-color: $color-error;
-    border-width: 0.1em;
+    border-width: 0.2em;
   }
 
   &.out-of-bounds {
-    border-color: red;
+    border-color: $color-error;
     box-shadow: inset 0 0 8px rgb(235, 98, 98);
 
     .text-area-overlay > .text-area-char-count {
-      color: red;
+      color: $color-error;
     }
   }
 
@@ -366,6 +366,13 @@ export default class RichTextArea extends Vue {
   white-space: pre-wrap;
   width: 100%;
   word-break: keep-all;
+
+  &.has-error {
+    border: 0.2em solid $color-error;
+    border-width: 0.2em;
+    min-height: 50px;
+    border-radius: 20px;
+  }
 
   h1,
   h2,

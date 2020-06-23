@@ -43,7 +43,7 @@
         <SelectionFieldAction v-if="hasAction" :actionIcon="actionIcon" @action="action(data.item)" />
       </template>
     </v-autocomplete>
-    <div class="selection-text" v-if="disabled && value">{{ label }}</div>
+    <div class="selection-text" :class="{ hasError: hasError }" v-if="disabled && value">{{ label }}</div>
   </div>
 </template>
 
@@ -175,5 +175,12 @@ export default class SelectionField<T extends any> extends Vue {
 
 .selection-text {
   @include field-input-text;
+
+  &.has-error {
+    border: 0.2em solid $color-error;
+    border-width: 0.2em;
+    min-height: 50px;
+    border-radius: 20px;
+  }
 }
 </style>

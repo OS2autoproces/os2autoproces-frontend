@@ -7,7 +7,7 @@
       @input="valueChanged($event)"
       :class="{ hasError: hasError }"
     />
-    <div v-if="disabled">{{ value }}</div>
+    <div v-if="disabled" :class="{ hasError: hasError }">{{ value }}</div>
   </div>
 </template>
 
