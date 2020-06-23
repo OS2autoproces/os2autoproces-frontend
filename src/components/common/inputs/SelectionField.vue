@@ -36,6 +36,7 @@
       :value="value"
       return-object
       :multiple="multiple"
+      :filter="filter"
     >
       <template slot="item" slot-scope="data">
         <SelectionFieldText :itemText="data.item[itemText]" :subText="data.item[itemSubText]" />
@@ -50,6 +51,8 @@
 import { Vue, Component, Prop, Watch, Emit } from 'vue-property-decorator';
 import SelectionFieldText from './SelectionFieldText.vue';
 import SelectionFieldAction from './SelectionFieldAction.vue';
+
+type FilterFunctionType = (item: object, queryText: string, itemText: string) => boolean;
 
 @Component({ components: { SelectionFieldText, SelectionFieldAction } })
 export default class SelectionField<T extends any> extends Vue {
@@ -82,6 +85,8 @@ export default class SelectionField<T extends any> extends Vue {
   @Prop({ type: Boolean, default: false }) hasAction!: boolean;
   @Prop({ type: String, default: 'info' }) actionIcon!: string;
   @Prop(Boolean) hasError!: boolean;
+  @Prop(Function) filter!: FilterFunctionType;
+
   @Emit()
   action(item: T) {
     return item;
@@ -106,7 +111,7 @@ export default class SelectionField<T extends any> extends Vue {
       return this.value.map((item: any) => item[this.itemText]).join(', ');
     }
     // @ts-ignore
-    return this.value[this.itemText];
+    return this.value[this.itemText] + (this.value[this.itemSubText] ? ' (' + this.value[this.itemSubText] + ')' : '');
   }
 
   @Watch('searchQuery')

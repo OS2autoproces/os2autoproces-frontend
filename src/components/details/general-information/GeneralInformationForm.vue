@@ -149,6 +149,7 @@
             :items="common.kles"
             itemText="name"
             itemSubText="code"
+            :filter="kleFilter"
             clearable
           />
         </WellItem>
@@ -161,6 +162,7 @@
             :items="common.forms"
             itemText="description"
             itemSubText="code"
+            :filter="formFilter"
             clearable
           />
         </WellItem>
@@ -380,6 +382,22 @@ export default class GeneralInformationForm extends Vue {
       ProcessModule.update({ kle });
     }
     CommonModule.loadFormsByKle(kle);
+  }
+
+  kleFilter(item: Kle, queryText: string, itemText: string): boolean {
+    return (
+      !queryText ||
+      item?.code?.toLowerCase().includes(queryText.toLowerCase()) ||
+      item?.name?.toLowerCase().includes(queryText.toLowerCase())
+    );
+  }
+
+  formFilter(item: Form, queryText: string, itemText: string): boolean {
+    return (
+      !queryText ||
+      item?.code?.toLowerCase().includes(queryText.toLowerCase()) ||
+      item?.description?.toLowerCase().includes(queryText.toLowerCase())
+    );
   }
 
   phaseChanged(phase: any) {
