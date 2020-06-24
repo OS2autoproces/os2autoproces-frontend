@@ -519,6 +519,10 @@ export default class GeneralInformationForm extends Vue {
     @include heading;
     font-size: 2rem;
   }
+
+  .title-field {
+    word-break: break-all;
+  }
 }
 
 .bookmark-button {

@@ -15,7 +15,7 @@
     </div>
     <div
       class="text-area-readonly"
-      :class="{ 'double-column': twoColumns, 'full-width': fullWidth }"
+      :class="{ 'double-column': twoColumns, 'full-width': fullWidth, hasError: hasError }"
       v-if="disabled"
       v-html="sanitizedHtml"
     ></div>
@@ -105,6 +105,12 @@ export default class TextArea extends Vue {
   white-space: pre-wrap;
   width: 100%;
   word-break: break-all;
+
+  &.hasError {
+    border: 0.2em solid $color-error;
+    border-width: 0.2em;
+    min-height: 50px;
+  }
 }
 
 .full-width {
