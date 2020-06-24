@@ -51,11 +51,15 @@
         <div class="snack-bar-list-container" v-if="errors.hasErrors">
           <div v-for="section in errors.errorSections" :key="section.section">
             <ul class="section-errors" v-if="section.errors.length > 0">
-              <a class="section-errors-title" @click="clickHashLink" :href="hashLink(section.id)">
-                {{ section.section }}</a
-              >
+              <!--
+                Include the following below, if customer wishes to have clickable sections:
+                `@click="clickHashLink" :href="hashLink(section.id)"`
+              -->
+              <span class="section-errors-title"> {{ section.section }}</span>
               <li v-for="(field, i) in section.errors" :key="i">
-                <span class="snack-bar-list-item">{{ field.description }}</span>
+                <a class="snack-bar-list-item" @click="clickHashLink" :href="hashLink(field.name)">{{
+                  field.description
+                }}</a>
               </li>
             </ul>
           </div>

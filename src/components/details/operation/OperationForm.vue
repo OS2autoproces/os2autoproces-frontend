@@ -8,7 +8,7 @@
     @edit="update({ disabled: { operationEdit: $event } })"
   >
     <div class="rating-wrapper" :class="{ disabled: state.disabled.operationEdit, hasError: isInErrors('rating') }">
-      <div class="rating-label">
+      <div class="rating-label" id="rating">
         I hvor høj grad indfriede løsningen de forventede gevinster? *
         <InfoTooltip>Skalaen lav, mellem, høj angiver graden af gevinstrealisering.</InfoTooltip>
       </div>
@@ -18,43 +18,39 @@
         :disabled="state.disabled.operationEdit"
         :value="state.rating"
         :hasError="isInErrors('rating')"
-        id="rating"
       />
     </div>
 
     <Well>
       <div>
-        <WellItem labelWidth="55%" label="Sidst kontrolleret i forhold til §">
+        <WellItem labelWidth="55%" label="Sidst kontrolleret i forhold til §" id="legalClauseLastVerified">
           <DatePicker
             @change="update({ legalClauseLastVerified: $event })"
             :disabled="state.disabled.operationEdit"
             :value="state.legalClauseLastVerified"
             :hasError="isInErrors('legalClauseLastVerified')"
-            id="legalClauseLastVerified"
           />
         </WellItem>
       </div>
       <div>
-        <WellItem labelWidth="55%" label="Løsning taget ud af drift">
+        <WellItem labelWidth="55%" label="Løsning taget ud af drift" id="decommissioned">
           <DatePicker
             @change="update({ decommissioned: $event })"
             :disabled="state.disabled.operationEdit"
             :value="state.decommissioned"
             :hasError="isInErrors('decommissioned')"
-            id="decommissioned"
           />
         </WellItem>
       </div>
     </Well>
 
-    <h2>Kommentar til realiseret gevinster</h2>
+    <h2 id="ratingComment">Kommentar til realiseret gevinster</h2>
     <RichTextArea
       :max-length="10000"
       @change="update({ ratingComment: $event })"
       :disabled="state.disabled.operationEdit"
       :value="state.ratingComment"
       :hasError="isInErrors('ratingComment')"
-      id="ratingComment"
     />
   </FormSection>
 </template>

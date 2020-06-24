@@ -8,7 +8,7 @@
     @edit="update({ disabled: { assessmentEdit: $event } })"
   >
     <div class="assessment" :class="{ disabled: state.disabled.assessmentEdit }">
-      <div class="question">
+      <div class="question" id="levelOfProfessionalAssessment">
         <div class="label">
           I hvor høj grad indgår der faglig vurdering i processen?
           <InfoTooltip class="tooltip"
@@ -20,11 +20,10 @@
           :disabled="state.disabled.assessmentEdit"
           :value="state.levelOfProfessionalAssessment"
           :hasError="isInErrors('levelOfProfessionalAssessment')"
-          id="levelOfProfessionalAssessment"
           @change="update({ levelOfProfessionalAssessment: $event })"
         />
       </div>
-      <div class="question">
+      <div class="question" id="levelOfChange">
         <div class="label">
           I hvor høj grad er processen præget af hyppige ændringer?
           <InfoTooltip class="tooltip"
@@ -36,11 +35,10 @@
           :disabled="state.disabled.assessmentEdit"
           :value="state.levelOfChange"
           :hasError="isInErrors('levelOfChange')"
-          id="levelOfChange"
           @change="update({ levelOfChange: $event })"
         />
       </div>
-      <div class="question">
+      <div class="question" id="levelOfStructuredInformation">
         <div class="label">
           I hvor høj grad er processen baseret på struktureret information?
           <InfoTooltip class="tooltip">Det kan f.eks. være ved brug af en formular.</InfoTooltip>
@@ -49,11 +47,10 @@
           :disabled="state.disabled.assessmentEdit"
           :value="state.levelOfStructuredInformation"
           :hasError="isInErrors('levelOfStructuredInformation')"
-          id="levelOfStructuredInformation"
           @change="update({ levelOfStructuredInformation: $event })"
         />
       </div>
-      <div class="question">
+      <div class="question" id="levelOfUniformity">
         <div class="label">
           Er der variation i den måde processen løses?
           <InfoTooltip class="tooltip"
@@ -65,11 +62,10 @@
           :disabled="state.disabled.assessmentEdit"
           :value="state.levelOfUniformity"
           :hasError="isInErrors('levelOfUniformity')"
-          id="levelOfUniformity"
           @change="update({ levelOfUniformity: $event })"
         />
       </div>
-      <div class="question">
+      <div class="question" id="levelOfDigitalInformation">
         <div class="label">
           Er de data og informationer, der skal bruges i processen, tilgængelige digitalt i IT-systemer?
         </div>
@@ -77,11 +73,10 @@
           :disabled="state.disabled.assessmentEdit"
           :value="state.levelOfDigitalInformation"
           :hasError="isInErrors('levelOfDigitalInformation')"
-          id="levelOfDigitalInformation"
           @change="update({ levelOfDigitalInformation: $event })"
         />
       </div>
-      <div class="question">
+      <div class="question" id="levelOfQuality">
         <div class="label">
           Vil en automatiseret løsning bidrage til en højere kvalitet, som er mere ensrettet og med færre fejl?
           <InfoTooltip class="tooltip"
@@ -92,11 +87,10 @@
           :disabled="state.disabled.assessmentEdit"
           :value="state.levelOfQuality"
           :hasError="isInErrors('levelOfQuality')"
-          id="levelOfQuality"
           @change="update({ levelOfQuality: $event })"
         />
       </div>
-      <div class="question">
+      <div class="question" id="levelOfSpeed">
         <div class="label">
           Vil en automatiseret løsning bidrage til en hurtigere og mere fyldestgørende service?
           <InfoTooltip class="tooltip"
@@ -108,11 +102,10 @@
           :disabled="state.disabled.assessmentEdit"
           :value="state.levelOfSpeed"
           :hasError="isInErrors('levelOfSpeed')"
-          id="levelOfSpeed"
           @change="update({ levelOfSpeed: $event })"
         />
       </div>
-      <div class="question">
+      <div class="question" id="levelOfRoutineWorkReduction">
         <div class="label">
           Vil automatisering frigive tid og nedbringe rutineopgaver, som skaber en bedre trivsel blandt medarbejderne?
           <InfoTooltip class="tooltip"
@@ -124,11 +117,10 @@
           :disabled="state.disabled.assessmentEdit"
           :value="state.levelOfRoutineWorkReduction"
           :hasError="isInErrors('levelOfRoutineWorkReduction')"
-          id="levelOfRoutineWorkReduction"
           @change="update({ levelOfRoutineWorkReduction: $event })"
         />
       </div>
-      <div class="question">
+      <div class="question" id="evaluatedLevelOfRoi">
         <div class="label">
           I hvor høj grad vurderes det at processen kan automatiseres?
           <InfoTooltip class="tooltip"
@@ -140,7 +132,6 @@
           :disabled="state.disabled.assessmentEdit"
           :value="state.evaluatedLevelOfRoi"
           :hasError="isInErrors('evaluatedLevelOfRoi')"
-          id="evaluatedLevelOfRoi"
           @change="update({ evaluatedLevelOfRoi: $event })"
         />
       </div>

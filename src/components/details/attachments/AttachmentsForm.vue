@@ -8,7 +8,7 @@
     @edit="state.update({ disabled: { attachmentsEdit: $event } })"
   >
     <h2 v-if="isWithinMunicipality && state.minPhase(PhaseKeys.SPECIFICATION)">Sagsreference i ESDH</h2>
-    <div v-if="isWithinMunicipality && state.minPhase(PhaseKeys.SPECIFICATION)">
+    <div v-if="isWithinMunicipality && state.minPhase(PhaseKeys.SPECIFICATION)" id="esdhReference">
       <InfoTooltip>Skriv sagsreferencen eller indsæt et direkte link til sagen i ESDH systemet.</InfoTooltip>
       <TextArea
         :max-length="300"
@@ -16,7 +16,6 @@
         :disabled="state.disabled.attachmentsEdit"
         :value="state.esdhReference"
         :hasError="isInErrors('esdhReference')"
-        id="esdhReference"
         :minHeight="'50px'"
       />
     </div>

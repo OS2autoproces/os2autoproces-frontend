@@ -9,6 +9,7 @@
     <Well>
       <div>
         <WellItem
+          id="timeSpendOccurancesPerEmployee"
           labelWidth="70%"
           label="Antal gange processen foretages årligt"
           :required="state.minPhase(PhaseKeys.PREANALYSIS)"
@@ -17,12 +18,12 @@
             :type="'number'"
             :value="state.timeSpendOccurancesPerEmployee"
             :hasError="isInErrors('timeSpendOccurancesPerEmployee')"
-            id="timeSpendOccurancesPerEmployee"
             :disabled="state.disabled.timeAndProcessEdit"
             @change="update({ timeSpendOccurancesPerEmployee: $event })"
           />
         </WellItem>
         <WellItem
+          id="timeSpendPerOccurance"
           labelWidth="70%"
           label="Tidsforbrug pr. proces i minutter og sekunder"
           :required="state.minPhase(PhaseKeys.PREANALYSIS)"
@@ -41,11 +42,11 @@
             @change="updateTimeSpentPerOccurance({ seconds: $event })"
             :rules="secondRules"
             :hasError="isInErrors('timeSpendPerOccurance')"
-            id="timeSpendPerOccurance"
             >sek</InputField
           >
         </WellItem>
         <WellItem
+          id="timeSpendPercentageDigital"
           labelWidth="70%"
           label="Forventet automatiseringsgrad"
           tooltip="Hvor meget af processen vurderer du kan automatiseres på en skala fra 0-100."
@@ -55,7 +56,6 @@
             :disabled="state.disabled.timeAndProcessEdit"
             :value="state.timeSpendPercentageDigital"
             :hasError="isInErrors('timeSpendPercentageDigital')"
-            id="timeSpendPercentageDigital"
             @change="update({ timeSpendPercentageDigital: $event })"
             >%</InputField
           >
@@ -78,6 +78,7 @@
 
       <div>
         <WellItem
+          id="timeSpendEmployeesDoingProcess"
           labelWidth="70%"
           label="Antal medarbejdere der foretager processen"
           :required="state.minPhase(PhaseKeys.PREANALYSIS)"
@@ -87,26 +88,23 @@
             :disabled="state.disabled.timeAndProcessEdit"
             :value="state.timeSpendEmployeesDoingProcess"
             :hasError="isInErrors('timeSpendEmployeesDoingProcess')"
-            id="timeSpendEmployeesDoingProcess"
             @change="update({ timeSpendEmployeesDoingProcess: $event })"
           />
         </WellItem>
-        <WellItem labelWidth="70%" label="Er borgere påvirket?">
+        <WellItem labelWidth="70%" label="Er borgere påvirket?" id="targetsCitizens">
           <MappedSelectionField
             :disabled="state.disabled.timeAndProcessEdit"
             :value="state.targetsCitizens"
             :hasError="isInErrors('targetsCitizens')"
-            id="targetsCitizens"
             @change="update({ targetsCitizens: $event })"
             :items="yesNoItems"
           />
         </WellItem>
-        <WellItem labelWidth="70%" label="Er virksomheder påvirket?">
+        <WellItem labelWidth="70%" label="Er virksomheder påvirket?" id="targetsCompanies">
           <MappedSelectionField
             :disabled="state.disabled.timeAndProcessEdit"
             :value="state.targetsCompanies"
             :hasError="isInErrors('targetsCompanies')"
-            id="targetsCompanies"
             @change="update({ targetsCompanies: $event })"
             :items="yesNoItems"
           />
@@ -114,7 +112,7 @@
       </div>
     </Well>
 
-    <div class="comments-wrap">
+    <div class="comments-wrap" id="timeSpendComment">
       <span>Kommentar vedr. tidsforbrug</span>
       <InfoTooltip class="time-proces-tooltip"
         >Her kan du uddybe eller kommentere på de indtastede værdier ovenfor og på tidsforbruget generelt. F.eks.
@@ -123,7 +121,6 @@
       <TextArea
         :value="state.timeSpendComment"
         :hasError="isInErrors('timeSpendComment')"
-        id="timeSpendComment"
         :disabled="state.disabled.timeAndProcessEdit"
         @change="update({ timeSpendComment: $event })"
         :maxLength="10000"
