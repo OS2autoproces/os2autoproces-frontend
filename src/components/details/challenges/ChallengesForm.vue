@@ -6,7 +6,7 @@
     :disabled="state.disabled.challengesEdit"
     @edit="update({ disabled: { challengesEdit: $event } })"
   >
-    <div>
+    <div id="longDescription">
       <h2>Beskrivelse</h2>
       <InfoTooltip>Her kan du beskrive den nuværende proces i detaljer.</InfoTooltip>
       <RichTextArea
@@ -15,12 +15,11 @@
         :disabled="state.disabled.challengesEdit"
         :value="state.longDescription"
         :hasError="isInErrors('longDescription')"
-        id="longDescription"
         :maxLength="10000"
       />
     </div>
 
-    <div v-if="minPhase(PhaseKeys.PREANALYSIS)">
+    <div v-if="minPhase(PhaseKeys.PREANALYSIS)" id="solutionRequests">
       <h2 class="with-margin">Idéer til løsning</h2>
       <InfoTooltip
         >Her kan tilføjes de ønsker, du har til en fremtidig løsning. Ønskerne kan både være teknologiske (f.eks. RPA)
@@ -32,12 +31,11 @@
         :disabled="state.disabled.challengesEdit"
         :value="state.solutionRequests"
         :hasError="isInErrors('solutionRequests')"
-        id="solutionRequests"
         :maxLength="10000"
       />
     </div>
 
-    <div v-if="state.minPhase(PhaseKeys.PREANALYSIS)">
+    <div v-if="state.minPhase(PhaseKeys.PREANALYSIS)" id="processChallenges">
       <h2 class="with-margin">Udfordringer i den nuværende proces *</h2>
       <InfoTooltip
         >Her kan du beskrive de trivielle handlinger, udfordringer eller vaskeligheder der opleves i udførelsen af den
@@ -49,7 +47,6 @@
         :disabled="state.disabled.challengesEdit"
         :value="state.processChallenges"
         :hasError="isInErrors('processChallenges')"
-        id="processChallenges"
         :maxLength="10000"
       />
     </div>
@@ -61,6 +58,7 @@
         </WellItem>
 
         <WellItem
+          id="itSystems"
           label="Nuværende systemer:"
           tooltip="Vælg hvilke systemer der understøtter den nuværende proces. Listen kommer fra KITOS."
         >
@@ -71,7 +69,6 @@
             itemText="name"
             :disabled="state.disabled.challengesEdit"
             @change="update({ itSystems: $event })"
-            id="itSystems"
             multiple
           />
         </WellItem>
@@ -83,6 +80,7 @@
         </WellItem>
 
         <WellItem
+          id="itSystemsDescription"
           labelWidth="30%"
           label="Andre nuværende systemer:"
           tooltip="Hvis der er systemer du ikke kan finde på listen kan du notere dem her."
@@ -93,7 +91,6 @@
             :disabled="state.disabled.challengesEdit"
             :value="state.itSystemsDescription"
             :hasError="isInErrors('itSystemsDescription')"
-            id="itSystemsDescription"
             :maxLength="10000"
           />
         </WellItem>

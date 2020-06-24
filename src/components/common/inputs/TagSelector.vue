@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="tag-list">
+    <div v-if="disabled" class="tag-list" :class="{ hasError: hasError }">
       <div v-for="(tag, index) in value" :key="index" class="tag-item">
         {{ tag.name }}
         <span role="button" @click="removeTag(index)" class="delete-icon" v-if="!disabled">
@@ -63,6 +63,8 @@ export default class TagSelector extends Vue {
 @import '@/styles/variables.scss';
 
 .tag-list {
+  min-height: 50px;
+
   .tag-item {
     display: inline-block;
     text-align: center;
@@ -83,6 +85,12 @@ export default class TagSelector extends Vue {
       width: 1rem;
       height: 1rem;
     }
+  }
+
+  &.hasError {
+    border: 0.2em solid $color-error;
+    border-width: 0.2em;
+    border-radius: 20px;
   }
 }
 

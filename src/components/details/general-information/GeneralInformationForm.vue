@@ -16,6 +16,7 @@
         :hasError="isInErrors('title')"
         :class="{ disabled: state.disabled.generalInformationEdit }"
         @change="update({ title: $event })"
+        :maxLength="65"
       />
       <div v-if="!isReporting" class="bookmark-button" role="button" @click="setBookmark(!state.hasBookmarked)">
         <StarIcon :class="{ selected: state.hasBookmarked }" />
@@ -517,6 +518,10 @@ export default class GeneralInformationForm extends Vue {
   .title-field {
     @include heading;
     font-size: 2rem;
+  }
+
+  .title-field {
+    word-break: break-all;
   }
 }
 
