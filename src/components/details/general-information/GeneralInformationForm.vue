@@ -16,6 +16,7 @@
         :hasError="isInErrors('title')"
         :class="{ disabled: state.disabled.generalInformationEdit }"
         @change="update({ title: $event })"
+        :maxLength="65"
       />
       <div v-if="!isReporting" class="bookmark-button" role="button" @click="setBookmark(!state.hasBookmarked)">
         <StarIcon :class="{ selected: state.hasBookmarked }" />

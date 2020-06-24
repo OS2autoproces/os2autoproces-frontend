@@ -2,7 +2,11 @@
   <div>
     <div
       class="input-field-wrap"
-      :class="{ 'has-icon': this.$slots.default, 'has-error': this.hasError || this.hasViolatedRules }"
+      :class="{
+        'has-icon': this.$slots.default,
+        'has-error': this.hasError || this.hasViolatedRules,
+        'out-of-bounds': currentLength > maxLength
+      }"
       v-if="!disabled"
     >
       <v-text-field
@@ -15,8 +19,13 @@
         @keyup.enter="submit"
         :rules="rules"
       />
+
       <div class="icon" v-if="this.$slots.default">
         <slot />
+      </div>
+
+      <div class="input-field-overlay">
+        <div class="input-field-char-count" v-if="maxLength">({{ currentLength }} ud af {{ maxLength }} tegn)</div>
       </div>
     </div>
     <div class="disabled-flex" v-if="disabled">
@@ -47,6 +56,8 @@ export default class InputField extends Vue {
   rules!: Rule[];
   @Prop(Boolean)
   hasError!: boolean;
+  @Prop(Number)
+  maxLength!: number;
 
   currentInput = '';
 
@@ -62,6 +73,10 @@ export default class InputField extends Vue {
 
   get hasViolatedRules(): boolean {
     return this.checkRules(this.currentInput);
+  }
+
+  get currentLength() {
+    return this.valueSynced?.length ?? 0;
   }
 
   valueChanged(value: any) {
@@ -95,6 +110,27 @@ export default class InputField extends Vue {
   &.has-error {
     border-color: $color-error;
     border-width: 0.1em;
+  }
+
+  &.out-of-bounds {
+    border-color: $color-error;
+    box-shadow: inset 0 0 8px rgb(235, 98, 98);
+
+    .input-field-overlay > .input-field-char-count {
+      color: $color-error;
+    }
+  }
+
+  .input-field-overlay {
+    display: inline-block;
+    position: relative;
+    right: 0.5rem;
+    text-align: right;
+
+    font-family: 'Lato', Arial, 'Helvetica Neue', Helvetica, sans-serif;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    font-size: 1rem;
   }
 
   &.has-icon {
