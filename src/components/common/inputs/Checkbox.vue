@@ -1,6 +1,6 @@
 <template>
   <div class="checkbox" role="checkbox" :aria-checked="valueString" @click="click" :class="{ disabled }">
-    <div class="checkbox-icon" :class="{ hasError: hasError }">
+    <div class="checkbox-icon" :class="{ 'has-error': hasError }">
       <CheckIcon v-if="value" />
     </div>
     <slot />
@@ -50,7 +50,7 @@ export default class Checkbox extends Vue {
     display: inline-block;
     width: 20px;
     height: 20px;
-    &.hasError {
+    &.has-error {
       border-color: $color-error;
       border-width: 0.1em;
     }

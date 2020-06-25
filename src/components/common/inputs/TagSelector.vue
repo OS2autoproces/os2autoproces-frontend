@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="disabled" class="tag-list" :class="{ hasError: hasError }">
+    <div v-if="disabled" class="tag-list" :class="{ 'has-error': hasError }">
       <div v-for="(tag, index) in value" :key="index" class="tag-item">
         {{ tag.name }}
         <span role="button" @click="removeTag(index)" class="delete-icon" v-if="!disabled">
@@ -87,7 +87,7 @@ export default class TagSelector extends Vue {
     }
   }
 
-  &.hasError {
+  &.has-error {
     border: 0.2em solid $color-error;
     border-width: 0.2em;
     border-radius: 20px;
