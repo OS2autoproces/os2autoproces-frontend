@@ -1,5 +1,5 @@
 <template>
-  <div class="rating" :class="{ disabled, hasError: hasError }">
+  <div class="rating" :class="{ disabled, 'has-error': hasError }">
     <div @click="setValue(1)">
       <StarIcon class="star" :class="{ selected: value > 0 }" />
     </div>
@@ -41,7 +41,7 @@ export default class Rating extends Vue {
   display: inline-flex;
   justify-content: space-between;
 
-  &.hasError {
+  &.has-error {
     border: 0.2em solid $color-error;
     border-width: 0.2em;
     min-height: 50px;

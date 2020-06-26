@@ -1,5 +1,5 @@
 <template>
-  <div class="scale" :class="{ disabled, hasError: hasError }">
+  <div class="scale" :class="{ disabled, 'has-error': hasError }">
     <div class="scale-option" v-for="likert in items" :key="likert.value" @click="select(likert.value)">
       <Checkbox class="checkbox" :disabled="disabled" :value="likert.value === value" :hasError="hasError" />
       <div class="label">{{ likert.label }}</div>
@@ -51,7 +51,7 @@ export default class LikertScale extends Vue {
     cursor: pointer;
   }
 
-  &.hasError {
+  &.has-error {
     border: 0.2em solid $color-error;
     border-width: 0.2em;
     min-height: 50px;

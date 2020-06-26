@@ -28,7 +28,7 @@
         <div class="input-field-char-count" v-if="maxLength">({{ currentLength }} ud af {{ maxLength }} tegn)</div>
       </div>
     </div>
-    <div class="disabled-flex" :class="{ hasError: hasError }" v-if="disabled">
+    <div class="disabled-flex" :class="{ 'has-error': hasError }" v-if="disabled">
       {{ value }}
       <span>
         <slot />
@@ -184,7 +184,7 @@ export default class InputField extends Vue {
   justify-content: space-between;
   padding: 0px 10px;
 
-  &.hasError {
+  &.has-error {
     border: 0.2em solid $color-error;
     border-width: 0.2em;
     min-height: 50px;

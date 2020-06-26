@@ -2,7 +2,7 @@
   <div>
     <v-select
       class="select-wrap"
-      :class="{ hasError: hasError }"
+      :class="{ 'has-error': hasError }"
       v-if="!disabled && dropdown"
       :items="_items"
       :value="value"
@@ -20,7 +20,7 @@
     </v-select>
     <v-autocomplete
       class="select-wrap"
-      :class="{ hasError: hasError }"
+      :class="{ 'has-error': hasError }"
       ref="autocomplete"
       v-if="!disabled && !dropdown"
       :clearable="clearable"
@@ -43,7 +43,7 @@
         <SelectionFieldAction v-if="hasAction" :actionIcon="actionIcon" @action="action(data.item)" />
       </template>
     </v-autocomplete>
-    <div class="selection-text" :class="{ hasError: hasError }" v-if="disabled && value">{{ label }}</div>
+    <div class="selection-text" :class="{ 'has-error': hasError }" v-if="disabled && value">{{ label }}</div>
   </div>
 </template>
 
@@ -166,7 +166,7 @@ export default class SelectionField<T extends any> extends Vue {
     display: none !important;
   }
 }
-.hasError::v-deep {
+.'has-error'::v-deep {
   .v-input__slot {
     border-color: $color-error;
     border-width: 0.1em;

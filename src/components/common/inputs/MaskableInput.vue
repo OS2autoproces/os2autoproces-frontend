@@ -5,9 +5,9 @@
       :value="value"
       v-mask="mask"
       @input="valueChanged($event)"
-      :class="{ hasError: hasError }"
+      :class="{ 'has-error': hasError }"
     />
-    <div v-if="disabled" :class="{ hasError: hasError }">{{ value }}</div>
+    <div v-if="disabled" :class="{ 'has-error': hasError }">{{ value }}</div>
   </div>
 </template>
 
@@ -58,7 +58,7 @@ export default class MaskableInputComponent extends Vue {
     }
   }
 }
-.hasError::v-deep {
+.has-error::v-deep {
   .v-input__slot {
     border-color: $color-error;
     border-width: 0.1em;
