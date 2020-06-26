@@ -6,7 +6,7 @@
         <InfoTooltip class="tooltip" v-if="tooltip">{{ tooltip }}</InfoTooltip>
       </div>
     </div>
-    <div class="well-input">
+    <div class="well-input" :class="{ 'grey-background': greyBackground }">
       <slot />
     </div>
   </div>
@@ -30,6 +30,8 @@ export default class WellItem extends Vue {
   labelWidth!: string;
   @Prop(Boolean)
   required!: boolean;
+  @Prop(Boolean)
+  greyBackground!: boolean;
 }
 </script>
 
@@ -64,6 +66,12 @@ export default class WellItem extends Vue {
     .v-input {
       background: $color-background;
       border-radius: 20px;
+    }
+  }
+
+  .well-input.grey-background {
+    .v-input {
+      background: $color-background-grey;
     }
   }
 }

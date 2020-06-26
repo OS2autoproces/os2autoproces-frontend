@@ -167,7 +167,7 @@
             clearable
           />
         </WellItem>
-        <WellItem labelWidth="200px" label="KL ID:" id="klId">
+        <WellItem labelWidth="200px" label="KL ID:" id="klId" greyBackground>
           <InputField
             :disabled="state.disabled.generalInformationEdit"
             :value="state.klId"
@@ -180,6 +180,7 @@
           labelWidth="200px"
           label="KL’s Arbejdsgangsbank:"
           tooltip="KL’s Arbejdsgangsbank nummeret henviser til en proces fra KL’s Arbejdsgangsbank."
+          greyBackground
         >
           <MaskableInput
             :disabled="state.disabled.generalInformationEdit"
