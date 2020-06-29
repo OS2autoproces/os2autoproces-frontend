@@ -1,6 +1,10 @@
 <template>
   <div>
-    <div class="text-area" :class="{ 'out-of-bounds': currentLength > maxLength, hasError: hasError }" v-if="!disabled">
+    <div
+      class="text-area"
+      :class="{ 'out-of-bounds': currentLength > maxLength, 'has-error': hasError }"
+      v-if="!disabled"
+    >
       <textarea
         :value="value"
         @input="valueChanged"
@@ -15,7 +19,7 @@
     </div>
     <div
       class="text-area-readonly"
-      :class="{ 'double-column': twoColumns, 'full-width': fullWidth, hasError: hasError }"
+      :class="{ 'double-column': twoColumns, 'full-width': fullWidth, 'has-error': hasError }"
       v-if="disabled"
       v-html="sanitizedHtml"
     ></div>
@@ -79,7 +83,7 @@ export default class TextArea extends Vue {
   padding-bottom: 25px;
   background: $color-background;
 
-  &.hasError {
+  &.has-error {
     border-color: $color-error;
     border-width: 0.1em;
   }
@@ -106,7 +110,7 @@ export default class TextArea extends Vue {
   width: 100%;
   word-break: break-all;
 
-  &.hasError {
+  &.has-error {
     border: 0.2em solid $color-error;
     border-width: 0.2em;
     min-height: 50px;

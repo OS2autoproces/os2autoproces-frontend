@@ -7,7 +7,7 @@
     :disabled="state.disabled.operationEdit"
     @edit="update({ disabled: { operationEdit: $event } })"
   >
-    <div class="rating-wrapper" :class="{ disabled: state.disabled.operationEdit, hasError: isInErrors('rating') }">
+    <div class="rating-wrapper" :class="{ disabled: state.disabled.operationEdit, 'has-error': isInErrors('rating') }">
       <div class="rating-label" id="rating">
         I hvor høj grad indfriede løsningen de forventede gevinster? *
         <InfoTooltip>Skalaen lav, mellem, høj angiver graden af gevinstrealisering.</InfoTooltip>
@@ -110,7 +110,7 @@ export default class OperationForm extends Vue {
   &:not(.disabled) {
     border-color: $color-primary;
     border-radius: 1rem;
-    &.hasError {
+    &.has-error {
       border-color: $color-error;
       border-width: 0.1em;
     }
