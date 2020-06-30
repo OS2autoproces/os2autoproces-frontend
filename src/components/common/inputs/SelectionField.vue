@@ -166,7 +166,7 @@ export default class SelectionField<T extends any> extends Vue {
     display: none !important;
   }
 }
-.'has-error'::v-deep {
+.has-error::v-deep {
   .v-input__slot {
     border-color: $color-error;
     border-width: 0.1em;
