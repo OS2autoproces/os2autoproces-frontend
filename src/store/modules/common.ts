@@ -121,7 +121,10 @@ export default class Common extends VuexModule implements CommonState {
   @Action
   async loadMunicipalities() {
     const response = await HTTP.get(`public/municipalities`);
-    this.UPDATE({ municipalities: response?.data as Municipality[] });
+    const municipalities = (response?.data as Municipality[])?.sort((m1: Municipality, m2: Municipality) =>
+      m1.name.localeCompare(m2.name)
+    );
+    this.UPDATE({ municipalities });
   }
 
   @Action
