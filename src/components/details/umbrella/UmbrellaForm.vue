@@ -80,7 +80,7 @@
               :disabled="state.disabled.generalInformationEdit"
               :value="state.domains"
               :hasError="isInErrors('domains')"
-              @change="assign({ domains: $event })"
+              @change="update({ domains: $event })"
             />
           </WellItem>
           <WellItem id="contact" labelWidth="120px" label="Kontaktperson:">
