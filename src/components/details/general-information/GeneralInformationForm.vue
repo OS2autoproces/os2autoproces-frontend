@@ -94,7 +94,7 @@
             :disabled="state.disabled.generalInformationEdit"
             :value="state.domains"
             :hasError="isInErrors('domains')"
-            @change="assign({ domains: $event })"
+            @change="update({ domains: $event })"
           />
         </WellItem>
         <WellItem id="orgUnits" labelWidth="120px" label="Afdelinger:" v-if="isWithinMunicipality">
@@ -102,7 +102,7 @@
             :disabled="state.disabled.generalInformationEdit"
             :value="state.orgUnits"
             :hasError="isInErrors('orgUnits')"
-            @change="assign({ orgUnits: $event })"
+            @change="update({ orgUnits: $event })"
             :items="common.orgUnits"
             multiple
             itemText="name"
