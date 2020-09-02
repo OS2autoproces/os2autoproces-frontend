@@ -94,7 +94,7 @@
             :disabled="state.disabled.generalInformationEdit"
             :value="state.domains"
             :hasError="isInErrors('domains')"
-            @change="update({ domains: $event })"
+            @change="assign({ domains: $event })"
           />
         </WellItem>
         <WellItem id="orgUnits" labelWidth="120px" label="Afdelinger:" v-if="isWithinMunicipality">
@@ -102,7 +102,7 @@
             :disabled="state.disabled.generalInformationEdit"
             :value="state.orgUnits"
             :hasError="isInErrors('orgUnits')"
-            @change="update({ orgUnits: $event })"
+            @change="assign({ orgUnits: $event })"
             :items="common.orgUnits"
             multiple
             itemText="name"
@@ -362,6 +362,10 @@ export default class GeneralInformationForm extends Vue {
 
   get common() {
     return CommonModule;
+  }
+
+  assign(state: Partial<ProcessState>) {
+    ProcessModule.assign(state);
   }
 
   update(state: Partial<ProcessState>) {
