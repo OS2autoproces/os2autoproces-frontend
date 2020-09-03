@@ -80,7 +80,7 @@
               :disabled="state.disabled.generalInformationEdit"
               :value="state.domains"
               :hasError="isInErrors('domains')"
-              @change="update({ domains: $event })"
+              @change="assign({ domains: $event })"
             />
           </WellItem>
           <WellItem id="contact" labelWidth="120px" label="Kontaktperson:">
@@ -232,6 +232,10 @@ export default class UmbrellaForm extends Vue {
 
   get logo() {
     return `/logos/${ProcessModule.cvr}.png`;
+  }
+
+  assign(state: Partial<ProcessState>) {
+    ProcessModule.assign(state);
   }
 
   update(state: Partial<ProcessState>) {
