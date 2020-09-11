@@ -68,7 +68,7 @@
             :hasError="isInErrors('itSystems')"
             itemText="name"
             :disabled="state.disabled.challengesEdit"
-            @change="update({ itSystems: $event })"
+            @change="assign({ itSystems: $event })"
             multiple
           />
         </WellItem>
@@ -148,6 +148,10 @@ export default class ChallengesForm extends Vue {
 
   update(state: Partial<ProcessState>) {
     ProcessModule.update(state);
+  }
+
+  assign(state: Partial<ProcessState>) {
+    ProcessModule.assign(state);
   }
 
   isInErrors(name: string) {

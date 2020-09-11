@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="disabled" class="tag-list" :class="{ 'has-error': hasError }">
+    <div class="tag-list" :class="{ 'has-error': hasError }">
       <div v-for="(tag, index) in value" :key="index" class="tag-item">
         {{ tag.name }}
         <span role="button" @click="removeTag(index)" class="delete-icon" v-if="!disabled">
