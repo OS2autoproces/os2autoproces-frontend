@@ -1,0 +1,8 @@
+{
+    "recommendations": [
+        "esbenp.prettier-vscode",
+        "ms-vscode.vscode-typescript-tslint-plugin",
+        "ms-azuretools.vscode-docker",
+        "editorconfig.editorconfig"
+    ]
+}
