@@ -1,17 +1,24 @@
 # OS2autoproces frontend
 
-This application allows reporting and searching for descriptions of RPA processes.
+The application allows reporting and searching for descriptions of RPA processes.
+The backend is develop by Digital Identity.
+
+The customer host the source code at: https://bitbucket.org/os2offdig/os2autoproces-frontend.
+
+Documents related to the project: https://drive.google.com/drive/folders/1IIzsSsWfDnOGX5siwrPn30jMmMZKCyn7
+
+The project backlog: https://itminds.atlassian.net/secure/RapidBoard.jspa?rapidView=143&projectKey=AP&view=planning.nodetail
 
 ## Architecture
 
-### Tools and technologies
-The application is written as a [Vue.js](https://vuejs.org/) application using [Vuex](https://vuex.vuejs.org/) for state management and [Vuetify](https://vuetifyjs.com/) for general components.
-
-The application is written in [TypeScript](https://www.typescriptlang.org/) using the [vue-class-component](https://class-component.vuejs.org/) and [vue-property-decorator](https://www.npmjs.com/package/vue-property-decorator) packages, which allows writing Vue components as classes.
+The application is written as a Vue.js application using Vuex for state management and Vuetify for general components.
+The application is written in TypeScript using the vue-class-component and vue-property-decorator packages, which allows writting Vue components as classes.
 
 The Vue CLI is used to run and build the project.
 
 ### Folder structure
+
+Folders of interest:
 
 - **Docker** contains configuration and scripts used by the Docker deployment.
 - **public** contains index.html and environment config.
@@ -36,38 +43,47 @@ The Vue CLI is used to run and build the project.
 ### Environment config
 
 Environment config is managed in /public/environment-config.js
-
 Environment config works by the Docker containers startup.sh script writes environment variables in /public/environment-config.js which is loaded in the index.html file.
-
 That way the frontend has access to the configuration giving to the Docker image when it is started.
+
+### General patterns and conventions
+
+All icons in the application are added by creating a Vue component with the icons svg code.
+
+## Documentation
+
+This README contains all documentation for the project.
+
+Documentation for the backend: https://dev.os2autoproces.eu/doc
+
+### Known bugs and quirks
+
+Be careful when updating the Vuetify package.
+It often breaks the styling of custom components in the application.
+
+There are no known bugs.
+
+### Recommendations for future development
+
+There are no recommendations.
 
 ## Local dev environment
 
-It is recommened to use [Visual Studio Code](https://code.visualstudio.com/) for developing on the project.
+First install packages with `npm install`.
 
-After installing Visual Studio Code, make sure to install the recommened extensions from the Extensions tab;
+### Running the application
 
-- Prettier - Code formatter
-- TSLint
-- EditorConfig for VS Code
-- Docker
+`npm run serve` will start the dev server.
 
-After setting up VS Code clone the project from github and install the npm packages with `npm install`.
-
-Finally, run `npm run serve` to start the dev server.
-Docker is not required for development, only for deployment in production.
-
-While developing, the application depends on the backend running on https://dev.os2autoproces.eu/
+The application depends on the backend running on https://dev.os2autoproces.eu/
 
 ### Test Credentials
 
-Test credentials for use during development can be found in the API docs at https://dev.os2autoproces.eu/doc#chapter-2-3, Temporary Development Setup.
+Test credentials for use during development can be found in the API docs at https://dev.os2autoproces.eu/doc#chapter-2-3, Temporary Development Setup. _Note these credentials might not be up to date..._. You might need to use and/or update the credentials below:
 
-_Note these credentials might not be up to date..._. You might need to use and/or update the credentials below:
-
-- _User_: itminds2@digitalidentity
-- _PW_: Test1234
-- _Test municipality_: Digital Identity
+_User_: itminds2@digitalidentity
+_PW_: Test1234
+_Test municipality_: Digital Identity
 
 ### Tests
 
@@ -80,44 +96,29 @@ _Note these credentials might not be up to date..._. You might need to use and/o
 `npm run lint` will lint the application.
 Lint rules are defined in /tslint.json.
 
-## Development guidelines
+### Database
 
-### Code Review
+There is no database in the project.
 
-All changes to the repository have to be reviewed and merged through pull requests.
+## Deployment
 
-The reviewer should consider the following:
+The customer handles deployment in this project.
+The application is hosted in a Docker container running an NGINX server.
 
-- Do the changes actually solve the relevant issue correctly and entirely?
-- Do the changes have any unintended consequences elsewhere in the project?
-- Do the changes follow the style of the rest of the code?
-- Are the changes sufficiently covered by automated tests?
-- Do the changes require any changes to the documentation?
-- Has the version number and changelog been updated correctly?
+### Building the code
 
-### General patterns and conventions
+The project is built as part of building the Docker image.
 
-All icons in the application are added by creating a Vue component with the icons svg code.
+The first step of the Dockerfile is copying the source files and building them.
 
-### Known bugs and quirks
+## Accesses
 
-Be careful when updating the Vuetify package.
-It often breaks the styling of custom components in the application.
+Access is needed for pushing to the customers Bitbucket repository.
 
-## Deploying
+## Contacts
 
-In production the application is hosted in a Docker container running an NGINX server.
+Project Manager: cst@it-minds.dk
 
-The Dockerfile consists of two stages.
+Lead Developer: rsr@it-minds.dk
 
-The first stage is based on a Node.js image, it handles building the source code into the final production bundle.
-
-The second stage is based on a lightweight NGINX image, it handles;
-
-- configuring NGINX,
-- serving the built application,
-- passing environment variables from the Docker container to the frontend.
-
-Since the Dockerfile handles everything related to building and configuration, the only manual step is to run [docker build](https://docs.docker.com/engine/reference/commandline/build/) and running the docker image.
-
-The image takes a single env variable `API_AUTOPROCES` to set the origin of the backend API, e.g. https://dev.os2autoproces.eu.
+Backend Developer: bsg@digital-identity.dk

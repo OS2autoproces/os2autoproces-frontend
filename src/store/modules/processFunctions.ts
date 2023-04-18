@@ -38,6 +38,7 @@ export const initialProcessState: ProcessState = {
   kle: null,
   form: null,
   contact: null,
+  otherContactEmail: null,
   klId: '',
   kla: null,
   legalClause: '',
@@ -85,6 +86,7 @@ export const initialProcessState: ProcessState = {
   timeSpendComputedTotal: '0',
   timeSpendEmployeesDoingProcess: '0',
   timeSpendPercentageDigital: '0',
+  expectedDevelopmentTime: '0',
   targetsCitizens: false,
   targetsCompanies: false,
   timeSpendComment: '',
@@ -93,6 +95,7 @@ export const initialProcessState: ProcessState = {
   organizationalImplementationNotes: '',
   technicalImplementationNotes: '',
   technologies: [],
+  services: [],
 
   /* Operation */
   lastChanged: '',

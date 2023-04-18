@@ -46,7 +46,7 @@
           >Her kan angive teknologier anvendt i løsningen fra listen. Hvis du mangler en teknologi, så kontakt
           OS2autoproces koordinationsgruppen, så vil de oprette den for dig.</InfoTooltip
         >
-        <TagSelector
+        <TagSelectorTechnologies
           @add="state.addTechnology($event)"
           @remove="state.removeTechnology($event)"
           :disabled="state.disabled.implementationEdit"
@@ -66,6 +66,21 @@
           :items="runPeriods"
         />
       </div>
+      <div class="automation" id="automations">
+        <h2 class="with-margin">Automatiseringen anvender følgende systemer/snitflader</h2>
+        <InfoTooltip
+          >Her kan du angive de systemer og snitflader som løsningen gør brug af ud fra listen. Hvis du mangler et
+          system/snitflade, så kontakt OS2autoproces koordinationsgruppen, så vil de oprette den for dig.
+        </InfoTooltip>
+        <TagSelectorITSystems
+          @add="state.addServices($event)"
+          @remove="state.removeServices($event)"
+          :disabled="state.disabled.implementationEdit"
+          :value="state.services"
+          :hasError="isInErrors('services')"
+          :items="itSystems"
+        />
+      </div>
     </div>
   </FormSection>
 </template>
@@ -76,7 +91,8 @@ import RichTextArea from '@/components/common/inputs/RichTextArea.vue';
 import { Action, Getter } from 'vuex-class';
 import FormSection from '@/components/details/FormSection.vue';
 import InfoTooltip from '@/components/common/InfoTooltip.vue';
-import TagSelector from '@/components/common/inputs/TagSelector.vue';
+import TagSelectorTechnologies from '@/components/common/inputs/TagSelectorTechnologies.vue';
+import TagSelectorITSystems from '@/components/common/inputs/TagSelectorITSystems.vue';
 import MappedSelectionField from '@/components/common/inputs/MappedSelectionField.vue';
 import { Technology } from '@/store/modules/commonInterfaces';
 import { CommonModule } from '@/store/modules/common';
@@ -90,7 +106,8 @@ import { ErrorModule } from '@/store/modules/error';
     RichTextArea,
     FormSection,
     InfoTooltip,
-    TagSelector,
+    TagSelectorTechnologies,
+    TagSelectorITSystems,
     MappedSelectionField
   }
 })
@@ -111,6 +128,10 @@ export default class ImplementationForm extends Vue {
 
   get technologies() {
     return CommonModule.technologies;
+  }
+
+  get itSystems() {
+    return CommonModule.itSystems;
   }
 
   get state() {

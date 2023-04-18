@@ -6,7 +6,7 @@
     </div>
     <div class="result-column potential">
       <div>
-        <div class="field">Kommune:</div>
+        <div class="field">Organisation:</div>
         <div class="value">{{ process.municipalityName }}</div>
       </div>
       <div>

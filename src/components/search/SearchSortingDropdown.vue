@@ -46,7 +46,6 @@ export default class SearchSortingDropdown extends Vue {
 
   keys: Array<{ property: keyof SortingOptionParams; text: string; ascLabel?: string; descLabel?: string }> = [
     { property: 'created', text: 'Seneste tilføjede' },
-    { property: 'rating', text: 'Vurderet potentiale', ascLabel: this.ascLabel, descLabel: this.descLabel },
     { property: 'title', text: 'Proces', ascLabel: ', A-Z', descLabel: ', Z-A' }
   ];
 
@@ -62,6 +61,12 @@ export default class SearchSortingDropdown extends Vue {
     },
     []
   );
+
+  updateFilters(filters: SearchFilters) {
+    return SearchModule.updateFilters({
+      ...filters
+    });
+  }
 
   get formattedOption(): DropdownSortingOption {
     return (

@@ -34,12 +34,12 @@
     >
 
     <div class="datepicker">
-      Oprettet:
+      Oprettet siden:
       <DatePicker :value="filters.created" @change="updateFilters({ created: $event })" />
     </div>
 
     <div class="datepicker">
-      Senest ændret:
+      Ændret siden:
       <DatePicker :value="filters.lastChanged" @change="updateFilters({ lastChanged: $event })" />
     </div>
 

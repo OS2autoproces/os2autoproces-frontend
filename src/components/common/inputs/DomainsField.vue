@@ -24,14 +24,22 @@ export default class DomainsField extends Vue {
   item: Item[] = [];
 
   items = [
-    { value: DomainKeys.WORK, text: DomainLabels.WORK },
     { value: DomainKeys.HEALTH, text: DomainLabels.HEALTH },
-    { value: DomainKeys.CHILDREN, text: DomainLabels.CHILDREN },
     { value: DomainKeys.ENVIRONMENT, text: DomainLabels.ENVIRONMENT },
     { value: DomainKeys.DEMOCRACY, text: DomainLabels.DEMOCRACY },
-    { value: DomainKeys.ADMINISTRATION, text: DomainLabels.ADMINISTRATION }
+    { value: DomainKeys.ADMINISTRATION, text: DomainLabels.ADMINISTRATION },
+    { value: DomainKeys.TECHNIQUE, text: DomainLabels.TECHNIQUE },
+    { value: DomainKeys.IT, text: DomainLabels.IT },
+    { value: DomainKeys.HR, text: DomainLabels.HR },
+    { value: DomainKeys.ECONOMY, text: DomainLabels.ECONOMY },
+    { value: DomainKeys.EDUCATION, text: DomainLabels.EDUCATION },
+    { value: DomainKeys.FAMILY, text: DomainLabels.FAMILY },
+    { value: DomainKeys.CULTURE, text: DomainLabels.CULTURE },
+    { value: DomainKeys.PROFESSION, text: DomainLabels.PROFESSION },
+    { value: DomainKeys.SOCIAL, text: DomainLabels.SOCIAL },
+    { value: DomainKeys.SUSTAINABILITY, text: DomainLabels.SUSTAINABILITY },
+    { value: DomainKeys.EMPLOYMENT, text: DomainLabels.EMPLOYMENT }
   ];
-
   @Watch('value')
   valueWatch(newValue: Domain[]) {
     // Check if value actually changed

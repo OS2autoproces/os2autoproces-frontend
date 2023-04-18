@@ -29,6 +29,9 @@
         <WellItem labelWidth="200px" label="ID:">
           <InputField disabled :value="state.id" />
         </WellItem>
+        <WellItem labelWidth="180px" label="Organisation:">
+          <span>{{ state.municipalityName }}</span>
+        </WellItem>
         <WellItem labelWidth="180px" label="Indberetter:" v-if="isWithinMunicipality">
           <SelectionField disabled :value="state.reporter" itemText="name" />
         </WellItem>
@@ -57,6 +60,8 @@
           labelWidth="180px"
           label="Kontaktperson:"
           tooltip="En person der har teknisk viden omkring løsningen."
+          :required="true"
+          v-if="isWithinMunicipality || (!isWithinMunicipality && state.otherContactEmail == null)"
         >
           <SelectionField
             itemSubText="email"
@@ -71,7 +76,30 @@
             clearable
           />
         </WellItem>
-        <WellItem v-if="state.contact" labelWidth="180px" label="Mail:">{{ state.contact.email }}</WellItem>
+        <WellItem
+          v-if="
+            (state.contact && isWithinMunicipality) ||
+              (state.contact && !isWithinMunicipality && state.otherContactEmail == null)
+          "
+          labelWidth="180px"
+          label="Mail:"
+        >
+          {{ state.contact.email }}
+        </WellItem>
+        <WellItem
+          id="otherContactEmail"
+          labelWidth="180px"
+          label="Anden kontaktinformation:"
+          tooltip="Ønsker du anden kontakt information end en oprettet bruger i OS2autoproces, noter da information og email i dette felt. Eksempel: fællespostkassen OS2, xxxx@os2.dk. Disse oplysninger erstatter oplysningerne i feltet Kontaktperson, når processen læses af andre organisationer."
+          v-if="isWithinMunicipality || (!isWithinMunicipality && state.otherContactEmail != null)"
+        >
+          <InputField
+            :value="state.otherContactEmail"
+            :disabled="state.disabled.generalInformationEdit"
+            :hasError="isInErrors('otherContactEmail')"
+            @change="update({ otherContactEmail: $event })"
+          />
+        </WellItem>
       </div>
 
       <div>
@@ -79,7 +107,7 @@
           id="visibility"
           labelWidth="120px"
           label="Synlighed:"
-          tooltip="Synligheden ’Egen organisation’ betyder at alle brugere i din organisation kan se processen. Synligheden ’Alle i OS2autoproces’ betyder at brugere i andre kommuner og regioner kan se processen. Privat betyder at det kun er dig og din superbruger der kan se processen."
+          tooltip="Synligheden ’Egen organisation’ betyder at alle brugere i din organisation kan se processen. Synligheden ’Alle i OS2autoproces’ betyder at brugere i andre organisationer kan se processen. Privat betyder at det kun er dig og din superbruger der kan se processen."
         >
           <MappedSelectionField
             :disabled="!!state.parents.length || state.disabled.generalInformationEdit"
@@ -89,7 +117,12 @@
             :items="visibilityLevels"
           />
         </WellItem>
-        <WellItem id="domains" labelWidth="120px" label="Fagområder:">
+        <WellItem
+          id="domains"
+          labelWidth="120px"
+          label="Fagområder:"
+          tooltip="Vælg gerne flere kategorier, hvis processen vedrører flere områder."
+        >
           <DomainsField
             :disabled="state.disabled.generalInformationEdit"
             :value="state.domains"
@@ -113,7 +146,7 @@
           v-if="state.minPhase(PhaseKeys.DEVELOPMENT)"
           labelWidth="180px"
           label="Leverandør:"
-          tooltip="Her skrives enten kommunens navn eller en ekstern leverandør der har lavet løsningen."
+          tooltip="Her skrives organisationens navn eller en ekstern leverandør der har lavet løsningen."
         >
           <InputField
             :disabled="state.disabled.generalInformationEdit"
@@ -133,6 +166,12 @@
       </div>
 
       <div>
+        <WellItem label="Oprettet:">
+          <DatePicker :value="state.created" id="created" disabled />
+        </WellItem>
+        <WellItem label="Sidst opdateret:">
+          <DatePicker :value="state.lastChanged" id="lastChanged" disabled />
+        </WellItem>
         <WellItem v-if="state.minPhase(PhaseKeys.PREANALYSIS)" labelWidth="120px" label="Lovparagraf:" id="legalClause">
           <InputField
             :disabled="state.disabled.generalInformationEdit || state.form"
@@ -249,6 +288,9 @@
         <h2 class="comments-heading" v-if="state.status === StatusKeys.FAILED">Hvorfor er processen mislykket?</h2>
         <h2 class="comments-heading" v-if="state.status === StatusKeys.PENDING">Hvorfor afventer processen?</h2>
         <h2 class="comments-heading" v-if="state.status === StatusKeys.REJECTED">Hvorfor er processen afvist?</h2>
+        <h2 class="comments-heading" v-if="state.status === StatusKeys.NOT_RELEVANT">
+          Hvorfor er processen ikke relevant mere?
+        </h2>
         <TextArea
           :disabled="state.disabled.generalInformationEdit"
           @change="update({ statusText: $event })"
@@ -302,6 +344,7 @@ import Button from '@/components/common/inputs/Button.vue';
 import { AuthModule, User } from '@/store/modules/auth';
 import { ProcessModule, ProcessState } from '@/store/modules/process';
 import { ErrorModule } from '@/store/modules/error';
+import DatePicker from '@/components/common/inputs/DatePicker.vue';
 // TODO - split this component. No component should be 500 lines
 @Component({
   components: {
@@ -323,7 +366,8 @@ import { ErrorModule } from '@/store/modules/error';
     WarningIcon,
     AppDialog,
     DialogContent,
-    Button
+    Button,
+    DatePicker
   }
 })
 export default class GeneralInformationForm extends Vue {
@@ -345,7 +389,8 @@ export default class GeneralInformationForm extends Vue {
     { value: StatusKeys.FAILED, text: StatusLabels.FAILED },
     { value: StatusKeys.PENDING, text: StatusLabels.PENDING },
     { value: StatusKeys.INPROGRESS, text: StatusLabels.INPROGRESS },
-    { value: StatusKeys.NOT_RATED, text: StatusLabels.NOT_RATED }
+    { value: StatusKeys.NOT_RATED, text: StatusLabels.NOT_RATED },
+    { value: StatusKeys.NOT_RELEVANT, text: StatusLabels.NOT_RELEVANT }
   ];
 
   get isWithinMunicipality() {
@@ -410,7 +455,10 @@ export default class GeneralInformationForm extends Vue {
     this.isPhaseChanged = true;
     ProcessModule.update({ phase });
 
-    if (phase === PhaseKeys.OPERATION && ProcessModule.visibility !== VisibilityKeys.PUBLIC) {
+    if (
+      (phase === PhaseKeys.OPERATION || phase === PhaseKeys.DECOMMISSIONED) &&
+      ProcessModule.visibility !== VisibilityKeys.PUBLIC
+    ) {
       this.openPublicVisibilityDialog();
     }
   }

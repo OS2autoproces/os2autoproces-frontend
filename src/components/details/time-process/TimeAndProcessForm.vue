@@ -109,6 +109,32 @@
             :items="yesNoItems"
           />
         </WellItem>
+        <WellItem
+          id="expectedDevelopmentTime"
+          labelWidth="70%"
+          label="Forventet timeforbrug på udvikling"
+          tooltip="Dette felt udfyldes af en person som har teknisk viden omkring udvikling."
+          :required="state.minPhase(PhaseKeys.PREANALYSIS)"
+        >
+          <InputField
+            :type="'number'"
+            :disabled="state.disabled.timeAndProcessEdit"
+            :value="hoursAndMinutesExpectedDevelopmentTime.hours.toFixed(0)"
+            @change="updateExpectedDevelopmentTime({ hours: $event })"
+            :hasError="isInErrors('expectedDevelopmentTime')"
+            :rules="hoursRules"
+            >tim</InputField
+          >
+          <InputField
+            :type="'number'"
+            :disabled="state.disabled.timeAndProcessEdit"
+            :value="hoursAndMinutesExpectedDevelopmentTime.minutes.toFixed(0)"
+            @change="updateExpectedDevelopmentTime({ minutes: $event })"
+            :rules="minuteRules"
+            :hasError="isInErrors('expectedDevelopmentTime')"
+            >min</InputField
+          >
+        </WellItem>
       </div>
     </Well>
 
@@ -130,18 +156,17 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator';
+import InfoTooltip from '@/components/common/InfoTooltip.vue';
+import InputField from '@/components/common/inputs/InputField.vue';
+import MappedSelectionField from '@/components/common/inputs/MappedSelectionField.vue';
+import TextArea from '@/components/common/inputs/TextArea.vue';
 import Well from '@/components/common/Well.vue';
 import WellItem from '@/components/common/WellItem.vue';
-import InfoTooltip from '@/components/common/InfoTooltip.vue';
-import TextArea from '@/components/common/inputs/TextArea.vue';
-import MappedSelectionField from '@/components/common/inputs/MappedSelectionField.vue';
-import InputField from '@/components/common/inputs/InputField.vue';
 import FormSection from '@/components/details/FormSection.vue';
-import { Action, Getter } from 'vuex-class';
-import { Phase, PhaseKeys } from '@/models/phase';
-import Process, { ProcessModule, ProcessState } from '@/store/modules/process';
+import { PhaseKeys } from '@/models/phase';
 import { ErrorModule } from '@/store/modules/error';
+import { ProcessModule, ProcessState } from '@/store/modules/process';
+import { Component, Vue } from 'vue-property-decorator';
 
 @Component({
   components: {
@@ -168,6 +193,17 @@ export default class TimeAndProcessForm extends Vue {
     value => parseInt(value, 10) >= 0 || 'Sekunder kan ikke være negative'
   ];
 
+  minuteRules: Array<(value: string) => boolean | string> = [
+    value => Number.isInteger(Number(value)) || 'Minutter skal være heltal',
+    value => parseInt(value, 10) < 60 || 'Minutter kan højest være 59',
+    value => parseInt(value, 10) >= 0 || 'Minutter kan ikke være negative'
+  ];
+
+  hoursRules: Array<(value: string) => boolean | string> = [
+    value => Number.isInteger(Number(value)) || 'Timer skal være heltal',
+    value => parseInt(value, 10) >= 0 || 'Timer kan ikke være negative'
+  ];
+
   get state() {
     return ProcessModule;
   }
@@ -178,6 +214,10 @@ export default class TimeAndProcessForm extends Vue {
 
   get timeSpendPerOccurance() {
     return Number(ProcessModule.timeSpendPerOccurance);
+  }
+
+  get expectedDevelopmentTime() {
+    return Number(ProcessModule.expectedDevelopmentTime);
   }
 
   get timeSpendPercentageDigital() {
@@ -192,6 +232,7 @@ export default class TimeAndProcessForm extends Vue {
     const hours = (this.timeSpendTotal / 60).toFixed(2) || '0';
     return hours;
   }
+
   // Number of times this process is repeated yearly * amount of time required pr. process in minutes / 60 * automation potential / 100
   get exptectedYearlyPotential() {
     const hours = ((this.timeSpendTotal / 60) * (this.timeSpendPercentageDigital / 100)).toFixed(2) || '0';
@@ -202,6 +243,12 @@ export default class TimeAndProcessForm extends Vue {
     const minutes = parseInt(ProcessModule.timeSpendPerOccurance ?? '', 10); // remove decimals
     const seconds = (this.timeSpendPerOccurance - minutes) * 60; // remove minute part and convert decimals to seconds
     return { minutes, seconds };
+  }
+
+  get hoursAndMinutesExpectedDevelopmentTime(): { hours: number; minutes: number } {
+    const hours = parseInt(ProcessModule.expectedDevelopmentTime ?? '', 10); // remove decimals
+    const minutes = (this.expectedDevelopmentTime - hours) * 60; // remove hour part and convert decimals to minutes
+    return { hours, minutes };
   }
 
   update(state: Partial<ProcessState>) {
@@ -219,6 +266,15 @@ export default class TimeAndProcessForm extends Vue {
       !!seconds || seconds === '' ? parseInt(seconds || '0', 10) : this.minutesAndSecondsPerOccurance.seconds;
     const timeSpendPerOccurance = newMinutes + newSeconds / 60;
     ProcessModule.update({ timeSpendPerOccurance: `${timeSpendPerOccurance}` });
+  }
+
+  updateExpectedDevelopmentTime({ hours, minutes }: { hours: string; minutes: string }) {
+    const newHours =
+      !!hours || hours === '' ? parseInt(hours || '0', 10) : this.hoursAndMinutesExpectedDevelopmentTime.hours;
+    const newMinutes =
+      !!minutes || minutes === '' ? parseInt(minutes || '0', 10) : this.hoursAndMinutesExpectedDevelopmentTime.minutes;
+    const expectedDevelopmentTime = newHours + newMinutes / 60;
+    ProcessModule.update({ expectedDevelopmentTime: `${expectedDevelopmentTime}` });
   }
 }
 </script>

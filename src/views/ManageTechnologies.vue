@@ -67,7 +67,7 @@ export default class ManageTechnologies extends Vue {
     if (!technology.name) {
       return;
     }
-    CommonModule.editTechnology(technology.id, technology.name);
+    CommonModule.editTechnology(technology);
     this.editing = null;
   }
 

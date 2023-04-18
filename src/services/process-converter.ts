@@ -9,7 +9,7 @@ import { User } from '@/store/modules/auth';
 import { ProcessState } from '@/store/modules/process';
 import { Link } from '@/store/modules/processInterfaces';
 import { CommonModule } from '@/store/modules/common';
-import { ITSystem, OrgUnit, Technology } from '@/store/modules/commonInterfaces';
+import { ITSystem, OrgUnit, Service, Technology } from '@/store/modules/commonInterfaces';
 import { ProcessReport } from '@/store/modules/processInterfaces';
 
 export interface ProcessRequest {
@@ -50,6 +50,7 @@ export interface ProcessRequest {
   timeSpendPerOccurance: number;
   timeSpendEmployeesDoingProcess: number;
   timeSpendPercentageDigital: number;
+  expectedDevelopmentTime: number;
   timeSpendComment: string;
   targetsCompanies: boolean;
   targetsCitizens: boolean;
@@ -76,7 +77,9 @@ export interface ProcessRequest {
   users: string[] | null;
   owner: string | null;
   contact: string | null;
+  otherContactEmail: string | null;
   itSystems: string[] | null;
+  services: string[] | null;
   orgUnits: string[];
   technologies: string[] | null;
   children: string[];
@@ -129,6 +132,7 @@ export interface ProcessResponse {
   timeSpendEmployeesDoingProcess: number;
   timeSpendPercentageDigital: number;
   timeSpendComputedTotal: number;
+  expectedDevelopmentTime: number;
   timeSpendComment: string;
   targetsCompanies: boolean;
   targetsCitizens: boolean;
@@ -155,8 +159,10 @@ export interface ProcessResponse {
   users: User[] | null;
   owner: User;
   contact: User;
+  otherContactEmail: string | null;
   reporter: User;
   itSystems: ITSystem[] | null;
+  services: Service[] | null;
   orgUnits: OrgUnit[] | null;
   technologies: Technology[] | null;
   children: ProcessReport[];
@@ -205,6 +211,7 @@ function stateToRequestFields(state: ProcessReport): ProcessRequest {
     kla: defaultNull(state.kla),
     codeRepositoryUrl: state.codeRepositoryUrl ?? '',
     links: defaultNull(state.links),
+    services: defaultNull(state.services),
     vendor: defaultNull(state.vendor),
     internalNotes: defaultNull(state.internalNotes),
     processChallenges: defaultNull(state.processChallenges),
@@ -213,6 +220,7 @@ function stateToRequestFields(state: ProcessReport): ProcessRequest {
     timeSpendOccurancesPerEmployee: defaultZero(state.timeSpendOccurancesPerEmployee),
     timeSpendPercentageDigital: defaultZero(state.timeSpendPercentageDigital),
     timeSpendPerOccurance: defaultZero(state.timeSpendPerOccurance),
+    expectedDevelopmentTime: defaultZero(state.expectedDevelopmentTime),
     timeSpendComment: state.timeSpendComment ?? '',
     targetsCompanies: !!state.targetsCompanies,
     targetsCitizens: !!state.targetsCitizens,
@@ -235,6 +243,7 @@ function stateToRequestFields(state: ProcessReport): ProcessRequest {
     sepMep: !!state.sepMep,
     contact: relation('users', state.contact),
     owner: relation('users', state.owner),
+    otherContactEmail: defaultNull(state.otherContactEmail),
     orgUnits: relationArray('orgUnits', state.orgUnits),
     users: relationArray('users', state.users),
     technologies: relationArray('technologies', state.technologies),
@@ -258,6 +267,7 @@ function buildUmbrellaRequest(request: ProcessRequest): Partial<ProcessRequest> 
     'kla',
     'form',
     'contact',
+    'otherContactEmail',
     'children',
     'domains',
     'title',
@@ -302,6 +312,7 @@ export function responseToState(process: ProcessResponse): ProcessState {
     timeSpendOccurancesPerEmployee: process.timeSpendOccurancesPerEmployee.toString(),
     timeSpendPercentageDigital: process.timeSpendPercentageDigital.toString(),
     timeSpendPerOccurance: process.timeSpendPerOccurance.toString(),
+    expectedDevelopmentTime: process.expectedDevelopmentTime ? process.expectedDevelopmentTime.toString() : '0',
     rating: process.rating || 0,
     itSystemsDescription: process.itSystemsDescription || '',
     hasBookmarked: process.hasBookmarked,
@@ -328,6 +339,7 @@ export function responseToState(process: ProcessResponse): ProcessState {
     technicalImplementationNotes: process.technicalImplementationNotes || '',
     searchWords: process.searchWords || '',
     itSystems: process.itSystems || [],
+    services: process.services || [],
     orgUnits: process.orgUnits || [],
     created: process.created || '',
     decommissioned: process.decommissioned || '',

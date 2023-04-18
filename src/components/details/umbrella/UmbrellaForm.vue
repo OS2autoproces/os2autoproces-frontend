@@ -75,7 +75,12 @@
         </div>
 
         <div>
-          <WellItem id="domains" labelWidth="120px" label="Fagområder:">
+          <WellItem
+            id="domains"
+            labelWidth="120px"
+            label="Fagområder:"
+            tooltip="Vælg gerne flere kategorier, hvis processen vedrører flere områder."
+          >
             <DomainsField
               :disabled="state.disabled.generalInformationEdit"
               :value="state.domains"
@@ -83,7 +88,7 @@
               @change="assign({ domains: $event })"
             />
           </WellItem>
-          <WellItem id="contact" labelWidth="120px" label="Kontaktperson:">
+          <WellItem id="contact" labelWidth="120px" label="Kontaktperson:" :required="true">
             <SelectionField
               itemSubText="email"
               :disabled="state.disabled.generalInformationEdit"
@@ -98,6 +103,20 @@
             />
           </WellItem>
           <WellItem labelWidth="120px" v-if="state.contact" label="Mail:">{{ state.contact.email }}</WellItem>
+          <WellItem
+            id="otherContactEmail"
+            labelWidth="180px"
+            label="Anden kontaktinformation:"
+            tooltip="Ønsker du anden kontakt information end en oprettet bruger i OS2autoproces, noter da information og email i dette felt. Eksempel: fællespostkassen OS2, xxxx@os2.dk. Disse oplysninger erstatter oplysningerne i feltet Kontaktperson, når processen læses af andre organisationer."
+          >
+            <InputField
+              :value="state.otherContactEmail"
+              :disabled="state.disabled.generalInformationEdit"
+              :hasError="isInErrors('otherContactEmail')"
+              @change="update({ otherContactEmail: $event })"
+            />
+          </WellItem>
+
         </div>
 
         <div>

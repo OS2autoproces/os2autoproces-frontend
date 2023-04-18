@@ -105,6 +105,23 @@ export default class Auth extends VuexModule implements AuthState {
   get isFrontpageEditor() {
     return !!this.user?.roles ? this.user.roles.some(role => role === UserRole.frontpageEditor) : false;
   }
+
+  @Action
+  async editUser(): Promise<boolean> {
+    const response = await HTTP.put(`api/profile`, {
+      name: AuthModule.user?.name,
+      email: AuthModule.user?.email,
+      uuid: AuthModule.user?.uuid,
+      cvr: AuthModule.user?.cvr
+    });
+
+    if (response.status !== 200) {
+      throw new Error();
+    }
+
+    return true;
+  }
+
 }
 
 export const AuthModule = getModule(Auth);

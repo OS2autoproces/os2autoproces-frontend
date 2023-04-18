@@ -162,5 +162,8 @@ export const processFieldsValidators: { [P in keyof ProcessState]?: (state: Proc
   },
   itSystemsDescription({ itSystemsDescription }: ProcessState) {
     return isValid(itSystemsDescription, isMinMax(0, 10000));
+  },
+  otherContactEmail({ otherContactEmail }: ProcessState) {
+    return isValid(otherContactEmail, isMinMax(0, 255));
   }
 };

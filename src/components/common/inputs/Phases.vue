@@ -35,10 +35,10 @@ export default class Phases extends Vue {
     { value: PhaseKeys.SPECIFICATION, text: PhaseLabels.SPECIFICATION },
     { value: PhaseKeys.DEVELOPMENT, text: PhaseLabels.DEVELOPMENT },
     { value: PhaseKeys.IMPLEMENTATION, text: PhaseLabels.IMPLEMENTATION },
-    { value: PhaseKeys.OPERATION, text: PhaseLabels.OPERATION }
+    { value: PhaseKeys.OPERATION, text: PhaseLabels.OPERATION },
+    { value: PhaseKeys.DECOMMISSIONED, text: PhaseLabels.DECOMMISSIONED }
   ];
 }
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

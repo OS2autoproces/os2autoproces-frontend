@@ -27,7 +27,7 @@
       <span>Antal viste</span>
       <SelectionField
         class="size-select"
-        :value="chosenSize"
+        :value="pageSize"
         :items="sizes"
         :type="'number'"
         :clearable="false"
@@ -44,6 +44,7 @@ import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 import ArrowLeftIcon from '../icons/ArrowLeftIcon.vue';
 import ArrowRightIcon from '../icons/ArrowRightIcon.vue';
 import SelectionField from '../common/inputs/SelectionField.vue';
+import { CommonModule } from '@/store/modules/common';
 
 @Component({
   components: {
@@ -60,16 +61,25 @@ export default class SearchPagination extends Vue {
     value,
     text: value.toString()
   }));
-  chosenSize = 5;
 
   @Emit()
   onPageChange(page: number) {
     return page;
   }
 
+  get pageSize() {
+    return CommonModule.page;
+  }
+
+  mounted() {
+    if (CommonModule.page === null) {
+      this.onSizeChange(5);
+    }
+  }
+
   @Emit()
   onSizeChange(size: number) {
-    this.chosenSize = size;
+    CommonModule.updatePage(size);
     return size;
   }
 

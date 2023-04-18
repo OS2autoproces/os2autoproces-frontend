@@ -1,11 +1,12 @@
-export type Status = 'REJECTED' | 'FAILED' | 'PENDING' | 'INPROGRESS' | 'NOT_RATED';
+export type Status = 'REJECTED' | 'FAILED' | 'PENDING' | 'INPROGRESS' | 'NOT_RATED' | 'NOT_RELEVANT';
 
 export const StatusLabels: { [x in Status]: string } = {
   PENDING: 'Afventer',
   REJECTED: 'Afvist',
-  INPROGRESS: 'Igang',
+  INPROGRESS: 'I gang',
   NOT_RATED: 'Ikke vurderet',
-  FAILED: 'Mislykket'
+  FAILED: 'Mislykket',
+  NOT_RELEVANT: 'Ikke relevant mere'
 };
 
 export const StatusKeys: { [x in Status]: x } = {
@@ -13,7 +14,8 @@ export const StatusKeys: { [x in Status]: x } = {
   FAILED: 'FAILED',
   PENDING: 'PENDING',
   INPROGRESS: 'INPROGRESS',
-  NOT_RATED: 'NOT_RATED'
+  NOT_RATED: 'NOT_RATED',
+  NOT_RELEVANT: 'NOT_RELEVANT'
 };
 
 export interface StatusSelect {
@@ -41,5 +43,9 @@ export const defaultStatusSelects: StatusSelect[] = [
   {
     label: StatusLabels.NOT_RATED,
     key: StatusKeys.NOT_RATED
+  },
+  {
+    label: StatusLabels.NOT_RELEVANT,
+    key: StatusKeys.NOT_RELEVANT
   }
 ];

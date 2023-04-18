@@ -4,7 +4,7 @@ import { RunPeriod } from '@/models/runperiod';
 import { Type } from '@/models/types';
 import { Domain } from '@/models/domain';
 import { Visibility } from '@/models/visibility';
-import { Kle, Form, ITSystem, OrgUnit, Technology } from './commonInterfaces';
+import { Kle, Form, ITSystem, OrgUnit, Technology, Service } from './commonInterfaces';
 import { LikertScale } from '@/models/likert-scale';
 import { User } from './auth';
 
@@ -44,6 +44,7 @@ export interface ProcessReport {
   solutionRequests: string | null;
   timeSpendOccurancesPerEmployee: string | null;
   timeSpendPerOccurance: string | null;
+  expectedDevelopmentTime: string | null;
   timeSpendEmployeesDoingProcess: string | null;
   timeSpendPercentageDigital: string | null;
   timeSpendComputedTotal: string | null;
@@ -69,8 +70,10 @@ export interface ProcessReport {
   users: User[] | null;
   owner: User | null;
   contact: User | null;
+  otherContactEmail: string | null;
   reporter: User | null;
   itSystems: ITSystem[] | null;
+  services: Service[] | null;
   orgUnits: OrgUnit[] | null;
   technologies: Technology[] | null;
   hasBookmarked: boolean | null;

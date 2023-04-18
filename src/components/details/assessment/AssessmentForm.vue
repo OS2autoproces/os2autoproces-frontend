@@ -13,7 +13,8 @@
           I hvor høj grad indgår der faglig vurdering i processen?
           <InfoTooltip class="tooltip"
             >En faglig vurdering kan f.eks. være, at en sagsbehandler foretager et skøn eller tager en beslutning der
-            har betydning for processens forløb.</InfoTooltip
+            har betydning for processens forløb. En proces med høj faglig vurdering egner sig oftest ikke til
+            automatisering.</InfoTooltip
           >
         </div>
         <LikertScale
@@ -80,7 +81,7 @@
         <div class="label">
           Vil en automatiseret løsning bidrage til en højere kvalitet, som er mere ensrettet og med færre fejl?
           <InfoTooltip class="tooltip"
-            >Her skal du vurdere, hvad en digital assistent kan betyde for kvaliteten af processen.</InfoTooltip
+            >Her skal du vurdere, hvad en automatiseret løsning kan betyde for kvaliteten af processen.</InfoTooltip
           >
         </div>
         <LikertScale
@@ -94,9 +95,9 @@
         <div class="label">
           Vil en automatiseret løsning bidrage til en hurtigere og mere fyldestgørende service?
           <InfoTooltip class="tooltip"
-            >Her skal du vurdere, hvad en digital assistent kan betyde for serviceniveauet. Det kunne f.eks. være at
-            borgerne vil få svar hurtigere.</InfoTooltip
-          >
+            >Her skal du vurdere, hvad en automatiseret løsning kan betyde for serviceniveauet. Det kunne f.eks. være at
+            borgerne vil få svar hurtigere.
+          </InfoTooltip>
         </div>
         <LikertScale
           :disabled="state.disabled.assessmentEdit"
@@ -109,9 +110,9 @@
         <div class="label">
           Vil automatisering frigive tid og nedbringe rutineopgaver, som skaber en bedre trivsel blandt medarbejderne?
           <InfoTooltip class="tooltip"
-            >Her skal du vurdere, hvad en digital assistent vil betyde for din egne trivsel som medarbejder. F.eks. ved
-            at lette nogle af de trivielle og tidskrævende arbejdsopgaver.</InfoTooltip
-          >
+            >Her skal du vurdere, hvad en automatiseret løsning vil betyde for din egen trivsel som medarbejder. F.eks.
+            ved at lette nogle af de trivielle og tidskrævende arbejdsopgaver.
+          </InfoTooltip>
         </div>
         <LikertScale
           :disabled="state.disabled.assessmentEdit"

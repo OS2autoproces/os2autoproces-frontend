@@ -16,6 +16,15 @@ export interface ITSystem {
   id: number;
   name: string;
   vendor: string | null;
+  fromKitos: boolean;
+}
+
+export interface Service {
+  name: string;
+}
+export interface ITSystemRequest {
+  name: string;
+  vendor: string | null;
 }
 export interface OrgUnit {
   id: number;

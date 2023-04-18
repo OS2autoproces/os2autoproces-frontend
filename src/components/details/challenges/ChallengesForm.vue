@@ -53,10 +53,6 @@
 
     <Well class="challenges-well">
       <div>
-        <WellItem label="Oprettet:">
-          <DatePicker :value="state.created" disabled />
-        </WellItem>
-
         <WellItem
           id="itSystems"
           label="Nuværende systemer:"
@@ -75,10 +71,6 @@
       </div>
 
       <div>
-        <WellItem labelWidth="30%" label="Sidst opdateret:">
-          <DatePicker :value="state.lastChanged" id="lastChanged" disabled />
-        </WellItem>
-
         <WellItem
           id="itSystemsDescription"
           labelWidth="30%"
@@ -104,7 +96,6 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 import TextArea from '@/components/common/inputs/TextArea.vue';
 import RichTextArea from '@/components/common/inputs/RichTextArea.vue';
 import SelectionField from '@/components/common/inputs/SelectionField.vue';
-import DatePicker from '@/components/common/inputs/DatePicker.vue';
 import FormSection from '@/components/details/FormSection.vue';
 import Well from '@/components/common/Well.vue';
 import InfoTooltip from '@/components/common/InfoTooltip.vue';
@@ -123,7 +114,6 @@ import { RootState } from '@/store';
     TextArea,
     RichTextArea,
     SelectionField,
-    DatePicker,
     Well,
     FormSection,
     InfoTooltip,

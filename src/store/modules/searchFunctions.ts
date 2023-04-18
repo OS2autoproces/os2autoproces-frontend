@@ -37,15 +37,25 @@ export function getInitialState(): SearchState {
         SPECIFICATION: false,
         DEVELOPMENT: false,
         IMPLEMENTATION: false,
-        OPERATION: false
+        OPERATION: false,
+        DECOMMISSIONED: false
       },
       domain: {
-        WORK: false,
         ADMINISTRATION: false,
-        CHILDREN: false,
+        EMPLOYMENT: false,
+        PROFESSION: false,
+        FAMILY: false,
+        EDUCATION: false,
         DEMOCRACY: false,
         ENVIRONMENT: false,
-        HEALTH: false
+        TECHNIQUE: false,
+        SOCIAL: false,
+        HEALTH: false,
+        SUSTAINABILITY: false,
+        HR: false,
+        IT: false,
+        CULTURE: false,
+        ECONOMY: false
       },
       runPeriod: {
         ONDEMAND: false,
@@ -61,7 +71,8 @@ export function getInitialState(): SearchState {
         INPROGRESS: false,
         NOT_RATED: false,
         PENDING: false,
-        REJECTED: false
+        REJECTED: false,
+        NOT_RELEVANT: false
       }
     }
   };

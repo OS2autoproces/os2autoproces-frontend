@@ -5,7 +5,7 @@ import { HTTP } from '@/services/http-service';
 import { Disabled, Attachment, Comment, ProcessReport, AttachmentFile, Link } from './processInterfaces';
 import { initialProcessState, setBackendManagedFields, initialProcessKeys } from './processFunctions';
 import { User } from '@/store/modules/auth';
-import { Technology, ITSystem, Kle, Form, OrgUnit } from './commonInterfaces';
+import { Technology, ITSystem, Kle, Form, OrgUnit, Service } from './commonInterfaces';
 import { ProcessResponse, responseToState, stateToRequest } from '@/services/process-converter';
 import { getInvalidProperties } from './validation';
 import { isEmpty } from 'lodash';
@@ -75,6 +75,7 @@ export default class Process extends VuexModule implements ProcessState {
   timeSpendPercentageDigital: string | null = null;
   timeSpendComputedTotal: string | null = null;
   timeSpendComment: string | null = null;
+  expectedDevelopmentTime: string | null = null;
   targetsCompanies: boolean | null = null;
   targetsCitizens: boolean | null = null;
   municipalityName: string | null = null;
@@ -96,8 +97,10 @@ export default class Process extends VuexModule implements ProcessState {
   users: User[] = [];
   owner: User | null = null;
   contact: User | null = null;
+  otherContactEmail: string | null = null;
   reporter: User | null = null;
   itSystems: ITSystem[] = [];
+  services: Service[] = [];
   orgUnits: OrgUnit[] = [];
   technologies: Technology[] = [];
   hasBookmarked: boolean | null = null;
@@ -327,6 +330,43 @@ export default class Process extends VuexModule implements ProcessState {
       return;
     }
     this.ASSIGN({ itSystems: [...this.itSystems, itSystem] });
+  }
+
+  @Action
+  addITSystems(itSystems: ITSystem) {
+    if (this.itSystems) {
+      if (!this.itSystems?.some(t => t.name === itSystems.name)) {
+        this.ASSIGN({ itSystems: [...this.itSystems, itSystems] });
+      }
+    } else {
+      this.ASSIGN({ itSystems: [itSystems] });
+    }
+  }
+
+  @Action
+  removeITSystems(index: number) {
+    if (this.itSystems) {
+      this.ASSIGN({ itSystems: this.itSystems.filter((_, i) => i !== index) });
+    }
+  }
+
+  @Action
+  addServices(itSystem: ITSystem) {
+    const service: Service = { name: itSystem.name };
+    if (this.services) {
+      if (!this.services?.some(s => s.name === service.name)) {
+        this.ASSIGN({ services: [...this.services, service] });
+      }
+    } else {
+      this.ASSIGN({ services: [service] });
+    }
+  }
+
+  @Action
+  removeServices(index: number) {
+    if (this.services) {
+      this.ASSIGN({ services: this.services.filter((_, i) => i !== index) });
+    }
   }
 
   @Action

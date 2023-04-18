@@ -6,13 +6,7 @@
     </div>
     <div class="result-column potential">
       <div v-if="isChildProcess">
-        <div class="field">Vurderet potentiale:</div>
-        <div class="value">
-          <Rating class="rating" :value="process.rating" disabled />
-        </div>
-      </div>
-      <div v-if="isChildProcess">
-        <div class="field">Kommune:</div>
+        <div class="field">Organisation:</div>
         <div class="value">{{ process.municipalityName }}</div>
       </div>
       <div>

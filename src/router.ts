@@ -4,9 +4,11 @@ import Router, { Route, RouteConfig } from 'vue-router';
 import Details from './views/Details.vue';
 import Home from './views/Home.vue';
 import ManageTechnologies from './views/ManageTechnologies.vue';
+import ManageSystems from './views/ManageSystems.vue';
 import ReportProcess from './views/ReportProcess.vue';
 import Search from './views/Search.vue';
 import Discovery from './views/Discovery.vue';
+import Profile from './views/Profile.vue';
 import { mapSearchQueryToObject, mapQueryObjToFilters, isIE } from '@/services/url-service';
 import { isEmpty } from 'lodash';
 import { getInitialState } from '@/store/modules/searchFunctions';
@@ -27,6 +29,44 @@ function validateAuth(isValid: (user: User | undefined | null) => boolean) {
       }
     }
   };
+}
+
+function validateAuthPlusCheckProfile(isValid: (user: User | undefined | null) => boolean) {
+  return async (to: Route, from: Route, next: any) => {
+    if (isValid(AuthModule.user)) {
+      if (
+        AuthModule.user?.name == null ||
+        AuthModule.user?.name === '' ||
+        AuthModule.user?.email == null ||
+        AuthModule.user?.email === ''
+      ) {
+        window.location.href = '/profile';
+      } else {
+        window.location.href = '/search';
+      }
+    } else {
+      await AuthModule.loadUser();
+
+      if (isValid(AuthModule.user)) {
+        if (
+          AuthModule.user?.name == null ||
+          AuthModule.user?.name === '' ||
+          AuthModule.user?.email == null ||
+          AuthModule.user?.email === ''
+        ) {
+          window.location.href = '/profile';
+        } else {
+          window.location.href = '/search';
+        }
+      } else {
+        window.location.href = `${window.autoProcessConfiguration.apiUrl}/saml/login`;
+      }
+    }
+  };
+}
+
+function isLoggedInPlusCheckProfile() {
+  return validateAuthPlusCheckProfile(user => !!user);
 }
 
 function handleDetailsIE() {
@@ -56,6 +96,16 @@ export const routes: RouteConfig[] = [
     beforeEnter: hasRole(UserRole.administrator)
   },
   {
+    path: '/manage-systems',
+    component: ManageSystems,
+    beforeEnter: hasRole(UserRole.administrator)
+  },
+  {
+    path: '/profile',
+    component: Profile,
+    beforeEnter: isLoggedIn()
+  },
+  {
     path: '/search',
     props: ({ query }) => {
       return {
@@ -82,7 +132,13 @@ export const routes: RouteConfig[] = [
     component: ReportProcess,
     beforeEnter: isLoggedIn()
   },
-  { path: '/logged-in', redirect: '/search' },
+  {
+    path: '/logged-in',
+    component: Home,
+
+    // this will redirect to to either login (if user is not logged in), search (if user profile is completed) or profile (if user profile is not completed), so that the component is set to Home does not matter
+    beforeEnter: isLoggedInPlusCheckProfile()
+  },
   { path: '/logged-out', redirect: '/' }
 ];
 

@@ -3,9 +3,7 @@
     <NavBar />
 
     <div class="wrapper">
-      <router-link to="/search" class="search-page-link">
-        <ArrowLeftIcon />Tilbage til søgning
-      </router-link>
+      <router-link to="/search" class="search-page-link"> <ArrowLeftIcon />Tilbage til søgning </router-link>
 
       <div class="process-selector">
         <h1>Hvad ønsker du at indberette?</h1>
@@ -15,11 +13,9 @@
             <h2>Proces</h2>
 
             <div class="options">
-              <router-link
-                v-for="phase in phasesLevels"
-                :key="phase.route"
-                :to="`/details/new/${phase.route}`"
-              >{{phase.label}}</router-link>
+              <router-link v-for="phase in phasesLevels" :key="phase.route" :to="`/details/new/${phase.route}`">{{
+                phase.label
+              }}</router-link>
             </div>
           </div>
 
@@ -29,16 +25,17 @@
               <InfoTooltip>
                 En paraplyproces er en overordnet proces, hvor det er muligt at samle lignede processer under.
                 <!--no format-->
-                Et eksempel er: Paraplyen Lægeerklæringer. Hvortil processerne Lægeerklæring Randers, Lægeerklæring Skanderborg og Lægeerklæringer Syddjurs er tilknyttet.Forskellen på en ’egen paraply’ og ’fælles paraply’ er synligheden. Fælles paraplyer kan ses på tværs af organisationer, mens ’egen paraply’ kun kan ses i egen organisation.
+                Et eksempel er: Paraplyen Lægeerklæringer. Hvortil processerne Lægeerklæring Randers, Lægeerklæring
+                Skanderborg og Lægeerklæringer Syddjurs er tilknyttet.Forskellen på en ’egen paraply’ og ’fælles
+                paraply’ er synligheden. Fælles paraplyer kan ses på tværs af organisationer, mens ’egen paraply’ kun
+                kan ses i egen organisation.
               </InfoTooltip>
             </h2>
 
             <div class="options">
-              <router-link
-                v-for="type in typeLevels"
-                :key="type.route"
-                :to="`/details/new/${type.route}`"
-              >{{type.label}}</router-link>
+              <router-link v-for="type in typeLevels" :key="type.route" :to="`/details/new/${type.route}`">{{
+                type.label
+              }}</router-link>
             </div>
           </div>
         </div>
@@ -71,7 +68,8 @@ export default class Home extends Vue {
     { route: PhaseKeys.SPECIFICATION, label: PhaseLabels.SPECIFICATION },
     { route: PhaseKeys.DEVELOPMENT, label: PhaseLabels.DEVELOPMENT },
     { route: PhaseKeys.IMPLEMENTATION, label: PhaseLabels.IMPLEMENTATION },
-    { route: PhaseKeys.OPERATION, label: PhaseLabels.OPERATION }
+    { route: PhaseKeys.OPERATION, label: PhaseLabels.OPERATION },
+    { route: PhaseKeys.DECOMMISSIONED, label: PhaseLabels.DECOMMISSIONED }
   ];
 
   typeLevels = [

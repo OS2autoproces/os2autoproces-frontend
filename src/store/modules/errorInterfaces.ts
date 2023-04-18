@@ -65,7 +65,8 @@ export const timeAndProcessLabels: ProcessLabels = {
   timeSpendEmployeesDoingProcess: 'Antal medarbejdere der foretager processen',
   timeSpendPercentageDigital: 'Tidsbesparelse i %',
   timeSpendComputedTotal: 'Total besparelse',
-  timeSpendComment: 'Kommentar vedr. tidsforbrug'
+  timeSpendComment: 'Kommentar vedr. tidsforbrug',
+  expectedDevelopmentTime: 'Forventet timeforbrug på udvikling'
 };
 
 export const timeAndProcessKeys: Array<keyof ProcessLabels> = Object.keys(timeAndProcessLabels) as Array<
@@ -98,7 +99,8 @@ export const attachmentKeys: Array<keyof ProcessLabels> = Object.keys(attachment
 export const implementationLabels: ProcessLabels = {
   technologies: 'Anvendt teknologi',
   technicalImplementationNotes: 'Teknisk implementering',
-  organizationalImplementationNotes: 'Organisatorisk implementering'
+  organizationalImplementationNotes: 'Organisatorisk implementering',
+  services: 'Automatiseringen anvender følgende systemer/snitflader'
 };
 
 export const implementationKeys: Array<keyof ProcessLabels> = Object.keys(implementationLabels) as Array<
@@ -146,6 +148,7 @@ export const errorLimitations: { [key: string]: string } = {
   kla: '8, 11 eller 14 tegn',
   timeSpendOccurancesPerEmployee: 'kun tal',
   timeSpendPerOccurance: 'kun tal',
+  expectedDevelopmentTime: 'kun tal',
   timeSpendEmployeesDoingProcess: 'kun tal',
   timeSpendPercentageDigital: 'maks 100 tegn',
   owner: 'obligatorisk felt',

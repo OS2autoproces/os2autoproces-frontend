@@ -1,4 +1,4 @@
-export type Phase = 'IDEA' | 'PREANALYSIS' | 'SPECIFICATION' | 'DEVELOPMENT' | 'IMPLEMENTATION' | 'OPERATION';
+export type Phase = 'IDEA' | 'PREANALYSIS' | 'SPECIFICATION' | 'DEVELOPMENT' | 'IMPLEMENTATION' | 'OPERATION' | 'DECOMMISSIONED';
 
 export const PhaseLabels: { [x in Phase]: string } = {
   IDEA: 'Idé',
@@ -6,7 +6,8 @@ export const PhaseLabels: { [x in Phase]: string } = {
   SPECIFICATION: 'Specifikation',
   DEVELOPMENT: 'Udvikling',
   IMPLEMENTATION: 'Implementering',
-  OPERATION: 'I drift'
+  OPERATION: 'I drift',
+  DECOMMISSIONED: 'Taget ud af drift'
 };
 
 export const PhaseKeys: { [phase in Phase]: phase } = {
@@ -15,7 +16,8 @@ export const PhaseKeys: { [phase in Phase]: phase } = {
   SPECIFICATION: 'SPECIFICATION',
   DEVELOPMENT: 'DEVELOPMENT',
   IMPLEMENTATION: 'IMPLEMENTATION',
-  OPERATION: 'OPERATION'
+  OPERATION: 'OPERATION',
+  DECOMMISSIONED: 'DECOMMISSIONED'
 };
 
-export const PhaseOrder = ['IDEA', 'PREANALYSIS', 'SPECIFICATION', 'DEVELOPMENT', 'IMPLEMENTATION', 'OPERATION'];
+export const PhaseOrder = ['IDEA', 'PREANALYSIS', 'SPECIFICATION', 'DEVELOPMENT', 'IMPLEMENTATION', 'OPERATION', 'DECOMMISSIONED'];

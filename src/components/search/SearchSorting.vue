@@ -6,13 +6,7 @@
         <SortIcon v-if="sorting.property === 'title'" :descending="sorting.descending" />
       </div>
     </div>
-    <div class="sort-option-column">
-      <div @click="clickSortOption('rating')" role="button">
-        Vurderet potentiale
-        <SortIcon v-if="sorting.property === 'rating'" :descending="sorting.descending" />
-      </div>
-    </div>
-    <div class="sort-option-column"></div>
+
     <div class="sort-option-column">
       <div @click="clickSortOption('status')" role="button">
         Status
@@ -58,7 +52,7 @@ export default class SearchSorting extends Vue {
 .sort-option-column {
   @include heading;
   color: $color-primary;
-  flex: 0 0 25%;
+  flex: 0 0 75%;
 
   > div {
     display: inline-flex;
