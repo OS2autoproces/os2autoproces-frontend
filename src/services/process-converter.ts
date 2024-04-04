@@ -23,6 +23,7 @@ export interface ProcessRequest {
 
   created: string | null;
   lastChanged: string | null;
+  putIntoOperation: string | null;
   decommissioned: string | null;
 
   title: string;
@@ -72,6 +73,7 @@ export interface ProcessRequest {
 
   rating: number | null;
   ratingComment: string | null;
+  automationDescription: string | null;
   searchWords: string | null;
 
   users: string[] | null;
@@ -106,6 +108,7 @@ export interface ProcessResponse {
 
   created: string | null;
   lastChanged: string | null;
+  putIntoOperation: string | null;
   decommissioned: string | null;
 
   title: string;
@@ -154,6 +157,7 @@ export interface ProcessResponse {
 
   rating: number | null;
   ratingComment: string | null;
+  automationDescription: string | null;
   searchWords: string | null;
 
   users: User[] | null;
@@ -198,6 +202,7 @@ function stateToRequestFields(state: ProcessReport): ProcessRequest {
     runPeriod: state.runPeriod || RunPeriodKeys.ONDEMAND,
     created: defaultNull(state.created),
     lastChanged: defaultNull(state.lastChanged),
+    putIntoOperation: defaultNull(state.putIntoOperation),
     decommissioned: defaultNull(state.decommissioned),
     title: state.title ?? '',
     shortDescription: state.shortDescription ?? '',
@@ -237,6 +242,7 @@ function stateToRequestFields(state: ProcessReport): ProcessRequest {
     organizationalImplementationNotes: defaultNull(state.organizationalImplementationNotes),
     rating: defaultNull(state.rating),
     ratingComment: defaultNull(state.ratingComment),
+    automationDescription: defaultNull(state.automationDescription),
     searchWords: '',
     type: state.type || TypeKeys.CHILD,
     itSystemsDescription: defaultNull(state.itSystemsDescription),
@@ -323,6 +329,7 @@ export function responseToState(process: ProcessResponse): ProcessState {
     esdhReference: process.esdhReference || '',
     organizationalImplementationNotes: process.organizationalImplementationNotes || '',
     ratingComment: process.ratingComment || '',
+    automationDescription: process.automationDescription || '',
     timeSpendComment: process.timeSpendComment || '',
     technologies: process.technologies || [],
     users: process.users || [],
@@ -342,6 +349,7 @@ export function responseToState(process: ProcessResponse): ProcessState {
     services: process.services || [],
     orgUnits: process.orgUnits || [],
     created: process.created || '',
+    putIntoOperation: process.putIntoOperation || '',
     decommissioned: process.decommissioned || '',
     lastChanged: process.lastChanged || '',
     children: process.children || [],

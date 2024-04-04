@@ -4,10 +4,19 @@
       <PillCheckbox :value="!!filters.reporterId" @change="setReporterId">Mine indberetninger</PillCheckbox>
       <PillCheckbox :value="!!filters.usersId" @change="setUsersId">Mine tilknytninger</PillCheckbox>
       <PillCheckbox :value="!!filters.bookmarkedId" @change="setBookmarkedId">Mine favoritter</PillCheckbox>
-      <SearchSelectSavedFilters />
     </div>
 
+    <h1 v-if="!umbrellaProcessSearch">
+      SØGNING
+      <InfoTooltip>
+        Der søges i felterne: Titel, Resumé, Beskrivelse, Afdelinger, Indberetter, Kontaktperson (navn), Anden kontakt
+        information, Faglig kontaktperson (navn), KLE-nr., Idéer til løsning, Udfordringer i den nuværende proces,
+        Kommentar vedr. tidsforbrug, Teknisk implementering, Organisatorisk implementering, Beskrivelse af
+        automatisering, og Kommentar til realiseret gevinster.
+      </InfoTooltip>
+    </h1>
     <SearchField class="search-text" :value="filters.text" @change="updateFilters({ text: $event })" />
+    <SearchSelectSavedFilters style="margin-top: 1rem;" />
 
     <h1 v-if="!umbrellaProcessSearch">AVANCERET SØGNING</h1>
 
@@ -46,10 +55,11 @@
     <ExpandPanel title="Organisation">
       <SelectionField
         :items="municipalities"
-        :value="filters.municipality"
+        :value="filters.municipalities"
         itemText="name"
-        @change="assignFilters({ municipality: $event })"
+        @change="assignFilters({ municipalities: $event })"
         clearable
+        multiple
       />
     </ExpandPanel>
 
@@ -133,6 +143,7 @@ import { Municipality } from '@/store/modules/commonInterfaces';
 import { AuthModule } from '@/store/modules/auth';
 import { CommonModule } from '@/store/modules/common';
 import { SearchModule } from '@/store/modules/search';
+import InfoTooltip from '@/components/common/InfoTooltip.vue';
 
 @Component({
   components: {
@@ -147,7 +158,8 @@ import { SearchModule } from '@/store/modules/search';
     Button,
     SearchFiltersActions,
     SearchFiltersRunPeriod,
-    SearchSelectSavedFilters
+    SearchSelectSavedFilters,
+    InfoTooltip
   }
 })
 export default class SearchFiltersComponent extends Vue {
@@ -164,7 +176,7 @@ export default class SearchFiltersComponent extends Vue {
   umbrellaProcessSearch!: boolean;
 
   mounted() {
-    CommonModule.loadITSystems();
+    CommonModule.loadITSystemsSorted();
     CommonModule.loadMunicipalities();
     CommonModule.loadTechnologies();
   }

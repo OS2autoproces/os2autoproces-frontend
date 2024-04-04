@@ -5,6 +5,7 @@
     id="challenges"
     :disabled="state.disabled.challengesEdit"
     @edit="update({ disabled: { challengesEdit: $event } })"
+    :expandOnMount="shouldBeOpen"
   >
     <div id="longDescription">
       <h2>Beskrivelse</h2>
@@ -130,6 +131,32 @@ export default class ChallengesForm extends Vue {
 
   get itSystems() {
     return CommonModule.itSystems;
+  }
+
+  get shouldBeOpen(): boolean {
+    const href = window.location.href;
+    const url = new URL(href);
+    const params = url.searchParams;
+    let search = null;
+    for (const [key, value] of params) {
+      if (key === 'search') {
+        search = value;
+        break;
+      }
+    }
+
+    if (search != null) {
+      const searchLowerCase = search.toLowerCase();
+      if (this.state.longDescription?.toLocaleLowerCase()?.includes(searchLowerCase)) {
+        return true;
+      } else if (this.state.solutionRequests?.toLocaleLowerCase().includes(searchLowerCase)) {
+        return true;
+      } else if (this.state.processChallenges?.toLocaleLowerCase().includes(searchLowerCase)) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   minPhase(phase: Phase) {

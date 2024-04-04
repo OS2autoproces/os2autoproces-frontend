@@ -39,6 +39,7 @@ import ArrowDownIcon from '@/components/icons/ArrowDownIcon.vue';
 import WarningIcon from '@/components/icons/WarningIcon.vue';
 import InfoTooltip from '@/components/common/InfoTooltip.vue';
 import { ProcessModule } from '@/store/modules/process';
+import { CommonModule } from '@/store/modules/common';
 
 @Component({
   components: {
@@ -62,12 +63,15 @@ export default class FormSection extends Vue {
   disabled!: boolean;
   @Prop({ type: String, default: '' })
   placeholder!: string;
+  @Prop(Boolean)
+  expandOnMount!: boolean;
 
   expanded = false;
 
   toggleEdit() {
     this.expanded = this.disabled;
     this.$emit('edit', !this.disabled);
+    CommonModule.callHighlightByUrlParam();
   }
 
   toggleExpand() {
@@ -75,6 +79,8 @@ export default class FormSection extends Vue {
       return;
     }
     this.expanded = !this.expanded;
+
+    CommonModule.callHighlightByUrlParam();
   }
 
   get canEdit() {
@@ -87,6 +93,13 @@ export default class FormSection extends Vue {
 
   get isExpanded() {
     return this.expanded || this.alwaysOpen || this.invalid || !this.disabled;
+  }
+
+  mounted() {
+    if (this.expandOnMount) {
+      this.expanded = true;
+      CommonModule.callHighlightByUrlParam();
+    }
   }
 }
 </script>

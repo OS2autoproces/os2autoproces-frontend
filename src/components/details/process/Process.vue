@@ -7,7 +7,7 @@
         <ProcessMenu :phase="phase" :canEdit="state.canEdit" :isReporting="isReporting" />
 
         <Button primary v-if="isReporting" class="report-button" @click="report">Gem</Button>
-        <Button primary v-if="!isReporting" class="save-button" @click="save">Gem</Button>
+        <Button primary v-if="!isReporting && state.canEdit" class="save-button" @click="save">Gem</Button>
       </div>
     </div>
 
@@ -17,7 +17,7 @@
 
         <ProcessParents :parents="state.parents" />
 
-        <div class="form-sections">
+        <div class="form-sections" id="detailsPage">
           <GeneralInformationForm :isReporting="isReporting" />
           <ChallengesForm />
           <TimeAndProcessForm />
@@ -220,6 +220,8 @@ export default class Process extends Vue {
     } else {
       ProcessModule.loadComments();
     }
+
+    CommonModule.callHighlightByUrlParam();
   }
 
   async save() {

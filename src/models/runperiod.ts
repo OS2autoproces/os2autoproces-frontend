@@ -1,8 +1,8 @@
 export type RunPeriod = 'ONDEMAND' | 'ONCE' | 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'QUATERLY' | 'YEARLY';
 
 export const RunPeriodLabels: { [x in RunPeriod]: string } = {
-  ONDEMAND: 'Løbende kørsel',
   ONCE: 'Engangskørsel',
+  ONDEMAND: 'Løbende kørsel',
   DAILY: 'Dagligt',
   WEEKLY: 'Ugentligt',
   MONTHLY: 'Månedligt',
@@ -11,8 +11,8 @@ export const RunPeriodLabels: { [x in RunPeriod]: string } = {
 };
 
 export const RunPeriodKeys: { [runPeriod in RunPeriod]: runPeriod } = {
-  ONDEMAND: 'ONDEMAND',
   ONCE: 'ONCE',
+  ONDEMAND: 'ONDEMAND',
   DAILY: 'DAILY',
   WEEKLY: 'WEEKLY',
   MONTHLY: 'MONTHLY',

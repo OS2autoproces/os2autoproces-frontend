@@ -99,10 +99,12 @@ export const initialProcessState: ProcessState = {
 
   /* Operation */
   lastChanged: '',
+  putIntoOperation: '',
   decommissioned: '',
   legalClauseLastVerified: null,
   rating: 0,
   ratingComment: '',
+  automationDescription: '',
 
   /* Attachments */
   links: [],

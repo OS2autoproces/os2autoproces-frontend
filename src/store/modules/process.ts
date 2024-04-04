@@ -49,6 +49,7 @@ export default class Process extends VuexModule implements ProcessState {
   statusText: string | null = null;
   created: string | null = null;
   lastChanged: string | null = null;
+  putIntoOperation: string | null = null;
   decommissioned: string | null = null;
   title: string | null = null;
   type: Type | null = null;
@@ -93,6 +94,7 @@ export default class Process extends VuexModule implements ProcessState {
   organizationalImplementationNotes: string | null = null;
   rating: number | null = null;
   ratingComment: string | null = null;
+  automationDescription: string | null = null;
   searchWords: string | null = null;
   users: User[] = [];
   owner: User | null = null;

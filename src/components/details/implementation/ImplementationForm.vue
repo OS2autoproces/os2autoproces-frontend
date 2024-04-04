@@ -6,6 +6,7 @@
     id="implementation"
     :disabled="state.disabled.implementationEdit"
     @edit="update({ disabled: { implementationEdit: $event } })"
+    :expandOnMount="shouldBeOpen"
   >
     <div v-if="state.minPhase(PhaseKeys.IMPLEMENTATION)" id="technicalImplementationNotes">
       <h2>Teknisk implementering</h2>
@@ -136,6 +137,30 @@ export default class ImplementationForm extends Vue {
 
   get state() {
     return ProcessModule;
+  }
+
+  get shouldBeOpen(): boolean {
+    const href = window.location.href;
+    const url = new URL(href);
+    const params = url.searchParams;
+    let search = null;
+    for (const [key, value] of params) {
+      if (key === 'search') {
+        search = value;
+        break;
+      }
+    }
+
+    if (search != null) {
+      const searchLowerCase = search.toLowerCase();
+      if (this.state.technicalImplementationNotes?.toLowerCase().includes(searchLowerCase)) {
+        return true;
+      } else if (this.state.organizationalImplementationNotes?.toLowerCase().includes(searchLowerCase)) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   update(state: Partial<ProcessState>) {

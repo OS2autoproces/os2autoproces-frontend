@@ -6,8 +6,25 @@
     id="operation"
     :disabled="state.disabled.operationEdit"
     @edit="update({ disabled: { operationEdit: $event } })"
+    :expandOnMount="shouldBeOpen"
   >
-    <div class="rating-wrapper" :class="{ disabled: state.disabled.operationEdit, 'has-error': isInErrors('rating') }">
+    <h2 id="automationDescription" style="margin-top: 0px;">
+      Beskrivelse af automatisering
+      <InfoTooltip>Her kan du beskrive den idriftsatte automatisering i detaljer.</InfoTooltip>
+    </h2>
+    <RichTextArea
+      :max-length="10000"
+      @change="update({ automationDescription: $event })"
+      :disabled="state.disabled.operationEdit"
+      :value="state.automationDescription"
+      :hasError="isInErrors('automationDescription')"
+    />
+
+    <div
+      class="rating-wrapper"
+      :class="{ disabled: state.disabled.operationEdit, 'has-error': isInErrors('rating') }"
+      style="margin-top: 1rem;"
+    >
       <div class="rating-label" id="rating">
         I hvor høj grad indfriede løsningen de forventede gevinster? *
         <InfoTooltip>Skalaen lav, mellem, høj angiver graden af gevinstrealisering.</InfoTooltip>
@@ -23,12 +40,12 @@
 
     <Well>
       <div>
-        <WellItem labelWidth="55%" label="Sidst kontrolleret i forhold til §" id="legalClauseLastVerified">
+        <WellItem labelWidth="55%" label="Løsning sat i drift" id="putIntoOperation">
           <DatePicker
-            @change="update({ legalClauseLastVerified: $event })"
+            @change="update({ putIntoOperation: $event })"
             :disabled="state.disabled.operationEdit"
-            :value="state.legalClauseLastVerified"
-            :hasError="isInErrors('legalClauseLastVerified')"
+            :value="state.putIntoOperation"
+            :hasError="isInErrors('putIntoOperation')"
           />
         </WellItem>
       </div>
@@ -39,6 +56,16 @@
             :disabled="state.disabled.operationEdit"
             :value="state.decommissioned"
             :hasError="isInErrors('decommissioned')"
+          />
+        </WellItem>
+      </div>
+      <div>
+        <WellItem labelWidth="55%" label="Sidst kontrolleret i forhold til §" id="legalClauseLastVerified">
+          <DatePicker
+            @change="update({ legalClauseLastVerified: $event })"
+            :disabled="state.disabled.operationEdit"
+            :value="state.legalClauseLastVerified"
+            :hasError="isInErrors('legalClauseLastVerified')"
           />
         </WellItem>
       </div>
@@ -85,6 +112,30 @@ export default class OperationForm extends Vue {
 
   get state() {
     return ProcessModule;
+  }
+
+  get shouldBeOpen(): boolean {
+    const href = window.location.href;
+    const url = new URL(href);
+    const params = url.searchParams;
+    let search = null;
+    for (const [key, value] of params) {
+      if (key === 'search') {
+        search = value;
+        break;
+      }
+    }
+
+    if (search != null) {
+      const searchLowerCase = search.toLowerCase();
+      if (this.state.automationDescription?.toLowerCase().includes(searchLowerCase)) {
+        return true;
+      } else if (this.state.ratingComment?.toLowerCase().includes(searchLowerCase)) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   update(state: Partial<ProcessState>) {

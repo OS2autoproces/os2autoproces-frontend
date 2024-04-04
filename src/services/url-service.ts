@@ -74,7 +74,7 @@ export const mapQueryObjToFilters = (
     text: query.text || initial.text,
     created: query.created || initial.created,
     lastChanged: query.lastChanged || initial.lastChanged,
-    municipality: query.municipality || initial.municipality,
+    municipalities: query.municipalities || initial.municipalities,
     visibility: query.visibility || initial.visibility,
     page: query.page || initial.page,
     size: query.size || initial.size,

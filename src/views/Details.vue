@@ -103,6 +103,8 @@ export default class Details extends Vue {
   mounted() {
     this.loadContent();
     window.addEventListener('beforeunload', this.shouldLeaveWithoutSaving);
+
+    CommonModule.callHighlightByUrlParam();
   }
 
   destroyed() {

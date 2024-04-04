@@ -57,7 +57,7 @@ export default class SearchPagination extends Vue {
   @Prop(Number) page!: number;
   @Prop(Number) pageTotal!: number;
   @Prop(Number) size!: number;
-  sizes: Array<{ text: string; value: number }> = Array.from([5, 10, 25], (value, index) => ({
+  sizes: Array<{ text: string; value: number }> = Array.from([10, 20, 50], (value, index) => ({
     value,
     text: value.toString()
   }));
@@ -73,7 +73,7 @@ export default class SearchPagination extends Vue {
 
   mounted() {
     if (CommonModule.page === null) {
-      this.onSizeChange(5);
+      this.onSizeChange(20);
     }
   }
 

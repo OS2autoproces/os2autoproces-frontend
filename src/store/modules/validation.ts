@@ -154,6 +154,9 @@ export const processFieldsValidators: { [P in keyof ProcessState]?: (state: Proc
   ratingComment({ ratingComment }: ProcessState) {
     return isValid(ratingComment, isMinMax(0, 10000));
   },
+  automationDescription({ automationDescription }: ProcessState) {
+    return isValid(automationDescription, isMinMax(0, 10000));
+  },
   legalClauseLastVerified({ legalClauseLastVerified }: ProcessState) {
     return !legalClauseLastVerified || DateTime.fromISO(legalClauseLastVerified).isValid;
   },

@@ -22,6 +22,7 @@ export interface ProcessReport {
   statusText: string | null;
   created: string | null;
   lastChanged: string | null;
+  putIntoOperation: string | null;
   decommissioned: string | null;
   title: string | null;
   type: Type | null;
@@ -66,6 +67,7 @@ export interface ProcessReport {
   organizationalImplementationNotes: string | null;
   rating: number | null;
   ratingComment: string | null;
+  automationDescription: string | null;
   searchWords: string | null;
   users: User[] | null;
   owner: User | null;

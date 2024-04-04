@@ -9,7 +9,9 @@
   >
     <div class="title-row" id="title">
       <div class="title-label">Titel: *</div>
+      <span v-if="state.disabled.generalInformationEdit" class="title-field flex-grow">{{ state.title }}</span>
       <InputField
+        v-if="!state.disabled.generalInformationEdit"
         class="title-field flex-grow"
         :value="state.title"
         :disabled="state.disabled.generalInformationEdit"

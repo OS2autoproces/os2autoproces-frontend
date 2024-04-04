@@ -1,12 +1,12 @@
 <template>
-  <div class="search-field">
+  <div class="search-field" id="searchFieldDiv">
     <InputField placeholder="søg" :value="value" @change="valueChanged">
       <SearchIcon />
     </InputField>
   </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 
 import InputField from './InputField.vue';

@@ -10,9 +10,7 @@
   }
 
   window.autoProcessConfiguration = {
-    apiUrl: getEnvironmentVariable(
-      '${API_AUTOPROCES}',
-      'https://dev.os2autoproces.eu'
-    )
+    apiUrl: getEnvironmentVariable('${API_AUTOPROCES}', 'https://dev.os2autoproces.eu')
+    // apiUrl: getEnvironmentVariable('${API_AUTOPROCES}', 'https://localhost/backend')
   };
 })();

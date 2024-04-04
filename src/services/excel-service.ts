@@ -13,5 +13,5 @@ export const downloadSearchResultsExcel = async () => {
     return null;
   }
 
-  saveAs(blob, 'OS2Autoprocess.xls');
+  saveAs(blob, 'OS2Autoprocess.xlsx');
 };

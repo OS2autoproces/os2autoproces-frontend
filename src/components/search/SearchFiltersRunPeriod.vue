@@ -27,7 +27,7 @@ import { SearchModule } from '@/store/modules/search';
 })
 export default class SearchFiltersRunPeriod extends Vue {
   RunPeriodLabels = RunPeriodLabels;
-  RunPeriodKeys = [RunPeriodKeys.ONDEMAND, RunPeriodKeys.ONCE];
+  RunPeriodKeys = RunPeriodKeys;
 
   update(keyToUpdate: keyof typeof RunPeriodKeys, active: boolean) {
     SearchModule.updateFilters({

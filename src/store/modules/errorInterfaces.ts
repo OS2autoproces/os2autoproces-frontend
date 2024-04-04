@@ -110,6 +110,7 @@ export const implementationKeys: Array<keyof ProcessLabels> = Object.keys(implem
 export const operationLabels: ProcessLabels = {
   rating: 'I hvor høj grad indfriede løsningen de forventede gevinster?',
   ratingComment: 'Kommentar til realiseret gevinster',
+  putIntoOperation: 'Løsning sat i drift',
   decommissioned: 'Løsning taget ud af drift',
   legalClauseLastVerified: 'Sidst kontrolleret i forhold til §'
 };

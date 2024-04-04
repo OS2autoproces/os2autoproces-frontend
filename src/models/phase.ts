@@ -1,4 +1,11 @@
-export type Phase = 'IDEA' | 'PREANALYSIS' | 'SPECIFICATION' | 'DEVELOPMENT' | 'IMPLEMENTATION' | 'OPERATION' | 'DECOMMISSIONED';
+export type Phase =
+  | 'IDEA'
+  | 'PREANALYSIS'
+  | 'SPECIFICATION'
+  | 'DEVELOPMENT'
+  | 'IMPLEMENTATION'
+  | 'OPERATION'
+  | 'DECOMMISSIONED';
 
 export const PhaseLabels: { [x in Phase]: string } = {
   IDEA: 'Idé',
@@ -20,4 +27,12 @@ export const PhaseKeys: { [phase in Phase]: phase } = {
   DECOMMISSIONED: 'DECOMMISSIONED'
 };
 
-export const PhaseOrder = ['IDEA', 'PREANALYSIS', 'SPECIFICATION', 'DEVELOPMENT', 'IMPLEMENTATION', 'OPERATION', 'DECOMMISSIONED'];
+export const PhaseOrder = [
+  'IDEA',
+  'PREANALYSIS',
+  'SPECIFICATION',
+  'DEVELOPMENT',
+  'IMPLEMENTATION',
+  'OPERATION',
+  'DECOMMISSIONED'
+];

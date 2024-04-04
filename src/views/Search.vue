@@ -9,26 +9,31 @@
       <div>
         <div class="results-wrapper">
           <div class="report">
-            <SearchSortingDropdown />
+            <div class="excelBtnRowWrapper">
+              <span>Vis</span>
+              <SelectionField
+                class="column-select"
+                :items="columns"
+                itemText="name"
+                :value="state.selectedColumns"
+                @change="state.SET_SELECTED_COLUMNS($event)"
+                multiple
+              />
+              <excelBtn></excelBtn>
+            </div>
             <router-link to="/report"> <PlusIcon />Indberet proces </router-link>
           </div>
 
-          <SearchSorting
-            v-if="!state.isSearchingForUmbrellaProcess"
-            :sorting="state.filters.sorting"
-            @change="updateFilters({ sorting: $event })"
-          />
-          <SearchSortingUmbrella v-else :sorting="state.filters.sorting" @change="updateFilters({ sorting: $event })" />
-
-          <div class="results" v-if="state.result">
-            <router-link
-              :to="'/details/' + process.id"
-              class="search-result-link"
-              v-for="process in state.result.processes"
-              :key="process.id"
-            >
-              <SearchResult :process="process" />
-            </router-link>
+          <div>
+            <table id="processTable" v-if="state.result">
+              <thead>
+                <SearchTableHeaderSorting
+                  :sorting="state.filters.sorting"
+                  @change="updateFilters({ sorting: $event })"
+                />
+              </thead>
+              <SearchResultRow v-for="process in state.result.processes" :process="process" v-bind:key="process.id" />
+            </table>
           </div>
 
           <SearchPagination
@@ -60,15 +65,17 @@ import NavBar from '../components/common/NavBar.vue';
 import SearchFiltersComponent from '../components/search/SearchFilters.vue';
 import SearchPagination from '../components/search/SearchPagination.vue';
 import SearchResult from '../components/search/SearchResult.vue';
-import SearchSorting from '../components/search/SearchSorting.vue';
-import SearchSortingUmbrella from '../components/search/SearchSortingUmbrella.vue';
+import SearchResultRow from '../components/search/SearchResultRow.vue';
+import SearchTableHeaderSorting from '../components/search/SearchTableHeaderSorting.vue';
 import PlusIcon from '../components/icons/PlusIcon.vue';
-import { SearchFilters, SearchResultProcess } from '@/store/modules/searchInterfaces';
+import { SearchFilters, AllSearchTableColumns } from '@/store/modules/searchInterfaces';
 import SearchSortingDropdown from '@/components/search/SearchSortingDropdown.vue';
 import { SearchModule } from '@/store/modules/search';
-import store from '@/store';
 import Details from './Details.vue';
 import { ProcessModule } from '@/store/modules/process';
+import SelectionField from '../components/common/inputs/SelectionField.vue';
+import excelBtn from '@/components/search/ExcelBtn.vue';
+import { CommonModule } from '@/store/modules/common';
 
 @Component({
   components: {
@@ -77,10 +84,12 @@ import { ProcessModule } from '@/store/modules/process';
     SearchFiltersComponent,
     SearchPagination,
     SearchResult,
-    SearchSorting,
-    SearchSortingUmbrella,
+    SearchResultRow,
     SearchSortingDropdown,
-    Details
+    Details,
+    SearchTableHeaderSorting,
+    SelectionField,
+    excelBtn
   }
 })
 export default class Search extends Vue {
@@ -94,11 +103,14 @@ export default class Search extends Vue {
     return SearchModule;
   }
 
+  columns = AllSearchTableColumns;
+
   async ieGoBack() {
     await this.updateFilters(this.lastFilterUpdate);
   }
 
   async updateFiltersAndScrollToTop(filters: Partial<SearchFilters>) {
+    const search = this.lastFilterUpdate.text;
     await this.updateFilters(filters);
 
     document.body.scrollTop = 0;
@@ -133,6 +145,7 @@ export default class Search extends Vue {
 
   updateFilters(filters: Partial<SearchFilters>) {
     this.lastFilterUpdate = filters;
+
     return SearchModule.assignFilters({
       page: 0,
       ...filters
@@ -140,14 +153,51 @@ export default class Search extends Vue {
   }
 
   assignFilters(filters: Partial<SearchFilters>) {
+    this.lastFilterUpdate = filters;
+
     SearchModule.assignFilters({
       page: 0,
       ...filters
     });
   }
 
-  mounted() {
-    !!this.initialFilters ? SearchModule.assignFilters(this.initialFilters) : SearchModule.search();
+  // we can't set an id directly on the input field (would be nice). Instead we set an id on a div above. Therefore we need to find the first (and only) input field in the div.
+  findFirstInputElementValue(element: HTMLElement | null): string | null {
+    if (!element) {
+      return null;
+    }
+
+    if (element.tagName.toLowerCase() === 'input') {
+      return (element as HTMLInputElement).value;
+    } else {
+      for (const child of element.children) {
+        const result = this.findFirstInputElementValue(child as HTMLElement);
+        if (result) {
+          return result;
+        }
+      }
+    }
+    return null;
+  }
+
+  async mounted() {
+    (await !!this.initialFilters) ? SearchModule.assignFilters(this.initialFilters) : SearchModule.search();
+
+    // listen for process changes (eg. on search)
+    this.$watch(
+      () => SearchModule.result?.processes,
+      (newValue, oldValue) => {
+        if (newValue != null) {
+          const searchDiv = document.getElementById('searchFieldDiv');
+          const search = this.findFirstInputElementValue(searchDiv);
+          if (search != null && search !== '') {
+            CommonModule.highlightWord(search);
+          } else {
+            CommonModule.removeHighlight();
+          }
+        }
+      }
+    );
   }
 }
 </script>
@@ -215,13 +265,24 @@ export default class Search extends Vue {
   }
 }
 
-.search-result-link {
-  display: block;
-  text-decoration: inherit;
-  color: inherit;
-
-  &:not(:last-of-type) {
-    margin-bottom: 1rem;
+/* row above table styling */
+.excelBtnRowWrapper {
+  display: flex;
+  align-items: center;
+  .column-select {
+    margin-left: 1rem;
+    min-width: 13rem;
+    max-width: 37rem;
   }
+}
+
+/* table styling */
+#processTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#processTable tbody:nth-child(even) {
+  background-color: #f2f2f2;
 }
 </style>

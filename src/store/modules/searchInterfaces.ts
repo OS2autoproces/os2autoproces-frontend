@@ -25,13 +25,20 @@ export interface SearchResultProcess {
   runPeriod: RunPeriod;
   municipalityName: string;
   domains: Domain[];
+  technologies: Technology[];
   kle: string;
   sepMep: boolean;
   legalClause: string;
   hasBookmarked: boolean;
+  hasAttachments: boolean;
   lastChanged: number;
   type: Type;
   childrenCount: number;
+  timeSpendOccurancesPerEmployee: number;
+  timeSpendPerOccurance: number;
+  timeSpendPercentageDigital: number;
+  searchMatch: string;
+  searchWord: string;
 }
 export interface SortingOptionParams extends SearchResultProcess {
   created: string;
@@ -47,7 +54,7 @@ export interface SearchFilters {
   text: string;
   created: string;
   lastChanged: string;
-  municipality: Municipality | null;
+  municipalities: Municipality[];
   visibility: {
     MUNICIPALITY: boolean;
     PUBLIC: boolean;
@@ -73,3 +80,31 @@ export interface SearchFilters {
     [x in Status]: boolean | null;
   };
 }
+export interface SearchTableColumn {
+  id: number;
+  name: string;
+}
+export const AllSearchTableColumns: SearchTableColumn[] = [
+  { id: 1, name: 'ID' },
+  { id: 2, name: 'Titel' },
+  { id: 3, name: 'Organisation' },
+  { id: 4, name: 'Opdateret' },
+  { id: 5, name: 'Fase' },
+  { id: 6, name: 'Resumé' },
+  { id: 7, name: 'Status' },
+  { id: 8, name: 'Fagområder' },
+  { id: 9, name: 'FÅE' },
+  { id: 10, name: 'Anvendt teknologi' },
+  { id: 11, name: 'Skedulering' },
+  { id: 12, name: 'Bilag' },
+  { id: 13, name: 'Favorit' }
+];
+export const PreSelectedSearchTableColumns: SearchTableColumn[] = [
+  { id: 1, name: 'ID' },
+  { id: 2, name: 'Titel' },
+  { id: 3, name: 'Organisation' },
+  { id: 4, name: 'Opdateret' },
+  { id: 5, name: 'Fase' },
+  { id: 13, name: 'Favorit' }
+];
+export const PreSelectedSearchTableColumnIds: number[] = [1, 2, 3, 4, 5, 13];

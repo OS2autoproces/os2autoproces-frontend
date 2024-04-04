@@ -5,6 +5,7 @@
     id="time-and-process"
     :disabled="state.disabled.timeAndProcessEdit"
     @edit="update({ disabled: { timeAndProcessEdit: $event } })"
+    :expandOnMount="shouldBeOpen"
   >
     <Well>
       <div>
@@ -249,6 +250,28 @@ export default class TimeAndProcessForm extends Vue {
     const hours = parseInt(ProcessModule.expectedDevelopmentTime ?? '', 10); // remove decimals
     const minutes = (this.expectedDevelopmentTime - hours) * 60; // remove hour part and convert decimals to minutes
     return { hours, minutes };
+  }
+
+  get shouldBeOpen(): boolean {
+    const href = window.location.href;
+    const url = new URL(href);
+    const params = url.searchParams;
+    let search = null;
+    for (const [key, value] of params) {
+      if (key === 'search') {
+        search = value;
+        break;
+      }
+    }
+
+    if (search != null) {
+      const searchLowerCase = search.toLowerCase();
+      if (this.state.timeSpendComment?.toLowerCase().includes(searchLowerCase)) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   update(state: Partial<ProcessState>) {

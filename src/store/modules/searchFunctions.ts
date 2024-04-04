@@ -1,6 +1,7 @@
 import { SearchState } from './search';
 import { SearchFilters } from './searchInterfaces';
 import { isEqual } from 'lodash';
+import { PreSelectedSearchTableColumns, PreSelectedSearchTableColumnIds } from '@/store/modules/searchInterfaces';
 
 export function getInitialState(): SearchState {
   return {
@@ -8,16 +9,18 @@ export function getInitialState(): SearchState {
     filtersTouched: false,
     savedFilters: [],
     selectedSavedFiltersText: '',
+    selectedColumns: PreSelectedSearchTableColumns,
+    selectedColumnIds: PreSelectedSearchTableColumnIds,
     filters: {
       page: 0,
-      size: 5,
+      size: 20,
       reporterId: null,
       usersId: null,
       bookmarkedId: null,
       text: '',
       created: '',
       lastChanged: '',
-      municipality: null,
+      municipalities: [],
       visibility: {
         MUNICIPALITY: false,
         PUBLIC: false

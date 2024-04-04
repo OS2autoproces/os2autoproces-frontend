@@ -42,6 +42,66 @@ const debouncedSearch = debounce(async (request: UserSearchRequest) => {
   CommonModule.ASSIGN({ users });
 }, 250);
 
+function compareByName(a: ITSystem, b: ITSystem): number {
+  const navnA = a.name.toUpperCase();
+  const navnB = b.name.toUpperCase();
+
+  if (navnA < navnB) {
+    return -1;
+  }
+  if (navnA > navnB) {
+    return 1;
+  }
+  return 0;
+}
+
+function highlightSearch(searchWord: string, searchInElementId: string) {
+  removeHighlight();
+  const searchInElement = document.getElementById(searchInElementId);
+  if (searchInElement != null) {
+    const textNodes = getTextNodes(searchInElement);
+    textNodes.forEach(node => {
+      const content = node.nodeValue || '';
+      const index = content.toLowerCase().indexOf(searchWord.toLowerCase());
+
+      if (index !== -1) {
+        const range = document.createRange();
+        range.setStart(node, index);
+        range.setEnd(node, index + searchWord.length);
+
+        const span = document.createElement('span');
+        span.className = 'customHighlight';
+        span.style.backgroundColor = 'yellow';
+        range.surroundContents(span);
+      }
+    });
+  }
+}
+
+function removeHighlight() {
+  const highlightedElements: NodeListOf<HTMLElement> = document.querySelectorAll('.customHighlight');
+  for (const element of highlightedElements) {
+    const parent = element.parentNode;
+    parent?.replaceChild(element.firstChild!, element);
+    parent?.normalize();
+  }
+}
+
+function getTextNodes(node: Node): Node[] {
+  const textNodes: Node[] = [];
+
+  if (node.nodeType === Node.TEXT_NODE) {
+    textNodes.push(node);
+  } else {
+    const childNodes = node.childNodes;
+    for (const childNode of childNodes) {
+      textNodes.push(...getTextNodes(childNode));
+    }
+  }
+
+  return textNodes;
+}
+
 @Module({ dynamic: true, store, name: 'common', namespaced: true })
 export default class Common extends VuexModule implements CommonState {
   frontPage: string | null = null;
@@ -130,6 +190,13 @@ export default class Common extends VuexModule implements CommonState {
   }
 
   @Action
+  async loadITSystemsSorted() {
+    const itSystems = (await HTTP.get<ItSystemsResponse>(`api/itSystems?size=100000`))?.data._embedded.itSystems;
+    itSystems.sort(compareByName);
+    this.UPDATE({ itSystems });
+  }
+
+  @Action
   async addITSystem(itSystemRequest: ITSystemRequest) {
     const response = (await HTTP.post(`api/managedItSystem/`, itSystemRequest)).data as ITSystem;
     if (!response) {
@@ -195,6 +262,36 @@ export default class Common extends VuexModule implements CommonState {
     }
     const forms = await (await HTTP.get<FormResponse>(`api/kles/${kle.code}/forms`))?.data._embedded.forms;
     this.UPDATE({ forms });
+  }
+
+  @Action
+  callHighlightByUrlParam() {
+    const href = window.location.href;
+    const url = new URL(href);
+    const params = url.searchParams;
+    let search: string = '';
+    for (const [key, value] of params) {
+      if (key === 'search') {
+        search = value;
+        break;
+      }
+    }
+
+    if (search != null && search !== '') {
+      setTimeout(() => {
+        highlightSearch(search, 'detailsPage');
+      }, 200);
+    }
+  }
+
+  @Action
+  highlightWord(searchWord: string) {
+    highlightSearch(searchWord, 'processTable');
+  }
+
+  @Action
+  removeHighlight() {
+    removeHighlight();
   }
 }
 export const CommonModule = getModule(Common);

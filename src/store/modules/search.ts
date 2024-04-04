@@ -9,6 +9,11 @@ import {
 } from '@/store/modules/service';
 import { SearchFilters, SearchResult, SavedSearchFilters } from './searchInterfaces';
 import { getInitialState, getFiltersTouched } from './searchFunctions';
+import {
+  SearchTableColumn,
+  PreSelectedSearchTableColumns,
+  PreSelectedSearchTableColumnIds
+} from '@/store/modules/searchInterfaces';
 
 export interface SearchState {
   result: SearchResult | null;
@@ -16,6 +21,8 @@ export interface SearchState {
   filtersTouched: boolean;
   savedFilters: SavedSearchFilters[];
   selectedSavedFiltersText: string;
+  selectedColumns: SearchTableColumn[];
+  selectedColumnIds: number[];
 }
 
 const debouncedSearch = debounce(async (filters: SearchFilters) => {
@@ -31,6 +38,8 @@ export default class SearchStore extends VuexModule implements SearchState {
   savedFilters: SavedSearchFilters[] = [];
   selectedSavedFiltersText: string = '';
   searchKey: number = 0;
+  selectedColumns: SearchTableColumn[] = PreSelectedSearchTableColumns;
+  selectedColumnIds: number[] = PreSelectedSearchTableColumnIds;
 
   @Mutation
   DELETE_SAVED_FILTERS({ text }: Partial<SavedSearchFilters>) {
@@ -48,6 +57,12 @@ export default class SearchStore extends VuexModule implements SearchState {
   @Mutation
   SET_SELECTED_SAVED_FILTERS(filtersText: string) {
     this.selectedSavedFiltersText = filtersText;
+  }
+
+  @Mutation
+  SET_SELECTED_COLUMNS(columns: SearchTableColumn[]) {
+    this.selectedColumns = columns;
+    this.selectedColumnIds = columns.map(c => c.id);
   }
 
   @Mutation

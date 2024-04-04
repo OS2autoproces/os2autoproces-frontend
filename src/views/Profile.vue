@@ -80,7 +80,7 @@ export default class ManageTechnologies extends Vue {
       const success = await AuthModule.editUser();
       this.showSaveSuccess = success;
       setTimeout(() => {
-        window.location.href = '/search';
+        this.$router.push('/dashboard');
       }, 3 * 1000);
     } catch (e) {
       this.showSaveError = true;

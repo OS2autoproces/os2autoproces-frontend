@@ -9,6 +9,7 @@ import ReportProcess from './views/ReportProcess.vue';
 import Search from './views/Search.vue';
 import Discovery from './views/Discovery.vue';
 import Profile from './views/Profile.vue';
+import Dashboard from './views/Dashboard.vue';
 import { mapSearchQueryToObject, mapQueryObjToFilters, isIE } from '@/services/url-service';
 import { isEmpty } from 'lodash';
 import { getInitialState } from '@/store/modules/searchFunctions';
@@ -40,9 +41,9 @@ function validateAuthPlusCheckProfile(isValid: (user: User | undefined | null) =
         AuthModule.user?.email == null ||
         AuthModule.user?.email === ''
       ) {
-        window.location.href = '/profile';
+        router.push('/profile');
       } else {
-        window.location.href = '/search';
+        router.push('/dashboard');
       }
     } else {
       await AuthModule.loadUser();
@@ -54,9 +55,9 @@ function validateAuthPlusCheckProfile(isValid: (user: User | undefined | null) =
           AuthModule.user?.email == null ||
           AuthModule.user?.email === ''
         ) {
-          window.location.href = '/profile';
+          router.push('/profile');
         } else {
-          window.location.href = '/search';
+          router.push('/dashboard');
         }
       } else {
         window.location.href = `${window.autoProcessConfiguration.apiUrl}/saml/login`;
@@ -103,6 +104,11 @@ export const routes: RouteConfig[] = [
   {
     path: '/profile',
     component: Profile,
+    beforeEnter: isLoggedIn()
+  },
+  {
+    path: '/dashboard',
+    component: Dashboard,
     beforeEnter: isLoggedIn()
   },
   {

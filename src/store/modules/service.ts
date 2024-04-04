@@ -10,6 +10,7 @@ import { Type, TypeKeys } from '@/models/types';
 import { umbrellaLabels } from '@/store/modules/errorInterfaces';
 import { setUrlSearchQuery, mapSearchQueryToObject, mapQueryObjToFilters, stringify } from '@/services/url-service';
 import qs from 'qs';
+import { Technology } from './commonInterfaces';
 
 interface ProcessSearchResponse {
   id: number;
@@ -21,13 +22,20 @@ interface ProcessSearchResponse {
   status: Status;
   runPeriod: RunPeriod;
   domains: Domain[];
+  technologies: Technology[];
   kle: string;
   sepMep: boolean;
   legalClause: string;
   hasBookmarked: boolean;
+  hasAttachments: boolean;
   lastChanged: number;
   type: Type;
   childrenCount: number;
+  timeSpendOccurancesPerEmployee: number;
+  timeSpendPerOccurance: number;
+  timeSpendPercentageDigital: number;
+  searchMatch: string;
+  searchWord: string;
 }
 
 interface SearchResponse {
@@ -50,7 +58,7 @@ interface SearchParams {
   visibility: Visibility[];
   itSystems: number[];
   technologies: number[];
-  cvr: string | null;
+  cvr: string[];
   page: number;
   size: number;
   freetext: string;
@@ -106,7 +114,7 @@ export const mapFiltersToSearchParams = (filters: SearchFilters): SearchParams =
     freetext: filters.text,
     klaProcess: filters.klaProcess,
     sepMep: filters.sepMep,
-    cvr: filters.municipality ? filters.municipality.cvr : null,
+    cvr: filters.municipalities.map(municipality => municipality.cvr),
     type: filters.umbrella ? [TypeKeys.GLOBAL_PARENT, TypeKeys.PARENT] : [TypeKeys.CHILD]
   };
 

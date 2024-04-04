@@ -1,5 +1,5 @@
 #==================== Building Stage =====================================
-FROM node:14.2.0 as node
+FROM node:14.21.3 as node
 
 WORKDIR /app
 
@@ -9,6 +9,9 @@ COPY package-lock.json /app
 
 # Install dependencies
 RUN npm install
+
+# Remove bad extension
+RUN rm -rf node_modules/tiptap-extensions/node_modules/
 
 # Copy source files
 COPY src /app/src

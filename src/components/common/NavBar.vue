@@ -4,11 +4,12 @@
       <div class="logo">OS2autoproces</div>
     </router-link>
     <router-link class="link" v-if="isFrontpageEditor" to="/">Forside</router-link>
-    <router-link class="link" v-if="isAdministrator" to="/search">Søgning</router-link>
+    <router-link class="link" to="/dashboard">Dashboard</router-link>
+    <router-link class="link" to="/search">Procesoverblik</router-link>
     <router-link class="link" v-if="isAdministrator" to="/manage-systems">Systemer</router-link>
     <router-link class="link" v-if="isAdministrator" to="/manage-technologies">Teknologier</router-link>
-    <a class="link" target="_blank" rel="noopener noreferrer" href="https://os2autoproces.os2.eu/"
-      >Spørgsmål og vejledning</a
+    <a class="link" rel="noopener noreferrer" target="_blank" href="https://boks.os2.eu/s/CR6pmmnwqR2REBg"
+      >Information</a
     >
     <div class="flex-grow"></div>
     <div class="user-info" v-if="state.user">
@@ -73,11 +74,15 @@ export default class NavBar extends Vue {
 
 .link {
   margin-left: 2rem;
-  color: $color-primary;
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
 }
 
 .logout-button {
-  color: $color-primary;
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
 }
 
 .logo-link {
