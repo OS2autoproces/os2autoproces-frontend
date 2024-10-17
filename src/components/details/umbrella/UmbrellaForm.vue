@@ -109,11 +109,11 @@
             id="otherContactEmail"
             labelWidth="180px"
             label="Anden kontaktinformation:"
-            tooltip="Ønsker du anden kontakt information end en oprettet bruger i OS2autoproces, noter da information og email i dette felt. Eksempel: fællespostkassen OS2, xxxx@os2.dk. Disse oplysninger erstatter oplysningerne i feltet Kontaktperson, når processen læses af andre organisationer."
+            tooltip="Ønsker du anden kontakt information end en oprettet bruger i OS2autoproces, noter da information og email i dette felt. Eksempel: fællespostkassen OS2, xxxx@os2.dk. Disse oplysninger erstatter oplysningerne i feltet Kontaktperson, når processen læses af andre organisationer. Dette felt kan være låst, hvis der er opsat en kontakt på organisationssiden."
           >
             <InputField
-              :value="state.otherContactEmail"
-              :disabled="state.disabled.generalInformationEdit"
+              :value="calculatedOtherContact"
+              :disabled="state.disabled.generalInformationEdit || !canEditOtherContact"
               :hasError="isInErrors('otherContactEmail')"
               @change="update({ otherContactEmail: $event })"
             />
@@ -213,6 +213,7 @@ import StarIcon from '@/components/icons/StarIcon.vue';
 import { AuthModule } from '@/store/modules/auth';
 import { ProcessModule, ProcessState } from '@/store/modules/process';
 import { ErrorModule } from '@/store/modules/error';
+import { OrganisationModule } from '@/store/modules/organisation';
 
 @Component({
   components: {
@@ -251,7 +252,34 @@ export default class UmbrellaForm extends Vue {
   }
 
   get logo() {
-    return `/logos/${ProcessModule.cvr}.png`;
+    if (this.state.base64Logo != null) {
+      return this.state.base64Logo;
+    } else {
+      return `/logos/${ProcessModule.cvr}.png`;
+    }
+  }
+
+  get canEditOtherContact() {
+    if (this.isReporting) {
+      if (OrganisationModule.autoOtherContactEmail == null || OrganisationModule.autoOtherContactEmail === "") {
+        return true;
+      }
+      return false;
+    } else {
+      return ProcessModule.canEditOtherContact;
+    }
+  }
+
+  get calculatedOtherContact() {
+    if (this.isReporting) {
+      if (OrganisationModule.autoOtherContactEmail == null || OrganisationModule.autoOtherContactEmail === "") {
+        return ProcessModule.otherContactEmail;
+      } else {
+        return OrganisationModule.autoOtherContactEmail;
+      }
+    } else {
+      return ProcessModule.otherContactEmail;
+    }
   }
 
   assign(state: Partial<ProcessState>) {

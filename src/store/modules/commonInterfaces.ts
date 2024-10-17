@@ -37,6 +37,11 @@ export interface Municipality {
   name: string;
   cvr: string;
 }
+export interface Logo {
+  id: number;
+  fileName: string;
+  url: string;
+}
 export interface Technology {
   id: number;
   name: string;

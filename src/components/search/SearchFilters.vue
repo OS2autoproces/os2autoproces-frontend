@@ -1,9 +1,10 @@
 <template>
   <div class="wrapper">
     <div class="types" v-if="!umbrellaProcessSearch">
-      <PillCheckbox :value="!!filters.reporterId" @change="setReporterId">Mine indberetninger</PillCheckbox>
-      <PillCheckbox :value="!!filters.usersId" @change="setUsersId">Mine tilknytninger</PillCheckbox>
-      <PillCheckbox :value="!!filters.bookmarkedId" @change="setBookmarkedId">Mine favoritter</PillCheckbox>
+      <PillCheckbox class="pillCheckbox" :value="!!filters.reporterId" @change="setReporterId">Mine indberetninger</PillCheckbox>
+      <PillCheckbox class="pillCheckbox" :value="!!filters.usersId" @change="setUsersId">Mine tilknytninger</PillCheckbox>
+      <PillCheckbox class="pillCheckbox" :value="!!filters.bookmarkedId" @change="setBookmarkedId">Mine favoritter</PillCheckbox>
+      <PillCheckbox class="pillCheckbox" :value="filters.filterMyOrganisation" @change="setMyOrganisation">Relevant for min organisation</PillCheckbox>
     </div>
 
     <h1 v-if="!umbrellaProcessSearch">
@@ -144,6 +145,7 @@ import { AuthModule } from '@/store/modules/auth';
 import { CommonModule } from '@/store/modules/common';
 import { SearchModule } from '@/store/modules/search';
 import InfoTooltip from '@/components/common/InfoTooltip.vue';
+import { OrganisationModule } from '@/store/modules/organisation';
 
 @Component({
   components: {
@@ -179,6 +181,9 @@ export default class SearchFiltersComponent extends Vue {
     CommonModule.loadITSystemsSorted();
     CommonModule.loadMunicipalities();
     CommonModule.loadTechnologies();
+
+    const cvr = AuthModule.user ? AuthModule.user.cvr : null;
+    OrganisationModule.loadMunicipalityDetails(cvr);
   }
 
   setReporterId(value: boolean) {
@@ -194,6 +199,17 @@ export default class SearchFiltersComponent extends Vue {
   setBookmarkedId(value: boolean) {
     const bookmarkedId = value && AuthModule.user ? AuthModule.user.uuid : null;
     this.updateFilters({ bookmarkedId });
+  }
+
+  setMyOrganisation(value: boolean) {
+    if (value) {
+      this.updateFilters({ itSystems: OrganisationModule.itSystems });
+      this.updateFilters({ technologies: OrganisationModule.technologies });
+    } else {
+      this.updateFilters({ itSystems: [] });
+      this.updateFilters({ technologies: [] });
+    }
+    this.updateFilters({ filterMyOrganisation: value });
   }
 
   updateFilters(filters: Partial<SearchFilters>) {
@@ -259,5 +275,9 @@ h1 {
 
 .datepicker {
   margin-top: 1rem;
+}
+
+.pillCheckbox {
+  font-size: 15px;
 }
 </style>

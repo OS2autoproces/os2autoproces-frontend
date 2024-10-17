@@ -6,6 +6,7 @@
     <router-link class="link" v-if="isFrontpageEditor" to="/">Forside</router-link>
     <router-link class="link" to="/dashboard">Dashboard</router-link>
     <router-link class="link" to="/search">Procesoverblik</router-link>
+    <router-link class="link" :to="`/organisation/${cvr}`">Min organisation</router-link>
     <router-link class="link" v-if="isAdministrator" to="/manage-systems">Systemer</router-link>
     <router-link class="link" v-if="isAdministrator" to="/manage-technologies">Teknologier</router-link>
     <a class="link" rel="noopener noreferrer" target="_blank" href="https://boks.os2.eu/s/CR6pmmnwqR2REBg"
@@ -43,6 +44,10 @@ export default class NavBar extends Vue {
 
   get isFrontpageEditor() {
     return AuthModule.user && AuthModule.user.roles.includes(UserRole.frontpageEditor);
+  }
+
+  get cvr() {
+    return AuthModule.user?.cvr
   }
 
   get state() {

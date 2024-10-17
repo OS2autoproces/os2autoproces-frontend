@@ -154,6 +154,10 @@ export default class SearchResultRow extends Vue {
   }
 
   get timeSpendHours() {
+    if (this.process.timeSpendOccurancesPerEmployee == null || this.process.timeSpendPerOccurance == null) {
+      return '0';
+    }
+    
     const total = this.process.timeSpendOccurancesPerEmployee * this.process.timeSpendPerOccurance;
     const hours = (total / 60) * (this.process.timeSpendPercentageDigital / 100);
     const result = hours.toLocaleString('da-DK', { minimumFractionDigits: 2 }) || '0';

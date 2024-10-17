@@ -81,6 +81,11 @@ export interface ProcessReport {
   hasBookmarked: boolean | null;
   canEdit: boolean | null;
   emailNotification: boolean | null;
+  seenByCount: number;
+  base64Logo: string | null;
+  employees: string | null;
+  inhabitants: string | null;
+  canEditOtherContact: boolean | null;
 }
 export interface Link {
   url: string;

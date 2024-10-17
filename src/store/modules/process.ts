@@ -111,6 +111,11 @@ export default class Process extends VuexModule implements ProcessState {
   disabled: Disabled | null = null;
   attachments: Attachment[] = [];
   comments: Comment[] = [];
+  seenByCount: number = 0;
+  base64Logo: string | null = null;
+  employees: string | null = null;
+  inhabitants: string | null = null;
+  canEditOtherContact: boolean | null = null;
 
   @Mutation
   UPDATE(state: Partial<ProcessState>) {

@@ -78,7 +78,14 @@
       </div>
     </div>
 
-    <div class="datatable-container">
+    <SelectionField
+            class="selectTable"
+            :value="table"
+            :items="tables"
+            @change="updateTable"
+          />
+
+    <div class="datatable-container" id="municipalityContainer" v-show="table.value === 'MUNICIPALITY'">
       <table id="municipalityDatatable" class="display custom-datatable table">
         <thead>
           <tr>
@@ -88,8 +95,31 @@
         </thead>
         <tbody>
           <tr v-for="item in municipalityChartDTO" :key="item.municipalityName">
-            <td>{{ item.municipalityName }}</td>
+            <td>
+              <a :href="'/organisation/' + item.cvr">{{ item.municipalityName }}</a>
+            </td>
             <td>{{ item.processCount }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="datatable-container" id="seenByContainer" v-show="table.value === 'SEEN_BY'">
+      <table id="seenByDatatable" class="display custom-datatable table">
+        <thead>
+          <tr>
+            <th>Nr.</th>
+            <th>ID</th>
+            <th>Titel</th>
+            <th>Set af unikke brugere</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="item in seenByChartDTO" :key="item.sortOrder">
+            <td>{{ item.sortOrder }}</td>
+            <td>{{ item.processId }}</td>
+            <td>{{ item.title }}</td>
+            <td>{{ item.count }}</td>
           </tr>
         </tbody>
       </table>
@@ -100,17 +130,24 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 import NavBar from '@/components/common/NavBar.vue';
+import SelectionField from '@/components/common/inputs/SelectionField.vue';
 import { Chart, registerables, ChartData } from 'chart.js';
 import { ChartModule } from '@/store/modules/chart';
 import 'datatables.net-dt';
 import 'datatables.net-dt/css/jquery.dataTables.min.css';
 import $ from 'jquery';
 
+interface Table {
+  value: string;
+  text: string;
+}
+
 Chart.register(...registerables);
 
 @Component({
   components: {
-    NavBar
+    NavBar,
+    SelectionField
   }
 })
 export default class Dashboard extends Vue {
@@ -122,6 +159,14 @@ export default class Dashboard extends Vue {
   selectedPhaseBarChartData = 'all';
   selectedTechnologyPieChartData = 'all';
   selectedSystemPieChartData = 'all';
+
+  tables = [
+    { value: "MUNICIPALITY", text: "Top-10 organisationer" },
+    { value: "SEEN_BY", text: "Top-10 mest sete processer" }
+  ]
+
+  table: Table = this.tables[0];
+
   backgroundColors = [
     '#EE8A3C',
     '#3D5386',
@@ -149,6 +194,10 @@ export default class Dashboard extends Vue {
 
   get municipalityChartDTO() {
     return ChartModule.municipalityChartDTO;
+  }
+
+  get seenByChartDTO() {
+    return ChartModule.seenByChartDTO;
   }
 
   get historyChartDTO() {
@@ -291,6 +340,13 @@ export default class Dashboard extends Vue {
     this.loadMunicipalityChartDTO();
     this.loadHistoryChartDTO();
     this.loadSystemChartDTO();
+    this.loadSeenByChartDTO();
+
+    window.addEventListener('resize', this.handleResize);
+  }
+
+  async handleResize() {
+    location.reload();
   }
 
   async loadPhaseChartDTO() {
@@ -308,6 +364,11 @@ export default class Dashboard extends Vue {
     this.renderDataTable();
   }
 
+  async loadSeenByChartDTO() {
+    await ChartModule.loadSeenByChartDTO();
+    this.renderSeenByDatatable();
+  }
+
   async loadHistoryChartDTO() {
     await ChartModule.loadHistoryChartDTO();
     this.renderLineChart();
@@ -323,6 +384,22 @@ export default class Dashboard extends Vue {
       destroy: true,
       paging: false,
       order: [[1, 'desc']],
+      language: {
+        search: 'Søg',
+        lengthMenu: '',
+        info: 'Viser _START_ til _END_ af _TOTAL_ rækker',
+        zeroRecords: 'Ingen data...',
+        infoEmpty: '',
+        infoFiltered: '(ud af _MAX_ rækker)'
+      }
+    });
+  }
+
+  renderSeenByDatatable() {
+    const seenByDataTable = $('#seenByDatatable').DataTable({
+      destroy: true,
+      paging: false,
+      order: [[0, 'asc']],
       language: {
         search: 'Søg',
         lengthMenu: '',
@@ -479,6 +556,10 @@ export default class Dashboard extends Vue {
     this.systemPieChartInstance.update();
   }
 
+  updateTable(selectedTable: Table) {
+    this.table = selectedTable;
+  }
+
   async clearFilters() {
     location.reload();
   }
@@ -523,16 +604,41 @@ export default class Dashboard extends Vue {
   border-radius: 0.5rem;
   min-width: 100px;
   color: #ee8a3c;
+  max-height: 30px;
 }
 
 .datatable-container {
   margin-top: 40px !important;
   width: 60%;
   margin: 0 auto;
+  margin-bottom: 50px;
 }
 
-/* datatable */
 .custom-datatable th {
   color: $color-secondary;
+}
+
+.selectTable {
+  width: 60%;
+  margin: 0 auto;
+  min-width: 100px;
+  margin-top: 50px;
+}
+
+@media screen and (max-width: 1150px) {
+  .wrapper {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    width: 90%;
+    margin: 0 auto;
+  }
+
+  .chart-container {
+    width: 98%;
+  }
+
+  .clearBtn {
+    width: 90%;
+    margin: 0 auto;
+  }
 }
 </style>

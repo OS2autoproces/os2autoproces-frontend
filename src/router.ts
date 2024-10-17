@@ -10,6 +10,7 @@ import Search from './views/Search.vue';
 import Discovery from './views/Discovery.vue';
 import Profile from './views/Profile.vue';
 import Dashboard from './views/Dashboard.vue';
+import Organisation from './views/Organisation.vue';
 import { mapSearchQueryToObject, mapQueryObjToFilters, isIE } from '@/services/url-service';
 import { isEmpty } from 'lodash';
 import { getInitialState } from '@/store/modules/searchFunctions';
@@ -119,6 +120,12 @@ export const routes: RouteConfig[] = [
       };
     },
     component: Search,
+    beforeEnter: isLoggedIn()
+  },
+  {
+    path: '/organisation/:cvr',
+    component: Organisation,
+    props: route => ({ cvr: route.params.cvr }),
     beforeEnter: isLoggedIn()
   },
   {

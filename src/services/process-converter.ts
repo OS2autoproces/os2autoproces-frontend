@@ -47,14 +47,14 @@ export interface ProcessRequest {
   processChallenges: string | null;
   solutionRequests: string | null;
 
-  timeSpendOccurancesPerEmployee: number;
-  timeSpendPerOccurance: number;
-  timeSpendEmployeesDoingProcess: number;
-  timeSpendPercentageDigital: number;
-  expectedDevelopmentTime: number;
+  timeSpendOccurancesPerEmployee: number | null;
+  timeSpendPerOccurance: number | null;
+  timeSpendEmployeesDoingProcess: number | null;
+  timeSpendPercentageDigital: number | null;
+  expectedDevelopmentTime: number | null;
   timeSpendComment: string;
-  targetsCompanies: boolean;
-  targetsCitizens: boolean;
+  targetsCompanies: boolean | null;
+  targetsCitizens: boolean | null;
 
   levelOfProfessionalAssessment: LikertScale;
   levelOfChange: LikertScale;
@@ -130,15 +130,15 @@ export interface ProcessResponse {
   processChallenges: string | null;
   solutionRequests: string | null;
 
-  timeSpendOccurancesPerEmployee: number;
-  timeSpendPerOccurance: number;
-  timeSpendEmployeesDoingProcess: number;
-  timeSpendPercentageDigital: number;
+  timeSpendOccurancesPerEmployee: number | null;
+  timeSpendPerOccurance: number | null;
+  timeSpendEmployeesDoingProcess: number | null;
+  timeSpendPercentageDigital: number | null;
   timeSpendComputedTotal: number;
-  expectedDevelopmentTime: number;
+  expectedDevelopmentTime: number | null;
   timeSpendComment: string;
-  targetsCompanies: boolean;
-  targetsCitizens: boolean;
+  targetsCompanies: boolean | null;
+  targetsCitizens: boolean | null;
 
   levelOfProfessionalAssessment: LikertScale;
   levelOfChange: LikertScale;
@@ -161,7 +161,7 @@ export interface ProcessResponse {
   searchWords: string | null;
 
   users: User[] | null;
-  owner: User;
+  owner: User | null;
   contact: User;
   otherContactEmail: string | null;
   reporter: User;
@@ -171,6 +171,11 @@ export interface ProcessResponse {
   technologies: Technology[] | null;
   children: ProcessReport[];
   parents: ProcessReport[];
+  seenByCount: number;
+  base64Logo: string | null;
+  employees: string | null;
+  inhabitants: string | null;
+  canEditOtherContact: boolean | null;
 }
 
 function relation(name: string, entity: { id: number | string } | null | undefined): string {
@@ -199,7 +204,7 @@ function stateToRequestFields(state: ProcessReport): ProcessRequest {
     phase: state.phase || PhaseKeys.IDEA,
     status: state.status || StatusKeys.PENDING,
     statusText: defaultNull(state.statusText),
-    runPeriod: state.runPeriod || RunPeriodKeys.ONDEMAND,
+    runPeriod: state.runPeriod || RunPeriodKeys.NOT_CHOSEN_YET,
     created: defaultNull(state.created),
     lastChanged: defaultNull(state.lastChanged),
     putIntoOperation: defaultNull(state.putIntoOperation),
@@ -221,14 +226,14 @@ function stateToRequestFields(state: ProcessReport): ProcessRequest {
     internalNotes: defaultNull(state.internalNotes),
     processChallenges: defaultNull(state.processChallenges),
     solutionRequests: defaultNull(state.solutionRequests),
-    timeSpendEmployeesDoingProcess: defaultZero(state.timeSpendEmployeesDoingProcess),
-    timeSpendOccurancesPerEmployee: defaultZero(state.timeSpendOccurancesPerEmployee),
-    timeSpendPercentageDigital: defaultZero(state.timeSpendPercentageDigital),
-    timeSpendPerOccurance: defaultZero(state.timeSpendPerOccurance),
-    expectedDevelopmentTime: defaultZero(state.expectedDevelopmentTime),
+    timeSpendEmployeesDoingProcess: defaultNull(state.timeSpendEmployeesDoingProcess),
+    timeSpendOccurancesPerEmployee: defaultNull(state.timeSpendOccurancesPerEmployee),
+    timeSpendPercentageDigital: defaultNull(state.timeSpendPercentageDigital),
+    timeSpendPerOccurance: defaultNull(state.timeSpendPerOccurance),
+    expectedDevelopmentTime: defaultNull(state.expectedDevelopmentTime),
     timeSpendComment: state.timeSpendComment ?? '',
-    targetsCompanies: !!state.targetsCompanies,
-    targetsCitizens: !!state.targetsCitizens,
+    targetsCompanies: state.targetsCompanies,
+    targetsCitizens: state.targetsCitizens,
     levelOfProfessionalAssessment: state.levelOfProfessionalAssessment || LikertScaleKeys.UNKNOWN,
     levelOfChange: state.levelOfChange || LikertScaleKeys.UNKNOWN,
     levelOfDigitalInformation: state.levelOfDigitalInformation || LikertScaleKeys.UNKNOWN,
@@ -314,11 +319,11 @@ export function responseToState(process: ProcessResponse): ProcessState {
     sepMep: process.sepMep,
     hasChanged: false,
     timeSpendComputedTotal: process.timeSpendComputedTotal.toString(),
-    timeSpendEmployeesDoingProcess: process.timeSpendEmployeesDoingProcess.toString(),
-    timeSpendOccurancesPerEmployee: process.timeSpendOccurancesPerEmployee.toString(),
-    timeSpendPercentageDigital: process.timeSpendPercentageDigital.toString(),
-    timeSpendPerOccurance: process.timeSpendPerOccurance.toString(),
-    expectedDevelopmentTime: process.expectedDevelopmentTime ? process.expectedDevelopmentTime.toString() : '0',
+    timeSpendEmployeesDoingProcess: process.timeSpendEmployeesDoingProcess != null ? process.timeSpendEmployeesDoingProcess.toString() : '',
+    timeSpendOccurancesPerEmployee: process.timeSpendOccurancesPerEmployee != null ? process.timeSpendOccurancesPerEmployee.toString() : '',
+    timeSpendPercentageDigital: process.timeSpendPercentageDigital != null ? process.timeSpendPercentageDigital.toString() : '',
+    timeSpendPerOccurance: process.timeSpendPerOccurance != null ? process.timeSpendPerOccurance.toString() : null,
+    expectedDevelopmentTime: process.expectedDevelopmentTime != null ? process.expectedDevelopmentTime.toString() : null,
     rating: process.rating || 0,
     itSystemsDescription: process.itSystemsDescription || '',
     hasBookmarked: process.hasBookmarked,
@@ -355,6 +360,11 @@ export function responseToState(process: ProcessResponse): ProcessState {
     children: process.children || [],
     type: process.type || TypeKeys.CHILD,
     owner: process.owner,
-    emailNotification: process.emailNotification || false
+    emailNotification: process.emailNotification || false,
+    seenByCount: process.seenByCount,
+    base64Logo: process.base64Logo || null,
+    employees: process.employees || null,
+    inhabitants: process.inhabitants || null,
+    canEditOtherContact: process.canEditOtherContact || null
   };
 }

@@ -53,7 +53,7 @@ export const initialProcessState: ProcessState = {
   phase: PhaseKeys.IDEA,
   status: StatusKeys.NOT_RATED,
   statusText: '',
-  runPeriod: RunPeriodKeys.ONDEMAND,
+  runPeriod: RunPeriodKeys.NOT_CHOSEN_YET,
   klaProcess: false,
   municipalityName: '',
   type: TypeKeys.CHILD,
@@ -81,15 +81,17 @@ export const initialProcessState: ProcessState = {
   itSystemsDescription: '',
 
   /* Time and process */
-  timeSpendOccurancesPerEmployee: '0',
-  timeSpendPerOccurance: '0',
+  timeSpendOccurancesPerEmployee: null,
+  timeSpendPerOccurance: null,
   timeSpendComputedTotal: '0',
-  timeSpendEmployeesDoingProcess: '0',
-  timeSpendPercentageDigital: '0',
-  expectedDevelopmentTime: '0',
-  targetsCitizens: false,
-  targetsCompanies: false,
+  timeSpendEmployeesDoingProcess: null,
+  timeSpendPercentageDigital: null,
+  expectedDevelopmentTime: null,
+  targetsCitizens: null,
+  targetsCompanies: null,
   timeSpendComment: '',
+  inhabitants: null,
+  employees: null,
 
   /* Implementation */
   organizationalImplementationNotes: '',
@@ -118,6 +120,9 @@ export const initialProcessState: ProcessState = {
   cvr: '',
   hasBookmarked: false,
   canEdit: false,
+  seenByCount: 0,
+  base64Logo: null,
+  canEditOtherContact: null,
 
   emailNotification: false
 };

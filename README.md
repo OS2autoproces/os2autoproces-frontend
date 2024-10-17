@@ -71,7 +71,7 @@ There are no recommendations.
 
 Follow Local dev environment instructions bellow. But be aware of:
 
-- use Node.js 14.21.3 (Fermium) and the included npm version (tested and works with npm 9.6.2) (https://nodejs.org/download/release/v14.21.3/)
+- use Node.js 14.21.3 (Fermium) and the included npm version (tested and works with npm 9.6.2) (https://nodejs.org/en/blog/release/v14.21.3)
 - make sure you have Visual Studio and the Desktop development with C++ downloaded (for some reason the project needs it to run even though you are using Visual Studio Code)
 - To run project follow these steps:
   - Install and run nginx. You need an nginx.conf file with the right setting. You can find a nginx.conf file in the nginx folder of this project, but it needs to be in the nginx folder. To start nginx type 'start nginx' in a terminal opened from the nginx folder. To stop type 'nginx -s stop'.

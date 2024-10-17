@@ -17,6 +17,7 @@ export function getInitialState(): SearchState {
       reporterId: null,
       usersId: null,
       bookmarkedId: null,
+      filterMyOrganisation: false,
       text: '',
       created: '',
       lastChanged: '',
@@ -61,6 +62,7 @@ export function getInitialState(): SearchState {
         ECONOMY: false
       },
       runPeriod: {
+        NOT_CHOSEN_YET: false,
         ONDEMAND: false,
         ONCE: false,
         DAILY: false,

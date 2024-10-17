@@ -51,6 +51,7 @@ export interface SearchFilters {
   reporterId: string | null;
   usersId: string | null;
   bookmarkedId: string | null;
+  filterMyOrganisation: boolean;
   text: string;
   created: string;
   lastChanged: string;

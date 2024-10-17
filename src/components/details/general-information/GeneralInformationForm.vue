@@ -20,10 +20,22 @@
         @change="update({ title: $event })"
         :maxLength="65"
       />
-      <div v-if="!isReporting" class="bookmark-button" role="button" @click="setBookmark(!state.hasBookmarked)">
-        <StarIcon :class="{ selected: state.hasBookmarked }" />
-      </div>
       <MunicipalityLogo :src="logo" />
+    </div>
+
+    <div class="action-row" v-if="!isReporting">
+        <div class="left-container" style="width: 33%">
+          <p>Set af <b>{{ state.seenByCount }}</b> unikke brugere</p>
+        </div>
+        <div class="middle-container" style="width: 33%;"></div>
+        <div class="right-container" style="width: 33%; display: inline-flex;">
+          <div class="bookmark-button" role="button" @click="setBookmark(!state.hasBookmarked)">
+            <StarIcon :class="{ selected: state.hasBookmarked }" />
+          </div>
+          <div style="margin-left: 50px;">
+            <p>Favorit</p>
+          </div>
+        </div>
     </div>
 
     <Well>
@@ -32,7 +44,7 @@
           <InputField disabled :value="state.id" />
         </WellItem>
         <WellItem labelWidth="180px" label="Organisation:">
-          <span>{{ state.municipalityName }}</span>
+          <a :href="'/organisation/' + state.cvr">{{ state.municipalityName }}</a>
         </WellItem>
         <WellItem labelWidth="180px" label="Indberetter:" v-if="isWithinMunicipality">
           <SelectionField disabled :value="state.reporter" itemText="name" />
@@ -43,7 +55,7 @@
           label="Fagligkontaktperson:"
           tooltip="Er en person der varetager processen til daglig og derfor har stort kendskab til den."
           v-if="isWithinMunicipality"
-          :required="state.minPhase(PhaseKeys.SPECIFICATION)"
+          :required="false"
         >
           <SelectionField
             itemSubText="email"
@@ -55,6 +67,7 @@
             isItemsPartial
             @change="update({ owner: $event })"
             :items="common.users"
+            clearable
           />
         </WellItem>
         <WellItem
@@ -92,12 +105,12 @@
           id="otherContactEmail"
           labelWidth="180px"
           label="Anden kontaktinformation:"
-          tooltip="Ønsker du anden kontakt information end en oprettet bruger i OS2autoproces, noter da information og email i dette felt. Eksempel: fællespostkassen OS2, xxxx@os2.dk. Disse oplysninger erstatter oplysningerne i feltet Kontaktperson, når processen læses af andre organisationer."
+          tooltip="Ønsker du anden kontakt information end en oprettet bruger i OS2autoproces, noter da information og email i dette felt. Eksempel: fællespostkassen OS2, xxxx@os2.dk. Disse oplysninger erstatter oplysningerne i feltet Kontaktperson, når processen læses af andre organisationer. Dette felt kan være låst, hvis der er opsat en kontakt på organisationssiden."
           v-if="isWithinMunicipality || (!isWithinMunicipality && state.otherContactEmail != null)"
         >
           <InputField
-            :value="state.otherContactEmail"
-            :disabled="state.disabled.generalInformationEdit"
+            :value="calculatedOtherContact"
+            :disabled="state.disabled.generalInformationEdit || !canEditOtherContact"
             :hasError="isInErrors('otherContactEmail')"
             @change="update({ otherContactEmail: $event })"
           />
@@ -347,6 +360,7 @@ import { AuthModule, User } from '@/store/modules/auth';
 import { ProcessModule, ProcessState } from '@/store/modules/process';
 import { ErrorModule } from '@/store/modules/error';
 import DatePicker from '@/components/common/inputs/DatePicker.vue';
+import { OrganisationModule } from '@/store/modules/organisation';
 // TODO - split this component. No component should be 500 lines
 @Component({
   components: {
@@ -400,7 +414,11 @@ export default class GeneralInformationForm extends Vue {
   }
 
   get logo() {
-    return `/logos/${ProcessModule?.cvr}.png`;
+    if (this.state.base64Logo != null) {
+      return this.state.base64Logo;
+    } else {
+      return `/logos/${ProcessModule?.cvr}.png`;
+    }
   }
 
   get state() {
@@ -409,6 +427,29 @@ export default class GeneralInformationForm extends Vue {
 
   get common() {
     return CommonModule;
+  }
+
+  get canEditOtherContact() {
+    if (this.isReporting) {
+      if (OrganisationModule.autoOtherContactEmail == null || OrganisationModule.autoOtherContactEmail === "") {
+        return true;
+      }
+      return false;
+    } else {
+      return ProcessModule.canEditOtherContact;
+    }
+  }
+
+  get calculatedOtherContact() {
+    if (this.isReporting) {
+      if (OrganisationModule.autoOtherContactEmail == null || OrganisationModule.autoOtherContactEmail === "") {
+        return ProcessModule.otherContactEmail;
+      } else {
+        return OrganisationModule.autoOtherContactEmail;
+      }
+    } else {
+      return ProcessModule.otherContactEmail;
+    }
   }
 
   assign(state: Partial<ProcessState>) {
@@ -583,7 +624,7 @@ export default class GeneralInformationForm extends Vue {
 .bookmark-button {
   height: 2rem;
   width: 2rem;
-  margin-left: 50px;
+  margin-left: 5px;
 }
 
 .form-header {
@@ -601,5 +642,11 @@ export default class GeneralInformationForm extends Vue {
       margin: 1rem 0.5rem;
     }
   }
+}
+
+.action-row {
+  color: $color-secondary;
+  display: flex;
+  align-items: center;
 }
 </style>

@@ -113,6 +113,7 @@ import SnackBar from '@/components/common/SnackBar.vue';
 import { isEmpty } from 'lodash';
 import { CommonModule } from '@/store/modules/common';
 import { ProcessModule, ProcessState } from '@/store/modules/process';
+import { OrganisationModule } from '@/store/modules/organisation';
 import { AuthModule } from '@/store/modules/auth';
 import { isIE } from '@/services/url-service';
 
@@ -196,6 +197,8 @@ export default class Process extends Vue {
   }
 
   mounted() {
+    OrganisationModule.loadMunicipalityDetails(AuthModule.user?.cvr? AuthModule.user.cvr : null);
+
     CommonModule.loadKles();
     CommonModule.loadITSystems();
     CommonModule.loadOrgUnits();

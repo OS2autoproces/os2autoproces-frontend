@@ -57,7 +57,7 @@
         />
       </div>
       <div class="run-period" id="runPeriod">
-        <h2 class="with-margin">Skedulering</h2>
+        <h2 class="with-margin">Skedulering *</h2>
         <MappedSelectionField
           class="run-period-field"
           :disabled="state.disabled.implementationEdit"
@@ -118,6 +118,7 @@ export default class ImplementationForm extends Vue {
   twoColumnBreakpoint = 1600;
 
   runPeriods = [
+    { value: RunPeriodKeys.NOT_CHOSEN_YET, text: RunPeriodLabels.NOT_CHOSEN_YET },
     { value: RunPeriodKeys.ONCE, text: RunPeriodLabels.ONCE },
     { value: RunPeriodKeys.ONDEMAND, text: RunPeriodLabels.ONDEMAND },
     { value: RunPeriodKeys.DAILY, text: RunPeriodLabels.DAILY },

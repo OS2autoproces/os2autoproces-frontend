@@ -26,7 +26,7 @@
       style="margin-top: 1rem;"
     >
       <div class="rating-label" id="rating">
-        I hvor høj grad indfriede løsningen de forventede gevinster? *
+        I hvor høj grad indfriede løsningen de forventede gevinster?
         <InfoTooltip>Skalaen lav, mellem, høj angiver graden af gevinstrealisering.</InfoTooltip>
       </div>
       <Rating

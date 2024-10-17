@@ -98,6 +98,7 @@ export const attachmentKeys: Array<keyof ProcessLabels> = Object.keys(attachment
 
 export const implementationLabels: ProcessLabels = {
   technologies: 'Anvendt teknologi',
+  runPeriod: 'Skedulering',
   technicalImplementationNotes: 'Teknisk implementering',
   organizationalImplementationNotes: 'Organisatorisk implementering',
   services: 'Automatiseringen anvender følgende systemer/snitflader'
@@ -151,9 +152,9 @@ export const errorLimitations: { [key: string]: string } = {
   timeSpendPerOccurance: 'kun tal',
   expectedDevelopmentTime: 'kun tal',
   timeSpendEmployeesDoingProcess: 'kun tal',
-  timeSpendPercentageDigital: 'maks 100 tegn',
-  owner: 'obligatorisk felt',
+  timeSpendPercentageDigital: 'maks 100%',
   technologies: 'obligatorisk fra specifikations-fasen',
+  runPeriod: 'obligatorisk fra specifikations-fasen',
   processChallenges: 'obligatorisk fra Idé-fasen'
 };
 

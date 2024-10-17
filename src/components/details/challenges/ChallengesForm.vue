@@ -37,7 +37,7 @@
     </div>
 
     <div v-if="state.minPhase(PhaseKeys.PREANALYSIS)" id="processChallenges">
-      <h2 class="with-margin">Udfordringer i den nuværende proces *</h2>
+      <h2 class="with-margin">Udfordringer i den nuværende proces</h2>
       <InfoTooltip
         >Her kan du beskrive de trivielle handlinger, udfordringer eller vaskeligheder der opleves i udførelsen af den
         nuværende proces.</InfoTooltip

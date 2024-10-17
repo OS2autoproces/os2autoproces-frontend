@@ -11,8 +11,16 @@ export interface OrganisationChartDTO {
 }
 
 export interface MunicipalityProcessCountChartDTO {
+  cvr: string
   municipalityName: string;
   processCount: number;
+}
+
+export interface ProcessSeenByChartDTO {
+  processId: number;
+  title: string
+  count: number;
+  sortOrder: number
 }
 
 export interface ChartState {
@@ -21,6 +29,7 @@ export interface ChartState {
   municipalityChartDTO: MunicipalityProcessCountChartDTO[] | null;
   historyChartDTO: OrganisationChartDTO | null;
   systemChartDTO: OrganisationChartDTO | null;
+  seenByChartDTO: ProcessSeenByChartDTO[] | null
 }
 
 @Module({ dynamic: true, store, name: 'chart', namespaced: true })
@@ -30,6 +39,7 @@ export default class Chart extends VuexModule implements ChartState {
   municipalityChartDTO: MunicipalityProcessCountChartDTO[] | null = null;
   historyChartDTO: OrganisationChartDTO | null = null;
   systemChartDTO: OrganisationChartDTO | null = null;
+  seenByChartDTO: ProcessSeenByChartDTO[] | null = null;
 
   @Mutation
   UPDATE(partial: Partial<ChartState>) {
@@ -64,6 +74,12 @@ export default class Chart extends VuexModule implements ChartState {
   async loadHistoryChartDTO() {
     const historyChartDTO = (await HTTP.get<OrganisationChartDTO>('api/charts/history'))?.data;
     this.UPDATE({ historyChartDTO });
+  }
+
+  @Action
+  async loadSeenByChartDTO() {
+    const seenByChartDTO = (await HTTP.get<ProcessSeenByChartDTO[]>('api/charts/seenby'))?.data;
+    this.UPDATE({ seenByChartDTO });
   }
 }
 export const ChartModule = getModule(Chart);

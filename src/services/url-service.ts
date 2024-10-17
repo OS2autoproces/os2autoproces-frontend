@@ -71,6 +71,7 @@ export const mapQueryObjToFilters = (
     reporterId: query.reporterId || initial.reporterId,
     usersId: query.usersId || initial.usersId,
     bookmarkedId: query.bookmarkedId || initial.bookmarkedId,
+    filterMyOrganisation: query.filterMyOrganisation || initial.filterMyOrganisation,
     text: query.text || initial.text,
     created: query.created || initial.created,
     lastChanged: query.lastChanged || initial.lastChanged,

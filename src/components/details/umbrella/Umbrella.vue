@@ -74,6 +74,7 @@ import { SearchModule } from '@/store/modules/search';
 import { ProcessModule } from '@/store/modules/process';
 import { AuthModule } from '@/store/modules/auth';
 import { isIE } from '@/services/url-service';
+import { OrganisationModule } from '@/store/modules/organisation';
 
 @Component({
   components: {
@@ -135,6 +136,8 @@ export default class Umbrella extends Vue {
   }
 
   mounted() {
+    OrganisationModule.loadMunicipalityDetails(AuthModule.user?.cvr? AuthModule.user.cvr : null);
+
     if (this.isReporting) {
       ProcessModule.update({
         type: this.type,

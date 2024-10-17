@@ -2,6 +2,7 @@ import { DateTime } from 'luxon';
 import * as validateJs from 'validate.js';
 import { PhaseKeys } from '@/models/phase';
 import { ProcessState } from './process';
+import { RunPeriodKeys } from '@/models/runperiod';
 
 export function getInvalidProperties(
   state: ProcessState,
@@ -72,16 +73,19 @@ export const processFieldsValidators: { [P in keyof ProcessState]?: (state: Proc
     return isValid(solutionRequests, isMinMax(0, 10000));
   },
   timeSpendOccurancesPerEmployee({ phase, timeSpendOccurancesPerEmployee }: ProcessState) {
-    return phase === PhaseKeys.IDEA || isValid(timeSpendOccurancesPerEmployee, isFloat);
+    return timeSpendOccurancesPerEmployee == null || timeSpendOccurancesPerEmployee === '' || isValid(timeSpendOccurancesPerEmployee, isFloat);
   },
   timeSpendPerOccurance({ phase, timeSpendPerOccurance }: ProcessState) {
-    return phase === PhaseKeys.IDEA || isValid(timeSpendPerOccurance, isFloat);
+    return timeSpendPerOccurance === "null" || timeSpendPerOccurance === ''  || isValid(timeSpendPerOccurance, isFloat);
   },
   timeSpendEmployeesDoingProcess({ phase, timeSpendEmployeesDoingProcess }: ProcessState) {
-    return phase === PhaseKeys.IDEA || isValid(timeSpendEmployeesDoingProcess, isFloat);
+    return timeSpendEmployeesDoingProcess == null || timeSpendEmployeesDoingProcess === '' || isValid(timeSpendEmployeesDoingProcess, isFloat);
   },
   timeSpendPercentageDigital({ phase, timeSpendPercentageDigital }: ProcessState) {
-    return phase === PhaseKeys.IDEA || isValid(timeSpendPercentageDigital, isBetween(0, 100));
+    return timeSpendPercentageDigital == null || timeSpendPercentageDigital === '' || isValid(timeSpendPercentageDigital, isBetween(0, 100));
+  },
+  expectedDevelopmentTime({ phase, expectedDevelopmentTime }: ProcessState) {
+    return expectedDevelopmentTime === "null" || expectedDevelopmentTime === '' || isValid(expectedDevelopmentTime, isFloat);
   },
   timeSpendComment({ timeSpendComment }: ProcessState) {
     return isValid(timeSpendComment, isMinMax(0, 10000));
@@ -113,11 +117,14 @@ export const processFieldsValidators: { [P in keyof ProcessState]?: (state: Proc
   evaluatedLevelOfRoi() {
     return true; // allow any phase to not have an assessment
   },
+  owner() {
+    return true;  // allow any phase to not have an owner
+  },
+  processChallenges() {
+    return true; // allow any phase to not have processChallenges
+  },
   esdhReference({ esdhReference }: ProcessState) {
     return isValid(esdhReference, isMinMax(0, 300));
-  },
-  owner({ phase, owner }: ProcessState) {
-    return phase === PhaseKeys.IDEA || phase === PhaseKeys.PREANALYSIS || !!owner;
   },
   vendor({ vendor }: ProcessState) {
     return isValid(vendor || '', isMinMax(0, 255));
@@ -130,25 +137,23 @@ export const processFieldsValidators: { [P in keyof ProcessState]?: (state: Proc
       (technologies || []).length > 0
     );
   },
-  runPeriod: ({ runPeriod }: ProcessState) => !!runPeriod,
+  runPeriod({ phase, runPeriod }: ProcessState){
+    return (
+      phase === PhaseKeys.IDEA ||
+      phase === PhaseKeys.PREANALYSIS ||
+      phase === PhaseKeys.SPECIFICATION ||
+      (runPeriod != null && runPeriod !== RunPeriodKeys.NOT_CHOSEN_YET)
+    );
+  },
   technicalImplementationNotes({ technicalImplementationNotes }: ProcessState) {
     return isValid(technicalImplementationNotes, isMinMax(0, 10000));
   },
   organizationalImplementationNotes({ organizationalImplementationNotes }: ProcessState) {
     return isValid(organizationalImplementationNotes, isMinMax(0, 10000));
   },
-  processChallenges({ phase, processChallenges }: ProcessState) {
-    const minLength = phase === PhaseKeys.IDEA ? 0 : 1;
-    return isValid(processChallenges, isMinMax(minLength, 10000));
-  },
   rating({ phase, rating }: ProcessState) {
     return (
-      phase === PhaseKeys.IDEA ||
-      phase === PhaseKeys.PREANALYSIS ||
-      phase === PhaseKeys.SPECIFICATION ||
-      phase === PhaseKeys.DEVELOPMENT ||
-      phase === PhaseKeys.IMPLEMENTATION ||
-      isValid(rating, isBetween(1, 3))
+      isValid(rating, isBetween(0, 3))
     );
   },
   ratingComment({ ratingComment }: ProcessState) {

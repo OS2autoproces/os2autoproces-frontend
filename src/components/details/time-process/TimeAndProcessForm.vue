@@ -13,7 +13,7 @@
           id="timeSpendOccurancesPerEmployee"
           labelWidth="70%"
           label="Antal gange processen foretages årligt"
-          :required="state.minPhase(PhaseKeys.PREANALYSIS)"
+          :required="false"
         >
           <InputField
             :type="'number'"
@@ -27,21 +27,20 @@
           id="timeSpendPerOccurance"
           labelWidth="70%"
           label="Tidsforbrug pr. proces i minutter og sekunder"
-          :required="state.minPhase(PhaseKeys.PREANALYSIS)"
+          :required="false"
         >
           <InputField
             :type="'number'"
             :disabled="state.disabled.timeAndProcessEdit"
-            :value="minutesAndSecondsPerOccurance.minutes.toFixed(0)"
+            :value="minutesAndSecondsPerOccurance.minutes !== null && !isNaN(minutesAndSecondsPerOccurance.minutes) ? minutesAndSecondsPerOccurance.minutes.toFixed(0) : ''"
             @change="updateTimeSpentPerOccurance({ minutes: $event })"
             >min</InputField
           >
           <InputField
             :type="'number'"
             :disabled="state.disabled.timeAndProcessEdit"
-            :value="minutesAndSecondsPerOccurance.seconds.toFixed(0)"
+            :value="minutesAndSecondsPerOccurance.seconds !== null && !isNaN(minutesAndSecondsPerOccurance.seconds) ? minutesAndSecondsPerOccurance.seconds.toFixed(0) : ''"
             @change="updateTimeSpentPerOccurance({ seconds: $event })"
-            :rules="secondRules"
             :hasError="isInErrors('timeSpendPerOccurance')"
             >sek</InputField
           >
@@ -82,7 +81,7 @@
           id="timeSpendEmployeesDoingProcess"
           labelWidth="70%"
           label="Antal medarbejdere der foretager processen"
-          :required="state.minPhase(PhaseKeys.PREANALYSIS)"
+          :required="false"
         >
           <InputField
             :type="'number'"
@@ -115,23 +114,21 @@
           labelWidth="70%"
           label="Forventet timeforbrug på udvikling"
           tooltip="Dette felt udfyldes af en person som har teknisk viden omkring udvikling."
-          :required="state.minPhase(PhaseKeys.PREANALYSIS)"
+          :required="false"
         >
           <InputField
             :type="'number'"
             :disabled="state.disabled.timeAndProcessEdit"
-            :value="hoursAndMinutesExpectedDevelopmentTime.hours.toFixed(0)"
+            :value="hoursAndMinutesExpectedDevelopmentTime.hours !== null && !isNaN(hoursAndMinutesExpectedDevelopmentTime.hours) ? hoursAndMinutesExpectedDevelopmentTime.hours.toFixed(0) : ''"
             @change="updateExpectedDevelopmentTime({ hours: $event })"
             :hasError="isInErrors('expectedDevelopmentTime')"
-            :rules="hoursRules"
             >tim</InputField
           >
           <InputField
             :type="'number'"
             :disabled="state.disabled.timeAndProcessEdit"
-            :value="hoursAndMinutesExpectedDevelopmentTime.minutes.toFixed(0)"
+            :value="hoursAndMinutesExpectedDevelopmentTime.minutes !== null && !isNaN(hoursAndMinutesExpectedDevelopmentTime.minutes) ? hoursAndMinutesExpectedDevelopmentTime.minutes.toFixed(0) : ''"
             @change="updateExpectedDevelopmentTime({ minutes: $event })"
-            :rules="minuteRules"
             :hasError="isInErrors('expectedDevelopmentTime')"
             >min</InputField
           >
@@ -139,20 +136,33 @@
       </div>
     </Well>
 
-    <div class="comments-wrap" id="timeSpendComment">
-      <span>Kommentar vedr. tidsforbrug</span>
-      <InfoTooltip class="time-proces-tooltip"
-        >Her kan du uddybe eller kommentere på de indtastede værdier ovenfor og på tidsforbruget generelt. F.eks.
-        hvordan det er målt.</InfoTooltip
-      >
-      <TextArea
-        :value="state.timeSpendComment"
-        :hasError="isInErrors('timeSpendComment')"
-        :disabled="state.disabled.timeAndProcessEdit"
-        @change="update({ timeSpendComment: $event })"
-        :maxLength="10000"
-      />
+    <div class="grid-container">
+      <div class="grid-child" id="timeSpendComment">
+        <span>Kommentar vedr. tidsforbrug</span>
+        <InfoTooltip class="time-proces-tooltip"
+          >Her kan du uddybe eller kommentere på de indtastede værdier ovenfor og på tidsforbruget generelt. F.eks.
+          hvordan det er målt.</InfoTooltip
+        >
+        <TextArea
+          :value="state.timeSpendComment"
+          :hasError="isInErrors('timeSpendComment')"
+          :disabled="state.disabled.timeAndProcessEdit"
+          @change="update({ timeSpendComment: $event })"
+          :maxLength="10000"
+        />
+      </div>
+      <div class="grid-child">
+        <span>Fata om indberetter organisationen</span>
+        <InfoTooltip class="time-proces-tooltip">Tal fra organisationens grundlæggende oplysninger</InfoTooltip>
+        <WellItem labelWidth="180px" label="Antal indbyggere:">
+          <span class="value-span">{{ state.inhabitants }}</span>
+        </WellItem>
+        <WellItem labelWidth="180px" label="Antal ansatte:">
+          <span class="value-span">{{ state.employees }}</span>
+        </WellItem>
+      </div>
     </div>
+    
   </FormSection>
 </template>
 
@@ -184,6 +194,7 @@ export default class TimeAndProcessForm extends Vue {
   PhaseKeys = PhaseKeys;
 
   yesNoItems = [
+    { value: null, text: '' },
     { value: true, text: 'Ja' },
     { value: false, text: 'Nej' }
   ];
@@ -214,11 +225,11 @@ export default class TimeAndProcessForm extends Vue {
   }
 
   get timeSpendPerOccurance() {
-    return Number(ProcessModule.timeSpendPerOccurance);
+    return ProcessModule.timeSpendPerOccurance == null ? null : Number(ProcessModule.timeSpendPerOccurance);
   }
 
   get expectedDevelopmentTime() {
-    return Number(ProcessModule.expectedDevelopmentTime);
+    return ProcessModule.expectedDevelopmentTime == null ? null : Number(ProcessModule.expectedDevelopmentTime);
   }
 
   get timeSpendPercentageDigital() {
@@ -226,7 +237,11 @@ export default class TimeAndProcessForm extends Vue {
   }
 
   get timeSpendTotal() {
-    return this.timeSpendOccurancesPerEmployee * this.timeSpendPerOccurance;
+    if (this.timeSpendOccurancesPerEmployee == null || this.timeSpendPerOccurance == null) {
+      return 0;
+    } else {
+      return this.timeSpendOccurancesPerEmployee * this.timeSpendPerOccurance;
+    }
   }
 
   get timeSpendHours() {
@@ -236,20 +251,38 @@ export default class TimeAndProcessForm extends Vue {
 
   // Number of times this process is repeated yearly * amount of time required pr. process in minutes / 60 * automation potential / 100
   get exptectedYearlyPotential() {
-    const hours = ((this.timeSpendTotal / 60) * (this.timeSpendPercentageDigital / 100)).toFixed(2) || '0';
-    return hours;
+    if (this.timeSpendPercentageDigital == null) {
+      return '0';
+    } else {
+      const hours = ((this.timeSpendTotal / 60) * (this.timeSpendPercentageDigital / 100)).toFixed(2) || '0';
+      return hours;
+    }
   }
 
-  get minutesAndSecondsPerOccurance(): { minutes: number; seconds: number } {
-    const minutes = parseInt(ProcessModule.timeSpendPerOccurance ?? '', 10); // remove decimals
-    const seconds = (this.timeSpendPerOccurance - minutes) * 60; // remove minute part and convert decimals to seconds
-    return { minutes, seconds };
+  get minutesAndSecondsPerOccurance(): { minutes: number | null; seconds: number | null } {
+    if (this.timeSpendPerOccurance == null) {
+      const minutes = null;
+      const seconds = null;
+      return { minutes, seconds };
+    } else {
+      const minuteString = this.timeSpendPerOccurance.toString();
+      const minutes = parseInt(minuteString ?? '', 10); // remove decimals
+      const seconds = (this.timeSpendPerOccurance - minutes) * 60; // remove minute part and convert decimals to seconds
+      return { minutes, seconds };
+    }
   }
 
-  get hoursAndMinutesExpectedDevelopmentTime(): { hours: number; minutes: number } {
-    const hours = parseInt(ProcessModule.expectedDevelopmentTime ?? '', 10); // remove decimals
-    const minutes = (this.expectedDevelopmentTime - hours) * 60; // remove hour part and convert decimals to minutes
-    return { hours, minutes };
+  get hoursAndMinutesExpectedDevelopmentTime(): { hours: number | null; minutes: number | null } {
+    if (this.expectedDevelopmentTime == null) {
+      const hours = null;
+      const minutes = null;
+      return { hours, minutes };
+    } else {
+      const hoursString = this.expectedDevelopmentTime.toString()
+      const hours = parseInt(hoursString ?? '', 10); // remove decimals
+      const minutes = (this.expectedDevelopmentTime - hours) * 60; // remove hour part and convert decimals to minutes
+      return { hours, minutes };
+    }
   }
 
   get shouldBeOpen(): boolean {
@@ -283,21 +316,65 @@ export default class TimeAndProcessForm extends Vue {
   }
 
   updateTimeSpentPerOccurance({ minutes, seconds }: { minutes: string; seconds: string }) {
-    const newMinutes =
-      !!minutes || minutes === '' ? parseInt(minutes || '0', 10) : this.minutesAndSecondsPerOccurance.minutes;
-    const newSeconds =
-      !!seconds || seconds === '' ? parseInt(seconds || '0', 10) : this.minutesAndSecondsPerOccurance.seconds;
-    const timeSpendPerOccurance = newMinutes + newSeconds / 60;
-    ProcessModule.update({ timeSpendPerOccurance: `${timeSpendPerOccurance}` });
+    let newSeconds = null;
+    if (seconds !== '' && seconds != null) {
+      newSeconds = parseInt(seconds, 10);
+    } else if (seconds == null) {
+      newSeconds = this.minutesAndSecondsPerOccurance.seconds;
+    }
+    
+    let newMinutes = null;
+    if (minutes !== '' && minutes != null) {
+      newMinutes = parseInt(minutes, 10);
+    } else if (minutes == null) {
+      newMinutes = this.minutesAndSecondsPerOccurance.minutes;
+    }
+
+    if (newSeconds == null && newMinutes == null) {
+      ProcessModule.update({ timeSpendPerOccurance: `${null}` });
+    } else {
+      if (newSeconds == null) {
+        newSeconds = 0;
+      }
+
+      if (newMinutes == null) {
+        newMinutes = 0
+      }
+      
+      const timeSpendPerOccurance = newMinutes + newSeconds / 60;
+      ProcessModule.update({ timeSpendPerOccurance: `${timeSpendPerOccurance}` });
+    }
   }
 
   updateExpectedDevelopmentTime({ hours, minutes }: { hours: string; minutes: string }) {
-    const newHours =
-      !!hours || hours === '' ? parseInt(hours || '0', 10) : this.hoursAndMinutesExpectedDevelopmentTime.hours;
-    const newMinutes =
-      !!minutes || minutes === '' ? parseInt(minutes || '0', 10) : this.hoursAndMinutesExpectedDevelopmentTime.minutes;
-    const expectedDevelopmentTime = newHours + newMinutes / 60;
-    ProcessModule.update({ expectedDevelopmentTime: `${expectedDevelopmentTime}` });
+    let newHours = null;
+    if (hours !== '' && hours != null) {
+      newHours = parseInt(hours, 10);
+    } else if (hours == null) {
+      newHours = this.hoursAndMinutesExpectedDevelopmentTime.hours;
+    }
+    
+    let newMinutes = null;
+    if (minutes !== '' && minutes != null) {
+      newMinutes = parseInt(minutes, 10);
+    } else if (minutes == null) {
+      newMinutes = this.hoursAndMinutesExpectedDevelopmentTime.minutes;
+    }
+
+    if (newHours == null && newMinutes == null) {
+      ProcessModule.update({ expectedDevelopmentTime: `${null}` });
+    } else {
+      if (newHours == null) {
+        newHours = 0;
+      }
+
+      if (newMinutes == null) {
+        newMinutes = 0
+      }
+      
+      const expectedDevelopmentTime = newHours + newMinutes / 60;
+      ProcessModule.update({ expectedDevelopmentTime: `${expectedDevelopmentTime}` });
+    }
   }
 }
 </script>
@@ -305,9 +382,14 @@ export default class TimeAndProcessForm extends Vue {
 <style lang="scss" scoped>
 @import '@/styles/variables.scss';
 
-.comments-wrap {
-  width: 50%;
-  padding-top: 1rem;
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 20px;
+    padding-top: 1rem;
+}
+
+.grid-child {
   vertical-align: baseline;
 
   span {
@@ -316,6 +398,9 @@ export default class TimeAndProcessForm extends Vue {
   }
   .time-proces-tooltip {
     vertical-align: middle;
+  }
+  .value-span {
+    color: $color-text;
   }
 }
 </style>
