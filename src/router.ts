@@ -27,7 +27,7 @@ function validateAuth(isValid: (user: User | undefined | null) => boolean) {
       if (isValid(AuthModule.user)) {
         next();
       } else {
-        window.location.href = `${window.autoProcessConfiguration.apiUrl}/saml/login`;
+        window.location.href = `${window.autoProcessConfiguration.apiUrl}/saml/SSO`;
       }
     }
   };
@@ -44,7 +44,7 @@ function validateAuthPlusCheckProfile(isValid: (user: User | undefined | null) =
       ) {
         router.push('/profile');
       } else {
-        router.push('/dashboard');
+        router.push('/search');
       }
     } else {
       await AuthModule.loadUser();
@@ -58,7 +58,7 @@ function validateAuthPlusCheckProfile(isValid: (user: User | undefined | null) =
         ) {
           router.push('/profile');
         } else {
-          router.push('/dashboard');
+          router.push('/search');
         }
       } else {
         window.location.href = `${window.autoProcessConfiguration.apiUrl}/saml/login`;

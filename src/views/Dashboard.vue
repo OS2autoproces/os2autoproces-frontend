@@ -1,6 +1,12 @@
 <template>
   <div class="page">
     <NavBar />
+
+    <div class="explainer">
+      <b>Følg udviklingen i automatisering</b>
+      <p>Dashboardet giver dig indsigt i, hvordan automatiserede processer udvikler sig over tid – både i din egen organisation og på tværs af hele fællesskabet. Se hvor mange processer der er i gang i de enkelte faser, og hvilke systemer og teknologier der bruges mest.</p>
+    </div>
+
     <Button class="clearBtn action elevation-3" @click="clearFilters()">Ryd filtre</Button>
 
     <div class="wrapper">
@@ -161,7 +167,7 @@ export default class Dashboard extends Vue {
   selectedSystemPieChartData = 'all';
 
   tables = [
-    { value: "MUNICIPALITY", text: "Top-10 organisationer" },
+    { value: "MUNICIPALITY", text: "Antal processer pr. organisation" },
     { value: "SEEN_BY", text: "Top-10 mest sete processer" }
   ]
 
@@ -600,10 +606,10 @@ export default class Dashboard extends Vue {
   width: 50%;
   margin: 0 auto;
   background-color: #ffffff;
-  border: 1px solid #3d5386;
+  border: 1px solid $color-primary;
   border-radius: 0.5rem;
   min-width: 100px;
-  color: #ee8a3c;
+  color: $color-primary;
   max-height: 30px;
 }
 
@@ -615,7 +621,7 @@ export default class Dashboard extends Vue {
 }
 
 .custom-datatable th {
-  color: $color-secondary;
+  color: $color-primary;
 }
 
 .selectTable {
@@ -623,6 +629,12 @@ export default class Dashboard extends Vue {
   margin: 0 auto;
   min-width: 100px;
   margin-top: 50px;
+}
+
+.explainer {
+  width: 50%;
+  margin: 10px auto;
+  min-width: 100px;
 }
 
 @media screen and (max-width: 1150px) {

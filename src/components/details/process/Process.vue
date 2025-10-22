@@ -4,7 +4,8 @@
       <div class="side-bar-content">
         <a @click="goBack" class="search-page-link"> <ArrowLeftIcon />Tilbage til søgning </a>
 
-        <ProcessMenu :phase="phase" :canEdit="state.canEdit" :isReporting="isReporting" />
+        <ProcessMenu v-if="state.phase != 'RAPID'" :phase="phase" :canEdit="state.canEdit" :isReporting="isReporting" />
+        <br v-if="state.phase === 'RAPID'"/>
 
         <Button primary v-if="isReporting" class="report-button" @click="report">Gem</Button>
         <Button primary v-if="!isReporting && state.canEdit" class="save-button" @click="save">Gem</Button>
@@ -13,28 +14,43 @@
 
     <div class="details-wrapper">
       <div class="details-content">
+        <div class="phase-explainer" v-if="state.phase === 'RAPID'">
+          <b>Hurtig deling</b><br/>
+          <p>
+            Her deler du basisoplysninger med dine kolleger i de andre offentlige organisationer. <br/>
+            Hvis du får lyst til at styre udviklingsprocessen i OS2autoproces, kan du gøre det ved at skifte fase fra "tom" til en anden relevant fase.
+          </p>
+        </div>
+
+        <div class="phase-explainer" v-else>
+          <b>Processtyring</b><br/>
+          <p>
+            Her kan du oprette og styre en fuld proces gennem alle faser – fra idé til drift. Når du skifter fase, får du vist spørgsmål, der er målrettet netop den fase, så processen bliver dokumenteret trin for trin.
+          </p>
+        </div>
         <ProcessHeader :isReporting="isReporting" />
 
         <ProcessParents :parents="state.parents" />
 
         <div class="form-sections" id="detailsPage">
-          <GeneralInformationForm :isReporting="isReporting" />
-          <ChallengesForm />
-          <TimeAndProcessForm />
-          <AssessmentForm />
-          <ImplementationForm />
-          <OperationForm />
-          <AttachmentsForm :showPlaceholder="isReporting" v-if="state.minPhase(PhaseKeys.PREANALYSIS)" />
+          <RapidForm :isReporting="isReporting" v-if="state.phase === 'RAPID'"/>
+          <GeneralInformationForm :isReporting="isReporting" v-if="state.phase != 'RAPID'"/>
+          <ChallengesForm v-if="state.phase != 'RAPID'"/>
+          <TimeAndProcessForm v-if="state.phase != 'RAPID'"/>
+          <AssessmentForm v-if="state.phase != 'RAPID'"/>
+          <ImplementationForm v-if="state.phase != 'RAPID'"/>
+          <OperationForm v-if="state.phase != 'RAPID'"/>
+          <AttachmentsForm :showPlaceholder="isReporting" v-if="state.minPhase(PhaseKeys.PREANALYSIS) && state.phase != 'RAPID'" />
 
           <FormSection
-            v-if="state.canEdit"
+            v-if="state.canEdit && state.phase != 'RAPID'"
             id="internal-notes"
             heading="Interne noter"
             :disabled="state.disabled.internalNotesEdit"
             @edit="update({ disabled: { internalNotesEdit: $event } })"
             tooltip="Her kan du tilføje noter til og om processen, der kun vil være synlige for tilknyttede personer. Noterne bliver heller ikke delt, hvis processen deles med alle brugere i OS2autoproces."
           >
-            <InternalNotes :internalNotes="state.internalNotes" :disabled="state.disabled.internalNotesEdit" />
+            <InternalNotes :internalNotes="state.internalNotes" :disabled="state.disabled.internalNotesEdit"/>
           </FormSection>
         </div>
 
@@ -99,6 +115,7 @@ import ProcessMenu from '@/components/details/process/ProcessMenu.vue';
 import ProcessHeader from '@/components/details/process/ProcessHeader.vue';
 import ProcessParents from '@/components/details/process/ProcessParents.vue';
 import GeneralInformationForm from '@/components/details/general-information/GeneralInformationForm.vue';
+import RapidForm from '@/components/details/rapid/RapidForm.vue';
 import Button from '@/components/common/inputs/Button.vue';
 import ChallengesForm from '@/components/details/challenges/ChallengesForm.vue';
 import AssessmentForm from '@/components/details/assessment/AssessmentForm.vue';
@@ -136,7 +153,8 @@ import { isIE } from '@/services/url-service';
     ArrowLeftIcon,
     EditIcon,
     SnackBar,
-    InternalNotes
+    InternalNotes,
+    RapidForm
   }
 })
 export default class Process extends Vue {
@@ -210,6 +228,7 @@ export default class Process extends Vue {
         hasChanged: false,
         cvr: AuthModule.user?.cvr,
         disabled: {
+          rapidEdit: false,
           generalInformationEdit: false,
           challengesEdit: false,
           timeAndProcessEdit: false,
@@ -285,12 +304,12 @@ export default class Process extends Vue {
 }
 
 .form-sections {
-  border: 1px solid $color-secondary;
+  border: 1px solid $color-primary;
   border-radius: 1rem;
   margin-top: 2rem;
 
   > *:not(:last-of-type) {
-    border-bottom: 1px solid $color-secondary;
+    border-bottom: 1px solid $color-primary;
   }
 }
 
@@ -320,7 +339,7 @@ export default class Process extends Vue {
 
 .comments-heading {
   @include heading;
-  color: $color-secondary;
+  color: $color-primary;
   margin-top: 2rem;
   padding: 1rem 2rem;
 }
@@ -345,5 +364,9 @@ export default class Process extends Vue {
       text-decoration: none;
     }
   }
+}
+
+.phase-explainer {
+  margin: 20px 0px;
 }
 </style>

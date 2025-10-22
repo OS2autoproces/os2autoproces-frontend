@@ -64,6 +64,6 @@ export default class ExpandPanel extends Vue {}
   font-size: 1rem;
   white-space: pre-line;
   text-align: left;
-  color: $color-secondary;
+  color: $color-primary;
 }
 </style>

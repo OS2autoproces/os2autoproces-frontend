@@ -27,6 +27,7 @@ export interface User {
   cvr: string;
   roles: UserRole[];
   bookmarks?: number[];
+  active: boolean;
 }
 
 interface BookmarkResponse {

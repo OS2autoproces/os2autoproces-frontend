@@ -58,7 +58,7 @@ export default class Button extends Vue {
   width: 140px;
   white-space: nowrap;
   color: $color-background;
-  background-color: $color-secondary;
+  background-color: $color-primary;
   text-align: center;
   font-size: 3.5rem;
 }

@@ -131,6 +131,7 @@ export const processFieldsValidators: { [P in keyof ProcessState]?: (state: Proc
   },
   technologies({ phase, technologies }: ProcessState) {
     return (
+      phase === PhaseKeys.RAPID ||
       phase === PhaseKeys.IDEA ||
       phase === PhaseKeys.PREANALYSIS ||
       phase === PhaseKeys.SPECIFICATION ||
@@ -139,6 +140,7 @@ export const processFieldsValidators: { [P in keyof ProcessState]?: (state: Proc
   },
   runPeriod({ phase, runPeriod }: ProcessState){
     return (
+      phase === PhaseKeys.RAPID ||
       phase === PhaseKeys.IDEA ||
       phase === PhaseKeys.PREANALYSIS ||
       phase === PhaseKeys.SPECIFICATION ||

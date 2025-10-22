@@ -57,7 +57,7 @@ export default class IdentityProviders extends Vue {
 .theme--light.v-toolbar.v-sheet {
   margin: auto;
   color: white;
-  background-color: $color-primary;
+  background-color: $color-secondary;
   font-size: 1.8rem;
   font-weight: bold;
 }

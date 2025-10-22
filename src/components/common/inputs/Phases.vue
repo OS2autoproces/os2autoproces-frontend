@@ -30,6 +30,7 @@ export default class Phases extends Vue {
   private hasError!: boolean;
 
   private phases = [
+    { value: PhaseKeys.RAPID, text: PhaseLabels.RAPID },
     { value: PhaseKeys.IDEA, text: PhaseLabels.IDEA },
     { value: PhaseKeys.PREANALYSIS, text: PhaseLabels.PREANALYSIS },
     { value: PhaseKeys.SPECIFICATION, text: PhaseLabels.SPECIFICATION },

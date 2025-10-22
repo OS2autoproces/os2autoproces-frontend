@@ -127,7 +127,7 @@ export default class SearchTableHeaderSorting extends Vue {
 
 /* table styling */
 th {
-  color: $color-secondary;
+  color: $color-primary;
   font-weight: bold;
   padding: 0.5rem;
   text-align: left;

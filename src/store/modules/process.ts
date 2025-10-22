@@ -27,6 +27,7 @@ import { Domain } from '@/models/domain';
 import { Visibility } from '@/models/visibility';
 import { LikertScale } from '@/models/likert-scale';
 import { ErrorModule } from './error';
+import Phases from '@/components/common/inputs/Phases.vue';
 
 export interface ProcessState extends ProcessReport {
   disabled: Disabled | null;

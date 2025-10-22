@@ -70,7 +70,7 @@ export default class TagSelector extends Vue {
     text-align: center;
     position: relative;
     color: $color-background;
-    background-color: $color-secondary;
+    background-color: $color-primary;
     border-radius: 1rem;
     padding: 0 0.5rem;
     line-height: 1.8em;

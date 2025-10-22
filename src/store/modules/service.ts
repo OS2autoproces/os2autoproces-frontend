@@ -72,6 +72,8 @@ interface SearchParams {
   klaProcess: boolean;
   sepMep: boolean | null;
   status: Status[];
+  filterMyOrganisation: boolean | null;
+  filterOnCvr: boolean | null;
 }
 
 function mapSearchResponse(response: SearchResponse): SearchResult {
@@ -115,7 +117,9 @@ export const mapFiltersToSearchParams = (filters: SearchFilters): SearchParams =
     klaProcess: filters.klaProcess,
     sepMep: filters.sepMep,
     cvr: filters.municipalities.map(municipality => municipality.cvr),
-    type: filters.umbrella ? [TypeKeys.GLOBAL_PARENT, TypeKeys.PARENT] : [TypeKeys.CHILD]
+    type: filters.umbrella ? [TypeKeys.GLOBAL_PARENT, TypeKeys.PARENT] : [TypeKeys.CHILD],
+    filterMyOrganisation: filters.filterMyOrganisation,
+    filterOnCvr: filters.filterOnCvr
   };
 
   if (filters.visibility.MUNICIPALITY) {

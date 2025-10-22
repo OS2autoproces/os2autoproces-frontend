@@ -23,6 +23,6 @@ export default class WarningIcon extends Vue {}
 }
 
 .cls-2 {
-  fill: $color-primary;
+  fill: $color-secondary;
 }
 </style>

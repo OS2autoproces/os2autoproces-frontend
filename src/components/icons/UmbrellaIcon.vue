@@ -25,7 +25,7 @@ export default class UmbrellaIcon extends Vue {}
 
 path {
   fill: $color-background;
-  stroke: $color-secondary;
+  stroke: $color-primary;
   stroke-miterlimit: 10;
 }
 </style>

@@ -23,10 +23,11 @@ export default class ExcelBtn extends Vue {
 @import '@/styles/variables.scss';
 .btn {
   display: flex;
-  background: $color-secondary;
+  background: $color-primary;
   padding: 0.5rem 1rem;
   color: white;
   border-radius: 20px;
   margin-left: 1rem;
+  font-size: smaller;
 }
 </style>

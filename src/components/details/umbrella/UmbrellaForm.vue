@@ -370,7 +370,7 @@ export default class UmbrellaForm extends Vue {
 
   .title-label {
     margin-right: 1rem;
-    color: $color-secondary;
+    color: $color-primary;
   }
 
   .title-label,

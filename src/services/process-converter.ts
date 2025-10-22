@@ -305,6 +305,7 @@ export function responseToState(process: ProcessResponse): ProcessState {
     attachments: [],
     comments: [],
     disabled: {
+      rapidEdit: true,
       generalInformationEdit: true,
       challengesEdit: true,
       timeAndProcessEdit: true,

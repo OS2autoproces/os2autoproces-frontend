@@ -15,6 +15,6 @@ export default class FileIcon extends Vue {}
 @import '../../styles/variables';
 
 path {
-  fill: $color-secondary;
+  fill: $color-primary;
 }
 </style>

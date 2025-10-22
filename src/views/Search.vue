@@ -8,20 +8,44 @@
       </div>
       <div>
         <div class="results-wrapper">
-          <div class="report">
-            <div class="excelBtnRowWrapper">
-              <span>Vis</span>
-              <SelectionField
-                class="column-select"
-                :items="columns"
-                itemText="name"
-                :value="state.selectedColumns"
-                @change="state.SET_SELECTED_COLUMNS($event)"
-                multiple
+
+          <div class="header-content">
+            <div class="text-section">
+              <h1>Bliv inspireret til automatisering</h1>
+              <p>Dyk ned i andres automatiseringsprocesser og få nye idéer til dit eget arbejde.</p>
+              <p>Del dine erfaringer og vær med til at inspirere andre.</p>
+              <p>Sammen driver vi automatiseringen frem i det offentlige.</p>
+            </div>
+            <div class="button-section">
+              <div class="button-wrapper">
+                <router-link class="addProcessBtn" to="/report"> <PlusIcon />Tilføj proces</router-link>
+                <a class="apiBtn" href="https://www.os2autoproces.eu/swagger-ui/index.html">Brug API til at tilføje og opdatere processer automatisk</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="searchSection">
+            <div class="search-field-wrapper">
+              <SearchField
+                class="search-text"
+                :value="state.filters.text"
+                @change="updateFilters({ text: $event })"
+                :placeholder="'Søg efter en automatiseret proces'"
               />
               <excelBtn></excelBtn>
             </div>
-            <router-link to="/report"> <PlusIcon />Indberet proces </router-link>
+          </div>
+
+          <div class="overTableBtnSection">
+            <ColumnSelectionField
+              class="column-select"
+              :items="columns"
+              itemText="name"
+              :value="state.selectedColumns"
+              placeholder="Vælg kolonner"
+              @change="state.SET_SELECTED_COLUMNS($event)"
+              multiple
+            />
           </div>
 
           <div>
@@ -74,8 +98,11 @@ import { SearchModule } from '@/store/modules/search';
 import Details from './Details.vue';
 import { ProcessModule } from '@/store/modules/process';
 import SelectionField from '../components/common/inputs/SelectionField.vue';
+import ColumnSelectionField from '../components/common/inputs/ColumnSelectionField.vue';
 import excelBtn from '@/components/search/ExcelBtn.vue';
 import { CommonModule } from '@/store/modules/common';
+import SearchField from '../components/common/inputs/SearchField.vue';
+import InfoTooltip from '@/components/common/InfoTooltip.vue';
 
 @Component({
   components: {
@@ -89,7 +116,10 @@ import { CommonModule } from '@/store/modules/common';
     Details,
     SearchTableHeaderSorting,
     SelectionField,
-    excelBtn
+    ColumnSelectionField,
+    excelBtn,
+    SearchField,
+    InfoTooltip
   }
 })
 export default class Search extends Vue {
@@ -240,29 +270,7 @@ export default class Search extends Vue {
 .results-wrapper {
   max-width: 1350px;
   margin: 0 auto;
-}
-
-.report {
-  padding: 2rem 0;
-  text-align: right;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  a {
-    @include heading;
-    color: $color-secondary;
-    text-decoration: none;
-    font-size: 1.66rem;
-    display: inline-flex;
-    align-items: center;
-  }
-
-  svg {
-    margin-right: 0.5rem;
-    height: 1.5rem;
-    width: 1.5rem;
-  }
+  padding-top: 40px;
 }
 
 /* row above table styling */
@@ -284,5 +292,99 @@ export default class Search extends Vue {
 
 #processTable tbody:nth-child(even) {
   background-color: #f2f2f2;
+}
+
+// add process btn
+.addProcessBtn {
+  color: $color-black;
+  border-radius: 20px;
+  padding: 0.5rem 2rem;
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  white-space: nowrap;
+  font-weight: 600;
+  color: #ffffff;
+  background-color: $color-primary;
+  
+  svg {
+    width: 1rem;
+    height: 1rem;
+    margin-right: 0.5rem;
+    flex-shrink: 0;
+  }
+}
+
+// header section
+.header-content {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+}
+
+.text-section {
+  flex: 0 0 80%;
+}
+
+.button-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: flex-end;
+}
+
+.apiBtn {
+  color: $color-primary;
+  font-size: 0.9rem;
+  text-align: right;
+  
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.overTableBtnSection {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+}
+
+.searchSection {
+  margin-bottom: 2rem;
+}
+
+.search-field-wrapper {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  
+  .search-text {
+    flex: 0 0 50%;
+  }
+  
+  h2 {
+    @include heading;
+    color: $color-primary;
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+  }
+}
+
+.overTableBtnSection {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.excelBtnRowWrapper {
+  display: flex;
+  align-items: center;
+
+  button {
+    margin: 0px;
+  }
 }
 </style>

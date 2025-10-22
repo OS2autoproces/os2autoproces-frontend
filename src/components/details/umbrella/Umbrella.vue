@@ -11,6 +11,14 @@
 
     <div class="details-wrapper">
       <div class="details-content">
+        <div class="phase-explainer">
+          <b>Tilføj processer til paraply</b><br/>
+          <p>
+            Find eksisterende processer og knyt dem til et tema. Så kan du samle relaterede processer under én paraply uden at ændre i dem. <br/>
+            En paraply kan være intern for egen organisation eller fælles på tværs, så andre kan se og bruge den.
+          </p>
+        </div>
+
         <ProcessHeader :isReporting="isReporting" isUmbrella />
 
         <div class="form-sections" id="detailsPage">
@@ -146,6 +154,7 @@ export default class Umbrella extends Vue {
         cvr: AuthModule.user?.cvr,
         visibility: this.type === TypeKeys.PARENT ? VisibilityKeys.MUNICIPALITY : VisibilityKeys.PUBLIC,
         disabled: {
+          rapidEdit: false,
           generalInformationEdit: false,
           challengesEdit: false,
           timeAndProcessEdit: false,
@@ -230,10 +239,10 @@ export default class Umbrella extends Vue {
 }
 
 .form-sections {
-  border: 1px solid $color-secondary;
+  border: 1px solid $color-primary;
   border-radius: 1rem;
   margin-top: 2rem;
-  border-bottom: 1px solid $color-secondary;
+  border-bottom: 1px solid $color-primary;
 }
 
 .side-bar {
@@ -249,5 +258,9 @@ export default class Umbrella extends Vue {
   .report-button {
     margin-top: 2rem;
   }
+}
+
+.phase-explainer {
+  margin: 20px 0px;
 }
 </style>

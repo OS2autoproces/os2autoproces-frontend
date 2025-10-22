@@ -17,6 +17,6 @@ export default class WordIcon extends Vue {}
 
 rect,
 path {
-  fill: $color-secondary;
+  fill: $color-primary;
 }
 </style>

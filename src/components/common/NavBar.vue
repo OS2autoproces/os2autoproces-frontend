@@ -6,7 +6,7 @@
     <router-link class="link" v-if="isFrontpageEditor" to="/">Forside</router-link>
     <router-link class="link" to="/dashboard">Dashboard</router-link>
     <router-link class="link" to="/search">Procesoverblik</router-link>
-    <router-link class="link" :to="`/organisation/${cvr}`">Min organisation</router-link>
+    <a class="link" :href="`/organisation/${cvr}`">Min organisation</a>
     <router-link class="link" v-if="isAdministrator" to="/manage-systems">Systemer</router-link>
     <router-link class="link" v-if="isAdministrator" to="/manage-technologies">Teknologier</router-link>
     <a class="link" rel="noopener noreferrer" target="_blank" href="https://boks.os2.eu/s/CR6pmmnwqR2REBg"
@@ -66,7 +66,7 @@ export default class NavBar extends Vue {
 .navbar {
   display: flex;
   align-items: center;
-  background-color: $color-secondary;
+  background-color: $color-primary;
   height: 5rem;
   padding: 1rem;
 }

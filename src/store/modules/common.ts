@@ -38,7 +38,7 @@ export interface CommonState {
 
 const debouncedSearch = debounce(async (request: UserSearchRequest) => {
   const users = (await HTTP.get<UserResponse>(`api/users?name=${request.name}&cvr=${request.cvr}`)).data._embedded
-    .users;
+    .users.filter(u => u.active);
   CommonModule.ASSIGN({ users });
 }, 250);
 

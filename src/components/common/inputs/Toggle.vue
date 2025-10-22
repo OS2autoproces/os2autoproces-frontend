@@ -46,7 +46,7 @@ export default class Toggle extends Vue {
   line-height: 40px;
   padding: 0 1rem;
   color: $color-background;
-  background-color: $color-secondary;
+  background-color: $color-primary;
   border-radius: 0.5rem;
   top: -1px;
 

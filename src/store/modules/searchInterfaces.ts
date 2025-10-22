@@ -52,6 +52,7 @@ export interface SearchFilters {
   usersId: string | null;
   bookmarkedId: string | null;
   filterMyOrganisation: boolean;
+  filterOnCvr: boolean;
   text: string;
   created: string;
   lastChanged: string;
@@ -106,6 +107,7 @@ export const PreSelectedSearchTableColumns: SearchTableColumn[] = [
   { id: 3, name: 'Organisation' },
   { id: 4, name: 'Opdateret' },
   { id: 5, name: 'Fase' },
+  { id: 6, name: 'Resumé' },
   { id: 13, name: 'Favorit' }
 ];
-export const PreSelectedSearchTableColumnIds: number[] = [1, 2, 3, 4, 5, 13];
+export const PreSelectedSearchTableColumnIds: number[] = [1, 2, 3, 4, 5, 6, 13];

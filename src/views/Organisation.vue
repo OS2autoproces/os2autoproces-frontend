@@ -4,7 +4,8 @@
 
     <div class="wrapper">
       <div class="title">
-        <h1>{{ municipalityName }}</h1>
+        <b>{{ municipalityName }}</b>
+        <p>Her kan du se de grundlæggende oplysninger om din organisation samt de teknologier og systemer, I arbejder med. Oplysningerne bruges til at anbefale relevante processer og til automatisk at udfylde data, når I tilføjer processer.</p>
       </div>
       
       <div class="form-sections" id="generalInformation">
@@ -28,7 +29,7 @@
                 />
               </WellItem>
 
-              <WellItem id="employeeCount" labelWidth="180px" label="Antal indbyggere:">
+              <WellItem id="employeeCount" labelWidth="180px" label="Antal medarbejdere:">
                 <MappedSelectionField
                   :disabled="state.generalInformationEdit"
                   :value="state.employees"
@@ -37,8 +38,13 @@
                 />
               </WellItem>
 
-              <WellItem id="logoUpload" labelWidth="180px" label="logo:" tooltip="Logo'et der uploades, skal være i PNG format. Bemærk at logo'et nedskaleres til 85 pixel i højden, så undlad at uploade et billede der er mange gange større end dette, og test evt at logo'et ser godt ud ved neskalering til 85 pixel i højde.">
-                <p>{{ logoName }}</p>
+              <WellItem id="logoUpload" labelWidth="180px" label="Logo:" tooltip="Logo'et der uploades, skal være i PNG format. Bemærk at logo'et nedskaleres til 85 pixel i højden, så undlad at uploade et billede der er mange gange større end dette, og test evt at logo'et ser godt ud ved neskalering til 85 pixel i højde.">
+                <LogoComponent
+                  :logoName="logoName"
+                  :logo="logoPlaceholder"
+                  :disabled="state.generalInformationEdit"
+                  @remove="removeLogo()"
+                />
                 <div v-if="!state.generalInformationEdit">
                   <label class="upload-button-wrapper">
                     <input type="file" @change="chooseLogo($event.target.files)" ref="fileInput" accept="image/*" />
@@ -105,8 +111,7 @@
             <div class="technology" id="technologies">
               <label>Anvendte teknologier i organisationen</label>
               <InfoTooltip>
-                Her kan du angive teknologier som I anvender til automatisering i jeres organisation. 
-                Hvis du mangler en teknologi, så kontakt OS2autoproces koordinationsgruppe, så vil de oprette den for dig.
+                Her kan du angive teknologier som I anvender til automatisering i jeres organisation. De teknologier du udpeger her, vil blive vist på procesoverblikket når du vælger filtret ”Anbefalet til min organisation”.
               </InfoTooltip>
               <TagSelectorTechnologies
                 @add="state.addTechnology($event)"
@@ -120,8 +125,7 @@
             <div class="itSystems" id="itSystems">
               <label>Systemer der automatiseres til i organisationen</label>
               <InfoTooltip>
-                Her kan du angive systemer som I automatiserer op imod i jeres organisation. 
-                Hvis du mangler et system, så kontakt OS2autoproces koordinationsgruppe, så vil de oprette den for dig. 
+                Her kan du angive systemer som I automatiserer op imod i jeres organisation. De teknologier du udpeger her, vil blive vist på procesoverblikket når du vælger filtret ”Anbefalet til min organisation”.
               </InfoTooltip>
               <TagSelectorITSystems
                 @add="state.addITSystems($event)"
@@ -177,6 +181,24 @@
       @onSnackClose="assign({ showUploadError: false })"
       >Det nye logo kunne ikke uploades. Prøv igen.</SnackBar
     >
+
+    <SnackBar
+      :showButton="false"
+      :value="showRemoveLogoSuccess"
+      :timeout="3000"
+      color="success"
+      @onSnackClose="assign({ showRemoveLogoSuccess: false })"
+      >Logoet er fjernet!</SnackBar
+    >
+
+    <SnackBar
+      :showButton="false"
+      :value="showRemoveLogoError"
+      :timeout="5000"
+      color="error"
+      @onSnackClose="assign({ showRemoveLogoError: false })"
+      >Logoet kunne ikke fjernes. Prøv igen.</SnackBar
+    >
     
   </div>
 </template>
@@ -201,6 +223,7 @@ import { UserSearchRequest } from '@/store/modules/commonInterfaces';
 import InfoTooltip from '@/components/common/InfoTooltip.vue';
 import TagSelectorTechnologies from '@/components/common/inputs/TagSelectorTechnologies.vue';
 import TagSelectorITSystems from '@/components/common/inputs/TagSelectorITSystems.vue';
+import LogoComponent from '@/components/common/inputs/Logo.vue';
 
 
 @Component({
@@ -216,7 +239,8 @@ import TagSelectorITSystems from '@/components/common/inputs/TagSelectorITSystem
     InputField,
     InfoTooltip,
     TagSelectorTechnologies,
-    TagSelectorITSystems
+    TagSelectorITSystems,
+    LogoComponent
   }
 })
 export default class Organisation extends Vue {
@@ -262,6 +286,15 @@ export default class Organisation extends Vue {
   get showUploadSuccess() {
     return this.state.showUploadSuccess;
   }
+
+  get showRemoveLogoError() {
+    return this.state.showRemoveLogoError;
+  }
+
+  get showRemoveLogoSuccess() {
+    return this.state.showRemoveLogoSuccess;
+  }
+
 
   get logoName() {
     if (this.logoPlaceholder != null) {
@@ -317,6 +350,11 @@ export default class Organisation extends Vue {
     this.clearFileInput();
   }
 
+  async removeLogo() {
+    await OrganisationModule.removeLogo();
+    this.logoPlaceholder = null;
+  }
+
   clearFileInput() {
     const input = this.$refs.fileInput as HTMLInputElement;
     input.type = 'text';
@@ -354,18 +392,15 @@ export default class Organisation extends Vue {
 
   .title {
     margin-top: 0.75rem;
-    text-align: center;
-    color: $color-secondary;
-    padding: 1rem;
   }
 
   .form-sections {
-  border: 1px solid $color-secondary;
+  border: 1px solid $color-primary;
   border-radius: 1rem;
   margin-top: 2rem;
 
   > *:not(:last-of-type) {
-    border-bottom: 1px solid $color-secondary;
+    border-bottom: 1px solid $color-primary;
   }
 
   .upload-button {
@@ -391,7 +426,7 @@ export default class Organisation extends Vue {
     grid-gap: 20px;
 
     label {
-      color: $color-secondary
+      color: $color-primary
     }
   }
 }

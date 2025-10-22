@@ -1,5 +1,7 @@
-$color-primary: #ee8a3c;
-$color-secondary: #3d5386;
+$color-primary: #3d5386;
+$color-secondary: #ee8a3c;
+$color-heading: #222222;
+$color-black: black;
 $color-text: #575756;
 $color-grey: #b2b2b2;
 $color-background: #ffffff;
@@ -30,16 +32,21 @@ $body-font-family: fontFamily();
 }
 
 @mixin field-label() {
-  color: $color-secondary;
+  color: $color-primary;
   font-size: 1rem;
 }
 
 @mixin textarea-heading() {
-  color: $color-secondary;
+  color: $color-primary;
   font-size: 1.3rem;
 }
 
 @mixin field-input-text() {
   font-weight: bold;
   font-size: 1rem;
+}
+
+button:not(.menubar__button):not([aria-label="clear icon"]) {
+  color: #ffffff;
+  background-color: $color-primary;
 }

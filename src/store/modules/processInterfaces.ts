@@ -109,6 +109,7 @@ export interface Comment {
   created: string;
 }
 export interface Disabled {
+  rapidEdit: boolean;
   generalInformationEdit: boolean;
   challengesEdit: boolean;
   timeAndProcessEdit: boolean;

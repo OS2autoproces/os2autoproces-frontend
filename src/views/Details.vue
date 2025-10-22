@@ -32,6 +32,7 @@ import { TypeKeys } from '@/models/types';
 import { ProcessModule } from '@/store/modules/process';
 import ComponentClass from 'vue-class-component';
 import { CommonModule } from '@/store/modules/common';
+import { PhaseKeys } from '@/models/phase';
 
 ComponentClass.registerHooks(['beforeRouteLeave', 'beforeRouteUpdate']);
 

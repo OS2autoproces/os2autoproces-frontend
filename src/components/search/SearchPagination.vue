@@ -156,11 +156,12 @@ export default class SearchPagination extends Vue {
 
 button {
   font-size: 1.25rem;
-  color: $color-primary;
   display: inline-flex;
   align-items: center;
   margin: 0;
   margin-bottom: 1rem;
+  background-color: inherit;
+  color: $color-primary;
 
   svg {
     height: 1.5rem;

@@ -1,6 +1,6 @@
 <template>
   <div class="search-field" id="searchFieldDiv">
-    <InputField placeholder="søg" :value="value" @change="valueChanged">
+    <InputField :placeholder="placeholder" :value="value" @change="valueChanged">
       <SearchIcon />
     </InputField>
   </div>
@@ -20,6 +20,7 @@ import SearchIcon from '../../icons/SearchIcon.vue';
 })
 export default class SearchField extends Vue {
   @Prop(String) value!: string;
+  @Prop(String) placeholder!: string;
 
   valueChanged(value: string) {
     this.$emit('change', value);

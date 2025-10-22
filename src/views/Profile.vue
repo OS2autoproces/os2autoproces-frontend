@@ -98,7 +98,7 @@ export default class ManageTechnologies extends Vue {
 }
 
 h1 {
-  color: $color-secondary;
+  color: $color-primary;
   margin-top: 2rem;
 }
 

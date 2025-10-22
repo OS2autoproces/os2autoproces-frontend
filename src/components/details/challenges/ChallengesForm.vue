@@ -182,7 +182,7 @@ export default class ChallengesForm extends Vue {
 
 h2 {
   @include heading;
-  color: $color-secondary;
+  color: $color-primary;
 
   &.with-margin {
     margin-top: 2rem;

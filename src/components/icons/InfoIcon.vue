@@ -16,7 +16,7 @@ export default class CheckIcon extends Vue {}
 @import "../../styles/variables";
 
 circle {
-  fill: $color-secondary;
+  fill: $color-primary;
 }
 
 text {

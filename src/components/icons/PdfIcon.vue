@@ -23,7 +23,7 @@ export default class PdfIcon extends Vue {}
 
 path,
 polygon {
-  fill: $color-secondary;
+  fill: $color-primary;
 }
 
 .cls-1 {

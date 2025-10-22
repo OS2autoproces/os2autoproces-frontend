@@ -153,7 +153,7 @@ export default class AttachmentUpload extends Vue {
 }
 
 .personal-info-warning {
-  color: $color-secondary;
+  color: $color-primary;
 }
 
 .upload-button {
@@ -175,6 +175,6 @@ export default class AttachmentUpload extends Vue {
 
 h2 {
   @include heading;
-  color: $color-secondary;
+  color: $color-primary;
 }
 </style>

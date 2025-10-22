@@ -18,7 +18,7 @@ export default class StarIcon extends Vue {}
 
 polygon {
   fill: $color-background;
-  stroke: $color-secondary;
+  stroke: $color-primary;
   stroke-miterlimit: 10;
 }
 

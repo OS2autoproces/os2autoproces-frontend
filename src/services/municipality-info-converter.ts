@@ -71,10 +71,13 @@ export function responseToState(municipality: MunicipalityInfoResponse): Organis
     technologies: municipality.technologies,
     itSystems: municipality.itSystems,
     municipalityLogo: municipality.logo,
+    rapidEdit: true,
     generalInformationEdit: true,
     technologiesEdit: true,
     showUploadError: false,
     showUploadSuccess: false,
+    showRemoveLogoError: false,
+    showRemoveLogoSuccess: false,
     logoUrl: null
   };
 }

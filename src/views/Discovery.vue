@@ -23,7 +23,7 @@ export default class Discovery extends Vue {}
 @import "../styles/variables";
 
 .page {
-  background-color: $color-secondary;
+  background-color: $color-primary;
   padding-top: 3rem;
 }
 </style>

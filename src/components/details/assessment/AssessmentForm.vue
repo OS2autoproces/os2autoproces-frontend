@@ -195,7 +195,7 @@ export default class AssessmentForm extends Vue {
 
 .label {
   @include heading;
-  color: $color-secondary;
+  color: $color-primary;
   margin-bottom: 1rem;
 }
 

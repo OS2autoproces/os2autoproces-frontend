@@ -152,12 +152,12 @@
         />
       </div>
       <div class="grid-child">
-        <span>Fata om indberetter organisationen</span>
+        <span>Data om indberetter organisationen</span>
         <InfoTooltip class="time-proces-tooltip">Tal fra organisationens grundlæggende oplysninger</InfoTooltip>
         <WellItem labelWidth="180px" label="Antal indbyggere:">
           <span class="value-span">{{ state.inhabitants }}</span>
         </WellItem>
-        <WellItem labelWidth="180px" label="Antal ansatte:">
+        <WellItem labelWidth="180px" label="Antal medarbejdere:">
           <span class="value-span">{{ state.employees }}</span>
         </WellItem>
       </div>
@@ -393,7 +393,7 @@ export default class TimeAndProcessForm extends Vue {
   vertical-align: baseline;
 
   span {
-    color: $color-secondary;
+    color: $color-primary;
     margin-right: 1rem;
   }
   .time-proces-tooltip {

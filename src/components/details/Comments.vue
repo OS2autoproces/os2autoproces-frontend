@@ -67,7 +67,7 @@ export default class Comments extends Vue {
 .comments-form {
   display: flex;
   border-radius: 1rem;
-  background-color: rgba($color-secondary, 0.3);
+  background-color: rgba($color-primary, 0.3);
   padding: 2rem;
 }
 
@@ -81,7 +81,7 @@ export default class Comments extends Vue {
 
   ::v-deep {
     .text-area {
-      border: 1px solid $color-secondary;
+      border: 1px solid $color-primary;
     }
 
     .text-area-overlay {
@@ -101,7 +101,7 @@ export default class Comments extends Vue {
 
 .comment-list-wrapper {
   flex: 1 1 70%;
-  border: 1px solid $color-secondary;
+  border: 1px solid $color-primary;
   border-radius: 10px;
   padding-right: 1rem;
   background: $color-background;

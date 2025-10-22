@@ -4,6 +4,7 @@
 
     <div class="wrapper">
       <h1>Teknologier</h1>
+      <p>Her kan du se en samlet liste over de teknologier, der er registreret på tværs af organisationer. Oversigten fungerer som et katalog og giver indblik i, hvilke teknologiske platforme der findes.</p>
       <div class="technology" v-for="technology in technologies" :key="technology.id">
         <InputField
           class="name"
@@ -100,7 +101,7 @@ export default class ManageTechnologies extends Vue {
 }
 
 h1 {
-  color: $color-secondary;
+  color: $color-primary;
   margin-top: 2rem;
 }
 
@@ -110,7 +111,7 @@ h1 {
   align-items: center;
 
   &:not(:last-of-type) {
-    border-bottom: 1px solid $color-secondary;
+    border-bottom: 1px solid $color-primary;
   }
 
   .name {

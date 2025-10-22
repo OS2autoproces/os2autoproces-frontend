@@ -1,25 +1,42 @@
 <template>
   <div class="wrapper">
+    <h1 v-if="!umbrellaProcessSearch" class="search-header">AVANCERET SØGNING</h1>
     <div class="types" v-if="!umbrellaProcessSearch">
-      <PillCheckbox class="pillCheckbox" :value="!!filters.reporterId" @change="setReporterId">Mine indberetninger</PillCheckbox>
-      <PillCheckbox class="pillCheckbox" :value="!!filters.usersId" @change="setUsersId">Mine tilknytninger</PillCheckbox>
-      <PillCheckbox class="pillCheckbox" :value="!!filters.bookmarkedId" @change="setBookmarkedId">Mine favoritter</PillCheckbox>
-      <PillCheckbox class="pillCheckbox" :value="filters.filterMyOrganisation" @change="setMyOrganisation">Relevant for min organisation</PillCheckbox>
+      <div class="filterCheck">
+        <div>
+          Min organisation
+        </div>
+        <Checkbox :value="filters.filterOnCvr" @change="setFilterOnCvr"></Checkbox>
+      </div>
+      <div class="filterCheck">
+        <div>
+          Mine indberetninger
+        </div>
+        <Checkbox :value="!!filters.reporterId" @change="setReporterId"></Checkbox>
+      </div>
+      <div class="filterCheck">
+        <div>
+          Mine tilknytninger
+        </div>
+        <Checkbox :value="!!filters.usersId" @change="setUsersId"></Checkbox>
+      </div>
+      <div class="filterCheck">
+        <div>
+          Mine favoritter
+        </div>
+        <Checkbox :value="!!filters.bookmarkedId" @change="setBookmarkedId"></Checkbox>
+      </div>
+      <div class="filterCheck">
+        <div>
+          Anbefalet til min organisation
+        </div>
+        <Checkbox :value="filters.filterMyOrganisation" @change="setMyOrganisation"></Checkbox>
+      </div>
     </div>
 
-    <h1 v-if="!umbrellaProcessSearch">
-      SØGNING
-      <InfoTooltip>
-        Der søges i felterne: Titel, Resumé, Beskrivelse, Afdelinger, Indberetter, Kontaktperson (navn), Anden kontakt
-        information, Faglig kontaktperson (navn), KLE-nr., Idéer til løsning, Udfordringer i den nuværende proces,
-        Kommentar vedr. tidsforbrug, Teknisk implementering, Organisatorisk implementering, Beskrivelse af
-        automatisering, og Kommentar til realiseret gevinster.
-      </InfoTooltip>
-    </h1>
-    <SearchField class="search-text" :value="filters.text" @change="updateFilters({ text: $event })" />
+    <!-- if !umbrellaProcessSearch the search field will be directly in Search.vue -->
+    <SearchField v-if="umbrellaProcessSearch" class="search-text" :placeholder="'Søg'" :value="filters.text" @change="updateFilters({ text: $event })" />
     <SearchSelectSavedFilters style="margin-top: 1rem;" />
-
-    <h1 v-if="!umbrellaProcessSearch">AVANCERET SØGNING</h1>
 
     <div class="municipality-level" v-if="!umbrellaProcessSearch">
       <SearchOption
@@ -144,7 +161,6 @@ import { Municipality } from '@/store/modules/commonInterfaces';
 import { AuthModule } from '@/store/modules/auth';
 import { CommonModule } from '@/store/modules/common';
 import { SearchModule } from '@/store/modules/search';
-import InfoTooltip from '@/components/common/InfoTooltip.vue';
 import { OrganisationModule } from '@/store/modules/organisation';
 
 @Component({
@@ -160,8 +176,7 @@ import { OrganisationModule } from '@/store/modules/organisation';
     Button,
     SearchFiltersActions,
     SearchFiltersRunPeriod,
-    SearchSelectSavedFilters,
-    InfoTooltip
+    SearchSelectSavedFilters
   }
 })
 export default class SearchFiltersComponent extends Vue {
@@ -202,14 +217,11 @@ export default class SearchFiltersComponent extends Vue {
   }
 
   setMyOrganisation(value: boolean) {
-    if (value) {
-      this.updateFilters({ itSystems: OrganisationModule.itSystems });
-      this.updateFilters({ technologies: OrganisationModule.technologies });
-    } else {
-      this.updateFilters({ itSystems: [] });
-      this.updateFilters({ technologies: [] });
-    }
     this.updateFilters({ filterMyOrganisation: value });
+  }
+
+  setFilterOnCvr(value: boolean) {
+    this.updateFilters({ filterOnCvr: value });
   }
 
   updateFilters(filters: Partial<SearchFilters>) {
@@ -250,7 +262,7 @@ export default class SearchFiltersComponent extends Vue {
 }
 
 .types {
-  margin-bottom: 4rem;
+  margin-bottom: 3rem;
 
   > div {
     margin-bottom: 1rem;
@@ -259,7 +271,7 @@ export default class SearchFiltersComponent extends Vue {
 
 h1 {
   @include heading;
-  color: $color-secondary;
+  color: $color-primary;
   line-height: 1.2em;
   font-size: 1.25rem;
   margin: 3rem 0;
@@ -279,5 +291,17 @@ h1 {
 
 .pillCheckbox {
   font-size: 15px;
+}
+
+.filterCheck {
+  display: flex;
+
+  > div:first-of-type {
+    flex-grow: 1;
+  }
+}
+
+.search-header {
+  margin: 0px 0px 20px 0px;
 }
 </style>

@@ -38,7 +38,7 @@ export default class ExpandPanel extends Vue {
     font-size: 1.2rem;
     @include heading;
     flex-grow: 1;
-    color: $color-secondary;
+    color: $color-primary;
   }
 
   .panel-icon {

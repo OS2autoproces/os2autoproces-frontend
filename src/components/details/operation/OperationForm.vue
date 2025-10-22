@@ -184,7 +184,7 @@ export default class OperationForm extends Vue {
 
 h2 {
   @include heading;
-  color: $color-secondary;
+  color: $color-primary;
   margin-bottom: 0.5rem;
   display: inline-block;
   margin-right: 1rem;

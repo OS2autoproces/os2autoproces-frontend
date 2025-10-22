@@ -6,11 +6,29 @@
       <router-link to="/search" class="search-page-link"> <ArrowLeftIcon />Tilbage til søgning </router-link>
 
       <div class="process-selector">
-        <h1>Hvad ønsker du at indberette?</h1>
+        <h1>Hvordan vil du starte din proces?</h1>
+        <p>Vælg om du vil lave en hurtig deling med få oplysninger eller oprette en fuld proces, som kan styres gennem alle faser.
+Du kan også knytte eksisterende processer til en paraply for at samle dem under et fælles tema.</p>
 
         <div class="report-options">
           <div class="process">
-            <h2>Proces</h2>
+            <h2>Hurtig deling
+              <InfoTooltip>
+                Her deler du basisoplysninger om en proces med kolleger og andre offentlige organisationer. Du kan altid udbygge delingen eller styre processen gennem faserne ved at ændre fra ”Deling (ingen fase)” til en anden fase.
+              </InfoTooltip>
+            </h2>
+            <p>Del de vigtigste oplysninger hurtigt. Du kan altid bygge videre senere.</p>
+
+            <div class="options">
+              <router-link  :to="`/details/new/RAPID`">Hurtig deling</router-link>
+            </div>
+
+          </div>
+          <div class="process">
+            <h2>Processtyring
+              <InfoTooltip>Her kan du oprette og styre en fuld proces gennem alle faser – fra idé til drift. Når du skifter fase, får du vist spørgsmål, der er målrettet netop den fase, så processen bliver dokumenteret trin for trin.</InfoTooltip>
+            </h2>
+            <p>Opret en fuld proces og styr den gennem alle faser fra idé til drift.</p>
 
             <div class="options">
               <router-link v-for="phase in phasesLevels" :key="phase.route" :to="`/details/new/${phase.route}`">{{
@@ -23,14 +41,11 @@
             <h2>
               Paraplyproces
               <InfoTooltip>
-                En paraplyproces er en overordnet proces, hvor det er muligt at samle lignede processer under.
-                <!--no format-->
-                Et eksempel er: Paraplyen Lægeerklæringer. Hvortil processerne Lægeerklæring Randers, Lægeerklæring
-                Skanderborg og Lægeerklæringer Syddjurs er tilknyttet.Forskellen på en ’egen paraply’ og ’fælles
-                paraply’ er synligheden. Fælles paraplyer kan ses på tværs af organisationer, mens ’egen paraply’ kun
-                kan ses i egen organisation.
+                Find eksisterende processer og knyt dem til et tema. Så kan du samle relaterede processer under én paraply uden at ændre i dem.
+En paraply kan være intern for egen organisation eller fælles på tværs, så andre kan se og bruge den.
               </InfoTooltip>
             </h2>
+            <p>Saml eksisterende processer under et fælles tema. Vælg egen eller fælles paraply.</p>
 
             <div class="options">
               <router-link v-for="type in typeLevels" :key="type.route" :to="`/details/new/${type.route}`">{{
@@ -117,7 +132,7 @@ export default class Home extends Vue {
 
   h1,
   h2 {
-    color: $color-secondary;
+    color: $color-primary;
   }
 
   svg {

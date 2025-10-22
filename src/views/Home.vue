@@ -75,7 +75,7 @@ export default class Home extends Vue {
 @import '../styles/variables';
 
 .page {
-  background-color: $color-secondary;
+  background-color: $color-primary;
 }
 
 .header {

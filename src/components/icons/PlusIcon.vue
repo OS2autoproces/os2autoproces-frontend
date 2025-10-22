@@ -15,6 +15,6 @@ export default class PlusIcon extends Vue {}
 @import "../../styles/variables";
 
 polygon {
-  fill: $color-primary;
+  fill: #ffffff;
 }
 </style>

@@ -4,6 +4,7 @@
 
     <div class="wrapper">
       <h1>Systemer</h1>
+      <p>Her kan du se en samlet liste over de systemer, der er registreret på tværs af organisationer. Oversigten fungerer som et katalog, hvor du kan slå systemer op og få indblik i de løsninger, der findes.</p>
       <div class="nameAndVendor">
         <h3 class="name">Navn</h3>
         <h3>Leverandør</h3>
@@ -136,7 +137,7 @@ export default class ManageSystems extends Vue {
 }
 
 h1 {
-  color: $color-secondary;
+  color: $color-primary;
   margin-top: 2rem;
 }
 
@@ -156,7 +157,7 @@ h1 {
 .nameAndVendor {
   display: flex;
   padding: 1rem;
-  border-bottom: 1px solid $color-secondary;
+  border-bottom: 1px solid $color-primary;
 }
 
 .nameInput {
@@ -189,7 +190,7 @@ h1 {
   align-items: center;
 
   &:not(:last-of-type) {
-    border-bottom: 1px solid $color-secondary;
+    border-bottom: 1px solid $color-primary;
   }
 
   .editIcon {

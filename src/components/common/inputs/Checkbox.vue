@@ -45,7 +45,6 @@ export default class Checkbox extends Vue {
     background-color: $color-background;
     margin-right: 0.25rem;
     position: relative;
-    border-radius: 50%;
     border: 1px solid $color-primary;
     display: inline-block;
     width: 20px;

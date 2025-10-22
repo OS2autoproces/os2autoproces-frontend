@@ -76,7 +76,7 @@ $resume-line-height: 1em * 1.5;
 }
 
 .result {
-  border: 2px solid $color-secondary;
+  border: 2px solid $color-primary;
   border-radius: 1rem;
   padding: 1rem;
   display: flex;
@@ -86,7 +86,7 @@ $resume-line-height: 1em * 1.5;
 .name {
   @include heading;
   font-size: 1.5rem;
-  color: $color-secondary;
+  color: $color-primary;
 }
 
 .star-icon {

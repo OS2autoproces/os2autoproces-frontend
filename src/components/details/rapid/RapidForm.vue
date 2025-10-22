@@ -1,22 +1,22 @@
 <template>
   <FormSection
     :invalid="!state.isGeneralInformationValid"
-    heading="Grundlæggende oplysninger"
-    id="general-information"
-    :disabled="state.disabled.generalInformationEdit"
-    @edit="update({ disabled: { generalInformationEdit: $event } })"
+    heading="Hurtig deling"
+    id="rapid-form"
+    :disabled="state.disabled.rapidEdit"
+    @edit="update({ disabled: { rapidEdit: $event } })"
     always-open
   >
     <div class="title-row" id="title">
       <div class="title-label">Titel: *</div>
-      <span v-if="state.disabled.generalInformationEdit" class="title-field flex-grow">{{ state.title }}</span>
+      <span v-if="state.disabled.rapidEdit" class="title-field flex-grow">{{ state.title }}</span>
       <InputField
-        v-if="!state.disabled.generalInformationEdit"
+        v-if="!state.disabled.rapidEdit"
         class="title-field flex-grow"
         :value="state.title"
-        :disabled="state.disabled.generalInformationEdit"
+        :disabled="state.disabled.rapidEdit"
         :hasError="isInErrors('title')"
-        :class="{ disabled: state.disabled.generalInformationEdit }"
+        :class="{ disabled: state.disabled.rapidEdit }"
         @change="update({ title: $event })"
         :maxLength="65"
       />
@@ -50,58 +50,6 @@
           <SelectionField disabled :value="state.reporter" itemText="name" />
         </WellItem>
         <WellItem
-          id="owner"
-          labelWidth="180px"
-          label="Fagligkontaktperson:"
-          tooltip="Er en person der varetager processen til daglig og derfor har stort kendskab til den."
-          v-if="isWithinMunicipality"
-          :required="false"
-        >
-          <SelectionField
-            itemSubText="email"
-            :disabled="state.disabled.generalInformationEdit"
-            :value="state.owner"
-            :hasError="isInErrors('owner')"
-            itemText="name"
-            @search="search($event)"
-            isItemsPartial
-            @change="update({ owner: $event })"
-            :items="common.users"
-            clearable
-          />
-        </WellItem>
-        <WellItem
-          id="contact"
-          labelWidth="180px"
-          label="Kontaktperson:"
-          tooltip="En person der har teknisk viden omkring løsningen."
-          :required="true"
-          v-if="isWithinMunicipality || (!isWithinMunicipality && state.otherContactEmail == null)"
-        >
-          <SelectionField
-            itemSubText="email"
-            :disabled="state.disabled.generalInformationEdit"
-            :value="state.contact"
-            :hasError="isInErrors('contact')"
-            itemText="name"
-            @search="search($event)"
-            isItemsPartial
-            @change="update({ contact: $event })"
-            :items="common.users"
-            clearable
-          />
-        </WellItem>
-        <WellItem
-          v-if="
-            (state.contact && isWithinMunicipality) ||
-              (state.contact && !isWithinMunicipality && state.otherContactEmail == null)
-          "
-          labelWidth="180px"
-          label="Mail:"
-        >
-          {{ state.contact.email }}
-        </WellItem>
-        <WellItem
           id="otherContactEmail"
           labelWidth="180px"
           label="Anden kontaktinformation:"
@@ -110,72 +58,9 @@
         >
           <InputField
             :value="calculatedOtherContact"
-            :disabled="state.disabled.generalInformationEdit || !canEditOtherContact"
+            :disabled="state.disabled.rapidEdit || !canEditOtherContact"
             :hasError="isInErrors('otherContactEmail')"
             @change="update({ otherContactEmail: $event })"
-          />
-        </WellItem>
-      </div>
-
-      <div>
-        <WellItem
-          id="visibility"
-          labelWidth="120px"
-          label="Synlighed:"
-          tooltip="Synligheden ’Egen organisation’ betyder at alle brugere i din organisation kan se processen. Synligheden ’Alle i OS2autoproces’ betyder at brugere i andre organisationer kan se processen. Privat betyder at det kun er dig og din superbruger der kan se processen."
-        >
-          <MappedSelectionField
-            :disabled="!!state.parents.length || state.disabled.generalInformationEdit"
-            :value="state.visibility"
-            :hasError="isInErrors('visibility')"
-            @change="update({ visibility: $event })"
-            :items="visibilityLevels"
-          />
-        </WellItem>
-        <WellItem
-          id="domains"
-          labelWidth="120px"
-          label="Fagområder:"
-          tooltip="Vælg gerne flere kategorier, hvis processen vedrører flere områder."
-        >
-          <DomainsField
-            :disabled="state.disabled.generalInformationEdit"
-            :value="state.domains"
-            :hasError="isInErrors('domains')"
-            @change="assign({ domains: $event })"
-          />
-        </WellItem>
-        <WellItem id="orgUnits" labelWidth="120px" label="Afdelinger:" v-if="isWithinMunicipality">
-          <SelectionField
-            :disabled="state.disabled.generalInformationEdit"
-            :value="state.orgUnits"
-            :hasError="isInErrors('orgUnits')"
-            @change="assign({ orgUnits: $event })"
-            :items="common.orgUnits"
-            multiple
-            itemText="name"
-          />
-        </WellItem>
-        <WellItem
-          id="vendor"
-          v-if="state.minPhase(PhaseKeys.DEVELOPMENT)"
-          labelWidth="180px"
-          label="Leverandør:"
-          tooltip="Her skrives organisationens navn eller en ekstern leverandør der har lavet løsningen."
-        >
-          <InputField
-            :disabled="state.disabled.generalInformationEdit"
-            :value="state.vendor"
-            :hasError="isInErrors('vendor')"
-            @change="update({ vendor: $event })"
-          />
-        </WellItem>
-        <WellItem v-if="state.sepMep" labelWidth="120px" label="SEP/MEP:" id="sepMep">
-          <Checkbox
-            :disabled="true"
-            :value="state.sepMep"
-            :hasError="isInErrors('sepMep')"
-            @change="update({ sepMep: $event })"
           />
         </WellItem>
       </div>
@@ -187,70 +72,7 @@
         <WellItem label="Sidst opdateret:">
           <DatePicker :value="state.lastChanged" id="lastChanged" disabled />
         </WellItem>
-        <WellItem v-if="state.minPhase(PhaseKeys.PREANALYSIS)" labelWidth="120px" label="Lovparagraf:" id="legalClause">
-          <InputField
-            :disabled="state.disabled.generalInformationEdit || state.form"
-            :value="state.legalClause"
-            :hasError="isInErrors('legalClause')"
-            @change="update({ legalClause: $event })"
-          />
-        </WellItem>
-        <WellItem labelWidth="200px" label="KLE:" id="kle">
-          <SelectionField
-            :disabled="state.disabled.generalInformationEdit"
-            :value="state.kle"
-            :hasError="isInErrors('kle')"
-            @change="setKle($event)"
-            :items="common.kles"
-            itemText="name"
-            itemSubText="code"
-            :filter="kleFilter"
-            clearable
-          />
-        </WellItem>
-        <WellItem labelWidth="200px" label="FORM:" id="form" v-if="state.kle">
-          <SelectionField
-            :disabled="state.disabled.generalInformationEdit"
-            :value="state.form"
-            :hasError="isInErrors('form')"
-            @change="update({ form: $event })"
-            :items="common.forms"
-            itemText="description"
-            itemSubText="code"
-            :filter="formFilter"
-            clearable
-          />
-        </WellItem>
-        <WellItem labelWidth="200px" label="KL ID:" id="klId" greyBackground>
-          <InputField
-            :disabled="state.disabled.generalInformationEdit"
-            :value="state.klId"
-            :hasError="isInErrors('klId')"
-            @change="update({ klId: $event })"
-          />
-        </WellItem>
-        <WellItem
-          id="kla"
-          labelWidth="200px"
-          label="KL’s Arbejdsgangsbank:"
-          tooltip="KL’s Arbejdsgangsbank nummeret henviser til en proces fra KL’s Arbejdsgangsbank."
-          greyBackground
-        >
-          <MaskableInput
-            :disabled="state.disabled.generalInformationEdit"
-            mask="##.##.##.##.##"
-            :value="state.kla"
-            :hasError="isInErrors('kla')"
-            @change="setKla"
-          />
-        </WellItem>
       </div>
-
-      <AssociatedPersonsInput
-        v-if="state.minPhase(PhaseKeys.PREANALYSIS) && isWithinMunicipality"
-        slot="well-footer"
-        :disabled="state.disabled.generalInformationEdit"
-      />
     </Well>
 
     <div class="resume-phases">
@@ -260,7 +82,7 @@
           <InfoTooltip>Resume er en helt kort opsummering der vises på søgeoversigten.</InfoTooltip>
         </h2>
         <TextArea
-          :disabled="state.disabled.generalInformationEdit"
+          :disabled="state.disabled.rapidEdit"
           @change="update({ shortDescription: $event })"
           :value="state.shortDescription"
           :hasError="isInErrors('shortDescription')"
@@ -273,46 +95,106 @@
           <div class="field-label">Fase:</div>
           <Phases
             class="phase-field"
-            :disabled="state.disabled.generalInformationEdit"
+            :disabled="state.disabled.rapidEdit"
             :value="state.phase"
             :hasError="isInErrors('phase')"
             @change="phaseChanged($event)"
           />
         </div>
-        <div id="status">
-          <div class="field-label">Status:</div>
-          <MappedSelectionField
-            class="status-field"
-            :disabled="state.disabled.generalInformationEdit"
-            :value="state.status"
-            :hasError="isInErrors('status')"
-            @change="update({ status: $event })"
-            :items="statusLevels"
-          />
-        </div>
 
-        <div v-if="isPhaseChanged" class="phase-changed">
-          <WarningIcon class="general-information-warning-icon" />
-          <div>Når du skifter fase, skal yderligere information om processen udfyldes</div>
+        <div class="rapid-warning">
+          <WarningIcon class="rapid-warning-icon" />
+          <div>Vælg en fase, hvis du ønsker at styre din udviklingsproces i OS2autoproces</div>
         </div>
       </div>
     </div>
 
-    <div id="statusText">
-      <div v-if="state.status !== StatusKeys.INPROGRESS && state.status !== StatusKeys.NOT_RATED">
-        <h2 class="comments-heading" v-if="state.status === StatusKeys.FAILED">Hvorfor er processen mislykket?</h2>
-        <h2 class="comments-heading" v-if="state.status === StatusKeys.PENDING">Hvorfor afventer processen?</h2>
-        <h2 class="comments-heading" v-if="state.status === StatusKeys.REJECTED">Hvorfor er processen afvist?</h2>
-        <h2 class="comments-heading" v-if="state.status === StatusKeys.NOT_RELEVANT">
-          Hvorfor er processen ikke relevant mere?
-        </h2>
-        <TextArea
-          :disabled="state.disabled.generalInformationEdit"
-          @change="update({ statusText: $event })"
-          :value="state.statusText"
+    <div class="rapid-section">
+      <h2>Problemstillinger</h2>
+      <div id="longDescription">
+        <h3>
+          Beskrivelse
+          <InfoTooltip>Her kan du beskrive den nuværende proces i detaljer.</InfoTooltip>
+        </h3>
+        <RichTextArea
+          :twoColumnBreakpoint="twoColumnBreakpoint"
+          @change="update({ longDescription: $event })"
+          :disabled="state.disabled.rapidEdit"
+          :value="state.longDescription"
+          :hasError="isInErrors('longDescription')"
+          :maxLength="10000"
         />
       </div>
     </div>
+
+    <div class="rapid-section">
+      <h2>Bilag og links</h2>
+      <div class="mb">
+        <h3>Links</h3>
+        <div>
+          <TextArea
+            :readonly-html="readonlyLinks"
+            :value="state.disabled.rapidEdit ? '' : state.codeRepositoryUrl"
+            @change="state.update({ codeRepositoryUrl: $event })"
+            :disabled="state.disabled.rapidEdit"
+            :max-length="10000"
+          />
+        </div>
+      </div>
+      <div class="mb">
+        <h3>Bilag</h3>
+        <div>
+          <div v-if="!isReporting">
+            <AttachmentUpload :disabled="state.disabled.rapidEdit" />
+          </div>
+          <div v-else>Det er først muligt at tilføje et bilag, efter du har klikket på Gem første gang.</div>
+        </div>
+      </div>
+      
+    </div>
+
+    <div class="rapid-section">
+      <h2>Udvikling og implementering</h2>
+      <div class="tech-automation-wrapper">
+        <div class="technology" id="technologies">
+          <h3 class="with-margin">
+            Anvendt teknologi
+            <InfoTooltip
+            >Her kan angive teknologier anvendt i løsningen fra listen. Hvis du mangler en teknologi, så kontakt
+            OS2autoproces koordinationsgruppen, så vil de oprette den for dig.</InfoTooltip
+          >
+          </h3>
+          
+          <TagSelectorTechnologies
+            @add="state.addTechnology($event)"
+            @remove="state.removeTechnology($event)"
+            :disabled="state.disabled.implementationEdit"
+            :value="state.technologies"
+            :hasError="isInErrors('technologies')"
+            :items="technologies"
+          />
+        </div>
+        <div class="automation" id="automations">
+          <h3 class="with-margin">
+            Automatiseringen anvender følgende systemer/snitflader
+            <InfoTooltip
+            >Her kan du angive de systemer og snitflader som løsningen gør brug af ud fra listen. Hvis du mangler et
+            system/snitflade, så kontakt OS2autoproces koordinationsgruppen, så vil de oprette den for dig.
+          </InfoTooltip>
+          </h3>
+          
+          <TagSelectorITSystems
+            @add="state.addServices($event)"
+            @remove="state.removeServices($event)"
+            :disabled="state.disabled.implementationEdit"
+            :value="state.services"
+            :hasError="isInErrors('services')"
+            :items="itSystems"
+          />
+        </div>
+      </div>
+    </div>
+
     <AppDialog :open="publicVisibilityDialogOpen" @close="closePublicVisibilityDialog">
       <DialogContent>
         <h2 class="form-header">Vil du ikke også ændre synligheden til 'Alle i OS2Autoproces'?</h2>
@@ -332,21 +214,15 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 import { Action, Getter } from 'vuex-class';
 
 import InputField from '@/components/common/inputs/InputField.vue';
-import MaskableInput from '@/components/common/inputs/MaskableInput.vue';
 import SelectionField from '@/components/common/inputs/SelectionField.vue';
-import MappedSelectionField from '@/components/common/inputs/MappedSelectionField.vue';
-import Checkbox from '@/components/common/inputs/Checkbox.vue';
-import DomainsField from '@/components/common/inputs/DomainsField.vue';
 import TextArea from '@/components/common/inputs/TextArea.vue';
 import Phases from '@/components/common/inputs/Phases.vue';
-import AssociatedPersonsInput from '@/components/details/general-information/AssociatedPersonsInput.vue';
 import Well from '@/components/common/Well.vue';
 import WellItem from '@/components/common/WellItem.vue';
 import FormSection from '@/components/details/FormSection.vue';
 import WarningIcon from '@/components/icons/WarningIcon.vue';
 import { StatusKeys, StatusLabels } from '@/models/status';
 import { VisibilityKeys, VisibilityLabels } from '@/models/visibility';
-import { Domain, DomainKeys, DomainLabels } from '@/models/domain';
 import { Kle, Form, UserSearchRequest, OrgUnit } from '@/store/modules/commonInterfaces';
 import { CommonModule } from '@/store/modules/common';
 import { Phase, PhaseKeys } from '@/models/phase';
@@ -361,29 +237,32 @@ import { ProcessModule, ProcessState } from '@/store/modules/process';
 import { ErrorModule } from '@/store/modules/error';
 import DatePicker from '@/components/common/inputs/DatePicker.vue';
 import { OrganisationModule } from '@/store/modules/organisation';
-// TODO - split this component. No component should be 500 lines
+import RichTextArea from '@/components/common/inputs/RichTextArea.vue';
+import AttachmentUpload from '@/components/common/inputs/AttachmentUpload.vue';
+import TagSelectorTechnologies from '@/components/common/inputs/TagSelectorTechnologies.vue';
+import TagSelectorITSystems from '@/components/common/inputs/TagSelectorITSystems.vue';
+
 @Component({
   components: {
+    TagSelectorTechnologies,
+    TagSelectorITSystems,
     InputField,
-    Checkbox,
-    DomainsField,
     SelectionField,
     InfoTooltip,
-    MappedSelectionField,
     StarIcon,
     TextArea,
     MunicipalityLogo,
     Phases,
-    AssociatedPersonsInput,
     Well,
     FormSection,
-    MaskableInput,
     WellItem,
     WarningIcon,
     AppDialog,
     DialogContent,
     Button,
-    DatePicker
+    DatePicker,
+    RichTextArea,
+    AttachmentUpload
   }
 })
 export default class GeneralInformationForm extends Vue {
@@ -429,6 +308,14 @@ export default class GeneralInformationForm extends Vue {
     return CommonModule;
   }
 
+  get technologies() {
+    return CommonModule.technologies;
+  }
+
+  get itSystems() {
+    return CommonModule.itSystems;
+  }
+
   get canEditOtherContact() {
     if (this.isReporting) {
       if (OrganisationModule.autoOtherContactEmail == null || OrganisationModule.autoOtherContactEmail === "") {
@@ -452,6 +339,21 @@ export default class GeneralInformationForm extends Vue {
     }
   }
 
+  get readonlyLinks() {
+    // This function parses links and makes them clickable when the user is not editing.
+    // First, it uses a long regex that matches urls (from http://urlregex.com) to match all urls in the text. Then it wraps them with an 'a' html tag.
+    const firstPass = !ProcessModule.disabled?.attachmentsEdit
+      ? ''
+      : ProcessModule.codeRepositoryUrl?.replace(
+          /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/g,
+          '<a href="$1" target="_blank">$1</a>'
+        );
+    // After wrapping the links with an 'a' tag, all matched links that start with 'www' but lack a protocol get an http protocol prepended in the href attribute.
+    // Finally, the result is returned.
+    return firstPass?.replace(/href="www/g, 'href="http://www');
+    // TODO: Fix mails without schema and maybe other edge cases
+  }
+
   assign(state: Partial<ProcessState>) {
     ProcessModule.assign(state);
   }
@@ -462,36 +364,6 @@ export default class GeneralInformationForm extends Vue {
 
   isInErrors(name: string) {
     return ErrorModule.errorInField(ErrorModule.generalInformation, name);
-  }
-
-  setKla(kla: string) {
-    // Inserts periodes for every 2 characters, to match format: ##.##.##.##.##
-    ProcessModule.update({ kla: kla.replace(/(\d{2})(?=\d)/g, '$1.') });
-  }
-
-  setKle(kle: Kle) {
-    if (!kle) {
-      ProcessModule.update({ kle, form: null });
-    } else {
-      ProcessModule.update({ kle });
-    }
-    CommonModule.loadFormsByKle(kle);
-  }
-
-  kleFilter(item: Kle, queryText: string, itemText: string): boolean {
-    return (
-      !queryText ||
-      item?.code?.toLowerCase().includes(queryText.toLowerCase()) ||
-      item?.name?.toLowerCase().includes(queryText.toLowerCase())
-    );
-  }
-
-  formFilter(item: Form, queryText: string, itemText: string): boolean {
-    return (
-      !queryText ||
-      item?.code?.toLowerCase().includes(queryText.toLowerCase()) ||
-      item?.description?.toLowerCase().includes(queryText.toLowerCase())
-    );
   }
 
   phaseChanged(phase: any) {
@@ -571,13 +443,21 @@ export default class GeneralInformationForm extends Vue {
   }
 }
 
+h2, h3 {
+  color: $color-primary;
+}
+
+h2 {
+  margin-bottom: 15px;
+}
+
 .comments-heading {
   @include textarea-heading;
   vertical-align: middle;
   padding: 1rem 0;
 }
 
-.phase-changed {
+.rapid-warning {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -595,7 +475,7 @@ export default class GeneralInformationForm extends Vue {
   }
 }
 
-.general-information-warning-icon {
+.rapid-warning-icon {
   vertical-align: middle;
   width: 40px;
   height: 40px;
@@ -650,4 +530,28 @@ export default class GeneralInformationForm extends Vue {
   align-items: center;
   line-height: 40px;
 }
+
+.rapid-section {
+  margin: 20px 0px;
+}
+
+.tech-automation-wrapper {
+  display: flex;
+  gap: 2rem;
+  
+  .technology,
+  .automation {
+    flex: 1;
+  }
+}
+
+.mb {
+  margin-bottom: 15px;
+}
+
+::v-deep .attachment-upload h2 {
+  font-size: 1em;
+  color: $color-text;
+}
+
 </style>

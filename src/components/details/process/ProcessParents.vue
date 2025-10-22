@@ -26,7 +26,7 @@ export default class ProcessParents extends Vue {
 
 .parent {
   display: block;
-  border: 2px solid $color-secondary;
+  border: 2px solid $color-primary;
   border-radius: 1rem;
   padding: 1rem;
   margin-bottom: 1rem;

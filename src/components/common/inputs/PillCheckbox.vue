@@ -39,7 +39,7 @@ export default class Checkbox extends Vue {
 
 .checkbox {
   display: flex;
-  background: $color-secondary;
+  background: $color-primary;
   padding: 0.5rem 1rem;
   color: white;
   border-radius: 20px;

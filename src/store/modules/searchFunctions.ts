@@ -18,6 +18,7 @@ export function getInitialState(): SearchState {
       usersId: null,
       bookmarkedId: null,
       filterMyOrganisation: false,
+      filterOnCvr: false,
       text: '',
       created: '',
       lastChanged: '',
@@ -36,6 +37,7 @@ export function getInitialState(): SearchState {
         descending: true
       },
       phase: {
+        RAPID: false,
         IDEA: false,
         PREANALYSIS: false,
         SPECIFICATION: false,

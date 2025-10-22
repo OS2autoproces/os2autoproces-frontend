@@ -75,6 +75,6 @@ export default class LikertScale extends Vue {
 .label {
   white-space: nowrap;
   font-style: italic;
-  color: $color-secondary;
+  color: $color-primary;
 }
 </style>

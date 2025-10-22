@@ -26,6 +26,9 @@ export interface OrganisationState {
   municipalityLogo: Logo | null;
   showUploadError: boolean;
   showUploadSuccess: boolean;
+  showRemoveLogoError: boolean;
+  showRemoveLogoSuccess: boolean;
+  rapidEdit: boolean;
   generalInformationEdit: boolean;
   technologiesEdit: boolean;
   logoUrl: string | null;
@@ -33,10 +36,13 @@ export interface OrganisationState {
 
 @Module({ dynamic: true, store, name: 'organisation', namespaced: true })
 export default class Organisation extends VuexModule implements OrganisationState {
+  rapidEdit: boolean = true;
   generalInformationEdit: boolean = true;
   technologiesEdit: boolean = true;
   showUploadError: boolean = false;
   showUploadSuccess: boolean = false;
+  showRemoveLogoError: boolean = false;
+  showRemoveLogoSuccess: boolean = false;
   logoUrl: string | null = null;
 
   inhabitants: Inhabitants | null = null;
@@ -119,6 +125,19 @@ export default class Organisation extends VuexModule implements OrganisationStat
 
     this.ASSIGN({ municipalityLogo });
     this.ASSIGN({ showUploadSuccess: true });
+  }
+
+  @Action
+  async removeLogo() {
+
+    const response = await HTTP.delete<Logo>(`/api/logo/${this.municipalityCvr}`);
+    if (response.status !== 200) {
+      this.ASSIGN({ showRemoveLogoError: true });
+      throw new Error();
+    }
+
+    this.ASSIGN({ municipalityLogo: null });
+    this.ASSIGN({ showRemoveLogoSuccess: true });
   }
 
   @Action

@@ -29,7 +29,7 @@ export default class ExcelIcon extends Vue {}
 
 polygon,
 rect {
-  fill: $color-secondary;
+  fill: $color-primary;
   stroke-miterlimit: 10;
 }
 

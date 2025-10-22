@@ -20,7 +20,7 @@ export default class PowerPointIcon extends Vue {}
 
 rect,
 polygon {
-  fill: $color-secondary;
+  fill: $color-primary;
 }
 
 path {
